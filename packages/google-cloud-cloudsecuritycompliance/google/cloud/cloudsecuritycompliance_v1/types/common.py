@@ -1052,10 +1052,10 @@ class CELExpression(proto.Message):
 
             This field is a member of `oneof`_ ``criteria``.
         expression (str):
-            Required. The logical expression in CEL. The maximum length
-            of the condition is 1000 characters. For more information,
-            see `CEL
-            expression <https://cloud.google.com/security-command-center/docs/compliance-manager-write-cel-expressions>`__.
+            Required. The logical expression in CEL. The
+            maximum length of the condition is 1000
+            characters. For more information, see [CEL
+            expression](https://cloud.google.com/security-command-center/docs/compliance-manager-write-cel-expressions).
     """
 
     resource_types_values: "StringList" = proto.Field(

@@ -146,9 +146,9 @@ class ResourceBackupConfig(proto.Message):
             will be populated in this field for a Compute
             Engine VM which has the disk associated.
         backup_configured (bool):
-            Output only. Whether the target resource is configured for
-            backup. This is true if the backup_configs_details is not
-            empty.
+            Output only. Whether the target resource is
+            configured for backup. This is true if the
+            backup_configs_details is not empty.
         vaulted (bool):
             Output only. Whether the target resource is protected by a
             backup vault. This is true if the backup_configs_details is
@@ -259,16 +259,19 @@ class BackupConfigDetails(proto.Message):
             successful backup created via this backup
             configuration.
         applicable_resource (str):
-            Output only. The `full resource
-            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
-            of the resource that is applicable for the backup
-            configuration. Example:
+            Output only. The [full resource
+            name](https://cloud.google.com/asset-inventory/docs/resource-name-format)
+            of the resource that is applicable for the
+            backup configuration. Example:
+
             "//compute.googleapis.com/projects/{project}/zones/{zone}/instances/{instance}".
         backup_vault (str):
-            Output only. The `full resource
-            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
-            of the backup vault that will store the backups generated
-            through this backup configuration. Example:
+            Output only. The [full resource
+            name](https://cloud.google.com/asset-inventory/docs/resource-name-format)
+            of the backup vault that will store the backups
+            generated through this backup configuration.
+            Example:
+
             "//backupdr.googleapis.com/v1/projects/{project}/locations/{region}/backupVaults/{backupvaultId}".
         backup_locations (MutableSequence[google.cloud.backupdr_v1.types.BackupLocation]):
             The locations where the backups are to be

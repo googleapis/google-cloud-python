@@ -90,8 +90,8 @@ class ListKnowledgeBasesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 10 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         filter (str):
             The filter expression used to filter knowledge bases
             returned by the list method. The expression has the

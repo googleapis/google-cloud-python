@@ -564,8 +564,9 @@ class PolicyTagManagerAsyncClient:
                 The request object. Request message for
                 [UpdateTaxonomy][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdateTaxonomy].
             taxonomy (:class:`google.cloud.datacatalog_v1beta1.types.Taxonomy`):
-                The taxonomy to update. Only description, display_name,
-                and activated policy types can be updated.
+                The taxonomy to update. Only
+                description, display_name, and activated
+                policy types can be updated.
 
                 This corresponds to the ``taxonomy`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1150,9 +1151,9 @@ class PolicyTagManagerAsyncClient:
                 The request object. Request message for
                 [UpdatePolicyTag][google.cloud.datacatalog.v1beta1.PolicyTagManager.UpdatePolicyTag].
             policy_tag (:class:`google.cloud.datacatalog_v1beta1.types.PolicyTag`):
-                The policy tag to update. Only the description,
-                display_name, and parent_policy_tag fields can be
-                updated.
+                The policy tag to update. Only the
+                description, display_name, and
+                parent_policy_tag fields can be updated.
 
                 This corresponds to the ``policy_tag`` field
                 on the ``request`` instance; if ``request`` is provided, this

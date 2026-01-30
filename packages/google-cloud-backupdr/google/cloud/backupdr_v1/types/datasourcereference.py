@@ -44,8 +44,9 @@ class DataSourceReference(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the DataSourceReference.
-            Format:
+            Identifier. The resource name of the
+            DataSourceReference. Format:
+
             projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
         data_source (str):
             Output only. The resource name of the
@@ -187,8 +188,9 @@ class GetDataSourceReferenceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DataSourceReference to retrieve.
-            Format:
+            Required. The name of the DataSourceReference to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
     """
 

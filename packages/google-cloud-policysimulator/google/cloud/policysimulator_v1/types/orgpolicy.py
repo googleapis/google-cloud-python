@@ -391,8 +391,9 @@ class CreateOrgPolicyViolationsPreviewOperationMetadata(proto.Message):
             Output only. The current state of the
             operation.
         resources_found (int):
-            Total number of resources that need scanning. Should equal
-            resource_scanned + resources_pending
+            Total number of resources that need scanning.
+            Should equal resource_scanned +
+            resources_pending
         resources_scanned (int):
             Number of resources already scanned.
         resources_pending (int):

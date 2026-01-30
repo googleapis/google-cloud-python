@@ -50,7 +50,8 @@ class Product(proto.Message):
 
     Attributes:
         name (str):
-            Resource Name of the Product. Format: products/{product_id}
+            Resource Name of the Product.
+            Format: products/{product_id}
         marketing_info (google.cloud.channel_v1.types.MarketingInfo):
             Marketing information for the product.
     """
@@ -74,8 +75,8 @@ class Sku(proto.Message):
 
     Attributes:
         name (str):
-            Resource Name of the SKU. Format:
-            products/{product_id}/skus/{sku_id}
+            Resource Name of the SKU.
+            Format: products/{product_id}/skus/{sku_id}
         marketing_info (google.cloud.channel_v1.types.MarketingInfo):
             Marketing information for the SKU.
         product (google.cloud.channel_v1.types.Product):

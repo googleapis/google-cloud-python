@@ -46,11 +46,13 @@ class CreateRuntimeProjectAttachmentRequest(proto.Message):
             Attachment. Format:
             ``projects/{project}/locations/{location}``
         runtime_project_attachment_id (str):
-            Required. The ID to use for the Runtime Project Attachment,
-            which will become the final component of the Runtime Project
-            Attachment's name. The ID must be the same as the project ID
+            Required. The ID to use for the Runtime Project
+            Attachment, which will become the final
+            component of the Runtime Project Attachment's
+            name. The ID must be the same as the project ID
             of the Google cloud project specified in the
-            runtime_project_attachment.runtime_project field.
+            runtime_project_attachment.runtime_project
+            field.
         runtime_project_attachment (google.cloud.apihub_v1.types.RuntimeProjectAttachment):
             Required. The Runtime Project Attachment to
             create.
@@ -252,8 +254,8 @@ class RuntimeProjectAttachment(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of a runtime project
-            attachment. Format:
+            Identifier. The resource name of a runtime
+            project attachment. Format:
             "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}".
         runtime_project (str):
             Required. Immutable. Google cloud project

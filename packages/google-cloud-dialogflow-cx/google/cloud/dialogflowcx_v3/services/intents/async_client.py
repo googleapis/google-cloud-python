@@ -546,8 +546,8 @@ class IntentsAsyncClient:
         r"""Creates an intent in the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -678,8 +678,8 @@ class IntentsAsyncClient:
         r"""Updates the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -811,8 +811,8 @@ class IntentsAsyncClient:
         r"""Deletes the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 

@@ -1354,8 +1354,8 @@ class DataChatServiceClient(metaclass=DataChatServiceClientMeta):
 
         Args:
             request (Union[google.cloud.geminidataanalytics_v1alpha.types.ListMessagesRequest, dict]):
-                The request object. Request for listing chat messages based on parent and
-                conversation_id.
+                The request object. Request for listing chat messages based
+                on parent and conversation_id.
             parent (str):
                 Required. The conversation to list messages under.
                 Format:

@@ -294,8 +294,8 @@ class ListVodStitchDetailsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
     """
 
     parent: str = proto.Field(
@@ -367,8 +367,8 @@ class ListVodAdTagDetailsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
     """
 
     parent: str = proto.Field(
@@ -786,15 +786,15 @@ class ListLiveConfigsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         filter (str):
             Optional. The filter to apply to list results (see
             `Filtering <https://google.aip.dev/160>`__).
         order_by (str):
-            Optional. Specifies the ordering of results following `Cloud
-            API
-            syntax <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+            Optional. Specifies the ordering of results
+            following [Cloud API
+            syntax](https://cloud.google.com/apis/design/design_patterns#sorting_order).
     """
 
     parent: str = proto.Field(
@@ -970,15 +970,15 @@ class ListVodConfigsRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
         filter (str):
             Optional. The filter to apply to list results (see
             `Filtering <https://google.aip.dev/160>`__).
         order_by (str):
-            Optional. Specifies the ordering of results following `Cloud
-            API
-            syntax <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+            Optional. Specifies the ordering of results
+            following [Cloud API
+            syntax](https://cloud.google.com/apis/design/design_patterns#sorting_order).
     """
 
     parent: str = proto.Field(

@@ -59,8 +59,8 @@ class DataTaxonomy(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the DataTaxonomy,
-            of the form:
+            Output only. The relative resource name of the
+            DataTaxonomy, of the form:
             projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}.
         uid (str):
             Output only. System generated globally unique
@@ -175,10 +175,12 @@ class DataAttribute(proto.Message):
             Optional. User-defined labels for the
             DataAttribute.
         parent_id (str):
-            Optional. The ID of the parent DataAttribute resource,
-            should belong to the same data taxonomy. Circular dependency
-            in parent chain is not valid. Maximum depth of the hierarchy
-            allowed is 4. [a -> b -> c -> d -> e, depth = 4]
+            Optional. The ID of the parent DataAttribute
+            resource, should belong to the same data
+            taxonomy. Circular dependency in parent chain is
+            not valid. Maximum depth of the hierarchy
+            allowed is 4.
+            [a -> b -> c -> d -> e, depth = 4]
         attribute_count (int):
             Output only. The number of child attributes
             present for this attribute.
@@ -261,8 +263,9 @@ class DataAttributeBinding(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the Data
-            Attribute Binding, of the form:
+            Output only. The relative resource name of the
+            Data Attribute Binding, of the form:
+
             projects/{project_number}/locations/{location}/dataAttributeBindings/{data_attribute_binding_id}
         uid (str):
             Output only. System generated globally unique
@@ -292,18 +295,21 @@ class DataAttributeBinding(proto.Message):
             DeleteDataAttributeBinding and the
             UpdateDataAttributeBinding method.
         resource (str):
-            Optional. Immutable. The resource name of the resource that
-            is associated to attributes. Presently, only entity resource
-            is supported in the form:
+            Optional. Immutable. The resource name of the
+            resource that is associated to attributes.
+            Presently, only entity resource is supported in
+            the form:
+
             projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity_id}
-            Must belong in the same project and region as the attribute
-            binding, and there can only exist one active binding for a
-            resource.
+            Must belong in the same project and region as
+            the attribute binding, and there can only exist
+            one active binding for a resource.
 
             This field is a member of `oneof`_ ``resource_reference``.
         attributes (MutableSequence[str]):
-            Optional. List of attributes to be associated with the
-            resource, provided in the form:
+            Optional. List of attributes to be associated
+            with the resource, provided in the form:
+
             projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
         paths (MutableSequence[google.cloud.dataplex_v1.types.DataAttributeBinding.Path]):
             Optional. The list of paths for items within
@@ -323,8 +329,10 @@ class DataAttributeBinding(proto.Message):
                 Nested columns should be of the form:
                 'address.city'.
             attributes (MutableSequence[str]):
-                Optional. List of attributes to be associated with the path
-                of the resource, provided in the form:
+                Optional. List of attributes to be associated
+                with the path of the resource, provided in the
+                form:
+
                 projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
         """
 
@@ -583,7 +591,8 @@ class CreateDataAttributeRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the parent data taxonomy
+            Required. The resource name of the parent data
+            taxonomy
             projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
         data_attribute_id (str):
             Required. DataAttribute identifier.
@@ -654,7 +663,8 @@ class GetDataAttributeRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the dataAttribute:
+            Required. The resource name of the
+            dataAttribute:
             projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
     """
 
@@ -750,7 +760,8 @@ class DeleteDataAttributeRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the DataAttribute:
+            Required. The resource name of the
+            DataAttribute:
             projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
         etag (str):
             Optional. If the client provided etag value
@@ -774,7 +785,8 @@ class CreateDataAttributeBindingRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the parent data taxonomy
+            Required. The resource name of the parent data
+            taxonomy
             projects/{project_number}/locations/{location_id}
         data_attribute_binding_id (str):
             Required. DataAttributeBinding identifier.
@@ -845,7 +857,8 @@ class GetDataAttributeBindingRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the DataAttributeBinding:
+            Required. The resource name of the
+            DataAttributeBinding:
             projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
     """
 
@@ -861,6 +874,7 @@ class ListDataAttributeBindingsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The resource name of the Location:
+
             projects/{project_number}/locations/{location_id}
         page_size (int):
             Optional. Maximum number of
@@ -950,7 +964,8 @@ class DeleteDataAttributeBindingRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the DataAttributeBinding:
+            Required. The resource name of the
+            DataAttributeBinding:
             projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
         etag (str):
             Required. If the client provided etag value

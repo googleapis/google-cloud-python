@@ -808,10 +808,11 @@ class TextServiceClient(metaclass=TextServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             candidate_count (int):
-                Optional. Number of generated responses to return.
-
-                This value must be between [1, 8], inclusive. If unset,
-                this will default to 1.
+                Optional. Number of generated responses
+                to return.
+                This value must be between [1, 8],
+                inclusive. If unset, this will default
+                to 1.
 
                 This corresponds to the ``candidate_count`` field
                 on the ``request`` instance; if ``request`` is provided, this

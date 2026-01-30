@@ -856,9 +856,9 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> gcd_agent.Agent:
         r"""Creates/updates the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -1075,12 +1075,13 @@ class AgentsClient(metaclass=AgentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchAgentsPager:
-        r"""Returns the list of agents. Since there is at most one
-        conversational agent per project, this method is useful
-        primarily for listing all agents across projects the caller has
-        access to. One can achieve that with a wildcard project
-        collection id "-". Refer to `List
-        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
+        r"""Returns the list of agents.
+        Since there is at most one conversational agent per
+        project, this method is useful primarily for listing all
+        agents across projects the caller has access to. One can
+        achieve that with a wildcard project collection id "-".
+        Refer to [List
+        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
 
         .. code-block:: python
 

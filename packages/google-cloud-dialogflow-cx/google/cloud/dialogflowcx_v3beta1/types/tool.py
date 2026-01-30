@@ -84,8 +84,8 @@ class ListToolsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -108,8 +108,9 @@ class ListToolsResponse(proto.Message):
 
     Attributes:
         tools (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Tool]):
-            The list of Tools. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of Tools. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -657,8 +658,8 @@ class Tool(proto.Message):
 
                 This field is a member of `oneof`_ ``auth_config``.
             service_agent_auth_config (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.ServiceAgentAuthConfig):
-                Config for `Diglogflow service
-                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__
+                Config for [Diglogflow service
+                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
                 auth.
 
                 This field is a member of `oneof`_ ``auth_config``.
@@ -753,16 +754,16 @@ class Tool(proto.Message):
             """
 
             class OauthGrantType(proto.Enum):
-                r"""OAuth grant types. Only `client credential
-                grant <https://oauth.net/2/grant-types/client-credentials>`__ is
+                r"""OAuth grant types. Only [client credential
+                grant](https://oauth.net/2/grant-types/client-credentials) is
                 supported.
 
                 Values:
                     OAUTH_GRANT_TYPE_UNSPECIFIED (0):
                         Default value. This value is unused.
                     CLIENT_CREDENTIAL (1):
-                        Represents the `client credential
-                        flow <https://oauth.net/2/grant-types/client-credentials>`__.
+                        Represents the [client credential
+                        flow](https://oauth.net/2/grant-types/client-credentials).
                 """
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
@@ -796,24 +797,27 @@ class Tool(proto.Message):
             )
 
         class ServiceAgentAuthConfig(proto.Message):
-            r"""Config for auth using `Diglogflow service
-            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            r"""Config for auth using [Diglogflow service
+            agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 
             Attributes:
                 service_agent_auth (google.cloud.dialogflowcx_v3beta1.types.Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth):
-                    Optional. Indicate the auth token type generated from the
-                    `Diglogflow service
-                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
-                    The generated token is sent in the Authorization header.
+                    Optional. Indicate the auth token type generated
+                    from the [Diglogflow service
+                    agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+                    The generated token is sent in the Authorization
+                    header.
             """
 
             class ServiceAgentAuth(proto.Enum):
-                r"""Indicate the auth token type generated from the `Diglogflow service
-                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                r"""Indicate the auth token type generated from the [Diglogflow
+                service
+                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 
                 Values:
                     SERVICE_AGENT_AUTH_UNSPECIFIED (0):
-                        Service agent auth type unspecified. Default to ID_TOKEN.
+                        Service agent auth type unspecified. Default to
+                        ID_TOKEN.
                     ID_TOKEN (1):
                         Use `ID
                         token <https://cloud.google.com/docs/authentication/token-types#id>`__
@@ -1140,8 +1144,8 @@ class ListToolVersionsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -1164,8 +1168,9 @@ class ListToolVersionsResponse(proto.Message):
 
     Attributes:
         tool_versions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.ToolVersion]):
-            The list of tool versions. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of tool versions. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

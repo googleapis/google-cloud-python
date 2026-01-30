@@ -71,8 +71,8 @@ class Document(proto.Message):
             Optional. An internal identifier for
             document. Should be loggable (no PII).
         mime_type (str):
-            An IANA published `media type (MIME
-            type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
+            An IANA published [media type (MIME
+            type)](https://www.iana.org/assignments/media-types/media-types.xhtml).
         text (str):
             Optional. UTF-8 encoded text in reading order
             from the document.
@@ -186,9 +186,10 @@ class Document(proto.Message):
                 style <https://www.w3schools.com/cssref/pr_font_font-style.asp>`__.
                 Possible values are ``normal``, ``italic``, and ``oblique``.
             text_decoration (str):
-                `Text
-                decoration <https://www.w3schools.com/cssref/pr_text_text-decoration.asp>`__.
-                Follows CSS standard.
+                [Text
+                decoration](https://www.w3schools.com/cssref/pr_text_text-decoration.asp).
+                Follows CSS standard. <text-decoration-line>
+                <text-decoration-color> <text-decoration-style>
             font_size (google.cloud.documentai_v1beta3.types.Document.Style.FontSize):
                 Font size.
             font_family (str):
@@ -350,8 +351,8 @@ class Document(proto.Message):
                 content (bytes):
                     Raw byte content of the image.
                 mime_type (str):
-                    Encoding `media type (MIME
-                    type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__
+                    Encoding [media type (MIME
+                    type)](https://www.iana.org/assignments/media-types/media-types.xhtml)
                     for the image.
                 width (int):
                     Width of the image in pixels.
@@ -386,11 +387,11 @@ class Document(proto.Message):
                 cols (int):
                     Number of columns in the matrix.
                 type_ (int):
-                    This encodes information about what data type the matrix
-                    uses. For example, 0 (CV_8U) is an unsigned 8-bit image. For
-                    the full list of OpenCV primitive data types, please refer
-                    to
-                    https://docs.opencv.org/4.3.0/d1/d1b/group\__core\__hal\__interface.html
+                    This encodes information about what data type
+                    the matrix uses. For example, 0 (CV_8U) is an
+                    unsigned 8-bit image. For the full list of
+                    OpenCV primitive data types, please refer to
+                    https://docs.opencv.org/4.3.0/d1/d1b/group__core__hal__interface.html
                 data (bytes):
                     The matrix data.
             """
@@ -1308,6 +1309,7 @@ class Document(proto.Message):
                     This field is a member of `oneof`_ ``structured_value``.
                 address_value (google.type.postal_address_pb2.PostalAddress):
                     Postal address. See also:
+
                     https://github.com/googleapis/googleapis/blob/master/google/type/postal_address.proto
 
                     This field is a member of `oneof`_ ``structured_value``.
@@ -1485,9 +1487,10 @@ class Document(proto.Message):
                 The text segments from the
                 [Document.text][google.cloud.documentai.v1beta3.Document.text].
             content (str):
-                Contains the content of the text span so that users do not
-                have to look it up in the text_segments. It is always
-                populated for formFields.
+                Contains the content of the text span so that
+                users do not have to look it up in the
+                text_segments. It is always populated for
+                formFields.
         """
 
         class TextSegment(proto.Message):
@@ -1710,8 +1713,8 @@ class Document(proto.Message):
 
             Attributes:
                 revision (int):
-                    The index of the index into current revision's parent_ids
-                    list.
+                    The index of the index into current revision's
+                    parent_ids list.
                 index (int):
                     The index of the parent item in the
                     corresponding item list (eg. list of entities,
@@ -2137,8 +2140,8 @@ class Document(proto.Message):
 
                 Attributes:
                     blob_asset_id (str):
-                        Optional. Asset ID of the inline image. If set, find the
-                        image content in the blob_assets field.
+                        Optional. Asset ID of the inline image. If set,
+                        find the image content in the blob_assets field.
 
                         This field is a member of `oneof`_ ``image_source``.
                     gcs_uri (str):
@@ -2339,8 +2342,8 @@ class Document(proto.Message):
 
                 Attributes:
                     blob_asset_id (str):
-                        Optional. Asset ID of the inline image. If set, find the
-                        image content in the blob_assets field.
+                        Optional. Asset ID of the inline image. If set,
+                        find the image content in the blob_assets field.
 
                         This field is a member of `oneof`_ ``image_source``.
                     gcs_uri (str):
@@ -2491,9 +2494,9 @@ class Document(proto.Message):
                 Optional. The content of the blob asset, for
                 example, image bytes.
             mime_type (str):
-                The mime type of the blob asset. An IANA published `media
-                type (MIME
-                type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
+                The mime type of the blob asset.
+                An IANA published [media type (MIME
+                type)](https://www.iana.org/assignments/media-types/media-types.xhtml).
         """
 
         asset_id: str = proto.Field(

@@ -584,9 +584,9 @@ class AgentsAsyncClient:
     ) -> gcdc_agent.Agent:
         r"""Creates an agent in the specified location.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -727,9 +727,9 @@ class AgentsAsyncClient:
     ) -> gcdc_agent.Agent:
         r"""Updates the specified agent.
 
-        Note: You should always train flows prior to sending them
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        Note: You should always train flows prior to sending
+        them queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 

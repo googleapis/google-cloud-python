@@ -256,7 +256,9 @@ class GetAssetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the asset to retrieve. Format:
+            Required. The name of the asset to retrieve.
+            Format:
+
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
     """
 
@@ -288,11 +290,13 @@ class ListAssetsRequest(proto.Message):
             ``ListAssets`` must match the call that provided the page
             token.
         filter (str):
-            The filter applied to the returned list. Only the following
-            filterings are supported: "assets_with_contents = true",
-            which returns assets with contents uploaded;
-            "assets_with_contents = false", which returns assets without
-            contents.
+            The filter applied to the returned list.
+            Only the following filterings are supported:
+
+            "assets_with_contents = true", which returns
+            assets with contents uploaded;
+            "assets_with_contents = false", which returns
+            assets without contents.
     """
 
     parent: str = proto.Field(
@@ -864,9 +868,11 @@ class ViewIndexedAssetsRequest(proto.Message):
             ``ViewIndexedAssets`` must match the call that provided the
             page token.
         filter (str):
-            The filter applied to the returned list. Only the following
-            filterings are supported: "asset_id = xxxx", which returns
-            asset with specified id. "asset_id = xxxx, yyyy, zzzz",
+            The filter applied to the returned list.
+            Only the following filterings are supported:
+
+            "asset_id = xxxx", which returns asset with
+            specified id. "asset_id = xxxx, yyyy, zzzz",
             which returns assets with specified ids.
     """
 
@@ -1626,10 +1632,10 @@ class Index(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update timestamp.
         deployed_indexes (MutableSequence[google.cloud.visionai_v1.types.DeployedIndexReference]):
-            Output only. References to the deployed index instance.
-            Index of VIDEO_ON_DEMAND corpus can have at most one
-            deployed index. Index of IMAGE corpus can have multiple
-            deployed indexes.
+            Output only. References to the deployed index
+            instance. Index of VIDEO_ON_DEMAND corpus can
+            have at most one deployed index. Index of IMAGE
+            corpus can have multiple deployed indexes.
         satisfies_pzs (bool):
             Output only. This boolean field is only set
             for projects that have Physical Zone Separation
@@ -1750,10 +1756,11 @@ class Corpus(proto.Message):
             Optional. Description of the corpus. Can be
             up to 25000 characters long.
         default_ttl (google.protobuf.duration_pb2.Duration):
-            Optional. The default TTL value for all assets under the
-            corpus without a asset level user-defined TTL. For
-            STREAM_VIDEO type corpora, this is required and the maximum
-            allowed default_ttl is 10 years.
+            Optional. The default TTL value for all assets
+            under the corpus without a asset level
+            user-defined TTL. For STREAM_VIDEO type corpora,
+            this is required and the maximum allowed
+            default_ttl is 10 years.
         type_ (google.cloud.visionai_v1.types.Corpus.Type):
             Optional. Type of the asset inside corpus.
         search_capability_setting (google.cloud.visionai_v1.types.SearchCapabilitySetting):
@@ -1782,9 +1789,9 @@ class Corpus(proto.Message):
 
         Values:
             TYPE_UNSPECIFIED (0):
-                The default type, not supposed to be used. If this default
-                type is used, the corpus will be created as STREAM_VIDEO
-                corpus.
+                The default type, not supposed to be used. If
+                this default type is used, the corpus will be
+                created as STREAM_VIDEO corpus.
             STREAM_VIDEO (1):
                 Asset is a live streaming video.
             IMAGE (2):
@@ -1882,12 +1889,13 @@ class ListCorporaRequest(proto.Message):
             Required. The resource name of the project
             from which to list corpora.
         page_size (int):
-            Requested page size. API may return fewer results than
-            requested. If negative, INVALID_ARGUMENT error will be
-            returned. If unspecified or 0, API will pick a default size,
-            which is 10. If the requested page size is larger than the
-            maximum size, API will pick use the maximum size, which is
-            20.
+            Requested page size. API may return fewer
+            results than requested. If negative,
+            INVALID_ARGUMENT error will be returned. If
+            unspecified or 0, API will pick a default size,
+            which is 10. If the requested page size is
+            larger than the maximum size, API will pick use
+            the maximum size, which is 20.
         page_token (str):
             A token identifying a page of results for the server to
             return. Typically obtained via
@@ -2258,10 +2266,11 @@ class DataSchemaDetails(proto.Message):
 
                 This field is a member of `oneof`_ ``_search_strategy_type``.
             confidence_score_index_config (google.cloud.visionai_v1.types.DataSchemaDetails.SearchStrategy.ConfidenceScoreIndexConfig):
-                Optional. Configs the path to the confidence score, and the
-                threshold. Only if the score is greater than the threshold,
-                current field will be built into the index. Only applies to
-                leaf nodes using EXACT_SEARCH or SMART_SEARCH.
+                Optional. Configs the path to the confidence
+                score, and the threshold. Only if the score is
+                greater than the threshold, current field will
+                be built into the index. Only applies to leaf
+                nodes using EXACT_SEARCH or SMART_SEARCH.
         """
 
         class SearchStrategyType(proto.Enum):
@@ -2284,16 +2293,33 @@ class DataSchemaDetails(proto.Message):
             SMART_SEARCH = 2
 
         class ConfidenceScoreIndexConfig(proto.Message):
-            r"""Filter on the confidence score. Only adds to index if the confidence
-            score is higher than the threshold. Example data schema: key:
-            "name-confidence-pair" type: CUSTOMIZED_STRUCT granularity:
-            GRANULARITY_PARTITION_LEVEL customized_struct_config { field_schemas
-            { key: "name" type: STRING granularity: GRANULARITY_PARTITION_LEVEL
-            search_strategy { search_strategy_type: SMART_SEARCH
-            confidence_score_index_config { field_path:
-            "name-confidence-pair.score" threshold: 0.6 } } } field_schemas {
-            key: "score" type: FLOAT granularity: GRANULARITY_PARTITION_LEVEL }
-            } This means only "name" with score > 0.6 will be indexed.
+            r"""Filter on the confidence score. Only adds to index if the
+            confidence score is higher than the threshold.
+            Example data schema:
+
+            key: "name-confidence-pair"
+            type: CUSTOMIZED_STRUCT
+            granularity: GRANULARITY_PARTITION_LEVEL
+            customized_struct_config {
+            field_schemas {
+            key: "name"
+            type: STRING
+            granularity: GRANULARITY_PARTITION_LEVEL
+            search_strategy {
+            search_strategy_type: SMART_SEARCH
+            confidence_score_index_config {
+            field_path: "name-confidence-pair.score"
+            threshold: 0.6
+            }
+            }
+            }
+            field_schemas {
+            key: "score"
+            type: FLOAT
+            granularity: GRANULARITY_PARTITION_LEVEL
+            }
+            }
+            This means only "name" with score > 0.6 will be indexed.
 
             Attributes:
                 field_path (str):
@@ -2649,9 +2675,10 @@ class AnnotationValue(proto.Message):
 
             This field is a member of `oneof`_ ``value``.
         customized_struct_data_value (google.protobuf.struct_pb2.Struct):
-            Value of customized struct annotation. This field does not
-            have effects. Use customized_struct_value instead for
-            customized struct annotation.
+            Value of customized struct annotation. This
+            field does not have effects. Use
+            customized_struct_value instead for customized
+            struct annotation.
 
             This field is a member of `oneof`_ ``value``.
         list_value (google.cloud.visionai_v1.types.AnnotationList):
@@ -3670,23 +3697,26 @@ class FacetProperty(proto.Message):
             Display name of the facet. To be used by UI
             for facet rendering.
         result_size (int):
-            Maximum number of unique bucket to return for one facet.
-            Bucket number can be large for high-cardinality facet such
-            as "player". We only return top-n most related ones to user.
-            If it's <= 0, the server will decide the appropriate
+            Maximum number of unique bucket to return for
+            one facet. Bucket number can be large for
+            high-cardinality facet such as "player". We only
+            return top-n most related ones to user. If it's
+            <= 0, the server will decide the appropriate
             result_size.
         bucket_type (google.cloud.visionai_v1.types.FacetBucketType):
             Facet bucket type e.g. value, range.
     """
 
     class FixedRangeBucketSpec(proto.Message):
-        r"""If bucket type is FIXED_RANGE, specify how values are bucketized.
-        Use FixedRangeBucketSpec when you want to create multiple buckets
-        with equal granularities. Using integer bucket value as an example,
-        when bucket_start = 0, bucket_granularity = 10, bucket_count = 5,
-        this facet will be aggregated via the following buckets: [-inf, 0),
-        [0, 10), [10, 20), [20, 30), [30, inf). Notably, bucket_count <= 1
-        is an invalid spec.
+        r"""If bucket type is FIXED_RANGE, specify how values are
+        bucketized. Use FixedRangeBucketSpec when you want to create
+        multiple buckets with equal granularities. Using integer bucket
+        value as an example, when bucket_start = 0, bucket_granularity =
+        10, bucket_count = 5, this facet will be aggregated via the
+        following buckets:
+
+        [-inf, 0), [0, 10), [10, 20), [20, 30), [30, inf).
+        Notably, bucket_count <= 1 is an invalid spec.
 
         Attributes:
             bucket_start (google.cloud.visionai_v1.types.FacetValue):
@@ -3807,10 +3837,12 @@ class FacetProperty(proto.Message):
 
 
 class SearchHypernym(proto.Message):
-    r"""Search resource: SearchHypernym. For example, { hypernym: "vehicle"
-    hyponyms: ["sedan", "truck"] } This means in SMART_SEARCH mode,
-    searching for "vehicle" will also return results with "sedan" or
-    "truck" as annotations.
+    r"""Search resource: SearchHypernym.
+    For example,
+    { hypernym: "vehicle"
+    hyponyms: ["sedan", "truck"] }
+    This means in SMART_SEARCH mode, searching for "vehicle" will
+    also return results with "sedan" or "truck" as annotations.
 
     Attributes:
         name (str):
@@ -4000,19 +4032,33 @@ class SearchCriteriaProperty(proto.Message):
 
     Attributes:
         mapped_fields (MutableSequence[str]):
-            Each mapped_field corresponds to a UGA key. To understand
-            how this property works, take the following example. In the
-            SearchConfig table, the user adds this entry: search_config
-            { name: "person" search_criteria_property { mapped_fields:
-            "player" mapped_fields: "coach" } }
+            Each mapped_field corresponds to a UGA key. To
+            understand how this property works, take the
+            following example. In the SearchConfig table,
+            the user adds this entry:
 
-            Now, when a user issues a query like: criteria { field:
-            "person" text_array { txt_values: "Tom Brady" txt_values:
-            "Bill Belichick" } }
+            search_config {
+            name: "person"
+            search_criteria_property {
+            mapped_fields: "player"
+            mapped_fields: "coach"
+            }
+            }
 
-            MWH search will return search documents where (player=Tom
-            Brady \|\| coach=Tom Brady \|\| player=Bill Belichick \|\|
-            coach=Bill Belichick).
+            Now, when a user issues a query like:
+
+            criteria {
+            field: "person"
+            text_array {
+            txt_values: "Tom Brady"
+            txt_values: "Bill Belichick"
+            }
+            }
+
+            MWH search will return search documents where
+            (player=Tom Brady \|\| coach=Tom Brady \|\|
+            player=Bill Belichick \|\| coach=Bill
+            Belichick).
     """
 
     mapped_fields: MutableSequence[str] = proto.RepeatedField(
@@ -4443,19 +4489,22 @@ class SearchAssetsRequest(proto.Message):
             Required. The parent corpus to search. Format:
             \`projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
         page_size (int):
-            The number of results to be returned in this page. If it's
-            0, the server will decide the appropriate page_size.
+            The number of results to be returned in this
+            page. If it's 0, the server will decide the
+            appropriate page_size.
         page_token (str):
             The continuation token to fetch the next
             page. If empty, it means it is fetching the
             first page.
         content_time_ranges (google.cloud.visionai_v1.types.DateTimeRangeArray):
-            Time ranges that matching video content must fall within. If
-            no ranges are provided, there will be no time restriction.
-            This field is treated just like the criteria below, but
-            defined separately for convenience as it is used frequently.
-            Note that if the end_time is in the future, it will be
-            clamped to the time the request was received.
+            Time ranges that matching video content must
+            fall within. If no ranges are provided, there
+            will be no time restriction. This field is
+            treated just like the criteria below, but
+            defined separately for convenience as it is used
+            frequently. Note that if the end_time is in the
+            future, it will be clamped to the time the
+            request was received.
         criteria (MutableSequence[google.cloud.visionai_v1.types.Criteria]):
             Criteria applied to search results.
         facet_selections (MutableSequence[google.cloud.visionai_v1.types.FacetGroup]):
@@ -4465,9 +4514,10 @@ class SearchAssetsRequest(proto.Message):
             selected or unselected. Only selected facet
             buckets will be used as search criteria.
         result_annotation_keys (MutableSequence[str]):
-            A list of annotation keys to specify the annotations to be
-            retrieved and returned with each search result. Annotation
-            granularity must be GRANULARITY_ASSET_LEVEL and its search
+            A list of annotation keys to specify the
+            annotations to be retrieved and returned with
+            each search result. Annotation granularity must
+            be GRANULARITY_ASSET_LEVEL and its search
             strategy must not be NO_SEARCH.
         search_query (str):
             Global search query. Allows user to search
@@ -4546,11 +4596,13 @@ class SearchIndexEndpointRequest(proto.Message):
             Criteria to exclude from search results. Note that
             ``fetch_matched_annotations`` will be ignored.
         page_size (int):
-            Requested page size. API may return fewer results than
-            requested. If negative, INVALID_ARGUMENT error will be
-            returned. If unspecified or 0, API will pick a default size,
-            which is 10. If the requested page size is larger than the
-            maximum size, API will pick the maximum size, which is 100.
+            Requested page size. API may return fewer
+            results than requested. If negative,
+            INVALID_ARGUMENT error will be returned. If
+            unspecified or 0, API will pick a default size,
+            which is 10. If the requested page size is
+            larger than the maximum size, API will pick the
+            maximum size, which is 100.
         page_token (str):
             The continuation token to fetch the next
             page. If empty, it means it is fetching the
@@ -4656,11 +4708,11 @@ class SchemaKeySortingStrategy(proto.Message):
         """
 
         class AggregateMethod(proto.Enum):
-            r"""When one result has multiple values with the same key, specify which
-            value is used to sort. By default, AGGREGATE_METHOD_LARGEST is used
-            when results are sorted in decreasing order,
-            AGGREGATE_METHOD_SMALLEST is used when results are sorted in
-            incresing order.
+            r"""When one result has multiple values with the same key, specify
+            which value is used to sort. By default,
+            AGGREGATE_METHOD_LARGEST is used when results are sorted in
+            decreasing order, AGGREGATE_METHOD_SMALLEST is used when results
+            are sorted in incresing order.
 
             Values:
                 AGGREGATE_METHOD_UNSPECIFIED (0):
@@ -4721,8 +4773,9 @@ class AnnotationMatchingResult(proto.Message):
             Matched annotations for the criteria.
         status (google.rpc.status_pb2.Status):
             Status of the match result. Possible values:
-            FAILED_PRECONDITION - the criteria is not eligible for
-            match. OK - matching is performed.
+
+            FAILED_PRECONDITION - the criteria is not
+            eligible for match. OK - matching is performed.
     """
 
     criteria: "Criteria" = proto.Field(
@@ -4767,9 +4820,10 @@ class SearchResultItem(proto.Message):
             Search result annotations specified by
             result_annotation_keys in search request.
         annotation_matching_results (MutableSequence[google.cloud.visionai_v1.types.AnnotationMatchingResult]):
-            Criteria or facet-selection based annotation matching
-            results associated to this search result item. Only contains
-            results for criteria or facet_selections with
+            Criteria or facet-selection based annotation
+            matching results associated to this search
+            result item. Only contains results for criteria
+            or facet_selections with
             fetch_matched_annotations=true.
     """
 
@@ -5008,9 +5062,11 @@ class CircleArea(proto.Message):
 
     Attributes:
         latitude (float):
-            Latitude of circle area's center. Degrees [-90 .. 90]
+            Latitude of circle area's center. Degrees [-90
+            .. 90]
         longitude (float):
-            Longitude of circle area's center. Degrees [-180 .. 180]
+            Longitude of circle area's center. Degrees [-180
+            .. 180]
         radius_meter (float):
             Radius of the circle area in meters.
     """
@@ -5236,8 +5292,8 @@ class Partition(proto.Message):
         )
 
     class RelativeTemporalPartition(proto.Message):
-        r"""Partition of asset in relative time. Supported by VIDEO_ON_DEMAND
-        corpus type.
+        r"""Partition of asset in relative time. Supported by
+        VIDEO_ON_DEMAND corpus type.
 
         Attributes:
             start_offset (google.protobuf.duration_pb2.Duration):

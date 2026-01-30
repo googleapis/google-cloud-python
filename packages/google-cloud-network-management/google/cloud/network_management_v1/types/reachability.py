@@ -190,7 +190,8 @@ class UpdateConnectivityTestRequest(proto.Message):
             Required. Mask of fields to update. At least
             one path must be supplied in this field.
         resource (google.cloud.network_management_v1.types.ConnectivityTest):
-            Required. Only fields specified in update_mask are updated.
+            Required. Only fields specified in update_mask
+            are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

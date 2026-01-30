@@ -52,8 +52,8 @@ class MetadataExchangeRequest(proto.Message):
 
         Values:
             AUTH_TYPE_UNSPECIFIED (0):
-                Authentication type is unspecified and DB_NATIVE is used by
-                default
+                Authentication type is unspecified and DB_NATIVE
+                is used by default
             DB_NATIVE (1):
                 Database native authentication
                 (user/password)

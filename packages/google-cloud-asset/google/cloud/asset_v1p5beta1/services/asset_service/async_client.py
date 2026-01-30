@@ -336,11 +336,14 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1p5beta1.types.ListAssetsRequest, dict]]):
                 The request object. ListAssets request.
             parent (:class:`str`):
-                Required. Name of the organization or project the assets
-                belong to. Format: "organizations/[organization-number]"
-                (such as "organizations/123"), "projects/[project-id]"
-                (such as "projects/my-project-id"), or
-                "projects/[project-number]" (such as "projects/12345").
+                Required. Name of the organization or
+                project the assets belong to. Format:
+                "organizations/[organization-number]"
+                (such as "organizations/123"),
+                "projects/[project-id]" (such as
+                "projects/my-project-id"), or
+                "projects/[project-number]" (such as
+                "projects/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

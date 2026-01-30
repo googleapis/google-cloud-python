@@ -110,8 +110,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class LfpSaleServiceGrpcTransport(LfpSaleServiceTransport):
     """gRPC backend transport for LfpSaleService.
 
-    Service for a `LFP
-    partner <https://support.google.com/merchants/answer/7676652>`__ to
+    Service for a [LFP
+    partner](https://support.google.com/merchants/answer/7676652) to
     submit sales data for a merchant.
 
     This class defines the same methods as the primary client, so the

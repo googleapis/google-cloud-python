@@ -455,8 +455,9 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1p2beta1.types.GetFeedRequest, dict]]):
                 The request object. Get asset feed request.
             name (:class:`str`):
-                Required. The name of the Feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the Feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -805,8 +806,9 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1p2beta1.types.DeleteFeedRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 

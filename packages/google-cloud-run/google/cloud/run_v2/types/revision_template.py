@@ -116,9 +116,9 @@ class RevisionTemplate(proto.Message):
             Optional. The action to take if the
             encryption key is revoked.
         encryption_key_shutdown_duration (google.protobuf.duration_pb2.Duration):
-            Optional. If encryption_key_revocation_action is SHUTDOWN,
-            the duration before shutting down all instances. The minimum
-            increment is 1 hour.
+            Optional. If encryption_key_revocation_action is
+            SHUTDOWN, the duration before shutting down all
+            instances. The minimum increment is 1 hour.
         session_affinity (bool):
             Optional. Enable session affinity.
         health_check_disabled (bool):

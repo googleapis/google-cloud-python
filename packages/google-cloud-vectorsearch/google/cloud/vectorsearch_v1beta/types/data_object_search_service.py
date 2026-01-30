@@ -231,8 +231,9 @@ class VectorSearch(proto.Message):
             index if one is available, and fall back to the
             default KNN search otherwise.
         distance_metric (google.cloud.vectorsearch_v1beta.types.DistanceMetric):
-            Optional. The distance metric to use for the KNN search. If
-            not specified, DOT_PRODUCT will be used as the default.
+            Optional. The distance metric to use for the KNN
+            search. If not specified, DOT_PRODUCT will be
+            used as the default.
     """
 
     vector: gcv_data_object.DenseVector = proto.Field(

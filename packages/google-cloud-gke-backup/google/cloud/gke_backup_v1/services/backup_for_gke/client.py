@@ -2016,10 +2016,13 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Returns:
             google.cloud.gke_backup_v1.types.BackupChannel:
-                A BackupChannel imposes constraints on where clusters can be backed up.
-                   The BackupChannel should be in the same project and
-                   region as the cluster being backed up. The backup can
-                   be created only in destination_project.
+                A BackupChannel imposes constraints on
+                where clusters can be backed up. The
+                BackupChannel should be in the same
+                project and region as the cluster being
+                backed up.
+                The backup can be created only in
+                destination_project.
 
         """
         # Create or coerce a protobuf request object.
@@ -6008,7 +6011,9 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for
                 GetBackupIndexDownloadUrl.
             backup (str):
-                Required. Full name of Backup resource. Format:
+                Required. Full name of Backup resource.
+                Format:
+
                 projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
 
                 This corresponds to the ``backup`` field

@@ -33,9 +33,10 @@ __protobuf__ = proto.module(
 
 
 class Subscription(proto.Message):
-    r"""A subscription to receive events about a Google Workspace resource.
-    To learn more about subscriptions, see the `Google Workspace Events
-    API overview <https://developers.google.com/workspace/events>`__.
+    r"""A subscription to receive events about a Google Workspace
+    resource. To learn more about subscriptions, see the [Google
+    Workspace Events API
+    overview](https://developers.google.com/workspace/events).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -172,10 +173,11 @@ class Subscription(proto.Message):
             ERROR_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             USER_SCOPE_REVOKED (1):
-                The authorizing user has revoked the grant of one or more
-                OAuth scopes. To learn more about authorization for Google
-                Workspace, see `Configure the OAuth consent
-                screen <https://developers.google.com/workspace/guides/configure-oauth-consent#choose-scopes>`__.
+                The authorizing user has revoked the grant of
+                one or more OAuth scopes. To learn more about
+                authorization for Google Workspace, see
+                [Configure the OAuth consent
+                screen](https://developers.google.com/workspace/guides/configure-oauth-consent#choose-scopes).
             RESOURCE_DELETED (2):
                 The target resource for the subscription no
                 longer exists.

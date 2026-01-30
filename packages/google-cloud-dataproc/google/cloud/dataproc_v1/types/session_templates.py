@@ -105,9 +105,9 @@ class ListSessionTemplatesRequest(proto.Message):
             ``ListSessions`` call. Provide this token to retrieve the
             subsequent page.
         filter (str):
-            Optional. A filter for the session templates to return in
-            the response. Filters are case sensitive and have the
-            following syntax:
+            Optional. A filter for the session templates to
+            return in the response. Filters are case
+            sensitive and have the following syntax:
 
             [field = value] AND [field [= value]] ...
     """

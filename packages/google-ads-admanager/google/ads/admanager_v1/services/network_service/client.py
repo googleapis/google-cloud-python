@@ -777,8 +777,8 @@ class NetworkServiceClient(metaclass=NetworkServiceClientMeta):
             request (Union[google.ads.admanager_v1.types.GetNetworkRequest, dict]):
                 The request object. Request to get Network
             name (str):
-                Required. Resource name of Network. Format:
-                networks/{network_code}
+                Required. Resource name of Network.
+                Format: networks/{network_code}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -37,13 +37,13 @@ __protobuf__ = proto.module(
 
 
 class Asset(proto.Message):
-    r"""An asset in Google Cloud. An asset can be any resource in the Google
-    Cloud `resource
-    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+    r"""An asset in Google Cloud. An asset can be any resource in the
+    Google Cloud [resource
+    hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
     a resource outside the Google Cloud resource hierarchy (such as
-    Google Kubernetes Engine clusters and objects), or a policy (e.g.
-    IAM policy). See `Supported asset
-    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+    Google Kubernetes Engine clusters and objects), or a policy
+    (e.g. IAM policy). See [Supported asset
+    types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
     for more information.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -82,23 +82,24 @@ class Asset(proto.Message):
             topic <https://cloud.google.com/iam/help/allow-policies/inheritance>`__
             for more information.
         org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
-            A representation of an `organization
-            policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
-            There can be more than one organization policy with
-            different constraints set on a given resource.
+            A representation of an [organization
+            policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
+            There can be more than one organization policy
+            with different constraints set on a given
+            resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
-            Please also refer to the `access policy user
-            guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
+            Please also refer to the [access policy user
+            guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
-            Please also refer to the `access level user
-            guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
+            Please also refer to the [access level user
+            guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
-            Please also refer to the `service perimeter user
-            guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
+            Please also refer to the [service perimeter user
+            guide](https://cloud.google.com/vpc-service-controls/docs/overview).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         ancestors (MutableSequence[str]):

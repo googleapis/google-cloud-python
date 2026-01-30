@@ -206,9 +206,9 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
 
 class PatchJobInstanceDetails(proto.Message):
     r"""Patch details for a VM instance. For more information about
-    reviewing VM instance details, see `Listing all VM instance details
-    for a specific patch
-    job <https://cloud.google.com/compute/docs/os-patch-management/manage-patch-jobs#list-instance-details>`__.
+    reviewing VM instance details, see
+    [Listing all VM instance details for a specific patch
+    job](https://cloud.google.com/compute/docs/os-patch-management/manage-patch-jobs#list-instance-details).
 
     Attributes:
         name (str):
@@ -264,9 +264,10 @@ class ListPatchJobsRequest(proto.Message):
             call that indicates where this listing should
             continue from.
         filter (str):
-            If provided, this field specifies the criteria that must be
-            met by patch jobs to be included in the response. Currently,
-            filtering is only available on the patch_deployment field.
+            If provided, this field specifies the criteria
+            that must be met by patch jobs to be included in
+            the response. Currently, filtering is only
+            available on the patch_deployment field.
     """
 
     parent: str = proto.Field(
@@ -317,11 +318,12 @@ class PatchJob(proto.Message):
     r"""A high level representation of a patch job that is either in
     progress or has completed.
 
-    Instance details are not included in the job. To paginate through
-    instance details, use ListPatchJobInstanceDetails.
+    Instance details are not included in the job. To paginate
+    through instance details, use ListPatchJobInstanceDetails.
 
-    For more information about patch jobs, see `Creating patch
-    jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
+    For more information about patch jobs, see
+    [Creating patch
+    jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
     Attributes:
         name (str):
@@ -877,10 +879,12 @@ class ZypperSettings(proto.Message):
         excludes (MutableSequence[str]):
             List of patches to exclude from update.
         exclusive_patches (MutableSequence[str]):
-            An exclusive list of patches to be updated. These are the
-            only patches that will be installed using 'zypper patch
-            patch:<patch_name>' command. This field must not be used
-            with any other patch configuration fields.
+            An exclusive list of patches to be updated.
+            These are the only patches that will be
+            installed using 'zypper patch
+            patch:<patch_name>' command. This field must not
+            be used with any other patch configuration
+            fields.
     """
 
     with_optional: bool = proto.Field(
@@ -927,7 +931,8 @@ class WindowsUpdateSettings(proto.Message):
     """
 
     class Classification(proto.Enum):
-        r"""Microsoft Windows update classifications as defined in [1]
+        r"""Microsoft Windows update classifications as defined in
+        [1]
         https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro
 
         Values:
@@ -935,46 +940,54 @@ class WindowsUpdateSettings(proto.Message):
                 Invalid. If classifications are included,
                 they must be specified.
             CRITICAL (1):
-                "A widely released fix for a specific problem that addresses
-                a critical, non-security-related bug." [1]
+                "A widely released fix for a specific problem
+                that addresses a critical, non-security-related
+                bug." [1]
             SECURITY (2):
                 "A widely released fix for a product-specific,
-                security-related vulnerability. Security vulnerabilities are
-                rated by their severity. The severity rating is indicated in
-                the Microsoft security bulletin as critical, important,
+                security-related vulnerability. Security
+                vulnerabilities are rated by their severity. The
+                severity rating is indicated in the Microsoft
+                security bulletin as critical, important,
                 moderate, or low." [1]
             DEFINITION (3):
-                "A widely released and frequent software update that
-                contains additions to a product's definition database.
-                Definition databases are often used to detect objects that
-                have specific attributes, such as malicious code, phishing
+                "A widely released and frequent software update
+                that contains additions to a product's
+                definition database. Definition databases are
+                often used to detect objects that have specific
+                attributes, such as malicious code, phishing
                 websites, or junk mail." [1]
             DRIVER (4):
-                "Software that controls the input and output of a device."
-                [1]
+                "Software that controls the input and output of
+                a device." [1]
             FEATURE_PACK (5):
-                "New product functionality that is first distributed outside
-                the context of a product release and that is typically
-                included in the next full product release." [1]
+                "New product functionality that is first
+                distributed outside the context of a product
+                release and that is typically included in the
+                next full product release." [1]
             SERVICE_PACK (6):
-                "A tested, cumulative set of all hotfixes, security updates,
-                critical updates, and updates. Additionally, service packs
-                may contain additional fixes for problems that are found
-                internally since the release of the product. Service packs
-                my also contain a limited number of customer-requested
-                design changes or features." [1]
+                "A tested, cumulative set of all hotfixes,
+                security updates, critical updates, and updates.
+                Additionally, service packs may contain
+                additional fixes for problems that are found
+                internally since the release of the product.
+                Service packs my also contain a limited number
+                of customer-requested design changes or
+                features." [1]
             TOOL (7):
-                "A utility or feature that helps complete a task or set of
-                tasks." [1]
+                "A utility or feature that helps complete a task
+                or set of tasks." [1]
             UPDATE_ROLLUP (8):
-                "A tested, cumulative set of hotfixes, security updates,
-                critical updates, and updates that are packaged together for
-                easy deployment. A rollup generally targets a specific area,
-                such as security, or a component of a product, such as
+                "A tested, cumulative set of hotfixes, security
+                updates, critical updates, and updates that are
+                packaged together for easy deployment. A rollup
+                generally targets a specific area, such as
+                security, or a component of a product, such as
                 Internet Information Services (IIS)." [1]
             UPDATE (9):
-                "A widely released fix for a specific problem. An update
-                addresses a noncritical, non-security-related bug." [1]
+                "A widely released fix for a specific problem.
+                An update addresses a noncritical,
+                non-security-related bug." [1]
         """
         CLASSIFICATION_UNSPECIFIED = 0
         CRITICAL = 1
@@ -1047,8 +1060,9 @@ class ExecStepConfig(proto.Message):
 
             This field is a member of `oneof`_ ``executable``.
         allowed_success_codes (MutableSequence[int]):
-            Defaults to [0]. A list of possible return values that the
-            execution can return to indicate a success.
+            Defaults to [0]. A list of possible return
+            values that the execution can return to indicate
+            a success.
         interpreter (google.cloud.osconfig_v1.types.ExecStepConfig.Interpreter):
             The script interpreter to use to run the script. If no
             interpreter is specified the script will be executed

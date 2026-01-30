@@ -49,11 +49,12 @@ __protobuf__ = proto.module(
 
 
 class PatchDeployment(proto.Message):
-    r"""Patch deployments are configurations that individual patch jobs use
-    to complete a patch. These configurations include instance filter,
-    package repository settings, and a schedule. For more information
-    about creating and managing patch deployments, see `Scheduling patch
-    jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
+    r"""Patch deployments are configurations that individual patch jobs
+    use to complete a patch. These configurations include instance
+    filter, package repository settings, and a schedule. For more
+    information about creating and managing patch deployments, see
+    [Scheduling patch
+    jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

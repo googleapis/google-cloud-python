@@ -95,8 +95,8 @@ class FileUpload(proto.Message):
                 items will be dropped".
             code (str):
                 Output only. The code of the error, for example,
-                "validation/invalid_value". Returns "?" if the code is
-                unknown.
+                "validation/invalid_value". Returns
+                "?" if the code is unknown.
             count (int):
                 Output only. The number of occurrences of the
                 error in the file upload.

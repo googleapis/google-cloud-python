@@ -103,8 +103,8 @@ class ListToolsRequest(proto.Message):
             models to return in a single page. Default to
             10.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -215,13 +215,15 @@ class Tool(proto.Message):
             Optional. A human readable description of the
             tool.
         action_confirmation_requirement (MutableMapping[str, google.cloud.dialogflow_v2beta1.types.Tool.ConfirmationRequirement]):
-            Optional. Confirmation requirement for the actions. Each key
-            is an action name in the action_schemas. If an action's
-            confirmation requirement is unspecified (either the key is
+            Optional. Confirmation requirement for the
+            actions. Each key is an action name in the
+            action_schemas. If an action's confirmation
+            requirement is unspecified (either the key is
             not present, or its value is
-            CONFIRMATION_REQUIREMENT_UNSPECIFIED), the requirement is
-            inferred from the action's method_type - confirmation is not
-            required if and only if method_type is GET.
+            CONFIRMATION_REQUIREMENT_UNSPECIFIED), the
+            requirement is inferred from the action's
+            method_type - confirmation is not required if
+            and only if method_type is GET.
         extension_spec (google.cloud.dialogflow_v2beta1.types.Tool.ExtensionTool):
             Vertex extension tool specification.
 
@@ -263,8 +265,8 @@ class Tool(proto.Message):
 
         Values:
             CONFIRMATION_REQUIREMENT_UNSPECIFIED (0):
-                Unspecified. Whether the action requires confirmation is
-                inferred from method_type.
+                Unspecified. Whether the action requires
+                confirmation is inferred from method_type.
             REQUIRED (1):
                 Conformation is required.
             NOT_REQUIRED (2):
@@ -536,8 +538,8 @@ class Tool(proto.Message):
 
                 This field is a member of `oneof`_ ``auth_config``.
             service_agent_auth_config (google.cloud.dialogflow_v2beta1.types.Tool.Authentication.ServiceAgentAuthConfig):
-                Config for `Diglogflow service
-                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__
+                Config for [Diglogflow service
+                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
                 auth.
 
                 This field is a member of `oneof`_ ``auth_config``.
@@ -627,16 +629,16 @@ class Tool(proto.Message):
             """
 
             class OauthGrantType(proto.Enum):
-                r"""OAuth grant types. Only `client credential
-                grant <https://oauth.net/2/grant-types/client-credentials>`__ is
+                r"""OAuth grant types. Only [client credential
+                grant](https://oauth.net/2/grant-types/client-credentials) is
                 supported.
 
                 Values:
                     OAUTH_GRANT_TYPE_UNSPECIFIED (0):
                         Default value. This value is unused.
                     CLIENT_CREDENTIAL (1):
-                        Represents the `client credential
-                        flow <https://oauth.net/2/grant-types/client-credentials>`__.
+                        Represents the [client credential
+                        flow](https://oauth.net/2/grant-types/client-credentials).
                 """
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
@@ -670,24 +672,27 @@ class Tool(proto.Message):
             )
 
         class ServiceAgentAuthConfig(proto.Message):
-            r"""Config for auth using `Dialogflow service
-            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            r"""Config for auth using [Dialogflow service
+            agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 
             Attributes:
                 service_agent_auth (google.cloud.dialogflow_v2beta1.types.Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth):
-                    Optional. Indicate the auth token type generated from the
-                    `Diglogflow service
-                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
-                    The generated token is sent in the Authorization header.
+                    Optional. Indicate the auth token type generated
+                    from the [Diglogflow service
+                    agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+                    The generated token is sent in the Authorization
+                    header.
             """
 
             class ServiceAgentAuth(proto.Enum):
-                r"""Indicate the auth token type generated from the `Diaglogflow service
-                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                r"""Indicate the auth token type generated from the [Diaglogflow
+                service
+                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 
                 Values:
                     SERVICE_AGENT_AUTH_UNSPECIFIED (0):
-                        Service agent auth type unspecified. Default to ID_TOKEN.
+                        Service agent auth type unspecified. Default to
+                        ID_TOKEN.
                     ID_TOKEN (1):
                         Use `ID
                         token <https://cloud.google.com/docs/authentication/token-types#id>`__

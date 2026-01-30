@@ -149,8 +149,8 @@ class Annotation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Unique name of this annotation, format is:
-
+            Output only. Unique name of this annotation,
+            format is:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/{annotated_dataset}/examples/{example_id}/annotations/{annotation_id}
         annotation_source (google.cloud.datalabeling_v1beta1.types.AnnotationSource):
             Output only. The source of the annotation.

@@ -53,11 +53,9 @@ class Service(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name for this Service. The format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+            Identifier. Resource name for this Service. The
+            format is:
+            projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
         display_name (str):
             Name used for UI elements listing this
             Service.
@@ -466,8 +464,8 @@ class Service(proto.Message):
 
         Attributes:
             resource_name (str):
-                The full name of the resource that defines this service.
-                Formatted as described in
+                The full name of the resource that defines this
+                service. Formatted as described in
                 https://cloud.google.com/apis/design/resource_names.
         """
 

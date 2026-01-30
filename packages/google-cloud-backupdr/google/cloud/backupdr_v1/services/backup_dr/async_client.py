@@ -508,8 +508,8 @@ class BackupDRAsyncClient:
                 The request object. Request message for getting a
                 management server instance.
             name (:class:`str`):
-                Required. Name of the management server resource name,
-                in the format
+                Required. Name of the management server
+                resource name, in the format
                 'projects/{project_id}/locations/{location}/managementServers/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -921,8 +921,9 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_vault_id (:class:`str`):
-                Required. ID of the requesting object If auto-generating
-                ID server-side, remove this field and backup_vault_id
+                Required. ID of the requesting object
+                If auto-generating ID server-side,
+                remove this field and backup_vault_id
                 from the method_signature of Create RPC
 
                 This corresponds to the ``backup_vault_id`` field
@@ -1314,8 +1315,8 @@ class BackupDRAsyncClient:
                 The request object. Request message for getting a
                 BackupVault.
             name (:class:`str`):
-                Required. Name of the backupvault store resource name,
-                in the format
+                Required. Name of the backupvault store
+                resource name, in the format
                 'projects/{project_id}/locations/{location}/backupVaults/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -1435,12 +1436,15 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the BackupVault resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then the request will fail.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                BackupVault resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then the request will
+                fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1825,8 +1829,8 @@ class BackupDRAsyncClient:
                 The request object. Request message for getting a
                 DataSource instance.
             name (:class:`str`):
-                Required. Name of the data source resource name, in the
-                format
+                Required. Name of the data source
+                resource name, in the format
                 'projects/{project_id}/locations/{location}/backupVaults/{resource_name}/dataSource/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -1948,12 +1952,15 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the DataSource resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then the request will fail.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                DataSource resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then the request will
+                fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2348,8 +2355,8 @@ class BackupDRAsyncClient:
             request (Optional[Union[google.cloud.backupdr_v1.types.GetBackupRequest, dict]]):
                 The request object. Request message for getting a Backup.
             name (:class:`str`):
-                Required. Name of the data source resource name, in the
-                format
+                Required. Name of the data source
+                resource name, in the format
                 'projects/{project_id}/locations/{location}/backupVaults/{backupVault}/dataSources/{datasource}/backups/{backup}'
 
                 This corresponds to the ``name`` field
@@ -2467,12 +2474,15 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Backup resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then the request will fail.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Backup resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then the request will
+                fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3033,15 +3043,20 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to update. Field mask is
-                used to specify the fields to be overwritten in the
-                BackupPlan resource by the update. The fields specified
-                in the update_mask are relative to the resource, not the
-                full request. A field will be overwritten if it is in
-                the mask. If the user does not provide a mask then the
-                request will fail. Currently, these fields are supported
-                in update: description, schedules, retention period,
-                adding and removing Backup Rules.
+                Required. The list of fields to update.
+                Field mask is used to specify the fields
+                to be overwritten in the BackupPlan
+                resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then the
+                request will fail. Currently, these
+                fields are supported in update:
+                description, schedules, retention
+                period, adding and removing Backup
+                Rules.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3971,15 +3986,19 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to update. Field mask is
-                used to specify the fields to be overwritten in the
-                BackupPlanAssociation resource by the update. The fields
-                specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then the request will fail. Currently
-                backup_plan_association.backup_plan is the only
-                supported field.
+                Required. The list of fields to update.
+                Field mask is used to specify the fields
+                to be overwritten in the
+                BackupPlanAssociation resource by the
+                update. The fields specified in the
+                update_mask are relative to the
+                resource, not the full request. A field
+                will be overwritten if it is in the
+                mask. If the user does not provide a
+                mask then the request will fail.
+                Currently
+                backup_plan_association.backup_plan is
+                the only supported field.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4670,8 +4689,8 @@ class BackupDRAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             rule_id (:class:`str`):
-                Required. backup rule_id for which a backup needs to be
-                triggered.
+                Required. backup rule_id for which a
+                backup needs to be triggered.
 
                 This corresponds to the ``rule_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4795,8 +4814,9 @@ class BackupDRAsyncClient:
                 The request object. Request for the
                 GetDataSourceReference method.
             name (:class:`str`):
-                Required. The name of the DataSourceReference to
-                retrieve. Format:
+                Required. The name of the
+                DataSourceReference to retrieve. Format:
+
                 projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
 
                 This corresponds to the ``name`` field

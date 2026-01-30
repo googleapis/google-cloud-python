@@ -200,12 +200,14 @@ class UpdateReportConfigRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the ReportConfig resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the ReportConfig
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         report_config (google.cloud.storageinsights_v1.types.ReportConfig):
             Required. The resource being updated
         request_id (str):
@@ -320,9 +322,9 @@ class ReportDetail(proto.Message):
         labels (MutableMapping[str, str]):
             Labels as key value pairs
         target_datetime (google.type.datetime_pb2.DateTime):
-            The date for which report is generated. The time part of
-            target_datetime will be zero till we support multiple
-            reports per day.
+            The date for which report is generated. The time
+            part of target_datetime will be zero till we
+            support multiple reports per day.
         report_metrics (google.cloud.storageinsights_v1.types.ReportDetail.Metrics):
             Metrics of the report.
     """
@@ -819,9 +821,9 @@ class Identity(proto.Message):
 
 
 class DatasetConfig(proto.Message):
-    r"""Message describing the dataset configuration properties. For more
-    information, see `Dataset configuration
-    properties <https://cloud.google.com/storage/docs/insights/datasets#dataset-config>`__.
+    r"""Message describing the dataset configuration properties. For
+    more information, see [Dataset configuration
+    properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

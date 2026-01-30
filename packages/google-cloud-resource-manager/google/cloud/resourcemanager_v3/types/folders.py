@@ -409,8 +409,8 @@ class MoveFolderRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Folder to move. Must be
-            of the form folders/{folder_id}
+            Required. The resource name of the Folder to
+            move. Must be of the form folders/{folder_id}
         destination_parent (str):
             Required. The resource name of the folder or organization
             which should be the folder's new parent. Must be of the form

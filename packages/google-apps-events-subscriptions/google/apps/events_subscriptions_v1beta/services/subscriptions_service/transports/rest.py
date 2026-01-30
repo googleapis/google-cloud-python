@@ -939,10 +939,11 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             Returns:
                 ~.subscription_resource.Subscription:
-                    A subscription to receive events about a Google
-                Workspace resource. To learn more about subscriptions,
-                see the `Google Workspace Events API
-                overview <https://developers.google.com/workspace/events>`__.
+                    A subscription to receive events about a
+                Google Workspace resource. To learn more
+                about subscriptions, see the [Google
+                Workspace Events API
+                overview](https://developers.google.com/workspace/events).
 
             """
 

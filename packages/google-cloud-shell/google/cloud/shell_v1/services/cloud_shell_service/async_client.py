@@ -313,8 +313,8 @@ class CloudShellServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cloudshell.Environment:
-        r"""Gets an environment. Returns NOT_FOUND if the environment does
-        not exist.
+        r"""Gets an environment. Returns NOT_FOUND if the
+        environment does not exist.
 
         .. code-block:: python
 
@@ -641,10 +641,10 @@ class CloudShellServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Adds a public SSH key to an environment, allowing clients with
-        the corresponding private key to connect to that environment via
-        SSH. If a key with the same content already exists, this will
-        error with ALREADY_EXISTS.
+        r"""Adds a public SSH key to an environment, allowing
+        clients with the corresponding private key to connect to
+        that environment via SSH. If a key with the same content
+        already exists, this will error with ALREADY_EXISTS.
 
         .. code-block:: python
 
@@ -745,10 +745,11 @@ class CloudShellServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Removes a public SSH key from an environment. Clients will no
-        longer be able to connect to the environment using the
-        corresponding private key. If a key with the same content is not
-        present, this will error with NOT_FOUND.
+        r"""Removes a public SSH key from an environment. Clients
+        will no longer be able to connect to the environment
+        using the corresponding private key. If a key with the
+        same content is not present, this will error with
+        NOT_FOUND.
 
         .. code-block:: python
 

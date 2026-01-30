@@ -155,12 +155,15 @@ class MigrationTask(proto.Message):
             for the migration task. The ID is
             server-generated.
         type_ (str):
-            The type of the task. This must be one of the supported task
-            types: Translation_Teradata2BQ, Translation_Redshift2BQ,
-            Translation_Bteq2BQ, Translation_Oracle2BQ,
-            Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
-            Translation_Snowflake2BQ, Translation_Netezza2BQ,
-            Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
+            The type of the task. This must be one of the
+            supported task types: Translation_Teradata2BQ,
+            Translation_Redshift2BQ, Translation_Bteq2BQ,
+            Translation_Oracle2BQ, Translation_HiveQL2BQ,
+            Translation_SparkSQL2BQ,
+            Translation_Snowflake2BQ,
+            Translation_Netezza2BQ,
+            Translation_AzureSynapse2BQ,
+            Translation_Vertica2BQ,
             Translation_SQLServer2BQ, Translation_Presto2BQ,
             Translation_MySQL2BQ, Translation_Postgresql2BQ,
             Translation_SQLite2BQ, Translation_Greenplum2BQ.

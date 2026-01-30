@@ -893,8 +893,8 @@ class AutoscalingPolicyServiceClient(metaclass=AutoscalingPolicyServiceClientMet
     ) -> autoscaling_policies.AutoscalingPolicy:
         r"""Updates (replaces) autoscaling policy.
 
-        Disabled check for update_mask, because all updates will be full
-        replacements.
+        Disabled check for update_mask, because all updates will
+        be full replacements.
 
         .. code-block:: python
 

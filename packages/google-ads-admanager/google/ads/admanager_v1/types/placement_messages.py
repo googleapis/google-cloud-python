@@ -64,8 +64,8 @@ class Placement(proto.Message):
 
             This field is a member of `oneof`_ ``_status``.
         targeted_ad_units (MutableSequence[str]):
-            Optional. The resource names of AdUnits that constitute the
-            Placement. Format:
+            Optional. The resource names of AdUnits that
+            constitute the Placement. Format:
             "networks/{network_code}/adUnits/{ad_unit}".
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant this Placement was

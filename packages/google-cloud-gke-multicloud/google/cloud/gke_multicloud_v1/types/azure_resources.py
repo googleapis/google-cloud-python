@@ -112,11 +112,11 @@ class AzureCluster(proto.Message):
             Required. Configuration related to the
             cluster RBAC settings.
         azure_services_authentication (google.cloud.gke_multicloud_v1.types.AzureServicesAuthentication):
-            Optional. Authentication configuration for management of
-            Azure resources.
-
-            Either azure_client or azure_services_authentication should
-            be provided.
+            Optional. Authentication configuration for
+            management of Azure resources.
+            Either azure_client or
+            azure_services_authentication should be
+            provided.
         state (google.cloud.gke_multicloud_v1.types.AzureCluster.State):
             Output only. The current state of the
             cluster.
@@ -354,11 +354,13 @@ class AzureClusterNetworking(proto.Message):
 
             This field cannot be changed after creating a cluster.
         service_load_balancer_subnet_id (str):
-            Optional. The ARM ID of the subnet where Kubernetes private
-            service type load balancers are deployed. When unspecified,
-            it defaults to AzureControlPlane.subnet_id.
+            Optional. The ARM ID of the subnet where
+            Kubernetes private service type load balancers
+            are deployed. When unspecified, it defaults to
+            AzureControlPlane.subnet_id.
 
             Example:
+
             "/subscriptions/d00494d6-6f3c-4280-bbb2-899e163d1d30/resourceGroups/anthos_cluster_gkeust4/providers/Microsoft.Network/virtualNetworks/gke-vnet-gkeust4/subnets/subnetid456".
     """
 
@@ -443,19 +445,21 @@ class AzureControlPlane(proto.Message):
             Optional. A set of tags to apply to all
             underlying control plane Azure resources.
         replica_placements (MutableSequence[google.cloud.gke_multicloud_v1.types.ReplicaPlacement]):
-            Optional. Configuration for where to place the control plane
-            replicas.
-
-            Up to three replica placement instances can be specified. If
-            replica_placements is set, the replica placement instances
-            will be applied to the three control plane replicas as
-            evenly as possible.
+            Optional. Configuration for where to place the
+            control plane replicas.
+            Up to three replica placement instances can be
+            specified. If replica_placements is set, the
+            replica placement instances will be applied to
+            the three control plane replicas as evenly as
+            possible.
         endpoint_subnet_id (str):
-            Optional. The ARM ID of the subnet where the control plane
-            load balancer is deployed. When unspecified, it defaults to
+            Optional. The ARM ID of the subnet where the
+            control plane load balancer is deployed. When
+            unspecified, it defaults to
             AzureControlPlane.subnet_id.
 
             Example:
+
             "/subscriptions/d00494d6-6f3c-4280-bbb2-899e163d1d30/resourceGroups/anthos_cluster_gkeust4/providers/Microsoft.Network/virtualNetworks/gke-vnet-gkeust4/subnets/subnetid123".
     """
 
@@ -1145,13 +1149,13 @@ class AzureNodePoolAutoscaling(proto.Message):
 
     Attributes:
         min_node_count (int):
-            Required. Minimum number of nodes in the node pool. Must be
-            greater than or equal to 1 and less than or equal to
-            max_node_count.
+            Required. Minimum number of nodes in the node
+            pool. Must be greater than or equal to 1 and
+            less than or equal to max_node_count.
         max_node_count (int):
-            Required. Maximum number of nodes in the node pool. Must be
-            greater than or equal to min_node_count and less than or
-            equal to 50.
+            Required. Maximum number of nodes in the node
+            pool. Must be greater than or equal to
+            min_node_count and less than or equal to 50.
     """
 
     min_node_count: int = proto.Field(
@@ -1331,8 +1335,9 @@ class AzureSshConfig(proto.Message):
 
     Attributes:
         authorized_key (str):
-            Required. The SSH public key data for VMs managed by Anthos.
-            This accepts the authorized_keys file format used in OpenSSH
+            Required. The SSH public key data for VMs
+            managed by Anthos. This accepts the
+            authorized_keys file format used in OpenSSH
             according to the sshd(8) manual page.
     """
 

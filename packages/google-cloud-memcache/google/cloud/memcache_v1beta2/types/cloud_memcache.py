@@ -413,14 +413,15 @@ class MaintenancePolicy(proto.Message):
             Output only. The time when the policy was
             updated.
         description (str):
-            Description of what this policy is for. Create/Update
-            methods return INVALID_ARGUMENT if the length is greater
-            than 512.
+            Description of what this policy is for.
+            Create/Update methods return INVALID_ARGUMENT if
+            the length is greater than 512.
         weekly_maintenance_window (MutableSequence[google.cloud.memcache_v1beta2.types.WeeklyMaintenanceWindow]):
-            Required. Maintenance window that is applied to resources
-            covered by this policy. Minimum 1. For the current version,
-            the maximum number of weekly_maintenance_windows is expected
-            to be one.
+            Required. Maintenance window that is applied to
+            resources covered by this policy. Minimum 1. For
+            the current version, the maximum number of
+            weekly_maintenance_windows is expected to be
+            one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -667,8 +668,9 @@ class UpdateInstanceRequest(proto.Message):
 
             - ``displayName``
         resource (google.cloud.memcache_v1beta2.types.Instance):
-            Required. A Memcached [Instance] resource. Only fields
-            specified in update_mask are updated.
+            Required. A Memcached [Instance] resource.
+            Only fields specified in update_mask are
+            updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -710,8 +712,8 @@ class RescheduleMaintenanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
             where ``location_id`` refers to a GCP region.
         reschedule_type (google.cloud.memcache_v1beta2.types.RescheduleMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME, must set up
-            schedule_time as well.
+            Required. If reschedule type is SPECIFIC_TIME,
+            must set up schedule_time as well.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp when the maintenance shall be rescheduled to if
             reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for

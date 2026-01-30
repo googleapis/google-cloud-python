@@ -376,14 +376,17 @@ class AuthzPolicy(proto.Message):
 
             Attributes:
                 principal_selector (google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.Principal.PrincipalSelector):
-                    Optional. An enum to decide what principal value the
-                    principal rule will match against. If not specified, the
-                    PrincipalSelector is CLIENT_CERT_URI_SAN.
+                    Optional. An enum to decide what principal value
+                    the principal rule will match against. If not
+                    specified, the PrincipalSelector is
+                    CLIENT_CERT_URI_SAN.
                 principal (google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.StringMatch):
-                    Required. A non-empty string whose value is matched against
-                    the principal value based on the principal_selector. Only
-                    exact match can be applied for CLIENT_CERT_URI_SAN,
-                    CLIENT_CERT_DNS_NAME_SAN, CLIENT_CERT_COMMON_NAME selectors.
+                    Required. A non-empty string whose value is
+                    matched against the principal value based on the
+                    principal_selector. Only exact match can be
+                    applied for CLIENT_CERT_URI_SAN,
+                    CLIENT_CERT_DNS_NAME_SAN,
+                    CLIENT_CERT_COMMON_NAME selectors.
             """
 
             class PrincipalSelector(proto.Enum):
@@ -391,8 +394,8 @@ class AuthzPolicy(proto.Message):
 
                 Values:
                     PRINCIPAL_SELECTOR_UNSPECIFIED (0):
-                        Unspecified principal selector. It will be treated as
-                        CLIENT_CERT_URI_SAN by default.
+                        Unspecified principal selector. It will be
+                        treated as CLIENT_CERT_URI_SAN by default.
                     CLIENT_CERT_URI_SAN (1):
                         The principal rule is matched against a list
                         of URI SANs in the validated client's
@@ -400,23 +403,28 @@ class AuthzPolicy(proto.Message):
                         exact URI SAN value match. This is the default
                         principal selector.
                     CLIENT_CERT_DNS_NAME_SAN (2):
-                        The principal rule is matched against a list of DNS Name
-                        SANs in the validated client's certificate. A match happens
-                        when there is any exact DNS Name SAN value match. This is
-                        only applicable for Application Load Balancers except for
-                        classic Global External Application load balancer.
+                        The principal rule is matched against a list of
+                        DNS Name SANs in the validated client's
+                        certificate. A match happens when there is any
+                        exact DNS Name SAN value match.
+                        This is only applicable for Application Load
+                        Balancers except for classic Global External
+                        Application load balancer.
                         CLIENT_CERT_DNS_NAME_SAN is not supported for
                         INTERNAL_SELF_MANAGED load balancing scheme.
                     CLIENT_CERT_COMMON_NAME (3):
-                        The principal rule is matched against the common name in the
-                        client's certificate. Authorization against multiple common
-                        names in the client certificate is not supported. Requests
-                        with multiple common names in the client certificate will be
-                        rejected if CLIENT_CERT_COMMON_NAME is set as the principal
-                        selector. A match happens when there is an exact common name
-                        value match. This is only applicable for Application Load
-                        Balancers except for global external Application Load
-                        Balancer and classic Application Load Balancer.
+                        The principal rule is matched against the common
+                        name in the client's certificate. Authorization
+                        against multiple common names in the client
+                        certificate is not supported. Requests with
+                        multiple common names in the client certificate
+                        will be rejected if CLIENT_CERT_COMMON_NAME is
+                        set as the principal selector. A match happens
+                        when there is an exact common name value match.
+                        This is only applicable for Application Load
+                        Balancers except for global external Application
+                        Load Balancer and classic Application Load
+                        Balancer.
                         CLIENT_CERT_COMMON_NAME is not supported for
                         INTERNAL_SELF_MANAGED load balancing scheme.
                 """
@@ -483,9 +491,10 @@ class AuthzPolicy(proto.Message):
                         Service Mesh. This field is not supported for
                         global external Application Load Balancers.
                     ip_blocks (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.IpBlock]):
-                        Optional. A list of IP addresses or IP address ranges to
-                        match against the source IP address of the request. Limited
-                        to 10 ip_blocks per Authorization Policy
+                        Optional. A list of IP addresses or IP address
+                        ranges to match against the source IP address of
+                        the request. Limited to 10 ip_blocks per
+                        Authorization Policy
                     resources (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.RequestResource]):
                         Optional. A list of resources to match
                         against the resource of the source VM of a

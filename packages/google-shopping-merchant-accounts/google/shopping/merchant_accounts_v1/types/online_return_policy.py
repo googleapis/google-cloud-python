@@ -432,9 +432,10 @@ class OnlineReturnPolicy(proto.Message):
                 Required. Display name of this seasonal
                 override in Merchant Center.
             start_date (google.type.date_pb2.Date):
-                Required. Defines the date range when this seasonal override
-                applies. Both start_date and end_date are inclusive. The
-                dates of the seasonal overrides should not overlap.
+                Required. Defines the date range when this
+                seasonal override applies. Both start_date and
+                end_date are inclusive. The dates of the
+                seasonal overrides should not overlap.
             end_date (google.type.date_pb2.Date):
                 Required. seasonal override end date
                 (inclusive).

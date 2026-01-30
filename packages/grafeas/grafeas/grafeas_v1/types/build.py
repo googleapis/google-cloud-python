@@ -73,10 +73,11 @@ class BuildOccurrence(proto.Message):
             replacement. In-toto Provenance representation
             as defined in spec.
         intoto_statement (grafeas.grafeas_v1.types.InTotoStatement):
-            In-toto Statement representation as defined in spec. The
-            intoto_statement can contain any type of provenance. The
-            serialized payload of the statement can be stored and signed
-            in the Occurrence's envelope.
+            In-toto Statement representation as defined in
+            spec. The intoto_statement can contain any type
+            of provenance. The serialized payload of the
+            statement can be stored and signed in the
+            Occurrence's envelope.
         in_toto_slsa_provenance_v1 (grafeas.grafeas_v1.types.InTotoSlsaProvenanceV1):
             In-Toto Slsa Provenance V1 represents a slsa
             provenance meeting the slsa spec, wrapped in an

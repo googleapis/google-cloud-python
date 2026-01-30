@@ -342,8 +342,8 @@ class PipelineServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.RunPipeline.
             name (:class:`str`):
-                Required. The resource name which owns the resources of
-                the pipeline. Format:
+                Required. The resource name which owns
+                the resources of the pipeline. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``name`` field

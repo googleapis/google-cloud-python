@@ -625,8 +625,9 @@ class SecuritySettingsServiceAsyncClient:
                 The request object. The request message for
                 [SecuritySettingsService.UpdateSecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettingsService.UpdateSecuritySettings].
             security_settings (:class:`google.cloud.dialogflowcx_v3.types.SecuritySettings`):
-                Required. [SecuritySettings] object that contains values
-                for each of the fields to update.
+                Required. [SecuritySettings] object that
+                contains values for each of the fields
+                to update.
 
                 This corresponds to the ``security_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this

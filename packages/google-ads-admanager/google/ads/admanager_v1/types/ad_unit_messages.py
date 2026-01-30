@@ -52,9 +52,10 @@ class AdUnit(proto.Message):
         ad_unit_id (int):
             Output only. AdUnit ID.
         parent_ad_unit (str):
-            Required. Immutable. The AdUnit's parent. Every ad unit has
-            a parent except for the root ad unit, which is created by
-            Google. Format:
+            Required. Immutable. The AdUnit's parent. Every
+            ad unit has a parent except for the root ad
+            unit, which is created by Google. Format:
+
             "networks/{network_code}/adUnits/{ad_unit_id}".
 
             This field is a member of `oneof`_ ``_parent_ad_unit``.
@@ -97,13 +98,15 @@ class AdUnit(proto.Message):
 
             This field is a member of `oneof`_ ``_effective_target_window``.
         applied_teams (MutableSequence[str]):
-            Optional. The resource names of Teams directly applied to
-            this AdUnit. Format:
+            Optional. The resource names of Teams directly
+            applied to this AdUnit. Format:
             "networks/{network_code}/teams/{team_id}".
         teams (MutableSequence[str]):
-            Output only. The resource names of all Teams that this
-            AdUnit is on as well as those inherited from parent AdUnits.
-            Format: "networks/{network_code}/teams/{team_id}".
+            Output only. The resource names of all Teams
+            that this AdUnit is on as well as those
+            inherited from parent AdUnits. Format:
+
+            "networks/{network_code}/teams/{team_id}".
         description (str):
             Optional. A description of the ad unit. The
             maximum length is 65,535 characters.
@@ -412,7 +415,8 @@ class LabelFrequencyCap(proto.Message):
 
     Attributes:
         label (str):
-            Required. The label to used for frequency capping. Format:
+            Required. The label to used for frequency
+            capping. Format:
             "networks/{network_code}/labels/{label_id}".
 
             This field is a member of `oneof`_ ``_label``.

@@ -39,7 +39,8 @@ class CreateSynonymSetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent name. Format:
+            Required. The parent name.
+            Format:
             projects/{project_number}/locations/{location}.
         synonym_set (google.cloud.contentwarehouse_v1.types.SynonymSet):
             Required. The synonymSet to be created for a
@@ -63,7 +64,9 @@ class GetSynonymSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the synonymSet to retrieve Format:
+            Required. The name of the synonymSet to retrieve
+            Format:
+
             projects/{project_number}/locations/{location}/synonymSets/{context}.
     """
 
@@ -79,7 +82,8 @@ class ListSynonymSetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent name. Format:
+            Required. The parent name.
+            Format:
             projects/{project_number}/locations/{location}.
         page_size (int):
             The maximum number of synonymSets to return.
@@ -143,7 +147,9 @@ class UpdateSynonymSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the synonymSet to update Format:
+            Required. The name of the synonymSet to update
+            Format:
+
             projects/{project_number}/locations/{location}/synonymSets/{context}.
         synonym_set (google.cloud.contentwarehouse_v1.types.SynonymSet):
             Required. The synonymSet to be updated for
@@ -166,7 +172,9 @@ class DeleteSynonymSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the synonymSet to delete Format:
+            Required. The name of the synonymSet to delete
+            Format:
+
             projects/{project_number}/locations/{location}/synonymSets/{context}.
     """
 

@@ -50,9 +50,10 @@ class NotificationChannelDescriptor(proto.Message):
 
             In the above, ``[TYPE]`` is the value of the ``type`` field.
         type_ (str):
-            The type of notification channel, such as "email" and "sms".
-            To view the full list of channels, see `Channel
-            descriptors <https://cloud.google.com/monitoring/alerts/using-channels-api#ncd>`__.
+            The type of notification channel, such as
+            "email" and "sms". To view the full list of
+            channels, see [Channel
+            descriptors](https://cloud.google.com/monitoring/alerts/using-channels-api#ncd).
             Notification channel types are globally unique.
         display_name (str):
             A human-readable name for the notification
@@ -70,8 +71,9 @@ class NotificationChannelDescriptor(proto.Message):
             description for how that field should be
             populated.
         supported_tiers (MutableSequence[google.cloud.monitoring_v3.types.ServiceTier]):
-            The tiers that support this notification channel; the
-            project service tier must be one of the supported_tiers.
+            The tiers that support this notification
+            channel; the project service tier must be one of
+            the supported_tiers.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
             The product launch stage for channels of this
             type.

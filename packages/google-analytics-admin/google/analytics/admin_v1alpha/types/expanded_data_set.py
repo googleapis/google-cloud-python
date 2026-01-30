@@ -68,9 +68,10 @@ class ExpandedDataSetFilter(proto.Message):
                 Required. The string value to be matched
                 against.
             case_sensitive (bool):
-                Optional. If true, the match is case-sensitive. If false,
-                the match is case-insensitive. Must be true when match_type
-                is EXACT. Must be false when match_type is CONTAINS.
+                Optional. If true, the match is case-sensitive.
+                If false, the match is case-insensitive.
+                Must be true when match_type is EXACT.
+                Must be false when match_type is CONTAINS.
         """
 
         class MatchType(proto.Enum):
@@ -155,17 +156,18 @@ class ExpandedDataSetFilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpressionList):
-            A list of expressions to be AND’ed together. It must contain
-            a ExpandedDataSetFilterExpression with either not_expression
-            or dimension_filter. This must be set for the top level
+            A list of expressions to be AND’ed together. It
+            must contain a ExpandedDataSetFilterExpression
+            with either not_expression or dimension_filter.
+            This must be set for the top level
             ExpandedDataSetFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpression):
-            A filter expression to be NOT'ed (that is, inverted,
-            complemented). It must include a dimension_filter. This
-            cannot be set on the top level
-            ExpandedDataSetFilterExpression.
+            A filter expression to be NOT'ed (that is,
+            inverted, complemented). It must include a
+            dimension_filter. This cannot be set on the top
+            level ExpandedDataSetFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.admin_v1alpha.types.ExpandedDataSetFilter):
@@ -218,8 +220,8 @@ class ExpandedDataSet(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this ExpandedDataSet
-            resource. Format:
+            Output only. The resource name for this
+            ExpandedDataSet resource. Format:
             properties/{property_id}/expandedDataSets/{expanded_data_set}
         display_name (str):
             Required. The display name of the
@@ -228,14 +230,14 @@ class ExpandedDataSet(proto.Message):
             Optional. The description of the
             ExpandedDataSet. Max 50 chars.
         dimension_names (MutableSequence[str]):
-            Immutable. The list of dimensions included in the
-            ExpandedDataSet. See the `API
-            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>`__
+            Immutable. The list of dimensions included in
+            the ExpandedDataSet. See the [API
+            Dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions)
             for the list of dimension names.
         metric_names (MutableSequence[str]):
             Immutable. The list of metrics included in the
-            ExpandedDataSet. See the `API
-            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
+            ExpandedDataSet. See the [API
+            Metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics)
             for the list of dimension names.
         dimension_filter_expression (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpression):
             Immutable. A logical expression of ExpandedDataSet filters

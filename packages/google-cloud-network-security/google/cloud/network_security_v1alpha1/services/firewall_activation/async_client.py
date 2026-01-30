@@ -621,10 +621,11 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             firewall_endpoint_id (:class:`str`):
-                Required. Id of the requesting object. If
-                auto-generating Id server-side, remove this field and
-                firewall_endpoint_id from the method_signature of Create
-                RPC.
+                Required. Id of the requesting object.
+                If auto-generating Id server-side,
+                remove this field and
+                firewall_endpoint_id from the
+                method_signature of Create RPC.
 
                 This corresponds to the ``firewall_endpoint_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -895,12 +896,15 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Endpoint resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Endpoint resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1292,10 +1296,11 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             firewall_endpoint_association_id (:class:`str`):
-                Optional. Id of the requesting object. If
-                auto-generating Id server-side, remove this field and
-                firewall_endpoint_association_id from the
-                method_signature of Create RPC.
+                Optional. Id of the requesting object.
+                If auto-generating Id server-side,
+                remove this field and
+                firewall_endpoint_association_id from
+                the method_signature of Create RPC.
 
                 This corresponds to the ``firewall_endpoint_association_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1581,12 +1586,15 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Association resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Association resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

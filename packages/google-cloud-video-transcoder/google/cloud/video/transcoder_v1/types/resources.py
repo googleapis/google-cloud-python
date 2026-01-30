@@ -1553,9 +1553,10 @@ class TrackDefinition(proto.Message):
 
             This field is a member of `oneof`_ ``_input_track``.
         languages (MutableSequence[str]):
-            Optional. A list of languages spoken in the input asset,
-            represented by a BCP 47 language code, such as "en-US" or
-            "sr-Latn". For more information, see
+            Optional. A list of languages spoken in the
+            input asset, represented by a BCP 47 language
+            code, such as "en-US" or "sr-Latn". For more
+            information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         detect_languages (bool):
             Optional. Whether to automatically detect the
@@ -1564,12 +1565,13 @@ class TrackDefinition(proto.Message):
             languages present in the track and populate the
             languages field.
         detected_languages (MutableSequence[str]):
-            Output only. A list of languages detected in the input
-            asset, represented by a BCP 47 language code, such as
-            "en-US" or "sr-Latn". For more information, see
+            Output only. A list of languages detected in the
+            input asset, represented by a BCP 47 language
+            code, such as "en-US" or "sr-Latn". For more
+            information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-            This field is only populated if the detect_languages field
-            is set to true.
+            This field is only populated if the
+            detect_languages field is set to true.
     """
 
     input_track: int = proto.Field(

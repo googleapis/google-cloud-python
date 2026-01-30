@@ -61,12 +61,13 @@ class ListFilesRequest(proto.Message):
             For a full description of the filter format, please see
             https://google.aip.dev/160.
         page_size (int):
-            Optional. The maximum number of files to return. The service
-            may return fewer than this value. If unspecified, at most
-            100 files will be returned. The maximum value is 1000;
-            values above 1000 will be coerced to 1000. If user specifies
-            a value less than or equal to 0 - the request will be
-            rejected with an INVALID_ARGUMENT error.
+            Optional. The maximum number of files to return.
+            The service may return fewer than this value. If
+            unspecified, at most 100 files will be returned.
+            The maximum value is 1000; values above 1000
+            will be coerced to 1000. If user specifies a
+            value less than or equal to 0 - the request will
+            be rejected with an INVALID_ARGUMENT error.
         page_token (str):
             Optional. A page token received from a previous
             ``ListFiles`` call. Provide this to retrieve the subsequent

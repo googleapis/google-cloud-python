@@ -718,12 +718,15 @@ class StorageInsightsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the ReportConfig resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                ReportConfig resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1319,9 +1322,10 @@ class StorageInsightsAsyncClient:
 
         Returns:
             google.cloud.storageinsights_v1.types.DatasetConfig:
-                Message describing the dataset configuration properties. For more
-                   information, see [Dataset configuration
-                   properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+                Message describing the dataset
+                configuration properties. For more
+                information, see [Dataset configuration
+                properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
         """
         # Create or coerce a protobuf request object.

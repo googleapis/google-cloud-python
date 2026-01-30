@@ -413,9 +413,9 @@ class CatalogAttribute(proto.Message):
                     MergedFacetValue is 25. Each value can have up to 128
                     characters.
                 merged_value (str):
-                    All the previous values are replaced by this merged facet
-                    value. This merged_value must be non-empty and can have up
-                    to 128 characters.
+                    All the previous values are replaced by this
+                    merged facet value. This merged_value must be
+                    non-empty and can have up to 128 characters.
             """
 
             values: MutableSequence[str] = proto.RepeatedField(
@@ -453,15 +453,15 @@ class CatalogAttribute(proto.Message):
             )
 
         class RerankConfig(proto.Message):
-            r"""Options to rerank based on facet values engaged by the user for the
-            current key. That key needs to be a custom textual key and
-            facetable. To use this control, you also need to pass all the facet
-            keys engaged by the user in the request using the field
+            r"""Options to rerank based on facet values engaged by the user for
+            the current key. That key needs to be a custom textual key and
+            facetable. To use this control, you also need to pass all the
+            facet keys engaged by the user in the request using the field
             [SearchRequest.FacetSpec]. In particular, if you don't pass the
-            facet keys engaged that you want to rerank on, this control won't be
-            effective. Moreover, to obtain better results, the facet values that
-            you want to rerank on should be close to English (ideally made of
-            words, underscores, and spaces).
+            facet keys engaged that you want to rerank on, this control
+            won't be effective. Moreover, to obtain better results, the
+            facet values that you want to rerank on should be close to
+            English (ideally made of words, underscores, and spaces).
 
             Attributes:
                 rerank_facet (bool):
@@ -734,9 +734,9 @@ class Catalog(proto.Message):
         display_name (str):
             Required. Immutable. The catalog display name.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         product_level_config (google.cloud.retail_v2.types.ProductLevelConfig):
             Required. The product level configuration.
     """

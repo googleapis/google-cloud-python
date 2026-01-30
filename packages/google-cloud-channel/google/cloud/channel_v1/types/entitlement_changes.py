@@ -54,15 +54,18 @@ class EntitlementChange(proto.Message):
 
             This field is a member of `oneof`_ ``change_reason``.
         other_change_reason (str):
-            e.g. purchase_number change reason, entered by CRS.
+            e.g. purchase_number change reason, entered by
+            CRS.
 
             This field is a member of `oneof`_ ``change_reason``.
         entitlement (str):
-            Required. Resource name of an entitlement in the form:
+            Required. Resource name of an entitlement in the
+            form:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         offer (str):
-            Required. Resource name of the Offer at the time of change.
-            Takes the form: accounts/{account_id}/offers/{offer_id}.
+            Required. Resource name of the Offer at the time
+            of change. Takes the form:
+            accounts/{account_id}/offers/{offer_id}.
         provisioned_service (google.cloud.channel_v1.types.ProvisionedService):
             Service provisioned for an Entitlement.
         change_type (google.cloud.channel_v1.types.EntitlementChange.ChangeType):
@@ -72,14 +75,16 @@ class EntitlementChange(proto.Message):
         operator_type (google.cloud.channel_v1.types.EntitlementChange.OperatorType):
             Operator type responsible for the change.
         parameters (MutableSequence[google.cloud.channel_v1.types.Parameter]):
-            Extended parameters, such as: purchase_order_number,
-            gcp_details; internal_correlation_id,
+            Extended parameters, such as:
+
+            purchase_order_number, gcp_details;
+            internal_correlation_id,
             long_running_operation_id, order_id; etc.
         operator (str):
-            Human-readable identifier that shows what operator made a
-            change. When the operator_type is RESELLER, this is the
-            user's email address. For all other operator types, this is
-            empty.
+            Human-readable identifier that shows what
+            operator made a change. When the operator_type
+            is RESELLER, this is the user's email address.
+            For all other operator types, this is empty.
     """
 
     class ChangeType(proto.Enum):

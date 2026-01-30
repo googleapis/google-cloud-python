@@ -940,12 +940,9 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             request (Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]):
                 The request object. The ``ListDashboards`` request.
             parent (str):
-                Required. The scope of the dashboards to list. The
-                format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]
+                Required. The scope of the dashboards to
+                list. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1186,12 +1183,9 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
             request (Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]):
                 The request object. The ``DeleteDashboard`` request.
             name (str):
-                Required. The resource name of the Dashboard. The format
-                is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
+                Required. The resource name of the
+                Dashboard. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

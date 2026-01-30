@@ -236,11 +236,13 @@ class Form(proto.Message):
                 If the parameter is required, the default value
                 will be ignored.
             redact (bool):
-                Indicates whether the parameter content should be redacted
-                in log. If redaction is enabled, the parameter content will
-                be replaced by parameter name during logging. Note: the
-                parameter content is subject to redaction if either
-                parameter level redaction or [entity type level
+                Indicates whether the parameter content should
+                be redacted in log. If redaction is enabled, the
+                parameter content will be replaced by parameter
+                name during logging.
+                Note: the parameter content is subject to
+                redaction if either parameter level redaction or
+                [entity type level
                 redaction][google.cloud.dialogflow.cx.v3beta1.EntityType.redact]
                 is enabled.
             advanced_settings (google.cloud.dialogflowcx_v3beta1.types.AdvancedSettings):
@@ -581,8 +583,8 @@ class ListPagesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -609,8 +611,9 @@ class ListPagesResponse(proto.Message):
 
     Attributes:
         pages (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Page]):
-            The list of pages. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of pages. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

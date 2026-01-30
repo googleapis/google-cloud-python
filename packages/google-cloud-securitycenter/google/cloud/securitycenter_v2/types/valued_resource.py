@@ -37,12 +37,13 @@ class ValuedResource(proto.Message):
             Valued resource name, for example, e.g.:
             ``organizations/123/simulations/456/valuedResources/789``
         resource (str):
-            The `full resource
-            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
+            The
+            [full resource
+            name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
             of the valued resource.
         resource_type (str):
-            The `resource
-            type <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+            The [resource
+            type](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
             of the valued resource.
         display_name (str):
             Human-readable name of the valued resource.

@@ -1012,10 +1012,10 @@ class NetworksClient(metaclass=NetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Cancel requests to remove a peering from the specified network.
-        Applicable only for PeeringConnection with
-        update_strategy=CONSENSUS. Cancels a request to remove a peering
-        from the specified network.
+        r"""Cancel requests to remove a peering from the specified
+        network. Applicable only for PeeringConnection with
+        update_strategy=CONSENSUS. Cancels a request to remove a
+        peering from the specified network.
 
         .. code-block:: python
 
@@ -1158,10 +1158,10 @@ class NetworksClient(metaclass=NetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Cancel requests to remove a peering from the specified network.
-        Applicable only for PeeringConnection with
-        update_strategy=CONSENSUS. Cancels a request to remove a peering
-        from the specified network.
+        r"""Cancel requests to remove a peering from the specified
+        network. Applicable only for PeeringConnection with
+        update_strategy=CONSENSUS. Cancels a request to remove a
+        peering from the specified network.
 
         .. code-block:: python
 
@@ -3638,8 +3638,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Updates the specified network peering with the data included in
-        the request. You can only modify the
+        r"""Updates the specified network peering with the data
+        included in the request. You can only modify the
         NetworkPeering.export_custom_routes field and the
         NetworkPeering.import_custom_routes field.
 
@@ -3776,8 +3776,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Updates the specified network peering with the data included in
-        the request. You can only modify the
+        r"""Updates the specified network peering with the data
+        included in the request. You can only modify the
         NetworkPeering.export_custom_routes field and the
         NetworkPeering.import_custom_routes field.
 

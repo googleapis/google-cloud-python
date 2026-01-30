@@ -53,9 +53,10 @@ class CreateInstanceRequest(proto.Message):
         instance (google.cloud.run_v2.types.Instance):
 
         instance_id (str):
-            Required. The unique identifier for the Instance. It must
-            begin with letter, and cannot end with hyphen; must contain
-            fewer than 50 characters. The name of the instance becomes
+            Required. The unique identifier for the
+            Instance. It must begin with letter, and cannot
+            end with hyphen; must contain fewer than 50
+            characters. The name of the instance becomes
             {parent}/instances/{instance_id}.
         validate_only (bool):
             Optional. Indicates that the request should
@@ -173,8 +174,9 @@ class ListInstancesResponse(proto.Message):
         instances (MutableSequence[google.cloud.run_v2.types.Instance]):
             The resulting list of Instances.
         next_page_token (str):
-            A token indicating there are more items than page_size. Use
-            it in the next ListInstances request to continue.
+            A token indicating there are more items than
+            page_size. Use it in the next ListInstances
+            request to continue.
     """
 
     @property
@@ -266,11 +268,13 @@ class Instance(proto.Message):
     Attributes:
         name (str):
             The fully qualified name of this Instance. In
-            CreateInstanceRequest, this field is ignored, and instead
-            composed from CreateInstanceRequest.parent and
+            CreateInstanceRequest, this field is ignored,
+            and instead composed from
+            CreateInstanceRequest.parent and
             CreateInstanceRequest.instance_id.
 
             Format:
+
             projects/{project}/locations/{location}/instances/{instance_id}
         description (str):
             User-provided description of the Instance.
@@ -348,9 +352,9 @@ class Instance(proto.Message):
             The action to take if the encryption key is
             revoked.
         encryption_key_shutdown_duration (google.protobuf.duration_pb2.Duration):
-            If encryption_key_revocation_action is SHUTDOWN, the
-            duration before shutting down all instances. The minimum
-            increment is 1 hour.
+            If encryption_key_revocation_action is SHUTDOWN,
+            the duration before shutting down all instances.
+            The minimum increment is 1 hour.
         node_selector (google.cloud.run_v2.types.NodeSelector):
             Optional. The node selector for the instance.
         gpu_zonal_redundancy_disabled (bool):
@@ -359,13 +363,15 @@ class Instance(proto.Message):
 
             This field is a member of `oneof`_ ``_gpu_zonal_redundancy_disabled``.
         ingress (google.cloud.run_v2.types.IngressTraffic):
-            Optional. Provides the ingress settings for this Instance.
-            On output, returns the currently observed ingress settings,
-            or INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+            Optional. Provides the ingress settings for this
+            Instance. On output, returns the currently
+            observed ingress settings, or
+            INGRESS_TRAFFIC_UNSPECIFIED if no revision is
+            active.
         invoker_iam_disabled (bool):
             Optional. Disables IAM permission check for
-            run.routes.invoke for callers of this Instance. For more
-            information, visit
+            run.routes.invoke for callers of this Instance.
+            For more information, visit
             https://cloud.google.com/run/docs/securing/managing-access#invoker_check.
         iap_enabled (bool):
             Optional. IAP settings on the Instance.

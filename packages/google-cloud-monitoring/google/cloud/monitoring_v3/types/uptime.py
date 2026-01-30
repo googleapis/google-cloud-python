@@ -122,9 +122,9 @@ class InternalChecker(proto.Message):
             network <https://cloud.google.com/vpc/docs/vpc>`__ where the
             internal resource lives (ex: "default").
         gcp_zone (str):
-            The GCP zone the Uptime check should egress from. Only
-            respected for internal Uptime checks, where internal_network
-            is specified.
+            The GCP zone the Uptime check should egress
+            from. Only respected for internal Uptime checks,
+            where internal_network is specified.
         peer_project_id (str):
             The GCP project ID where the internal checker
             lives. Not necessary the same as the Metrics

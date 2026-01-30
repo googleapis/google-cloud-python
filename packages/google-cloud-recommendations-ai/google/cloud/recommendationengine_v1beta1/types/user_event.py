@@ -266,13 +266,14 @@ class EventDetail(proto.Message):
             Optional, but highly encouraged for user events that are the
             result of a recommendation prediction query.
         event_attributes (google.cloud.recommendationengine_v1beta1.types.FeatureMap):
-            Optional. Extra user event features to include in the
-            recommendation model.
+            Optional. Extra user event features to include
+            in the recommendation model.
 
-            For product recommendation, an example of extra user
-            information is traffic_channel, i.e. how user arrives at the
-            site. Users can arrive at the site by coming to the site
-            directly, or coming through Google search, and etc.
+            For product recommendation, an example of extra
+            user information is traffic_channel, i.e. how
+            user arrives at the site. Users can arrive at
+            the site by coming to the site directly, or
+            coming through Google search, and etc.
     """
 
     uri: str = proto.Field(

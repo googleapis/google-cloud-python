@@ -3801,10 +3801,12 @@ class ClusterManagerRestTransport(_BaseClusterManagerRestTransport):
 
             Args:
                 request (~.cluster_service.GetJSONWebKeysRequest):
-                    The request object. GetJSONWebKeysRequest gets the public component of the
-                keys used by the cluster to sign token requests. This
-                will be the jwks_uri for the discover document returned
-                by getOpenIDConfig. See the OpenID Connect Discovery 1.0
+                    The request object. GetJSONWebKeysRequest gets the public
+                component of the keys used by the
+                cluster to sign token requests. This
+                will be the jwks_uri for the discover
+                document returned by getOpenIDConfig.
+                See the OpenID Connect Discovery 1.0
                 specification for details.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

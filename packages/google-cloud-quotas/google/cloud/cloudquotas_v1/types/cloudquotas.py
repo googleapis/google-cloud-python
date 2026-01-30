@@ -273,12 +273,14 @@ class UpdateQuotaPreferenceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the QuotaPreference resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the QuotaPreference
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         quota_preference (google.cloud.cloudquotas_v1.types.QuotaPreference):
             Required. The resource being updated
         allow_missing (bool):

@@ -67,9 +67,11 @@ class GoogleApiSource(proto.Message):
         display_name (str):
             Optional. Resource display name.
         destination (str):
-            Required. Destination is the message bus that the
-            GoogleApiSource is delivering to. It must be point to the
-            full resource name of a MessageBus. Format:
+            Required. Destination is the message bus that
+            the GoogleApiSource is delivering to. It must be
+            point to the full resource name of a MessageBus.
+            Format:
+
             "projects/{PROJECT_ID}/locations/{region}/messagesBuses/{MESSAGE_BUS_ID)
         crypto_key_name (str):
             Optional. Resource name of a KMS crypto key (managed by the

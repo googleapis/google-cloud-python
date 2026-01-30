@@ -106,18 +106,19 @@ class RuleView(proto.Enum):
             ListRules/ListRuleRevisions. The API will
             default to the FULL view for GetRule.
         BASIC (1):
-            Include basic metadata about the rule, but not the full
-            contents. Returned fields include: revision_id,
-            revision_create_time, display_name, author, severity, type,
-            allowed_run_frequency, near_real_time_live_rule_eligible,
-            etag, and scope. This is the default value for ListRules and
-            ListRuleRevisions.
+            Include basic metadata about the rule, but not
+            the full contents. Returned fields include:
+            revision_id, revision_create_time, display_name,
+            author, severity, type, allowed_run_frequency,
+            near_real_time_live_rule_eligible, etag, and
+            scope. This is the default value for ListRules
+            and ListRuleRevisions.
         FULL (2):
             Include all fields.
             This is the default value for GetRule.
         REVISION_METADATA_ONLY (3):
-            Include basic metadata about the rule's revision only.
-            Returned fields include: revision_id and
+            Include basic metadata about the rule's revision
+            only. Returned fields include: revision_id and
             revision_create_time.
     """
     RULE_VIEW_UNSPECIFIED = 0
@@ -161,8 +162,9 @@ class Rule(proto.Message):
             Output only. The timestamp of when the rule
             was created. Populated in FULL view.
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp of when the rule revision was
-            created. Populated in FULL, REVISION_METADATA_ONLY views.
+            Output only. The timestamp of when the rule
+            revision was created. Populated in FULL,
+            REVISION_METADATA_ONLY views.
         compilation_state (google.cloud.chronicle_v1.types.Rule.CompilationState):
             Output only. The current compilation state of
             the rule. Populated in FULL view.
@@ -203,9 +205,10 @@ class Rule(proto.Message):
             rule uses the near real time live rule when the
             run frequency is set to LIVE.
         inputs_used (google.cloud.chronicle_v1.types.InputsUsed):
-            Output only. The set of inputs used in the rule. For
-            example, if the rule uses $e.principal.hostname, then the
-            uses_udm field will be true.
+            Output only. The set of inputs used in the rule.
+            For example, if the rule uses
+            $e.principal.hostname, then the uses_udm field
+            will be true.
     """
 
     class CompilationState(proto.Enum):
@@ -328,11 +331,12 @@ class RuleDeployment(proto.Message):
             Whether detections resulting from this
             deployment should be considered alerts.
         archived (bool):
-            The archive state of the rule deployment. Cannot be set to
-            true unless enabled is set to false. If set to true,
-            alerting will automatically be set to false. If currently
-            set to true, enabled, alerting, and run_frequency cannot be
-            updated.
+            The archive state of the rule deployment.
+            Cannot be set to true unless enabled is set to
+            false. If set to true, alerting will
+            automatically be set to false. If currently set
+            to true, enabled, alerting, and run_frequency
+            cannot be updated.
         archive_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the rule
             deployment archive state was last set to true.
@@ -573,6 +577,7 @@ class ListRulesRequest(proto.Message):
             unspecified, defaults to BASIC.
         filter (str):
             Only the following filters are allowed:
+
             "reference_lists:{reference_list_name}"
             "data_tables:{data_table_name}"
             "display_name:{display_name}".

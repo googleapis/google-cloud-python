@@ -364,8 +364,8 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
 
         Gets details about a meeting space.
 
-        For an example, see `Get a meeting
-        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
+        For an example, see [Get a meeting
+        space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
 
         Returns:
             Callable[[~.GetSpaceRequest],
@@ -393,8 +393,8 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
 
         Updates details about a meeting space.
 
-        For an example, see `Update a meeting
-        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
+        For an example, see [Update a meeting
+        space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
 
         Returns:
             Callable[[~.UpdateSpaceRequest],
@@ -462,8 +462,8 @@ class SpacesServiceGrpcAsyncIOTransport(SpacesServiceTransport):
 
         Ends an active conference (if there's one).
 
-        For an example, see `End active
-        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
+        For an example, see [End active
+        conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
 
         Returns:
             Callable[[~.EndActiveConferenceRequest],

@@ -506,10 +506,12 @@ class Node(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of this node. Resource names
-            are schemeless URIs that follow the conventions in
-            https://cloud.google.com/apis/design/resource_names. For
-            example:
+            Output only. The resource name of this node.
+            Resource names are schemeless URIs that follow
+            the conventions in
+            https://cloud.google.com/apis/design/resource_names.
+            For example:
+
             projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster/nodes/my-node
         fqdn (str):
             Output only. Fully qualified domain name of
@@ -1719,21 +1721,23 @@ class NetworkPeering(proto.Message):
 
             This field is a member of `oneof`_ ``_exchange_subnet_routes``.
         export_custom_routes_with_public_ip (bool):
-            Optional. True if all subnet routes with a public IP address
-            range are exported; false otherwise. The default value is
-            true. IPv4 special-use ranges
-            (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are
-            always exported to peers and are not controlled by this
-            field.
+            Optional. True if all subnet routes with a
+            public IP address range are exported; false
+            otherwise. The default value is true. IPv4
+            special-use ranges
+            (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+            are always exported to peers and are not
+            controlled by this field.
 
             This field is a member of `oneof`_ ``_export_custom_routes_with_public_ip``.
         import_custom_routes_with_public_ip (bool):
-            Optional. True if all subnet routes with public IP address
-            range are imported; false otherwise. The default value is
-            true. IPv4 special-use ranges
-            (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are
-            always imported to peers and are not controlled by this
-            field.
+            Optional. True if all subnet routes with public
+            IP address range are imported; false otherwise.
+            The default value is true. IPv4 special-use
+            ranges
+            (https://en.wikipedia.org/wiki/IPv4#Special_addresses)
+            are always imported to peers and are not
+            controlled by this field.
 
             This field is a member of `oneof`_ ``_import_custom_routes_with_public_ip``.
         state (google.cloud.vmwareengine_v1.types.NetworkPeering.State):
@@ -1805,8 +1809,9 @@ class NetworkPeering(proto.Message):
                 Peering connection used for connecting to
                 another VMware Engine network.
             PRIVATE_SERVICES_ACCESS (3):
-                Peering connection used for establishing `private services
-                access <https://cloud.google.com/vpc/docs/private-services-access>`__.
+                Peering connection used for establishing
+                [private services
+                access](https://cloud.google.com/vpc/docs/private-services-access).
             NETAPP_CLOUD_VOLUMES (4):
                 Peering connection used for connecting to
                 NetApp Cloud Volumes.
@@ -2361,8 +2366,8 @@ class VmwareEngineNetwork(proto.Message):
 
         Attributes:
             type_ (google.cloud.vmwareengine_v1.types.VmwareEngineNetwork.VpcNetwork.Type):
-                Output only. Type of VPC network (INTRANET, INTERNET, or
-                GOOGLE_CLOUD)
+                Output only. Type of VPC network (INTRANET,
+                INTERNET, or GOOGLE_CLOUD)
             network (str):
                 Output only. The relative resource name of the service VPC
                 network this VMware Engine network is attached to. For
@@ -2490,10 +2495,11 @@ class PrivateConnection(proto.Message):
             Output only. VPC network peering id between
             given network VPC and VMwareEngineNetwork.
         routing_mode (google.cloud.vmwareengine_v1.types.PrivateConnection.RoutingMode):
-            Optional. Routing Mode. Default value is set to GLOBAL. For
-            type = PRIVATE_SERVICE_ACCESS, this field can be set to
-            GLOBAL or REGIONAL, for other types only GLOBAL is
-            supported.
+            Optional. Routing Mode.
+            Default value is set to GLOBAL.
+            For type = PRIVATE_SERVICE_ACCESS, this field
+            can be set to GLOBAL or REGIONAL, for other
+            types only GLOBAL is supported.
         uid (str):
             Output only. System-generated unique
             identifier for the resource.
@@ -2557,8 +2563,9 @@ class PrivateConnection(proto.Message):
                 The default value. This value should never be
                 used.
             PRIVATE_SERVICE_ACCESS (1):
-                Connection used for establishing `private services
-                access <https://cloud.google.com/vpc/docs/private-services-access>`__.
+                Connection used for establishing [private
+                services
+                access](https://cloud.google.com/vpc/docs/private-services-access).
             NETAPP_CLOUD_VOLUMES (2):
                 Connection used for connecting to NetApp
                 Cloud Volumes.

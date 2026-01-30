@@ -48,10 +48,11 @@ class ConversationInfo(proto.Message):
 
     Attributes:
         language_code (str):
-            Optional. The language code of the conversation data within
-            this dataset. See
-            https://cloud.google.com/apis/design/standard_fields for
-            more information. Supports all UTF-8 languages.
+            Optional. The language code of the conversation
+            data within this dataset. See
+            https://cloud.google.com/apis/design/standard_fields
+            for more information. Supports all UTF-8
+            languages.
     """
 
     language_code: str = proto.Field(
@@ -224,8 +225,8 @@ class ListConversationDatasetsRequest(proto.Message):
             datasets to return in a single page. By default
             100 and at most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(

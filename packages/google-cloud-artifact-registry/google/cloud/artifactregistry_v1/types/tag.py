@@ -104,8 +104,8 @@ class ListTagsRequest(proto.Message):
             The maximum number of tags to return. Maximum
             page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request, if any.
+            The next_page_token value returned from a
+            previous list request, if any.
     """
 
     parent: str = proto.Field(

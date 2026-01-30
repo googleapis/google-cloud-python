@@ -300,8 +300,9 @@ class TagHoldsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a TagHold. Returns ALREADY_EXISTS if a TagHold with the
-        same resource and origin exists under the same TagValue.
+        r"""Creates a TagHold. Returns ALREADY_EXISTS if a TagHold
+        with the same resource and origin exists under the same
+        TagValue.
 
         .. code-block:: python
 

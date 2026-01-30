@@ -373,8 +373,9 @@ class TextServiceAsyncClient:
             candidate_count (:class:`int`):
                 Number of generated responses to return.
 
-                This value must be between [1, 8], inclusive. If unset,
-                this will default to 1.
+                This value must be between [1, 8],
+                inclusive. If unset, this will default
+                to 1.
 
                 This corresponds to the ``candidate_count`` field
                 on the ``request`` instance; if ``request`` is provided, this

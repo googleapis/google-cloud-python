@@ -233,8 +233,8 @@ class RequestLog(proto.Message):
             Stackdriver Trace identifier for this
             request.
         trace_sampled (bool):
-            If true, the value in the 'trace_id' field was sampled for
-            storage in a trace backend.
+            If true, the value in the 'trace_id' field was
+            sampled for storage in a trace backend.
         source_reference (MutableSequence[google.cloud.appengine_logging_v1.types.SourceReference]):
             Source code for the application that handled
             this request. There can be more than one source

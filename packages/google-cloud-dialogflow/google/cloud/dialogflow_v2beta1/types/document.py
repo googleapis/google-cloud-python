@@ -89,15 +89,17 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         content (str):
-            The raw content of the document. This field is only
-            permitted for EXTRACTIVE_QA and FAQ knowledge types. Note:
-            This field is in the process of being deprecated, please use
+            The raw content of the document. This field is
+            only permitted for EXTRACTIVE_QA and FAQ
+            knowledge types. Note: This field is in the
+            process of being deprecated, please use
             raw_content instead.
 
             This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
-            The raw content of the document. This field is only
-            permitted for EXTRACTIVE_QA and FAQ knowledge types.
+            The raw content of the document. This field is
+            only permitted for EXTRACTIVE_QA and FAQ
+            knowledge types.
 
             This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
@@ -304,8 +306,8 @@ class ListDocumentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 10 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         filter (str):
             The filter expression used to filter documents returned by
             the list method. The expression has the following syntax:

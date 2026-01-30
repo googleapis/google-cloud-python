@@ -585,8 +585,8 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     ) -> Callable[[warehouse.IndexAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the index asset method over gRPC.
 
-        Index one asset for search. Supported corpus type:
-        Corpus.Type.VIDEO_ON_DEMAND
+        Index one asset for search.
+        Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
 
         Returns:
             Callable[[~.IndexAssetRequest],
@@ -614,8 +614,8 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     ]:
         r"""Return a callable for the remove index asset method over gRPC.
 
-        Remove one asset's index data for search. Supported corpus type:
-        Corpus.Type.VIDEO_ON_DEMAND
+        Remove one asset's index data for search.
+        Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
 
         Returns:
             Callable[[~.RemoveIndexAssetRequest],
@@ -696,9 +696,9 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     ) -> Callable[[warehouse.UpdateIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update index method over gRPC.
 
-        Updates an Index under the corpus. Users can perform a
-        metadata-only update or trigger a full index rebuild with
-        different update_mask values.
+        Updates an Index under the corpus.
+        Users can perform a metadata-only update or trigger a
+        full index rebuild with different update_mask values.
 
         Returns:
             Callable[[~.UpdateIndexRequest],
@@ -1263,11 +1263,12 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     ) -> Callable[[warehouse.ClipAssetRequest], Awaitable[warehouse.ClipAssetResponse]]:
         r"""Return a callable for the clip asset method over gRPC.
 
-        Supported by STREAM_VIDEO corpus type. Generates clips for
-        downloading. The api takes in a time range, and generates a clip
-        of the first content available after start_time and before
-        end_time, which may overflow beyond these bounds. Returned clips
-        are truncated if the total size of the clips are larger than
+        Supported by STREAM_VIDEO corpus type.
+        Generates clips for downloading. The api takes in a time
+        range, and generates a clip of the first content
+        available after start_time and before end_time, which
+        may overflow beyond these bounds. Returned clips are
+        truncated if the total size of the clips are larger than
         100MB.
 
         Returns:

@@ -1724,8 +1724,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest.RescheduleType):
-                Required. If reschedule type is SPECIFIC_TIME,
-                schedule_time must be set.
+                Required. If reschedule type is
+                SPECIFIC_TIME, schedule_time must be
+                set.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1880,8 +1881,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupCollectionsPager:
                 Response for [ListBackupCollections].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2109,8 +2111,9 @@ class MemorystoreClient(metaclass=MemorystoreClientMeta):
             google.cloud.memorystore_v1.services.memorystore.pagers.ListBackupsPager:
                 Response for [ListBackups].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

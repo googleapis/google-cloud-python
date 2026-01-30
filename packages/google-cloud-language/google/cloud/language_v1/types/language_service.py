@@ -107,11 +107,13 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_content_uri (str):
-            The Google Cloud Storage URI where the file content is
-            located. This URI must be of the form:
-            gs://bucket_name/object_name. For more details, see
-            https://cloud.google.com/storage/docs/reference-uris. NOTE:
-            Cloud Storage object versioning is not supported.
+            The Google Cloud Storage URI where the file
+            content is located. This URI must be of the
+            form: gs://bucket_name/object_name. For more
+            details, see
+            https://cloud.google.com/storage/docs/reference-uris.
+            NOTE: Cloud Storage object versioning is not
+            supported.
 
             This field is a member of `oneof`_ ``source``.
         language (str):
@@ -204,12 +206,12 @@ class Entity(proto.Message):
             they are available. For the metadata associated with other
             entity types, see the Type table below.
         salience (float):
-            The salience score associated with the entity in the [0,
-            1.0] range.
-
-            The salience score for an entity provides information about
-            the importance or centrality of that entity to the entire
-            document text. Scores closer to 0 are less salient, while
+            The salience score associated with the entity in
+            the [0, 1.0] range.
+            The salience score for an entity provides
+            information about the importance or centrality
+            of that entity to the entire document text.
+            Scores closer to 0 are less salient, while
             scores closer to 1.0 are highly salient.
         mentions (MutableSequence[google.cloud.language_v1.types.EntityMention]):
             The mentions of this entity in the input
@@ -379,9 +381,10 @@ class Sentiment(proto.Message):
 
     Attributes:
         magnitude (float):
-            A non-negative number in the [0, +inf) range, which
-            represents the absolute magnitude of sentiment regardless of
-            score (positive or negative).
+            A non-negative number in the [0, +inf) range,
+            which represents the absolute magnitude of
+            sentiment regardless of score (positive or
+            negative).
         score (float):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive sentiment).
@@ -398,8 +401,8 @@ class Sentiment(proto.Message):
 
 
 class PartOfSpeech(proto.Message):
-    r"""Represents part of speech information for a token. Parts of speech
-    are as defined in
+    r"""Represents part of speech information for a token. Parts of
+    speech are as defined in
     http://www.lrec-conf.org/proceedings/lrec2012/pdf/274_Paper.pdf
 
     Attributes:

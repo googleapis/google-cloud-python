@@ -95,9 +95,11 @@ class VolumeBackup(proto.Message):
             read-modify-write cycle to perform volume backup updates in
             order to avoid race conditions.
         satisfies_pzs (bool):
-            Output only. [Output Only] Reserved for future use.
+            Output only. [Output Only] Reserved for future
+            use.
         satisfies_pzi (bool):
-            Output only. [Output Only] Reserved for future use.
+            Output only. [Output Only] Reserved for future
+            use.
     """
 
     class VolumeBackupFormat(proto.Enum):

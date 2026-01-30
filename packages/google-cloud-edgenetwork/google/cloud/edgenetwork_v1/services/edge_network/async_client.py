@@ -1070,8 +1070,9 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             network_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and network_id from
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and network_id from
                 the method_signature of Create RPC
 
                 This corresponds to the ``network_id`` field
@@ -1580,8 +1581,9 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             subnet_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and subnet_id from the
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and subnet_id from the
                 method_signature of Create RPC
 
                 This corresponds to the ``subnet_id`` field
@@ -1720,12 +1722,15 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Subnet resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Subnet resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2592,10 +2597,11 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             interconnect_attachment_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and
-                interconnect_attachment_id from the method_signature of
-                Create RPC
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and
+                interconnect_attachment_id from the
+                method_signature of Create RPC
 
                 This corresponds to the ``interconnect_attachment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3217,8 +3223,9 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             router_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and router_id from the
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and router_id from the
                 method_signature of Create RPC
 
                 This corresponds to the ``router_id`` field
@@ -3357,12 +3364,15 @@ class EdgeNetworkAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Router resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Router resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -961,17 +961,21 @@ class IAMClient(metaclass=IAMClientMeta):
             google.cloud.iam_admin_v1.types.ServiceAccount:
                 An IAM service account.
 
-                   A service account is an account for an application or
-                   a virtual machine (VM) instance, not a person. You
-                   can use a service account to call Google APIs. To
-                   learn more, read the [overview of service
-                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+                A service account is an account for an
+                application or a virtual machine (VM)
+                instance, not a person. You can use a
+                service account to call Google APIs. To
+                learn more, read the [overview of
+                service
+                accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
-                   When you create a service account, you specify the
-                   project ID that owns the service account, as well as
-                   a name that must be unique within the project. IAM
-                   uses these values to create an email address that
-                   identifies the service account.
+                When you create a service account, you
+                specify the project ID that owns the
+                service account, as well as a name that
+                must be unique within the project. IAM
+                uses these values to create an email
+                address that identifies the service
+                account.
 
         """
         # Create or coerce a protobuf request object.
@@ -1102,17 +1106,21 @@ class IAMClient(metaclass=IAMClientMeta):
             google.cloud.iam_admin_v1.types.ServiceAccount:
                 An IAM service account.
 
-                   A service account is an account for an application or
-                   a virtual machine (VM) instance, not a person. You
-                   can use a service account to call Google APIs. To
-                   learn more, read the [overview of service
-                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+                A service account is an account for an
+                application or a virtual machine (VM)
+                instance, not a person. You can use a
+                service account to call Google APIs. To
+                learn more, read the [overview of
+                service
+                accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
-                   When you create a service account, you specify the
-                   project ID that owns the service account, as well as
-                   a name that must be unique within the project. IAM
-                   uses these values to create an email address that
-                   identifies the service account.
+                When you create a service account, you
+                specify the project ID that owns the
+                service account, as well as a name that
+                must be unique within the project. IAM
+                uses these values to create an email
+                address that identifies the service
+                account.
 
         """
         # Create or coerce a protobuf request object.
@@ -1210,17 +1218,21 @@ class IAMClient(metaclass=IAMClientMeta):
             request (Union[google.cloud.iam_admin_v1.types.ServiceAccount, dict]):
                 The request object. An IAM service account.
 
-                A service account is an account for an application or a
-                virtual machine (VM) instance, not a person. You can use
-                a service account to call Google APIs. To learn more,
-                read the `overview of service
-                accounts <https://cloud.google.com/iam/help/service-accounts/overview>`__.
+                A service account is an account for an
+                application or a virtual machine (VM)
+                instance, not a person. You can use a
+                service account to call Google APIs. To
+                learn more, read the [overview of
+                service
+                accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
-                When you create a service account, you specify the
-                project ID that owns the service account, as well as a
-                name that must be unique within the project. IAM uses
-                these values to create an email address that identifies
-                the service account.
+                When you create a service account, you
+                specify the project ID that owns the
+                service account, as well as a name that
+                must be unique within the project. IAM
+                uses these values to create an email
+                address that identifies the service
+                account.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1233,17 +1245,21 @@ class IAMClient(metaclass=IAMClientMeta):
             google.cloud.iam_admin_v1.types.ServiceAccount:
                 An IAM service account.
 
-                   A service account is an account for an application or
-                   a virtual machine (VM) instance, not a person. You
-                   can use a service account to call Google APIs. To
-                   learn more, read the [overview of service
-                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+                A service account is an account for an
+                application or a virtual machine (VM)
+                instance, not a person. You can use a
+                service account to call Google APIs. To
+                learn more, read the [overview of
+                service
+                accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
-                   When you create a service account, you specify the
-                   project ID that owns the service account, as well as
-                   a name that must be unique within the project. IAM
-                   uses these values to create an email address that
-                   identifies the service account.
+                When you create a service account, you
+                specify the project ID that owns the
+                service account, as well as a name that
+                must be unique within the project. IAM
+                uses these values to create an email
+                address that identifies the service
+                account.
 
         """
         # Create or coerce a protobuf request object.
@@ -1335,17 +1351,21 @@ class IAMClient(metaclass=IAMClientMeta):
             google.cloud.iam_admin_v1.types.ServiceAccount:
                 An IAM service account.
 
-                   A service account is an account for an application or
-                   a virtual machine (VM) instance, not a person. You
-                   can use a service account to call Google APIs. To
-                   learn more, read the [overview of service
-                   accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+                A service account is an account for an
+                application or a virtual machine (VM)
+                instance, not a person. You can use a
+                service account to call Google APIs. To
+                learn more, read the [overview of
+                service
+                accounts](https://cloud.google.com/iam/help/service-accounts/overview).
 
-                   When you create a service account, you specify the
-                   project ID that owns the service account, as well as
-                   a name that must be unique within the project. IAM
-                   uses these values to create an email address that
-                   identifies the service account.
+                When you create a service account, you
+                specify the project ID that owns the
+                service account, as well as a name that
+                must be unique within the project. IAM
+                uses these values to create an email
+                address that identifies the service
+                account.
 
         """
         # Create or coerce a protobuf request object.
@@ -2712,8 +2732,9 @@ class IAMClient(metaclass=IAMClientMeta):
 
         Args:
             request (Union[google.cloud.iam_admin_v1.types.SignBlobRequest, dict]):
-                The request object. Deprecated. `Migrate to Service Account Credentials
-                API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
+                The request object. Deprecated. [Migrate to Service Account
+                Credentials
+                API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                 The service account sign blob request.
             name (str):
@@ -2733,9 +2754,9 @@ class IAMClient(metaclass=IAMClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             bytes_to_sign (bytes):
-                Required. Deprecated. `Migrate to Service Account
-                Credentials
-                API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
+                Required. Deprecated. [Migrate to
+                Service Account Credentials
+                API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                 The bytes to sign.
 
@@ -2752,10 +2773,11 @@ class IAMClient(metaclass=IAMClientMeta):
 
         Returns:
             google.cloud.iam_admin_v1.types.SignBlobResponse:
-                Deprecated. [Migrate to Service Account Credentials
-                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
+                Deprecated. [Migrate to Service Account
+                Credentials
+                API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
-                   The service account sign blob response.
+                The service account sign blob response.
 
         """
         warnings.warn("IAMClient.sign_blob is deprecated", DeprecationWarning)
@@ -2857,8 +2879,9 @@ class IAMClient(metaclass=IAMClientMeta):
 
         Args:
             request (Union[google.cloud.iam_admin_v1.types.SignJwtRequest, dict]):
-                The request object. Deprecated. `Migrate to Service Account Credentials
-                API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
+                The request object. Deprecated. [Migrate to Service Account
+                Credentials
+                API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
                 The service account sign JWT request.
             name (str):
@@ -2907,10 +2930,11 @@ class IAMClient(metaclass=IAMClientMeta):
 
         Returns:
             google.cloud.iam_admin_v1.types.SignJwtResponse:
-                Deprecated. [Migrate to Service Account Credentials
-                   API](https://cloud.google.com/iam/help/credentials/migrate-api).
+                Deprecated. [Migrate to Service Account
+                Credentials
+                API](https://cloud.google.com/iam/help/credentials/migrate-api).
 
-                   The service account sign JWT response.
+                The service account sign JWT response.
 
         """
         warnings.warn("IAMClient.sign_jwt is deprecated", DeprecationWarning)
@@ -4151,11 +4175,11 @@ class IAMClient(metaclass=IAMClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam.QueryAuditableServicesResponse:
-        r"""Returns a list of services that allow you to opt into audit logs
-        that are not generated by default.
+        r"""Returns a list of services that allow you to opt into
+        audit logs that are not generated by default.
 
-        To learn more about audit logs, see the `Logging
-        documentation <https://cloud.google.com/logging/docs/audit>`__.
+        To learn more about audit logs, see the [Logging
+        documentation](https://cloud.google.com/logging/docs/audit).
 
         .. code-block:: python
 

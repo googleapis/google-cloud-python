@@ -6521,8 +6521,9 @@ class RegionInstanceGroupManagersClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Modifies the autohealing policy for the instances in this
-        managed instance group. [Deprecated] This method is deprecated.
+        r"""Modifies the autohealing policy for the instances in
+        this managed instance group.
+        [Deprecated] This method is deprecated.
         UseregionInstanceGroupManagers.patch instead.
 
         .. code-block:: python
@@ -6684,8 +6685,9 @@ class RegionInstanceGroupManagersClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Modifies the autohealing policy for the instances in this
-        managed instance group. [Deprecated] This method is deprecated.
+        r"""Modifies the autohealing policy for the instances in
+        this managed instance group.
+        [Deprecated] This method is deprecated.
         UseregionInstanceGroupManagers.patch instead.
 
         .. code-block:: python

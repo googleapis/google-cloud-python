@@ -623,10 +623,12 @@ class ManagedSchemaRegistryGrpcAsyncIOTransport(ManagedSchemaRegistryTransport):
     ]:
         r"""Return a callable for the list schema versions method over gRPC.
 
-        List the schema versions for the given schema id. The response
-        will be an array of subject-version pairs as:
-        [{"subject":"subject1", "version":1}, {"subject":"subject2",
-        "version":2}].
+        List the schema versions for the given schema id.
+        The response will be an array of subject-version pairs
+        as:
+
+        [{"subject":"subject1", "version":1},
+        {"subject":"subject2", "version":2}].
 
         Returns:
             Callable[[~.ListSchemaVersionsRequest],

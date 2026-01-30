@@ -34,8 +34,10 @@ class GiVersion(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Oracle Grid Infrastructure (GI)
-            version resource with the format:
+            Identifier. The name of the Oracle Grid
+            Infrastructure (GI) version resource with the
+            format:
+
             projects/{project}/locations/{region}/giVersions/{gi_versions}
         version (str):
             Optional. version

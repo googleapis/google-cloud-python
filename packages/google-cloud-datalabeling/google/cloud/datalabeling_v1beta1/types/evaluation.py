@@ -45,10 +45,10 @@ class Evaluation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of an evaluation. The name has
-            the following format:
+            Output only. Resource name of an evaluation. The
+            name has the following format:
 
-            "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+            "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id</var>}'
         config (google.cloud.datalabeling_v1beta1.types.EvaluationConfig):
             Output only. Options used in the evaluation
             job that created this evaluation.
@@ -139,11 +139,12 @@ class BoundingBoxEvaluationOptions(proto.Message):
 
     Attributes:
         iou_threshold (float):
-            Minimum [intersection-over-union
+            Minimum
+            [intersection-over-union
 
             (IOU)](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
-            required for 2 bounding boxes to be considered a match. This
-            must be a number between 0 and 1.
+            required for 2 bounding boxes to be considered a
+            match. This must be a number between 0 and 1.
     """
 
     iou_threshold: float = proto.Field(
@@ -254,16 +255,18 @@ class PrCurve(proto.Message):
             confidence_threshold (float):
                 Threshold used for this entry.
 
-                For classification tasks, this is a classification
-                threshold: a predicted label is categorized as positive or
-                negative (in the context of this point on the PR curve)
-                based on whether the label's score meets this threshold.
+                For classification tasks, this is a
+                classification threshold: a predicted label is
+                categorized as positive or negative (in the
+                context of this point on the PR curve) based on
+                whether the label's score meets this threshold.
 
-                For image object detection (bounding box) tasks, this is the
-                [intersection-over-union
+                For image object detection (bounding box) tasks,
+                this is the [intersection-over-union
 
                 (IOU)](/vision/automl/object-detection/docs/evaluate#intersection-over-union)
-                threshold for the context of this point on the PR curve.
+                threshold for the context of this point on the
+                PR curve.
             recall (float):
                 Recall value.
             precision (float):

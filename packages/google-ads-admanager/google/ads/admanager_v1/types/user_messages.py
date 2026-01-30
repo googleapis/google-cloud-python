@@ -76,12 +76,13 @@ class User(proto.Message):
 
             This field is a member of `oneof`_ ``_service_account``.
         orders_ui_local_time_zone (str):
-            Optional. The IANA Time Zone Database time zone, e.g.
-            "America/New_York", used in the orders and line items UI for
-            this User. If not provided, the UI then defaults to using
-            the Network's timezone. This setting only affects the UI for
-            this user and does not affect the timezone of any dates and
-            times returned in API responses.
+            Optional. The IANA Time Zone Database time zone,
+            e.g. "America/New_York", used in the orders and
+            line items UI for this User. If not provided,
+            the UI then defaults to using the Network's
+            timezone. This setting only affects the UI for
+            this user and does not affect the timezone of
+            any dates and times returned in API responses.
 
             This field is a member of `oneof`_ ``_orders_ui_local_time_zone``.
     """

@@ -41,8 +41,8 @@ class ListImageVersionsRequest(proto.Message):
         page_size (int):
             The maximum number of image_versions to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         include_past_releases (bool):
             Whether or not image versions from old
             releases should be included.

@@ -224,11 +224,13 @@ class Intent(proto.Message):
                 Indicates whether the parameter represents a
                 list of values.
             redact (bool):
-                Indicates whether the parameter content should be redacted
-                in log. If redaction is enabled, the parameter content will
-                be replaced by parameter name during logging. Note: the
-                parameter content is subject to redaction if either
-                parameter level redaction or [entity type level
+                Indicates whether the parameter content should
+                be redacted in log. If redaction is enabled, the
+                parameter content will be replaced by parameter
+                name during logging.
+                Note: the parameter content is subject to
+                redaction if either parameter level redaction or
+                [entity type level
                 redaction][google.cloud.dialogflow.cx.v3beta1.EntityType.redact]
                 is enabled.
         """
@@ -313,8 +315,8 @@ class ListIntentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -346,8 +348,9 @@ class ListIntentsResponse(proto.Message):
 
     Attributes:
         intents (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Intent]):
-            The list of intents. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of intents. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

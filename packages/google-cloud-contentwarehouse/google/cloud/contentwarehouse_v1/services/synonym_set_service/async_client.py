@@ -312,9 +312,9 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Creates a SynonymSet for a single context. Throws an
-        ALREADY_EXISTS exception if a synonymset already exists for the
-        context.
+        r"""Creates a SynonymSet for a single context.
+        Throws an ALREADY_EXISTS exception if a synonymset
+        already exists for the context.
 
         .. code-block:: python
 
@@ -347,7 +347,8 @@ class SynonymSetServiceAsyncClient:
                 The request object. Request message for
                 SynonymSetService.CreateSynonymSet.
             parent (:class:`str`):
-                Required. The parent name. Format:
+                Required. The parent name.
+                Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -443,8 +444,9 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Gets a SynonymSet for a particular context. Throws a NOT_FOUND
-        exception if the Synonymset does not exist
+        r"""Gets a SynonymSet for a particular context.
+        Throws a NOT_FOUND exception if the Synonymset
+        does not exist
 
         .. code-block:: python
 
@@ -478,7 +480,9 @@ class SynonymSetServiceAsyncClient:
                 SynonymSetService.GetSynonymSet. Will
                 return synonymSet for a certain context.
             name (:class:`str`):
-                Required. The name of the synonymSet to retrieve Format:
+                Required. The name of the synonymSet to
+                retrieve Format:
+
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -566,9 +570,10 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Remove the existing SynonymSet for the context and replaces it
-        with a new one. Throws a NOT_FOUND exception if the SynonymSet
-        is not found.
+        r"""Remove the existing SynonymSet for the context and
+        replaces it with a new one.
+        Throws a NOT_FOUND exception if the SynonymSet is not
+        found.
 
         .. code-block:: python
 
@@ -604,7 +609,9 @@ class SynonymSetServiceAsyncClient:
                 context and replaces it with the
                 SynonymSet in this request.
             name (:class:`str`):
-                Required. The name of the synonymSet to update Format:
+                Required. The name of the synonymSet to
+                update Format:
+
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -700,8 +707,9 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a SynonymSet for a given context. Throws a NOT_FOUND
-        exception if the SynonymSet is not found.
+        r"""Deletes a SynonymSet for a given context.
+        Throws a NOT_FOUND exception if the SynonymSet is not
+        found.
 
         .. code-block:: python
 
@@ -731,7 +739,9 @@ class SynonymSetServiceAsyncClient:
                 The request object. Request message for
                 SynonymSetService.DeleteSynonymSet.
             name (:class:`str`):
-                Required. The name of the synonymSet to delete Format:
+                Required. The name of the synonymSet to
+                delete Format:
+
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -839,7 +849,8 @@ class SynonymSetServiceAsyncClient:
                 return all synonymSets belonging to the
                 customer project.
             parent (:class:`str`):
-                Required. The parent name. Format:
+                Required. The parent name.
+                Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

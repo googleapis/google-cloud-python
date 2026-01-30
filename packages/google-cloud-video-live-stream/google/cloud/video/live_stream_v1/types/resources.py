@@ -462,11 +462,11 @@ class NormalizedCoordinate(proto.Message):
 
     Attributes:
         x (float):
-            Optional. Normalized x coordinate. Valid range is [0.0,
-            1.0]. Default is 0.
+            Optional. Normalized x coordinate. Valid range
+            is [0.0, 1.0]. Default is 0.
         y (float):
-            Optional. Normalized y coordinate. Valid range is [0.0,
-            1.0]. Default is 0.
+            Optional. Normalized y coordinate. Valid range
+            is [0.0, 1.0]. Default is 0.
     """
 
     x: float = proto.Field(
@@ -484,11 +484,11 @@ class NormalizedResolution(proto.Message):
 
     Attributes:
         w (float):
-            Optional. Normalized width. Valid range is [0.0, 1.0].
-            Default is 0.
+            Optional. Normalized width. Valid range is [0.0,
+            1.0]. Default is 0.
         h (float):
-            Optional. Normalized height. Valid range is [0.0, 1.0].
-            Default is 0.
+            Optional. Normalized height. Valid range is
+            [0.0, 1.0]. Default is 0.
     """
 
     w: float = proto.Field(
@@ -591,10 +591,11 @@ class InputConfig(proto.Message):
 
 
 class LogConfig(proto.Message):
-    r"""Configuration of platform logs. See `Using and managing platform
-    logs <https://cloud.google.com/logging/docs/api/platform-logs#managing-logs>`__
-    for more information about how to view platform logs through Cloud
-    Logging.
+    r"""Configuration of platform logs.
+    See [Using and managing platform
+    logs](https://cloud.google.com/logging/docs/api/platform-logs#managing-logs)
+    for more information about how to view platform logs through
+    Cloud Logging.
 
     Attributes:
         log_severity (google.cloud.video.live_stream_v1.types.LogConfig.LogSeverity):
@@ -1356,12 +1357,16 @@ class Clip(proto.Message):
                 the parent channel. This key is the same as
                 ``channel.manifests.key`` for the selected manifest.
             output_uri (str):
-                Output only. The output URI of the generated clip manifest.
-                This field will be populated when the CreateClip request is
-                accepted. Current output format is provided below but may
-                change in the future. Please read this field to get the uri
-                to the generated clip manifest. Format:
-                {clip.output_uri}/{channel.manifest.fileName} Example:
+                Output only. The output URI of the generated
+                clip manifest. This field will be populated when
+                the CreateClip request is accepted. Current
+                output format is provided below but may change
+                in the future. Please read this field to get the
+                uri to the generated clip manifest. Format:
+
+                {clip.output_uri}/{channel.manifest.fileName}
+                Example:
+
                 gs://my-bucket/clip-outputs/main.m3u8
         """
 
@@ -1996,15 +2001,16 @@ class Pool(proto.Message):
 
         Attributes:
             peered_network (str):
-                peered_network is the network resource URL of the network
-                that is peered to the service provider network. Must be of
-                the format
+                peered_network is the network resource URL of
+                the network that is peered to the service
+                provider network. Must be of the format
                 projects/NETWORK_PROJECT_NUMBER/global/networks/NETWORK_NAME,
-                where NETWORK_PROJECT_NUMBER is the project number of the
-                Cloud project that holds your VPC network and NETWORK_NAME
-                is the name of your VPC network. If peered_network is
-                omitted or empty, the pool will use endpoints that are
-                publicly available.
+                where NETWORK_PROJECT_NUMBER is the project
+                number of the Cloud project that holds your VPC
+                network and NETWORK_NAME is the name of your VPC
+                network. If peered_network is omitted or empty,
+                the pool will use endpoints that are publicly
+                available.
         """
 
         peered_network: str = proto.Field(

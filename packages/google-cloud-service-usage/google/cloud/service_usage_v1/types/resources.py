@@ -145,7 +145,8 @@ class ServiceConfig(proto.Message):
             [Service.logging][google.api.Service.logging]
             configurations.
         monitoring (google.api.monitoring_pb2.Monitoring):
-            Monitoring configuration. This should not include the
+            Monitoring configuration.
+            This should not include the
             'producer_destinations' field.
     """
 

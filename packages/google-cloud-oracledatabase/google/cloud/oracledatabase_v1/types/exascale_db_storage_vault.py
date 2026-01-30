@@ -43,8 +43,9 @@ class ExascaleDbStorageVault(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the ExascaleDbStorageVault.
-            Format:
+            Identifier. The resource name of the
+            ExascaleDbStorageVault. Format:
+
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
         display_name (str):
             Required. The display name for the
@@ -272,8 +273,8 @@ class GetExascaleDbStorageVaultRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExascaleDbStorageVault in the
-            following format:
+            Required. The name of the ExascaleDbStorageVault
+            in the following format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
     """
 
@@ -425,8 +426,8 @@ class DeleteExascaleDbStorageVaultRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExascaleDbStorageVault in the
-            following format:
+            Required. The name of the ExascaleDbStorageVault
+            in the following format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
         request_id (str):
             Optional. An optional ID to identify the

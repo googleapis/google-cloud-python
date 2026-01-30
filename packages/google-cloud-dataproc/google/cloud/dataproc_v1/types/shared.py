@@ -123,11 +123,11 @@ class FailureAction(proto.Enum):
 
     Values:
         FAILURE_ACTION_UNSPECIFIED (0):
-            When FailureAction is unspecified, failure action defaults
-            to NO_ACTION.
+            When FailureAction is unspecified, failure
+            action defaults to NO_ACTION.
         NO_ACTION (1):
-            Take no action on failure to create a cluster resource.
-            NO_ACTION is the default.
+            Take no action on failure to create a cluster
+            resource. NO_ACTION is the default.
         DELETE (2):
             Delete the failed cluster resource.
     """
@@ -487,8 +487,8 @@ class UsageSnapshot(proto.Message):
             (DCUs) (see [Dataproc Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing)).
         shuffle_storage_gb (int):
-            Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc
-            Serverless pricing]
+            Optional. Shuffle Storage in gigabytes (GB).
+            (see [Dataproc Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing))
         milli_dcu_premium (int):
             Optional. Milli (one-thousandth) Dataproc Compute Units
@@ -500,8 +500,8 @@ class UsageSnapshot(proto.Message):
             premium tier. (see [Dataproc Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing))
         milli_accelerator (int):
-            Optional. Milli (one-thousandth) accelerator. (see [Dataproc
-            Serverless pricing]
+            Optional. Milli (one-thousandth) accelerator.
+            (see [Dataproc Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing))
         accelerator_type (str):
             Optional. Accelerator type being used, if any
@@ -546,9 +546,11 @@ class GkeClusterConfig(proto.Message):
 
     Attributes:
         gke_cluster_target (str):
-            Optional. A target GKE cluster to deploy to. It must be in
-            the same project and region as the Dataproc cluster (the GKE
-            cluster can be zonal or regional). Format:
+            Optional. A target GKE cluster to deploy to. It
+            must be in the same project and region as the
+            Dataproc cluster (the GKE cluster can be zonal
+            or regional). Format:
+
             'projects/{project}/locations/{location}/clusters/{cluster_id}'
         node_pool_target (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget]):
             Optional. GKE node pools where workloads will be scheduled.
@@ -655,7 +657,9 @@ class GkeNodePoolTarget(proto.Message):
 
     Attributes:
         node_pool (str):
-            Required. The target GKE node pool. Format:
+            Required. The target GKE node pool.
+            Format:
+
             'projects/{project}/locations/{location}/clusters/{cluster}/nodePools/{node_pool}'
         roles (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolTarget.Role]):
             Required. The roles associated with the GKE
@@ -729,8 +733,8 @@ class GkeNodePoolTarget(proto.Message):
 
 
 class GkeNodePoolConfig(proto.Message):
-    r"""The configuration of a GKE node pool used by a `Dataproc-on-GKE
-    cluster <https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>`__.
+    r"""The configuration of a GKE node pool used by a [Dataproc-on-GKE
+    cluster](https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster).
 
     Attributes:
         config (google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodeConfig):
@@ -759,13 +763,14 @@ class GkeNodePoolConfig(proto.Message):
 
         Attributes:
             machine_type (str):
-                Optional. The name of a Compute Engine `machine
-                type <https://cloud.google.com/compute/docs/machine-types>`__.
+                Optional. The name of a Compute Engine [machine
+                type](https://cloud.google.com/compute/docs/machine-types).
             local_ssd_count (int):
-                Optional. The number of local SSD disks to attach to the
-                node, which is limited by the maximum number of disks
-                allowable per zone (see `Adding Local
-                SSDs <https://cloud.google.com/compute/docs/disks/local-ssd>`__).
+                Optional. The number of local SSD disks to
+                attach to the node, which is limited by the
+                maximum number of disks allowable per zone (see
+                [Adding Local
+                SSDs](https://cloud.google.com/compute/docs/disks/local-ssd)).
             preemptible (bool):
                 Optional. Whether the nodes are created as legacy
                 [preemptible VM instances]
@@ -780,8 +785,8 @@ class GkeNodePoolConfig(proto.Message):
                 assigned (the DEFAULT node pool will assume the CONTROLLER
                 role).
             accelerators (MutableSequence[google.cloud.dataproc_v1.types.GkeNodePoolConfig.GkeNodePoolAcceleratorConfig]):
-                Optional. A list of `hardware
-                accelerators <https://cloud.google.com/compute/docs/gpus>`__
+                Optional. A list of [hardware
+                accelerators](https://cloud.google.com/compute/docs/gpus)
                 to attach to each node.
             min_cpu_platform (str):
                 Optional. `Minimum CPU
@@ -855,9 +860,9 @@ class GkeNodePoolConfig(proto.Message):
                 The accelerator type resource namename (see
                 GPUs on Compute Engine).
             gpu_partition_size (str):
-                Size of partitions to create on the GPU. Valid values are
-                described in the NVIDIA `mig user
-                guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning>`__.
+                Size of partitions to create on the GPU. Valid
+                values are described in the NVIDIA [mig user
+                guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
         """
 
         accelerator_count: int = proto.Field(
@@ -880,8 +885,8 @@ class GkeNodePoolConfig(proto.Message):
 
         Attributes:
             min_node_count (int):
-                The minimum number of nodes in the node pool. Must be >= 0
-                and <= max_node_count.
+                The minimum number of nodes in the node pool.
+                Must be >= 0 and <= max_node_count.
             max_node_count (int):
                 The maximum number of nodes in the node pool. Must be >=
                 min_node_count, and must be > 0. **Note:** Quota must be
@@ -932,8 +937,9 @@ class AuthenticationConfig(proto.Message):
         Values:
             AUTHENTICATION_TYPE_UNSPECIFIED (0):
                 If AuthenticationType is unspecified then
-                END_USER_CREDENTIALS is used for 3.0 and newer runtimes, and
-                SERVICE_ACCOUNT is used for older runtimes.
+                END_USER_CREDENTIALS is used for 3.0 and newer
+                runtimes, and SERVICE_ACCOUNT is used for older
+                runtimes.
             SERVICE_ACCOUNT (1):
                 Use service account credentials for
                 authenticating to other services.

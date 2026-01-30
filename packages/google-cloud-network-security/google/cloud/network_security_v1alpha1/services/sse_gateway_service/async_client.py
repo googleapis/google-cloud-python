@@ -615,10 +615,11 @@ class SSEGatewayServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             partner_sse_gateway_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and
-                partner_sse_gateway_id from the method_signature of
-                Create RPC
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and
+                partner_sse_gateway_id from the
+                method_signature of Create RPC
 
                 This corresponds to the ``partner_sse_gateway_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

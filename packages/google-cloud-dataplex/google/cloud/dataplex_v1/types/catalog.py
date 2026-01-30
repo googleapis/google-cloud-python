@@ -134,8 +134,8 @@ class AspectType(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the AspectType,
-            of the form:
+            Output only. The relative resource name of the
+            AspectType, of the form:
             projects/{project_number}/locations/{location_id}/aspectTypes/{aspect_type_id}.
         uid (str):
             Output only. System generated globally unique
@@ -249,19 +249,21 @@ class AspectType(proto.Message):
                 Optional. The list of values for an enum
                 type. You must define it if the type is enum.
             map_items (google.cloud.dataplex_v1.types.AspectType.MetadataTemplate):
-                Optional. If the type is map, set map_items. map_items can
-                refer to a primitive field or a complex (record only) field.
-                To specify a primitive field, you only need to set name and
-                type in the nested MetadataTemplate. The recommended value
-                for the name field is item, as this isn't used in the actual
-                payload.
+                Optional. If the type is map, set map_items.
+                map_items can refer to a primitive field or a
+                complex (record only) field. To specify a
+                primitive field, you only need to set name and
+                type in the nested MetadataTemplate. The
+                recommended value for the name field is item, as
+                this isn't used in the actual payload.
             array_items (google.cloud.dataplex_v1.types.AspectType.MetadataTemplate):
-                Optional. If the type is array, set array_items. array_items
-                can refer to a primitive field or a complex (record only)
-                field. To specify a primitive field, you only need to set
-                name and type in the nested MetadataTemplate. The
-                recommended value for the name field is item, as this isn't
-                used in the actual payload.
+                Optional. If the type is array, set array_items.
+                array_items can refer to a primitive field or a
+                complex (record only) field. To specify a
+                primitive field, you only need to set name and
+                type in the nested MetadataTemplate. The
+                recommended value for the name field is item, as
+                this isn't used in the actual payload.
             type_id (str):
                 Optional. You can use type id if this
                 definition of the field needs to be reused
@@ -497,8 +499,8 @@ class EntryGroup(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the EntryGroup,
-            in the format
+            Output only. The relative resource name of the
+            EntryGroup, in the format
             projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}.
         uid (str):
             Output only. System generated globally unique
@@ -576,8 +578,8 @@ class EntryType(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the EntryType, of
-            the form:
+            Output only. The relative resource name of the
+            EntryType, of the form:
             projects/{project_number}/locations/{location_id}/entryTypes/{entry_type_id}.
         uid (str):
             Output only. System generated globally unique
@@ -831,10 +833,12 @@ class Entry(proto.Message):
             in the format
             ``projects/{project_id_or_number}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}``.
         fully_qualified_name (str):
-            Optional. A name for the entry that can be referenced by an
-            external system. For more information, see `Fully qualified
-            names <https://cloud.google.com/data-catalog/docs/fully-qualified-names>`__.
-            The maximum size of the field is 4000 characters.
+            Optional. A name for the entry that can be
+            referenced by an external system. For more
+            information, see [Fully qualified
+            names](https://cloud.google.com/data-catalog/docs/fully-qualified-names).
+            The maximum size of the field is 4000
+            characters.
         entry_source (google.cloud.dataplex_v1.types.EntrySource):
             Optional. Information related to the source
             system of the data resource that is represented
@@ -1629,18 +1633,21 @@ class UpdateEntryRequest(proto.Message):
         entry (google.cloud.dataplex_v1.types.Entry):
             Required. Entry resource.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Mask of fields to update. To update Aspects, the
-            update_mask must contain the value "aspects".
+            Optional. Mask of fields to update. To update
+            Aspects, the update_mask must contain the value
+            "aspects".
 
-            If the update_mask is empty, the service will update all
-            modifiable fields present in the request.
+            If the update_mask is empty, the service will
+            update all modifiable fields present in the
+            request.
         allow_missing (bool):
             Optional. If set to true and the entry
             doesn't exist, the service will create it.
         delete_missing_aspects (bool):
-            Optional. If set to true and the aspect_keys specify aspect
-            ranges, the service deletes any existing aspects from that
-            range that weren't provided in the request.
+            Optional. If set to true and the aspect_keys
+            specify aspect ranges, the service deletes any
+            existing aspects from that range that weren't
+            provided in the request.
         aspect_keys (MutableSequence[str]):
             Optional. The map keys of the Aspects which the service
             should modify. It supports the following syntaxes:
@@ -1711,11 +1718,11 @@ class ListEntriesRequest(proto.Message):
             Required. The resource name of the parent Entry Group:
             ``projects/{project}/locations/{location}/entryGroups/{entry_group}``.
         page_size (int):
-            Optional. Number of items to return per page. If there are
-            remaining results, the service returns a next_page_token. If
-            unspecified, the service returns at most 10 Entries. The
-            maximum value is 100; values above 100 will be coerced to
-            100.
+            Optional. Number of items to return per page. If
+            there are remaining results, the service returns
+            a next_page_token. If unspecified, the service
+            returns at most 10 Entries. The maximum value is
+            100; values above 100 will be coerced to 100.
         page_token (str):
             Optional. Page token received from a previous
             ``ListEntries`` call. Provide this to retrieve the
@@ -1893,14 +1900,15 @@ class SearchEntriesRequest(proto.Message):
             attributed in the following form:
             ``projects/{project}/locations/global``.
         query (str):
-            Required. The query against which entries in scope should be
-            matched. The query syntax is defined in `Search syntax for
-            Dataplex Universal
-            Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
+            Required. The query against which entries in
+            scope should be matched. The query syntax is
+            defined in [Search syntax for Dataplex Universal
+            Catalog](https://cloud.google.com/dataplex/docs/search-syntax).
         page_size (int):
-            Optional. Number of results in the search page. If <=0, then
-            defaults to 10. Max limit for page_size is 1000. Throws an
-            invalid argument for page_size > 1000.
+            Optional. Number of results in the search page.
+            If <=0, then defaults to 10. Max limit for
+            page_size is 1000. Throws an invalid argument
+            for page_size > 1000.
         page_token (str):
             Optional. Page token received from a previous
             ``SearchEntries`` call. Provide this to retrieve the
@@ -2056,9 +2064,10 @@ class ImportItem(proto.Message):
             Information about an entry and its attached
             aspects.
         entry_link (google.cloud.dataplex_v1.types.EntryLink):
-            Information about the entry link. User should provide either
-            one of the entry or entry_link. While providing entry_link,
-            user should not provide update_mask and aspect_keys.
+            Information about the entry link. User should
+            provide either one of the entry or entry_link.
+            While providing entry_link, user should not
+            provide update_mask and aspect_keys.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update, in paths that are relative to the
             ``Entry`` resource. Separate each field with a comma.
@@ -2507,9 +2516,9 @@ class MetadataJob(proto.Message):
         """
 
         class SyncMode(proto.Enum):
-            r"""Specifies how the entries and aspects in a metadata import job are
-            updated. For more information, see `Sync
-            mode <https://cloud.google.com/dataplex/docs/import-metadata#sync-mode>`__.
+            r"""Specifies how the entries and aspects in a metadata import job
+            are updated. For more information, see [Sync
+            mode](https://cloud.google.com/dataplex/docs/import-metadata#sync-mode).
 
             Values:
                 SYNC_MODE_UNSPECIFIED (0):

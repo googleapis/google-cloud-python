@@ -151,14 +151,17 @@ class ReportDataTable(proto.Message):
                 as the order of the dimensions specified in the
                 request.
             metric_value_groups (MutableSequence[google.ads.admanager_v1.types.ReportDataTable.MetricValueGroup]):
-                The length of the metric_value_groups field will be equal to
-                the length of the date_ranges field in the fetch response.
-                The metric_value_groups field is ordered such that each
-                index corresponds to the date_range at the same index. For
-                example, given date_ranges [x, y], metric_value_groups will
-                have a length of two. The first entry in metric_value_groups
-                represents the metrics for date x and the second entry in
-                metric_value_groups represents the metrics for date y.
+                The length of the metric_value_groups
+                field will be equal to the length of the
+                date_ranges field in the fetch response. The
+                metric_value_groups field is ordered such that
+                each index corresponds to the date_range at the
+                same index. For example, given date_ranges [x,
+                y], metric_value_groups will have a length of
+                two. The first entry in metric_value_groups
+                represents the metrics for date x and the second
+                entry in metric_value_groups represents the
+                metrics for date y.
         """
 
         dimension_values: MutableSequence[
@@ -187,19 +190,22 @@ class ReportDataTable(proto.Message):
             primary_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the PRIMARY MetricValueType.
             primary_percent_of_total_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
-                Data for the PRIMARY_PERCENT_OF_TOTAL MetricValueType.
+                Data for the PRIMARY_PERCENT_OF_TOTAL
+                MetricValueType.
             comparison_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the COMPARISON MetricValueType.
             comparison_percent_of_total_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
-                Data for the COMPARISON_PERCENT_OF_TOTAL MetricValueType.
+                Data for the COMPARISON_PERCENT_OF_TOTAL
+                MetricValueType.
             absolute_change_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the ABSOLUTE_CHANGE MetricValueType.
             relative_change_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the RELATIVE_CHANGE MetricValueType.
             flag_values (MutableSequence[bool]):
-                If true, the flag's conditions are met. If false, the flag's
-                conditions are not met. flag_values has the same length as
-                flags and index i of flag_values represents the flag at
+                If true, the flag's conditions are met. If
+                false, the flag's conditions are not met.
+                flag_values has the same length as flags and
+                index i of flag_values represents the flag at
                 index i of flags.
         """
 
@@ -260,7 +266,8 @@ class ScheduleOptions(proto.Message):
             report.
         flags (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.Flag]):
             Optional. The flags evaluated when
-            ReportDeliveryOption.WHEN_FLAG_PRESENT is specified.
+            ReportDeliveryOption.WHEN_FLAG_PRESENT is
+            specified.
     """
 
     class DeliveryCondition(proto.Enum):

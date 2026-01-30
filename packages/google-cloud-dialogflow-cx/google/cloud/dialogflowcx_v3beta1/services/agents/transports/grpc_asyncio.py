@@ -415,8 +415,8 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         Creates an agent in the specified location.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.CreateAgentRequest],
@@ -445,8 +445,8 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         Updates the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.UpdateAgentRequest],

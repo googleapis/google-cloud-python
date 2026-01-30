@@ -321,8 +321,8 @@ class BatchDatasetDocuments(proto.Message):
 
             This field is a member of `oneof`_ ``criteria``.
         filter (str):
-            A filter matching the documents. Follows the same format and
-            restriction as
+            A filter matching the documents.
+            Follows the same format and restriction as
             [google.cloud.documentai.master.ListDocumentsRequest.filter].
 
             This field is a member of `oneof`_ ``criteria``.

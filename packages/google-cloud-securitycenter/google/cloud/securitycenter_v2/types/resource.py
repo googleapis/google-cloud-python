@@ -66,6 +66,7 @@ class Resource(proto.Message):
     Attributes:
         name (str):
             The full resource name of the resource. See:
+
             https://cloud.google.com/apis/design/resource_names#full_resource_name
         display_name (str):
             The human readable name of the resource.

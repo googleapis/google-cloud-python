@@ -3615,7 +3615,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.InstanceGroupManagerList:
-                    [Output Only] A list of managed instance groups.
+                    [Output Only] A list of managed instance
+                groups.
+
             """
 
             http_options = (

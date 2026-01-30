@@ -56,7 +56,8 @@ class Container(proto.Message):
 
     Attributes:
         name (str):
-            Name of the container specified as a DNS_LABEL (RFC 1123).
+            Name of the container specified as a DNS_LABEL
+            (RFC 1123).
         image (str):
             Required. Name of the container image in
             Dockerhub, Google Artifact Registry, or Google
@@ -309,10 +310,11 @@ class SecretKeySelector(proto.Message):
 
     Attributes:
         secret (str):
-            Required. The name of the secret in Cloud Secret Manager.
-            Format: {secret_name} if the secret is in the same project.
-            projects/{project}/secrets/{secret_name} if the secret is in
-            a different project.
+            Required. The name of the secret in Cloud Secret
+            Manager. Format: {secret_name} if the secret is
+            in the same project.
+            projects/{project}/secrets/{secret_name} if the
+            secret is in a different project.
         version (str):
             The Cloud Secret Manager secret version.
             Can be 'latest' for the latest version, an
@@ -339,8 +341,9 @@ class ContainerPort(proto.Message):
             If specified, used to specify which protocol
             to use. Allowed values are "http1" and "h2c".
         container_port (int):
-            Port number the container listens on. This must be a valid
-            TCP port number, 0 < container_port < 65536.
+            Port number the container listens on.
+            This must be a valid TCP port number, 0 <
+            container_port < 65536.
     """
 
     name: str = proto.Field(
@@ -480,12 +483,14 @@ class SecretVolumeSource(proto.Message):
             projects/{project}/secrets/{secret} if the
             secret is in a different project.
         items (MutableSequence[google.cloud.run_v2.types.VersionToPath]):
-            If unspecified, the volume will expose a file whose name is
-            the secret, relative to VolumeMount.mount_path +
-            VolumeMount.sub_path. If specified, the key will be used as
-            the version to fetch from Cloud Secret Manager and the path
-            will be the name of the file exposed in the volume. When
-            items are defined, they must specify a path and a version.
+            If unspecified, the volume will expose a file
+            whose name is the secret, relative to
+            VolumeMount.mount_path + VolumeMount.sub_path.
+            If specified, the key will be used as the
+            version to fetch from Cloud Secret Manager and
+            the path will be the name of the file exposed in
+            the volume. When items are defined, they must
+            specify a path and a version.
         default_mode (int):
             Integer representation of mode bits to use on created files
             by default. Must be a value between 0000 and 0777 (octal),
@@ -527,8 +532,8 @@ class SecretVolumeSource(proto.Message):
 
 
 class VersionToPath(proto.Message):
-    r"""VersionToPath maps a specific version of a secret to a relative file
-    to mount to, relative to VolumeMount's mount_path.
+    r"""VersionToPath maps a specific version of a secret to a relative
+    file to mount to, relative to VolumeMount's mount_path.
 
     Attributes:
         path (str):
@@ -574,8 +579,8 @@ class VersionToPath(proto.Message):
 
 
 class CloudSqlInstance(proto.Message):
-    r"""Represents a set of Cloud SQL instances. Each one will be available
-    under /cloudsql/[instance]. Visit
+    r"""Represents a set of Cloud SQL instances. Each one will be
+    available under /cloudsql/[instance]. Visit
     https://cloud.google.com/sql/docs/mysql/connect-run for more
     information on how to connect Cloud SQL and Cloud Run.
 
@@ -729,14 +734,16 @@ class Probe(proto.Message):
             is 0. Maximum value for liveness probe is 3600.
             Maximum value for startup probe is 240.
         timeout_seconds (int):
-            Optional. Number of seconds after which the probe times out.
-            Defaults to 1 second. Minimum value is 1. Maximum value is
-            3600. Must be smaller than period_seconds.
+            Optional. Number of seconds after which the
+            probe times out. Defaults to 1 second. Minimum
+            value is 1. Maximum value is 3600. Must be
+            smaller than period_seconds.
         period_seconds (int):
-            Optional. How often (in seconds) to perform the probe.
-            Default to 10 seconds. Minimum value is 1. Maximum value for
-            liveness probe is 3600. Maximum value for startup probe is
-            240. Must be greater or equal than timeout_seconds.
+            Optional. How often (in seconds) to perform the
+            probe. Default to 10 seconds. Minimum value is
+            1. Maximum value for liveness probe is 3600.
+            Maximum value for startup probe is 240. Must be
+            greater or equal than timeout_seconds.
         failure_threshold (int):
             Optional. Minimum consecutive failures for
             the probe to be considered failed after having

@@ -155,9 +155,10 @@ class MigrationTask(proto.Message):
             The type of the task. This must be a
             supported task type.
         details (google.protobuf.any_pb2.Any):
-            DEPRECATED! Use one of the task_details below. The details
-            of the task. The type URL must be one of the supported task
-            details messages and correspond to the Task's type.
+            DEPRECATED! Use one of the task_details below.
+            The details of the task. The type URL must be
+            one of the supported task details messages and
+            correspond to the Task's type.
         state (google.cloud.bigquery_migration_v2alpha.types.MigrationTask.State):
             Output only. The current state of the task.
         processing_error (google.rpc.error_details_pb2.ErrorInfo):

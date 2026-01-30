@@ -336,8 +336,8 @@ class SetInstanceMachineTypeRequest(proto.Message):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         machine_type (str):
-            Required. The `Compute Engine machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__.
+            Required. The [Compute Engine machine
+            type](https://cloud.google.com/compute/docs/machine-types).
     """
 
     name: str = proto.Field(
@@ -636,11 +636,16 @@ class GetInstanceHealthResponse(proto.Message):
         health_state (google.cloud.notebooks_v1.types.GetInstanceHealthResponse.HealthState):
             Output only. Runtime health_state.
         health_info (MutableMapping[str, str]):
-            Output only. Additional information about instance health.
-            Example: healthInfo": { "docker_proxy_agent_status": "1",
-            "docker_status": "1", "jupyterlab_api_status": "-1",
-            "jupyterlab_status": "-1", "updated": "2020-10-18
-            09:40:03.573409" }
+            Output only. Additional information about
+            instance health. Example:
+
+            healthInfo": {
+            "docker_proxy_agent_status": "1",
+            "docker_status": "1",
+            "jupyterlab_api_status": "-1",
+            "jupyterlab_status": "-1",
+            "updated": "2020-10-18 09:40:03.573409"
+            }
     """
 
     class HealthState(proto.Enum):
@@ -957,12 +962,10 @@ class ListSchedulesResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (MutableSequence[str]):
-            Schedules that could not be reached. For example:
-
-            ::
-
-                ['projects/{project_id}/location/{location}/schedules/monthly_digest',
-                 'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
+            Schedules that could not be reached. For
+            example:
+            ['projects/{project_id}/location/{location}/schedules/monthly_digest',
+            'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
     """
 
     @property
@@ -1111,12 +1114,10 @@ class ListExecutionsResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (MutableSequence[str]):
-            Executions IDs that could not be reached. For example:
-
-            ::
-
-                ['projects/{project_id}/location/{location}/executions/imagenet_test1',
-                 'projects/{project_id}/location/{location}/executions/classifier_train1']
+            Executions IDs that could not be reached. For
+            example:
+            ['projects/{project_id}/location/{location}/executions/imagenet_test1',
+            'projects/{project_id}/location/{location}/executions/classifier_train1']
     """
 
     @property

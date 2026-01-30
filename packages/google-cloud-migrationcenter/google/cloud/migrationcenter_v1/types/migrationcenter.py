@@ -238,15 +238,17 @@ class ImportJobFormat(proto.Enum):
         IMPORT_JOB_FORMAT_RVTOOLS_CSV (2):
             RVTools format (CSV).
         IMPORT_JOB_FORMAT_EXPORTED_AWS_CSV (4):
-            CSV format exported from AWS using the [AWS collection
+            CSV format exported from AWS using the
+            [AWS collection
             script][https://github.com/GoogleCloudPlatform/aws-to-stratozone-export].
         IMPORT_JOB_FORMAT_EXPORTED_AZURE_CSV (5):
-            CSV format exported from Azure using the [Azure collection
+            CSV format exported from Azure using the
+            [Azure collection
             script][https://github.com/GoogleCloudPlatform/azure-to-stratozone-export].
         IMPORT_JOB_FORMAT_STRATOZONE_CSV (6):
-            CSV format created manually and following the StratoZone
-            format. For more information, see [Manually create and
-            upload data
+            CSV format created manually and following the
+            StratoZone format. For more information, see
+            [Manually create and upload data
             tables][https://cloud.google.com/migrate/stratozone/docs/import-data-portal].
     """
     IMPORT_JOB_FORMAT_UNSPECIFIED = 0
@@ -2504,7 +2506,9 @@ class GetErrorFrameRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the frame to retrieve. Format:
+            Required. The name of the frame to retrieve.
+            Format:
+
             projects/{project}/locations/{location}/sources/{source}/errorFrames/{error_frame}
         view (google.cloud.migrationcenter_v1.types.ErrorFrameView):
             Optional. An optional view mode to control
@@ -3640,8 +3644,8 @@ class MachineArchitectureDetails(proto.Message):
 
     Attributes:
         cpu_architecture (str):
-            CPU architecture, e.g., "x64-based PC", "x86_64", "i686"
-            etc.
+            CPU architecture, e.g., "x64-based PC",
+            "x86_64", "i686" etc.
         cpu_name (str):
             CPU name, e.g., "Intel Xeon E5-2690", "AMD
             EPYC 7571" etc.
@@ -5103,8 +5107,8 @@ class MemoryUsageSample(proto.Message):
 
     Attributes:
         utilized_percentage (float):
-            Percentage of system memory utilized. Must be in the
-            interval [0, 100].
+            Percentage of system memory utilized. Must be in
+            the interval [0, 100].
     """
 
     utilized_percentage: float = proto.Field(
@@ -5118,9 +5122,9 @@ class CpuUsageSample(proto.Message):
 
     Attributes:
         utilized_percentage (float):
-            Percentage of total CPU capacity utilized. Must be in the
-            interval [0, 100]. On most systems can be calculated using
-            100 - idle percentage.
+            Percentage of total CPU capacity utilized. Must
+            be in the interval [0, 100]. On most systems can
+            be calculated using 100 - idle percentage.
     """
 
     utilized_percentage: float = proto.Field(
@@ -5433,14 +5437,15 @@ class GenericInsight(proto.Message):
 
     Attributes:
         message_id (int):
-            Output only. Represents a globally unique message id for
-            this insight, can be used for localization purposes, in case
-            message_code is not yet known by the client use
-            default_message instead.
-        default_message (str):
-            Output only. In case message_code is not yet known by the
-            client default_message will be the message to be used
+            Output only. Represents a globally unique
+            message id for this insight, can be used for
+            localization purposes, in case message_code is
+            not yet known by the client use default_message
             instead.
+        default_message (str):
+            Output only. In case message_code is not yet
+            known by the client default_message will be the
+            message to be used instead.
         additional_information (MutableSequence[str]):
             Output only. Additional information about the
             insight, each entry can be a logical entry and
@@ -6205,7 +6210,8 @@ class MachineSeries(proto.Message):
 
     Attributes:
         code (str):
-            Code to identify a Compute Engine machine series. Consult
+            Code to identify a Compute Engine machine
+            series. Consult
             https://cloud.google.com/compute/docs/machine-resource#machine_type_comparison
             for more details on the available series.
     """

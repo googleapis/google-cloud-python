@@ -743,8 +743,9 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     ]:
         r"""Return a callable for the receive trigger webhook method over gRPC.
 
-        ReceiveTriggerWebhook [Experimental] is called when the API
-        receives a webhook request targeted at a specific trigger.
+        ReceiveTriggerWebhook [Experimental] is called when the
+        API receives a webhook request targeted at a specific
+        trigger.
 
         Returns:
             Callable[[~.ReceiveTriggerWebhookRequest],

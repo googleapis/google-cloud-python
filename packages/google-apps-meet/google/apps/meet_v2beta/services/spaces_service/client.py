@@ -867,8 +867,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> resource.Space:
         r"""Gets details about a meeting space.
 
-        For an example, see `Get a meeting
-        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
+        For an example, see [Get a meeting
+        space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
 
         .. code-block:: python
 
@@ -1000,8 +1000,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> resource.Space:
         r"""Updates details about a meeting space.
 
-        For an example, see `Update a meeting
-        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
+        For an example, see [Update a meeting
+        space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
 
         .. code-block:: python
 
@@ -1184,15 +1184,15 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
 
         Returns:
             google.apps.meet_v2beta.types.ConnectActiveConferenceResponse:
-                Response of ConnectActiveConference method.
+                Response of ConnectActiveConference
+                method.
+                A success response does not indicate the
+                meeting is fully joined; further
+                communication must occur across WebRTC.
 
-                   A success response does not indicate the meeting is
-                   fully joined; further communication must occur across
-                   WebRTC.
-
-                   See [Meet Media API
-                   overview](https://developers.google.com/meet/media-api/guides/overview)
-                   for more details about this connection.
+                See [Meet Media API
+                overview](https://developers.google.com/meet/media-api/guides/overview)
+                for more details about this connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -1254,8 +1254,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> None:
         r"""Ends an active conference (if there's one).
 
-        For an example, see `End active
-        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
+        For an example, see [End active
+        conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
 
         .. code-block:: python
 

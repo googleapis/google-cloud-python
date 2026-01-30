@@ -53,11 +53,14 @@ class Job(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the Job. job_id is unique
-            within the project, that is either set by the customer or
-            defined by the service. Format:
-            projects/{project}/locations/global/jobs/{job_id} . For
-            example: "projects/123456/locations/global/jobs/job01".
+            Identifier. The resource name of the Job. job_id
+            is unique within the project, that is either set
+            by the customer or defined by the service.
+            Format:
+
+            projects/{project}/locations/global/jobs/{job_id}
+            . For example:
+            "projects/123456/locations/global/jobs/job01".
         description (str):
             Optional. A description provided by the user
             for the job. Its max length is 1024 bytes when
@@ -448,7 +451,8 @@ class ObjectRetention(proto.Message):
 
         Values:
             RETENTION_MODE_UNSPECIFIED (0):
-                If set and retain_until_time is empty, clears the retention.
+                If set and retain_until_time is empty, clears
+                the retention.
             LOCKED (1):
                 Sets the retention mode to locked.
             UNLOCKED (2):
@@ -512,9 +516,10 @@ class PutMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``_content_type``.
         cache_control (str):
-            Optional. Updates objects Cache-Control fixed metadata.
-            Unset values will be ignored. Set empty values to clear the
-            metadata. Additionally, the value for Custom-Time cannot
+            Optional. Updates objects Cache-Control fixed
+            metadata. Unset values will be ignored. Set
+            empty values to clear the metadata.
+            Additionally, the value for Custom-Time cannot
             decrease. Refer to documentation in
             https://cloud.google.com/storage/docs/metadata#caching_data.
 

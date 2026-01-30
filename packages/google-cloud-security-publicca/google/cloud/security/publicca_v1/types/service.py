@@ -38,8 +38,8 @@ class CreateExternalAccountKeyRequest(proto.Message):
         parent (str):
             Required. The parent resource where this
             external_account_key will be created. Format:
-            projects/[project_id]/locations/[location]. At present only
-            the "global" location is supported.
+            projects/[project_id]/locations/[location]. At
+            present only the "global" location is supported.
         external_account_key (google.cloud.security.publicca_v1.types.ExternalAccountKey):
             Required. The external account key to create.
             This field only exists to future-proof the API.

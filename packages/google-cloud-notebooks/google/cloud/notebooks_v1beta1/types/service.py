@@ -289,8 +289,8 @@ class SetInstanceMachineTypeRequest(proto.Message):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         machine_type (str):
-            Required. The `Compute Engine machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__.
+            Required. The [Compute Engine machine
+            type](https://cloud.google.com/compute/docs/machine-types).
     """
 
     name: str = proto.Field(

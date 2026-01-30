@@ -85,8 +85,9 @@ class DataProfileSpec(proto.Message):
 
             Attributes:
                 results_table (str):
-                    Optional. The BigQuery table to export DataProfileScan
-                    results to. Format:
+                    Optional. The BigQuery table to export
+                    DataProfileScan results to. Format:
+
                     //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             """
 
@@ -189,12 +190,13 @@ class DataProfileResult(proto.Message):
                 name (str):
                     Output only. The name of the field.
                 type_ (str):
-                    Output only. The data type retrieved from the schema of the
-                    data source. For instance, for a BigQuery native table, it
-                    is the `BigQuery Table
-                    Schema <https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema>`__.
-                    For a Dataplex Universal Catalog Entity, it is the `Entity
-                    Schema <https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3>`__.
+                    Output only. The data type retrieved from the
+                    schema of the data source. For instance, for a
+                    BigQuery native table, it is the [BigQuery Table
+                    Schema](https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#tablefieldschema).
+                    For a Dataplex Universal Catalog Entity, it is
+                    the [Entity
+                    Schema](https://cloud.google.com/dataplex/docs/reference/rpc/google.cloud.dataplex.v1#type_3).
                 mode (str):
                     Output only. The mode of the field. Possible values include:
 

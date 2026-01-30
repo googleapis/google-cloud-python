@@ -147,11 +147,14 @@ class DocumentQuery(proto.Message):
             If no value is specified, ALL files will be
             returned.
         folder_name_filter (str):
-            Search all the documents under this specified folder.
-            Format:
+            Search all the documents under this specified
+            folder. Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
         document_name_filter (MutableSequence[str]):
-            Search the documents in the list. Format:
+            Search the documents in the list.
+            Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
         query_context (MutableSequence[str]):
             For custom synonyms.

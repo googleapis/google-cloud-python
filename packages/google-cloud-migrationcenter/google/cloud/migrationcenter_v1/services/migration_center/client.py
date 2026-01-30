@@ -4241,7 +4241,9 @@ class MigrationCenterClient(metaclass=MigrationCenterClientMeta):
             request (Union[google.cloud.migrationcenter_v1.types.GetErrorFrameRequest, dict]):
                 The request object.
             name (str):
-                Required. The name of the frame to retrieve. Format:
+                Required. The name of the frame to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/sources/{source}/errorFrames/{error_frame}
 
                 This corresponds to the ``name`` field

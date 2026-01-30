@@ -245,18 +245,16 @@ class Instance(proto.Message):
         health_state (google.cloud.notebooks_v2.types.HealthState):
             Output only. Instance health_state.
         health_info (MutableMapping[str, str]):
-            Output only. Additional information about instance health.
-            Example:
+            Output only. Additional information about
+            instance health. Example:
 
-            ::
-
-                healthInfo": {
-                  "docker_proxy_agent_status": "1",
-                  "docker_status": "1",
-                  "jupyterlab_api_status": "-1",
-                  "jupyterlab_status": "-1",
-                  "updated": "2020-10-18 09:40:03.573409"
-                }
+            healthInfo": {
+            "docker_proxy_agent_status": "1",
+            "docker_status": "1",
+            "jupyterlab_api_status": "-1",
+            "jupyterlab_status": "-1",
+            "updated": "2020-10-18 09:40:03.573409"
+            }
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):

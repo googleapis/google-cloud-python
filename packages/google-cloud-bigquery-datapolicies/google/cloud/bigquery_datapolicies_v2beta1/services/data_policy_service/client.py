@@ -835,9 +835,11 @@ class DataPolicyServiceClient(metaclass=DataPolicyServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_policy_id (str):
-                Required. User-assigned (human readable) ID of the data
-                policy that needs to be unique within a project. Used as
-                {data_policy_id} in part of the resource name.
+                Required. User-assigned (human readable)
+                ID of the data policy that needs to be
+                unique within a project. Used as
+                {data_policy_id} in part of the resource
+                name.
 
                 This corresponds to the ``data_policy_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

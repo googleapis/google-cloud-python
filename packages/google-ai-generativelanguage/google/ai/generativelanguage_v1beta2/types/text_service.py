@@ -67,8 +67,8 @@ class GenerateTextRequest(proto.Message):
         candidate_count (int):
             Number of generated responses to return.
 
-            This value must be between [1, 8], inclusive. If unset, this
-            will default to 1.
+            This value must be between [1, 8], inclusive. If
+            unset, this will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         max_output_tokens (int):

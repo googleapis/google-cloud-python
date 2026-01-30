@@ -67,8 +67,9 @@ class Policy(proto.Message):
             For ``clusterId`` syntax restrictions see
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
         kubernetes_namespace_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
-            Optional. Per-kubernetes-namespace admission rules. K8s
-            namespace spec format: [a-z.-]+, e.g. 'some-namespace'
+            Optional. Per-kubernetes-namespace admission
+            rules. K8s namespace spec format: [a-z.-]+, e.g.
+            'some-namespace'
         kubernetes_service_account_admission_rules (MutableMapping[str, google.cloud.binaryauthorization_v1.types.AdmissionRule]):
             Optional. Per-kubernetes-service-account admission rules.
             Service account spec format: ``namespace:serviceaccount``.
@@ -232,9 +233,10 @@ class AdmissionRule(proto.Message):
             ALWAYS_ALLOW (1):
                 This rule allows all all pod creations.
             REQUIRE_ATTESTATION (2):
-                This rule allows a pod creation if all the attestors listed
-                in 'require_attestations_by' have valid attestations for all
-                of the images in the pod spec.
+                This rule allows a pod creation if all the
+                attestors listed in 'require_attestations_by'
+                have valid attestations for all of the images in
+                the pod spec.
             ALWAYS_DENY (3):
                 This rule denies all pod creations.
         """
@@ -422,13 +424,17 @@ class PkixPublicKey(proto.Message):
             RSA_PSS_4096_SHA512 (4):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
-                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_3072_SHA256 (6):
-                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA256 (7):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA512 (8):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA512 digest.
             ECDSA_P256_SHA256 (9):
                 ECDSA on the NIST P-256 curve with a SHA256
                 digest.

@@ -1252,7 +1252,9 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 The request object. UpdateInstanceRequest updates the
                 settings of an instance.
             instance (google.cloud.filestore_v1.types.Instance):
-                Only fields specified in update_mask are updated.
+                Only fields specified in update_mask are
+                updated.
+
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2645,13 +2647,16 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_id (str):
-                Required. The ID to use for the backup. The ID must be
-                unique within the specified project and location.
+                Required. The ID to use for the backup.
+                The ID must be unique within the
+                specified project and location.
 
-                This value must start with a lowercase letter followed
-                by up to 62 lowercase letters, numbers, or hyphens, and
-                cannot end with a hyphen. Values that do not match this
-                pattern will trigger an INVALID_ARGUMENT error.
+                This value must start with a lowercase
+                letter followed by up to 62 lowercase
+                letters, numbers, or hyphens, and cannot
+                end with a hyphen. Values that do not
+                match this pattern will trigger an
+                INVALID_ARGUMENT error.
 
                 This corresponds to the ``backup_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

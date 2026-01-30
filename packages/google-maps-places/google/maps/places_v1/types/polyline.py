@@ -28,8 +28,8 @@ __protobuf__ = proto.module(
 
 
 class Polyline(proto.Message):
-    r"""A route polyline. Only supports an `encoded
-    polyline <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>`__,
+    r"""A route polyline. Only supports an [encoded
+    polyline](https://developers.google.com/maps/documentation/utilities/polylinealgorithm),
     which can be passed as a string and includes compression with
     minimal lossiness. This is the Routes API default output.
 

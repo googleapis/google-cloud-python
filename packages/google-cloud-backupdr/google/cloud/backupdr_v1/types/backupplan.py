@@ -102,11 +102,12 @@ class BackupPlan(proto.Message):
             for taking backups. Specify the email address of
             the Backup Vault Service Account.
         log_retention_days (int):
-            Optional. Applicable only for CloudSQL resource_type.
-
-            Configures how long logs will be stored. It is defined in
-            “days”. This value should be greater than or equal to
-            minimum enforced log retention duration of the backup vault.
+            Optional. Applicable only for CloudSQL
+            resource_type.
+            Configures how long logs will be stored. It is
+            defined in “days”. This value should be greater
+            than or equal to minimum enforced log retention
+            duration of the backup vault.
         supported_resource_types (MutableSequence[str]):
             Output only. All resource types to which
             backupPlan can be applied.
@@ -324,9 +325,10 @@ class StandardSchedule(proto.Message):
             Note: running jobs will not be cancelled at the end of the
             window.
         time_zone (str):
-            Required. The time zone to be used when interpreting the
-            schedule. The value of this field must be a time zone name
-            from the IANA tz database. See
+            Required. The time zone to be used when
+            interpreting the schedule. The value of this
+            field must be a time zone name from the IANA tz
+            database. See
             https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
             for the list of valid timezone names. For e.g.,
             Europe/Paris.
@@ -406,15 +408,17 @@ class BackupWindow(proto.Message):
             window starts for e.g. if value of start hour of
             day is 6 that mean backup window start at 6:00.
         end_hour_of_day (int):
-            Required. The hour of day (1-24) when the window end for
-            e.g. if value of end hour of day is 10 that mean backup
-            window end time is 10:00.
+            Required. The hour of day (1-24) when the window
+            end for e.g. if value of end hour of day is 10
+            that mean backup window end time is 10:00.
 
-            End hour of day should be greater than start hour of day. 0
-            <= start_hour_of_day < end_hour_of_day <= 24
+            End hour of day should be greater than start
+            hour of day. 0 <= start_hour_of_day <
+            end_hour_of_day <= 24
 
-            End hour of day is not include in backup window that mean if
-            end_hour_of_day= 10 jobs should start before 10:00.
+            End hour of day is not include in backup window
+            that mean if end_hour_of_day= 10 jobs should
+            start before 10:00.
     """
 
     start_hour_of_day: int = proto.Field(
@@ -699,15 +703,18 @@ class UpdateBackupPlanRequest(proto.Message):
         backup_plan (google.cloud.backupdr_v1.types.BackupPlan):
             Required. The resource being updated
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update. Field mask is used
-            to specify the fields to be overwritten in the BackupPlan
-            resource by the update. The fields specified in the
-            update_mask are relative to the resource, not the full
-            request. A field will be overwritten if it is in the mask.
-            If the user does not provide a mask then the request will
-            fail. Currently, these fields are supported in update:
-            description, schedules, retention period, adding and
-            removing Backup Rules.
+            Required. The list of fields to update.
+            Field mask is used to specify the fields to be
+            overwritten in the BackupPlan resource by the
+            update.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then
+            the request will fail. Currently, these fields
+            are supported in update: description, schedules,
+            retention period, adding and removing Backup
+            Rules.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

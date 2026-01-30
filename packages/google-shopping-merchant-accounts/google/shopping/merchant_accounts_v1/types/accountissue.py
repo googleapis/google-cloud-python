@@ -31,10 +31,10 @@ __protobuf__ = proto.module(
 
 
 class AccountIssue(proto.Message):
-    r"""Issues with your Merchant Center account that can impact all your
-    products. For more information, see `Account-level issues in
-    Merchant
-    Center <https://support.google.com/merchants/answer/12153802?sjid=17798438912526418908-EU#account>`__.
+    r"""Issues with your Merchant Center account that can impact all
+    your products. For more information, see [Account-level issues
+    in Merchant
+    Center](https://support.google.com/merchants/answer/12153802?sjid=17798438912526418908-EU#account).
 
     Attributes:
         name (str):

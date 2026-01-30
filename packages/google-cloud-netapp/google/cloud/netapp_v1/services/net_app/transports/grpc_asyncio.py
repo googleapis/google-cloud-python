@@ -1816,8 +1816,8 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
     ]:
         r"""Return a callable for the get backup policy method over gRPC.
 
-        Returns the description of the specified backup policy by
-        backup_policy_id.
+        Returns the description of the specified backup policy
+        by backup_policy_id.
 
         Returns:
             Callable[[~.GetBackupPolicyRequest],

@@ -1448,12 +1448,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the StoragePool resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                StoragePool resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2317,12 +2320,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Volume resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Volume resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3729,13 +3735,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Active Directory resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Active Directory resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4384,12 +4392,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the KmsConfig resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                KmsConfig resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6383,12 +6394,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Backup resource to be updated. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Backup resource to be updated. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7168,12 +7182,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Backup resource to be updated. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Backup resource to be updated. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7412,8 +7429,8 @@ class NetAppClient(metaclass=NetAppClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> backup_policy.BackupPolicy:
-        r"""Returns the description of the specified backup policy by
-        backup_policy_id.
+        r"""Returns the description of the specified backup policy
+        by backup_policy_id.
 
         .. code-block:: python
 
@@ -7688,12 +7705,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Backup Policy resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Backup Policy resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -8347,12 +8367,15 @@ class NetAppClient(metaclass=NetAppClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Quota Rule resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                Quota Rule resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

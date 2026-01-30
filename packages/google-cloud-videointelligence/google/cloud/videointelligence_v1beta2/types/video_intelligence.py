@@ -361,7 +361,8 @@ class LabelSegment(proto.Message):
         segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     segment: "VideoSegment" = proto.Field(
@@ -384,7 +385,8 @@ class LabelFrame(proto.Message):
             video, corresponding to the video frame for this
             location.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     time_offset: duration_pb2.Duration = proto.Field(
@@ -403,9 +405,9 @@ class Entity(proto.Message):
 
     Attributes:
         entity_id (str):
-            Opaque entity ID. Some IDs may be available in `Google
-            Knowledge Graph Search
-            API <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in
+            [Google Knowledge Graph Search
+            API](https://developers.google.com/knowledge-graph/).
         description (str):
             Textual description, e.g. ``Fixed-gear bicycle``.
         language_code (str):
@@ -509,8 +511,9 @@ class ExplicitContentAnnotation(proto.Message):
 
 
 class NormalizedBoundingBox(proto.Message):
-    r"""Normalized bounding box. The normalized vertex coordinates are
-    relative to the original image. Range: [0, 1].
+    r"""Normalized bounding box.
+    The normalized vertex coordinates are relative to the original
+    image. Range: [0, 1].
 
     Attributes:
         left (float):

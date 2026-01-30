@@ -460,11 +460,14 @@ class ModelServiceGrpcTransport(ModelServiceTransport):
     ) -> Callable[[model_service.CreateTunedModelRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tuned model method over gRPC.
 
-        Creates a tuned model. Check intermediate tuning progress (if
-        any) through the [google.longrunning.Operations] service.
+        Creates a tuned model.
+        Check intermediate tuning progress (if any) through the
+        [google.longrunning.Operations] service.
 
-        Access status and results through the Operations service.
-        Example: GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
+        Access status and results through the Operations
+        service. Example:
+
+        GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
 
         Returns:
             Callable[[~.CreateTunedModelRequest],

@@ -240,8 +240,9 @@ class LineItemChange(proto.Message):
 
     Attributes:
         change_id (str):
-            Output only. Change ID. All changes made within one order
-            update operation have the same change_id.
+            Output only. Change ID.
+            All changes made within one order update
+            operation have the same change_id.
         change_type (google.cloud.commerce_consumer_procurement_v1alpha1.types.LineItemChangeType):
             Required. Type of the change to make.
         old_line_item_info (google.cloud.commerce_consumer_procurement_v1alpha1.types.LineItemInfo):
@@ -332,8 +333,9 @@ class LineItemInfo(proto.Message):
 
     Attributes:
         offer (str):
-            Optional. The name of the offer can have either of these
-            formats: 'billingAccounts/{billing_account}/offers/{offer}',
+            Optional. The name of the offer can have either
+            of these formats:
+            'billingAccounts/{billing_account}/offers/{offer}',
             or 'services/{service}/standardOffers/{offer}'.
         parameters (MutableSequence[google.cloud.commerce_consumer_procurement_v1alpha1.types.Parameter]):
             Optional. User-provided parameters.

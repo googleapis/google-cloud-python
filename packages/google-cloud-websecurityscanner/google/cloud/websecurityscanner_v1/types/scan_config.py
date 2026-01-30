@@ -42,10 +42,12 @@ class ScanConfig(proto.Message):
             Required. The user provided display name of
             the ScanConfig.
         max_qps (int):
-            The maximum QPS during scanning. A valid value ranges from 5
-            to 20 inclusively. If the field is unspecified or its value
-            is set 0, server will default to 15. Other values outside of
-            [5, 20] range will be rejected with INVALID_ARGUMENT error.
+            The maximum QPS during scanning. A valid value
+            ranges from 5 to 20 inclusively. If the field is
+            unspecified or its value is set 0, server will
+            default to 15. Other values outside of [5, 20]
+            range will be rejected with INVALID_ARGUMENT
+            error.
         starting_urls (MutableSequence[str]):
             Required. The starting URLs from which the
             scanner finds site pages.
@@ -83,8 +85,8 @@ class ScanConfig(proto.Message):
 
         Values:
             USER_AGENT_UNSPECIFIED (0):
-                The user agent is unknown. Service will default to
-                CHROME_LINUX.
+                The user agent is unknown. Service will default
+                to CHROME_LINUX.
             CHROME_LINUX (1):
                 Chrome on Linux. This is the service default
                 if unspecified.

@@ -56,8 +56,9 @@ class UpdateSecuritySettingsRequest(proto.Message):
 
     Attributes:
         security_settings (google.cloud.dialogflowcx_v3beta1.types.SecuritySettings):
-            Required. [SecuritySettings] object that contains values for
-            each of the fields to update.
+            Required. [SecuritySettings] object that
+            contains values for each of the fields to
+            update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated. If the mask is not present, all
@@ -87,8 +88,8 @@ class ListSecuritySettingsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(

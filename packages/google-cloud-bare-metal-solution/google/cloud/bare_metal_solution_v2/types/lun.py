@@ -61,8 +61,9 @@ class Lun(proto.Message):
         wwid (str):
             The WWID for this LUN.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time after which LUN will be fully deleted. It
-            is filled only for LUNs in COOL_OFF state.
+            Output only. Time after which LUN will be fully
+            deleted. It is filled only for LUNs in COOL_OFF
+            state.
         instances (MutableSequence[str]):
             Output only. Instances this Lun is attached
             to.

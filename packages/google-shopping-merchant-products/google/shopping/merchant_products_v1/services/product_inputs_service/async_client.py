@@ -305,20 +305,21 @@ class ProductInputsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> productinputs.ProductInput:
-        r"""`Uploads a product input to your Merchant Center
-        account </merchant/api/guides/products/overview#upload-product-input>`__.
-        You must have a products `data
-        source </merchant/api/guides/data-sources/overview>`__ to be
-        able to insert a product. The unique identifier of the data
-        source is passed as a query parameter in the request URL.
+        r"""[Uploads a product input to your Merchant Center
+        account](/merchant/api/guides/products/overview#upload-product-input).
+        You must have a products [data
+        source](/merchant/api/guides/data-sources/overview) to
+        be able to insert a product. The unique identifier of
+        the data source is passed as a query parameter in the
+        request URL.
 
-        If a product input with the same contentLanguage, offerId, and
-        dataSource already exists, then the product input inserted by
-        this method replaces that entry.
+        If a product input with the same contentLanguage,
+        offerId, and dataSource already exists, then the product
+        input inserted by this method replaces that entry.
 
-        After inserting, updating, or deleting a product input, it may
-        take several minutes before the processed product can be
-        retrieved.
+        After inserting, updating, or deleting a product input,
+        it may take several minutes before the processed product
+        can be retrieved.
 
         .. code-block:: python
 

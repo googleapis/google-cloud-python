@@ -166,12 +166,12 @@ class ExtensionChain(proto.Message):
 
         Attributes:
             cel_expression (str):
-                Required. A Common Expression Language (CEL) expression that
-                is used to match requests for which the extension chain is
-                executed.
+                Required. A Common Expression Language (CEL)
+                expression that is used to match requests for
+                which the extension chain is executed.
 
-                For more information, see `CEL matcher language
-                reference <https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>`__.
+                For more information, see [CEL matcher language
+                reference](https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference).
         """
 
         cel_expression: str = proto.Field(

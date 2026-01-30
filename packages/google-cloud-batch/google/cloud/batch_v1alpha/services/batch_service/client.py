@@ -870,15 +870,19 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             job_id (str):
-                ID used to uniquely identify the Job within its parent
-                scope. This field should contain at most 63 characters
-                and must start with lowercase characters. Only lowercase
-                characters, numbers and '-' are accepted. The '-'
-                character cannot be the first or the last one. A system
-                generated ID will be used if the field is not set.
+                ID used to uniquely identify the Job
+                within its parent scope. This field
+                should contain at most 63 characters and
+                must start with lowercase characters.
+                Only lowercase characters, numbers and
+                '-' are accepted. The '-' character
+                cannot be the first or the last one. A
+                system generated ID will be used if the
+                field is not set.
 
-                The job.name field in the request will be ignored and
-                the created resource name of the Job will be
+                The job.name field in the request will
+                be ignored and the created resource name
+                of the Job will be
                 "{parent}/jobs/{job_id}".
 
                 This corresponds to the ``job_id`` field
@@ -1692,8 +1696,9 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
             request (Union[google.cloud.batch_v1alpha.types.ListTasksRequest, dict]):
                 The request object. ListTasks Request.
             parent (str):
-                Required. Name of a TaskGroup from which Tasks are being
-                requested. Pattern:
+                Required. Name of a TaskGroup from which
+                Tasks are being requested. Pattern:
+
                 "projects/{project}/locations/{location}/jobs/{job}/taskGroups/{task_group}"
 
                 This corresponds to the ``parent`` field
@@ -1837,17 +1842,21 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource_allowance_id (str):
-                ID used to uniquely identify the ResourceAllowance
-                within its parent scope. This field should contain at
-                most 63 characters and must start with lowercase
-                characters. Only lowercase characters, numbers and '-'
-                are accepted. The '-' character cannot be the first or
-                the last one. A system generated ID will be used if the
+                ID used to uniquely identify the
+                ResourceAllowance within its parent
+                scope. This field should contain at most
+                63 characters and must start with
+                lowercase characters.
+                Only lowercase characters, numbers and
+                '-' are accepted. The '-' character
+                cannot be the first or the last one. A
+                system generated ID will be used if the
                 field is not set.
 
-                The resource_allowance.name field in the request will be
-                ignored and the created resource name of the
-                ResourceAllowance will be
+                The resource_allowance.name field in the
+                request will be ignored and the created
+                resource name of the ResourceAllowance
+                will be
                 "{parent}/resourceAllowances/{resource_allowance_id}".
 
                 This corresponds to the ``resource_allowance_id`` field

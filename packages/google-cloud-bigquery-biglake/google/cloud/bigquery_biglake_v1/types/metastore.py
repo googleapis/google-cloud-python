@@ -76,7 +76,9 @@ class Catalog(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name. Format:
+            Output only. The resource name.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the
@@ -130,7 +132,9 @@ class Database(proto.Message):
 
             This field is a member of `oneof`_ ``options``.
         name (str):
-            Output only. The resource name. Format:
+            Output only. The resource name.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the
@@ -211,7 +215,9 @@ class Table(proto.Message):
 
             This field is a member of `oneof`_ ``options``.
         name (str):
-            Output only. The resource name. Format:
+            Output only. The resource name.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the table.
@@ -295,8 +301,8 @@ class CreateCatalogRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this catalog will be
-            created. Format:
+            Required. The parent resource where this catalog
+            will be created. Format:
             projects/{project_id_or_number}/locations/{location_id}
         catalog (google.cloud.bigquery_biglake_v1.types.Catalog):
             Required. The catalog to create. The ``name`` field does not
@@ -327,7 +333,9 @@ class DeleteCatalogRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the catalog to delete. Format:
+            Required. The name of the catalog to delete.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
     """
 
@@ -342,7 +350,9 @@ class GetCatalogRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the catalog to retrieve. Format:
+            Required. The name of the catalog to retrieve.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
     """
 
@@ -357,8 +367,8 @@ class ListCatalogsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            catalogs. Format:
+            Required. The parent, which owns this collection
+            of catalogs. Format:
             projects/{project_id_or_number}/locations/{location_id}
         page_size (int):
             The maximum number of catalogs to return. The
@@ -421,8 +431,9 @@ class CreateDatabaseRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this database will be
-            created. Format:
+            Required. The parent resource where this
+            database will be created. Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
         database (google.cloud.bigquery_biglake_v1.types.Database):
             Required. The database to create. The ``name`` field does
@@ -453,7 +464,9 @@ class DeleteDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the database to delete. Format:
+            Required. The name of the database to delete.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
     """
 
@@ -499,7 +512,9 @@ class GetDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the database to retrieve. Format:
+            Required. The name of the database to retrieve.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
     """
 
@@ -514,8 +529,9 @@ class ListDatabasesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            databases. Format:
+            Required. The parent, which owns this collection
+            of databases. Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
         page_size (int):
             The maximum number of databases to return.
@@ -578,8 +594,9 @@ class CreateTableRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this table will be
-            created. Format:
+            Required. The parent resource where this table
+            will be created. Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
         table (google.cloud.bigquery_biglake_v1.types.Table):
             Required. The table to create. The ``name`` field does not
@@ -610,7 +627,9 @@ class DeleteTableRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the table to delete. Format:
+            Required. The name of the table to delete.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
     """
 
@@ -681,7 +700,9 @@ class GetTableRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the table to retrieve. Format:
+            Required. The name of the table to retrieve.
+            Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
     """
 
@@ -696,8 +717,9 @@ class ListTablesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of tables.
-            Format:
+            Required. The parent, which owns this collection
+            of tables. Format:
+
             projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
         page_size (int):
             The maximum number of tables to return. The
@@ -792,7 +814,8 @@ class HiveTableOptions(proto.Message):
         parameters (MutableMapping[str, str]):
             Stores user supplied Hive table parameters.
         table_type (str):
-            Hive table type. For example, MANAGED_TABLE, EXTERNAL_TABLE.
+            Hive table type. For example, MANAGED_TABLE,
+            EXTERNAL_TABLE.
         storage_descriptor (google.cloud.bigquery_biglake_v1.types.HiveTableOptions.StorageDescriptor):
             Stores physical storage information of the
             data.

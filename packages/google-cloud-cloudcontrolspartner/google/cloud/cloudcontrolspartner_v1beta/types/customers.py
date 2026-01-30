@@ -57,9 +57,9 @@ class Customer(proto.Message):
             Output only. Indicates whether a customer is
             fully onboarded
         organization_domain (str):
-            Output only. The customer organization domain, extracted
-            from CRM Organization’s display_name field. e.g.
-            "google.com".
+            Output only. The customer organization domain,
+            extracted from CRM Organization’s display_name
+            field. e.g. "google.com".
     """
 
     name: str = proto.Field(

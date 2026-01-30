@@ -153,14 +153,16 @@ class TransactionEvent(proto.Message):
             TRANSACTION_EVENT_TYPE_UNSPECIFIED (0):
                 Default, unspecified event type.
             MERCHANT_APPROVE (1):
-                Indicates that the transaction is approved by the merchant.
-                The accompanying reasons can include terms such as
-                'INHOUSE', 'ACCERTIFY', 'CYBERSOURCE', or 'MANUAL_REVIEW'.
-            MERCHANT_DENY (2):
-                Indicates that the transaction is denied and concluded due
-                to risks detected by the merchant. The accompanying reasons
-                can include terms such as 'INHOUSE', 'ACCERTIFY',
+                Indicates that the transaction is approved by
+                the merchant. The accompanying reasons can
+                include terms such as 'INHOUSE', 'ACCERTIFY',
                 'CYBERSOURCE', or 'MANUAL_REVIEW'.
+            MERCHANT_DENY (2):
+                Indicates that the transaction is denied and
+                concluded due to risks detected by the merchant.
+                The accompanying reasons can include terms such
+                as 'INHOUSE', 'ACCERTIFY', 'CYBERSOURCE', or
+                'MANUAL_REVIEW'.
             MANUAL_REVIEW (3):
                 Indicates that the transaction is being
                 evaluated by a human, due to suspicion or risk.
@@ -180,8 +182,9 @@ class TransactionEvent(proto.Message):
                 Indicates that the transaction could not be
                 completed because the funds were not settled.
             CANCEL (8):
-                Indicates that the transaction has been canceled. Specify
-                the reason for the cancellation. For example,
+                Indicates that the transaction has been
+                canceled. Specify the reason for the
+                cancellation. For example,
                 'INSUFFICIENT_INVENTORY'.
             CHARGEBACK_INQUIRY (9):
                 Indicates that the merchant has received a
@@ -357,14 +360,16 @@ class AnnotateAssessmentRequest(proto.Message):
                 Provides information that the event turned
                 out to be fraudulent.
             PASSWORD_CORRECT (3):
-                Provides information that the event was related to a login
-                event in which the user typed the correct password.
-                Deprecated, prefer indicating CORRECT_PASSWORD through the
-                reasons field instead.
+                Provides information that the event was related
+                to a login event in which the user typed the
+                correct password. Deprecated, prefer indicating
+                CORRECT_PASSWORD through the reasons field
+                instead.
             PASSWORD_INCORRECT (4):
-                Provides information that the event was related to a login
-                event in which the user typed the incorrect password.
-                Deprecated, prefer indicating INCORRECT_PASSWORD through the
+                Provides information that the event was related
+                to a login event in which the user typed the
+                incorrect password. Deprecated, prefer
+                indicating INCORRECT_PASSWORD through the
                 reasons field instead.
         """
         ANNOTATION_UNSPECIFIED = 0
@@ -381,9 +386,10 @@ class AnnotateAssessmentRequest(proto.Message):
             REASON_UNSPECIFIED (0):
                 Unspecified reason. Do not use.
             CHARGEBACK (1):
-                Indicates that the transaction had a chargeback issued with
-                no other details. When possible, specify the type by using
-                CHARGEBACK_FRAUD or CHARGEBACK_DISPUTE instead.
+                Indicates that the transaction had a chargeback
+                issued with no other details. When possible,
+                specify the type by using CHARGEBACK_FRAUD or
+                CHARGEBACK_DISPUTE instead.
             CHARGEBACK_FRAUD (8):
                 Indicates that the transaction had a
                 chargeback issued related to an alleged
@@ -715,9 +721,9 @@ class Assessment(proto.Message):
             are used to to check for leaks privately without
             sharing user credentials.
         firewall_policy_assessment (google.cloud.recaptchaenterprise_v1.types.FirewallPolicyAssessment):
-            Output only. Assessment returned when firewall policies
-            belonging to the project are evaluated using the field
-            firewall_policy_evaluation.
+            Output only. Assessment returned when firewall
+            policies belonging to the project are evaluated
+            using the field firewall_policy_evaluation.
         fraud_prevention_assessment (google.cloud.recaptchaenterprise_v1.types.FraudPreventionAssessment):
             Output only. Assessment returned by Fraud
             Prevention when TransactionData is provided.
@@ -1082,10 +1088,11 @@ class TransactionData(proto.Message):
 
         Attributes:
             account_id (str):
-                Optional. Unique account identifier for this user. If using
-                account defender, this should match the hashed_account_id
-                field. Otherwise, a unique and persistent identifier for
-                this account.
+                Optional. Unique account identifier for this
+                user. If using account defender, this should
+                match the hashed_account_id field. Otherwise, a
+                unique and persistent identifier for this
+                account.
             creation_ms (int):
                 Optional. The epoch milliseconds of the
                 user's account creation.
@@ -1142,9 +1149,9 @@ class TransactionData(proto.Message):
                 Optional. The quantity of this item that is
                 being purchased.
             merchant_account_id (str):
-                Optional. When a merchant is specified, its corresponding
-                account_id. Necessary to populate marketplace-style
-                transactions.
+                Optional. When a merchant is specified, its
+                corresponding account_id. Necessary to populate
+                marketplace-style transactions.
         """
 
         name: str = proto.Field(
@@ -1413,8 +1420,9 @@ class RiskAnalysis(proto.Message):
         SUSPECTED_CHARGEBACK = 7
 
     class Challenge(proto.Enum):
-        r"""Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE keys.
-        Ensure that applications can handle values not explicitly listed.
+        r"""Challenge information for POLICY_BASED_CHALLENGE and INVISIBLE
+        keys. Ensure that applications can handle values not explicitly
+        listed.
 
         Values:
             CHALLENGE_UNSPECIFIED (0):
@@ -1510,12 +1518,13 @@ class TokenProperties(proto.Message):
 
     Attributes:
         valid (bool):
-            Output only. Whether the provided user response token is
-            valid. When valid = false, the reason could be specified in
-            invalid_reason or it could also be due to a user failing to
-            solve a challenge or a sitekey mismatch (i.e the sitekey
-            used to generate the token was different than the one
-            specified in the assessment).
+            Output only. Whether the provided user response
+            token is valid. When valid = false, the reason
+            could be specified in invalid_reason or it could
+            also be due to a user failing to solve a
+            challenge or a sitekey mismatch (i.e the sitekey
+            used to generate the token was different than
+            the one specified in the assessment).
         invalid_reason (google.cloud.recaptchaenterprise_v1.types.TokenProperties.InvalidReason):
             Output only. Reason associated with the
             response when valid = false.
@@ -1988,8 +1997,8 @@ class ListKeysRequest(proto.Message):
             Optional. The maximum number of keys to
             return. Default is 10. Max limit is 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a
-            previous. ListKeysRequest, if any.
+            Optional. The next_page_token value returned
+            from a previous. ListKeysRequest, if any.
     """
 
     parent: str = proto.Field(
@@ -2134,8 +2143,9 @@ class ListFirewallPoliciesRequest(proto.Message):
             Optional. The maximum number of policies to
             return. Default is 10. Max limit is 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a
-            previous. ListFirewallPoliciesRequest, if any.
+            Optional. The next_page_token value returned
+            from a previous. ListFirewallPoliciesRequest, if
+            any.
     """
 
     parent: str = proto.Field(
@@ -2270,15 +2280,17 @@ class MigrateKeyRequest(proto.Message):
             Required. The name of the key to be migrated, in the format
             ``projects/{project}/keys/{key}``.
         skip_billing_check (bool):
-            Optional. If true, skips the billing check. A reCAPTCHA
-            Enterprise key or migrated key behaves differently than a
-            reCAPTCHA (non-Enterprise version) key when you reach a
+            Optional. If true, skips the billing check.
+            A reCAPTCHA Enterprise key or migrated key
+            behaves differently than a reCAPTCHA
+            (non-Enterprise version) key when you reach a
             quota limit (see
             https://docs.cloud.google.com/recaptcha/quotas#quota_limit).
-            To avoid any disruption of your usage, we check that a
-            billing account is present. If your usage of reCAPTCHA is
-            under the free quota, you can safely skip the billing check
-            and proceed with the migration. See
+            To avoid any disruption of your usage, we check
+            that a billing account is present. If your usage
+            of reCAPTCHA is under the free quota, you can
+            safely skip the billing check and proceed with
+            the migration. See
             https://cloud.google.com/recaptcha/docs/billing-information.
     """
 
@@ -2527,8 +2539,8 @@ class WebKeySettings(proto.Message):
 
     Attributes:
         allow_all_domains (bool):
-            Optional. If set to true, it means allowed_domains are not
-            enforced.
+            Optional. If set to true, it means
+            allowed_domains are not enforced.
         allowed_domains (MutableSequence[str]):
             Optional. Domains or subdomains of websites allowed to use
             the key. All subdomains of an allowed domain are
@@ -2629,8 +2641,8 @@ class WebKeySettings(proto.Message):
         )
 
     class ChallengeSettings(proto.Message):
-        r"""Settings for POLICY_BASED_CHALLENGE keys to control when a challenge
-        is triggered.
+        r"""Settings for POLICY_BASED_CHALLENGE keys to control when a
+        challenge is triggered.
 
         Attributes:
             default_settings (google.cloud.recaptchaenterprise_v1.types.WebKeySettings.ActionSettings):
@@ -2694,8 +2706,8 @@ class AndroidKeySettings(proto.Message):
 
     Attributes:
         allow_all_package_names (bool):
-            Optional. If set to true, allowed_package_names are not
-            enforced.
+            Optional. If set to true, allowed_package_names
+            are not enforced.
         allowed_package_names (MutableSequence[str]):
             Optional. Android package names of apps allowed to use the
             key. Example: 'com.companyname.appname' Each key supports a
@@ -2731,8 +2743,8 @@ class IOSKeySettings(proto.Message):
 
     Attributes:
         allow_all_bundle_ids (bool):
-            Optional. If set to true, allowed_bundle_ids are not
-            enforced.
+            Optional. If set to true, allowed_bundle_ids are
+            not enforced.
         allowed_bundle_ids (MutableSequence[str]):
             Optional. iOS bundle IDs of apps allowed to use the key.
             Example: 'com.companyname.productname.appname' Each key
@@ -2813,10 +2825,10 @@ class ScoreDistribution(proto.Message):
 
     Attributes:
         score_buckets (MutableMapping[int, int]):
-            Map key is score value multiplied by 100. The scores are
-            discrete values between [0, 1]. The maximum number of
-            buckets is on order of a few dozen, but typically much lower
-            (ie. 10).
+            Map key is score value multiplied by 100. The
+            scores are discrete values between [0, 1]. The
+            maximum number of buckets is on order of a few
+            dozen, but typically much lower (ie. 10).
     """
 
     score_buckets: MutableMapping[int, int] = proto.MapField(
@@ -2896,8 +2908,9 @@ class FirewallPolicyAssessment(proto.Message):
 
     Attributes:
         error (google.rpc.status_pb2.Status):
-            Output only. If the processing of a policy config fails, an
-            error is populated and the firewall_policy is left empty.
+            Output only. If the processing of a policy
+            config fails, an error is populated and the
+            firewall_policy is left empty.
         firewall_policy (google.cloud.recaptchaenterprise_v1.types.FirewallPolicy):
             Output only. The policy that matched the
             request. If more than one policy may match, this
@@ -3081,10 +3094,10 @@ class FirewallPolicy(proto.Message):
             description can at most include 256 UTF-8
             characters.
         path (str):
-            Optional. The path for which this policy applies, specified
-            as a glob pattern. For more information on glob, see the
-            `manual
-            page <https://man7.org/linux/man-pages/man7/glob.7.html>`__.
+            Optional. The path for which this policy
+            applies, specified as a glob pattern. For more
+            information on glob, see the [manual
+            page](https://man7.org/linux/man-pages/man7/glob.7.html).
             A path has a max length of 200 characters.
         condition (str):
             Optional. A CEL (Common Expression Language) conditional
@@ -3415,13 +3428,14 @@ class ListIpOverridesRequest(proto.Message):
             Required. The parent key for which the IP overrides are
             listed, in the format ``projects/{project}/keys/{key}``.
         page_size (int):
-            Optional. The maximum number of overrides to return. Default
-            is 10. Max limit is 100. If the number of overrides is less
-            than the page_size, all overrides are returned. If the page
-            size is more than 100, it is coerced to 100.
+            Optional. The maximum number of overrides to
+            return. Default is 10. Max limit is 100. If the
+            number of overrides is less than the page_size,
+            all overrides are returned. If the page size is
+            more than 100, it is coerced to 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            ListIpOverridesRequest, if any.
+            Optional. The next_page_token value returned
+            from a previous ListIpOverridesRequest, if any.
     """
 
     parent: str = proto.Field(
@@ -3532,7 +3546,8 @@ class WafSettings(proto.Message):
     class WafFeature(proto.Enum):
         r"""Supported WAF features. For more information, see
         https://cloud.google.com/recaptcha/docs/usecase#comparison_of_features.
-        Ensure that applications can handle values not explicitly listed.
+        Ensure that applications can handle values not explicitly
+        listed.
 
         Values:
             WAF_FEATURE_UNSPECIFIED (0):

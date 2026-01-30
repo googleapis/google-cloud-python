@@ -163,11 +163,13 @@ class CheckoutSettings(proto.Message):
             will have the value of the parent account (for only
             marketplace sellers).
         effective_enrollment_state (google.shopping.merchant_accounts_v1.types.CheckoutSettings.CheckoutEnrollmentState):
-            Output only. The effective value of enrollment_state for a
-            given merchant ID. If account level settings are present
-            then this value will be a copy of the account level
-            settings. Otherwise, it will have the value of the parent
-            account (for only marketplace sellers).
+            Output only. The effective value of
+            enrollment_state for a given merchant ID. If
+            account level settings are present then this
+            value will be a copy of the account level
+            settings. Otherwise, it will have the value of
+            the parent account (for only marketplace
+            sellers).
 
             This field is a member of `oneof`_ ``_effective_enrollment_state``.
         effective_review_state (google.shopping.merchant_accounts_v1.types.CheckoutSettings.CheckoutReviewState):
@@ -286,19 +288,20 @@ class UriSettings(proto.Message):
 
     Attributes:
         checkout_uri_template (str):
-            Checkout URL template. When the placeholders are expanded
-            will redirect the buyer to the merchant checkout page with
-            the item in the cart. For more details, check the `help
-            center
-            doc <https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>`__
+            Checkout URL template. When the placeholders are
+            expanded will redirect the buyer to the merchant
+            checkout page with the item in the cart. For
+            more details, check the [help center
+            doc](https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting)
 
             This field is a member of `oneof`_ ``uri_template``.
         cart_uri_template (str):
-            Cart URL template. When the placeholders are expanded will
-            redirect the buyer to the cart page on the merchant website
-            with the selected item in cart. For more details, check the
-            `help center
-            doc <https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>`__
+            Cart URL template. When the placeholders are
+            expanded will redirect the buyer to the cart
+            page on the merchant website with the selected
+            item in cart. For more details, check the [help
+            center
+            doc](https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting)
 
             This field is a member of `oneof`_ ``uri_template``.
     """

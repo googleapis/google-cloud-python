@@ -109,18 +109,20 @@ class TranslateTextRequest(proto.Message):
             example, "text/html",  "text/plain". If left
             blank, the MIME type defaults to "text/html".
         source_language_code (str):
-            Optional. The ISO-639 language code of the input text if
-            known, for example, "en-US" or "sr-Latn". Supported language
-            codes are listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
-            If the source language isn't specified, the API attempts to
-            identify the source language automatically and returns the
-            source language within the response.
+            Optional. The ISO-639 language code of the input
+            text if known, for example, "en-US" or
+            "sr-Latn". Supported language codes are listed
+            in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
+            If the source language isn't specified, the API
+            attempts to identify the source language
+            automatically and returns the source language
+            within the response.
         target_language_code (str):
-            Required. The ISO-639 language code to use for translation
-            of the input text, set to one of the language codes listed
-            in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
+            Required. The ISO-639 language code to use for
+            translation of the input text, set to one of the
+            language codes listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
         parent (str):
             Required. Project or location to make a call. Must refer to
             a caller's project.
@@ -158,10 +160,10 @@ class TranslateTextRequest(proto.Message):
 
             If not provided, the default Google model (NMT) will be used
         glossary_config (google.cloud.translate_v3.types.TranslateTextGlossaryConfig):
-            Optional. Glossary to be applied. The glossary must be
-            within the same region (have the same location-id) as the
-            model, otherwise an INVALID_ARGUMENT (400) error is
-            returned.
+            Optional. Glossary to be applied. The glossary
+            must be within the same region (have the same
+            location-id) as the model, otherwise an
+            INVALID_ARGUMENT (400) error is returned.
         transliteration_config (google.cloud.translate_v3.types.TransliterationConfig):
             Optional. Transliteration to be applied.
         labels (MutableMapping[str, str]):
@@ -314,13 +316,14 @@ class RomanizeTextRequest(proto.Message):
             Required. The content of the input in string
             format.
         source_language_code (str):
-            Optional. The ISO-639 language code of the input text if
-            known, for example, "hi" or "zh". Supported language codes
-            are listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages#roman>`__.
-            If the source language isn't specified, the API attempts to
-            identify the source language automatically and returns the
-            source language for each content in the response.
+            Optional. The ISO-639 language code of the input
+            text if known, for example, "hi" or "zh".
+            Supported language codes are listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages#roman).
+            If the source language isn't specified, the API
+            attempts to identify the source language
+            automatically and returns the source language
+            for each content in the response.
     """
 
     parent: str = proto.Field(
@@ -677,10 +680,11 @@ class GcsDestination(proto.Message):
 
     Attributes:
         output_uri_prefix (str):
-            Required. The bucket used in 'output_uri_prefix' must exist
-            and there must be no files under 'output_uri_prefix'.
-            'output_uri_prefix' must end with "/" and start with
-            "gs://". One 'output_uri_prefix' can only be used by one
+            Required. The bucket used in 'output_uri_prefix'
+            must exist and there must be no files under
+            'output_uri_prefix'. 'output_uri_prefix' must
+            end with "/" and start with "gs://". One
+            'output_uri_prefix' can only be used by one
             batch translation job at a time. Otherwise an
             INVALID_ARGUMENT (400) error is returned.
     """
@@ -803,8 +807,9 @@ class DocumentInputConfig(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_source (google.cloud.translate_v3.types.GcsSource):
-            Google Cloud Storage location. This must be a single file.
-            For example: gs://example_bucket/example_file.pdf
+            Google Cloud Storage location. This must be a
+            single file. For example:
+            gs://example_bucket/example_file.pdf
 
             This field is a member of `oneof`_ ``source``.
         mime_type (str):
@@ -951,10 +956,10 @@ class TranslateDocumentRequest(proto.Message):
             specified if the request contains a glossary or a custom
             model.
         target_language_code (str):
-            Required. The ISO-639 language code to use for translation
-            of the input document, set to one of the language codes
-            listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
+            Required. The ISO-639 language code to use for
+            translation of the input document, set to one of
+            the language codes listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
         document_input_config (google.cloud.translate_v3.types.DocumentInputConfig):
             Required. Input configurations.
         document_output_config (google.cloud.translate_v3.types.DocumentOutputConfig):
@@ -979,10 +984,10 @@ class TranslateDocumentRequest(proto.Message):
             If not provided, the default Google model (NMT) will be used
             for translation.
         glossary_config (google.cloud.translate_v3.types.TranslateTextGlossaryConfig):
-            Optional. Glossary to be applied. The glossary must be
-            within the same region (have the same location-id) as the
-            model, otherwise an INVALID_ARGUMENT (400) error is
-            returned.
+            Optional. Glossary to be applied. The glossary
+            must be within the same region (have the same
+            location-id) as the model, otherwise an
+            INVALID_ARGUMENT (400) error is returned.
         labels (MutableMapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
@@ -1003,16 +1008,17 @@ class TranslateDocumentRequest(proto.Message):
             should follow rules in
             https://cloud.google.com/translate/attribution#attribution_and_logos
         is_translate_native_pdf_only (bool):
-            Optional. is_translate_native_pdf_only field for external
-            customers. If true, the page limit of online native pdf
-            translation is 300 and only native pdf pages will be
-            translated.
+            Optional. is_translate_native_pdf_only field for
+            external customers. If true, the page limit of
+            online native pdf translation is 300 and only
+            native pdf pages will be translated.
         enable_shadow_removal_native_pdf (bool):
-            Optional. If true, use the text removal server to remove the
-            shadow text on background image for native pdf translation.
-            Shadow removal feature can only be enabled when
-            is_translate_native_pdf_only: false && pdf_native_only:
-            false
+            Optional. If true, use the text removal server
+            to remove the shadow text on background image
+            for native pdf translation. Shadow removal
+            feature can only be enabled when
+            is_translate_native_pdf_only: false &&
+            pdf_native_only: false
         enable_rotation_correction (bool):
             Optional. If true, enable auto rotation
             correction in DVS.
@@ -1114,10 +1120,11 @@ class TranslateDocumentResponse(proto.Message):
         document_translation (google.cloud.translate_v3.types.DocumentTranslation):
             Translated document.
         glossary_document_translation (google.cloud.translate_v3.types.DocumentTranslation):
-            The document's translation output if a glossary is provided
-            in the request. This can be the same as
-            [TranslateDocumentResponse.document_translation] if no
-            glossary terms apply.
+            The document's translation output if a glossary
+            is provided in the request. This can be the same
+            as
+            [TranslateDocumentResponse.document_translation]
+            if no glossary terms apply.
         model (str):
             Only present when 'model' is present in the request. 'model'
             is normalized to have a project number.
@@ -1170,13 +1177,13 @@ class BatchTranslateTextRequest(proto.Message):
             region (have the same location-id) can be used, otherwise an
             INVALID_ARGUMENT (400) error is returned.
         source_language_code (str):
-            Required. Source language code. Supported language codes are
-            listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
+            Required. Source language code. Supported
+            language codes are listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
         target_language_codes (MutableSequence[str]):
-            Required. Specify up to 10 language codes here. Supported
-            language codes are listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
+            Required. Specify up to 10 language codes here.
+            Supported language codes are listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
         models (MutableMapping[str, str]):
             Optional. The models to use for translation. Map's key is
             target language code. Map's value is model name. Value can
@@ -1473,12 +1480,13 @@ class Glossary(proto.Message):
 
         Attributes:
             source_language_code (str):
-                Required. The ISO-639 language code of the input text, for
-                example, "en-US". Expected to be an exact match for
-                GlossaryTerm.language_code.
+                Required. The ISO-639 language code of the input
+                text, for example, "en-US". Expected to be an
+                exact match for GlossaryTerm.language_code.
             target_language_code (str):
-                Required. The ISO-639 language code for translation output,
-                for example, "zh-CN". Expected to be an exact match for
+                Required. The ISO-639 language code for
+                translation output, for example, "zh-CN".
+                Expected to be an exact match for
                 GlossaryTerm.language_code.
         """
 
@@ -1496,9 +1504,10 @@ class Glossary(proto.Message):
 
         Attributes:
             language_codes (MutableSequence[str]):
-                The ISO-639 language code(s) for terms defined in the
-                glossary. All entries are unique. The list contains at least
-                two entries. Expected to be an exact match for
+                The ISO-639 language code(s) for terms defined
+                in the glossary. All entries are unique. The
+                list contains at least two entries. Expected to
+                be an exact match for
                 GlossaryTerm.language_code.
         """
 
@@ -1783,9 +1792,10 @@ class ListGlossaryEntriesResponse(proto.Message):
         glossary_entries (MutableSequence[google.cloud.translate_v3.types.GlossaryEntry]):
             Optional. The Glossary Entries
         next_page_token (str):
-            Optional. A token to retrieve a page of results. Pass this
-            value in the [ListGLossaryEntriesRequest.page_token] field
-            in the subsequent calls.
+            Optional. A token to retrieve a page of results.
+            Pass this value in the
+            [ListGLossaryEntriesRequest.page_token] field in
+            the subsequent calls.
     """
 
     @property
@@ -2082,10 +2092,11 @@ class BatchTranslateDocumentRequest(proto.Message):
             codes are listed in `Language
             Support <https://cloud.google.com/translate/docs/languages>`__.
         target_language_codes (MutableSequence[str]):
-            Required. The ISO-639 language code to use for translation
-            of the input document. Specify up to 10 language codes here.
-            Supported language codes are listed in `Language
-            Support <https://cloud.google.com/translate/docs/languages>`__.
+            Required. The ISO-639 language code to use for
+            translation of the input document. Specify up to
+            10 language codes here. Supported language codes
+            are listed in [Language
+            Support](https://cloud.google.com/translate/docs/languages).
         input_configs (MutableSequence[google.cloud.translate_v3.types.BatchDocumentInputConfig]):
             Required. Input configurations.
             The total number of files matched should be <=
@@ -2135,11 +2146,12 @@ class BatchTranslateDocumentRequest(proto.Message):
             should follow rules in
             https://cloud.google.com/translate/attribution#attribution_and_logos
         enable_shadow_removal_native_pdf (bool):
-            Optional. If true, use the text removal server to remove the
-            shadow text on background image for native pdf translation.
-            Shadow removal feature can only be enabled when
-            is_translate_native_pdf_only: false && pdf_native_only:
-            false
+            Optional. If true, use the text removal server
+            to remove the shadow text on background image
+            for native pdf translation. Shadow removal
+            feature can only be enabled when
+            is_translate_native_pdf_only: false &&
+            pdf_native_only: false
         enable_rotation_correction (bool):
             Optional. If true, enable auto rotation
             correction in DVS.

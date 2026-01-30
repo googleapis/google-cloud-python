@@ -46,8 +46,9 @@ class ListSnapshotsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).

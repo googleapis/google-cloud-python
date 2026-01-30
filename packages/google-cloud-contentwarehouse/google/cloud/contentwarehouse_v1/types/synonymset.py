@@ -38,8 +38,10 @@ class SynonymSet(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the SynonymSet This is mandatory for
-            google.api.resource. Format:
+            The resource name of the SynonymSet
+            This is mandatory for google.api.resource.
+            Format:
+
             projects/{project_number}/locations/{location}/synonymSets/{context}.
         context (str):
             This is a freeform field. Example contexts

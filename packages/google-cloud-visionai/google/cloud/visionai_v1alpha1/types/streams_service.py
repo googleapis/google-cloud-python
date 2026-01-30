@@ -202,12 +202,13 @@ class UpdateClusterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Cluster resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Cluster resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         cluster (google.cloud.visionai_v1alpha1.types.Cluster):
             Required. The resource being updated
         request_id (str):
@@ -430,12 +431,13 @@ class UpdateStreamRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Stream resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Stream resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         stream (google.cloud.visionai_v1alpha1.types.Stream):
             Required. The resource being updated.
         request_id (str):
@@ -707,12 +709,13 @@ class UpdateEventRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Event resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Event resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         event (google.cloud.visionai_v1alpha1.types.Event):
             Required. The resource being updated.
         request_id (str):
@@ -934,12 +937,13 @@ class UpdateSeriesRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Series resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Series resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         series (google.cloud.visionai_v1alpha1.types.Series):
             Required. The resource being updated
         request_id (str):

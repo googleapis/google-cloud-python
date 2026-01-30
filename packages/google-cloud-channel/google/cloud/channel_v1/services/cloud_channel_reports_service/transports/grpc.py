@@ -112,13 +112,13 @@ class CloudChannelReportsServiceGrpcTransport(CloudChannelReportsServiceTranspor
     """gRPC backend transport for CloudChannelReportsService.
 
     CloudChannelReportsService lets Google Cloud resellers and
-    distributors retrieve and combine a variety of data in Cloud Channel
-    for multiple products (Google Cloud, Google Voice, and Google
-    Workspace.)
+    distributors retrieve and combine a variety of data in Cloud
+    Channel for multiple products (Google Cloud, Google Voice, and
+    Google Workspace.)
 
-    Deprecated: This service is being deprecated. Please use `Export
+    Deprecated: This service is being deprecated. Please use [Export
     Channel Services data to
-    BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
+    BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
     instead.
 
     This class defines the same methods as the primary client, so the
@@ -444,12 +444,12 @@ class CloudChannelReportsServiceGrpcTransport(CloudChannelReportsServiceTranspor
     ]:
         r"""Return a callable for the list reports method over gRPC.
 
-        Lists the reports that RunReportJob can run. These reports
-        include an ID, a description, and the list of columns that will
-        be in the result.
+        Lists the reports that RunReportJob can run. These
+        reports include an ID, a description, and the list of
+        columns that will be in the result.
 
-        Deprecated: Please use `Export Channel Services data to
-        BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
+        Deprecated: Please use [Export Channel Services data to
+        BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
         instead.
 
         Returns:

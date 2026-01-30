@@ -120,9 +120,9 @@ class AggregateProductStatus(proto.Message):
             The reporting context of the aggregate
             product statuses.
         country (str):
-            The country of the aggregate product statuses. Represented
-            as a `CLDR territory
-            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
+            The country of the aggregate product statuses.
+            Represented as a [CLDR territory
+            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml).
         stats (google.shopping.merchant_issueresolution_v1beta.types.AggregateProductStatus.Stats):
             Products statistics for the given reporting
             context and country.

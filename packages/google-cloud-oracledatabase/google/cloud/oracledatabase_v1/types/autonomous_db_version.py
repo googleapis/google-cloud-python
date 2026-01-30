@@ -35,8 +35,9 @@ class AutonomousDbVersion(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Autonomous Database Version
-            resource with the format:
+            Identifier. The name of the Autonomous Database
+            Version resource with the format:
+
             projects/{project}/locations/{region}/autonomousDbVersions/{autonomous_db_version}
         version (str):
             Output only. An Oracle Database version for

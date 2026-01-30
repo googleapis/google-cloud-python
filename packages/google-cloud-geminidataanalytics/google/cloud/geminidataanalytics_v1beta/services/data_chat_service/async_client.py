@@ -908,8 +908,8 @@ class DataChatServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.geminidataanalytics_v1beta.types.ListMessagesRequest, dict]]):
-                The request object. Request for listing chat messages based on parent and
-                conversation_id.
+                The request object. Request for listing chat messages based
+                on parent and conversation_id.
             parent (:class:`str`):
                 Required. The conversation to list messages under.
                 Format:

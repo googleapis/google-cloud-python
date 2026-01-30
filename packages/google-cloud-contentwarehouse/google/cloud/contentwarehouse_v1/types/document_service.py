@@ -46,8 +46,8 @@ class CreateDocumentResponse(proto.Message):
             Document created after executing create
             request.
         rule_engine_output (google.cloud.contentwarehouse_v1.types.RuleEngineOutput):
-            Output from Rule Engine recording the rule evaluator and
-            action executor's output.
+            Output from Rule Engine recording the rule
+            evaluator and action executor's output.
 
             Refer format in:
             google/cloud/contentwarehouse/v1/rule_engine.proto
@@ -90,8 +90,8 @@ class UpdateDocumentResponse(proto.Message):
             Updated document after executing update
             request.
         rule_engine_output (google.cloud.contentwarehouse_v1.types.RuleEngineOutput):
-            Output from Rule Engine recording the rule evaluator and
-            action executor's output.
+            Output from Rule Engine recording the rule
+            evaluator and action executor's output.
 
             Refer format in:
             google/cloud/contentwarehouse/v1/rule_engine.proto
@@ -124,10 +124,10 @@ class QAResult(proto.Message):
         highlights (MutableSequence[google.cloud.contentwarehouse_v1.types.QAResult.Highlight]):
             Highlighted sections in the snippet.
         confidence_score (float):
-            The calibrated confidence score for this document, in the
-            range [0., 1.]. This represents the confidence level for
-            whether the returned document and snippet answers the user's
-            query.
+            The calibrated confidence score for this
+            document, in the range [0., 1.]. This represents
+            the confidence level for whether the returned
+            document and snippet answers the user's query.
     """
 
     class Highlight(proto.Message):

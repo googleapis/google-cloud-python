@@ -196,8 +196,9 @@ class ListDomainsRequest(proto.Message):
             operation. For example,
             ``Domain.fqdn="mydomain.myorginization"``.
         order_by (str):
-            Optional. Specifies the ordering of results. See `Sorting
-            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
+            Optional. Specifies the ordering of results. See
+            [Sorting
+            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
             for more information.
     """
 
@@ -290,8 +291,9 @@ class UpdateDomainRequest(proto.Message):
             - ``locations``
             - ``authorized_networks``
         domain (google.cloud.managedidentities_v1.types.Domain):
-            Required. Domain message with updated fields. Only supported
-            fields specified in update_mask are updated.
+            Required. Domain message with updated fields.
+            Only supported fields specified in update_mask
+            are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

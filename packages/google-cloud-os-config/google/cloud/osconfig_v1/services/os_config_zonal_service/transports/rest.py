@@ -1278,16 +1278,17 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.inventory.Inventory:
-                    This API resource represents the available inventory
-                data for a Compute Engine virtual machine (VM) instance
-                at a given point in time.
+                    This API resource represents the
+                available inventory data for a Compute
+                Engine virtual machine (VM) instance at
+                a given point in time.
 
-                You can use this API resource to determine the inventory
-                data of your VM.
+                You can use this API resource to
+                determine the inventory data of your VM.
 
-                For more information, see `Information provided by OS
-                inventory
-                management <https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>`__.
+                For more information, see [Information
+                provided by OS inventory
+                management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
 
             """
 
@@ -1434,18 +1435,22 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.os_policy_assignments.OSPolicyAssignment:
-                    OS policy assignment is an API resource that is used to
-                apply a set of OS policies to a dynamically targeted
-                group of Compute Engine VM instances.
+                    OS policy assignment is an API resource
+                that is used to apply a set of OS
+                policies to a dynamically targeted group
+                of Compute Engine VM instances.
 
-                An OS policy is used to define the desired state
-                configuration for a Compute Engine VM instance through a
-                set of configuration resources that provide capabilities
-                such as installing or removing software packages, or
-                executing a script.
+                An OS policy is used to define the
+                desired state configuration for a
+                Compute Engine VM instance through a set
+                of configuration resources that provide
+                capabilities such as installing or
+                removing software packages, or executing
+                a script.
 
-                For more information, see `OS policy and OS policy
-                assignment <https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies>`__.
+                For more information, see [OS policy and
+                OS policy
+                assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
             """
 
@@ -1757,12 +1762,13 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.vulnerability.VulnerabilityReport:
-                    This API resource represents the vulnerability report
-                for a specified Compute Engine virtual machine (VM)
+                    This API resource represents the
+                vulnerability report for a specified
+                Compute Engine virtual machine (VM)
                 instance at a given point in time.
 
-                For more information, see `Vulnerability
-                reports <https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports>`__.
+                For more information, see [Vulnerability
+                reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
 
             """
 

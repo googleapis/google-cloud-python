@@ -312,11 +312,12 @@ class NodeKubeletConfig(proto.Message):
         cpu_cfs_quota_period (str):
             Optional. Set the CPU CFS quota period value
             'cpu.cfs_period_us'.
-
-            The string must be a sequence of decimal numbers, each with
-            optional fraction and a unit suffix, such as "300ms". Valid
-            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
-            The value must be a positive duration.
+            The string must be a sequence of decimal
+            numbers, each with optional fraction and a unit
+            suffix, such as "300ms".
+            Valid time units are "ns", "us" (or "µs"), "ms",
+            "s", "m", "h". The value must be a positive
+            duration.
 
             The default value is '100ms' if unspecified.
 
@@ -361,13 +362,14 @@ class NodeKubeletConfig(proto.Message):
 class Fleet(proto.Message):
     r"""Fleet related configuration.
 
-    Fleets are a Google Cloud concept for logically organizing clusters,
-    letting you use and manage multi-cluster capabilities and apply
-    consistent policies across your systems.
+    Fleets are a Google Cloud concept for logically organizing
+    clusters, letting you use and manage multi-cluster capabilities
+    and apply consistent policies across your systems.
 
-    See `Anthos
-    Fleets <https://cloud.google.com/anthos/multicluster-management/fleets>`__
-    for more details on Anthos multi-cluster capabilities using Fleets.
+    See [Anthos
+    Fleets](https://cloud.google.com/anthos/multicluster-management/fleets)
+    for more details on Anthos multi-cluster capabilities using
+    Fleets.
 
     Attributes:
         project (str):

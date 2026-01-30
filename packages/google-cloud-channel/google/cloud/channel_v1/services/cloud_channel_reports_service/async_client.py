@@ -68,13 +68,13 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class CloudChannelReportsServiceAsyncClient:
     """CloudChannelReportsService lets Google Cloud resellers and
-    distributors retrieve and combine a variety of data in Cloud Channel
-    for multiple products (Google Cloud, Google Voice, and Google
-    Workspace.)
+    distributors retrieve and combine a variety of data in Cloud
+    Channel for multiple products (Google Cloud, Google Voice, and
+    Google Workspace.)
 
-    Deprecated: This service is being deprecated. Please use `Export
+    Deprecated: This service is being deprecated. Please use [Export
     Channel Services data to
-    BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
+    BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
     instead.
     """
 
@@ -604,12 +604,12 @@ class CloudChannelReportsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListReportsAsyncPager:
-        r"""Lists the reports that RunReportJob can run. These reports
-        include an ID, a description, and the list of columns that will
-        be in the result.
+        r"""Lists the reports that RunReportJob can run. These
+        reports include an ID, a description, and the list of
+        columns that will be in the result.
 
-        Deprecated: Please use `Export Channel Services data to
-        BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
+        Deprecated: Please use [Export Channel Services data to
+        BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
         instead.
 
         .. code-block:: python
@@ -644,8 +644,9 @@ class CloudChannelReportsServiceAsyncClient:
                 The request object. Request message for
                 [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
             parent (:class:`str`):
-                Required. The resource name of the partner account to
-                list available reports for. Parent uses the format:
+                Required. The resource name of the
+                partner account to list available
+                reports for. Parent uses the format:
                 accounts/{account_id}
 
                 This corresponds to the ``parent`` field

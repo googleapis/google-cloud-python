@@ -91,8 +91,8 @@ class ListConversationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -417,9 +417,10 @@ class Conversation(proto.Message):
             response (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse):
                 The final response of the interaction.
             partial_responses (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse]):
-                The partial responses of the interaction. Empty if there is
-                no partial response in the interaction. See the [partial
-                response
+                The partial responses of the interaction. Empty
+                if there is no partial response in the
+                interaction. See the
+                [partial response
                 documentation][https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#queue].
             request_utterances (str):
                 The input text or the transcript of the input

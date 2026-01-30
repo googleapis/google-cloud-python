@@ -115,7 +115,8 @@ class TestCasesClientMeta(type):
 
 class TestCasesClient(metaclass=TestCasesClientMeta):
     """Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test Case
+    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test
+    Case
     Results][google.cloud.dialogflow.cx.v3beta1.TestCaseResult].
     """
 

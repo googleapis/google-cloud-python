@@ -68,8 +68,8 @@ class QueryUsageHistoriesRequest(proto.Message):
             Optional. The location level of the
             reservations usage timeseries.
         is_spot (bool):
-            Optional. The is_spot flag is used to fetch the usage data
-            for preemptible Resources.
+            Optional. The is_spot flag is used to fetch the
+            usage data for preemptible Resources.
         machine_family (str):
             The machine family for the ``UsageHistory`` values to
             return. Possible values include "n1", and "n2d". See
@@ -103,9 +103,10 @@ class QueryUsageHistoriesRequest(proto.Message):
             "gce-tpu". Empty cloud_resource_type will return results
             matching all resources.
         usage_aggregation_method (google.cloud.capacityplanner_v1beta.types.UsageHistory.AggregationMethod):
-            The method that should be used to convert sampled usage data
-            to daily usage values. AGGREGATION_METHOD_UNSPECIFIED will
-            return results matching all the aggregation methods.
+            The method that should be used to convert
+            sampled usage data to daily usage values.
+            AGGREGATION_METHOD_UNSPECIFIED will return
+            results matching all the aggregation methods.
         start_date (google.type.date_pb2.Date):
             Optional. The start date of reservations
             usage.
@@ -324,19 +325,21 @@ class QueryReservationsRequest(proto.Message):
             Optional. The location level of the
             reservations usage timeseries.
         machine_family (str):
-            Optional. The machine family to use to select the aggregate
-            reserved values to return. Possible values include "n1", and
-            "n2d" etc. Empty machine_family will return results matching
-            all machine families.
+            Optional. The machine family to use to select
+            the aggregate reserved values to return.
+            Possible values include "n1", and "n2d" etc.
+            Empty machine_family will return results
+            matching all machine families.
         machine_shape (google.cloud.capacityplanner_v1beta.types.MachineShape):
-            Optional. The machine_shape as a filter to select matching
-            reservations.
+            Optional. The machine_shape as a filter to
+            select matching reservations.
         gpu_type (str):
-            Optional. The GPU type for the reserved values to return.
-            Sample values are "nvidia-tesla-t4", and
-            "nvidia-tesla-a100". See
-            https://cloud.google.com/compute/docs/gpus for a list. Empty
-            gpu_type will return results matching all GPUs.
+            Optional. The GPU type for the reserved values
+            to return. Sample values are "nvidia-tesla-t4",
+            and "nvidia-tesla-a100". See
+            https://cloud.google.com/compute/docs/gpus for a
+            list. Empty gpu_type will return results
+            matching all GPUs.
         cloud_resource_type (str):
             Required. The resource for the reserved
             values to return. Possible values include
@@ -1036,10 +1039,11 @@ class ExportUsageHistoriesRequest(proto.Message):
             "gce-local-ssd", "gce-persistent-disk", "gce-gpu" and
             "gce-tpu".
         usage_aggregation_method (google.cloud.capacityplanner_v1beta.types.UsageHistory.AggregationMethod):
-            Optional. The method that should be used to convert sampled
-            usage data to daily usage values.
-            AGGREGATION_METHOD_UNSPECIFIED will return results matching
-            all the aggregation methods.
+            Optional. The method that should be used to
+            convert sampled usage data to daily usage
+            values. AGGREGATION_METHOD_UNSPECIFIED will
+            return results matching all the aggregation
+            methods.
         start_date (google.type.date_pb2.Date):
             Optional. The start date of usage.
         end_date (google.type.date_pb2.Date):
@@ -1232,8 +1236,8 @@ class ExportReservationsUsageRequest(proto.Message):
 
             This field is a member of `oneof`_ ``resource``.
         machine_shape (google.cloud.capacityplanner_v1beta.types.MachineShape):
-            Optional. The machine_shape as a filter to select matching
-            reservations and its usage.
+            Optional. The machine_shape as a filter to
+            select matching reservations and its usage.
 
             This field is a member of `oneof`_ ``resource``.
         gpu_type (str):
@@ -1425,9 +1429,10 @@ class BigQueryDestination(proto.Message):
     Attributes:
         dataset (str):
             Required. The BigQuery dataset in format
-            "projects/{projectId}/datasets/{datasetId}", to which the
-            snapshot result should be exported. If this dataset does not
-            exist, the export call returns an INVALID_ARGUMENT error.
+            "projects/{projectId}/datasets/{datasetId}", to
+            which the snapshot result should be exported. If
+            this dataset does not exist, the export call
+            returns an INVALID_ARGUMENT error.
         table (str):
             Required. The BigQuery table to which the
             snapshot result should be written.

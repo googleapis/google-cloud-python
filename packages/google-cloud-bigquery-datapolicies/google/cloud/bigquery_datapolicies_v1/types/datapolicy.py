@@ -241,9 +241,10 @@ class DataPolicy(proto.Message):
         data_policy_type (google.cloud.bigquery_datapolicies_v1.types.DataPolicy.DataPolicyType):
             Type of data policy.
         data_policy_id (str):
-            User-assigned (human readable) ID of the data policy that
-            needs to be unique within a project. Used as
-            {data_policy_id} in part of the resource name.
+            User-assigned (human readable) ID of the data
+            policy that needs to be unique within a project.
+            Used as {data_policy_id} in part of the resource
+            name.
     """
 
     class DataPolicyType(proto.Enum):
@@ -316,6 +317,7 @@ class DataMaskingPolicy(proto.Message):
 
     class PredefinedExpression(proto.Enum):
         r"""The available masking rules. Learn more here:
+
         https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.
 
         Values:

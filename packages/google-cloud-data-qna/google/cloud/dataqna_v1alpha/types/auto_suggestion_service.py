@@ -105,10 +105,11 @@ class Suggestion(proto.Message):
         suggestion_info (google.cloud.dataqna_v1alpha.types.SuggestionInfo):
             Detailed information about the suggestion.
         ranking_score (float):
-            The score of the suggestion. This can be used to define
-            ordering in UI. The score represents confidence in the
-            suggestion where higher is better. All score values must be
-            in the range [0, 1).
+            The score of the suggestion. This can be used to
+            define ordering in UI. The score represents
+            confidence in the suggestion where higher is
+            better. All score values must be in the range
+            [0, 1).
         suggestion_type (google.cloud.dataqna_v1alpha.types.SuggestionType):
             The type of the suggestion.
     """

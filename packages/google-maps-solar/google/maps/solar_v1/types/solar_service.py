@@ -137,9 +137,10 @@ class Experiment(proto.Enum):
         EXPERIMENT_UNSPECIFIED (0):
             No experiments are specified.
         EXPANDED_COVERAGE (1):
-            Expands the geographic region available for querying solar
-            data. For more information, see `Expanded
-            Coverage <https://developers.google.com/maps/documentation/solar/expanded-coverage>`__.
+            Expands the geographic region available for
+            querying solar data. For more information, see
+            [Expanded
+            Coverage](https://developers.google.com/maps/documentation/solar/expanded-coverage).
     """
     EXPERIMENT_UNSPECIFIED = 0
     EXPANDED_COVERAGE = 1

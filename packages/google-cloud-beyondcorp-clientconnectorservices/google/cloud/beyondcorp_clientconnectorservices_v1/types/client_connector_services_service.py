@@ -411,12 +411,14 @@ class UpdateClientConnectorServiceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the ClientConnectorService resource by the
-            update. The fields specified in the update_mask are relative
-            to the resource, not the full request. A field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the
+            ClientConnectorService resource by the update.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then
+            all fields will be overwritten.
 
             Mutable fields: display_name.
         client_connector_service (google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService):

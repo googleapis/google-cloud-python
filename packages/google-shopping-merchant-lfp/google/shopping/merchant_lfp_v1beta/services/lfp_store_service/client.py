@@ -108,8 +108,8 @@ class LfpStoreServiceClientMeta(type):
 
 
 class LfpStoreServiceClient(metaclass=LfpStoreServiceClientMeta):
-    """Service for a `LFP
-    partner <https://support.google.com/merchants/answer/7676652>`__ to
+    """Service for a [LFP
+    partner](https://support.google.com/merchants/answer/7676652) to
     submit local stores for a merchant.
     """
 

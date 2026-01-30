@@ -71,9 +71,10 @@ class RestoreChannel(proto.Message):
             ensure that their change will be applied to the same version
             of the resource.
         destination_project_id (str):
-            Output only. The project_id where backups will be restored.
-            Example Project ID: "my-project-id". This will be an
-            OUTPUT_ONLY field to return the project_id of the
+            Output only. The project_id where backups will
+            be restored. Example Project ID:
+            "my-project-id". This will be an OUTPUT_ONLY
+            field to return the project_id of the
             destination project.
     """
 

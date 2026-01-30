@@ -64,8 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class LfpSaleServiceAsyncClient:
-    """Service for a `LFP
-    partner <https://support.google.com/merchants/answer/7676652>`__ to
+    """Service for a [LFP
+    partner](https://support.google.com/merchants/answer/7676652) to
     submit sales data for a merchant.
     """
 

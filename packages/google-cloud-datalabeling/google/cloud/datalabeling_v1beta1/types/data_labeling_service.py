@@ -85,6 +85,7 @@ class CreateDatasetRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Dataset resource parent, format:
+
             projects/{project_id}
         dataset (google.cloud.datalabeling_v1beta1.types.Dataset):
             Required. The dataset to be created.
@@ -107,6 +108,7 @@ class GetDatasetRequest(proto.Message):
     Attributes:
         name (str):
             Required. Dataset resource name, format:
+
             projects/{project_id}/datasets/{dataset_id}
     """
 
@@ -122,6 +124,7 @@ class ListDatasetsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Dataset resource parent, format:
+
             projects/{project_id}
         filter (str):
             Optional. Filter on dataset is not supported
@@ -187,6 +190,7 @@ class DeleteDatasetRequest(proto.Message):
     Attributes:
         name (str):
             Required. Dataset resource name, format:
+
             projects/{project_id}/datasets/{dataset_id}
     """
 
@@ -202,6 +206,7 @@ class ImportDataRequest(proto.Message):
     Attributes:
         name (str):
             Required. Dataset resource name, format:
+
             projects/{project_id}/datasets/{dataset_id}
         input_config (google.cloud.datalabeling_v1beta1.types.InputConfig):
             Required. Specify the input source of the
@@ -233,11 +238,13 @@ class ExportDataRequest(proto.Message):
     Attributes:
         name (str):
             Required. Dataset resource name, format:
+
             projects/{project_id}/datasets/{dataset_id}
         annotated_dataset (str):
-            Required. Annotated dataset resource name. DataItem in
-            Dataset and their annotations in specified annotated dataset
-            will be exported. It's in format of
+            Required. Annotated dataset resource name.
+            DataItem in Dataset and their annotations in
+            specified annotated dataset will be exported.
+            It's in format of
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}
         filter (str):
@@ -279,7 +286,8 @@ class GetDataItemRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the data item to get, format:
+            Required. The name of the data item to get,
+            format:
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
@@ -294,7 +302,8 @@ class ListDataItemsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the dataset to list data items, format:
+            Required. Name of the dataset to list data
+            items, format:
             projects/{project_id}/datasets/{dataset_id}
         filter (str):
             Optional. Filter is not supported at this
@@ -359,7 +368,8 @@ class GetAnnotatedDatasetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the annotated dataset to get, format:
+            Required. Name of the annotated dataset to get,
+            format:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}
     """
@@ -375,8 +385,9 @@ class ListAnnotatedDatasetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the dataset to list annotated datasets,
-            format: projects/{project_id}/datasets/{dataset_id}
+            Required. Name of the dataset to list annotated
+            datasets, format:
+            projects/{project_id}/datasets/{dataset_id}
         filter (str):
             Optional. Filter is not supported at this
             moment.
@@ -442,7 +453,8 @@ class DeleteAnnotatedDatasetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the annotated dataset to delete, format:
+            Required. Name of the annotated dataset to
+            delete, format:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}
     """
@@ -465,32 +477,37 @@ class LabelImageRequest(proto.Message):
 
     Attributes:
         image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
-            Configuration for image classification task. One of
-            image_classification_config, bounding_poly_config,
-            polyline_config and segmentation_config are required.
+            Configuration for image classification task.
+            One of image_classification_config,
+            bounding_poly_config, polyline_config and
+            segmentation_config are required.
 
             This field is a member of `oneof`_ ``request_config``.
         bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
-            Configuration for bounding box and bounding poly task. One
-            of image_classification_config, bounding_poly_config,
-            polyline_config and segmentation_config are required.
+            Configuration for bounding box and bounding poly
+            task. One of image_classification_config,
+            bounding_poly_config, polyline_config and
+            segmentation_config are required.
 
             This field is a member of `oneof`_ ``request_config``.
         polyline_config (google.cloud.datalabeling_v1beta1.types.PolylineConfig):
-            Configuration for polyline task. One of
-            image_classification_config, bounding_poly_config,
-            polyline_config and segmentation_config are required.
+            Configuration for polyline task.
+            One of image_classification_config,
+            bounding_poly_config, polyline_config and
+            segmentation_config are required.
 
             This field is a member of `oneof`_ ``request_config``.
         segmentation_config (google.cloud.datalabeling_v1beta1.types.SegmentationConfig):
-            Configuration for segmentation task. One of
-            image_classification_config, bounding_poly_config,
-            polyline_config and segmentation_config are required.
+            Configuration for segmentation task.
+            One of image_classification_config,
+            bounding_poly_config, polyline_config and
+            segmentation_config are required.
 
             This field is a member of `oneof`_ ``request_config``.
         parent (str):
-            Required. Name of the dataset to request labeling task,
-            format: projects/{project_id}/datasets/{dataset_id}
+            Required. Name of the dataset to request
+            labeling task, format:
+            projects/{project_id}/datasets/{dataset_id}
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
         feature (google.cloud.datalabeling_v1beta1.types.LabelImageRequest.Feature):
@@ -586,32 +603,37 @@ class LabelVideoRequest(proto.Message):
 
     Attributes:
         video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
-            Configuration for video classification task. One of
-            video_classification_config, object_detection_config,
-            object_tracking_config and event_config is required.
+            Configuration for video classification task.
+            One of video_classification_config,
+            object_detection_config, object_tracking_config
+            and event_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         object_detection_config (google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig):
-            Configuration for video object detection task. One of
-            video_classification_config, object_detection_config,
-            object_tracking_config and event_config is required.
+            Configuration for video object detection task.
+            One of video_classification_config,
+            object_detection_config, object_tracking_config
+            and event_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         object_tracking_config (google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig):
-            Configuration for video object tracking task. One of
-            video_classification_config, object_detection_config,
-            object_tracking_config and event_config is required.
+            Configuration for video object tracking task.
+            One of video_classification_config,
+            object_detection_config, object_tracking_config
+            and event_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         event_config (google.cloud.datalabeling_v1beta1.types.EventConfig):
-            Configuration for video event task. One of
-            video_classification_config, object_detection_config,
-            object_tracking_config and event_config is required.
+            Configuration for video event task.
+            One of video_classification_config,
+            object_detection_config, object_tracking_config
+            and event_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         parent (str):
-            Required. Name of the dataset to request labeling task,
-            format: projects/{project_id}/datasets/{dataset_id}
+            Required. Name of the dataset to request
+            labeling task, format:
+            projects/{project_id}/datasets/{dataset_id}
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
         feature (google.cloud.datalabeling_v1beta1.types.LabelVideoRequest.Feature):
@@ -698,20 +720,21 @@ class LabelTextRequest(proto.Message):
 
     Attributes:
         text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
-            Configuration for text classification task. One of
-            text_classification_config and text_entity_extraction_config
-            is required.
+            Configuration for text classification task.
+            One of text_classification_config and
+            text_entity_extraction_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         text_entity_extraction_config (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig):
-            Configuration for entity extraction task. One of
-            text_classification_config and text_entity_extraction_config
-            is required.
+            Configuration for entity extraction task.
+            One of text_classification_config and
+            text_entity_extraction_config is required.
 
             This field is a member of `oneof`_ ``request_config``.
         parent (str):
-            Required. Name of the data set to request labeling task,
-            format: projects/{project_id}/datasets/{dataset_id}
+            Required. Name of the data set to request
+            labeling task, format:
+            projects/{project_id}/datasets/{dataset_id}
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
         feature (google.cloud.datalabeling_v1beta1.types.LabelTextRequest.Feature):
@@ -769,12 +792,14 @@ class GetExampleRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of example, format:
+
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}/examples/{example_id}
         filter (str):
-            Optional. An expression for filtering Examples. Filter by
-            annotation_spec.display_name is supported. Format
-            "annotation_spec.display_name = {display_name}".
+            Optional. An expression for filtering Examples.
+            Filter by annotation_spec.display_name is
+            supported. Format "annotation_spec.display_name
+            = {display_name}".
     """
 
     name: str = proto.Field(
@@ -794,10 +819,11 @@ class ListExamplesRequest(proto.Message):
         parent (str):
             Required. Example resource parent.
         filter (str):
-            Optional. An expression for filtering Examples. For
-            annotated datasets that have annotation spec set, filter by
-            annotation_spec.display_name is supported. Format
-            "annotation_spec.display_name = {display_name}".
+            Optional. An expression for filtering Examples.
+            For annotated datasets that have annotation spec
+            set, filter by annotation_spec.display_name is
+            supported. Format "annotation_spec.display_name
+            = {display_name}".
         page_size (int):
             Optional. Requested page size. Server may
             return fewer results than requested. Default
@@ -858,12 +884,13 @@ class CreateAnnotationSpecSetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. AnnotationSpecSet resource parent, format:
-            projects/{project_id}
+            Required. AnnotationSpecSet resource parent,
+            format: projects/{project_id}
         annotation_spec_set (google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet):
-            Required. Annotation spec set to create. Annotation specs
-            must be included. Only one annotation spec will be accepted
-            for annotation specs with same display_name.
+            Required. Annotation spec set to create.
+            Annotation specs must be included. Only one
+            annotation spec will be accepted for annotation
+            specs with same display_name.
     """
 
     parent: str = proto.Field(
@@ -882,7 +909,8 @@ class GetAnnotationSpecSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. AnnotationSpecSet resource name, format:
+            Required. AnnotationSpecSet resource name,
+            format:
             projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
     """
 
@@ -897,8 +925,8 @@ class ListAnnotationSpecSetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent of AnnotationSpecSet resource, format:
-            projects/{project_id}
+            Required. Parent of AnnotationSpecSet resource,
+            format: projects/{project_id}
         filter (str):
             Optional. Filter is not supported at this
             moment.
@@ -980,6 +1008,7 @@ class CreateInstructionRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Instruction resource parent, format:
+
             projects/{project_id}
         instruction (google.cloud.datalabeling_v1beta1.types.Instruction):
             Required. Instruction of how to perform the
@@ -1003,6 +1032,7 @@ class GetInstructionRequest(proto.Message):
     Attributes:
         name (str):
             Required. Instruction resource name, format:
+
             projects/{project_id}/instructions/{instruction_id}
     """
 
@@ -1018,6 +1048,7 @@ class DeleteInstructionRequest(proto.Message):
     Attributes:
         name (str):
             Required. Instruction resource name, format:
+
             projects/{project_id}/instructions/{instruction_id}
     """
 
@@ -1033,6 +1064,7 @@ class ListInstructionsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. Instruction resource parent, format:
+
             projects/{project_id}
         filter (str):
             Optional. Filter is not supported at this
@@ -1099,7 +1131,7 @@ class GetEvaluationRequest(proto.Message):
         name (str):
             Required. Name of the evaluation. Format:
 
-            "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+            "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>'
     """
 
     name: str = proto.Field(
@@ -1113,8 +1145,8 @@ class SearchEvaluationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Evaluation search parent (project ID). Format:
-            "projects/{project_id}".
+            Required. Evaluation search parent (project ID).
+            Format: "projects/<var>{project_id}</var>".
         filter (str):
             Optional. To search evaluations, you can filter by the
             following:
@@ -1297,8 +1329,8 @@ class CreateEvaluationJobRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Evaluation job resource parent. Format:
-            "projects/{project_id}".
+            Required. Evaluation job resource parent.
+            Format: "projects/<var>{project_id}</var>".
         job (google.cloud.datalabeling_v1beta1.types.EvaluationJob):
             Required. The evaluation job to create.
     """
@@ -1352,7 +1384,7 @@ class GetEvaluationJobRequest(proto.Message):
         name (str):
             Required. Name of the evaluation job. Format:
 
-            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
+            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
     """
 
     name: str = proto.Field(
@@ -1366,10 +1398,9 @@ class PauseEvaluationJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the evaluation job that is going to be
-            paused. Format:
-
-            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
+            Required. Name of the evaluation job that is
+            going to be paused. Format:
+            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
     """
 
     name: str = proto.Field(
@@ -1383,10 +1414,9 @@ class ResumeEvaluationJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the evaluation job that is going to be
-            resumed. Format:
-
-            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
+            Required. Name of the evaluation job that is
+            going to be resumed. Format:
+            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
     """
 
     name: str = proto.Field(
@@ -1400,10 +1430,9 @@ class DeleteEvaluationJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the evaluation job that is going to be
-            deleted. Format:
-
-            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
+            Required. Name of the evaluation job that is
+            going to be deleted. Format:
+            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
     """
 
     name: str = proto.Field(
@@ -1417,8 +1446,8 @@ class ListEvaluationJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Evaluation job resource parent. Format:
-            "projects/{project_id}".
+            Required. Evaluation job resource parent.
+            Format: "projects/<var>{project_id}</var>".
         filter (str):
             Optional. You can filter the jobs to list by model_id (also
             known as model_name, as described in

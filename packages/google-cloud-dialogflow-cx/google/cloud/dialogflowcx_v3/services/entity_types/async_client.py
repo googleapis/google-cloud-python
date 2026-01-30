@@ -448,8 +448,8 @@ class EntityTypesAsyncClient:
         r"""Creates an entity type in the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -608,8 +608,8 @@ class EntityTypesAsyncClient:
         r"""Updates the specified entity type.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -768,8 +768,8 @@ class EntityTypesAsyncClient:
         r"""Deletes the specified entity type.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 

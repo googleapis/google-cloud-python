@@ -384,12 +384,14 @@ class RuntimeProjectAttachmentServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             runtime_project_attachment_id (:class:`str`):
-                Required. The ID to use for the Runtime Project
-                Attachment, which will become the final component of the
-                Runtime Project Attachment's name. The ID must be the
-                same as the project ID of the Google cloud project
-                specified in the
-                runtime_project_attachment.runtime_project field.
+                Required. The ID to use for the Runtime
+                Project Attachment, which will become
+                the final component of the Runtime
+                Project Attachment's name. The ID must
+                be the same as the project ID of the
+                Google cloud project specified in the
+                runtime_project_attachment.runtime_project
+                field.
 
                 This corresponds to the ``runtime_project_attachment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

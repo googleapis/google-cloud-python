@@ -936,8 +936,9 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 The request object. Request message for
                 DocumentSchemaService.UpdateDocumentSchema.
             name (str):
-                Required. The name of the document schema to update.
-                Format:
+                Required. The name of the document
+                schema to update. Format:
+
                 projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
 
                 This corresponds to the ``name`` field
@@ -1023,8 +1024,8 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_schema.DocumentSchema:
-        r"""Gets a document schema. Returns NOT_FOUND if the document schema
-        does not exist.
+        r"""Gets a document schema. Returns NOT_FOUND if the
+        document schema does not exist.
 
         .. code-block:: python
 
@@ -1134,9 +1135,9 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a document schema. Returns NOT_FOUND if the document
-        schema does not exist. Returns BAD_REQUEST if the document
-        schema has documents depending on it.
+        r"""Deletes a document schema. Returns NOT_FOUND if the
+        document schema does not exist. Returns BAD_REQUEST if
+        the document schema has documents depending on it.
 
         .. code-block:: python
 
@@ -1268,8 +1269,8 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 The request object. Request message for
                 DocumentSchemaService.ListDocumentSchemas.
             parent (str):
-                Required. The parent, which owns this collection of
-                document schemas. Format:
+                Required. The parent, which owns this
+                collection of document schemas. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

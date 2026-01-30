@@ -80,8 +80,9 @@ class ExploitPredictionScoringSystem(proto.Message):
             proportion of all scored vulnerabilities with
             the same or a lower EPSS score
         score (float):
-            The EPSS score representing the probability [0-1] of
-            exploitation in the wild in the next 30 days
+            The EPSS score representing the probability
+            [0-1] of exploitation in the wild in the next 30
+            days
     """
 
     percentile: float = proto.Field(

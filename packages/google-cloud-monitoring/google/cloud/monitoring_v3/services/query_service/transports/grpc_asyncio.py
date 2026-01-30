@@ -341,10 +341,11 @@ class QueryServiceGrpcAsyncIOTransport(QueryServiceTransport):
     ]:
         r"""Return a callable for the query time series method over gRPC.
 
-        Queries time series by using Monitoring Query Language (MQL). We
-        recommend using PromQL instead of MQL. For more information
-        about the status of MQL, see the `MQL deprecation
-        notice <https://cloud.google.com/stackdriver/docs/deprecations/mql>`__.
+        Queries time series by using Monitoring Query Language
+        (MQL). We recommend using PromQL instead of MQL. For
+        more information about the status of MQL, see the [MQL
+        deprecation
+        notice](https://cloud.google.com/stackdriver/docs/deprecations/mql).
 
         Returns:
             Callable[[~.QueryTimeSeriesRequest],

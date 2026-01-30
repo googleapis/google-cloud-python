@@ -174,9 +174,9 @@ class AttributionSettings(proto.Message):
     """
 
     class AttributionModel(proto.Enum):
-        r"""The attribution model used for this source. We support the same set
-        of `models offered by Google Analytics
-        4 <https://support.google.com/analytics/answer/10596866>`__.
+        r"""The attribution model used for this source. We support the same
+        set of [models offered by Google Analytics
+        4](https://support.google.com/analytics/answer/10596866).
 
         Values:
             ATTRIBUTION_MODEL_UNSPECIFIED (0):

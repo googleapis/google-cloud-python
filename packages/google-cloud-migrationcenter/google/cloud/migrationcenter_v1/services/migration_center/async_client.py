@@ -3702,7 +3702,9 @@ class MigrationCenterAsyncClient:
             request (Optional[Union[google.cloud.migrationcenter_v1.types.GetErrorFrameRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the frame to retrieve. Format:
+                Required. The name of the frame to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/sources/{source}/errorFrames/{error_frame}
 
                 This corresponds to the ``name`` field

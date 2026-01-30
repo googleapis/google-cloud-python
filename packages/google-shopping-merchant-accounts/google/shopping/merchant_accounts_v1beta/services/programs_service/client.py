@@ -110,15 +110,17 @@ class ProgramsServiceClientMeta(type):
 class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
     """Service for program management.
 
-    Programs provide a mechanism for adding functionality to merchant
-    accounts. A typical example of this is the `Free product
-    listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
-    program, which enables products from a merchant's store to be shown
-    across Google for free.
+    Programs provide a mechanism for adding functionality to
+    merchant accounts. A typical example of this is the [Free
+    product
+    listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+    program, which enables products from a merchant's store to be
+    shown across Google for free.
 
-    This service exposes methods to retrieve a merchant's participation
-    in all available programs, in addition to methods for explicitly
-    enabling or disabling participation in each program.
+    This service exposes methods to retrieve a merchant's
+    participation in all available programs, in addition to methods
+    for explicitly enabling or disabling participation in each
+    program.
     """
 
     @staticmethod
@@ -794,15 +796,16 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program for the
-                specified account.
-
-                   Programs provide a mechanism for adding functionality
-                   to merchant accounts. A typical example of this is
-                   the [Free product
-                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                   program, which enables products from a merchant's
-                   store to be shown across Google for free.
+                Defines participation in a given program
+                for the specified account.
+                Programs provide a mechanism for adding
+                functionality to merchant accounts. A
+                typical example of this is the [Free
+                product
+                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                program, which enables products from a
+                merchant's store to be shown across
+                Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -1034,15 +1037,16 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program for the
-                specified account.
-
-                   Programs provide a mechanism for adding functionality
-                   to merchant accounts. A typical example of this is
-                   the [Free product
-                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                   program, which enables products from a merchant's
-                   store to be shown across Google for free.
+                Defines participation in a given program
+                for the specified account.
+                Programs provide a mechanism for adding
+                functionality to merchant accounts. A
+                typical example of this is the [Free
+                product
+                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                program, which enables products from a
+                merchant's store to be shown across
+                Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -1152,15 +1156,16 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program for the
-                specified account.
-
-                   Programs provide a mechanism for adding functionality
-                   to merchant accounts. A typical example of this is
-                   the [Free product
-                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                   program, which enables products from a merchant's
-                   store to be shown across Google for free.
+                Defines participation in a given program
+                for the specified account.
+                Programs provide a mechanism for adding
+                functionality to merchant accounts. A
+                typical example of this is the [Free
+                product
+                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                program, which enables products from a
+                merchant's store to be shown across
+                Google for free.
 
         """
         # Create or coerce a protobuf request object.

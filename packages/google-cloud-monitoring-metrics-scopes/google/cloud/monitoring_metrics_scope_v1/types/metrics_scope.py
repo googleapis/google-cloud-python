@@ -30,10 +30,10 @@ __protobuf__ = proto.module(
 
 
 class MetricsScope(proto.Message):
-    r"""Represents a `Metrics
-    Scope <https://cloud.google.com/monitoring/settings#concept-scope>`__
-    in Cloud Monitoring, which specifies one or more Google projects and
-    zero or more AWS accounts to monitor together.
+    r"""Represents a [Metrics
+    Scope](https://cloud.google.com/monitoring/settings#concept-scope)
+    in Cloud Monitoring, which specifies one or more Google projects
+    and zero or more AWS accounts to monitor together.
 
     Attributes:
         name (str):

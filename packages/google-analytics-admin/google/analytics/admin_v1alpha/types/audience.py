@@ -93,35 +93,41 @@ class AudienceDimensionOrMetricFilter(proto.Message):
 
             This field is a member of `oneof`_ ``one_filter``.
         field_name (str):
-            Required. Immutable. The dimension name or metric name to
-            filter. If the field name refers to a custom dimension or
-            metric, a scope prefix will be added to the front of the
-            custom dimensions or metric name. For more on scope prefixes
-            or custom dimensions/metrics, reference the [Google
-            Analytics Data API documentation]
+            Required. Immutable. The dimension name or
+            metric name to filter. If the field name refers
+            to a custom dimension or metric, a scope prefix
+            will be added to the front of the custom
+            dimensions or metric name. For more on scope
+            prefixes or custom dimensions/metrics, reference
+            the [Google Analytics Data API documentation]
             (https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#custom_dimensions).
         at_any_point_in_time (bool):
-            Optional. Indicates whether this filter needs dynamic
-            evaluation or not. If set to true, users join the Audience
-            if they ever met the condition (static evaluation). If unset
-            or set to false, user evaluation for an Audience is dynamic;
-            users are added to an Audience when they meet the conditions
-            and then removed when they no longer meet them.
+            Optional. Indicates whether this filter needs
+            dynamic evaluation or not. If set to true, users
+            join the Audience if they ever met the condition
+            (static evaluation). If unset or set to false,
+            user evaluation for an Audience is dynamic;
+            users are added to an Audience when they meet
+            the conditions and then removed when they no
+            longer meet them.
 
             This can only be set when Audience scope is
             ACROSS_ALL_SESSIONS.
         in_any_n_day_period (int):
-            Optional. If set, specifies the time window for which to
-            evaluate data in number of days. If not set, then audience
-            data is evaluated against lifetime data (For example,
-            infinite time window).
+            Optional. If set, specifies the time window for
+            which to evaluate data in number of days. If not
+            set, then audience data is evaluated against
+            lifetime data (For example, infinite time
+            window).
 
-            For example, if set to 1 day, only the current day's data is
-            evaluated. The reference point is the current day when
-            at_any_point_in_time is unset or false.
+            For example, if set to 1 day, only the current
+            day's data is evaluated. The reference point is
+            the current day when at_any_point_in_time is
+            unset or false.
 
             It can only be set when Audience scope is
-            ACROSS_ALL_SESSIONS and cannot be greater than 60 days.
+            ACROSS_ALL_SESSIONS and cannot be greater than
+            60 days.
     """
 
     class StringFilter(proto.Message):
@@ -351,15 +357,17 @@ class AudienceEventFilter(proto.Message):
             Required. Immutable. The name of the event to
             match against.
         event_parameter_filter_expression (google.analytics.admin_v1alpha.types.AudienceFilterExpression):
-            Optional. If specified, this filter matches events that
-            match both the single event name and the parameter filter
-            expressions. AudienceEventFilter inside the parameter filter
-            expression cannot be set (For example, nested event filters
-            are not supported). This should be a single and_group of
-            dimension_or_metric_filter or not_expression; ANDs of ORs
-            are not supported. Also, if it includes a filter for
-            "eventCount", only that one will be considered; all the
-            other filters will be ignored.
+            Optional. If specified, this filter matches
+            events that match both the single event name and
+            the parameter filter expressions.
+            AudienceEventFilter inside the parameter filter
+            expression cannot be set (For example, nested
+            event filters are not supported). This should be
+            a single and_group of dimension_or_metric_filter
+            or not_expression; ANDs of ORs are not
+            supported. Also, if it includes a filter for
+            "eventCount", only that one will be considered;
+            all the other filters will be ignored.
     """
 
     event_name: str = proto.Field(
@@ -386,21 +394,23 @@ class AudienceFilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.admin_v1alpha.types.AudienceFilterExpressionList):
-            A list of expressions to be AND’ed together. It can only
-            contain AudienceFilterExpressions with or_group. This must
-            be set for the top level AudienceFilterExpression.
+            A list of expressions to be AND’ed together. It
+            can only contain AudienceFilterExpressions with
+            or_group. This must be set for the top level
+            AudienceFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.admin_v1alpha.types.AudienceFilterExpressionList):
-            A list of expressions to OR’ed together. It cannot contain
-            AudienceFilterExpressions with and_group or or_group.
+            A list of expressions to OR’ed together. It
+            cannot contain AudienceFilterExpressions with
+            and_group or or_group.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.AudienceFilterExpression):
-            A filter expression to be NOT'ed (For example, inverted,
-            complemented). It can only include a
-            dimension_or_metric_filter. This cannot be set on the top
-            level AudienceFilterExpression.
+            A filter expression to be NOT'ed (For example,
+            inverted, complemented). It can only include a
+            dimension_or_metric_filter. This cannot be set
+            on the top level AudienceFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         dimension_or_metric_filter (google.analytics.admin_v1alpha.types.AudienceDimensionOrMetricFilter):
@@ -525,11 +535,13 @@ class AudienceSequenceFilter(proto.Message):
                 step and this step. It is ignored for the first
                 step.
             constraint_duration (google.protobuf.duration_pb2.Duration):
-                Optional. When set, this step must be satisfied within the
-                constraint_duration of the previous step (For example, t[i]
-                - t[i-1] <= constraint_duration). If not set, there is no
-                duration requirement (the duration is effectively
-                unlimited). It is ignored for the first step.
+                Optional. When set, this step must be satisfied
+                within the constraint_duration of the previous
+                step (For example, t[i] - t[i-1] <=
+                constraint_duration). If not set, there is no
+                duration requirement (the duration is
+                effectively unlimited). It is ignored for the
+                first step.
             filter_expression (google.analytics.admin_v1alpha.types.AudienceFilterExpression):
                 Required. Immutable. A logical expression of
                 Audience dimension, metric, or event filters in

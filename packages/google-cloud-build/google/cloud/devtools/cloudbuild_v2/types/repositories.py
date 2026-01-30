@@ -374,8 +374,8 @@ class GitHubEnterpriseConfig(proto.Message):
             SSL certificate to use for requests to GitHub
             Enterprise.
         server_version (str):
-            Output only. GitHub Enterprise version installed at the
-            host_uri.
+            Output only. GitHub Enterprise version installed
+            at the host_uri.
     """
 
     host_uri: str = proto.Field(

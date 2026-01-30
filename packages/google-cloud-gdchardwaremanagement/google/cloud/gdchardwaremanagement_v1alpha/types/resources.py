@@ -107,10 +107,10 @@ class Order(proto.Message):
             Output only. Time when this order was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this order as key value
-            pairs. For more information about labels, see `Create and
-            manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this order as
+            key value pairs. For more information about
+            labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         state (google.cloud.gdchardwaremanagement_v1alpha.types.Order.State):
             Output only. State of this order. On order
             creation, state will be set to DRAFT.
@@ -126,8 +126,8 @@ class Order(proto.Message):
             motivation for this order. The length of this
             field must be <= 1000 characters.
         fulfillment_time (google.protobuf.timestamp_pb2.Timestamp):
-            Deprecated: Please use customer_requested_installation_date
-            instead.
+            Deprecated: Please use
+            customer_requested_installation_date instead.
         customer_requested_installation_date (google.type.date_pb2.Date):
             Optional. Customer requested installation
             date for this order.
@@ -416,10 +416,10 @@ class Site(proto.Message):
             Output only. Time when this site was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this site as key value
-            pairs. For more information about labels, see `Create and
-            manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this site as
+            key value pairs. For more information about
+            labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         organization_contact (google.cloud.gdchardwaremanagement_v1alpha.types.OrganizationContact):
             Required. Contact information for this site.
         google_maps_pin_uri (str):
@@ -522,10 +522,10 @@ class HardwareGroup(proto.Message):
             Output only. Time when this hardware group
             was last updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this hardware group as key
-            value pairs. For more information about labels, see `Create
-            and manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this hardware
+            group as key value pairs. For more information
+            about labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         hardware_count (int):
             Required. Number of hardware in this
             HardwareGroup.
@@ -545,8 +545,8 @@ class HardwareGroup(proto.Message):
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
             Deprecated: This value is not used. Use the
-            requested_installation_date field in the Order resource
-            instead.
+            requested_installation_date field in the Order
+            resource instead.
     """
 
     class State(proto.Enum):
@@ -649,10 +649,10 @@ class Hardware(proto.Message):
             Output only. Time when this hardware was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this hardware as key value
-            pairs. For more information about labels, see `Create and
-            manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this hardware
+            as key value pairs. For more information about
+            labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         order (str):
             Required. Name of the order that this hardware belongs to.
             Format:
@@ -686,10 +686,12 @@ class Hardware(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
-            Optional. Requested installation date for this hardware. If
-            not specified, this is auto-populated from the order's
-            fulfillment_time upon submission or from the HardwareGroup's
-            requested_installation_date upon order acceptance.
+            Optional. Requested installation date for this
+            hardware. If not specified, this is
+            auto-populated from the order's fulfillment_time
+            upon submission or from the HardwareGroup's
+            requested_installation_date upon order
+            acceptance.
         actual_installation_date (google.type.date_pb2.Date):
             Output only. Actual installation date for
             this hardware. Filled in by Google.
@@ -958,10 +960,10 @@ class Comment(proto.Message):
             Output only. Time when this comment was
             created.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this comment as key value
-            pairs. For more information about labels, see `Create and
-            manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this comment as
+            key value pairs. For more information about
+            labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         author (str):
             Output only. Username of the author of this
             comment. This is auto-populated from the
@@ -1024,10 +1026,10 @@ class ChangeLogEntry(proto.Message):
             Output only. Time when this change log entry
             was created.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this change log entry as
-            key value pairs. For more information about labels, see
-            `Create and manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this change log
+            entry as key value pairs. For more information
+            about labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         log (str):
             Output only. Content of this log entry.
     """
@@ -1197,10 +1199,10 @@ class Zone(proto.Message):
             Output only. Time when this zone was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this zone as key value
-            pairs. For more information about labels, see `Create and
-            manage
-            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+            Optional. Labels associated with this zone as
+            key value pairs. For more information about
+            labels, see [Create and manage
+            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
         display_name (str):
             Optional. Human friendly display name of this
             zone.
@@ -1587,8 +1589,8 @@ class HardwarePhysicalInfo(proto.Message):
             C_13 (2):
                 C13.
             STANDARD_EU (3):
-                Deprecated: Please use TYPE_G_BS1363, CEE_7_3, CEE_7_5 or
-                TYPE_F instead.
+                Deprecated: Please use TYPE_G_BS1363, CEE_7_3,
+                CEE_7_5 or TYPE_F instead.
             TYPE_G_BS1363 (4):
                 Type G / BS1363.
             CEE_7_3 (5):

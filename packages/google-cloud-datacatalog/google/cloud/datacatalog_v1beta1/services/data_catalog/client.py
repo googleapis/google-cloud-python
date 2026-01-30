@@ -2538,15 +2538,18 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         Returns:
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   Google Cloud resources. [Tag template
-                   roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
-                   provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
-                   template to tag resources.
+                A tag template defines a tag, which can
+                have one or more typed fields. The
+                template is used to create and attach
+                the tag to Google Cloud resources. [Tag
+                template
+                roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                provide permissions to create, edit, and
+                use the template. See, for example, the
+                [TagTemplate
+                User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                role, which includes permission to use
+                the tag template to tag resources.
 
         """
         warnings.warn(
@@ -2662,15 +2665,18 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         Returns:
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   Google Cloud resources. [Tag template
-                   roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
-                   provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
-                   template to tag resources.
+                A tag template defines a tag, which can
+                have one or more typed fields. The
+                template is used to create and attach
+                the tag to Google Cloud resources. [Tag
+                template
+                roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                provide permissions to create, edit, and
+                use the template. See, for example, the
+                [TagTemplate
+                User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                role, which includes permission to use
+                the tag template to tag resources.
 
         """
         warnings.warn(
@@ -2802,15 +2808,18 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         Returns:
             google.cloud.datacatalog_v1beta1.types.TagTemplate:
-                A tag template defines a tag, which can have one or more typed fields.
-                   The template is used to create and attach the tag to
-                   Google Cloud resources. [Tag template
-                   roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
-                   provide permissions to create, edit, and use the
-                   template. See, for example, the [TagTemplate
-                   User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
-                   role, which includes permission to use the tag
-                   template to tag resources.
+                A tag template defines a tag, which can
+                have one or more typed fields. The
+                template is used to create and attach
+                the tag to Google Cloud resources. [Tag
+                template
+                roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
+                provide permissions to create, edit, and
+                use the template. See, for example, the
+                [TagTemplate
+                User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
+                role, which includes permission to use
+                the tag template to tag resources.
 
         """
         warnings.warn(
@@ -3772,14 +3781,15 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         Returns:
             google.cloud.datacatalog_v1beta1.types.Tag:
-                Tags are used to attach custom metadata to Data Catalog resources. Tags
-                   conform to the specifications within their tag
-                   template.
+                Tags are used to attach custom metadata
+                to Data Catalog resources. Tags conform
+                to the specifications within their tag
+                template.
 
-                   See [Data Catalog
-                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-                   for information on the permissions needed to create
-                   or view tags.
+                See [Data Catalog
+                IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
+                for information on the permissions
+                needed to create or view tags.
 
         """
         warnings.warn("DataCatalogClient.create_tag is deprecated", DeprecationWarning)
@@ -3911,14 +3921,15 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         Returns:
             google.cloud.datacatalog_v1beta1.types.Tag:
-                Tags are used to attach custom metadata to Data Catalog resources. Tags
-                   conform to the specifications within their tag
-                   template.
+                Tags are used to attach custom metadata
+                to Data Catalog resources. Tags conform
+                to the specifications within their tag
+                template.
 
-                   See [Data Catalog
-                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-                   for information on the permissions needed to create
-                   or view tags.
+                See [Data Catalog
+                IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
+                for information on the permissions
+                needed to create or view tags.
 
         """
         warnings.warn("DataCatalogClient.update_tag is deprecated", DeprecationWarning)

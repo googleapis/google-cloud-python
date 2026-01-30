@@ -115,9 +115,10 @@ class AzureCredentials(proto.Message):
         sas_token (str):
             Required. Azure shared access signature (SAS).
 
-            For more information about SAS, see `Grant limited access to
-            Azure Storage resources using shared access signatures
-            (SAS) <https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview>`__.
+            For more information about SAS, see
+            [Grant limited access to Azure Storage resources
+            using shared access signatures
+            (SAS)](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview).
     """
 
     sas_token: str = proto.Field(
@@ -354,8 +355,9 @@ class AwsS3Data(proto.Message):
 
     Attributes:
         bucket_name (str):
-            Required. S3 Bucket name (see `Creating a
-            bucket <https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html>`__).
+            Required. S3 Bucket name (see
+            [Creating a
+            bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html)).
         aws_access_key (google.cloud.storage_transfer_v1.types.AwsAccessKey):
             Input only. AWS access key used to sign the API requests to
             the AWS S3 bucket. Permissions on the bucket must be granted
@@ -458,11 +460,11 @@ class AwsS3Data(proto.Message):
 class AzureBlobStorageData(proto.Message):
     r"""An AzureBlobStorageData resource can be a data source, but not a
     data sink. An AzureBlobStorageData resource represents one Azure
-    container. The storage account determines the `Azure
-    endpoint <https://docs.microsoft.com/en-us/azure/storage/common/storage-create-storage-account#storage-account-endpoints>`__.
-    In an AzureBlobStorageData resource, a blobs's name is the `Azure
-    Blob Storage blob's key
-    name <https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names>`__.
+    container. The storage account determines the [Azure
+    endpoint](https://docs.microsoft.com/en-us/azure/storage/common/storage-create-storage-account#storage-account-endpoints).
+    In an AzureBlobStorageData resource, a blobs's name is the
+    [Azure Blob Storage blob's key
+    name](https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names).
 
     Attributes:
         storage_account (str):
@@ -518,17 +520,17 @@ class AzureBlobStorageData(proto.Message):
     """
 
     class FederatedIdentityConfig(proto.Message):
-        r"""The identity of an Azure application through which Storage Transfer
-        Service can authenticate requests using Azure workload identity
-        federation.
+        r"""The identity of an Azure application through which Storage
+        Transfer Service can authenticate requests using Azure workload
+        identity federation.
 
-        Storage Transfer Service can issue requests to Azure Storage through
-        registered Azure applications, eliminating the need to pass
-        credentials to Storage Transfer Service directly.
+        Storage Transfer Service can issue requests to Azure Storage
+        through registered Azure applications, eliminating the need to
+        pass credentials to Storage Transfer Service directly.
 
-        To configure federated identity, see `Configure access to Microsoft
-        Azure
-        Storage <https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity>`__.
+        To configure federated identity, see
+        [Configure access to Microsoft Azure
+        Storage](https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity).
 
         Attributes:
             client_id (str):
@@ -729,13 +731,14 @@ class S3CompatibleMetadata(proto.Message):
             will attempt to determine right auth method to
             use.
         request_model (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.RequestModel):
-            Specifies the API request model used to call the storage
-            service. When not specified, the default value of
-            RequestModel REQUEST_MODEL_VIRTUAL_HOSTED_STYLE is used.
+            Specifies the API request model used to call the
+            storage service. When not specified, the default
+            value of RequestModel
+            REQUEST_MODEL_VIRTUAL_HOSTED_STYLE is used.
         protocol (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.NetworkProtocol):
-            Specifies the network protocol of the agent. When not
-            specified, the default value of NetworkProtocol
-            NETWORK_PROTOCOL_HTTPS is used.
+            Specifies the network protocol of the agent.
+            When not specified, the default value of
+            NetworkProtocol NETWORK_PROTOCOL_HTTPS is used.
         list_api (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.ListApi):
             The Listing API to use for discovering
             objects. When not specified, Transfer Service
@@ -1045,12 +1048,13 @@ class TransferSpec(proto.Message):
 
             This field is a member of `oneof`_ ``data_source``.
         gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
-            For transfers between file systems, specifies a Cloud
-            Storage bucket to be used as an intermediate location
-            through which to transfer data.
+            For transfers between file systems, specifies a
+            Cloud Storage bucket to be used as an
+            intermediate location through which to transfer
+            data.
 
-            See `Transfer data between file
-            systems <https://cloud.google.com/storage-transfer/docs/file-to-file>`__
+            See [Transfer data between file
+            systems](https://cloud.google.com/storage-transfer/docs/file-to-file)
             for more information.
 
             This field is a member of `oneof`_ ``intermediate_data_location``.
@@ -1252,9 +1256,10 @@ class MetadataOptions(proto.Message):
             to transfers involving POSIX file systems, and
             ignored for other transfers.
         acl (google.cloud.storage_transfer_v1.types.MetadataOptions.Acl):
-            Specifies how each object's ACLs should be preserved for
-            transfers between Google Cloud Storage buckets. If
-            unspecified, the default behavior is the same as
+            Specifies how each object's ACLs should be
+            preserved for transfers between Google Cloud
+            Storage buckets. If unspecified, the default
+            behavior is the same as
             ACL_DESTINATION_BUCKET_DEFAULT.
         storage_class (google.cloud.storage_transfer_v1.types.MetadataOptions.StorageClass):
             Specifies the storage class to set on objects being
@@ -1376,11 +1381,12 @@ class MetadataOptions(proto.Message):
                 Use the destination bucket's default storage
                 class.
             STORAGE_CLASS_PRESERVE (2):
-                Preserve the object's original storage class. This is only
-                supported for transfers from Google Cloud Storage buckets.
-                REGIONAL and MULTI_REGIONAL storage classes will be mapped
-                to STANDARD to ensure they can be written to the destination
-                bucket.
+                Preserve the object's original storage class.
+                This is only supported for transfers from Google
+                Cloud Storage buckets. REGIONAL and
+                MULTI_REGIONAL storage classes will be mapped to
+                STANDARD to ensure they can be written to the
+                destination bucket.
             STORAGE_CLASS_STANDARD (3):
                 Set the storage class to STANDARD.
             STORAGE_CLASS_NEARLINE (4):
@@ -1636,10 +1642,10 @@ class EventStream(proto.Message):
 
     Attributes:
         name (str):
-            Required. Specifies a unique name of the resource such as
-            AWS SQS ARN in the form
-            'arn:aws:sqs:region:account_id:queue_name', or Pub/Sub
-            subscription resource name in the form
+            Required. Specifies a unique name of the
+            resource such as AWS SQS ARN in the form
+            'arn:aws:sqs:region:account_id:queue_name', or
+            Pub/Sub subscription resource name in the form
             'projects/{project}/subscriptions/{sub}'.
         event_stream_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Specifies the date and time that Storage
@@ -2203,9 +2209,9 @@ class NotificationConfig(proto.Message):
 class LoggingConfig(proto.Message):
     r"""Specifies the logging behavior for transfer operations.
 
-    Logs can be sent to Cloud Logging for all transfer types. See `Read
-    transfer
-    logs <https://cloud.google.com/storage-transfer/docs/read-transfer-logs>`__
+    Logs can be sent to Cloud Logging for all transfer types. See
+    [Read transfer
+    logs](https://cloud.google.com/storage-transfer/docs/read-transfer-logs)
     for details.
 
     Attributes:
@@ -2216,13 +2222,14 @@ class LoggingConfig(proto.Message):
             States in which ``log_actions`` are logged. If empty, no
             logs are generated.
         enable_onprem_gcs_transfer_logs (bool):
-            For PosixFilesystem transfers, enables `file system transfer
-            logs <https://cloud.google.com/storage-transfer/docs/on-prem-transfer-log-format>`__
+            For PosixFilesystem transfers, enables
+            [file system transfer
+            logs](https://cloud.google.com/storage-transfer/docs/on-prem-transfer-log-format)
             instead of, or in addition to, Cloud Logging.
 
             This option ignores [LoggableAction] and
-            [LoggableActionState]. If these are set, Cloud Logging will
-            also be enabled for this transfer.
+            [LoggableActionState]. If these are set, Cloud
+            Logging will also be enabled for this transfer.
     """
 
     class LoggableAction(proto.Enum):

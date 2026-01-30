@@ -265,7 +265,8 @@ class ClusterConfig(proto.Message):
 
         Values:
             CLUSTER_TIER_UNSPECIFIED (0):
-                Not set. Works the same as CLUSTER_TIER_STANDARD.
+                Not set. Works the same as
+                CLUSTER_TIER_STANDARD.
             CLUSTER_TIER_STANDARD (1):
                 Standard Dataproc cluster.
             CLUSTER_TIER_PREMIUM (2):
@@ -364,8 +365,9 @@ class ClusterConfig(proto.Message):
 
 class VirtualClusterConfig(proto.Message):
     r"""The Dataproc cluster config for a cluster that does not directly
-    control the underlying compute resources, such as a `Dataproc-on-GKE
-    cluster <https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke-overview>`__.
+    control the underlying compute resources, such as a
+    [Dataproc-on-GKE
+    cluster](https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke-overview).
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -439,8 +441,9 @@ class EndpointConfig(proto.Message):
 
     Attributes:
         http_ports (MutableMapping[str, str]):
-            Output only. The map of port descriptions to URLs. Will only
-            be populated if enable_http_port_access is true.
+            Output only. The map of port descriptions to
+            URLs. Will only be populated if
+            enable_http_port_access is true.
         enable_http_port_access (bool):
             Optional. If true, enable http access to
             specific ports on the cluster from external
@@ -486,9 +489,9 @@ class EncryptionConfig(proto.Message):
 
     Attributes:
         gce_pd_kms_key_name (str):
-            Optional. The Cloud KMS key resource name to use for
-            persistent disk encryption for all instances in the cluster.
-            See [Use CMEK with cluster data]
+            Optional. The Cloud KMS key resource name to use
+            for persistent disk encryption for all instances
+            in the cluster. See [Use CMEK with cluster data]
             (https://cloud.google.com//dataproc/docs/concepts/configuring-clusters/customer-managed-encryption#use_cmek_with_cluster_data)
             for more information.
         kms_key (str):
@@ -601,15 +604,16 @@ class GceClusterConfig(proto.Message):
             Optional. The type of IPv6 access for a
             cluster.
         service_account (str):
-            Optional. The `Dataproc service
-            account <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc>`__
-            (also see `VM Data Plane
-            identity <https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity>`__)
-            used by Dataproc cluster VM instances to access Google Cloud
-            Platform services.
+            Optional. The [Dataproc service
+            account](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/service-accounts#service_accounts_in_dataproc)
+            (also see [VM Data Plane
+            identity](https://cloud.google.com/dataproc/docs/concepts/iam/dataproc-principals#vm_service_account_data_plane_identity))
+            used by Dataproc cluster VM instances to access
+            Google Cloud Platform services.
 
-            If not specified, the `Compute Engine default service
-            account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
+            If not specified, the
+            [Compute Engine default service
+            account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
             is used.
         service_account_scopes (MutableSequence[str]):
             Optional. The URIs of service account scopes to be included
@@ -628,13 +632,13 @@ class GceClusterConfig(proto.Message):
             - https://www.googleapis.com/auth/bigtable.data
             - https://www.googleapis.com/auth/devstorage.full_control
         tags (MutableSequence[str]):
-            The Compute Engine network tags to add to all instances (see
-            `Tagging
-            instances <https://cloud.google.com/vpc/docs/add-remove-network-tags>`__).
+            The Compute Engine network tags to add to all
+            instances (see [Tagging
+            instances](https://cloud.google.com/vpc/docs/add-remove-network-tags)).
         metadata (MutableMapping[str, str]):
-            Optional. The Compute Engine metadata entries to add to all
-            instances (see `Project and instance
-            metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
+            Optional. The Compute Engine metadata entries to
+            add to all instances (see [Project and instance
+            metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
         reservation_affinity (google.cloud.dataproc_v1.types.ReservationAffinity):
             Optional. Reservation Affinity for consuming
             Zonal reservation.
@@ -642,13 +646,13 @@ class GceClusterConfig(proto.Message):
             Optional. Node Group Affinity for sole-tenant
             clusters.
         shielded_instance_config (google.cloud.dataproc_v1.types.ShieldedInstanceConfig):
-            Optional. Shielded Instance Config for clusters using
-            `Compute Engine Shielded
-            VMs <https://cloud.google.com/security/shielded-cloud/shielded-vm>`__.
+            Optional. Shielded Instance Config for clusters
+            using [Compute Engine Shielded
+            VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).
         confidential_instance_config (google.cloud.dataproc_v1.types.ConfidentialInstanceConfig):
-            Optional. Confidential Instance Config for clusters using
-            `Confidential
-            VMs <https://cloud.google.com/compute/confidential-vm/docs>`__.
+            Optional. Confidential Instance Config for
+            clusters using [Confidential
+            VMs](https://cloud.google.com/compute/confidential-vm/docs).
     """
 
     class PrivateIpv6GoogleAccess(proto.Enum):
@@ -768,8 +772,9 @@ class NodeGroupAffinity(proto.Message):
 
 
 class ShieldedInstanceConfig(proto.Message):
-    r"""Shielded Instance Config for clusters using `Compute Engine Shielded
-    VMs <https://cloud.google.com/security/shielded-cloud/shielded-vm>`__.
+    r"""Shielded Instance Config for clusters using [Compute Engine
+    Shielded
+    VMs](https://cloud.google.com/security/shielded-cloud/shielded-vm).
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -810,8 +815,8 @@ class ShieldedInstanceConfig(proto.Message):
 
 
 class ConfidentialInstanceConfig(proto.Message):
-    r"""Confidential Instance Config for clusters using `Confidential
-    VMs <https://cloud.google.com/compute/confidential-vm/docs>`__
+    r"""Confidential Instance Config for clusters using [Confidential
+    VMs](https://cloud.google.com/compute/confidential-vm/docs)
 
     Attributes:
         enable_confidential_compute (bool):
@@ -903,9 +908,9 @@ class InstanceGroupConfig(proto.Message):
             Optional. The Compute Engine accelerator
             configuration for these instances.
         min_cpu_platform (str):
-            Optional. Specifies the minimum cpu platform for the
-            Instance Group. See `Dataproc -> Minimum CPU
-            Platform <https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu>`__.
+            Optional. Specifies the minimum cpu platform for
+            the Instance Group. See [Dataproc -> Minimum CPU
+            Platform](https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
         min_num_instances (int):
             Optional. The minimum number of primary worker instances to
             create. If ``min_num_instances`` is set, cluster creation
@@ -1041,14 +1046,15 @@ class StartupConfig(proto.Message):
 
     Attributes:
         required_registration_fraction (float):
-            Optional. The config setting to enable cluster creation/
-            updation to be successful only after
-            required_registration_fraction of instances are up and
-            running. This configuration is applicable to only secondary
-            workers for now. The cluster will fail if
-            required_registration_fraction of instances are not
-            available. This will include instance creation, agent
-            registration, and service registration (if enabled).
+            Optional. The config setting to enable cluster
+            creation/ updation to be successful only after
+            required_registration_fraction of instances are
+            up and running. This configuration is applicable
+            to only secondary workers for now. The cluster
+            will fail if required_registration_fraction of
+            instances are not available. This will include
+            instance creation, agent registration, and
+            service registration (if enabled).
 
             This field is a member of `oneof`_ ``_required_registration_fraction``.
     """
@@ -1153,27 +1159,31 @@ class InstanceFlexibilityPolicy(proto.Message):
 
         Attributes:
             standard_capacity_base (int):
-                Optional. The base capacity that will always use Standard
-                VMs to avoid risk of more preemption than the minimum
-                capacity you need. Dataproc will create only standard VMs
-                until it reaches standard_capacity_base, then it will start
-                using standard_capacity_percent_above_base to mix Spot with
-                Standard VMs. eg. If 15 instances are requested and
-                standard_capacity_base is 5, Dataproc will create 5 standard
-                VMs and then start mixing spot and standard VMs for
-                remaining 10 instances.
+                Optional. The base capacity that will always use
+                Standard VMs to avoid risk of more preemption
+                than the minimum capacity you need. Dataproc
+                will create only standard VMs until it reaches
+                standard_capacity_base, then it will start using
+                standard_capacity_percent_above_base to mix Spot
+                with Standard VMs. eg. If 15 instances are
+                requested and standard_capacity_base is 5,
+                Dataproc will create 5 standard VMs and then
+                start mixing spot and standard VMs for remaining
+                10 instances.
 
                 This field is a member of `oneof`_ ``_standard_capacity_base``.
             standard_capacity_percent_above_base (int):
-                Optional. The percentage of target capacity that should use
-                Standard VM. The remaining percentage will use Spot VMs. The
-                percentage applies only to the capacity above
-                standard_capacity_base. eg. If 15 instances are requested
-                and standard_capacity_base is 5 and
-                standard_capacity_percent_above_base is 30, Dataproc will
-                create 5 standard VMs and then start mixing spot and
-                standard VMs for remaining 10 instances. The mix will be 30%
-                standard and 70% spot.
+                Optional. The percentage of target capacity that
+                should use Standard VM. The remaining percentage
+                will use Spot VMs. The percentage applies only
+                to the capacity above standard_capacity_base.
+                eg. If 15 instances are requested and
+                standard_capacity_base is 5 and
+                standard_capacity_percent_above_base is 30,
+                Dataproc will create 5 standard VMs and then
+                start mixing spot and standard VMs for remaining
+                10 instances. The mix will be 30% standard and
+                70% spot.
 
                 This field is a member of `oneof`_ ``_standard_capacity_percent_above_base``.
         """
@@ -1230,7 +1240,8 @@ class InstanceFlexibilityPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``_machine_type``.
             vm_count (int):
-                Output only. Number of VM provisioned with the machine_type.
+                Output only. Number of VM provisioned with the
+                machine_type.
 
                 This field is a member of `oneof`_ ``_vm_count``.
         """
@@ -1266,9 +1277,9 @@ class InstanceFlexibilityPolicy(proto.Message):
 
 
 class AcceleratorConfig(proto.Message):
-    r"""Specifies the type and number of accelerator cards attached to the
-    instances of an instance. See `GPUs on Compute
-    Engine <https://cloud.google.com/compute/docs/gpus/>`__.
+    r"""Specifies the type and number of accelerator cards attached to
+    the instances of an instance. See [GPUs on Compute
+    Engine](https://cloud.google.com/compute/docs/gpus/).
 
     Attributes:
         accelerator_type_uri (str):
@@ -1332,23 +1343,27 @@ class DiskConfig(proto.Message):
             Note: Local SSD options may vary by machine type and number
             of vCPUs selected.
         local_ssd_interface (str):
-            Optional. Interface type of local SSDs (default is "scsi").
-            Valid values: "scsi" (Small Computer System Interface),
-            "nvme" (Non-Volatile Memory Express). See `local SSD
-            performance <https://cloud.google.com/compute/docs/disks/local-ssd#performance>`__.
+            Optional. Interface type of local SSDs (default
+            is "scsi"). Valid values: "scsi" (Small Computer
+            System Interface), "nvme" (Non-Volatile Memory
+            Express).
+            See [local SSD
+            performance](https://cloud.google.com/compute/docs/disks/local-ssd#performance).
         boot_disk_provisioned_iops (int):
-            Optional. Indicates how many IOPS to provision for the disk.
-            This sets the number of I/O operations per second that the
-            disk can handle. Note: This field is only supported if
+            Optional. Indicates how many IOPS to provision
+            for the disk. This sets the number of I/O
+            operations per second that the disk can handle.
+            Note: This field is only supported if
             boot_disk_type is hyperdisk-balanced.
 
             This field is a member of `oneof`_ ``_boot_disk_provisioned_iops``.
         boot_disk_provisioned_throughput (int):
-            Optional. Indicates how much throughput to provision for the
-            disk. This sets the number of throughput mb per second that
-            the disk can handle. Values must be greater than or equal to
-            1. Note: This field is only supported if boot_disk_type is
-            hyperdisk-balanced.
+            Optional. Indicates how much throughput to
+            provision for the disk. This sets the number of
+            throughput mb per second that the disk can
+            handle. Values must be greater than or equal to
+            1. Note: This field is only supported if
+            boot_disk_type is hyperdisk-balanced.
 
             This field is a member of `oneof`_ ``_boot_disk_provisioned_throughput``.
     """
@@ -1797,13 +1812,15 @@ class SoftwareConfig(proto.Message):
 
     Attributes:
         image_version (str):
-            Optional. The version of software inside the cluster. It
-            must be one of the supported `Dataproc
-            Versions <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions>`__,
-            such as "1.2" (including a subminor version, such as
-            "1.2.29"), or the `"preview"
-            version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
-            If unspecified, it defaults to the latest Debian version.
+            Optional. The version of software inside the
+            cluster. It must be one of the supported
+            [Dataproc
+            Versions](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported-dataproc-image-versions),
+            such as "1.2" (including a subminor version,
+            such as "1.2.29"), or the ["preview"
+            version](https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions).
+            If unspecified, it defaults to the latest Debian
+            version.
         properties (MutableMapping[str, str]):
             Optional. The properties to set on daemon config files.
 
@@ -1960,8 +1977,8 @@ class DataprocMetricConfig(proto.Message):
     """
 
     class MetricSource(proto.Enum):
-        r"""A source for the collection of Dataproc custom metrics (see [Custom
-        metrics]
+        r"""A source for the collection of Dataproc custom metrics (see
+        [Custom metrics]
         (https://cloud.google.com//dataproc/docs/guides/dataproc-metrics#custom_metrics)).
 
         Values:

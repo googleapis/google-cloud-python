@@ -179,12 +179,14 @@ class UpdateAnalysisRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Analysis resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Analysis
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         analysis (google.cloud.visionai_v1alpha1.types.Analysis):
             Required. The resource being updated.
         request_id (str):

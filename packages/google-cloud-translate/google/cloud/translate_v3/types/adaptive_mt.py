@@ -258,10 +258,10 @@ class AdaptiveMtTranslateRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_reference_sentence_config``.
         glossary_config (google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.GlossaryConfig):
-            Optional. Glossary to be applied. The glossary must be
-            within the same region (have the same location-id) as the
-            model, otherwise an INVALID_ARGUMENT (400) error is
-            returned.
+            Optional. Glossary to be applied. The glossary
+            must be within the same region (have the same
+            location-id) as the model, otherwise an
+            INVALID_ARGUMENT (400) error is returned.
 
             This field is a member of `oneof`_ ``_glossary_config``.
     """

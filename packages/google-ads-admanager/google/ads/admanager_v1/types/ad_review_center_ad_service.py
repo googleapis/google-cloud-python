@@ -89,12 +89,13 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
             30 days.
         search_text (MutableSequence[str]):
             Optional. If provided, restrict the search to
-            AdReviewCenterAds associated with the text (including any
-            text on the ad or in the destination URL). If more than one
-            value is provided, the search will combine them in a logical
-            AND. For example, ['car', 'blue'] will match ads that
-            contain both "car" and "blue", but not an ad that only
-            contains "car".
+            AdReviewCenterAds associated with the text
+            (including any text on the ad or in the
+            destination URL). If more than one value is
+            provided, the search will combine them in a
+            logical AND. For example, ['car', 'blue'] will
+            match ads that contain both "car" and "blue",
+            but not an ad that only contains "car".
         buyer_account_id (MutableSequence[int]):
             Optional. If provided, restrict the search to
             creatives belonging to one of the given Adx

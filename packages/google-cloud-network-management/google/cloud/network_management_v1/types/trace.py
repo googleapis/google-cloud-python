@@ -64,9 +64,9 @@ __protobuf__ = proto.module(
 
 
 class LoadBalancerType(proto.Enum):
-    r"""Type of a load balancer. For more information, see `Summary of
+    r"""Type of a load balancer. For more information, see [Summary of
     Google Cloud load
-    balancers <https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers>`__.
+    balancers](https://cloud.google.com/load-balancing/docs/load-balancing-overview#summary-of-google-cloud-load-balancers).
 
     Values:
         LOAD_BALANCER_TYPE_UNSPECIFIED (0):
@@ -125,11 +125,12 @@ class Trace(proto.Message):
 
     Attributes:
         endpoint_info (google.cloud.network_management_v1.types.EndpointInfo):
-            Derived from the source and destination endpoints definition
-            specified by user request, and validated by the data plane
-            model. If there are multiple traces starting from different
-            source locations, then the endpoint_info may be different
-            between traces.
+            Derived from the source and destination
+            endpoints definition specified by user request,
+            and validated by the data plane model. If there
+            are multiple traces starting from different
+            source locations, then the endpoint_info may be
+            different between traces.
         steps (MutableSequence[google.cloud.network_management_v1.types.Step]):
             A trace of a test contains multiple steps
             from the initial state to the final state
@@ -365,8 +366,9 @@ class Step(proto.Message):
                 Initial state: packet originating from the
                 internet. The endpoint information is populated.
             START_FROM_GOOGLE_SERVICE (27):
-                Initial state: packet originating from a Google service. The
-                google_service information is populated.
+                Initial state: packet originating from a Google
+                service. The google_service information is
+                populated.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
                 or on-premises network with internal source IP.
@@ -407,17 +409,18 @@ class Step(proto.Message):
                 Cloud Run revision. A CloudRunRevisionInfo is
                 populated with starting revision information.
             START_FROM_STORAGE_BUCKET (29):
-                Initial state: packet originating from a Storage Bucket.
-                Used only for return traces. The storage_bucket information
-                is populated.
+                Initial state: packet originating from a Storage
+                Bucket. Used only for return traces.
+                The storage_bucket information is populated.
             START_FROM_PSC_PUBLISHED_SERVICE (30):
                 Initial state: packet originating from a
                 published service that uses Private Service
                 Connect. Used only for return traces.
             START_FROM_SERVERLESS_NEG (31):
-                Initial state: packet originating from a serverless network
-                endpoint group backend. Used only for return traces. The
-                serverless_neg information is populated.
+                Initial state: packet originating from a
+                serverless network endpoint group backend. Used
+                only for return traces. The serverless_neg
+                information is populated.
             APPLY_INGRESS_FIREWALL_RULE (4):
                 Config checking state: verify ingress
                 firewall rule.
@@ -902,7 +905,8 @@ class FirewallInfo(proto.Message):
         direction (str):
             Possible values: INGRESS, EGRESS
         action (str):
-            Possible values: ALLOW, DENY, APPLY_SECURITY_PROFILE_GROUP
+            Possible values: ALLOW, DENY,
+            APPLY_SECURITY_PROFILE_GROUP
         priority (int):
             The priority of the firewall rule.
         network_uri (str):
@@ -945,29 +949,33 @@ class FirewallInfo(proto.Message):
             FIREWALL_RULE_TYPE_UNSPECIFIED (0):
                 Unspecified type.
             HIERARCHICAL_FIREWALL_POLICY_RULE (1):
-                Hierarchical firewall policy rule. For details, see
-                `Hierarchical firewall policies
-                overview <https://cloud.google.com/vpc/docs/firewall-policies>`__.
+                Hierarchical firewall policy rule. For details,
+                see [Hierarchical firewall policies
+                overview](https://cloud.google.com/vpc/docs/firewall-policies).
             VPC_FIREWALL_RULE (2):
-                VPC firewall rule. For details, see `VPC firewall rules
-                overview <https://cloud.google.com/vpc/docs/firewalls>`__.
+                VPC firewall rule. For details, see
+                [VPC firewall rules
+                overview](https://cloud.google.com/vpc/docs/firewalls).
             IMPLIED_VPC_FIREWALL_RULE (3):
-                Implied VPC firewall rule. For details, see `Implied
-                rules <https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>`__.
+                Implied VPC firewall rule. For details, see
+                [Implied
+                rules](https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules).
             SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE (4):
-                Implicit firewall rules that are managed by serverless VPC
-                access to allow ingress access. They are not visible in the
-                Google Cloud console. For details, see `VPC connector's
+                Implicit firewall rules that are managed by
+                serverless VPC access to allow ingress access.
+                They are not visible in the Google Cloud
+                console. For details, see [VPC connector's
                 implicit
-                rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
+                rules](https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access).
             NETWORK_FIREWALL_POLICY_RULE (5):
-                User-defined global network firewall policy rule. For
-                details, see `Network firewall
-                policies <https://cloud.google.com/vpc/docs/network-firewall-policies>`__.
+                User-defined global network firewall policy
+                rule. For details, see [Network firewall
+                policies](https://cloud.google.com/vpc/docs/network-firewall-policies).
             NETWORK_REGIONAL_FIREWALL_POLICY_RULE (6):
-                User-defined regional network firewall policy rule. For
-                details, see `Regional network firewall
-                policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
+                User-defined regional network firewall policy
+                rule. For details, see [Regional network
+                firewall
+                policies](https://cloud.google.com/firewall/docs/regional-firewall-policies).
             SYSTEM_NETWORK_FIREWALL_POLICY_RULE (7):
                 System-defined global network firewall policy
                 rule.
@@ -975,16 +983,17 @@ class FirewallInfo(proto.Message):
                 System-defined regional network firewall
                 policy rule.
             UNSUPPORTED_FIREWALL_POLICY_RULE (100):
-                Firewall policy rule containing attributes not yet supported
-                in Connectivity tests. Firewall analysis is skipped if such
-                a rule can potentially be matched. Please see the `list of
+                Firewall policy rule containing attributes not
+                yet supported in Connectivity tests. Firewall
+                analysis is skipped if such a rule can
+                potentially be matched. Please see the [list of
                 unsupported
-                configurations <https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs>`__.
+                configurations](https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs).
             TRACKING_STATE (101):
-                Tracking state for response traffic created when request
-                traffic goes through allow firewall rule. For details, see
-                `firewall rules
-                specifications <https://cloud.google.com/firewall/docs/firewalls#specifications>`__
+                Tracking state for response traffic created when
+                request traffic goes through allow firewall
+                rule. For details, see [firewall rules
+                specifications](https://cloud.google.com/firewall/docs/firewalls#specifications)
             ANALYSIS_SKIPPED (102):
                 Firewall analysis was skipped due to
                 executing Connectivity Test in the
@@ -1090,24 +1099,28 @@ class RouteInfo(proto.Message):
         next_hop_type (google.cloud.network_management_v1.types.RouteInfo.NextHopType):
             Type of next hop.
         route_scope (google.cloud.network_management_v1.types.RouteInfo.RouteScope):
-            Indicates where route is applicable. Deprecated, routes with
-            NCC_HUB scope are not included in the trace in new tests.
+            Indicates where route is applicable. Deprecated,
+            routes with NCC_HUB scope are not included in
+            the trace in new tests.
         display_name (str):
             Name of a route.
         uri (str):
-            URI of a route. SUBNET, STATIC, PEERING_SUBNET (only for
-            peering network) and POLICY_BASED routes only.
+            URI of a route. SUBNET, STATIC, PEERING_SUBNET
+            (only for peering network) and POLICY_BASED
+            routes only.
         region (str):
-            Region of the route. DYNAMIC, PEERING_DYNAMIC, POLICY_BASED
-            and ADVERTISED routes only. If set for POLICY_BASED route,
-            this is a region of VLAN attachments for Cloud Interconnect
-            the route applies to.
+            Region of the route. DYNAMIC, PEERING_DYNAMIC,
+            POLICY_BASED and ADVERTISED routes only. If set
+            for POLICY_BASED route, this is a region of VLAN
+            attachments for Cloud Interconnect the route
+            applies to.
         dest_ip_range (str):
             Destination IP range of the route.
         next_hop (str):
-            String type of the next hop of the route (for example, "VPN
-            tunnel"). Deprecated in favor of the next_hop_type and
-            next_hop_uri fields, not used in new tests.
+            String type of the next hop of the route (for
+            example, "VPN tunnel"). Deprecated in favor of
+            the next_hop_type and next_hop_uri fields, not
+            used in new tests.
         network_uri (str):
             URI of a VPC network where route is located.
         priority (int):
@@ -1115,24 +1128,27 @@ class RouteInfo(proto.Message):
         instance_tags (MutableSequence[str]):
             Instance tags of the route.
         src_ip_range (str):
-            Source IP address range of the route. POLICY_BASED routes
-            only.
+            Source IP address range of the route.
+            POLICY_BASED routes only.
         dest_port_ranges (MutableSequence[str]):
-            Destination port ranges of the route. POLICY_BASED routes
-            only.
+            Destination port ranges of the route.
+            POLICY_BASED routes only.
         src_port_ranges (MutableSequence[str]):
-            Source port ranges of the route. POLICY_BASED routes only.
+            Source port ranges of the route. POLICY_BASED
+            routes only.
         protocols (MutableSequence[str]):
-            Protocols of the route. POLICY_BASED routes only.
+            Protocols of the route. POLICY_BASED routes
+            only.
         ncc_hub_uri (str):
             URI of the NCC Hub the route is advertised by.
-            PEERING_SUBNET and PEERING_DYNAMIC routes that are
-            advertised by NCC Hub only.
+            PEERING_SUBNET and PEERING_DYNAMIC routes that
+            are advertised by NCC Hub only.
 
             This field is a member of `oneof`_ ``_ncc_hub_uri``.
         ncc_spoke_uri (str):
-            URI of the destination NCC Spoke. PEERING_SUBNET and
-            PEERING_DYNAMIC routes that are advertised by NCC Hub only.
+            URI of the destination NCC Spoke. PEERING_SUBNET
+            and PEERING_DYNAMIC routes that are advertised
+            by NCC Hub only.
 
             This field is a member of `oneof`_ ``_ncc_spoke_uri``.
         advertised_route_source_router_uri (str):
@@ -1142,12 +1158,13 @@ class RouteInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_advertised_route_source_router_uri``.
         advertised_route_next_hop_uri (str):
-            For ADVERTISED routes, the URI of their next hop, i.e. the
-            URI of the hybrid endpoint (VPN tunnel, Interconnect
-            attachment, NCC router appliance) the advertised prefix is
-            advertised through, or URI of the source peered network.
-            Deprecated in favor of the next_hop_uri field, not used in
-            new tests.
+            For ADVERTISED routes, the URI of their next
+            hop, i.e. the URI of the hybrid endpoint (VPN
+            tunnel, Interconnect attachment, NCC router
+            appliance) the advertised prefix is advertised
+            through, or URI of the source peered network.
+            Deprecated in favor of the next_hop_uri field,
+            not used in new tests.
 
             This field is a member of `oneof`_ ``_advertised_route_next_hop_uri``.
         next_hop_uri (str):
@@ -1156,16 +1173,16 @@ class RouteInfo(proto.Message):
             URI of a VPC network where the next hop
             resource is located.
         originating_route_uri (str):
-            For PEERING_SUBNET and PEERING_STATIC routes, the URI of the
-            originating SUBNET/STATIC route.
+            For PEERING_SUBNET and PEERING_STATIC routes,
+            the URI of the originating SUBNET/STATIC route.
         originating_route_display_name (str):
-            For PEERING_SUBNET, PEERING_STATIC and PEERING_DYNAMIC
-            routes, the name of the originating SUBNET/STATIC/DYNAMIC
-            route.
+            For PEERING_SUBNET, PEERING_STATIC and
+            PEERING_DYNAMIC routes, the name of the
+            originating SUBNET/STATIC/DYNAMIC route.
         ncc_hub_route_uri (str):
-            For PEERING_SUBNET and PEERING_DYNAMIC routes that are
-            advertised by NCC Hub, the URI of the corresponding route in
-            NCC Hub's routing table.
+            For PEERING_SUBNET and PEERING_DYNAMIC routes
+            that are advertised by NCC Hub, the URI of the
+            corresponding route in NCC Hub's routing table.
     """
 
     class RouteType(proto.Enum):
@@ -1245,8 +1262,9 @@ class RouteInfo(proto.Message):
                 Next hop is the forwarding rule of an
                 Internal Load Balancer.
             NEXT_HOP_ROUTER_APPLIANCE (11):
-                Next hop is a `router appliance
-                instance <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>`__.
+                Next hop is a
+                [router appliance
+                instance](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview).
             NEXT_HOP_NCC_HUB (12):
                 Next hop is an NCC hub. This scenario only
                 happens when the user doesn't have permissions
@@ -1392,10 +1410,11 @@ class RouteInfo(proto.Message):
 
 
 class GoogleServiceInfo(proto.Message):
-    r"""For display only. Details of a Google Service sending packets to a
-    VPC network. Although the source IP might be a publicly routable
-    address, some Google Services use special routes within Google
-    production infrastructure to reach Compute Engine Instances.
+    r"""For display only. Details of a Google Service sending packets to
+    a VPC network. Although the source IP might be a publicly
+    routable address, some Google Services use special routes within
+    Google production infrastructure to reach Compute Engine
+    Instances.
     https://cloud.google.com/vpc/docs/routes#special_return_paths
 
     Attributes:
@@ -1807,9 +1826,9 @@ class VpnTunnelInfo(proto.Message):
     """
 
     class RoutingType(proto.Enum):
-        r"""Types of VPN routing policy. For details, refer to `Networks and
+        r"""Types of VPN routing policy. For details, refer to [Networks and
         Tunnel
-        routing <https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/>`__.
+        routing](https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/).
 
         Values:
             ROUTING_TYPE_UNSPECIFIED (0):
@@ -1886,8 +1905,8 @@ class InterconnectAttachmentInfo(proto.Message):
         type_ (google.cloud.network_management_v1.types.InterconnectAttachmentInfo.Type):
             The type of interconnect attachment this is.
         l2_attachment_matched_ip_address (str):
-            Appliance IP address that was matched for L2_DEDICATED
-            attachments.
+            Appliance IP address that was matched for
+            L2_DEDICATED attachments.
     """
 
     class Type(proto.Enum):
@@ -2049,14 +2068,15 @@ class DeliverInfo(proto.Message):
             CLOUD_SQL_INSTANCE (5):
                 Target is a Cloud SQL instance.
             PSC_PUBLISHED_SERVICE (6):
-                Target is a published service that uses `Private Service
-                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-services>`__.
+                Target is a published service that uses [Private
+                Service
+                Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
             PSC_GOOGLE_API (7):
-                Target is Google APIs that use `Private Service
-                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+                Target is Google APIs that use [Private Service
+                Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-apis).
             PSC_VPC_SC (8):
-                Target is a VPC-SC that uses `Private Service
-                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>`__.
+                Target is a VPC-SC that uses [Private Service
+                Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-apis).
             SERVERLESS_NEG (9):
                 Target is a serverless network endpoint
                 group.
@@ -2251,9 +2271,10 @@ class AbortInfo(proto.Message):
         ip_address (str):
             IP address that caused the abort.
         projects_missing_permission (MutableSequence[str]):
-            List of project IDs the user specified in the request but
-            lacks access to. In this case, analysis is aborted with the
-            PERMISSION_DENIED cause.
+            List of project IDs the user specified in the
+            request but lacks access to. In this case,
+            analysis is aborted with the PERMISSION_DENIED
+            cause.
     """
 
     class Cause(proto.Enum):
@@ -2529,8 +2550,9 @@ class DropInfo(proto.Message):
                 used in a Google Cloud project, provide the
                 project ID as test input.
             FOREIGN_IP_DISALLOWED (2):
-                A Compute Engine instance can only send or receive a packet
-                with a foreign IP address if ip_forward is enabled.
+                A Compute Engine instance can only send or
+                receive a packet with a foreign IP address if
+                ip_forward is enabled.
             FIREWALL_RULE (3):
                 Dropped due to a firewall rule, unless
                 allowed due to connection tracking.
@@ -2612,10 +2634,11 @@ class DropInfo(proto.Message):
                 Forwarding rule does not have backends
                 configured.
             FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK (13):
-                Firewalls block the health check probes to the backends and
-                cause the backends to be unavailable for traffic from the
-                load balancer. For more details, see `Health check firewall
-                rules <https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules>`__.
+                Firewalls block the health check probes to the
+                backends and cause the backends to be
+                unavailable for traffic from the load balancer.
+                For more details, see [Health check firewall
+                rules](https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules).
             INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS (85):
                 Matching ingress firewall rules by network
                 tags for packets sent via serverless VPC direct
@@ -2640,19 +2663,21 @@ class DropInfo(proto.Message):
                 Packet sent from or to a Redis Cluster that
                 is not in running state.
             TRAFFIC_TYPE_BLOCKED (15):
-                The type of traffic is blocked and the user cannot configure
-                a firewall rule to enable it. See `Always blocked
-                traffic <https://cloud.google.com/vpc/docs/firewalls#blockedtraffic>`__
+                The type of traffic is blocked and the user
+                cannot configure a firewall rule to enable it.
+                See [Always blocked
+                traffic](https://cloud.google.com/vpc/docs/firewalls#blockedtraffic)
                 for more details.
             GKE_MASTER_UNAUTHORIZED_ACCESS (16):
-                Access to Google Kubernetes Engine cluster master's endpoint
-                is not authorized. See `Access to the cluster
-                endpoints <https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints>`__
+                Access to Google Kubernetes Engine cluster
+                master's endpoint is not authorized. See [Access
+                to the cluster
+                endpoints](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints)
                 for more details.
             CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS (17):
-                Access to the Cloud SQL instance endpoint is not authorized.
-                See `Authorizing with authorized
-                networks <https://cloud.google.com/sql/docs/mysql/authorize-networks>`__
+                Access to the Cloud SQL instance endpoint is not
+                authorized. See [Authorizing with authorized
+                networks](https://cloud.google.com/sql/docs/mysql/authorize-networks)
                 for more details.
             DROPPED_INSIDE_GKE_SERVICE (18):
                 Packet was dropped inside Google Kubernetes
@@ -2730,9 +2755,9 @@ class DropInfo(proto.Message):
                 project that is not approved to connect to the
                 service.
             PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK (41):
-                The packet is sent to the Private Service Connect endpoint
-                over the peering, but `it's not
-                supported <https://cloud.google.com/vpc/docs/configure-private-service-connect-services#on-premises>`__.
+                The packet is sent to the Private Service
+                Connect endpoint over the peering, but [it's not
+                supported](https://cloud.google.com/vpc/docs/configure-private-service-connect-services#on-premises).
             PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS (48):
                 The packet is sent to the Private Service
                 Connect backend (network endpoint group), but
@@ -3129,8 +3154,10 @@ class IpMasqueradingSkippedInfo(proto.Message):
         reason (google.cloud.network_management_v1.types.IpMasqueradingSkippedInfo.Reason):
             Reason why IP masquerading was not applied.
         non_masquerade_range (str):
-            The matched non-masquerade IP range. Only set if reason is
-            DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE or
+            The matched non-masquerade IP range. Only set if
+            reason is
+            DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE
+            or
             DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE.
     """
 
@@ -3290,8 +3317,9 @@ class RedisClusterInfo(proto.Message):
             URI of a Redis Cluster in format
             "projects/{project_id}/locations/{location}/clusters/{cluster_id}".
         network_uri (str):
-            URI of the network containing the Redis Cluster endpoints in
-            format "projects/{project_id}/global/networks/{network_id}".
+            URI of the network containing the Redis Cluster
+            endpoints in format
+            "projects/{project_id}/global/networks/{network_id}".
         discovery_endpoint_ip_address (str):
             Discovery endpoint IP address of a Redis
             Cluster.
@@ -3549,10 +3577,11 @@ class NatInfo(proto.Message):
             Destination port after NAT translation. Only
             valid when protocol is TCP or UDP.
         router_uri (str):
-            Uri of the Cloud Router. Only valid when type is CLOUD_NAT.
-        nat_gateway_name (str):
-            The name of Cloud NAT Gateway. Only valid when type is
+            Uri of the Cloud Router. Only valid when type is
             CLOUD_NAT.
+        nat_gateway_name (str):
+            The name of Cloud NAT Gateway. Only valid when
+            type is CLOUD_NAT.
         cloud_nat_gateway_type (google.cloud.network_management_v1.types.NatInfo.CloudNatGatewayType):
             Type of Cloud NAT gateway. Only valid when ``type`` is
             CLOUD_NAT.

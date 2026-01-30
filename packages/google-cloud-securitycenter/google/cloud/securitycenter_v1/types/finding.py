@@ -83,31 +83,38 @@ class Finding(proto.Message):
 
     Attributes:
         name (str):
-            The `relative resource
-            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
+            The [relative resource
+            name](https://cloud.google.com/apis/design/resource_names#relative_resource_name)
             of the finding. Example:
+
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
             "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
         parent (str):
-            The relative resource name of the source the finding belongs
-            to. See:
+            The relative resource name of the source the
+            finding belongs to. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            This field is immutable after creation time. For example:
+            This field is immutable after creation time.
+            For example:
+
             "organizations/{organization_id}/sources/{source_id}".
         resource_name (str):
-            For findings on Google Cloud resources, the full resource
-            name of the Google Cloud resource this finding is for. See:
+            For findings on Google Cloud resources, the full
+            resource name of the Google Cloud resource this
+            finding is for. See:
+
             https://cloud.google.com/apis/design/resource_names#full_resource_name
-            When the finding is for a non-Google Cloud resource, the
-            resourceName can be a customer or partner defined string.
-            This field is immutable after creation time.
+            When the finding is for a non-Google Cloud
+            resource, the resourceName can be a customer or
+            partner defined string. This field is immutable
+            after creation time.
         state (google.cloud.securitycenter_v1.types.Finding.State):
             The state of the finding.
         category (str):
-            The additional taxonomy group within findings from a given
-            source. This field is immutable after creation time.
-            Example: "XSS_FLASH_INJECTION".
+            The additional taxonomy group within findings
+            from a given source. This field is immutable
+            after creation time. Example:
+            "XSS_FLASH_INJECTION".
         external_uri (str):
             The URI that, if available, points to a web
             page outside of Security Command Center where
@@ -115,10 +122,11 @@ class Finding(proto.Message):
             found. This field is guaranteed to be either
             empty or a well formed URL.
         source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Source specific properties. These properties are managed by
-            the source that writes the finding. The key names in the
-            source_properties map must be between 1 and 255 characters,
-            and must start with a letter and contain alphanumeric
+            Source specific properties. These properties are
+            managed by the source that writes the finding.
+            The key names in the source_properties map must
+            be between 1 and 255 characters, and must start
+            with a letter and contain alphanumeric
             characters or underscores only.
         security_marks (google.cloud.securitycenter_v1.types.SecurityMarks):
             Output only. User specified security marks.
@@ -148,8 +156,8 @@ class Finding(proto.Message):
             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}"
             or
             "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
-            depending on the closest CRM ancestor of the resource
-            associated with the finding.
+            depending on the closest CRM ancestor of the
+            resource associated with the finding.
         mute (google.cloud.securitycenter_v1.types.Finding.Mute):
             Indicates the mute state of a finding (either
             muted, unmuted or undefined). Unlike other
@@ -198,26 +206,26 @@ class Finding(proto.Message):
             Represents operating system processes
             associated with the Finding.
         contacts (MutableMapping[str, google.cloud.securitycenter_v1.types.ContactDetails]):
-            Output only. Map containing the points of contact for the
-            given finding. The key represents the type of contact, while
-            the value contains a list of all the contacts that pertain.
-            Please refer to:
+            Output only. Map containing the points of
+            contact for the given finding. The key
+            represents the type of contact, while the value
+            contains a list of all the contacts that
+            pertain. Please refer to:
+
             https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories
 
-            ::
-
-                {
-                  "security": {
-                    "contacts": [
-                      {
-                        "email": "person1@company.com"
-                      },
-                      {
-                        "email": "person2@company.com"
-                      }
-                    ]
-                  }
-                }
+            {
+            "security": {
+            "contacts": [
+            {
+            "email": "person1@company.com"
+            },
+            {
+            "email": "person2@company.com"
+            }
+            ]
+            }
+            }
         compliances (MutableSequence[google.cloud.securitycenter_v1.types.Compliance]):
             Contains compliance information for security
             standards associated to the finding.

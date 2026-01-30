@@ -98,8 +98,8 @@ class ListNamespacesRequest(proto.Message):
             Optional. The maximum number of items to
             return. The default value is 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
         filter (str):
             Optional. The filter to list results by.
 
@@ -303,8 +303,8 @@ class ListServicesRequest(proto.Message):
             Optional. The maximum number of items to
             return. The default value is 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
         filter (str):
             Optional. The filter to list results by.
 
@@ -513,8 +513,8 @@ class ListEndpointsRequest(proto.Message):
             Optional. The maximum number of items to
             return. The default value is 100.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
         filter (str):
             Optional. The filter to list results by.
 

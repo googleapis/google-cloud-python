@@ -523,9 +523,10 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             Returns:
                 ~.merchantreviews.MerchantReview:
-                    A review for a merchant. For more information, see
-                `Introduction to Merchant Review
-                Feeds <https://developers.google.com/merchant-review-feeds>`__
+                    A review for a merchant. For more
+                information, see [Introduction to
+                Merchant Review
+                Feeds](https://developers.google.com/merchant-review-feeds)
 
             """
 
@@ -676,9 +677,10 @@ class MerchantReviewsServiceRestTransport(_BaseMerchantReviewsServiceRestTranspo
 
             Returns:
                 ~.merchantreviews.MerchantReview:
-                    A review for a merchant. For more information, see
-                `Introduction to Merchant Review
-                Feeds <https://developers.google.com/merchant-review-feeds>`__
+                    A review for a merchant. For more
+                information, see [Introduction to
+                Merchant Review
+                Feeds](https://developers.google.com/merchant-review-feeds)
 
             """
 

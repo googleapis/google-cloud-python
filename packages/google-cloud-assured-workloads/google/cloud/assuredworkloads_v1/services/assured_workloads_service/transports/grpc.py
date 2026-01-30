@@ -372,10 +372,11 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
     ) -> Callable[[assuredworkloads.UpdateWorkloadRequest], assuredworkloads.Workload]:
         r"""Return a callable for the update workload method over gRPC.
 
-        Updates an existing workload. Currently allows updating of
-        workload display_name and labels. For force updates don't set
-        etag field in the Workload. Only one update operation per
-        workload can be in progress.
+        Updates an existing workload.
+        Currently allows updating of workload display_name and
+        labels. For force updates don't set etag field in the
+        Workload. Only one update operation per workload can be
+        in progress.
 
         Returns:
             Callable[[~.UpdateWorkloadRequest],
@@ -439,9 +440,9 @@ class AssuredWorkloadsServiceGrpcTransport(AssuredWorkloadsServiceTransport):
     ) -> Callable[[assuredworkloads.DeleteWorkloadRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete workload method over gRPC.
 
-        Deletes the workload. Make sure that workload's direct children
-        are already in a deleted state, otherwise the request will fail
-        with a FAILED_PRECONDITION error.
+        Deletes the workload. Make sure that workload's direct
+        children are already in a deleted state, otherwise the
+        request will fail with a FAILED_PRECONDITION error.
 
         Returns:
             Callable[[~.DeleteWorkloadRequest],

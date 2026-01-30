@@ -296,7 +296,8 @@ class Attestor(proto.Message):
             may be updated. The field may be displayed in
             chooser dialogs.
         user_owned_drydock_note (google.cloud.binaryauthorization_v1beta1.types.UserOwnedDrydockNote):
-            A Drydock ATTESTATION_AUTHORITY Note, created by the user.
+            A Drydock ATTESTATION_AUTHORITY Note, created by
+            the user.
 
             This field is a member of `oneof`_ ``attestor_type``.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -421,13 +422,17 @@ class PkixPublicKey(proto.Message):
             RSA_PSS_4096_SHA512 (4):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
-                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_3072_SHA256 (6):
-                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA256 (7):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA512 (8):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA512 digest.
             ECDSA_P256_SHA256 (9):
                 ECDSA on the NIST P-256 curve with a SHA256
                 digest.

@@ -39,15 +39,18 @@ class ScanRunErrorTrace(proto.Message):
         code (google.cloud.websecurityscanner_v1.types.ScanRunErrorTrace.Code):
             Output only. Indicates the error reason code.
         scan_config_error (google.cloud.websecurityscanner_v1.types.ScanConfigError):
-            Output only. If the scan encounters SCAN_CONFIG_ISSUE error,
-            this field has the error message encountered during scan
-            configuration validation that is performed before each scan
-            run.
+            Output only. If the scan encounters
+            SCAN_CONFIG_ISSUE error, this field has the
+            error message encountered during scan
+            configuration validation that is performed
+            before each scan run.
         most_common_http_error_code (int):
-            Output only. If the scan encounters TOO_MANY_HTTP_ERRORS,
-            this field indicates the most common HTTP error code, if
-            such is available. For example, if this code is 404, the
-            scan has encountered too many NOT_FOUND responses.
+            Output only. If the scan encounters
+            TOO_MANY_HTTP_ERRORS, this field indicates the
+            most common HTTP error code, if such is
+            available. For example, if this code is 404, the
+            scan has encountered too many NOT_FOUND
+            responses.
     """
 
     class Code(proto.Enum):
@@ -62,9 +65,9 @@ class ScanRunErrorTrace(proto.Message):
                 Indicates that the scan run failed due to an
                 internal server error.
             SCAN_CONFIG_ISSUE (2):
-                Indicates a scan configuration error, usually due to
-                outdated ScanConfig settings, such as starting_urls or the
-                DNS configuration.
+                Indicates a scan configuration error, usually
+                due to outdated ScanConfig settings, such as
+                starting_urls or the DNS configuration.
             AUTHENTICATION_CONFIG_ISSUE (3):
                 Indicates an authentication error, usually
                 due to outdated ScanConfig authentication
@@ -77,10 +80,11 @@ class ScanRunErrorTrace(proto.Message):
                 redirects, either to authentication or some
                 other page outside of the scan scope.
             TOO_MANY_HTTP_ERRORS (6):
-                Indicates that a scan encountered numerous errors from the
-                web site pages. When available, most_common_http_error_code
-                field indicates the most common HTTP error code encountered
-                during the scan.
+                Indicates that a scan encountered numerous
+                errors from the web site pages. When available,
+                most_common_http_error_code field indicates the
+                most common HTTP error code encountered during
+                the scan.
         """
         CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1

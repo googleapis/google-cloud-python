@@ -112,17 +112,19 @@ class Agent(proto.Message):
             The list of all languages supported by the agent (except for
             the ``default_language_code``).
         time_zone (str):
-            Required. The time zone of the agent from the `time zone
-            database <https://www.iana.org/time-zones>`__, e.g.,
-            America/New_York, Europe/Paris.
+            Required. The time zone of the agent from the
+            [time zone
+            database](https://www.iana.org/time-zones),
+            e.g., America/New_York, Europe/Paris.
         description (str):
             The description of the agent. The maximum
             length is 500 characters. If exceeded, the
             request is rejected.
         avatar_uri (str):
-            The URI of the agent's avatar. Avatars are used throughout
-            the Dialogflow console and in the self-hosted `Web
-            Demo <https://cloud.google.com/dialogflow/docs/integrations/web-demo>`__
+            The URI of the agent's avatar. Avatars are used
+            throughout the Dialogflow console and in the
+            self-hosted [Web
+            Demo](https://cloud.google.com/dialogflow/docs/integrations/web-demo)
             integration.
         speech_to_text_settings (google.cloud.dialogflowcx_v3beta1.types.SpeechToTextSettings):
             Speech recognition related settings.
@@ -546,8 +548,8 @@ class ListAgentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -570,8 +572,9 @@ class ListAgentsResponse(proto.Message):
 
     Attributes:
         agents (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Agent]):
-            The list of agents. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of agents. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

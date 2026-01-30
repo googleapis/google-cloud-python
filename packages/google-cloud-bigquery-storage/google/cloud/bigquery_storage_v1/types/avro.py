@@ -51,9 +51,9 @@ class AvroRows(proto.Message):
         serialized_binary_rows (bytes):
             Binary serialized rows in a block.
         row_count (int):
-            [Deprecated] The count of rows in the returning block.
-            Please use the format-independent ReadRowsResponse.row_count
-            instead.
+            [Deprecated] The count of rows in the returning
+            block. Please use the format-independent
+            ReadRowsResponse.row_count instead.
     """
 
     serialized_binary_rows: bytes = proto.Field(

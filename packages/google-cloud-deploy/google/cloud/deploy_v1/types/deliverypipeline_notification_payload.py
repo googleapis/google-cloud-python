@@ -31,9 +31,9 @@ __protobuf__ = proto.module(
 
 class DeliveryPipelineNotificationEvent(proto.Message):
     r"""Payload proto for
-    "clouddeploy.googleapis.com/deliverypipeline_notification" Platform
-    Log event that describes the failure to send delivery pipeline
-    status change Pub/Sub notification.
+    "clouddeploy.googleapis.com/deliverypipeline_notification"
+    Platform Log event that describes the failure to send delivery
+    pipeline status change Pub/Sub notification.
 
     Attributes:
         message (str):

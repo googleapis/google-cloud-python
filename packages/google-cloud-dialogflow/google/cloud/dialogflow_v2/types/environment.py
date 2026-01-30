@@ -221,8 +221,8 @@ class ListEnvironmentsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -245,9 +245,9 @@ class ListEnvironmentsResponse(proto.Message):
 
     Attributes:
         environments (MutableSequence[google.cloud.dialogflow_v2.types.Environment]):
-            The list of agent environments. There will be a maximum
-            number of items returned based on the page_size field in the
-            request.
+            The list of agent environments. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -394,8 +394,8 @@ class GetEnvironmentHistoryRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -426,9 +426,9 @@ class EnvironmentHistory(proto.Message):
 
             The environment ID for the default environment is ``-``.
         entries (MutableSequence[google.cloud.dialogflow_v2.types.EnvironmentHistory.Entry]):
-            Output only. The list of agent environments. There will be a
-            maximum number of items returned based on the page_size
-            field in the request.
+            Output only. The list of agent environments.
+            There will be a maximum number of items returned
+            based on the page_size field in the request.
         next_page_token (str):
             Output only. Token to retrieve the next page
             of results, or empty if there are no more

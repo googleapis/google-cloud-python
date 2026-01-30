@@ -29,10 +29,10 @@ __protobuf__ = proto.module(
 
 
 class SpeedReadingInterval(proto.Message):
-    r"""Traffic density indicator on a contiguous segment of a path. Given a
-    path with points P_0, P_1, ... , P_N (zero-based index), the
-    SpeedReadingInterval defines an interval and describes its traffic
-    using the following categories.
+    r"""Traffic density indicator on a contiguous segment of a path.
+    Given a path with points P_0, P_1, ... , P_N (zero-based index),
+    the SpeedReadingInterval defines an interval and describes its
+    traffic using the following categories.
 
     Attributes:
         start_polyline_point_index (int):

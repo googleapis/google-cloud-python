@@ -2131,8 +2131,10 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                Required. The filter expression. The expression must be
-                in the format: . Supported field: 'finding_type'.
+                Required. The filter expression. The
+                expression must be in the format:
+                <field> <operator> <value>. Supported
+                field: 'finding_type'.
                 Supported operator: '='.
 
                 This corresponds to the ``filter`` field

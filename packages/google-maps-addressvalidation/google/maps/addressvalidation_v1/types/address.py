@@ -138,9 +138,10 @@ class AddressComponent(proto.Message):
         component_name (google.maps.addressvalidation_v1.types.ComponentName):
             The name for this component.
         component_type (str):
-            The type of the address component. See `Table 2: Additional
-            types returned by the Places
-            service <https://developers.google.com/places/web-service/supported_types#table2>`__
+            The type of the address component. See
+            [Table 2: Additional types returned by the
+            Places
+            service](https://developers.google.com/places/web-service/supported_types#table2)
             for a list of possible types.
         confirmation_level (google.maps.addressvalidation_v1.types.AddressComponent.ConfirmationLevel):
             Indicates the level of certainty that we have

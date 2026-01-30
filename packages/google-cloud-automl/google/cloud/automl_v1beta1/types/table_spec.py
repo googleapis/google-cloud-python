@@ -46,15 +46,18 @@ class TableSpec(proto.Message):
 
             ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/tableSpecs/{table_spec_id}``
         time_column_spec_id (str):
-            column_spec_id of the time column. Only used if the parent
-            dataset's ml_use_column_spec_id is not set. Used to split
-            rows into TRAIN, VALIDATE and TEST sets such that oldest
-            rows go to TRAIN set, newest to TEST, and those in between
-            to VALIDATE. Required type: TIMESTAMP. If both this column
-            and ml_use_column are not set, then ML use of all rows will
-            be assigned by AutoML. NOTE: Updates of this field will
-            instantly affect any other users concurrently working with
-            the dataset.
+            column_spec_id of the time column. Only used if
+            the parent dataset's ml_use_column_spec_id is
+            not set. Used to split rows into TRAIN, VALIDATE
+            and TEST sets such that oldest rows go to TRAIN
+            set, newest to TEST, and those in between to
+            VALIDATE.
+            Required type: TIMESTAMP.
+            If both this column and ml_use_column are not
+            set, then ML use of all rows will be assigned by
+            AutoML. NOTE: Updates of this field will
+            instantly affect any other users concurrently
+            working with the dataset.
         row_count (int):
             Output only. The number of rows (i.e.
             examples) in the table.

@@ -481,12 +481,14 @@ class SpriteSheet(proto.Message):
             Required. The height of the sprite in pixels.
             Must be an even integer.
         column_count (int):
-            The maximum number of sprites per row in a sprite sheet.
-            Valid range is [1, 10] and the default value is 1.
+            The maximum number of sprites per row in a
+            sprite sheet. Valid range is [1, 10] and the
+            default value is 1.
         row_count (int):
-            The maximum number of rows per sprite sheet. When the sprite
-            sheet is full, a new sprite sheet is created. Valid range is
-            [1, 10] and the default value is 1.
+            The maximum number of rows per sprite sheet.
+            When the sprite sheet is full, a new sprite
+            sheet is created. Valid range is [1, 10] and the
+            default value is 1.
         interval (google.protobuf.duration_pb2.Duration):
             Create sprites at regular intervals. Valid range is [1
             second, 1 hour] and the default value is ``10s``.
@@ -696,19 +698,21 @@ class VideoStream(proto.Message):
 
         Attributes:
             width_pixels (int):
-                Required. The width of the video in pixels. Must be an even
-                integer. Valid range is [320, 4096].
+                Required. The width of the video in pixels. Must
+                be an even integer. Valid range is [320, 4096].
             height_pixels (int):
-                Required. The height of the video in pixels. Must be an even
-                integer. Valid range is [180, 2160].
+                Required. The height of the video in pixels.
+                Must be an even integer. Valid range is [180,
+                2160].
             frame_rate (float):
-                Required. The target video frame rate in frames per second
-                (FPS). Must be less than or equal to 60. Will default to the
-                input frame rate if larger than the input frame rate. The
-                API will generate an output FPS that is divisible by the
-                input FPS, and smaller or equal to the target FPS. See
-                `Calculating frame
-                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
+                Required. The target video frame rate in frames
+                per second (FPS). Must be less than or equal to
+                60. Will default to the input frame rate if
+                larger than the input frame rate. The API will
+                generate an output FPS that is divisible by the
+                input FPS, and smaller or equal to the target
+                FPS. See [Calculating frame
+                rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate)
                 for more information.
             bitrate_bps (int):
                 Required. The video bitrate in bits per
@@ -875,25 +879,27 @@ class VideoStream(proto.Message):
 
         Attributes:
             width_pixels (int):
-                Optional. The width of the video in pixels. Must be an even
-                integer. When not specified, the width is adjusted to match
-                the specified height and input aspect ratio. If both are
-                omitted, the input width is used. Valid range is [320,
-                4096].
+                Optional. The width of the video in pixels. Must
+                be an even integer. When not specified, the
+                width is adjusted to match the specified height
+                and input aspect ratio. If both are omitted, the
+                input width is used. Valid range is [320, 4096].
             height_pixels (int):
-                Optional. The height of the video in pixels. Must be an even
-                integer. When not specified, the height is adjusted to match
-                the specified width and input aspect ratio. If both are
-                omitted, the input height is used. Valid range is [180,
+                Optional. The height of the video in pixels.
+                Must be an even integer. When not specified, the
+                height is adjusted to match the specified width
+                and input aspect ratio. If both are omitted, the
+                input height is used. Valid range is [180,
                 2160].
             frame_rate (float):
-                Required. The target video frame rate in frames per second
-                (FPS). Must be less than or equal to 120. Will default to
-                the input frame rate if larger than the input frame rate.
-                The API will generate an output FPS that is divisible by the
-                input FPS, and smaller or equal to the target FPS. See
-                `Calculating frame
-                rate <https://cloud.google.com/transcoder/docs/concepts/frame-rate>`__
+                Required. The target video frame rate in frames
+                per second (FPS). Must be less than or equal to
+                120. Will default to the input frame rate if
+                larger than the input frame rate. The API will
+                generate an output FPS that is divisible by the
+                input FPS, and smaller or equal to the target
+                FPS. See [Calculating frame
+                rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate)
                 for more information.
             bitrate_bps (int):
                 Required. The video bitrate in bits per

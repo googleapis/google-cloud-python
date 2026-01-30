@@ -511,16 +511,20 @@ class SessionEntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2.types.SessionEntityType:
-                A session represents a conversation between a Dialogflow agent and an
-                   end-user. You can create special entities, called
-                   session entities, during a session. Session entities
-                   can extend or replace custom entity types and only
-                   exist during the session that they were created for.
-                   All session data, including session entities, is
-                   stored by Dialogflow for 20 minutes.
+                A session represents a conversation
+                between a Dialogflow agent and an
+                end-user. You can create special
+                entities, called session entities,
+                during a session. Session entities can
+                extend or replace custom entity types
+                and only exist during the session that
+                they were created for. All session data,
+                including session entities, is stored by
+                Dialogflow for 20 minutes.
 
-                   For more information, see the [session entity
-                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
+                For more information, see the [session
+                entity
+                guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -659,16 +663,20 @@ class SessionEntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2.types.SessionEntityType:
-                A session represents a conversation between a Dialogflow agent and an
-                   end-user. You can create special entities, called
-                   session entities, during a session. Session entities
-                   can extend or replace custom entity types and only
-                   exist during the session that they were created for.
-                   All session data, including session entities, is
-                   stored by Dialogflow for 20 minutes.
+                A session represents a conversation
+                between a Dialogflow agent and an
+                end-user. You can create special
+                entities, called session entities,
+                during a session. Session entities can
+                extend or replace custom entity types
+                and only exist during the session that
+                they were created for. All session data,
+                including session entities, is stored by
+                Dialogflow for 20 minutes.
 
-                   For more information, see the [session entity
-                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
+                For more information, see the [session
+                entity
+                guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.
@@ -802,16 +810,20 @@ class SessionEntityTypesAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2.types.SessionEntityType:
-                A session represents a conversation between a Dialogflow agent and an
-                   end-user. You can create special entities, called
-                   session entities, during a session. Session entities
-                   can extend or replace custom entity types and only
-                   exist during the session that they were created for.
-                   All session data, including session entities, is
-                   stored by Dialogflow for 20 minutes.
+                A session represents a conversation
+                between a Dialogflow agent and an
+                end-user. You can create special
+                entities, called session entities,
+                during a session. Session entities can
+                extend or replace custom entity types
+                and only exist during the session that
+                they were created for. All session data,
+                including session entities, is stored by
+                Dialogflow for 20 minutes.
 
-                   For more information, see the [session entity
-                   guide](https://cloud.google.com/dialogflow/docs/entities-session).
+                For more information, see the [session
+                entity
+                guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
         """
         # Create or coerce a protobuf request object.

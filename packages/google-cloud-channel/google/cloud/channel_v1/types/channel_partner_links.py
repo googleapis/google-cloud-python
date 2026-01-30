@@ -84,8 +84,9 @@ class ChannelPartnerLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for the channel partner link, in
-            the format accounts/{account_id}/channelPartnerLinks/{id}.
+            Output only. Resource name for the channel
+            partner link, in the format
+            accounts/{account_id}/channelPartnerLinks/{id}.
         reseller_cloud_identity_id (str):
             Required. Cloud Identity ID of the linked
             reseller.

@@ -107,7 +107,8 @@ class ImportAptArtifactsGcsSource(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
+            Cloud Storage paths URI (e.g.,
+            gs://my_bucket//my_object).
         use_wildcards (bool):
             Supports URI wildcards for matching multiple
             objects from a single URI.

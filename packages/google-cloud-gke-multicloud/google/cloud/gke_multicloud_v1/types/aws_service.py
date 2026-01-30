@@ -663,10 +663,10 @@ class GetAwsOpenIdConfigRequest(proto.Message):
 
 
 class GetAwsJsonWebKeysRequest(proto.Message):
-    r"""GetAwsJsonWebKeysRequest gets the public component of the keys used
-    by the cluster to sign token requests. This will be the jwks_uri for
-    the discover document returned by getOpenIDConfig. See the OpenID
-    Connect Discovery 1.0 specification for details.
+    r"""GetAwsJsonWebKeysRequest gets the public component of the keys
+    used by the cluster to sign token requests. This will be the
+    jwks_uri for the discover document returned by getOpenIDConfig.
+    See the OpenID Connect Discovery 1.0 specification for details.
 
     Attributes:
         aws_cluster (str):

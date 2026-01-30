@@ -396,8 +396,8 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the get approval request method over gRPC.
 
-        Gets an approval request. Returns NOT_FOUND if the request does
-        not exist.
+        Gets an approval request. Returns NOT_FOUND if the
+        request does not exist.
 
         Returns:
             Callable[[~.GetApprovalRequestMessage],
@@ -425,11 +425,11 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the approve approval request method over gRPC.
 
-        Approves a request and returns the updated ApprovalRequest.
-
+        Approves a request and returns the updated
+        ApprovalRequest.
         Returns NOT_FOUND if the request does not exist. Returns
-        FAILED_PRECONDITION if the request exists but is not in a
-        pending state.
+        FAILED_PRECONDITION if the request exists but is not in
+        a pending state.
 
         Returns:
             Callable[[~.ApproveApprovalRequestMessage],
@@ -457,16 +457,16 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the dismiss approval request method over gRPC.
 
-        Dismisses a request. Returns the updated ApprovalRequest.
-
-        NOTE: This does not deny access to the resource if another
-        request has been made and approved. It is equivalent in effect
-        to ignoring the request altogether.
+        Dismisses a request. Returns the updated
+        ApprovalRequest.
+        NOTE: This does not deny access to the resource if
+        another request has been made and approved. It is
+        equivalent in effect to ignoring the request altogether.
 
         Returns NOT_FOUND if the request does not exist.
 
-        Returns FAILED_PRECONDITION if the request exists but is not in
-        a pending state.
+        Returns FAILED_PRECONDITION if the request exists but is
+        not in a pending state.
 
         Returns:
             Callable[[~.DismissApprovalRequestMessage],
@@ -495,15 +495,15 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the invalidate approval request method over gRPC.
 
-        Invalidates an existing ApprovalRequest. Returns the updated
-        ApprovalRequest.
+        Invalidates an existing ApprovalRequest. Returns the
+        updated ApprovalRequest.
 
-        NOTE: This does not deny access to the resource if another
-        request has been made and approved. It only invalidates a single
-        approval.
+        NOTE: This does not deny access to the resource if
+        another request has been made and approved. It only
+        invalidates a single approval.
 
-        Returns FAILED_PRECONDITION if the request exists but is not in
-        an approved state.
+        Returns FAILED_PRECONDITION if the request exists but is
+        not in an approved state.
 
         Returns:
             Callable[[~.InvalidateApprovalRequestMessage],
@@ -567,9 +567,9 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         r"""Return a callable for the update access approval
         settings method over gRPC.
 
-        Updates the settings associated with a project, folder, or
-        organization. Settings to update are determined by the value of
-        field_mask.
+        Updates the settings associated with a project, folder,
+        or organization. Settings to update are determined by
+        the value of field_mask.
 
         Returns:
             Callable[[~.UpdateAccessApprovalSettingsMessage],

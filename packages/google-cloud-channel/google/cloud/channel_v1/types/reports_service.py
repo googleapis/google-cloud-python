@@ -217,9 +217,9 @@ class ListReportsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the partner account to list
-            available reports for. Parent uses the format:
-            accounts/{account_id}
+            Required. The resource name of the partner
+            account to list available reports for. Parent
+            uses the format: accounts/{account_id}
         page_size (int):
             Optional. Requested page size of the report.
             The server might return fewer results than
@@ -380,17 +380,22 @@ class Column(proto.Message):
             DATA_TYPE_UNSPECIFIED (0):
                 Not used.
             STRING (1):
-                ReportValues for this column will use string_value.
+                ReportValues for this column will use
+                string_value.
             INT (2):
                 ReportValues for this column will use int_value.
             DECIMAL (3):
-                ReportValues for this column will use decimal_value.
+                ReportValues for this column will use
+                decimal_value.
             MONEY (4):
-                ReportValues for this column will use money_value.
+                ReportValues for this column will use
+                money_value.
             DATE (5):
-                ReportValues for this column will use date_value.
+                ReportValues for this column will use
+                date_value.
             DATE_TIME (6):
-                ReportValues for this column will use date_time_value.
+                ReportValues for this column will use
+                date_time_value.
         """
         DATA_TYPE_UNSPECIFIED = 0
         STRING = 1

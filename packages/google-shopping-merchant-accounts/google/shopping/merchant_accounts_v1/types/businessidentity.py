@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 
 class BusinessIdentity(proto.Message):
-    r"""Collection of information related to the `identity of a
-    business <https://support.google.com/merchants/answer/12564247>`__.
+    r"""Collection of information related to the [identity of a
+    business](https://support.google.com/merchants/answer/12564247).
 
     Attributes:
         name (str):

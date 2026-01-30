@@ -2680,9 +2680,10 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> aws_resources.AwsOpenIdConfig:
-        r"""Gets the OIDC discovery document for the cluster. See the
-        `OpenID Connect Discovery 1.0
-        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        r"""Gets the OIDC discovery document for the cluster.
+        See the
+        [OpenID Connect Discovery 1.0
+        specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
         for details.
 
         .. code-block:: python
@@ -2808,11 +2809,13 @@ class AwsClustersClient(metaclass=AwsClustersClientMeta):
 
         Args:
             request (Union[google.cloud.gke_multicloud_v1.types.GetAwsJsonWebKeysRequest, dict]):
-                The request object. GetAwsJsonWebKeysRequest gets the public component of
-                the keys used by the cluster to sign token requests.
-                This will be the jwks_uri for the discover document
-                returned by getOpenIDConfig. See the OpenID Connect
-                Discovery 1.0 specification for details.
+                The request object. GetAwsJsonWebKeysRequest gets the public
+                component of the keys used by the
+                cluster to sign token requests. This
+                will be the jwks_uri for the discover
+                document returned by getOpenIDConfig.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

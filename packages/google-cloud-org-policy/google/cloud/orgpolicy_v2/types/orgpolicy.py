@@ -242,12 +242,16 @@ class PolicySpec(proto.Message):
                 'prod')". or "resource.matchTagId('tagKeys/123',
                 'tagValues/456')".
             parameters (google.protobuf.struct_pb2.Struct):
-                Optional. Required for managed constraints if parameters are
-                defined. Passes parameter values when policy enforcement is
-                enabled. Ensure that parameter value types match those
-                defined in the constraint definition. For example: {
-                "allowedLocations" : ["us-east1", "us-west1"], "allowAll" :
-                true }
+                Optional. Required for managed constraints if
+                parameters are defined. Passes parameter values
+                when policy enforcement is enabled. Ensure that
+                parameter value types match those defined in the
+                constraint definition. For example:
+
+                {
+                "allowedLocations" : ["us-east1", "us-west1"],
+                "allowAll" : true
+                }
         """
 
         class StringValues(proto.Message):
@@ -550,10 +554,10 @@ class UpdatePolicyRequest(proto.Message):
         policy (google.cloud.orgpolicy_v2.types.Policy):
             Required. Policy to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask used to specify the fields to be overwritten in
-            the policy by the set. The fields specified in the
-            update_mask are relative to the policy, not the full
-            request.
+            Field mask used to specify the fields to be
+            overwritten in the policy by the set. The fields
+            specified in the update_mask are relative to the
+            policy, not the full request.
     """
 
     policy: "Policy" = proto.Field(

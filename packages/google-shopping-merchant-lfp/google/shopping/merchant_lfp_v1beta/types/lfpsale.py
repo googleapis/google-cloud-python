@@ -54,8 +54,8 @@ class LfpSale(proto.Message):
             **Note**: if the merchant sells the same product new and
             used, they should have different IDs.
         region_code (str):
-            Required. The `CLDR territory
-            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__
+            Required. The [CLDR territory
+            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml)
             for the country where the product is sold.
         content_language (str):
             Required. The two-letter ISO 639-1 language

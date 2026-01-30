@@ -45,12 +45,13 @@ class ListUserLicensesRequest(proto.Message):
             Required. The parent [UserStore][] resource name, format:
             ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
         page_size (int):
-            Optional. Requested page size. Server may return fewer items
-            than requested. If unspecified, defaults to 10. The maximum
-            value is 50; values above 50 will be coerced to 50.
+            Optional. Requested page size. Server may return
+            fewer items than requested. If unspecified,
+            defaults to 10. The maximum value is 50; values
+            above 50 will be coerced to 50.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListUserLicenses`` call. Provide this to retrieve the

@@ -482,8 +482,8 @@ class OperatingSystemTargeting(proto.Message):
 
 
 class InventoryTargeting(proto.Message):
-    r"""Targeted ad units and AU placements are applied with logical OR.
-    Example:
+    r"""Targeted ad units and AU placements are applied with
+    logical OR. Example:
 
     (au:1 OR au:2 OR au_placement:5) AND (NOT (au:3))
 
@@ -777,24 +777,27 @@ class VideoPosition(proto.Message):
 
     Attributes:
         midroll_index (int):
-            Optional. The index of the mid-roll to target. This field is
-            ignored when targeting any video position (e.g.
-            position_type) other than MIDROLL.
+            Optional. The index of the mid-roll to target.
+            This field is ignored when targeting any video
+            position (e.g. position_type) other than
+            MIDROLL.
 
             This field is a member of `oneof`_ ``_midroll_index``.
         reverse_midroll_index (int):
-            Optional. The index from the back of the pod of the mid-roll
-            to target. This field is ignored when targeting any video
-            position (e.g. position_type) other than MIDROLL or if
-            targeting a specific midroll index (e.g. midroll_index !=
-            0).
+            Optional. The index from the back of the pod of
+            the mid-roll to target. This field is ignored
+            when targeting any video position (e.g.
+            position_type) other than MIDROLL or if
+            targeting a specific midroll index (e.g.
+            midroll_index != 0).
 
             This field is a member of `oneof`_ ``_reverse_midroll_index``.
         pod_position (int):
-            Optional. The video position within a pod to target. This
-            field must be unset in order to target a specific video
-            position (e.g. position_type), bumper type (e.g.
-            bumper_type), or custom ad spot (e.g. custom_spot_id).
+            Optional. The video position within a pod to
+            target. This field must be unset in order to
+            target a specific video position (e.g.
+            position_type), bumper type (e.g. bumper_type),
+            or custom ad spot (e.g. custom_spot_id).
 
             This field is a member of `oneof`_ ``_pod_position``.
         position_type (google.ads.admanager_v1.types.VideoPositionEnum.VideoPosition):
@@ -805,10 +808,11 @@ class VideoPosition(proto.Message):
 
             This field is a member of `oneof`_ ``_position_type``.
         bumper_type (google.ads.admanager_v1.types.TargetedVideoBumperTypeEnum.TargetedVideoBumperType):
-            Optional. The video bumper type to target. This field must
-            be unset in order to target a specific video position (e.g.
-            position_type), pod position (e.g. pod_position), or custom
-            ad spot (e.g. custom_spot_id).
+            Optional. The video bumper type to target. This
+            field must be unset in order to target a
+            specific video position (e.g. position_type),
+            pod position (e.g. pod_position), or custom ad
+            spot (e.g. custom_spot_id).
 
             This field is a member of `oneof`_ ``_bumper_type``.
     """

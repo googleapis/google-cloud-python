@@ -333,8 +333,8 @@ class CloudBillingGrpcTransport(CloudBillingTransport):
         r"""Return a callable for the get billing account method over gRPC.
 
         Gets information about a billing account. The current
-        authenticated user must be a `viewer of the billing
-        account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+        authenticated user must be a [viewer of the billing
+        account](https://cloud.google.com/billing/docs/how-to/billing-access).
 
         Returns:
             Callable[[~.GetBillingAccountRequest],

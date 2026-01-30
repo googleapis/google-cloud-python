@@ -46,8 +46,8 @@ class ConsentStatus(proto.Enum):
 
 
 class Consent(proto.Message):
-    r"""`Digital Markets Act
-    (DMA) <//digital-markets-act.ec.europa.eu/index_en>`__ consent
+    r"""[Digital Markets Act
+    (DMA)](//digital-markets-act.ec.europa.eu/index_en) consent
     settings for the user.
 
     Attributes:

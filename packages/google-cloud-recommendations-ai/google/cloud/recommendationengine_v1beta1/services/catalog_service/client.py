@@ -1184,8 +1184,9 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
-                Required. The catalog item to update/create. The
-                'catalog_item_id' field has to match that in the 'name'.
+                Required. The catalog item to
+                update/create. The 'catalog_item_id'
+                field has to match that in the 'name'.
 
                 This corresponds to the ``catalog_item`` field
                 on the ``request`` instance; if ``request`` is provided, this

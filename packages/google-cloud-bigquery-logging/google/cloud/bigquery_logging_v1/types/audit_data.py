@@ -1016,8 +1016,8 @@ class JobConfiguration(proto.Message):
                 Result table encryption information. Set when
                 non-default encryption is used.
             statement_type (str):
-                Type of the statement (e.g. SELECT, INSERT, CREATE_TABLE,
-                CREATE_MODEL..)
+                Type of the statement (e.g. SELECT, INSERT,
+                CREATE_TABLE, CREATE_MODEL..)
         """
 
         query: str = proto.Field(
@@ -1295,21 +1295,23 @@ class JobStatistics(proto.Message):
             Reservation name or "unreserved" for
             on-demand resource usage.
         referenced_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
-            The first N tables accessed by the query job. Older queries
-            that reference a large number of tables may not have all of
-            their tables in this list. You can use the
-            total_tables_processed count to know how many total tables
-            were read in the query. For new queries, there is currently
+            The first N tables accessed by the query job.
+            Older queries that reference a large number of
+            tables may not have all of their tables in this
+            list. You can use the total_tables_processed
+            count to know how many total tables were read in
+            the query. For new queries, there is currently
             no limit.
         total_tables_processed (int):
             Total number of unique tables referenced in
             the query.
         referenced_views (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
-            The first N views accessed by the query job. Older queries
-            that reference a large number of views may not have all of
-            their views in this list. You can use the
-            total_tables_processed count to know how many total tables
-            were read in the query. For new queries, there is currently
+            The first N views accessed by the query job.
+            Older queries that reference a large number of
+            views may not have all of their views in this
+            list. You can use the total_tables_processed
+            count to know how many total tables were read in
+            the query. For new queries, there is currently
             no limit.
         total_views_processed (int):
             Total number of unique views referenced in

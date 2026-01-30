@@ -59,8 +59,8 @@ class Inventory(proto.Message):
     You can use this API resource to determine the inventory data of
     your VM.
 
-    For more information, see `Information provided by OS inventory
-    management <https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>`__.
+    For more information, see [Information provided by OS inventory
+    management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
 
     Attributes:
         name (str):
@@ -256,8 +256,8 @@ class Inventory(proto.Message):
 
         Attributes:
             yum_package (google.cloud.osconfig_v1alpha.types.Inventory.VersionedPackage):
-                Yum package info. For details about the yum package manager,
-                see
+                Yum package info.
+                For details about the yum package manager, see
                 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
 
                 This field is a member of `oneof`_ ``details``.
@@ -268,9 +268,9 @@ class Inventory(proto.Message):
 
                 This field is a member of `oneof`_ ``details``.
             zypper_package (google.cloud.osconfig_v1alpha.types.Inventory.VersionedPackage):
-                Details of a Zypper package. For details about the Zypper
-                package manager, see
-                https://en.opensuse.org/SDB:Zypper_manual.
+                Details of a Zypper package.
+                For details about the Zypper package manager,
+                see https://en.opensuse.org/SDB:Zypper_manual.
 
                 This field is a member of `oneof`_ ``details``.
             googet_package (google.cloud.osconfig_v1alpha.types.Inventory.VersionedPackage):
@@ -280,9 +280,9 @@ class Inventory(proto.Message):
 
                 This field is a member of `oneof`_ ``details``.
             zypper_patch (google.cloud.osconfig_v1alpha.types.Inventory.ZypperPatch):
-                Details of a Zypper patch. For details about the Zypper
-                package manager, see
-                https://en.opensuse.org/SDB:Zypper_manual.
+                Details of a Zypper patch.
+                For details about the Zypper package manager,
+                see https://en.opensuse.org/SDB:Zypper_manual.
 
                 This field is a member of `oneof`_ ``details``.
             wua_package (google.cloud.osconfig_v1alpha.types.Inventory.WindowsUpdatePackage):
@@ -537,8 +537,8 @@ class Inventory(proto.Message):
                 Unique identifier associated with a
                 particular QFE update.
             install_time (google.protobuf.timestamp_pb2.Timestamp):
-                Date that the QFE update was installed. Mapped from
-                installed_on field.
+                Date that the QFE update was installed. Mapped
+                from installed_on field.
         """
 
         caption: str = proto.Field(

@@ -56,9 +56,10 @@ class CreateServiceRequest(proto.Message):
         service (google.cloud.run_v2.types.Service):
             Required. The Service instance to create.
         service_id (str):
-            Required. The unique identifier for the Service. It must
-            begin with letter, and cannot end with hyphen; must contain
-            fewer than 50 characters. The name of the service becomes
+            Required. The unique identifier for the Service.
+            It must begin with letter, and cannot end with
+            hyphen; must contain fewer than 50 characters.
+            The name of the service becomes
             {parent}/services/{service_id}.
         validate_only (bool):
             Indicates that the request should be
@@ -173,8 +174,9 @@ class ListServicesResponse(proto.Message):
         services (MutableSequence[google.cloud.run_v2.types.Service]):
             The resulting list of Services.
         next_page_token (str):
-            A token indicating there are more items than page_size. Use
-            it in the next ListServices request to continue.
+            A token indicating there are more items than
+            page_size. Use it in the next ListServices
+            request to continue.
         unreachable (MutableSequence[str]):
             Output only. For global requests, returns the
             list of regions that could not be reached within
@@ -260,12 +262,14 @@ class Service(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The fully qualified name of this Service. In
-            CreateServiceRequest, this field is ignored, and instead
-            composed from CreateServiceRequest.parent and
+            Identifier. The fully qualified name of this
+            Service. In CreateServiceRequest, this field is
+            ignored, and instead composed from
+            CreateServiceRequest.parent and
             CreateServiceRequest.service_id.
 
             Format:
+
             projects/{project}/locations/{location}/services/{service_id}
         description (str):
             User-provided description of the Service.
@@ -334,9 +338,11 @@ class Service(proto.Message):
             Arbitrary version identifier for the API
             client.
         ingress (google.cloud.run_v2.types.IngressTraffic):
-            Optional. Provides the ingress settings for this Service. On
-            output, returns the currently observed ingress settings, or
-            INGRESS_TRAFFIC_UNSPECIFIED if no revision is active.
+            Optional. Provides the ingress settings for this
+            Service. On output, returns the currently
+            observed ingress settings, or
+            INGRESS_TRAFFIC_UNSPECIFIED if no revision is
+            active.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
             Optional. The launch stage as defined by `Google Cloud
             Platform Launch
@@ -366,8 +372,8 @@ class Service(proto.Message):
             settings
         invoker_iam_disabled (bool):
             Optional. Disables IAM permission check for
-            run.routes.invoke for callers of this service. For more
-            information, visit
+            run.routes.invoke for callers of this service.
+            For more information, visit
             https://cloud.google.com/run/docs/securing/managing-access#invoker_check.
         default_uri_disabled (bool):
             Optional. Disables public resolution of the

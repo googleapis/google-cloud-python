@@ -332,9 +332,11 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the access control policy for an Identity-Aware Proxy
-        protected resource. Replaces any existing policy. More
-        information about managing access via IAP can be found at:
+        Sets the access control policy for an Identity-Aware
+        Proxy protected resource. Replaces any existing policy.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:
@@ -361,9 +363,11 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Gets the access control policy for an Identity-Aware Proxy
-        protected resource. More information about managing access via
-        IAP can be found at:
+        Gets the access control policy for an Identity-Aware
+        Proxy protected resource.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:
@@ -393,9 +397,11 @@ class IdentityAwareProxyAdminServiceGrpcTransport(
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns permissions that a caller has on the Identity-Aware
-        Proxy protected resource. More information about managing access
-        via IAP can be found at:
+        Returns permissions that a caller has on the
+        Identity-Aware Proxy protected resource.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:

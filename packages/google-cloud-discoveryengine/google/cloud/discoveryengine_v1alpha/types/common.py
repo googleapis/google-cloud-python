@@ -336,9 +336,10 @@ class GuidedSearchSpec(proto.Message):
             Whether or not to enable and include related
             questions in search response.
         max_related_questions (int):
-            Max number of related questions to be returned. The valid
-            range is [1, 5]. If enable_related_questions is true, the
-            default value is 3.
+            Max number of related questions to be returned.
+            The valid range is [1, 5]. If
+            enable_related_questions is true, the default
+            value is 3.
     """
 
     enable_refinement_attributes: bool = proto.Field(
@@ -400,7 +401,8 @@ class IdpConfig(proto.Message):
 
         Attributes:
             workforce_pool_name (str):
-                Workforce pool name. Example:
+                Workforce pool name.
+                Example:
                 "locations/global/workforcePools/pool_id".
         """
 
@@ -433,18 +435,21 @@ class Principal(proto.Message):
 
     Attributes:
         user_id (str):
-            User identifier. For Google Workspace user account, user_id
-            should be the google workspace user email. For non-google
-            identity provider user account, user_id is the mapped user
-            identifier configured during the workforcepool config.
+            User identifier.
+            For Google Workspace user account, user_id
+            should be the google workspace user email.
+            For non-google identity provider user account,
+            user_id is the mapped user identifier configured
+            during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         group_id (str):
-            Group identifier. For Google Workspace user account,
-            group_id should be the google workspace group email. For
-            non-google identity provider user account, group_id is the
-            mapped group identifier configured during the workforcepool
-            config.
+            Group identifier.
+            For Google Workspace user account, group_id
+            should be the google workspace group email.
+            For non-google identity provider user account,
+            group_id is the mapped group identifier
+            configured during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
     """

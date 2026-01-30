@@ -1757,9 +1757,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             Returns:
                 ~.storageinsights.DatasetConfig:
-                    Message describing the dataset configuration properties.
-                For more information, see `Dataset configuration
-                properties <https://cloud.google.com/storage/docs/insights/datasets#dataset-config>`__.
+                    Message describing the dataset
+                configuration properties. For more
+                information, see [Dataset configuration
+                properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
             """
 

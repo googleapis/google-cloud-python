@@ -383,18 +383,20 @@ class TaskTrackingViewConfig(proto.Message):
 
         Attributes:
             remaining_stop_count_threshold (int):
-                This data element is visible to the end users if the
-                remaining stop count <= remaining_stop_count_threshold.
+                This data element is visible to the end users if
+                the remaining stop count <=
+                remaining_stop_count_threshold.
 
                 This field is a member of `oneof`_ ``visibility_option``.
             duration_until_estimated_arrival_time_threshold (google.protobuf.duration_pb2.Duration):
-                This data element is visible to the end users if the ETA to
-                the stop <= duration_until_estimated_arrival_time_threshold.
+                This data element is visible to the end users if
+                the ETA to the stop <=
+                duration_until_estimated_arrival_time_threshold.
 
                 This field is a member of `oneof`_ ``visibility_option``.
             remaining_driving_distance_meters_threshold (int):
-                This data element is visible to the end users if the
-                remaining driving distance in meters <=
+                This data element is visible to the end users if
+                the remaining driving distance in meters <=
                 remaining_driving_distance_meters_threshold.
 
                 This field is a member of `oneof`_ ``visibility_option``.

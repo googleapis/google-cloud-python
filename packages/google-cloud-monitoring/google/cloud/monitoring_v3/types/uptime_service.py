@@ -50,17 +50,19 @@ class ListUptimeCheckConfigsRequest(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]
         filter (str):
-            If provided, this field specifies the criteria that must be
-            met by uptime checks to be included in the response.
+            If provided, this field specifies the criteria
+            that must be met by uptime checks to be included
+            in the response.
 
-            For more details, see `Filtering
-            syntax <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering#filter_syntax>`__.
+            For more details, see [Filtering
+            syntax](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering#filter_syntax).
         page_size (int):
-            The maximum number of results to return in a single
-            response. The server may further constrain the maximum
-            number of results returned in a single page. If the
-            page_size is <=0, the server will decide the number of
-            results to be returned.
+            The maximum number of results to return in a
+            single response. The server may further
+            constrain the maximum number of results returned
+            in a single page. If the page_size is <=0, the
+            server will decide the number of results to be
+            returned.
         page_token (str):
             If this field is not empty then it must contain the
             ``nextPageToken`` value returned by a previous call to this
@@ -93,12 +95,13 @@ class ListUptimeCheckConfigsResponse(proto.Message):
         uptime_check_configs (MutableSequence[google.cloud.monitoring_v3.types.UptimeCheckConfig]):
             The returned Uptime check configurations.
         next_page_token (str):
-            This field represents the pagination token to retrieve the
-            next page of results. If the value is empty, it means no
-            further results for the request. To retrieve the next page
-            of results, the value of the next_page_token is passed to
-            the subsequent List method call (in the request message's
-            page_token field).
+            This field represents the pagination token to
+            retrieve the next page of results. If the value
+            is empty, it means no further results for the
+            request. To retrieve the next page of results,
+            the value of the next_page_token is passed to
+            the subsequent List method call (in the request
+            message's page_token field).
         total_size (int):
             The total number of Uptime check
             configurations for the project, irrespective of
@@ -131,12 +134,9 @@ class GetUptimeCheckConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The Uptime check configuration to retrieve. The
-            format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+            Required. The Uptime check configuration to
+            retrieve. The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
     name: str = proto.Field(
@@ -215,12 +215,9 @@ class DeleteUptimeCheckConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The Uptime check configuration to delete. The
-            format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+            Required. The Uptime check configuration to
+            delete. The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
     """
 
     name: str = proto.Field(
@@ -234,12 +231,13 @@ class ListUptimeCheckIpsRequest(proto.Message):
 
     Attributes:
         page_size (int):
-            The maximum number of results to return in a single
-            response. The server may further constrain the maximum
-            number of results returned in a single page. If the
-            page_size is <=0, the server will decide the number of
-            results to be returned. NOTE: this field is not yet
-            implemented
+            The maximum number of results to return in a
+            single response. The server may further
+            constrain the maximum number of results returned
+            in a single page. If the page_size is <=0, the
+            server will decide the number of results to be
+            returned.
+            NOTE: this field is not yet implemented
         page_token (str):
             If this field is not empty then it must contain the
             ``nextPageToken`` value returned by a previous call to this
@@ -266,12 +264,14 @@ class ListUptimeCheckIpsResponse(proto.Message):
             The returned list of IP addresses (including
             region and location) that the checkers run from.
         next_page_token (str):
-            This field represents the pagination token to retrieve the
-            next page of results. If the value is empty, it means no
-            further results for the request. To retrieve the next page
-            of results, the value of the next_page_token is passed to
-            the subsequent List method call (in the request message's
-            page_token field). NOTE: this field is not yet implemented
+            This field represents the pagination token to
+            retrieve the next page of results. If the value
+            is empty, it means no further results for the
+            request. To retrieve the next page of results,
+            the value of the next_page_token is passed to
+            the subsequent List method call (in the request
+            message's page_token field).
+            NOTE: this field is not yet implemented
     """
 
     @property

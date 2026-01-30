@@ -101,17 +101,18 @@ class ResourceValueConfig(proto.Message):
         cloud_provider (google.cloud.securitycenter_v1.types.CloudProvider):
             Cloud provider this configuration applies to
         sensitive_data_protection_mapping (google.cloud.securitycenter_v1.types.ResourceValueConfig.SensitiveDataProtectionMapping):
-            A mapping of the sensitivity on Sensitive Data Protection
-            finding to resource values. This mapping can only be used in
-            combination with a resource_type that is related to
-            BigQuery, e.g. "bigquery.googleapis.com/Dataset".
+            A mapping of the sensitivity on Sensitive Data
+            Protection finding to resource values. This
+            mapping can only be used in combination with a
+            resource_type that is related to BigQuery, e.g.
+            "bigquery.googleapis.com/Dataset".
     """
 
     class SensitiveDataProtectionMapping(proto.Message):
-        r"""Resource value mapping for Sensitive Data Protection findings. If
-        any of these mappings have a resource value that is not unspecified,
-        the resource_value field will be ignored when reading this
-        configuration.
+        r"""Resource value mapping for Sensitive Data Protection findings.
+        If any of these mappings have a resource value that is not
+        unspecified, the resource_value field will be ignored when
+        reading this configuration.
 
         Attributes:
             high_sensitivity_mapping (google.cloud.securitycenter_v1.types.ResourceValue):

@@ -360,15 +360,16 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
 
         Create an OS policy assignment.
 
-        This method also creates the first revision of the OS policy
-        assignment.
+        This method also creates the first revision of the OS
+        policy assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).
 
         Returns:
             Callable[[~.CreateOSPolicyAssignmentRequest],
@@ -401,14 +402,16 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
 
         Update an existing OS policy assignment.
 
-        This method creates a new revision of the OS policy assignment.
+        This method creates a new revision of the OS policy
+        assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).
 
         Returns:
             Callable[[~.UpdateOSPolicyAssignmentRequest],
@@ -541,17 +544,19 @@ class OsConfigZonalServiceGrpcTransport(OsConfigZonalServiceTransport):
 
         Delete the OS policy assignment.
 
-        This method creates a new revision of the OS policy assignment.
+        This method creates a new revision of the OS policy
+        assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
         If the LRO completes and is not cancelled, all revisions
         associated with the OS policy assignment are deleted.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).
 
         Returns:
             Callable[[~.DeleteOSPolicyAssignmentRequest],

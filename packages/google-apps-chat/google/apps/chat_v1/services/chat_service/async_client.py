@@ -4904,9 +4904,11 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.types.SpaceEvent:
-                An event that represents a change or activity in a Google Chat space. To
-                   learn more, see [Work with events from Google
-                   Chat](https://developers.google.com/workspace/chat/events-overview).
+                An event that represents a change or
+                activity in a Google Chat space. To
+                learn more, see [Work with events from
+                Google
+                Chat](https://developers.google.com/workspace/chat/events-overview).
 
         """
         # Create or coerce a protobuf request object.

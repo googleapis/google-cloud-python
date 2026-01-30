@@ -439,16 +439,18 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
     ]:
         r"""Return a callable for the fetch profiles method over gRPC.
 
-        Fetches available profiles. A profile contains performance
-        metrics and cost information for a specific model server setup.
-        Profiles can be filtered by parameters. If no filters are
-        provided, all profiles are returned.
+        Fetches available profiles. A profile contains
+        performance metrics and cost information for a specific
+        model server setup. Profiles can be filtered by
+        parameters. If no filters are provided, all profiles are
+        returned.
 
-        Profiles display a single value per performance metric based on
-        the provided performance requirements. If no requirements are
-        given, the metrics represent the inflection point. See `Run best
-        practice inference with GKE Inference Quickstart
-        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how>`__
+        Profiles display a single value per performance metric
+        based on the provided performance requirements. If no
+        requirements are given, the metrics represent the
+        inflection point. See [Run best practice inference with
+        GKE Inference Quickstart
+        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how)
         for details.
 
         Returns:
@@ -478,11 +480,12 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
     ]:
         r"""Return a callable for the generate optimized manifest method over gRPC.
 
-        Generates an optimized deployment manifest for a given model and
-        model server, based on the specified accelerator, performance
-        targets, and configurations. See `Run best practice inference
-        with GKE Inference Quickstart
-        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart>`__
+        Generates an optimized deployment manifest for a given
+        model and model server, based on the specified
+        accelerator, performance targets, and configurations.
+        See [Run best practice inference with GKE Inference
+        Quickstart
+        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart)
         for deployment details.
 
         Returns:

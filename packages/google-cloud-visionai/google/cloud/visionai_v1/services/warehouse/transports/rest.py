@@ -5506,10 +5506,13 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym. For example, {
-                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
-                means in SMART_SEARCH mode, searching for "vehicle" will
-                also return results with "sedan" or "truck" as
+                    Search resource: SearchHypernym.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
                 annotations.
 
             """
@@ -8475,10 +8478,13 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym. For example, {
-                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
-                means in SMART_SEARCH mode, searching for "vehicle" will
-                also return results with "sedan" or "truck" as
+                    Search resource: SearchHypernym.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
                 annotations.
 
             """
@@ -12322,10 +12328,13 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym. For example, {
-                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
-                means in SMART_SEARCH mode, searching for "vehicle" will
-                also return results with "sedan" or "truck" as
+                    Search resource: SearchHypernym.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
                 annotations.
 
             """

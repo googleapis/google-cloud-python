@@ -3630,10 +3630,11 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.services.instance_group_managers.pagers.ListPager:
-                [Output Only] A list of managed instance groups.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                [Output Only] A list of managed instance
+                groups.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -6410,8 +6411,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Motifies the autohealing policy for the instances in this
-        managed instance group. [Deprecated] This method is deprecated.
+        r"""Motifies the autohealing policy for the instances in
+        this managed instance group.
+        [Deprecated] This method is deprecated.
         UseinstanceGroupManagers.patch instead.
 
         .. code-block:: python
@@ -6570,8 +6572,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Motifies the autohealing policy for the instances in this
-        managed instance group. [Deprecated] This method is deprecated.
+        r"""Motifies the autohealing policy for the instances in
+        this managed instance group.
+        [Deprecated] This method is deprecated.
         UseinstanceGroupManagers.patch instead.
 
         .. code-block:: python

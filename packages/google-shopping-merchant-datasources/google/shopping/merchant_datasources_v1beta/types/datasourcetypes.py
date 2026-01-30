@@ -77,9 +77,9 @@ class PrimaryProductDataSource(proto.Message):
 
             This field is a member of `oneof`_ ``_content_language``.
         countries (MutableSequence[str]):
-            Optional. The countries where the items may be displayed.
-            Represented as a `CLDR territory
-            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
+            Optional. The countries where the items may be
+            displayed. Represented as a [CLDR territory
+            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml).
         default_rule (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.DefaultRule):
             Optional. Default rule management of the data
             source. If set, the linked data sources will be
@@ -171,8 +171,8 @@ class PrimaryProductDataSource(proto.Message):
         )
 
     class Destination(proto.Message):
-        r"""Destinations also known as `Marketing
-        methods <https://support.google.com/merchants/answer/15130232>`__
+        r"""Destinations also known as [Marketing
+        methods](https://support.google.com/merchants/answer/15130232)
         selections.
 
         Attributes:
@@ -319,14 +319,14 @@ class LocalInventoryDataSource(proto.Message):
 
     Attributes:
         feed_label (str):
-            Required. Immutable. The feed label of the offers to which
-            the local inventory is provided.
+            Required. Immutable. The feed label of the
+            offers to which the local inventory is provided.
 
-            Must be less than or equal to 20 uppercase letters (A-Z),
-            numbers (0-9), and dashes (-).
+            Must be less than or equal to 20 uppercase
+            letters (A-Z), numbers (0-9), and dashes (-).
 
-            See also `migration to feed
-            labels <https://developers.google.com/shopping-content/guides/products/feed-labels>`__.
+            See also [migration to feed
+            labels](https://developers.google.com/shopping-content/guides/products/feed-labels).
         content_language (str):
             Required. Immutable. The two-letter ISO 639-1
             language of the items to which the local
@@ -348,14 +348,15 @@ class RegionalInventoryDataSource(proto.Message):
 
     Attributes:
         feed_label (str):
-            Required. Immutable. The feed label of the offers to which
-            the regional inventory is provided.
+            Required. Immutable. The feed label of the
+            offers to which the regional inventory is
+            provided.
 
-            Must be less than or equal to 20 uppercase letters (A-Z),
-            numbers (0-9), and dashes (-).
+            Must be less than or equal to 20 uppercase
+            letters (A-Z), numbers (0-9), and dashes (-).
 
-            See also `migration to feed
-            labels <https://developers.google.com/shopping-content/guides/products/feed-labels>`__.
+            See also [migration to feed
+            labels](https://developers.google.com/shopping-content/guides/products/feed-labels).
         content_language (str):
             Required. Immutable. The two-letter ISO 639-1
             language of the items to which the regional

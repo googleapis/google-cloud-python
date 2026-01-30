@@ -101,9 +101,9 @@ class WorkerPoolRevisionTemplate(proto.Message):
             Optional. The action to take if the
             encryption key is revoked.
         encryption_key_shutdown_duration (google.protobuf.duration_pb2.Duration):
-            Optional. If encryption_key_revocation_action is SHUTDOWN,
-            the duration before shutting down all instances. The minimum
-            increment is 1 hour.
+            Optional. If encryption_key_revocation_action is
+            SHUTDOWN, the duration before shutting down all
+            instances. The minimum increment is 1 hour.
         node_selector (google.cloud.run_v2.types.NodeSelector):
             Optional. The node selector for the revision
             template.

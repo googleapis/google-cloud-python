@@ -66,9 +66,10 @@ class ClassificationAnnotation(proto.Message):
 
 
 class ClassificationEvaluationMetrics(proto.Message):
-    r"""Model evaluation metrics for classification problems. Note: For
-    Video Classification this metrics only describe quality of the Video
-    Classification predictions of "segment_classification" type.
+    r"""Model evaluation metrics for classification problems.
+    Note: For Video Classification this metrics only describe
+    quality of the Video Classification predictions of
+    "segment_classification" type.
 
     Attributes:
         au_prc (float):
@@ -82,12 +83,14 @@ class ClassificationEvaluationMetrics(proto.Message):
         log_loss (float):
             Output only. The Log Loss metric.
         confidence_metrics_entry (MutableSequence[google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
-            Output only. Metrics for each confidence_threshold in
+            Output only. Metrics for each
+            confidence_threshold in
             0.00,0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and
-            position_threshold = INT32_MAX_VALUE. ROC and
-            precision-recall curves, and other aggregated metrics are
-            derived from them. The confidence metrics entries may also
-            be supplied for additional values of position_threshold, but
+            position_threshold = INT32_MAX_VALUE.
+            ROC and precision-recall curves, and other
+            aggregated metrics are derived from them. The
+            confidence metrics entries may also be supplied
+            for additional values of position_threshold, but
             from these no aggregated metrics are computed.
         confusion_matrix (google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfusionMatrix):
             Output only. Confusion matrix of the
@@ -110,10 +113,11 @@ class ClassificationEvaluationMetrics(proto.Message):
                 assumption that the model never returns
                 predictions with score lower than this value.
             position_threshold (int):
-                Output only. Metrics are computed with an assumption that
-                the model always returns at most this many predictions
-                (ordered by their score, descendingly), but they all still
-                need to meet the confidence_threshold.
+                Output only. Metrics are computed with an
+                assumption that the model always returns at most
+                this many predictions (ordered by their score,
+                descendingly), but they all still need to meet
+                the confidence_threshold.
             recall (float):
                 Output only. Recall (True Positive Rate) for
                 the given confidence threshold.

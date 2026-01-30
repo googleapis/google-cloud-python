@@ -180,8 +180,9 @@ class MarkInsightAcceptedRequest(proto.Message):
         name (str):
             Required. Name of the insight.
         state_metadata (MutableMapping[str, str]):
-            Optional. State properties user wish to include with this
-            state. Full replace of the current state_metadata.
+            Optional. State properties user wish to include
+            with this state. Full replace of the current
+            state_metadata.
         etag (str):
             Required. Fingerprint of the Insight.
             Provides optimistic locking.

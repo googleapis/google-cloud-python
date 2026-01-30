@@ -73,11 +73,11 @@ class Membership(proto.Message):
 
             This field is a member of `oneof`_ ``memberType``.
         group_member (google.apps.chat_v1.types.Group):
-            Optional. The Google Group the membership corresponds to.
-
-            Reading or mutating memberships for Google Groups requires
-            `user
-            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+            Optional. The Google Group the membership
+            corresponds to.
+            Reading or mutating memberships for Google
+            Groups requires [user
+            authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
 
             This field is a member of `oneof`_ ``memberType``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

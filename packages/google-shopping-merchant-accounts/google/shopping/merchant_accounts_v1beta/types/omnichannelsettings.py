@@ -80,24 +80,26 @@ class OmnichannelSetting(proto.Message):
 
     class LsfType(proto.Enum):
         r"""The product page experience type, which is also called the Local
-        Store Front (LSF) type. Check the `HC
-        article <https://support.google.com/merchants/answer/7178526>`__ for
-        more details.
+        Store Front (LSF) type. Check the [HC
+        article](https://support.google.com/merchants/answer/7178526)
+        for more details.
 
         Values:
             LSF_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             GHLSF (1):
-                Google-Hosted Local Store Front. Check the `HC
-                article <https://support.google.com/merchants/answer/14869424>`__
+                Google-Hosted Local Store Front. Check the [HC
+                article](https://support.google.com/merchants/answer/14869424)
                 for more details.
             MHLSF_BASIC (2):
-                Merchant-Hosted Local Store Front Basic. Check the `HC
-                article <https://support.google.com/merchants/answer/14615867>`__
+                Merchant-Hosted Local Store Front Basic. Check
+                the [HC
+                article](https://support.google.com/merchants/answer/14615867)
                 for more details.
             MHLSF_FULL (3):
-                Merchant-Hosted Local Store Front Full. Check the `HC
-                article <https://support.google.com/merchants/answer/14617076>`__
+                Merchant-Hosted Local Store Front Full. Check
+                the [HC
+                article](https://support.google.com/merchants/answer/14617076)
                 for more details.
         """
         LSF_TYPE_UNSPECIFIED = 0
@@ -182,10 +184,11 @@ class InStock(proto.Message):
 
     Attributes:
         uri (str):
-            Optional. Product landing page URI. It is only used for the
-            review of MHLSF in-stock serving. This URI domain should
-            match with the business's homepage. Required to be empty if
-            the lsf_type is GHLSF, and required when the lsf_type is
+            Optional. Product landing page URI. It is only
+            used for the review of MHLSF in-stock serving.
+            This URI domain should match with the business's
+            homepage. Required to be empty if the lsf_type
+            is GHLSF, and required when the lsf_type is
             MHLSF_FULL or MHLSF_BASIC.
         state (google.shopping.merchant_accounts_v1beta.types.ReviewState.State):
             Output only. The state of the in-stock
@@ -302,8 +305,8 @@ class About(proto.Message):
 
 
 class InventoryVerification(proto.Message):
-    r"""Collection of information related to `inventory
-    verification <https://support.google.com/merchants/answer/14684499?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC>`__.
+    r"""Collection of information related to [inventory
+    verification](https://support.google.com/merchants/answer/14684499?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC).
 
     Attributes:
         state (google.shopping.merchant_accounts_v1beta.types.InventoryVerification.State):
@@ -321,8 +324,8 @@ class InventoryVerification(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""The state of the `inventory
-        verification <https://support.google.com/merchants/answer/14684499?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC>`__
+        r"""The state of the [inventory
+        verification](https://support.google.com/merchants/answer/14684499?hl=en&ref_topic=15145634&sjid=6892280366904591178-NC)
         process.
 
         Values:

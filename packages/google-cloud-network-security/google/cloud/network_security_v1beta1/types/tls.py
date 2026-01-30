@@ -97,10 +97,11 @@ class CertificateProviderInstance(proto.Message):
 
     Attributes:
         plugin_instance (str):
-            Required. Plugin instance name, used to locate and load
-            CertificateProvider instance configuration. Set to
-            "google_cloud_private_spiffe" to use Certificate Authority
-            Service certificate provider instance.
+            Required. Plugin instance name, used to locate
+            and load CertificateProvider instance
+            configuration. Set to
+            "google_cloud_private_spiffe" to use Certificate
+            Authority Service certificate provider instance.
     """
 
     plugin_instance: str = proto.Field(

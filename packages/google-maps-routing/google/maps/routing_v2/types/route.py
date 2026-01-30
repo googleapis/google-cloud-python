@@ -419,11 +419,11 @@ class RouteLeg(proto.Message):
             distance (google.type.localized_text_pb2.LocalizedText):
                 Travel distance represented in text form.
             duration (google.type.localized_text_pb2.LocalizedText):
-                Duration, represented in text form and localized to the
-                region of the query. Takes traffic conditions into
-                consideration. Note: If you did not request traffic
-                information, this value is the same value as
-                static_duration.
+                Duration, represented in text form and localized
+                to the region of the query. Takes traffic
+                conditions into consideration. Note: If you did
+                not request traffic information, this value is
+                the same value as static_duration.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration without taking traffic conditions
                 into consideration, represented in text form.
@@ -703,11 +703,12 @@ class RouteLegStepTransitDetails(proto.Message):
             Information about the transit line used in
             this step.
         stop_count (int):
-            The number of stops from the departure to the arrival stop.
-            This count includes the arrival stop, but excludes the
-            departure stop. For example, if your route leaves from Stop
-            A, passes through stops B and C, and arrives at stop D,
-            stop_count returns 3.
+            The number of stops from the departure to the
+            arrival stop. This count includes the arrival
+            stop, but excludes the departure stop. For
+            example, if your route leaves from Stop A,
+            passes through stops B and C, and arrives at
+            stop D, <code>stop_count</code> returns 3.
         trip_short_text (str):
             The text that appears in schedules and sign boards to
             identify a transit trip to passengers. The text should

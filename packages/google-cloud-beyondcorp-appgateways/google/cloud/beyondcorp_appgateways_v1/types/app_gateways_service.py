@@ -50,14 +50,15 @@ class ListAppGatewaysRequest(proto.Message):
             [next_page_token][BeyondCorp.ListAppGatewaysResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            ListAppGatewaysRequest, if any.
+            Optional. The next_page_token value returned
+            from a previous ListAppGatewaysRequest, if any.
         filter (str):
             Optional. A filter specifying constraints of
             a list operation.
         order_by (str):
-            Optional. Specifies the ordering of results. See `Sorting
-            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
+            Optional. Specifies the ordering of results. See
+            [Sorting
+            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
             for more information.
     """
 

@@ -61,8 +61,8 @@ class EVConnectorType(proto.Enum):
             ability to charge a Tesla brand vehicle at a
             Tesla owned charging station.
         EV_CONNECTOR_TYPE_UNSPECIFIED_GB_T (8):
-            GB/T type corresponds to the GB/T standard in China. This
-            type covers all GB_T types.
+            GB/T type corresponds to the GB/T standard in
+            China. This type covers all GB_T types.
         EV_CONNECTOR_TYPE_UNSPECIFIED_WALL_OUTLET (9):
             Unspecified wall outlet.
         EV_CONNECTOR_TYPE_NACS (10):
@@ -83,11 +83,11 @@ class EVConnectorType(proto.Enum):
 
 
 class EVChargeOptions(proto.Message):
-    r"""Information about the EV Charge Station hosted in Place. Terminology
-    follows
-    https://afdc.energy.gov/fuels/electricity_infrastructure.html One
-    port could charge one car at a time. One port has one or more
-    connectors. One station has one or more ports.
+    r"""Information about the EV Charge Station hosted in Place.
+    Terminology follows
+    https://afdc.energy.gov/fuels/electricity_infrastructure.html
+    One port could charge one car at a time. One port has one or
+    more connectors. One station has one or more ports.
 
     Attributes:
         connector_count (int):
@@ -104,9 +104,9 @@ class EVChargeOptions(proto.Message):
     """
 
     class ConnectorAggregation(proto.Message):
-        r"""EV charging information grouped by [type, max_charge_rate_kw]. Shows
-        EV charge aggregation of connectors that have the same type and max
-        charge rate in kw.
+        r"""EV charging information grouped by [type, max_charge_rate_kw].
+        Shows EV charge aggregation of connectors that have the same
+        type and max charge rate in kw.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

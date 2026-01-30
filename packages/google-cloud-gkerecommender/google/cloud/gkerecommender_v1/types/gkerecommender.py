@@ -595,8 +595,8 @@ class PerformanceRange(proto.Message):
 
     Attributes:
         throughput_output_range (google.cloud.gkerecommender_v1.types.TokensPerSecondRange):
-            Output only. The range of throughput in output tokens per
-            second. This is measured as
+            Output only. The range of throughput in output
+            tokens per second. This is measured as
             total_output_tokens_generated_by_server /
             elapsed_time_in_seconds.
         ttft_range (google.cloud.gkerecommender_v1.types.MillisecondRange):
@@ -604,10 +604,11 @@ class PerformanceRange(proto.Message):
             Token) in milliseconds. TTFT is the time it
             takes to generate the first token for a request.
         ntpot_range (google.cloud.gkerecommender_v1.types.MillisecondRange):
-            Output only. The range of NTPOT (Normalized Time Per Output
-            Token) in milliseconds. NTPOT is the request latency
-            normalized by the number of output tokens, measured as
-            request_latency / total_output_tokens.
+            Output only. The range of NTPOT (Normalized Time
+            Per Output Token) in milliseconds. NTPOT is the
+            request latency normalized by the number of
+            output tokens, measured as request_latency /
+            total_output_tokens.
     """
 
     throughput_output_range: "TokensPerSecondRange" = proto.Field(
@@ -738,14 +739,15 @@ class PerformanceStats(proto.Message):
             on context length and may not be a reliable
             measure of LLM throughput.
         output_tokens_per_second (int):
-            Output only. The number of output tokens per second. This is
-            the throughput measured as
+            Output only. The number of output tokens per
+            second. This is the throughput measured as
             total_output_tokens_generated_by_server /
             elapsed_time_in_seconds.
         ntpot_milliseconds (int):
-            Output only. The Normalized Time Per Output Token (NTPOT) in
-            milliseconds. This is the request latency normalized by the
-            number of output tokens, measured as request_latency /
+            Output only. The Normalized Time Per Output
+            Token (NTPOT) in milliseconds. This is the
+            request latency normalized by the number of
+            output tokens, measured as request_latency /
             total_output_tokens.
         ttft_milliseconds (int):
             Output only. The Time To First Token (TTFT)
@@ -930,10 +932,11 @@ class GenerateOptimizedManifestResponse(proto.Message):
             Output only. Comments related to deploying
             the generated manifests.
         manifest_version (str):
-            Output only. Additional information about the versioned
-            dependencies used to generate the manifests. See `Run best
-            practice inference with GKE Inference Quickstart
-            recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart>`__
+            Output only. Additional information about the
+            versioned dependencies used to generate the
+            manifests. See [Run best practice inference with
+            GKE Inference Quickstart
+            recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart)
             for details.
     """
 

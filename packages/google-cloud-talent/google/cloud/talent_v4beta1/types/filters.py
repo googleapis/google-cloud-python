@@ -57,21 +57,22 @@ class JobQuery(proto.Message):
             "sr-Latn". For more information, see `Tags for Identifying
             Languages <https://tools.ietf.org/html/bcp47>`__.
         companies (MutableSequence[str]):
-            This filter specifies the company entities to search
-            against.
+            This filter specifies the company entities to
+            search against.
+            If a value isn't specified, jobs are searched
+            for against all companies.
 
-            If a value isn't specified, jobs are searched for against
-            all companies.
-
-            If multiple values are specified, jobs are searched against
-            the companies specified.
+            If multiple values are specified, jobs are
+            searched against the companies specified.
 
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}".
-            For example, "projects/foo/tenants/bar/companies/baz".
+            For example,
+            "projects/foo/tenants/bar/companies/baz".
 
-            If tenant id is unspecified, the default tenant is used. For
-            example, "projects/foo/companies/bar".
+            If tenant id is unspecified, the default tenant
+            is used. For example,
+            "projects/foo/companies/bar".
 
             At most 20 company filters are allowed.
         location_filters (MutableSequence[google.cloud.talent_v4beta1.types.LocationFilter]):
@@ -287,21 +288,22 @@ class LocationFilter(proto.Message):
             The address name, such as "Mountain View" or
             "Bay Area".
         region_code (str):
-            CLDR region code of the country/region. This field may be
-            used in two ways:
+            CLDR region code of the country/region. This
+            field may be used in two ways:
+            1) If telecommute preference is not set, this
+            field is used address ambiguity of the
+            user-input address. For example, "Liverpool" may
+            refer to "Liverpool, NY, US" or "Liverpool, UK".
+            This region code biases the address resolution
+            toward a specific country or territory. If this
+            field is not set, address resolution is biased
+            toward the United States by default.
 
-            1) If telecommute preference is not set, this field is used
-               address ambiguity of the user-input address. For example,
-               "Liverpool" may refer to "Liverpool, NY, US" or
-               "Liverpool, UK". This region code biases the address
-               resolution toward a specific country or territory. If
-               this field is not set, address resolution is biased
-               toward the United States by default.
-
-            2) If telecommute preference is set to TELECOMMUTE_ALLOWED,
-               the telecommute location filter will be limited to the
-               region specified in this field. If this field is not set,
-               the telecommute job locations will not be
+            2) If telecommute preference is set to
+            TELECOMMUTE_ALLOWED, the telecommute location
+            filter will be limited to the region specified
+            in this field. If this field is not set, the
+            telecommute job locations will not be
 
             See
             https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/territory_information.html
@@ -311,9 +313,10 @@ class LocationFilter(proto.Message):
             search from. This field is ignored if ``address`` is
             provided.
         distance_in_miles (float):
-            The distance_in_miles is applied when the location being
-            searched for is identified as a city or smaller. This field
-            is ignored if the location being searched for is a state or
+            The distance_in_miles is applied when the
+            location being searched for is identified as a
+            city or smaller. This field is ignored if the
+            location being searched for is a state or
             larger.
         telecommute_preference (google.cloud.talent_v4beta1.types.LocationFilter.TelecommutePreference):
             Allows the client to return jobs without a set location,
@@ -360,9 +363,9 @@ class LocationFilter(proto.Message):
                 Default value if the telecommute preference
                 isn't specified.
             TELECOMMUTE_EXCLUDED (1):
-                Deprecated: Ignore telecommute status of jobs. Use
-                TELECOMMUTE_JOBS_EXCLUDED if want to exclude telecommute
-                jobs.
+                Deprecated: Ignore telecommute status of jobs.
+                Use TELECOMMUTE_JOBS_EXCLUDED if want to exclude
+                telecommute jobs.
             TELECOMMUTE_ALLOWED (2):
                 Allow telecommute jobs.
             TELECOMMUTE_JOBS_EXCLUDED (3):

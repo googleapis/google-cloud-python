@@ -120,8 +120,8 @@ class _LoggingClientAIOInterceptor(
 class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
     """gRPC AsyncIO backend transport for ServiceManager.
 
-    `Google Service Management
-    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
+    [Google Service Management
+    API](https://cloud.google.com/service-infrastructure/docs/overview)
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -770,18 +770,19 @@ class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
     ]:
         r"""Return a callable for the generate config report method over gRPC.
 
-        Generates and returns a report (errors, warnings and changes
-        from existing configurations) associated with
+        Generates and returns a report (errors, warnings and
+        changes from existing configurations) associated with
         GenerateConfigReportRequest.new_value
 
         If GenerateConfigReportRequest.old_value is specified,
-        GenerateConfigReportRequest will contain a single ChangeReport
-        based on the comparison between
+        GenerateConfigReportRequest will contain a single
+        ChangeReport based on the comparison between
         GenerateConfigReportRequest.new_value and
-        GenerateConfigReportRequest.old_value. If
-        GenerateConfigReportRequest.old_value is not specified, this
-        method will compare GenerateConfigReportRequest.new_value with
-        the last pushed service configuration.
+        GenerateConfigReportRequest.old_value.
+        If GenerateConfigReportRequest.old_value is not
+        specified, this method will compare
+        GenerateConfigReportRequest.new_value with the last
+        pushed service configuration.
 
         Returns:
             Callable[[~.GenerateConfigReportRequest],

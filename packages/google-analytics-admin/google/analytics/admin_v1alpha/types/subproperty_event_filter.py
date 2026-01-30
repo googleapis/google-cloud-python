@@ -146,8 +146,9 @@ class SubpropertyEventFilterExpression(proto.Message):
 
     Attributes:
         or_group (google.analytics.admin_v1alpha.types.SubpropertyEventFilterExpressionList):
-            A list of expressions to OR’ed together. Must only contain
-            not_expression or filter_condition expressions.
+            A list of expressions to OR’ed together. Must
+            only contain not_expression or filter_condition
+            expressions.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.SubpropertyEventFilterExpression):
@@ -257,8 +258,10 @@ class SubpropertyEventFilter(proto.Message):
     Attributes:
         name (str):
             Output only. Format:
+
             properties/{ordinary_property_id}/subpropertyEventFilters/{sub_property_event_filter}
-            Example: properties/1234/subpropertyEventFilters/5678
+            Example:
+            properties/1234/subpropertyEventFilters/5678
         apply_to_property (str):
             Immutable. Resource name of the Subproperty
             that uses this filter.

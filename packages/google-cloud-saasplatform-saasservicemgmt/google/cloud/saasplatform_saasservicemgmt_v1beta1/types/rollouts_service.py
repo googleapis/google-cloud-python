@@ -51,9 +51,9 @@ class ListRolloutsRequest(proto.Message):
             The maximum number of rollouts to send per
             page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -144,9 +144,9 @@ class CreateRolloutRequest(proto.Message):
         rollout (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Rollout):
             Required. The desired state for the rollout.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -199,9 +199,9 @@ class UpdateRolloutRequest(proto.Message):
         rollout (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Rollout):
             Required. The desired state for the rollout.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -223,15 +223,17 @@ class UpdateRolloutRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Rollout resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the Rollout resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            Rollout will be overwritten.
+            If the user does not provide a mask then all
+            fields in the Rollout will be overwritten.
     """
 
     rollout: rollouts_resources.Rollout = proto.Field(
@@ -272,9 +274,9 @@ class DeleteRolloutRequest(proto.Message):
             requires that the resource must already exists, and the Not
             Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -325,9 +327,9 @@ class ListRolloutKindsRequest(proto.Message):
             The maximum number of rollout kinds to send
             per page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -422,9 +424,9 @@ class CreateRolloutKindRequest(proto.Message):
             Required. The desired state for the rollout
             kind.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -478,9 +480,9 @@ class UpdateRolloutKindRequest(proto.Message):
             Required. The desired state for the rollout
             kind.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -502,15 +504,17 @@ class UpdateRolloutKindRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the RolloutKind resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the RolloutKind resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            RolloutKind will be overwritten.
+            If the user does not provide a mask then all
+            fields in the RolloutKind will be overwritten.
     """
 
     rollout_kind: rollouts_resources.RolloutKind = proto.Field(
@@ -551,9 +555,9 @@ class DeleteRolloutKindRequest(proto.Message):
             (``*``) requires that the resource must already exists, and
             the Not Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must

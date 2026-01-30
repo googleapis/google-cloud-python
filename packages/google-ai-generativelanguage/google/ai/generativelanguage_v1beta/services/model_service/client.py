@@ -1251,11 +1251,14 @@ class ModelServiceClient(metaclass=ModelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a tuned model. Check intermediate tuning progress (if
-        any) through the [google.longrunning.Operations] service.
+        r"""Creates a tuned model.
+        Check intermediate tuning progress (if any) through the
+        [google.longrunning.Operations] service.
 
-        Access status and results through the Operations service.
-        Example: GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
+        Access status and results through the Operations
+        service. Example:
+
+        GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
 
         .. code-block:: python
 

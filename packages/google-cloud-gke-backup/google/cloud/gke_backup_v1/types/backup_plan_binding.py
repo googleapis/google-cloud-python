@@ -89,13 +89,13 @@ class BackupPlanBinding(proto.Message):
             state (google.cloud.gke_backup_v1.types.BackupPlanBinding.BackupPlanDetails.State):
                 Output only. State of the BackupPlan.
             last_successful_backup_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. Completion time of the last successful Backup.
-                This is sourced from a successful Backup's complete_time
-                field.
+                Output only. Completion time of the last
+                successful Backup. This is sourced from a
+                successful Backup's complete_time field.
             next_scheduled_backup_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. Start time of next scheduled backup under this
-                BackupPlan by either cron_schedule or rpo config. This is
-                sourced from BackupPlan.
+                Output only. Start time of next scheduled backup
+                under this BackupPlan by either cron_schedule or
+                rpo config. This is sourced from BackupPlan.
             rpo_risk_level (int):
                 Output only. A number that represents the
                 current risk level of this BackupPlan from RPO
@@ -232,25 +232,27 @@ class BackupPlanBinding(proto.Message):
 
             Attributes:
                 backup_delete_lock_days (int):
-                    Optional. Minimum age for Backups created via this
-                    BackupPlan (in days). This field MUST be an integer value
-                    between 0-90 (inclusive). A Backup created under this
-                    BackupPlan will NOT be deletable until it reaches Backup's
-                    (create_time + backup_delete_lock_days). Updating this field
-                    of a BackupPlan does NOT affect existing Backups under it.
-                    Backups created AFTER a successful update will inherit the
-                    new value.
+                    Optional. Minimum age for Backups created via
+                    this BackupPlan (in days). This field MUST be an
+                    integer value between 0-90 (inclusive). A Backup
+                    created under this BackupPlan will NOT be
+                    deletable until it reaches Backup's (create_time
+                    + backup_delete_lock_days). Updating this field
+                    of a BackupPlan does NOT affect existing Backups
+                    under it. Backups created AFTER a successful
+                    update will inherit the new value.
 
                     Default: 0 (no delete blocking)
                 backup_retain_days (int):
-                    Optional. The default maximum age of a Backup created via
-                    this BackupPlan. This field MUST be an integer value >= 0
-                    and <= 365. If specified, a Backup created under this
-                    BackupPlan will be automatically deleted after its age
-                    reaches (create_time + backup_retain_days). If not
-                    specified, Backups created under this BackupPlan will NOT be
-                    subject to automatic deletion. Default: 0 (no automatic
-                    deletion)
+                    Optional. The default maximum age of a Backup
+                    created via this BackupPlan. This field MUST be
+                    an integer value >= 0 and <= 365. If specified,
+                    a Backup created under this BackupPlan will be
+                    automatically deleted after its age reaches
+                    (create_time + backup_retain_days). If not
+                    specified, Backups created under this BackupPlan
+                    will NOT be subject to automatic deletion.
+                    Default: 0 (no automatic deletion)
             """
 
             backup_delete_lock_days: int = proto.Field(

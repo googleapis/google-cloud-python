@@ -1191,8 +1191,8 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Creates a page in the specified flow.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -1335,8 +1335,8 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Updates the specified page.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 
@@ -1480,8 +1480,8 @@ class PagesClient(metaclass=PagesClientMeta):
         r"""Deletes the specified page.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         .. code-block:: python
 

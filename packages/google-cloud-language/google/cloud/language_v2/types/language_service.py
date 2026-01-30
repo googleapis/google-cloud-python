@@ -99,11 +99,13 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_content_uri (str):
-            The Google Cloud Storage URI where the file content is
-            located. This URI must be of the form:
-            gs://bucket_name/object_name. For more details, see
-            https://cloud.google.com/storage/docs/reference-uris. NOTE:
-            Cloud Storage object versioning is not supported.
+            The Google Cloud Storage URI where the file
+            content is located. This URI must be of the
+            form: gs://bucket_name/object_name. For more
+            details, see
+            https://cloud.google.com/storage/docs/reference-uris.
+            NOTE: Cloud Storage object versioning is not
+            supported.
 
             This field is a member of `oneof`_ ``source``.
         language_code (str):
@@ -321,9 +323,10 @@ class Sentiment(proto.Message):
 
     Attributes:
         magnitude (float):
-            A non-negative number in the [0, +inf) range, which
-            represents the absolute magnitude of sentiment regardless of
-            score (positive or negative).
+            A non-negative number in the [0, +inf) range,
+            which represents the absolute magnitude of
+            sentiment regardless of score (positive or
+            negative).
         score (float):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive sentiment).
@@ -357,8 +360,9 @@ class EntityMention(proto.Message):
         probability (float):
             Probability score associated with the entity.
 
-            The score shows the probability of the entity mention being
-            the entity type. The score is in (0, 1] range.
+            The score shows the probability of the entity
+            mention being the entity type. The score is in
+            (0, 1] range.
     """
 
     class Type(proto.Enum):
@@ -433,10 +437,11 @@ class ClassificationCategory(proto.Message):
             Number represents how certain the classifier is
             that this category represents the given text.
         severity (float):
-            Optional. The classifier's severity of the category. This is
-            only present when the ModerateTextRequest.ModelVersion is
-            set to MODEL_VERSION_2, and the corresponding category has a
-            severity score.
+            Optional. The classifier's severity of the
+            category. This is only present when the
+            ModerateTextRequest.ModelVersion is set to
+            MODEL_VERSION_2, and the corresponding category
+            has a severity score.
     """
 
     name: str = proto.Field(

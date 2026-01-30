@@ -775,12 +775,14 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. A mask to specify the fields in the Order to
-                overwrite with this update. The fields specified in the
-                update_mask are relative to the order, not the full
-                request. A field will be overwritten if it is in the
-                mask. If you don't provide a mask then all fields will
-                be overwritten.
+                Required. A mask to specify the fields
+                in the Order to overwrite with this
+                update. The fields specified in the
+                update_mask are relative to the order,
+                not the full request. A field will be
+                overwritten if it is in the mask. If you
+                don't provide a mask then all fields
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1694,12 +1696,14 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. A mask to specify the fields in the Site to
-                overwrite with this update. The fields specified in the
-                update_mask are relative to the site, not the full
-                request. A field will be overwritten if it is in the
-                mask. If you don't provide a mask then all fields will
-                be overwritten.
+                Required. A mask to specify the fields
+                in the Site to overwrite with this
+                update. The fields specified in the
+                update_mask are relative to the site,
+                not the full request. A field will be
+                overwritten if it is in the mask. If you
+                don't provide a mask then all fields
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2369,12 +2373,14 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. A mask to specify the fields in the
-                HardwareGroup to overwrite with this update. The fields
-                specified in the update_mask are relative to the
-                hardware group, not the full request. A field will be
-                overwritten if it is in the mask. If you don't provide a
-                mask then all fields will be overwritten.
+                Required. A mask to specify the fields
+                in the HardwareGroup to overwrite with
+                this update. The fields specified in the
+                update_mask are relative to the hardware
+                group, not the full request. A field
+                will be overwritten if it is in the
+                mask. If you don't provide a mask then
+                all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3043,12 +3049,14 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. A mask to specify the fields in the Hardware
-                to overwrite with this update. The fields specified in
-                the update_mask are relative to the hardware, not the
-                full request. A field will be overwritten if it is in
-                the mask. If you don't provide a mask then all fields
-                will be overwritten.
+                Required. A mask to specify the fields
+                in the Hardware to overwrite with this
+                update. The fields specified in the
+                update_mask are relative to the
+                hardware, not the full request. A field
+                will be overwritten if it is in the
+                mask. If you don't provide a mask then
+                all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4695,12 +4703,14 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. A mask to specify the fields in the Zone to
-                overwrite with this update. The fields specified in the
-                update_mask are relative to the zone, not the full
-                request. A field will be overwritten if it is in the
-                mask. If you don't provide a mask then all fields will
-                be overwritten.
+                Required. A mask to specify the fields
+                in the Zone to overwrite with this
+                update. The fields specified in the
+                update_mask are relative to the zone,
+                not the full request. A field will be
+                overwritten if it is in the mask. If you
+                don't provide a mask then all fields
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4969,8 +4979,9 @@ class GDCHardwareManagementAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             state_signal (:class:`google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal`):
-                Optional. The state signal to send for this zone. Either
-                state_signal or provisioning_state_signal must be set,
+                Optional. The state signal to send for
+                this zone. Either state_signal or
+                provisioning_state_signal must be set,
                 but not both.
 
                 This corresponds to the ``state_signal`` field

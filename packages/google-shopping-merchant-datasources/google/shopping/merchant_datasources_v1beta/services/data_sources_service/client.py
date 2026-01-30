@@ -116,10 +116,10 @@ class DataSourcesServiceClientMeta(type):
 
 
 class DataSourcesServiceClient(metaclass=DataSourcesServiceClientMeta):
-    """Service to manage primary, supplemental, inventory and other data
-    sources. See more in the `Merchant
-    Center <https://support.google.com/merchants/answer/7439058>`__ help
-    article.
+    """Service to manage primary, supplemental, inventory and other
+    data sources. See more in the [Merchant
+    Center](https://support.google.com/merchants/answer/7439058)
+    help article.
     """
 
     @staticmethod

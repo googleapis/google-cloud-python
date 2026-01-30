@@ -64,38 +64,42 @@ class VpcFlowLogsConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_state``.
         aggregation_interval (google.cloud.network_management_v1.types.VpcFlowLogsConfig.AggregationInterval):
-            Optional. The aggregation interval for the logs. Default
-            value is INTERVAL_5_SEC.
+            Optional. The aggregation interval for the logs.
+            Default value is INTERVAL_5_SEC.
 
             This field is a member of `oneof`_ ``_aggregation_interval``.
         flow_sampling (float):
-            Optional. The value of the field must be in (0, 1]. The
-            sampling rate of VPC Flow Logs where 1.0 means all collected
-            logs are reported. Setting the sampling rate to 0.0 is not
-            allowed. If you want to disable VPC Flow Logs, use the state
+            Optional. The value of the field must be in (0,
+            1]. The sampling rate of VPC Flow Logs where 1.0
+            means all collected logs are reported. Setting
+            the sampling rate to 0.0 is not allowed. If you
+            want to disable VPC Flow Logs, use the state
             field instead. Default value is 1.0.
 
             This field is a member of `oneof`_ ``_flow_sampling``.
         metadata (google.cloud.network_management_v1.types.VpcFlowLogsConfig.Metadata):
-            Optional. Configures whether all, none or a subset of
-            metadata fields should be added to the reported VPC flow
-            logs. Default value is INCLUDE_ALL_METADATA.
+            Optional. Configures whether all, none or a
+            subset of metadata fields should be added to the
+            reported VPC flow logs. Default value is
+            INCLUDE_ALL_METADATA.
 
             This field is a member of `oneof`_ ``_metadata``.
         metadata_fields (MutableSequence[str]):
-            Optional. Custom metadata fields to include in the reported
-            VPC flow logs. Can only be specified if "metadata" was set
-            to CUSTOM_METADATA.
+            Optional. Custom metadata fields to include in
+            the reported VPC flow logs. Can only be
+            specified if "metadata" was set to
+            CUSTOM_METADATA.
         filter_expr (str):
             Optional. Export filter used to define which
             VPC Flow Logs should be logged.
 
             This field is a member of `oneof`_ ``_filter_expr``.
         cross_project_metadata (google.cloud.network_management_v1.types.VpcFlowLogsConfig.CrossProjectMetadata):
-            Optional. Determines whether to include cross project
-            annotations in the logs. This field is available only for
-            organization configurations. If not specified in org configs
-            will be set to CROSS_PROJECT_METADATA_ENABLED.
+            Optional. Determines whether to include cross
+            project annotations in the logs. This field is
+            available only for organization configurations.
+            If not specified in org configs will be set to
+            CROSS_PROJECT_METADATA_ENABLED.
 
             This field is a member of `oneof`_ ``_cross_project_metadata``.
         target_resource_state (google.cloud.network_management_v1.types.VpcFlowLogsConfig.TargetResourceState):
@@ -106,24 +110,27 @@ class VpcFlowLogsConfig(proto.Message):
             This field is a member of `oneof`_ ``_target_resource_state``.
         network (str):
             Traffic will be logged from VMs, VPN tunnels and
-            Interconnect Attachments within the network. Format:
+            Interconnect Attachments within the network.
+            Format:
             projects/{project_id}/global/networks/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         subnet (str):
-            Traffic will be logged from VMs within the subnetwork.
-            Format:
+            Traffic will be logged from VMs within the
+            subnetwork. Format:
             projects/{project_id}/regions/{region}/subnetworks/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         interconnect_attachment (str):
-            Traffic will be logged from the Interconnect Attachment.
-            Format:
+            Traffic will be logged from the Interconnect
+            Attachment. Format:
+
             projects/{project_id}/regions/{region}/interconnectAttachments/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         vpn_tunnel (str):
-            Traffic will be logged from the VPN Tunnel. Format:
+            Traffic will be logged from the VPN Tunnel.
+            Format:
             projects/{project_id}/regions/{region}/vpnTunnels/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
@@ -160,7 +167,8 @@ class VpcFlowLogsConfig(proto.Message):
 
         Values:
             AGGREGATION_INTERVAL_UNSPECIFIED (0):
-                If not specified, will default to INTERVAL_5_SEC.
+                If not specified, will default to
+                INTERVAL_5_SEC.
             INTERVAL_5_SEC (1):
                 Aggregate logs in 5s intervals.
             INTERVAL_30_SEC (2):
@@ -187,13 +195,15 @@ class VpcFlowLogsConfig(proto.Message):
 
         Values:
             METADATA_UNSPECIFIED (0):
-                If not specified, will default to INCLUDE_ALL_METADATA.
+                If not specified, will default to
+                INCLUDE_ALL_METADATA.
             INCLUDE_ALL_METADATA (1):
                 Include all metadata fields.
             EXCLUDE_ALL_METADATA (2):
                 Exclude all metadata fields.
             CUSTOM_METADATA (3):
-                Include only custom fields (specified in metadata_fields).
+                Include only custom fields (specified in
+                metadata_fields).
         """
         METADATA_UNSPECIFIED = 0
         INCLUDE_ALL_METADATA = 1
@@ -201,8 +211,8 @@ class VpcFlowLogsConfig(proto.Message):
         CUSTOM_METADATA = 3
 
     class CrossProjectMetadata(proto.Enum):
-        r"""Determines whether to include cross project annotations in the logs.
-        Project configurations will always have
+        r"""Determines whether to include cross project annotations in the
+        logs. Project configurations will always have
         CROSS_PROJECT_METADATA_DISABLED.
 
         Values:
@@ -210,11 +220,13 @@ class VpcFlowLogsConfig(proto.Message):
                 If not specified, the default is
                 CROSS_PROJECT_METADATA_ENABLED.
             CROSS_PROJECT_METADATA_ENABLED (1):
-                When CROSS_PROJECT_METADATA_ENABLED, metadata from other
-                projects will be included in the logs.
+                When CROSS_PROJECT_METADATA_ENABLED, metadata
+                from other projects will be included in the
+                logs.
             CROSS_PROJECT_METADATA_DISABLED (2):
-                When CROSS_PROJECT_METADATA_DISABLED, metadata from other
-                projects will not be included in the logs.
+                When CROSS_PROJECT_METADATA_DISABLED, metadata
+                from other projects will not be included in the
+                logs.
         """
         CROSS_PROJECT_METADATA_UNSPECIFIED = 0
         CROSS_PROJECT_METADATA_ENABLED = 1
@@ -361,60 +373,67 @@ class EffectiveVpcFlowLogsConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_state``.
         aggregation_interval (google.cloud.network_management_v1.types.VpcFlowLogsConfig.AggregationInterval):
-            The aggregation interval for the logs. Default value is
-            INTERVAL_5_SEC.
+            The aggregation interval for the logs. Default
+            value is INTERVAL_5_SEC.
 
             This field is a member of `oneof`_ ``_aggregation_interval``.
         flow_sampling (float):
-            The value of the field must be in (0, 1]. The sampling rate
-            of VPC Flow Logs where 1.0 means all collected logs are
-            reported. Setting the sampling rate to 0.0 is not allowed.
-            If you want to disable VPC Flow Logs, use the state field
-            instead. Default value is 1.0.
+            The value of the field must be in (0, 1]. The
+            sampling rate of VPC Flow Logs where 1.0 means
+            all collected logs are reported. Setting the
+            sampling rate to 0.0 is not allowed. If you want
+            to disable VPC Flow Logs, use the state field
+            instead.
+            Default value is 1.0.
 
             This field is a member of `oneof`_ ``_flow_sampling``.
         metadata (google.cloud.network_management_v1.types.VpcFlowLogsConfig.Metadata):
-            Configures whether all, none or a subset of metadata fields
-            should be added to the reported VPC flow logs. Default value
-            is INCLUDE_ALL_METADATA.
+            Configures whether all, none or a subset of
+            metadata fields should be added to the reported
+            VPC flow logs. Default value is
+            INCLUDE_ALL_METADATA.
 
             This field is a member of `oneof`_ ``_metadata``.
         metadata_fields (MutableSequence[str]):
-            Custom metadata fields to include in the reported VPC flow
-            logs. Can only be specified if "metadata" was set to
-            CUSTOM_METADATA.
+            Custom metadata fields to include in the
+            reported VPC flow logs. Can only be specified if
+            "metadata" was set to CUSTOM_METADATA.
         filter_expr (str):
             Export filter used to define which VPC Flow
             Logs should be logged.
 
             This field is a member of `oneof`_ ``_filter_expr``.
         cross_project_metadata (google.cloud.network_management_v1.types.VpcFlowLogsConfig.CrossProjectMetadata):
-            Determines whether to include cross project annotations in
-            the logs. This field is available only for organization
-            configurations. If not specified in org configs will be set
-            to CROSS_PROJECT_METADATA_ENABLED.
+            Determines whether to include cross project
+            annotations in the logs. This field is available
+            only for organization configurations. If not
+            specified in org configs will be set to
+            CROSS_PROJECT_METADATA_ENABLED.
 
             This field is a member of `oneof`_ ``_cross_project_metadata``.
         network (str):
             Traffic will be logged from VMs, VPN tunnels and
-            Interconnect Attachments within the network. Format:
+            Interconnect Attachments within the network.
+            Format:
             projects/{project_id}/global/networks/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         subnet (str):
-            Traffic will be logged from VMs within the subnetwork.
-            Format:
+            Traffic will be logged from VMs within the
+            subnetwork. Format:
             projects/{project_id}/regions/{region}/subnetworks/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         interconnect_attachment (str):
-            Traffic will be logged from the Interconnect Attachment.
-            Format:
+            Traffic will be logged from the Interconnect
+            Attachment. Format:
+
             projects/{project_id}/regions/{region}/interconnectAttachments/{name}
 
             This field is a member of `oneof`_ ``target_resource``.
         vpn_tunnel (str):
-            Traffic will be logged from the VPN Tunnel. Format:
+            Traffic will be logged from the VPN Tunnel.
+            Format:
             projects/{project_id}/regions/{region}/vpnTunnels/{name}
 
             This field is a member of `oneof`_ ``target_resource``.

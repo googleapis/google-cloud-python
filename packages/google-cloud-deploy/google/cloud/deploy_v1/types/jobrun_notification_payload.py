@@ -30,9 +30,10 @@ __protobuf__ = proto.module(
 
 
 class JobRunNotificationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/jobrun_notification"
-    Platform Log event that describes the failure to send JobRun
-    resource update Pub/Sub notification.
+    r"""Payload proto for
+    "clouddeploy.googleapis.com/jobrun_notification" Platform Log
+    event that describes the failure to send JobRun resource update
+    Pub/Sub notification.
 
     Attributes:
         message (str):

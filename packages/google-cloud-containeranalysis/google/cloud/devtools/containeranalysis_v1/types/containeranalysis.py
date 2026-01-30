@@ -73,8 +73,9 @@ class ExportSBOMResponse(proto.Message):
     Attributes:
         discovery_occurrence (str):
             The name of the discovery occurrence in the form
-            "projects/{project_id}/occurrences/{OCCURRENCE_ID} It can be
-            used to track the progress of the SBOM export.
+            "projects/{project_id}/occurrences/{OCCURRENCE_ID}
+            It can be used to track the progress of the SBOM
+            export.
     """
 
     discovery_occurrence: str = proto.Field(
@@ -123,8 +124,9 @@ class VulnerabilityOccurrencesSummary(proto.Message):
             resource_uri (str):
                 The affected resource.
             severity (grafeas.v1.grafeas.grafeas_v1.Severity):
-                The severity for this count. SEVERITY_UNSPECIFIED indicates
-                total across all severities.
+                The severity for this count.
+                SEVERITY_UNSPECIFIED indicates total across all
+                severities.
             fixable_count (int):
                 The number of fixable vulnerabilities
                 associated with this resource.

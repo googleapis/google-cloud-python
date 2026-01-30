@@ -74,8 +74,9 @@ class LoginRequirement(proto.Enum):
             of ``auth_fail_action``. If the user is an administrator,
             the handler proceeds.
         LOGIN_REQUIRED (3):
-            If the user has signed in, the handler proceeds normally.
-            Otherwise, the auth_fail_action is taken.
+            If the user has signed in, the handler proceeds
+            normally. Otherwise, the auth_fail_action is
+            taken.
     """
     LOGIN_UNSPECIFIED = 0
     LOGIN_OPTIONAL = 1

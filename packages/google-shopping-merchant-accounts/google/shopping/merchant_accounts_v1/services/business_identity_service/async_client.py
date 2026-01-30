@@ -63,8 +63,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class BusinessIdentityServiceAsyncClient:
-    """Service to support `business
-    identity <https://support.google.com/merchants/answer/12564247>`__
+    """Service to support [business
+    identity](https://support.google.com/merchants/answer/12564247)
     API.
     """
 
@@ -365,8 +365,9 @@ class BusinessIdentityServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1.types.BusinessIdentity:
-                Collection of information related to the [identity of a
-                   business](https://support.google.com/merchants/answer/12564247).
+                Collection of information related to the
+                [identity of a
+                business](https://support.google.com/merchants/answer/12564247).
 
         """
         # Create or coerce a protobuf request object.
@@ -499,8 +500,9 @@ class BusinessIdentityServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1.types.BusinessIdentity:
-                Collection of information related to the [identity of a
-                   business](https://support.google.com/merchants/answer/12564247).
+                Collection of information related to the
+                [identity of a
+                business](https://support.google.com/merchants/answer/12564247).
 
         """
         # Create or coerce a protobuf request object.

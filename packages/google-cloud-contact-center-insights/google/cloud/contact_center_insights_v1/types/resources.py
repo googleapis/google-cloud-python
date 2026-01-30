@@ -175,8 +175,8 @@ class Conversation(proto.Message):
         transcript (google.cloud.contact_center_insights_v1.types.Conversation.Transcript):
             Output only. The conversation transcript.
         medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
-            Immutable. The conversation medium, if unspecified will
-            default to PHONE_CALL.
+            Immutable. The conversation medium, if
+            unspecified will default to PHONE_CALL.
         duration (google.protobuf.duration_pb2.Duration):
             Output only. The duration of the
             conversation.
@@ -209,7 +209,8 @@ class Conversation(proto.Message):
 
         Values:
             MEDIUM_UNSPECIFIED (0):
-                Default value, if unspecified will default to PHONE_CALL.
+                Default value, if unspecified will default to
+                PHONE_CALL.
             PHONE_CALL (1):
                 The format for conversations that took place
                 over the phone.
@@ -823,7 +824,8 @@ class IssueModelResult(proto.Message):
 
     Attributes:
         issue_model (str):
-            Issue model that generates the result. Format:
+            Issue model that generates the result.
+            Format:
             projects/{project}/locations/{location}/issueModels/{issue_model}
         issues (MutableSequence[google.cloud.contact_center_insights_v1.types.IssueAssignment]):
             All the matched issues.
@@ -861,7 +863,9 @@ class FeedbackLabel(proto.Message):
 
             This field is a member of `oneof`_ ``label_type``.
         name (str):
-            Immutable. Resource name of the FeedbackLabel. Format:
+            Immutable. Resource name of the FeedbackLabel.
+            Format:
+
             projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}
         labeled_resource (str):
             Resource name of the resource to be labeled.
@@ -953,8 +957,8 @@ class IssueAssignment(proto.Message):
         issue (str):
             Resource name of the assigned issue.
         score (float):
-            Score indicating the likelihood of the issue assignment.
-            currently bounded on [0,1].
+            Score indicating the likelihood of the issue
+            assignment. currently bounded on [0,1].
         display_name (str):
             Immutable. Display name of the assigned
             issue. This field is set at time of analyis and
@@ -1143,12 +1147,12 @@ class Entity(proto.Message):
             they are available. For the metadata associated with other
             entity types, see the Type table below.
         salience (float):
-            The salience score associated with the entity in the [0,
-            1.0] range.
-
-            The salience score for an entity provides information about
-            the importance or centrality of that entity to the entire
-            document text. Scores closer to 0 are less salient, while
+            The salience score associated with the entity in
+            the [0, 1.0] range.
+            The salience score for an entity provides
+            information about the importance or centrality
+            of that entity to the entire document text.
+            Scores closer to 0 are less salient, while
             scores closer to 1.0 are highly salient.
         sentiment (google.cloud.contact_center_insights_v1.types.SentimentData):
             The aggregate sentiment expressed for this
@@ -1265,8 +1269,9 @@ class Entity(proto.Message):
 
 
 class Intent(proto.Message):
-    r"""The data for an intent. Represents a detected intent in the
-    conversation, for example MAKES_PROMISE.
+    r"""The data for an intent.
+    Represents a detected intent in the conversation, for example
+    MAKES_PROMISE.
 
     Attributes:
         id (str):
@@ -1310,8 +1315,9 @@ class PhraseMatchData(proto.Message):
 
 
 class DialogflowIntent(proto.Message):
-    r"""The data for a Dialogflow intent. Represents a detected intent in
-    the conversation, e.g. MAKES_PROMISE.
+    r"""The data for a Dialogflow intent.
+    Represents a detected intent in the conversation, e.g.
+    MAKES_PROMISE.
 
     Attributes:
         display_name (str):
@@ -1445,7 +1451,9 @@ class IssueModel(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the issue model. Format:
+            Immutable. The resource name of the issue model.
+            Format:
+
             projects/{project}/locations/{location}/issueModels/{issue_model}
         display_name (str):
             The representative name for the issue model.
@@ -1597,7 +1605,9 @@ class Issue(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the issue. Format:
+            Immutable. The resource name of the issue.
+            Format:
+
             projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}
         display_name (str):
             The representative name for the issue.
@@ -1663,7 +1673,9 @@ class IssueModelLabelStats(proto.Message):
 
         Attributes:
             issue (str):
-                Issue resource. Format:
+                Issue resource.
+                Format:
+
                 projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}
             labeled_conversations_count (int):
                 Number of conversations attached to the issue
@@ -1706,7 +1718,9 @@ class PhraseMatcher(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the phrase matcher. Format:
+            The resource name of the phrase matcher.
+            Format:
+
             projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
         revision_id (str):
             Output only. Immutable. The revision ID of
@@ -1737,9 +1751,10 @@ class PhraseMatcher(proto.Message):
             Output only. The most recent time at which
             the activation status was updated.
         role_match (google.cloud.contact_center_insights_v1.types.ConversationParticipant.Role):
-            The role whose utterances the phrase matcher should be
-            matched against. If the role is ROLE_UNSPECIFIED it will be
-            matched against any utterances in the transcript.
+            The role whose utterances the phrase matcher
+            should be matched against. If the role is
+            ROLE_UNSPECIFIED it will be matched against any
+            utterances in the transcript.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time at which
             the phrase matcher was updated.
@@ -2003,12 +2018,13 @@ class Settings(proto.Message):
 
         Attributes:
             runtime_integration_analysis_percentage (float):
-                Percentage of conversations created using Dialogflow runtime
-                integration to analyze automatically, between [0, 100].
+                Percentage of conversations created using
+                Dialogflow runtime integration to analyze
+                automatically, between [0, 100].
             upload_conversation_analysis_percentage (float):
                 Percentage of conversations created using the
-                UploadConversation endpoint to analyze automatically,
-                between [0, 100].
+                UploadConversation endpoint to analyze
+                automatically, between [0, 100].
             annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
                 To select the annotators to run and the
                 phrase matchers to use (if any). If not
@@ -2087,7 +2103,9 @@ class AnalysisRule(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the analysis rule. Format:
+            Identifier. The resource name of the analysis
+            rule. Format:
+
             projects/{project}/locations/{location}/analysisRules/{analysis_rule}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this analysis
@@ -2104,15 +2122,18 @@ class AnalysisRule(proto.Message):
             apply this analysis rule. An empty filter means
             this analysis rule applies to all conversations.
         annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
-            Selector of annotators to run and the phrase matchers to use
-            for conversations that matches the conversation_filter. If
-            not specified, NO annotators will be run.
+            Selector of annotators to run and the phrase
+            matchers to use for conversations that matches
+            the conversation_filter. If not specified, NO
+            annotators will be run.
         analysis_percentage (float):
-            Percentage of conversations that we should apply this
-            analysis setting automatically, between [0, 1]. For example,
-            0.1 means 10%. Conversations are sampled in a determenestic
-            way. The original runtime_percentage & upload percentage
-            will be replaced by defining filters on the conversation.
+            Percentage of conversations that we should apply
+            this analysis setting automatically, between [0,
+            1]. For example, 0.1 means 10%. Conversations
+            are sampled in a determenestic way. The original
+            runtime_percentage & upload percentage will be
+            replaced by defining filters on the
+            conversation.
         active (bool):
             If true, apply this rule to conversations.
             Otherwise, this rule is inactive and saved as a
@@ -2273,7 +2294,9 @@ class RuntimeAnnotation(proto.Message):
 
             This field is a member of `oneof`_ ``data``.
         annotation_id (str):
-            The unique identifier of the annotation. Format:
+            The unique identifier of the annotation.
+            Format:
+
             projects/{project}/locations/{location}/conversationDatasets/{dataset}/conversationDataItems/{data_item}/conversationAnnotations/{annotation}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which this annotation was
@@ -2473,11 +2496,14 @@ class ArticleSuggestionData(proto.Message):
             Suggestion and the document that it originates
             from.
         query_record (str):
-            The name of the answer record. Format:
+            The name of the answer record.
+            Format:
+
             projects/{project}/locations/{location}/answerRecords/{answer_record}
         source (str):
-            The knowledge document that this answer was extracted from.
-            Format:
+            The knowledge document that this answer was
+            extracted from. Format:
+
             projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}
     """
 
@@ -2526,11 +2552,14 @@ class FaqAnswerData(proto.Message):
             Map that contains metadata about the FAQ
             answer and the document that it originates from.
         query_record (str):
-            The name of the answer record. Format:
+            The name of the answer record.
+            Format:
+
             projects/{project}/locations/{location}/answerRecords/{answer_record}
         source (str):
-            The knowledge document that this answer was extracted from.
-            Format:
+            The knowledge document that this answer was
+            extracted from. Format:
+
             projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}.
     """
 
@@ -2576,7 +2605,9 @@ class SmartReplyData(proto.Message):
             Map that contains metadata about the Smart
             Reply and the document from which it originates.
         query_record (str):
-            The name of the answer record. Format:
+            The name of the answer record.
+            Format:
+
             projects/{project}/locations/{location}/answerRecords/{answer_record}
     """
 
@@ -2615,7 +2646,9 @@ class SmartComposeSuggestionData(proto.Message):
             Compose suggestion and the document from which
             it originates.
         query_record (str):
-            The name of the answer record. Format:
+            The name of the answer record.
+            Format:
+
             projects/{project}/locations/{location}/answerRecords/{answer_record}
     """
 
@@ -2680,10 +2713,14 @@ class ConversationSummarizationSuggestionData(proto.Message):
             summarization and the document from which it
             originates.
         answer_record (str):
-            The name of the answer record. Format:
+            The name of the answer record.
+            Format:
+
             projects/{project}/locations/{location}/answerRecords/{answer_record}
         conversation_model (str):
-            The name of the model that generates this summary. Format:
+            The name of the model that generates this
+            summary. Format:
+
             projects/{project}/locations/{location}/conversationModels/{conversation_model}
     """
 
@@ -2854,11 +2891,13 @@ class AnnotatorSelector(proto.Message):
             Whether to run the active phrase matcher
             annotator(s).
         phrase_matchers (MutableSequence[str]):
-            The list of phrase matchers to run. If not provided, all
-            active phrase matchers will be used. If inactive phrase
-            matchers are provided, they will not be used. Phrase
-            matchers will be run only if run_phrase_matcher_annotator is
-            set to true. Format:
+            The list of phrase matchers to run. If not
+            provided, all active phrase matchers will be
+            used. If inactive phrase matchers are provided,
+            they will not be used. Phrase matchers will be
+            run only if run_phrase_matcher_annotator is set
+            to true. Format:
+
             projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
         run_sentiment_annotator (bool):
             Whether to run the sentiment annotator.
@@ -2871,12 +2910,14 @@ class AnnotatorSelector(proto.Message):
             model should have already been deployed for this
             to take effect.
         issue_models (MutableSequence[str]):
-            The issue model to run. If not provided, the most recently
-            deployed topic model will be used. The provided issue model
-            will only be used for inference if the issue model is
-            deployed and if run_issue_model_annotator is set to true. If
-            more than one issue model is provided, only the first
-            provided issue model will be used for inference.
+            The issue model to run. If not provided, the
+            most recently deployed topic model will be used.
+            The provided issue model will only be used for
+            inference if the issue model is deployed and if
+            run_issue_model_annotator is set to true. If
+            more than one issue model is provided, only the
+            first provided issue model will be used for
+            inference.
         run_summarization_annotator (bool):
             Whether to run the summarization annotator.
         summarization_config (google.cloud.contact_center_insights_v1.types.AnnotatorSelector.SummarizationConfig):
@@ -2900,8 +2941,9 @@ class AnnotatorSelector(proto.Message):
 
         Attributes:
             conversation_profile (str):
-                Resource name of the Dialogflow conversation profile.
-                Format:
+                Resource name of the Dialogflow conversation
+                profile. Format:
+
                 projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}
 
                 This field is a member of `oneof`_ ``model_source``.
@@ -3031,7 +3073,9 @@ class QaQuestion(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the question. Format:
+            Identifier. The resource name of the question.
+            Format:
+
             projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}
         abbreviation (str):
             Short, descriptive string, used in the UI
@@ -3105,9 +3149,10 @@ class QaQuestion(proto.Message):
             key (str):
                 A short string used as an identifier.
             score (float):
-                Numerical score of the answer, used for generating the
-                overall score of a QaScorecardResult. If the answer uses
-                na_value, this field is unused.
+                Numerical score of the answer, used for
+                generating the overall score of a
+                QaScorecardResult. If the answer uses na_value,
+                this field is unused.
 
                 This field is a member of `oneof`_ ``_score``.
         """
@@ -3249,7 +3294,9 @@ class QaScorecard(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The scorecard name. Format:
+            Identifier. The scorecard name.
+            Format:
+
             projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}
         display_name (str):
             The user-specified display name of the
@@ -3300,7 +3347,9 @@ class QaScorecardRevision(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the scorecard revision. Format:
+            Identifier. The name of the scorecard revision.
+            Format:
+
             projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}
         snapshot (google.cloud.contact_center_insights_v1.types.QaScorecard):
             The snapshot of the scorecard at the time of
@@ -3440,8 +3489,8 @@ class QaAnswer(proto.Message):
 
                 This field is a member of `oneof`_ ``_potential_score``.
             normalized_score (float):
-                Output only. Normalized score of the questions. Calculated
-                as score / potential_score.
+                Output only. Normalized score of the questions.
+                Calculated as score / potential_score.
 
                 This field is a member of `oneof`_ ``_normalized_score``.
         """
@@ -3564,7 +3613,9 @@ class QaScorecardResult(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the scorecard result. Format:
+            Identifier. The name of the scorecard result.
+            Format:
+
             projects/{project}/locations/{location}/qaScorecardResults/{qa_scorecard_result}
         qa_scorecard_revision (str):
             The QaScorecardRevision scored by this

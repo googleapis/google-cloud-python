@@ -70,10 +70,10 @@ class GenerateTextRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_temperature``.
         candidate_count (int):
-            Optional. Number of generated responses to return.
-
-            This value must be between [1, 8], inclusive. If unset, this
-            will default to 1.
+            Optional. Number of generated responses to
+            return.
+            This value must be between [1, 8], inclusive. If
+            unset, this will default to 1.
 
             This field is a member of `oneof`_ ``_candidate_count``.
         max_output_tokens (int):

@@ -635,7 +635,9 @@ class CloudMemcacheAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (:class:`google.cloud.memcache_v1beta2.types.Instance`):
-                Required. A Memcached [Instance] resource
+                Required. A Memcached [Instance]
+                resource
+
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -779,8 +781,9 @@ class CloudMemcacheAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (:class:`google.cloud.memcache_v1beta2.types.Instance`):
-                Required. A Memcached [Instance] resource. Only fields
-                specified in update_mask are updated.
+                Required. A Memcached [Instance]
+                resource. Only fields specified in
+                update_mask are updated.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1515,8 +1518,9 @@ class CloudMemcacheAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (:class:`google.cloud.memcache_v1beta2.types.RescheduleMaintenanceRequest.RescheduleType`):
-                Required. If reschedule type is SPECIFIC_TIME, must set
-                up schedule_time as well.
+                Required. If reschedule type is
+                SPECIFIC_TIME, must set up schedule_time
+                as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this

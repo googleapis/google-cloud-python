@@ -117,7 +117,8 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_description``.
         brand (str):
-            Product Related Attributes.[14-36] Brand of the item.
+            Product Related Attributes.[14-36]
+            Brand of the item.
 
             This field is a member of `oneof`_ ``_brand``.
         mpn (str):
@@ -133,14 +134,17 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_gtin``.
         product_types (MutableSequence[str]):
-            Categories of the item (formatted as in `products data
-            specification <https://support.google.com/merchants/answer/6324406>`__).
+            Categories of the item (formatted as in
+            [products data
+            specification](https://support.google.com/merchants/answer/6324406)).
         google_product_category (str):
-            Google's category of the item (see `Google product
-            taxonomy <https://support.google.com/merchants/answer/1705911>`__).
-            When querying products, this field will contain the user
-            provided value. There is currently no way to get back the
-            auto assigned google product categories through the API.
+            Google's category of the item (see [Google
+            product
+            taxonomy](https://support.google.com/merchants/answer/1705911)).
+            When querying products, this field will contain
+            the user provided value. There is currently no
+            way to get back the auto assigned google product
+            categories through the API.
 
             This field is a member of `oneof`_ ``_google_product_category``.
         adult (bool):
@@ -545,9 +549,11 @@ class Certification(proto.Message):
             the EU European Registry for Energy Labeling
             (EPREL) database.
         authority (str):
-            The authority or certification body responsible for issuing
-            the certification. At this time, the most common value is
-            "EC" or “European_Commission” for energy labels in the EU.
+            The authority or certification body responsible
+            for issuing the certification. At this time, the
+            most common value is "EC" or
+            “European_Commission” for energy labels in the
+            EU.
         code (str):
             The code of the certification. For example,
             for the EPREL certificate with the link
@@ -660,14 +666,18 @@ class CssProductStatus(proto.Message):
             A list of all issues associated with the
             product.
         creation_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item has been created, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item has been created, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         last_update_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item has been last updated, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item has been last updated, in
+            [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         google_expiration_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item expires, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item expires, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
     """
 
     class DestinationStatus(proto.Message):

@@ -5765,9 +5765,11 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             Returns:
                 ~.compute.PartnerMetadata:
-                    Model definition of partner_metadata field. To be used
-                in dedicated Partner Metadata methods and to be inlined
-                in the Instance and InstanceTemplate resources.
+                    Model definition of partner_metadata
+                field. To be used in dedicated Partner
+                Metadata methods and to be inlined in
+                the Instance and InstanceTemplate
+                resources.
 
             """
 

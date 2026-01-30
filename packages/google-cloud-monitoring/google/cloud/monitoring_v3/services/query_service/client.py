@@ -712,10 +712,11 @@ class QueryServiceClient(metaclass=QueryServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.QueryTimeSeriesPager:
-        r"""Queries time series by using Monitoring Query Language (MQL). We
-        recommend using PromQL instead of MQL. For more information
-        about the status of MQL, see the `MQL deprecation
-        notice <https://cloud.google.com/stackdriver/docs/deprecations/mql>`__.
+        r"""Queries time series by using Monitoring Query Language
+        (MQL). We recommend using PromQL instead of MQL. For
+        more information about the status of MQL, see the [MQL
+        deprecation
+        notice](https://cloud.google.com/stackdriver/docs/deprecations/mql).
 
         .. code-block:: python
 

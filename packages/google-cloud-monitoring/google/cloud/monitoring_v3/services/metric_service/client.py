@@ -1339,8 +1339,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             metric_descriptor (google.api.metric_pb2.MetricDescriptor):
-                Required. The new `custom
-                metric <https://cloud.google.com/monitoring/custom-metrics>`__
+                Required. The new [custom
+                metric](https://cloud.google.com/monitoring/custom-metrics)
                 descriptor.
 
                 This corresponds to the ``metric_descriptor`` field
@@ -1579,17 +1579,18 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                Required. A `monitoring
-                filter <https://cloud.google.com/monitoring/api/v3/filters>`__
-                that specifies which time series should be returned. The
-                filter must specify a single metric type, and can
-                additionally specify metric labels and other
+                Required. A [monitoring
+                filter](https://cloud.google.com/monitoring/api/v3/filters)
+                that specifies which time series should
+                be returned. The filter must specify a
+                single metric type, and can additionally
+                specify metric labels and other
                 information. For example:
 
-                ::
-
-                    metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
-                        metric.labels.instance_name = "my-instance-name"
+                metric.type =
+                "compute.googleapis.com/instance/cpu/usage_time"
+                AND metric.labels.instance_name =
+                "my-instance-name"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1700,12 +1701,14 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Creates or adds data to one or more time series. The response is
-        empty if all time series in the request were written. If any
-        time series could not be written, a corresponding failure
-        message is included in the error response. This method does not
-        support `resource locations constraint of an organization
-        policy <https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy>`__.
+        r"""Creates or adds data to one or more time series.
+        The response is empty if all time series in the request
+        were written. If any time series could not be written, a
+        corresponding failure message is included in the error
+        response.
+        This method does not support
+        [resource locations constraint of an organization
+        policy](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy).
 
         .. code-block:: python
 

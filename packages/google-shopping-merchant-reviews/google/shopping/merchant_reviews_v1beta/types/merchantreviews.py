@@ -163,9 +163,9 @@ class ListMerchantReviewsResponse(proto.Message):
 
 
 class MerchantReview(proto.Message):
-    r"""A review for a merchant. For more information, see `Introduction to
-    Merchant Review
-    Feeds <https://developers.google.com/merchant-review-feeds>`__
+    r"""A review for a merchant. For more information, see
+    [Introduction to Merchant Review
+    Feeds](https://developers.google.com/merchant-review-feeds)
 
     Attributes:
         name (str):

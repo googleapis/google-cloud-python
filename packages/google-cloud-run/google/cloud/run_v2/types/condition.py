@@ -200,10 +200,11 @@ class Condition(proto.Message):
                 customized path of the container. System will
                 retry.
             MIN_INSTANCES_NOT_PROVISIONED (8):
-                A revision with min_instance_count > 0 was created and is
-                reserved, but it was not configured to serve traffic, so
-                it's not live. This can also happen momentarily during
-                traffic migration.
+                A revision with min_instance_count > 0 was
+                created and is reserved, but it was not
+                configured to serve traffic, so it's not live.
+                This can also happen momentarily during traffic
+                migration.
             ACTIVE_REVISION_LIMIT_REACHED (9):
                 The maximum allowed number of active
                 revisions has been reached.
@@ -217,8 +218,9 @@ class Condition(proto.Message):
                 since the revision is of a manually scaled
                 service with 0 instance count
             MIN_INSTANCES_WARMING (12):
-                A revision with min_instance_count > 0 was created and is
-                waiting for enough instances to begin a traffic migration.
+                A revision with min_instance_count > 0 was
+                created and is waiting for enough instances to
+                begin a traffic migration.
         """
         REVISION_REASON_UNDEFINED = 0
         PENDING = 1

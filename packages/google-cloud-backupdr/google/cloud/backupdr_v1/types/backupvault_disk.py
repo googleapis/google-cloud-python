@@ -158,8 +158,8 @@ class DiskRestoreProperties(proto.Message):
 
             This field is a member of `oneof`_ ``_access_mode``.
         architecture (google.cloud.backupdr_v1.types.DiskRestoreProperties.Architecture):
-            Optional. The architecture of the source disk. Valid values
-            are ARM64 or X86_64.
+            Optional. The architecture of the source disk.
+            Valid values are ARM64 or X86_64.
 
             This field is a member of `oneof`_ ``_architecture``.
         resource_policy (MutableSequence[str]):
@@ -325,8 +325,8 @@ class DiskBackupProperties(proto.Message):
             A list of guest OS features that are
             applicable to this backup.
         architecture (google.cloud.backupdr_v1.types.DiskBackupProperties.Architecture):
-            The architecture of the source disk. Valid values are ARM64
-            or X86_64.
+            The architecture of the source disk. Valid
+            values are ARM64 or X86_64.
 
             This field is a member of `oneof`_ ``_architecture``.
         type_ (str):

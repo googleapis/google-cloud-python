@@ -38,8 +38,8 @@ class OdbNetwork(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the OdbNetwork resource in the
-            following format:
+            Identifier. The name of the OdbNetwork resource
+            in the following format:
             projects/{project}/locations/{region}/odbNetworks/{odb_network}
         network (str):
             Required. The name of the VPC network in the
@@ -176,7 +176,8 @@ class DeleteOdbNetworkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource in the following format:
+            Required. The name of the resource in the
+            following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -288,8 +289,8 @@ class GetOdbNetworkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the OdbNetwork in the following
-            format:
+            Required. The name of the OdbNetwork in the
+            following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}.
     """
 

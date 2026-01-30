@@ -266,12 +266,14 @@ class SecretVersion(proto.Message):
             on
             [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1beta2.SecretManagerService.AddSecretVersion].
         scheduled_destroy_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. Output only. Scheduled destroy time for secret
-            version. This is a part of the Delayed secret version
-            destroy feature. For a Secret with a valid version destroy
-            TTL, when a secert version is destroyed, version is moved to
-            disabled state and it is scheduled for destruction Version
-            is destroyed only after the scheduled_destroy_time.
+            Optional. Output only. Scheduled destroy time
+            for secret version. This is a part of the
+            Delayed secret version destroy feature. For a
+            Secret with a valid version destroy TTL, when a
+            secert version is destroyed, version is moved to
+            disabled state and it is scheduled for
+            destruction Version is destroyed only after the
+            scheduled_destroy_time.
         customer_managed_encryption (google.cloud.secretmanager_v1beta2.types.CustomerManagedEncryptionStatus):
             Output only. The customer-managed encryption status of the
             [SecretVersion][google.cloud.secretmanager.v1beta2.SecretVersion].

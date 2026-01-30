@@ -1194,20 +1194,25 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             Args:
                 request (~.datatransfer.CreateTransferConfigRequest):
-                    The request object. A request to create a data transfer configuration. If
-                new credentials are needed for this transfer
-                configuration, authorization info must be provided. If
-                authorization info is provided, the transfer
-                configuration will be associated with the user id
-                corresponding to the authorization info. Otherwise, the
-                transfer configuration will be associated with the
-                calling user.
+                    The request object. A request to create a data transfer
+                configuration. If new credentials are
+                needed for this transfer configuration,
+                authorization info must be provided. If
+                authorization info is provided, the
+                transfer configuration will be
+                associated with the user id
+                corresponding to the authorization info.
+                Otherwise, the transfer configuration
+                will be associated with the calling
+                user.
 
-                When using a cross project service account for creating
-                a transfer config, you must enable cross project service
-                account usage. For more information, see `Disable
-                attachment of service accounts to resources in other
-                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
+                When using a cross project service
+                account for creating a transfer config,
+                you must enable cross project service
+                account usage. For more information, see
+                [Disable attachment of service accounts
+                to resources in other
+                projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3215,15 +3220,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             Args:
                 request (~.datatransfer.UpdateTransferConfigRequest):
-                    The request object. A request to update a transfer configuration. To update
-                the user id of the transfer configuration, authorization
-                info needs to be provided.
+                    The request object. A request to update a transfer
+                configuration. To update the user id of
+                the transfer configuration,
+                authorization info needs to be provided.
 
-                When using a cross project service account for updating
-                a transfer config, you must enable cross project service
-                account usage. For more information, see `Disable
-                attachment of service accounts to resources in other
-                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
+                When using a cross project service
+                account for updating a transfer config,
+                you must enable cross project service
+                account usage. For more information, see
+                [Disable attachment of service accounts
+                to resources in other
+                projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

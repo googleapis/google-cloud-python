@@ -45,7 +45,8 @@ class ReferenceListSyntaxType(proto.Enum):
 
     Values:
         REFERENCE_LIST_SYNTAX_TYPE_UNSPECIFIED (0):
-            Defaults to REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING.
+            Defaults to
+            REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING.
         REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING (1):
             List contains plain text patterns.
         REFERENCE_LIST_SYNTAX_TYPE_REGEX (2):
@@ -128,8 +129,8 @@ class GetReferenceListRequest(proto.Message):
             retrieve. Format:
             ``projects/{project}/locations/{locations}/instances/{instance}/referenceLists/{reference_list}``
         view (google.cloud.chronicle_v1.types.ReferenceListView):
-            How much of the ReferenceList to view. Defaults to
-            REFERENCE_LIST_VIEW_FULL.
+            How much of the ReferenceList to view. Defaults
+            to REFERENCE_LIST_VIEW_FULL.
     """
 
     name: str = proto.Field(
@@ -164,8 +165,8 @@ class ListReferenceListsRequest(proto.Message):
             provided to ``ListReferenceLists`` must match the call that
             provided the page token.
         view (google.cloud.chronicle_v1.types.ReferenceListView):
-            How much of each ReferenceList to view. Defaults to
-            REFERENCE_LIST_VIEW_BASIC.
+            How much of each ReferenceList to view. Defaults
+            to REFERENCE_LIST_VIEW_BASIC.
     """
 
     parent: str = proto.Field(
@@ -299,15 +300,18 @@ class ReferenceList(proto.Message):
             Required. A user-provided description of the
             reference list.
         entries (MutableSequence[google.cloud.chronicle_v1.types.ReferenceListEntry]):
-            Required. The entries of the reference list. When listed,
-            they are returned in the order that was specified at
-            creation or update. The combined size of the values of the
-            reference list may not exceed 6MB. This is returned only
-            when the view is REFERENCE_LIST_VIEW_FULL.
+            Required. The entries of the reference list.
+            When listed, they are returned in the order that
+            was specified at creation or update. The
+            combined size of the values of the reference
+            list may not exceed 6MB.
+            This is returned only when the view is
+            REFERENCE_LIST_VIEW_FULL.
         rules (MutableSequence[str]):
-            Output only. The resource names for the associated
-            self-authored Rules that use this reference list. This is
-            returned only when the view is REFERENCE_LIST_VIEW_FULL.
+            Output only. The resource names for the
+            associated self-authored Rules that use this
+            reference list. This is returned only when the
+            view is REFERENCE_LIST_VIEW_FULL.
         syntax_type (google.cloud.chronicle_v1.types.ReferenceListSyntaxType):
             Required. The syntax type indicating how list
             entries should be validated.
@@ -315,12 +319,13 @@ class ReferenceList(proto.Message):
             Output only. The count of self-authored rules
             using the reference list.
         scope_info (google.cloud.chronicle_v1.types.ScopeInfo):
-            The scope info of the reference list. During reference list
-            creation, if this field is not set, the reference list
-            without scopes (an unscoped list) will be created for an
-            unscoped user. For a scoped user, this field must be set.
-            During reference list update, if scope_info is requested to
-            be updated, this field must be set.
+            The scope info of the reference list.
+            During reference list creation, if this field is
+            not set, the reference list without scopes (an
+            unscoped list) will be created for an unscoped
+            user. For a scoped user, this field must be set.
+            During reference list update, if scope_info is
+            requested to be updated, this field must be set.
     """
 
     name: str = proto.Field(

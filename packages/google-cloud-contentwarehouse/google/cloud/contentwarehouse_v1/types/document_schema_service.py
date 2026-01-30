@@ -79,7 +79,9 @@ class UpdateDocumentSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document schema to update. Format:
+            Required. The name of the document schema to
+            update. Format:
+
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
         document_schema (google.cloud.contentwarehouse_v1.types.DocumentSchema):
             Required. The document schema to update with.
@@ -118,8 +120,8 @@ class ListDocumentSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of document
-            schemas. Format:
+            Required. The parent, which owns this collection
+            of document schemas. Format:
             projects/{project_number}/locations/{location}.
         page_size (int):
             The maximum number of document schemas to

@@ -319,13 +319,14 @@ class ListTargetSitesRequest(proto.Message):
             under this site search engine, regardless of whether or not
             this branch exists, a PERMISSION_DENIED error is returned.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             A page token, received from a previous ``ListTargetSites``
             call. Provide this to retrieve the subsequent page.
@@ -675,8 +676,8 @@ class RecrawlUrisMetadata(proto.Message):
             TargetSites that haven't been fully indexed, or
             match a TargetSite with type EXCLUDE.
         valid_uris_count (int):
-            Total number of unique URIs in the request that are not in
-            invalid_uris.
+            Total number of unique URIs in the request that
+            are not in invalid_uris.
         success_count (int):
             Total number of URIs that have been crawled
             so far.
@@ -783,13 +784,14 @@ class FetchDomainVerificationStatusRequest(proto.Message):
             fetch all the domain verification status.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         page_size (int):
-            Requested page size. Server may return fewer items than
-            requested. If unspecified, server will pick an appropriate
-            default. The maximum value is 1000; values above 1000 will
-            be coerced to 1000.
+            Requested page size. Server may return fewer
+            items than requested. If unspecified, server
+            will pick an appropriate default. The maximum
+            value is 1000; values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT error is
-            returned.
+            If this field is negative, an INVALID_ARGUMENT
+            error is returned.
         page_token (str):
             A page token, received from a previous
             ``FetchDomainVerificationStatus`` call. Provide this to

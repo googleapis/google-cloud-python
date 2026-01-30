@@ -73,8 +73,8 @@ class IpRules(proto.Message):
     """
 
     class Direction(proto.Enum):
-        r"""The type of direction that the rule is applicable to, one of ingress
-        or egress. Not applicable to OPEN_X_PORT findings.
+        r"""The type of direction that the rule is applicable to, one of
+        ingress or egress. Not applicable to OPEN_X_PORT findings.
 
         Values:
             DIRECTION_UNSPECIFIED (0):

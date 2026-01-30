@@ -1305,9 +1305,9 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         Runs asset discovery. The discovery is tracked with a
         long-running operation.
 
-        This API can only be called with limited frequency for an
-        organization. If it is called too frequently the caller will
-        receive a TOO_MANY_REQUESTS error.
+        This API can only be called with limited frequency for
+        an organization. If it is called too frequently the
+        caller will receive a TOO_MANY_REQUESTS error.
 
         Returns:
             Callable[[~.RunAssetDiscoveryRequest],
@@ -1569,8 +1569,9 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     ]:
         r"""Return a callable for the update notification config method over gRPC.
 
-        Updates a notification config. The following update fields are
-        allowed: description, pubsub_topic, streaming_config.filter
+        Updates a notification config. The following update
+        fields are allowed: description, pubsub_topic,
+        streaming_config.filter
 
         Returns:
             Callable[[~.UpdateNotificationConfigRequest],

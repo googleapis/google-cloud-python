@@ -41,8 +41,9 @@ class PluggableDatabase(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the PluggableDatabase resource in
-            the following format:
+            Identifier. The name of the PluggableDatabase
+            resource in the following format:
+
             projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
         properties (google.cloud.oracledatabase_v1.types.PluggableDatabaseProperties):
             Optional. The properties of the
@@ -437,8 +438,9 @@ class GetPluggableDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the PluggableDatabase resource in the
-            following format:
+            Required. The name of the PluggableDatabase
+            resource in the following format:
+
             projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
     """
 

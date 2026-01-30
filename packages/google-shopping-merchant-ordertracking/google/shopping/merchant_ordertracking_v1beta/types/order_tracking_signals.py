@@ -74,12 +74,13 @@ class OrderTrackingSignal(proto.Message):
             Output only. The ID that uniquely identifies
             this order tracking signal.
         merchant_id (int):
-            Optional. The Google Merchant Center ID of this order
-            tracking signal. This value is optional. If left unset, the
-            caller's Merchant Center ID is used. You must request access
-            in order to provide data on behalf of another business. For
-            more information, see `Submitting Order Tracking
-            Signals </shopping-content/guides/order-tracking-signals>`__.
+            Optional. The Google Merchant Center ID of this
+            order tracking signal. This value is optional.
+            If left unset, the caller's Merchant Center ID
+            is used. You must request access in order to
+            provide data on behalf of another business. For
+            more information, see [Submitting Order Tracking
+            Signals](/shopping-content/guides/order-tracking-signals).
         order_created_time (google.type.datetime_pb2.DateTime):
             Required. The time when the order was created
             on the businesses side. Include the year and
@@ -124,36 +125,47 @@ class OrderTrackingSignal(proto.Message):
                 hashed in returned OrderTrackingSignal creation
                 response.
             tracking_id (str):
-                Optional. The tracking ID of the shipment. This field is
-                required if one of the following fields is absent:
-                earliest_delivery_promise_time,
-                latest_delivery_promise_time, and actual_delivery_time.
+                Optional. The tracking ID of the shipment. This
+                field is required if one of the following fields
+                is absent: earliest_delivery_promise_time,
+                latest_delivery_promise_time, and
+                actual_delivery_time.
             carrier (str):
-                Optional. The name of the shipping carrier for the delivery.
-                This field is required if one of the following fields is
-                absent: earliest_delivery_promise_time,
-                latest_delivery_promise_time, and actual_delivery_time.
+                Optional. The name of the shipping carrier for
+                the delivery. This field is required if one of
+                the following fields is absent:
+
+                earliest_delivery_promise_time,
+                latest_delivery_promise_time, and
+                actual_delivery_time.
             carrier_service (str):
-                Optional. The service type for fulfillment, such as GROUND,
-                FIRST_CLASS, etc.
+                Optional. The service type for fulfillment, such
+                as GROUND, FIRST_CLASS, etc.
             shipped_time (google.type.datetime_pb2.DateTime):
                 Optional. The time when the shipment was
                 shipped. Include the year and timezone string,
                 if available.
             earliest_delivery_promise_time (google.type.datetime_pb2.DateTime):
-                Optional. The earliest delivery promised time. Include the
-                year and timezone string, if available. This field is
-                required, if one of the following fields is absent:
+                Optional. The earliest delivery promised time.
+                Include the year and timezone string, if
+                available. This field is required, if one of the
+                following fields is absent:
+
                 tracking_id or carrier_name.
             latest_delivery_promise_time (google.type.datetime_pb2.DateTime):
-                Optional. The latest delivery promised time. Include the
-                year and timezone string, if available. This field is
-                required, if one of the following fields is absent:
+                Optional. The latest delivery promised time.
+                Include the year and timezone string, if
+                available. This field is required, if one of the
+                following fields is absent:
+
                 tracking_id or carrier_name.
             actual_delivery_time (google.type.datetime_pb2.DateTime):
-                Optional. The time when the shipment was actually delivered.
-                Include the year and timezone string, if available. This
-                field is required, if one of the following fields is absent:
+                Optional. The time when the shipment was
+                actually delivered. Include the year and
+                timezone string, if available. This field is
+                required, if one of the following fields is
+                absent:
+
                 tracking_id or carrier_name.
             shipping_status (google.shopping.merchant_ordertracking_v1beta.types.OrderTrackingSignal.ShippingInfo.ShippingState):
                 Required. The status of the shipment.

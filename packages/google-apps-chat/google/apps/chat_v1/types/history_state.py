@@ -35,12 +35,14 @@ class HistoryState(proto.Enum):
         HISTORY_STATE_UNSPECIFIED (0):
             Default value. Do not use.
         HISTORY_OFF (1):
-            History off. `Messages and threads are kept for 24
-            hours <https://support.google.com/chat/answer/7664687>`__.
+            History off. [Messages and threads are kept for
+            24
+            hours](https://support.google.com/chat/answer/7664687).
         HISTORY_ON (2):
-            History on. The organization's `Vault retention
-            rules <https://support.google.com/vault/answer/7657597>`__
-            specify for how long messages and threads are kept.
+            History on. The organization's [Vault retention
+            rules](https://support.google.com/vault/answer/7657597)
+            specify for how long messages and threads are
+            kept.
     """
     HISTORY_STATE_UNSPECIFIED = 0
     HISTORY_OFF = 1

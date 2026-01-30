@@ -132,8 +132,8 @@ class ListSessionEntityTypesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -156,9 +156,9 @@ class ListSessionEntityTypesResponse(proto.Message):
 
     Attributes:
         session_entity_types (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SessionEntityType]):
-            The list of session entity types. There will be a maximum
-            number of items returned based on the page_size field in the
-            request.
+            The list of session entity types. There will be
+            a maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

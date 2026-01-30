@@ -169,8 +169,9 @@ class ScheduleOptionsV2(proto.Message):
 
             This field is a member of `oneof`_ ``schedule``.
         manual_schedule (google.cloud.bigquery_datatransfer_v1.types.ManualSchedule):
-            Manual transfer schedule. If set, the transfer run will not
-            be auto-scheduled by the system, unless the client invokes
+            Manual transfer schedule. If set, the transfer
+            run will not be auto-scheduled by the system,
+            unless the client invokes
             StartManualTransferRuns. This is equivalent to
             disable_auto_scheduling = true.
 
@@ -351,10 +352,11 @@ class TransferConfig(proto.Message):
             Options customizing the data transfer
             schedule.
         schedule_options_v2 (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptionsV2):
-            Options customizing different types of data transfer
-            schedule. This field replaces "schedule" and
-            "schedule_options" fields. ScheduleOptionsV2 cannot be used
-            together with ScheduleOptions/Schedule.
+            Options customizing different types of data
+            transfer schedule. This field replaces
+            "schedule" and "schedule_options" fields.
+            ScheduleOptionsV2 cannot be used together with
+            ScheduleOptions/Schedule.
         data_refresh_window_days (int):
             The number of days to look back to automatically refresh the
             data. For example, if ``data_refresh_window_days = 10``,

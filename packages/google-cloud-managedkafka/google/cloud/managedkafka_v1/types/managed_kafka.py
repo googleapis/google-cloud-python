@@ -728,11 +728,12 @@ class UpdateAclRequest(proto.Message):
             updated acl; to remove all acl entries for an acl, use
             DeleteAcl.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Acl resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Acl resource by
+            the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask.
     """
 
     acl: resources.Acl = proto.Field(

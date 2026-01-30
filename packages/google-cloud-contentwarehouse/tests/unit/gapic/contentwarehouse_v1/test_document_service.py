@@ -51,6 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.documentai_v1.types import barcode
+from google.cloud.documentai_v1.types import document
 from google.cloud.documentai_v1.types import document as gcd_document
 from google.cloud.documentai_v1.types import geometry
 from google.iam.v1 import policy_pb2  # type: ignore

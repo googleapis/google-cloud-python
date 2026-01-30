@@ -788,8 +788,8 @@ class ReachabilityServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (:class:`google.cloud.network_management_v1.types.ConnectivityTest`):
-                Required. Only fields specified in update_mask are
-                updated.
+                Required. Only fields specified in
+                update_mask are updated.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this

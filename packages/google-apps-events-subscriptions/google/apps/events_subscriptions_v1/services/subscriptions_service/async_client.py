@@ -321,9 +321,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a Google Workspace subscription. To learn how to use
-        this method, see `Create a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/create-subscription>`__.
+        r"""Creates a Google Workspace subscription. To learn how to
+        use this method, see [Create a Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/create-subscription).
 
         .. code-block:: python
 
@@ -451,9 +451,10 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a Google Workspace subscription. To learn how to use
-        this method, see `Delete a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/delete-subscription>`__.
+        r"""Deletes a Google Workspace subscription.
+        To learn how to use this method, see [Delete a Google
+        Workspace
+        subscription](https://developers.google.com/workspace/events/guides/delete-subscription).
 
         .. code-block:: python
 
@@ -589,9 +590,10 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> subscription_resource.Subscription:
-        r"""Gets details about a Google Workspace subscription. To learn how
-        to use this method, see `Get details about a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/get-subscription>`__.
+        r"""Gets details about a Google Workspace subscription. To
+        learn how to use this method, see [Get details about a
+        Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/get-subscription).
 
         .. code-block:: python
 
@@ -641,10 +643,11 @@ class SubscriptionsServiceAsyncClient:
 
         Returns:
             google.apps.events_subscriptions_v1.types.Subscription:
-                A subscription to receive events about a Google Workspace resource. To learn
-                   more about subscriptions, see the [Google Workspace
-                   Events API
-                   overview](https://developers.google.com/workspace/events).
+                A subscription to receive events about a
+                Google Workspace resource. To learn more
+                about subscriptions, see the [Google
+                Workspace Events API
+                overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -707,9 +710,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSubscriptionsAsyncPager:
-        r"""Lists Google Workspace subscriptions. To learn how to use this
-        method, see `List Google Workspace
-        subscriptions <https://developers.google.com/workspace/events/guides/list-subscriptions>`__.
+        r"""Lists Google Workspace subscriptions. To learn how to
+        use this method, see [List Google Workspace
+        subscriptions](https://developers.google.com/workspace/events/guides/list-subscriptions).
 
         .. code-block:: python
 
@@ -860,9 +863,10 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates or renews a Google Workspace subscription. To learn how
-        to use this method, see `Update or renew a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/update-subscription>`__.
+        r"""Updates or renews a Google Workspace subscription. To
+        learn how to use this method, see [Update or renew a
+        Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/update-subscription).
 
         .. code-block:: python
 

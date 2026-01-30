@@ -473,11 +473,13 @@ class EncryptionSpecServiceAsyncClient:
                 The request object. The request to initialize a
                 location-level encryption specification.
             encryption_spec (:class:`google.cloud.dialogflow_v2beta1.types.EncryptionSpec`):
-                Required. The encryption spec used for CMEK encryption.
-                It is required that the kms key is in the same region as
-                the endpoint. The same key will be used for all
-                provisioned resources, if encryption is available. If
-                the kms_key_name is left empty, no encryption will be
+                Required. The encryption spec used for
+                CMEK encryption. It is required that the
+                kms key is in the same region as the
+                endpoint. The same key will be used for
+                all provisioned resources, if encryption
+                is available. If the kms_key_name is
+                left empty, no encryption will be
                 enforced.
 
                 This corresponds to the ``encryption_spec`` field

@@ -95,13 +95,13 @@ class CreateJobRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under which the
-            job is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant under
+            which the job is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified a default tenant is created. For
+            example, "projects/foo".
         job (google.cloud.talent_v4beta1.types.Job):
             Required. The Job to be created.
     """
@@ -122,14 +122,15 @@ class GetJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the job to retrieve.
-
+            Required. The resource name of the job to
+            retrieve.
             The format is
             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-            For example, "projects/foo/tenants/bar/jobs/baz".
+            For example,
+            "projects/foo/tenants/bar/jobs/baz".
 
-            If tenant id is unspecified, the default tenant is used. For
-            example, "projects/foo/jobs/bar".
+            If tenant id is unspecified, the default tenant
+            is used. For example, "projects/foo/jobs/bar".
     """
 
     name: str = proto.Field(
@@ -175,14 +176,15 @@ class DeleteJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the job to be deleted.
-
+            Required. The resource name of the job to be
+            deleted.
             The format is
             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-            For example, "projects/foo/tenants/bar/jobs/baz".
+            For example,
+            "projects/foo/tenants/bar/jobs/baz".
 
-            If tenant id is unspecified, the default tenant is used. For
-            example, "projects/foo/jobs/bar".
+            If tenant id is unspecified, the default tenant
+            is used. For example, "projects/foo/jobs/bar".
     """
 
     name: str = proto.Field(
@@ -196,13 +198,13 @@ class BatchDeleteJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under which the
-            job is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified, a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant under
+            which the job is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified, a default tenant is created. For
+            example, "projects/foo".
         filter (str):
             Required. The filter string specifies the jobs to be
             deleted.
@@ -233,13 +235,13 @@ class ListJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under which the
-            job is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified, a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant under
+            which the job is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified, a default tenant is created. For
+            example, "projects/foo".
         filter (str):
             Required. The filter string specifies the jobs to be
             enumerated.
@@ -350,12 +352,13 @@ class SearchJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant to search within.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified, a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant to
+            search within.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified, a default tenant is created. For
+            example, "projects/foo".
         search_mode (google.cloud.talent_v4beta1.types.SearchJobsRequest.SearchMode):
             Mode of a search.
 
@@ -662,8 +665,9 @@ class SearchJobsRequest(proto.Message):
 
         Values:
             SEARCH_MODE_UNSPECIFIED (0):
-                The mode of the search method isn't specified. The default
-                search behavior is identical to JOB_SEARCH search behavior.
+                The mode of the search method isn't specified.
+                The default search behavior is identical to
+                JOB_SEARCH search behavior.
             JOB_SEARCH (1):
                 The job search matches against all jobs, and
                 featured jobs (jobs with promotionValue > 0) are
@@ -1141,13 +1145,13 @@ class BatchCreateJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under which the
-            job is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified, a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant under
+            which the job is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified, a default tenant is created. For
+            example, "projects/foo".
         jobs (MutableSequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be created.
     """
@@ -1168,13 +1172,13 @@ class BatchUpdateJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under which the
-            job is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}".
-            For example, "projects/foo/tenant/bar". If tenant id is
-            unspecified, a default tenant is created. For example,
-            "projects/foo".
+            Required. The resource name of the tenant under
+            which the job is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}". For
+            example, "projects/foo/tenant/bar". If tenant id
+            is unspecified, a default tenant is created. For
+            example, "projects/foo".
         jobs (MutableSequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):

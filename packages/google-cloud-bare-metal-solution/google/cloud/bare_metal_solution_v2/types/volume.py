@@ -65,8 +65,9 @@ class Volume(proto.Message):
             size if the storage volume has been configured
             with auto grow or auto shrink.
         emergency_size_gib (int):
-            Additional emergency size that was requested for this
-            Volume, in GiB. current_size_gib includes this value.
+            Additional emergency size that was requested for
+            this Volume, in GiB. current_size_gib includes
+            this value.
         max_size_gib (int):
             Maximum size volume can be expanded to in
             case of evergency, in GiB.
@@ -231,11 +232,13 @@ class Volume(proto.Message):
                 The amount, in GiB, of available space in
                 this storage volume's reserved snapshot space.
             reserved_space_percent (int):
-                Percent of the total Volume size reserved for snapshot
-                copies. Enabling snapshots requires reserving 20% or more of
-                the storage volume space for snapshots. Maximum reserved
-                space for snapshots is 40%. Setting this field will
-                effectively set snapshot_enabled to true.
+                Percent of the total Volume size reserved for
+                snapshot copies. Enabling snapshots requires
+                reserving 20% or more of the storage volume
+                space for snapshots. Maximum reserved space for
+                snapshots is 40%.
+                Setting this field will effectively set
+                snapshot_enabled to true.
         """
 
         reserved_space_gib: int = proto.Field(

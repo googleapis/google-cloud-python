@@ -1175,8 +1175,9 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource_bundle_id (str):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and resource_bundle_id
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and resource_bundle_id
                 from the method_signature of Create RPC
 
                 This corresponds to the ``resource_bundle_id`` field
@@ -1310,13 +1311,15 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the ResourceBundle resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                ResourceBundle resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1824,8 +1827,9 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             fleet_package_id (str):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and fleet_package_id
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and fleet_package_id
                 from the method_signature of Create RPC
 
                 This corresponds to the ``fleet_package_id`` field
@@ -1968,12 +1972,15 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the FleetPackage resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                FleetPackage resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2477,8 +2484,9 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             release_id (str):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and release_id from
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and release_id from
                 the method_signature of Create RPC
 
                 This corresponds to the ``release_id`` field
@@ -2614,12 +2622,15 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Release resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Release resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3252,12 +3263,15 @@ class ConfigDeliveryClient(metaclass=ConfigDeliveryClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Variant resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                Variant resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

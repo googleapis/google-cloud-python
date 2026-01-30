@@ -66,9 +66,9 @@ class LogEntry(proto.Message):
             ``//tracing.googleapis.com``. Example:
             ``projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824``
         insert_id (str):
-            A unique ID for the log entry used for deduplication. If
-            omitted, the implementation will generate one based on
-            operation_id.
+            A unique ID for the log entry used for
+            deduplication. If omitted, the implementation
+            will generate one based on operation_id.
         labels (MutableMapping[str, str]):
             A set of user-defined (key, value) data that
             provides additional information about the log

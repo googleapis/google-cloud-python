@@ -29,10 +29,10 @@ __protobuf__ = proto.module(
 
 
 class Notebook(proto.Message):
-    r"""Represents a Jupyter notebook IPYNB file, such as a `Colab
+    r"""Represents a Jupyter notebook IPYNB file, such as a [Colab
     Enterprise
-    notebook <https://cloud.google.com/colab/docs/introduction>`__ file,
-    that is associated with a finding.
+    notebook](https://cloud.google.com/colab/docs/introduction)
+    file, that is associated with a finding.
 
     Attributes:
         name (str):

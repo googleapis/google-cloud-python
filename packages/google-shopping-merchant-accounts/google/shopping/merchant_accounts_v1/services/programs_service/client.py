@@ -110,15 +110,17 @@ class ProgramsServiceClientMeta(type):
 class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
     """Service for program management.
 
-    Programs provide a mechanism for adding functionality to merchant
-    accounts. A typical example of this is the `Free product
-    listings <https://support.google.com/merchants/answer/13889434>`__
-    program, which enables products from a merchant's store to be shown
-    across Google for free.
+    Programs provide a mechanism for adding functionality to
+    merchant accounts. A typical example of this is the [Free
+    product
+    listings](https://support.google.com/merchants/answer/13889434)
+    program, which enables products from a merchant's store to be
+    shown across Google for free.
 
-    This service exposes methods to retrieve a business's participation
-    in all available programs, in addition to methods for explicitly
-    enabling or disabling participation in each program.
+    This service exposes methods to retrieve a business's
+    participation in all available programs, in addition to methods
+    for explicitly enabling or disabling participation in each
+    program.
     """
 
     @staticmethod

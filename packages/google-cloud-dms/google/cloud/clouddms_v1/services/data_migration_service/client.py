@@ -1153,8 +1153,8 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             migration_job (google.cloud.clouddms_v1.types.MigrationJob):
-                Required. Represents a `migration
-                job <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs>`__
+                Required. Represents a [migration
+                job](https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs)
                 object.
 
                 This corresponds to the ``migration_job`` field
@@ -4445,8 +4445,10 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
                 The request object. Retrieve a list of all mapping rules
                 in a given conversion workspace.
             parent (str):
-                Required. Name of the conversion workspace resource
-                whose mapping rules are listed in the form of:
+                Required. Name of the conversion
+                workspace resource whose mapping rules
+                are listed in the form of:
+
                 projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
 
                 This corresponds to the ``parent`` field

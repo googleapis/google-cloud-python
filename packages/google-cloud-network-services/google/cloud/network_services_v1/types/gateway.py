@@ -71,19 +71,23 @@ class Gateway(proto.Message):
             gateway. This field is required. If unspecified,
             an error is returned.
         addresses (MutableSequence[str]):
-            Optional. Zero or one IPv4 or IPv6 address on which the
-            Gateway will receive the traffic. When no address is
-            provided, an IP from the subnetwork is allocated
+            Optional. Zero or one IPv4 or IPv6 address on
+            which the Gateway will receive the traffic. When
+            no address is provided, an IP from the
+            subnetwork is allocated
 
             This field only applies to gateways of type
-            'SECURE_WEB_GATEWAY'. Gateways of type 'OPEN_MESH' listen on
-            0.0.0.0 for IPv4 and :: for IPv6.
+            'SECURE_WEB_GATEWAY'. Gateways of type
+            'OPEN_MESH' listen on 0.0.0.0 for IPv4 and ::
+            for IPv6.
         ports (MutableSequence[int]):
-            Required. One or more port numbers (1-65535), on which the
-            Gateway will receive traffic. The proxy binds to the
-            specified ports. Gateways of type 'SECURE_WEB_GATEWAY' are
-            limited to 1 port. Gateways of type 'OPEN_MESH' listen on
-            0.0.0.0 for IPv4 and :: for IPv6 and support multiple ports.
+            Required. One or more port numbers (1-65535), on
+            which the Gateway will receive traffic. The
+            proxy binds to the specified ports. Gateways of
+            type 'SECURE_WEB_GATEWAY' are limited to 1 port.
+            Gateways of type 'OPEN_MESH' listen on 0.0.0.0
+            for IPv4 and :: for IPv6 and support multiple
+            ports.
         scope (str):
             Optional. Scope determines how configuration
             across multiple Gateway instances are merged.
@@ -101,9 +105,10 @@ class Gateway(proto.Message):
             terminated. If empty, TLS termination is
             disabled.
         certificate_urls (MutableSequence[str]):
-            Optional. A fully-qualified Certificates URL reference. The
-            proxy presents a Certificate (selected based on SNI) when
-            establishing a TLS connection. This feature only applies to
+            Optional. A fully-qualified Certificates URL
+            reference. The proxy presents a Certificate
+            (selected based on SNI) when establishing a TLS
+            connection. This feature only applies to
             gateways of type 'SECURE_WEB_GATEWAY'.
         gateway_security_policy (str):
             Optional. A fully-qualified GatewaySecurityPolicy URL
@@ -142,10 +147,10 @@ class Gateway(proto.Message):
 
             This field is a member of `oneof`_ ``_envoy_headers``.
         routing_mode (google.cloud.network_services_v1.types.Gateway.RoutingMode):
-            Optional. The routing mode of the Gateway. This field is
-            configurable only for gateways of type SECURE_WEB_GATEWAY.
-            This field is required for gateways of type
-            SECURE_WEB_GATEWAY.
+            Optional. The routing mode of the Gateway.
+            This field is configurable only for gateways of
+            type SECURE_WEB_GATEWAY. This field is required
+            for gateways of type SECURE_WEB_GATEWAY.
     """
 
     class Type(proto.Enum):
@@ -409,12 +414,13 @@ class UpdateGatewayRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Gateway resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Gateway resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         gateway (google.cloud.network_services_v1.types.Gateway):
             Required. Updated Gateway resource.
     """

@@ -35,10 +35,10 @@ __protobuf__ = proto.module(
 
 class UpgradeNote(proto.Message):
     r"""An Upgrade Note represents a potential upgrade of a package to a
-    given version. For each package version combination (i.e. bash 4.0,
-    bash 4.1, bash 4.1.2), there will be an Upgrade Note. For Windows,
-    windows_update field represents the information related to the
-    update.
+    given version. For each package version combination (i.e. bash
+    4.0, bash 4.1, bash 4.1.2), there will be an Upgrade Note. For
+    Windows, windows_update field represents the information related
+    to the update.
 
     Attributes:
         package (str):
@@ -88,9 +88,10 @@ class UpgradeDistribution(proto.Message):
             metadata applies to. See
             https://cpe.mitre.org/specification/.
         classification (str):
-            The operating system classification of this Upgrade, as
-            specified by the upstream operating system upgrade feed. For
-            Windows the classification is one of the category_ids listed
+            The operating system classification of this
+            Upgrade, as specified by the upstream operating
+            system upgrade feed. For Windows the
+            classification is one of the category_ids listed
             at
             https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ff357803(v=vs.85)
         severity (str):
@@ -218,11 +219,12 @@ class WindowsUpdate(proto.Message):
 
 
 class UpgradeOccurrence(proto.Message):
-    r"""An Upgrade Occurrence represents that a specific resource_url could
-    install a specific upgrade. This presence is supplied via local
-    sources (i.e. it is present in the mirror and the running system has
-    noticed its availability). For Windows, both distribution and
-    windows_update contain information for the Windows update.
+    r"""An Upgrade Occurrence represents that a specific resource_url
+    could install a specific upgrade. This presence is supplied via
+    local sources (i.e. it is present in the mirror and the running
+    system has noticed its availability). For Windows, both
+    distribution and windows_update contain information for the
+    Windows update.
 
     Attributes:
         package (str):
@@ -232,10 +234,10 @@ class UpgradeOccurrence(proto.Message):
             Required for non-Windows OS. The version of
             the package in a machine + human readable form.
         distribution (grafeas.grafeas_v1.types.UpgradeDistribution):
-            Metadata about the upgrade for available for the specific
-            operating system for the resource_url. This allows efficient
-            filtering, as well as making it easier to use the
-            occurrence.
+            Metadata about the upgrade for available for the
+            specific operating system for the resource_url.
+            This allows efficient filtering, as well as
+            making it easier to use the occurrence.
         windows_update (grafeas.grafeas_v1.types.WindowsUpdate):
             Required for Windows OS. Represents the
             metadata about the Windows update.

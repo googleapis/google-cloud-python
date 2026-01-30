@@ -68,10 +68,10 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class DataSourcesServiceAsyncClient:
-    """Service to manage primary, supplemental, inventory and other data
-    sources. See more in the `Merchant
-    Center <https://support.google.com/merchants/answer/7439058>`__ help
-    article.
+    """Service to manage primary, supplemental, inventory and other
+    data sources. See more in the [Merchant
+    Center](https://support.google.com/merchants/answer/7439058)
+    help article.
     """
 
     _client: DataSourcesServiceClient

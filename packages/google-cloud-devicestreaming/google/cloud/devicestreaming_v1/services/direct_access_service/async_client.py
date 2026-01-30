@@ -360,8 +360,9 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.CreateDeviceSession.
             parent (:class:`str`):
-                Required. The Compute Engine project under which this
-                device will be allocated. "projects/{project_id}"
+                Required. The Compute Engine project
+                under which this device will be
+                allocated. "projects/{project_id}"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -492,8 +493,8 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.ListDeviceSessions.
             parent (:class:`str`):
-                Required. The name of the parent to request, e.g.
-                "projects/{project_id}"
+                Required. The name of the parent to
+                request, e.g. "projects/{project_id}"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -620,7 +621,8 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.GetDeviceSession.
             name (:class:`str`):
-                Required. Name of the DeviceSession, e.g.
+                Required. Name of the DeviceSession,
+                e.g.
                 "projects/{project_id}/deviceSessions/{session_id}"
 
                 This corresponds to the ``name`` field
@@ -778,8 +780,8 @@ class DirectAccessServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service.DeviceSession:
-        r"""Updates the current DeviceSession to the fields described by the
-        update_mask.
+        r"""Updates the current DeviceSession to the fields
+        described by the update_mask.
 
         .. code-block:: python
 

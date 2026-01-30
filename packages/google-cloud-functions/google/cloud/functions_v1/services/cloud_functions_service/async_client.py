@@ -1494,9 +1494,10 @@ class CloudFunctionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
+        r"""Tests the specified permissions against the IAM access
+        control policy for a function.
+        If the function does not exist, this will return an
+        empty set of permissions, not a NOT_FOUND error.
 
         .. code-block:: python
 

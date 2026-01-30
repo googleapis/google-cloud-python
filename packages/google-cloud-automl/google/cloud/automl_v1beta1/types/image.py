@@ -125,9 +125,10 @@ class ImageClassificationModelMetadata(proto.Message):
             prediction QPS that can be supported by this
             model per each node on which it is deployed.
         node_count (int):
-            Output only. The number of nodes this model is deployed on.
-            A node is an abstraction of a machine resource, which can
-            handle online prediction QPS as given in the node_qps field.
+            Output only. The number of nodes this model is
+            deployed on. A node is an abstraction of a
+            machine resource, which can handle online
+            prediction QPS as given in the node_qps field.
     """
 
     base_model_id: str = proto.Field(
@@ -196,9 +197,10 @@ class ImageObjectDetectionModelMetadata(proto.Message):
               afterwards. Expected to have a higher latency, but should
               also have a higher prediction quality than other models.
         node_count (int):
-            Output only. The number of nodes this model is deployed on.
-            A node is an abstraction of a machine resource, which can
-            handle online prediction QPS as given in the qps_per_node
+            Output only. The number of nodes this model is
+            deployed on. A node is an abstraction of a
+            machine resource, which can handle online
+            prediction QPS as given in the qps_per_node
             field.
         node_qps (float):
             Output only. An approximate number of online

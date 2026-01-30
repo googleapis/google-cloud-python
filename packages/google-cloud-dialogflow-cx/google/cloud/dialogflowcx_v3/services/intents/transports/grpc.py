@@ -403,8 +403,8 @@ class IntentsGrpcTransport(IntentsTransport):
         Creates an intent in the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.CreateIntentRequest],
@@ -433,8 +433,8 @@ class IntentsGrpcTransport(IntentsTransport):
         Updates the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.UpdateIntentRequest],
@@ -461,8 +461,8 @@ class IntentsGrpcTransport(IntentsTransport):
         Deletes the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.DeleteIntentRequest],

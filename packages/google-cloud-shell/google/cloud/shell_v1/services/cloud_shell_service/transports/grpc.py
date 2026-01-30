@@ -352,8 +352,8 @@ class CloudShellServiceGrpcTransport(CloudShellServiceTransport):
     ) -> Callable[[cloudshell.GetEnvironmentRequest], cloudshell.Environment]:
         r"""Return a callable for the get environment method over gRPC.
 
-        Gets an environment. Returns NOT_FOUND if the environment does
-        not exist.
+        Gets an environment. Returns NOT_FOUND if the
+        environment does not exist.
 
         Returns:
             Callable[[~.GetEnvironmentRequest],
@@ -442,10 +442,10 @@ class CloudShellServiceGrpcTransport(CloudShellServiceTransport):
     ) -> Callable[[cloudshell.AddPublicKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the add public key method over gRPC.
 
-        Adds a public SSH key to an environment, allowing clients with
-        the corresponding private key to connect to that environment via
-        SSH. If a key with the same content already exists, this will
-        error with ALREADY_EXISTS.
+        Adds a public SSH key to an environment, allowing
+        clients with the corresponding private key to connect to
+        that environment via SSH. If a key with the same content
+        already exists, this will error with ALREADY_EXISTS.
 
         Returns:
             Callable[[~.AddPublicKeyRequest],
@@ -471,10 +471,11 @@ class CloudShellServiceGrpcTransport(CloudShellServiceTransport):
     ) -> Callable[[cloudshell.RemovePublicKeyRequest], operations_pb2.Operation]:
         r"""Return a callable for the remove public key method over gRPC.
 
-        Removes a public SSH key from an environment. Clients will no
-        longer be able to connect to the environment using the
-        corresponding private key. If a key with the same content is not
-        present, this will error with NOT_FOUND.
+        Removes a public SSH key from an environment. Clients
+        will no longer be able to connect to the environment
+        using the corresponding private key. If a key with the
+        same content is not present, this will error with
+        NOT_FOUND.
 
         Returns:
             Callable[[~.RemovePublicKeyRequest],

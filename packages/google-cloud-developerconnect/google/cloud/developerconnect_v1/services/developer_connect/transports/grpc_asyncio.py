@@ -961,7 +961,8 @@ class DeveloperConnectGrpcAsyncIOTransport(DeveloperConnectTransport):
     ]:
         r"""Return a callable for the list users method over gRPC.
 
-        Lists Users in a given project, location, and account_connector.
+        Lists Users in a given project, location, and
+        account_connector.
 
         Returns:
             Callable[[~.ListUsersRequest],

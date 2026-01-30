@@ -597,10 +597,11 @@ class VmwareEngineGrpcTransport(VmwareEngineTransport):
     ) -> Callable[[vmwareengine.CreateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
-        Creates a new cluster in a given private cloud. Creating a new
-        cluster provides additional nodes for use in the parent private
-        cloud and requires sufficient `node
-        quota <https://cloud.google.com/vmware-engine/quotas>`__.
+        Creates a new cluster in a given private cloud.
+        Creating a new cluster provides additional nodes for use
+        in the parent private cloud and requires sufficient
+        [node
+        quota](https://cloud.google.com/vmware-engine/quotas).
 
         Returns:
             Callable[[~.CreateClusterRequest],

@@ -333,10 +333,11 @@ class LiveSession(proto.Message):
                 for ads and the session uses client-side ad
                 tracking.
             targeting_parameters (MutableMapping[str, str]):
-                `Targeting
-                parameters <https://support.google.com/admanager/answer/7320899>`__
-                to send to Ad Manager to generate a stream ID. This should
-                only be set if the session uses server-side ad tracking.
+                [Targeting
+                parameters](https://support.google.com/admanager/answer/7320899)
+                to send to Ad Manager to generate a stream ID.
+                This should only be set if the session uses
+                server-side ad tracking.
         """
 
         stream_id: str = proto.Field(

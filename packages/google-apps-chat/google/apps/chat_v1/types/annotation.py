@@ -312,11 +312,11 @@ class RichLinkMetadata(proto.Message):
                 A Chat space rich link type. For example, a
                 space smart chip.
             GMAIL_MESSAGE (3):
-                A Gmail message rich link type. Specifically, a Gmail chip
-                from `Share to
-                Chat <https://support.google.com/chat?p=chat_gmail>`__. The
-                API only supports reading messages with GMAIL_MESSAGE rich
-                links.
+                A Gmail message rich link type. Specifically, a
+                Gmail chip from [Share to
+                Chat](https://support.google.com/chat?p=chat_gmail).
+                The API only supports reading messages with
+                GMAIL_MESSAGE rich links.
             MEET_SPACE (4):
                 A Meet message rich link type. For example, a
                 Meet chip.
@@ -509,12 +509,12 @@ class CalendarEventLinkData(proto.Message):
 
     Attributes:
         calendar_id (str):
-            The `Calendar
-            identifier <https://developers.google.com/workspace/calendar/api/v3/reference/calendars>`__
+            The [Calendar
+            identifier](https://developers.google.com/workspace/calendar/api/v3/reference/calendars)
             of the linked Calendar.
         event_id (str):
-            The `Event
-            identifier <https://developers.google.com/workspace/calendar/api/v3/reference/events>`__
+            The [Event
+            identifier](https://developers.google.com/workspace/calendar/api/v3/reference/events)
             of the linked Calendar event.
     """
 

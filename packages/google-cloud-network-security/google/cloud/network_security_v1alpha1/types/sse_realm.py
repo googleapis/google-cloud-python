@@ -85,8 +85,8 @@ class SACRealm(proto.Message):
                 The default value. This value is used if the
                 state is omitted.
             PALO_ALTO_PRISMA_ACCESS (1):
-                `Palo Alto Networks Prisma
-                Access <https://www.paloaltonetworks.com/sase/access>`__.
+                [Palo Alto Networks Prisma
+                Access](https://www.paloaltonetworks.com/sase/access).
             SYMANTEC_CLOUD_SWG (2):
                 Symantec Cloud SWG.
         """
@@ -765,26 +765,29 @@ class PartnerSSERealm(proto.Message):
             Required. value of the key to establish
             global handshake from SSERealm
         partner_vpc (str):
-            Optional. VPC owned by the partner to be peered with CDEN
-            sse_vpc in sse_project This field is deprecated. Use
-            partner_network instead.
+            Optional. VPC owned by the partner to be peered
+            with CDEN sse_vpc in sse_project This field is
+            deprecated. Use partner_network instead.
         sse_vpc (str):
-            Output only. CDEN owned VPC to be peered with partner_vpc
-            This field is deprecated. Use sse_network instead.
+            Output only. CDEN owned VPC to be peered with
+            partner_vpc This field is deprecated. Use
+            sse_network instead.
         sse_project (str):
-            Output only. CDEN owned project owning sse_vpc. It stores
-            project id in the TTM flow, but project number in the NCCGW
-            flow. This field will be deprecated after the partner
-            migrates from using sse_project to using sse_project_number.
+            Output only. CDEN owned project owning sse_vpc.
+            It stores project id in the TTM flow, but
+            project number in the NCCGW flow. This field
+            will be deprecated after the partner migrates
+            from using sse_project to using
+            sse_project_number.
         state (google.cloud.network_security_v1alpha1.types.PartnerSSERealm.State):
-            Output only. State of the realm. It can be either
-            CUSTOMER_ATTACHED or CUSTOMER_DETACHED.
+            Output only. State of the realm. It can be
+            either CUSTOMER_ATTACHED or CUSTOMER_DETACHED.
         partner_network (str):
-            Optional. Partner-owned network to be peered with CDEN's
-            sse_network in sse_project
+            Optional. Partner-owned network to be peered
+            with CDEN's sse_network in sse_project
         sse_network (str):
-            Output only. CDEN-owned network to be peered with
-            partner_network
+            Output only. CDEN-owned network to be peered
+            with partner_network
         pan_options (google.cloud.network_security_v1alpha1.types.PartnerSSERealm.PartnerSSERealmPanOptions):
             Optional. Required only for PAN.
         sse_project_number (int):
@@ -816,11 +819,11 @@ class PartnerSSERealm(proto.Message):
 
         Attributes:
             serial_number (str):
-                Optional. serial_number is provided by PAN to identify GCP
-                customer on PAN side.
+                Optional. serial_number is provided by PAN to
+                identify GCP customer on PAN side.
             tenant_id (str):
-                Optional. tenant_id is provided by PAN to identify GCP
-                customer on PAN side.
+                Optional. tenant_id is provided by PAN to
+                identify GCP customer on PAN side.
         """
 
         serial_number: str = proto.Field(
@@ -986,9 +989,10 @@ class CreatePartnerSSERealmRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         partner_sse_realm_id (str):
-            Required. Id of the requesting object If auto-generating Id
-            server-side, remove this field and partner_sse_realm_id from
-            the method_signature of Create RPC
+            Required. Id of the requesting object
+            If auto-generating Id server-side, remove this
+            field and partner_sse_realm_id from the
+            method_signature of Create RPC
         partner_sse_realm (google.cloud.network_security_v1alpha1.types.PartnerSSERealm):
             Required. The resource being created
         request_id (str):

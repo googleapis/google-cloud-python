@@ -751,10 +751,10 @@ class DeveloperRegistrationServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> developerregistration.DeveloperRegistration:
-        r"""Registers the GCP used for the API call to the shopping account
-        passed in the request. Will create a user with an "API
-        developer" and add the "developer_email" as a contact with "API
-        notifications" email preference on.
+        r"""Registers the GCP used for the API call to the shopping
+        account passed in the request. Will create a user with
+        an "API developer" and add the "developer_email" as a
+        contact with "API notifications" email preference on.
 
         .. code-block:: python
 

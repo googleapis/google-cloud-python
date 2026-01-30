@@ -1035,8 +1035,9 @@ class AnalyticsAdminServiceAsyncClient:
             request (Optional[Union[google.analytics.admin_v1beta.types.GetPropertyRequest, dict]]):
                 The request object. Request message for GetProperty RPC.
             name (:class:`str`):
-                Required. The name of the property to lookup. Format:
-                properties/{property_id} Example: "properties/1000"
+                Required. The name of the property to
+                lookup. Format: properties/{property_id}
+                Example: "properties/1000"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1369,8 +1370,9 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for DeleteProperty
                 RPC.
             name (:class:`str`):
-                Required. The name of the Property to soft-delete.
-                Format: properties/{property_id} Example:
+                Required. The name of the Property to
+                soft-delete. Format:
+                properties/{property_id} Example:
                 "properties/1000"
 
                 This corresponds to the ``name`` field
@@ -3656,10 +3658,11 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetConversionEvent RPC
             name (:class:`str`):
-                Required. The resource name of the conversion event to
-                retrieve. Format:
+                Required. The resource name of the
+                conversion event to retrieve. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example: "properties/123/conversionEvents/456"
+                Example:
+                "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3774,10 +3777,11 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteConversionEvent RPC
             name (:class:`str`):
-                Required. The resource name of the conversion event to
-                delete. Format:
+                Required. The resource name of the
+                conversion event to delete. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example: "properties/123/conversionEvents/456"
+                Example:
+                "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4272,10 +4276,10 @@ class AnalyticsAdminServiceAsyncClient:
             request (Optional[Union[google.analytics.admin_v1beta.types.GetKeyEventRequest, dict]]):
                 The request object. Request message for GetKeyEvent RPC
             name (:class:`str`):
-                Required. The resource name of the Key Event to
-                retrieve. Format:
-                properties/{property}/keyEvents/{key_event} Example:
-                "properties/123/keyEvents/456"
+                Required. The resource name of the Key
+                Event to retrieve. Format:
+                properties/{property}/keyEvents/{key_event}
+                Example: "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4382,8 +4386,9 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for DeleteKeyEvent
                 RPC
             name (:class:`str`):
-                Required. The resource name of the Key Event to delete.
-                Format: properties/{property}/keyEvents/{key_event}
+                Required. The resource name of the Key
+                Event to delete. Format:
+                properties/{property}/keyEvents/{key_event}
                 Example: "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field

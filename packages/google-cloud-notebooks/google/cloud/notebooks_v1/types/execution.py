@@ -128,7 +128,8 @@ class ExecutionTemplate(proto.Message):
             pass them here in an YAML file. Ex:
             ``gs://notebook_user/scheduled_notebooks/sentiment_notebook_params.yaml``
         parameters (str):
-            Parameters used within the 'input_notebook_file' notebook.
+            Parameters used within the 'input_notebook_file'
+            notebook.
         service_account (str):
             The email address of a service account to use when running
             the execution. You must have the

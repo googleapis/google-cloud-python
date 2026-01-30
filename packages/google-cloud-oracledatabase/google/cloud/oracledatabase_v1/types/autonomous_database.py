@@ -221,8 +221,9 @@ class AutonomousDatabase(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Autonomous Database resource in
-            the following format:
+            Identifier. The name of the Autonomous Database
+            resource in the following format:
+
             projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}
         database (str):
             Optional. The name of the Autonomous
@@ -255,14 +256,16 @@ class AutonomousDatabase(proto.Message):
             Optional. The subnet CIDR range for the
             Autonomous Database.
         odb_network (str):
-            Optional. The name of the OdbNetwork associated with the
-            Autonomous Database. Format:
+            Optional. The name of the OdbNetwork associated
+            with the Autonomous Database. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
-            It is optional but if specified, this should match the
-            parent ODBNetwork of the OdbSubnet.
+            It is optional but if specified, this should
+            match the parent ODBNetwork of the OdbSubnet.
         odb_subnet (str):
-            Optional. The name of the OdbSubnet associated with the
-            Autonomous Database. Format:
+            Optional. The name of the OdbSubnet associated
+            with the Autonomous Database. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         source_config (google.cloud.oracledatabase_v1.types.SourceConfig):
             Optional. The source Autonomous Database

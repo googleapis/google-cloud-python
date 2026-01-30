@@ -682,9 +682,10 @@ class CloudFunctionsServiceGrpcAsyncIOTransport(CloudFunctionsServiceTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
+        Tests the specified permissions against the IAM access
+        control policy for a function.
+        If the function does not exist, this will return an
+        empty set of permissions, not a NOT_FOUND error.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

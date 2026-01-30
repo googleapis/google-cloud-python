@@ -352,10 +352,10 @@ class DataSourcesServiceRestStub:
 class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
     """REST backend synchronous transport for DataSourcesService.
 
-    Service to manage primary, supplemental, inventory and other data
-    sources. See more in the `Merchant
-    Center <https://support.google.com/merchants/answer/7439058>`__ help
-    article.
+    Service to manage primary, supplemental, inventory and other
+    data sources. See more in the [Merchant
+    Center](https://support.google.com/merchants/answer/7439058)
+    help article.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

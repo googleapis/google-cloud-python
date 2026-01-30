@@ -7090,8 +7090,9 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             Args:
                 request (~.service.RestoreClusterRequest):
-                    The request object. Message for restoring a Cluster from a backup or another
-                cluster at a given point in time. NEXT_ID: 11
+                    The request object. Message for restoring a Cluster from a
+                backup or another cluster at a given
+                point in time. NEXT_ID: 11
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

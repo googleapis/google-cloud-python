@@ -63,8 +63,8 @@ class InstanceView(proto.Enum):
 
     Values:
         INSTANCE_VIEW_UNSPECIFIED (0):
-            INSTANCE_VIEW_UNSPECIFIED Not specified, equivalent to
-            BASIC.
+            INSTANCE_VIEW_UNSPECIFIED Not specified,
+            equivalent to BASIC.
         INSTANCE_VIEW_BASIC (1):
             BASIC server responses for a primary or read
             instance include all the relevant instance
@@ -87,7 +87,8 @@ class ClusterView(proto.Enum):
 
     Values:
         CLUSTER_VIEW_UNSPECIFIED (0):
-            CLUSTER_VIEW_UNSPECIFIED Not specified, equivalent to BASIC.
+            CLUSTER_VIEW_UNSPECIFIED Not specified,
+            equivalent to BASIC.
         CLUSTER_VIEW_BASIC (1):
             BASIC server responses include all the
             relevant cluster details, excluding
@@ -95,9 +96,10 @@ class ClusterView(proto.Enum):
             and other view-specific fields. The default
             value.
         CLUSTER_VIEW_CONTINUOUS_BACKUP (2):
-            CONTINUOUS_BACKUP response returns all the fields from BASIC
-            plus the earliest restorable time if continuous backups are
-            enabled. May increase latency.
+            CONTINUOUS_BACKUP response returns all the
+            fields from BASIC plus the earliest restorable
+            time if continuous backups are enabled. May
+            increase latency.
     """
     CLUSTER_VIEW_UNSPECIFIED = 0
     CLUSTER_VIEW_BASIC = 1
@@ -134,9 +136,9 @@ class DatabaseVersion(proto.Enum):
 
 
 class SubscriptionType(proto.Enum):
-    r"""Subscription_type added to distinguish between Standard and Trial
-    subscriptions. By default, a subscription type is considered
-    STANDARD unless explicitly specified.
+    r"""Subscription_type added to distinguish between Standard and
+    Trial subscriptions. By default, a subscription type is
+    considered STANDARD unless explicitly specified.
 
     Values:
         SUBSCRIPTION_TYPE_UNSPECIFIED (0):
@@ -225,8 +227,10 @@ class EncryptionConfig(proto.Message):
 
     Attributes:
         kms_key_name (str):
-            The fully-qualified resource name of the KMS key. Each Cloud
-            KMS key is regionalized and has the following format:
+            The fully-qualified resource name of the KMS
+            key. Each Cloud KMS key is regionalized and has
+            the following format:
+
             projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
     """
 
@@ -288,9 +292,9 @@ class SslConfig(proto.Message):
             Optional. SSL mode. Specifies client-server
             SSL/TLS connection behavior.
         ca_source (google.cloud.alloydb_v1alpha.types.SslConfig.CaSource):
-            Optional. Certificate Authority (CA) source. Only
-            CA_SOURCE_MANAGED is supported currently, and is the default
-            value.
+            Optional. Certificate Authority (CA) source.
+            Only CA_SOURCE_MANAGED is supported currently,
+            and is the default value.
     """
 
     class SslMode(proto.Enum):
@@ -298,7 +302,8 @@ class SslConfig(proto.Message):
 
         Values:
             SSL_MODE_UNSPECIFIED (0):
-                SSL mode is not specified. Defaults to ENCRYPTED_ONLY.
+                SSL mode is not specified. Defaults to
+                ENCRYPTED_ONLY.
             SSL_MODE_ALLOW (1):
                 SSL connections are optional. CA verification
                 not enforced.
@@ -331,8 +336,8 @@ class SslConfig(proto.Message):
 
         Values:
             CA_SOURCE_UNSPECIFIED (0):
-                Certificate Authority (CA) source not specified. Defaults to
-                CA_SOURCE_MANAGED.
+                Certificate Authority (CA) source not specified.
+                Defaults to CA_SOURCE_MANAGED.
             CA_SOURCE_MANAGED (1):
                 Certificate Authority (CA) managed by the
                 AlloyDB Cluster.
@@ -578,18 +583,22 @@ class ContinuousBackupInfo(proto.Message):
             Output only. Days of the week on which a
             continuous backup is taken.
         earliest_restorable_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The earliest restorable time that can be
-            restored to. If continuous backups and recovery was recently
-            enabled, the earliest restorable time is the creation time
-            of the earliest eligible backup within this cluster's
-            continuous backup recovery window. After a cluster has had
-            continuous backups enabled for the duration of its recovery
-            window, the earliest restorable time becomes "now minus the
-            recovery window". For example, assuming a point in time
-            recovery is attempted at 04/16/2025 3:23:00PM with a 14d
-            recovery window, the earliest restorable time would be
-            04/02/2025 3:23:00PM. This field is only visible if the
-            CLUSTER_VIEW_CONTINUOUS_BACKUP cluster view is provided.
+            Output only. The earliest restorable time that
+            can be restored to. If continuous backups and
+            recovery was recently enabled, the earliest
+            restorable time is the creation time of the
+            earliest eligible backup within this cluster's
+            continuous backup recovery window. After a
+            cluster has had continuous backups enabled for
+            the duration of its recovery window, the
+            earliest restorable time becomes "now minus the
+            recovery window". For example, assuming a point
+            in time recovery is attempted at 04/16/2025
+            3:23:00PM with a 14d recovery window, the
+            earliest restorable time would be 04/02/2025
+            3:23:00PM. This field is only visible if the
+            CLUSTER_VIEW_CONTINUOUS_BACKUP cluster view is
+            provided.
     """
 
     encryption_info: "EncryptionInfo" = proto.Field(
@@ -703,9 +712,9 @@ class MaintenanceUpdatePolicy(proto.Message):
         )
 
     class DenyMaintenancePeriod(proto.Message):
-        r"""DenyMaintenancePeriod definition. Excepting emergencies, maintenance
-        will not be scheduled to start within this deny period. The
-        start_date must be less than the end_date.
+        r"""DenyMaintenancePeriod definition. Excepting emergencies,
+        maintenance will not be scheduled to start within this deny
+        period. The start_date must be less than the end_date.
 
         Attributes:
             start_date (google.type.date_pb2.Date):
@@ -1360,12 +1369,14 @@ class Instance(proto.Message):
             Configurations for the machines that host the
             underlying database engine.
         availability_type (google.cloud.alloydb_v1alpha.types.Instance.AvailabilityType):
-            Availability type of an Instance. If empty, defaults to
-            REGIONAL for primary instances. For read pools,
-            availability_type is always UNSPECIFIED. Instances in the
-            read pools are evenly distributed across available zones
-            within the region (i.e. read pools with more than one node
-            will have a node in at least two zones).
+            Availability type of an Instance.
+            If empty, defaults to REGIONAL for primary
+            instances. For read pools, availability_type is
+            always UNSPECIFIED. Instances in the read pools
+            are evenly distributed across available zones
+            within the region (i.e. read pools with more
+            than one node will have a node in at least two
+            zones).
         gce_zone (str):
             The Compute Engine zone that the instance
             should serve from, per
@@ -1404,16 +1415,18 @@ class Instance(proto.Message):
         observability_config (google.cloud.alloydb_v1alpha.types.Instance.ObservabilityInstanceConfig):
             Configuration for observability.
         read_pool_config (google.cloud.alloydb_v1alpha.types.Instance.ReadPoolConfig):
-            Read pool instance configuration. This is required if the
-            value of instanceType is READ_POOL.
+            Read pool instance configuration.
+            This is required if the value of instanceType is
+            READ_POOL.
         ip_address (str):
             Output only. The IP address for the Instance.
             This is the connection endpoint for an end-user
             application.
         public_ip_address (str):
-            Output only. The public IP addresses for the Instance. This
-            is available ONLY when enable_public_ip is set. This is the
-            connection endpoint for an end-user application.
+            Output only. The public IP addresses for the
+            Instance. This is available ONLY when
+            enable_public_ip is set. This is the connection
+            endpoint for an end-user application.
         reconciling (bool):
             Output only. Reconciling
             (https://google.aip.dev/128#reconciliation). Set
@@ -1498,10 +1511,12 @@ class Instance(proto.Message):
                 be able to restart, update or delete these
                 instances.
             BOOTSTRAPPING (8):
-                Index 7 is used in the producer apis for ROLLED_BACK state.
-                Keeping that index unused in case that state also needs to
-                exposed via consumer apis in future. The instance has been
-                configured to sync data from some other source.
+                Index 7 is used in the producer apis for
+                ROLLED_BACK state. Keeping that index unused in
+                case that state also needs to exposed via
+                consumer apis in future.
+                The instance has been configured to sync data
+                from some other source.
             PROMOTING (9):
                 The instance is being promoted.
         """
@@ -1584,9 +1599,10 @@ class Instance(proto.Message):
             cpu_count (int):
                 The number of CPU's in the VM instance.
             machine_type (str):
-                Machine type of the VM instance. E.g. "n2-highmem-4",
-                "n2-highmem-8", "c4a-highmem-4-lssd". cpu_count must match
-                the number of vCPUs in the machine type.
+                Machine type of the VM instance. E.g.
+                "n2-highmem-4", "n2-highmem-8",
+                "c4a-highmem-4-lssd". cpu_count must match the
+                number of vCPUs in the machine type.
         """
 
         cpu_count: int = proto.Field(
@@ -1880,12 +1896,13 @@ class Instance(proto.Message):
 
         Attributes:
             network_attachment_resource (str):
-                The network attachment resource created in the consumer
-                network to which the PSC interface will be linked. This is
-                of the format:
+                The network attachment resource created in the
+                consumer network to which the PSC interface will
+                be linked. This is of the format:
+
                 "projects/${CONSUMER_PROJECT}/regions/${REGION}/networkAttachments/${NETWORK_ATTACHMENT_NAME}".
-                The network attachment must be in the same region as the
-                instance.
+                The network attachment must be in the same
+                region as the instance.
         """
 
         network_attachment_resource: str = proto.Field(
@@ -1912,31 +1929,40 @@ class Instance(proto.Message):
                 Output only. The IP address of the PSC
                 service automation endpoint.
             status (str):
-                Output only. The status of the PSC service automation
-                connection. Possible values: "STATE_UNSPECIFIED" - An
-                invalid state as the default case. "ACTIVE" - The connection
-                has been created successfully. "FAILED" - The connection is
-                not functional since some resources on the connection fail
-                to be created. "CREATING" - The connection is being created.
+                Output only. The status of the PSC service
+                automation connection. Possible values:
+
+                "STATE_UNSPECIFIED" - An invalid state as the
+                default case. "ACTIVE" - The connection has been
+                created successfully. "FAILED" - The connection
+                is not functional since some resources on the
+                connection fail to be created.
+                "CREATING" - The connection is being created.
                 "DELETING" - The connection is being deleted.
-                "CREATE_REPAIRING" - The connection is being repaired to
-                complete creation. "DELETE_REPAIRING" - The connection is
-                being repaired to complete deletion.
+                "CREATE_REPAIRING" - The connection is being
+                repaired to complete creation.
+                "DELETE_REPAIRING" - The connection is being
+                repaired to complete deletion.
             consumer_network_status (str):
-                Output only. The status of the service connection policy.
-                Possible values: "STATE_UNSPECIFIED" - Default state, when
-                Connection Map is created initially. "VALID" - Set when
-                policy and map configuration is valid, and their matching
-                can lead to allowing creation of PSC Connections subject to
+                Output only. The status of the service
+                connection policy. Possible values:
+
+                "STATE_UNSPECIFIED" - Default state, when
+                Connection Map is created initially.
+                "VALID" - Set when policy and map configuration
+                is valid, and their matching can lead to
+                allowing creation of PSC Connections subject to
                 other constraints like connections limit.
-                "CONNECTION_POLICY_MISSING" - No Service Connection Policy
-                found for this network and Service Class
-                "POLICY_LIMIT_REACHED" - Service Connection Policy limit
-                reached for this network and Service Class
-                "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" - The consumer
-                instance project is not in
-                AllowedGoogleProducersResourceHierarchyLevels of the
-                matching ServiceConnectionPolicy.
+                "CONNECTION_POLICY_MISSING" - No Service
+                Connection Policy found for this network and
+                Service Class
+                "POLICY_LIMIT_REACHED" - Service Connection
+                Policy limit reached for this network and
+                Service Class
+                "CONSUMER_INSTANCE_PROJECT_NOT_ALLOWLISTED" -
+                The consumer instance project is not in
+                AllowedGoogleProducersResourceHierarchyLevels of
+                the matching ServiceConnectionPolicy.
         """
 
         consumer_project: str = proto.Field(
@@ -2288,14 +2314,16 @@ class ConnectionInfo(proto.Message):
             projects/{project}/locations/{location}/clusters/*/instances/*/connectionInfo
             This field currently has no semantic meaning.
         ip_address (str):
-            Output only. The private network IP address for the
-            Instance. This is the default IP for the instance and is
-            always created (even if enable_public_ip is set). This is
-            the connection endpoint for an end-user application.
+            Output only. The private network IP address for
+            the Instance. This is the default IP for the
+            instance and is always created (even if
+            enable_public_ip is set). This is the connection
+            endpoint for an end-user application.
         public_ip_address (str):
-            Output only. The public IP addresses for the Instance. This
-            is available ONLY when enable_public_ip is set. This is the
-            connection endpoint for an end-user application.
+            Output only. The public IP addresses for the
+            Instance. This is available ONLY when
+            enable_public_ip is set. This is the connection
+            endpoint for an end-user application.
         pem_certificate_chain (MutableSequence[str]):
             Output only. The pem-encoded chain that may
             be used to verify the X.509 certificate.
@@ -2385,8 +2413,8 @@ class Backup(proto.Message):
             Output only. The system-generated UID of the
             cluster which was used to create this resource.
         cluster_name (str):
-            Required. The full resource name of the backup source
-            cluster (e.g.,
+            Required. The full resource name of the backup
+            source cluster (e.g.,
             projects/{project}/locations/{region}/clusters/{cluster_id}).
         reconciling (bool):
             Output only. Reconciling
@@ -2415,10 +2443,10 @@ class Backup(proto.Message):
         size_bytes (int):
             Output only. The size of the backup in bytes.
         expiry_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time at which after the backup is eligible
-            to be garbage collected. It is the duration specified by the
-            backup's retention policy, added to the backup's
-            create_time.
+            Output only. The time at which after the backup
+            is eligible to be garbage collected. It is the
+            duration specified by the backup's retention
+            policy, added to the backup's create_time.
         expiry_quantity (google.cloud.alloydb_v1alpha.types.Backup.QuantityBasedExpiry):
             Output only. The QuantityBasedExpiry of the
             backup, specified by the backup's retention
@@ -2472,8 +2500,8 @@ class Backup(proto.Message):
             TYPE_UNSPECIFIED (0):
                 Backup Type is unknown.
             ON_DEMAND (1):
-                ON_DEMAND backups that were triggered by the customer (e.g.,
-                not AUTOMATED).
+                ON_DEMAND backups that were triggered by the
+                customer (e.g., not AUTOMATED).
             AUTOMATED (2):
                 AUTOMATED backups triggered by the automated
                 backups scheduler pursuant to an automated
@@ -2489,18 +2517,18 @@ class Backup(proto.Message):
         CONTINUOUS = 3
 
     class QuantityBasedExpiry(proto.Message):
-        r"""A backup's position in a quantity-based retention queue, of backups
-        with the same source cluster and type, with length, retention,
-        specified by the backup's retention policy. Once the position is
-        greater than the retention, the backup is eligible to be garbage
-        collected.
+        r"""A backup's position in a quantity-based retention queue, of
+        backups with the same source cluster and type, with length,
+        retention, specified by the backup's retention policy.
+        Once the position is greater than the retention, the backup is
+        eligible to be garbage collected.
 
         Example: 5 backups from the same source cluster and type with a
-        quantity-based retention of 3 and denoted by backup_id (position,
-        retention).
+        quantity-based retention of 3 and denoted by backup_id
+        (position, retention).
 
-        Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3). Awaiting
-        garbage collection: backup_2 (4, 3), backup_1 (5, 3)
+        Safe: backup_5 (1, 3), backup_4, (2, 3), backup_3 (3, 3).
+        Awaiting garbage collection: backup_2 (4, 3), backup_1 (5, 3)
 
         Attributes:
             retention_count (int):
@@ -2641,10 +2669,10 @@ class Backup(proto.Message):
 
 class SupportedDatabaseFlag(proto.Message):
     r"""SupportedDatabaseFlag gives general information about a database
-    flag, like type and allowed values. This is a static value that is
-    defined on the server side, and it cannot be modified by callers. To
-    set the Database flags on a particular Instance, a caller should
-    modify the Instance.database_flags field.
+    flag, like type and allowed values. This is a static value that
+    is defined on the server side, and it cannot be modified by
+    callers. To set the Database flags on a particular Instance, a
+    caller should modify the Instance.database_flags field.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -2677,9 +2705,9 @@ class SupportedDatabaseFlag(proto.Message):
             - projects/{project}/locations/{location}/flags/{flag} This
               field currently has no semantic meaning.
         flag_name (str):
-            The name of the database flag, e.g. "max_allowed_packets".
-            The is a possibly key for the Instance.database_flags map
-            field.
+            The name of the database flag, e.g.
+            "max_allowed_packets". The is a possibly key for
+            the Instance.database_flags map field.
         value_type (google.cloud.alloydb_v1alpha.types.SupportedDatabaseFlag.ValueType):
 
         accepts_multiple_values (bool):
@@ -2701,9 +2729,9 @@ class SupportedDatabaseFlag(proto.Message):
 
     class ValueType(proto.Enum):
         r"""ValueType describes the semantic type of the value that the flag
-        accepts. Regardless of the ValueType, the Instance.database_flags
-        field accepts the stringified version of the value, i.e. "20" or
-        "3.14".
+        accepts. Regardless of the ValueType, the
+        Instance.database_flags field accepts the stringified version of
+        the value, i.e. "20" or "3.14".
 
         Values:
             VALUE_TYPE_UNSPECIFIED (0):
@@ -2905,19 +2933,23 @@ class Database(proto.Message):
             Identifier. Name of the resource in the form of
             ``projects/{project}/locations/{location}/clusters/{cluster}/databases/{database}``.
         charset (str):
-            Optional. Immutable. Charset for the database. This field
-            can contain any PostgreSQL supported charset name. Example
-            values include "UTF8", "SQL_ASCII", etc.
+            Optional. Immutable. Charset for the database.
+            This field can contain any PostgreSQL supported
+            charset name. Example values include "UTF8",
+            "SQL_ASCII", etc.
         collation (str):
-            Optional. Immutable. lc_collate for the database. String
-            sort order. Example values include "C", "POSIX", etc.
+            Optional. Immutable. lc_collate for the
+            database. String sort order.
+            Example values include "C", "POSIX", etc.
         character_type (str):
-            Optional. Immutable. lc_ctype for the database. Character
-            classification (What is a letter? The upper-case
-            equivalent?). Example values include "C", "POSIX", etc.
+            Optional. Immutable. lc_ctype for the database.
+            Character classification (What is a letter? The
+            upper-case equivalent?). Example values include
+            "C", "POSIX", etc.
         is_template (bool):
-            Optional. Whether the database is a template database.
-            Deprecated in favor of is_template_database.
+            Optional. Whether the database is a template
+            database. Deprecated in favor of
+            is_template_database.
         database_template (str):
             Input only. Immutable. Template of the
             database to be used for creating a new database.

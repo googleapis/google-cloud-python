@@ -110,14 +110,17 @@ class DataSource(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         resource (str):
-            Immutable. The service-qualified full resource name of the
-            cloud resource for a DataScan job to scan against. The field
-            could either be: Cloud Storage bucket for DataDiscoveryScan
-            Format:
+            Immutable. The service-qualified full resource
+            name of the cloud resource for a DataScan job to
+            scan against. The field could either be: Cloud
+            Storage bucket for DataDiscoveryScan Format:
+
             //storage.googleapis.com/projects/PROJECT_ID/buckets/BUCKET_ID
-            or BigQuery table of type "TABLE" for
+            or
+            BigQuery table of type "TABLE" for
             DataProfileScan/DataQualityScan/DataDocumentationScan
             Format:
+
             //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
 
             This field is a member of `oneof`_ ``source``.

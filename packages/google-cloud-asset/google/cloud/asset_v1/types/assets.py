@@ -74,9 +74,9 @@ class TemporalAsset(proto.Message):
         prior_asset_state (google.cloud.asset_v1.types.TemporalAsset.PriorAssetState):
             State of prior_asset.
         prior_asset (google.cloud.asset_v1.types.Asset):
-            Prior copy of the asset. Populated if prior_asset_state is
-            PRESENT. Currently this is only set for responses in
-            Real-Time Feed.
+            Prior copy of the asset. Populated if
+            prior_asset_state is PRESENT. Currently this is
+            only set for responses in Real-Time Feed.
     """
 
     class PriorAssetState(proto.Enum):
@@ -84,7 +84,8 @@ class TemporalAsset(proto.Message):
 
         Values:
             PRIOR_ASSET_STATE_UNSPECIFIED (0):
-                prior_asset is not applicable for the current asset.
+                prior_asset is not applicable for the current
+                asset.
             PRESENT (1):
                 prior_asset is populated correctly.
             INVALID (2):
@@ -175,14 +176,14 @@ class AssetEnrichment(proto.Message):
 
 
 class Asset(proto.Message):
-    r"""An asset in Google Cloud. An asset can be any resource in the Google
-    Cloud `resource
-    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+    r"""An asset in Google Cloud. An asset can be any resource in the
+    Google Cloud [resource
+    hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
     a resource outside the Google Cloud resource hierarchy (such as
-    Google Kubernetes Engine clusters and objects), or a policy (e.g.
-    IAM policy), or a relationship (e.g. an INSTANCE_TO_INSTANCEGROUP
-    relationship). See `Supported asset
-    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+    Google Kubernetes Engine clusters and objects), or a policy
+    (e.g. IAM policy), or a relationship (e.g. an
+    INSTANCE_TO_INSTANCEGROUP relationship). See [Supported asset
+    types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
     for more information.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -194,8 +195,9 @@ class Asset(proto.Message):
 
     Attributes:
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The last update timestamp of an asset. update_time is
-            updated when create/update/delete operation is performed.
+            The last update timestamp of an asset.
+            update_time is updated when create/update/delete
+            operation is performed.
         name (str):
             The full name of the asset. Example:
             ``//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1``
@@ -224,29 +226,30 @@ class Asset(proto.Message):
             topic <https://cloud.google.com/iam/help/allow-policies/inheritance>`__
             for more information.
         org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
-            A representation of an `organization
-            policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
-            There can be more than one organization policy with
-            different constraints set on a given resource.
+            A representation of an [organization
+            policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
+            There can be more than one organization policy
+            with different constraints set on a given
+            resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
-            Also refer to the `access policy user
-            guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
+            Also refer to the [access policy user
+            guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
-            Also refer to the `access level user
-            guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
+            Also refer to the [access level user
+            guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
-            Also refer to the `service perimeter user
-            guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
+            Also refer to the [service perimeter user
+            guide](https://cloud.google.com/vpc-service-controls/docs/overview).
 
             This field is a member of `oneof`_ ``access_context_policy``.
         os_inventory (google.cloud.osconfig_v1.types.Inventory):
-            A representation of runtime OS Inventory information. See
-            `this
-            topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
+            A representation of runtime OS Inventory
+            information. See [this
+            topic](https://cloud.google.com/compute/docs/instances/os-inventory-management)
             for more information.
         related_assets (google.cloud.asset_v1.types.RelatedAssets):
             DEPRECATED. This field only presents for the
@@ -480,14 +483,14 @@ class RelationshipAttributes(proto.Message):
 
 
 class RelatedAsset(proto.Message):
-    r"""An asset identifier in Google Cloud which contains its name, type
-    and ancestors. An asset can be any resource in the Google Cloud
-    `resource
-    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
+    r"""An asset identifier in Google Cloud which contains its name,
+    type and ancestors. An asset can be any resource in the Google
+    Cloud [resource
+    hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
     a resource outside the Google Cloud resource hierarchy (such as
-    Google Kubernetes Engine clusters and objects), or a policy (e.g.
-    IAM policy). See `Supported asset
-    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+    Google Kubernetes Engine clusters and objects), or a policy
+    (e.g. IAM policy). See [Supported asset
+    types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
     for more information.
 
     Attributes:
@@ -551,7 +554,8 @@ class Tag(proto.Message):
 
             This field is a member of `oneof`_ ``_tag_key``.
         tag_key_id (str):
-            TagKey ID, in the format of tagKeys/{TAG_KEY_ID}.
+            TagKey ID, in the format of
+            tagKeys/{TAG_KEY_ID}.
 
             This field is a member of `oneof`_ ``_tag_key_id``.
         tag_value (str):
@@ -560,7 +564,8 @@ class Tag(proto.Message):
 
             This field is a member of `oneof`_ ``_tag_value``.
         tag_value_id (str):
-            TagValue ID, in the format of tagValues/{TAG_VALUE_ID}.
+            TagValue ID, in the format of
+            tagValues/{TAG_VALUE_ID}.
 
             This field is a member of `oneof`_ ``_tag_value_id``.
     """
@@ -1508,8 +1513,8 @@ class IamPolicyAnalysisResult(proto.Message):
 
         Attributes:
             full_resource_name (str):
-                The `full resource
-                name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+                The [full resource
+                name](https://cloud.google.com/asset-inventory/docs/resource-name-format)
             analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this resource.
         """

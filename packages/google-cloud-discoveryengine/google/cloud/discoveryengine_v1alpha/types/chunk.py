@@ -58,8 +58,9 @@ class Chunk(proto.Message):
             Metadata of the document from the current
             chunk.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
-            Output only. This field is OUTPUT_ONLY. It contains derived
-            data that are not in the original input document.
+            Output only. This field is OUTPUT_ONLY.
+            It contains derived data that are not in the
+            original input document.
         page_span (google.cloud.discoveryengine_v1alpha.types.Chunk.PageSpan):
             Page span of the chunk.
         chunk_metadata (google.cloud.discoveryengine_v1alpha.types.Chunk.ChunkMetadata):

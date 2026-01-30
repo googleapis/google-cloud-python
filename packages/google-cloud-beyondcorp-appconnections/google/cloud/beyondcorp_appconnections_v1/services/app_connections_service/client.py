@@ -1265,9 +1265,9 @@ class AppConnectionsServiceClient(metaclass=AppConnectionsServiceClientMeta):
                 The request object. Request message for
                 BeyondCorp.UpdateAppConnection.
             app_connection (google.cloud.beyondcorp_appconnections_v1.types.AppConnection):
-                Required. AppConnection message with updated fields.
-                Only supported fields specified in update_mask are
-                updated.
+                Required. AppConnection message with
+                updated fields. Only supported fields
+                specified in update_mask are updated.
 
                 This corresponds to the ``app_connection`` field
                 on the ``request`` instance; if ``request`` is provided, this

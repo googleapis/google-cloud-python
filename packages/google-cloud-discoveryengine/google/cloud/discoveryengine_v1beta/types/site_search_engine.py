@@ -65,19 +65,22 @@ class TargetSite(proto.Message):
             The type of the target site, e.g., whether
             the site is to be included or excluded.
         exact_match (bool):
-            Input only. If set to false, a uri_pattern is generated to
-            include all pages whose address contains the
-            provided_uri_pattern. If set to true, an uri_pattern is
-            generated to try to be an exact match of the
-            provided_uri_pattern or just the specific page if the
-            provided_uri_pattern is a specific one. provided_uri_pattern
-            is always normalized to generate the URI pattern to be used
-            by the search engine.
+            Input only. If set to false, a uri_pattern is
+            generated to include all pages whose address
+            contains the provided_uri_pattern. If set to
+            true, an uri_pattern is generated to try to be
+            an exact match of the provided_uri_pattern or
+            just the specific page if the
+            provided_uri_pattern is a specific one.
+            provided_uri_pattern is always normalized to
+            generate the URI pattern to be used by the
+            search engine.
         generated_uri_pattern (str):
-            Output only. This is system-generated based on the
-            provided_uri_pattern.
+            Output only. This is system-generated based on
+            the provided_uri_pattern.
         root_domain_uri (str):
-            Output only. Root domain of the provided_uri_pattern.
+            Output only. Root domain of the
+            provided_uri_pattern.
         site_verification_info (google.cloud.discoveryengine_v1beta.types.SiteVerificationInfo):
             Output only. Site ownership and validity
             verification status.

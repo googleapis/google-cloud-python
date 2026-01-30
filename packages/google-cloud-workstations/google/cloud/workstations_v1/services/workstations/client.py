@@ -1505,19 +1505,21 @@ class WorkstationsClient(metaclass=WorkstationsClientMeta):
 
         Returns:
             google.cloud.workstations_v1.types.WorkstationConfig:
-                A workstation configuration resource in the Cloud
-                Workstations API.
-
-                   Workstation configurations act as templates for
-                   workstations. The workstation configuration defines
-                   details such as the workstation virtual machine (VM)
-                   instance type, persistent storage, container image
-                   defining environment, which IDE or Code Editor to
-                   use, and more. Administrators and platform teams can
-                   also use [Identity and Access Management
-                   (IAM)](https://cloud.google.com/iam/docs/overview)
-                   rules to grant access to teams or to individual
-                   developers.
+                A workstation configuration resource in
+                the Cloud Workstations API.
+                Workstation configurations act as
+                templates for workstations. The
+                workstation configuration defines
+                details such as the workstation virtual
+                machine (VM) instance type, persistent
+                storage, container image defining
+                environment, which IDE or Code Editor to
+                use, and more. Administrators and
+                platform teams can also use [Identity
+                and Access Management
+                (IAM)](https://cloud.google.com/iam/docs/overview)
+                rules to grant access to teams or to
+                individual developers.
 
         """
         # Create or coerce a protobuf request object.

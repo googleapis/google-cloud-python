@@ -298,9 +298,10 @@ class RestoreConfig(proto.Message):
 
     Attributes:
         volume_data_restore_policy (google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicy):
-            Optional. Specifies the mechanism to be used to restore
-            volume data. Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED
-            (will be treated as NO_VOLUME_DATA_RESTORATION).
+            Optional. Specifies the mechanism to be used to
+            restore volume data. Default:
+            VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be
+            treated as NO_VOLUME_DATA_RESTORATION).
         cluster_resource_conflict_policy (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceConflictPolicy):
             Optional. Defines the behavior for handling the situation
             where cluster-scoped resources being restored already exist
@@ -309,10 +310,11 @@ class RestoreConfig(proto.Message):
             [cluster_resource_restore_scope][google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope]
             is not empty.
         namespaced_resource_restore_mode (google.cloud.gke_backup_v1.types.RestoreConfig.NamespacedResourceRestoreMode):
-            Optional. Defines the behavior for handling the situation
-            where sets of namespaced resources being restored already
-            exist in the target cluster. This MUST be set to a value
-            other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
+            Optional. Defines the behavior for handling the
+            situation where sets of namespaced resources
+            being restored already exist in the target
+            cluster. This MUST be set to a value other than
+            NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
         cluster_resource_restore_scope (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceRestoreScope):
             Optional. Identifies the cluster-scoped
             resources to restore from the Backup. Not
@@ -366,10 +368,11 @@ class RestoreConfig(proto.Message):
             the filtering logic of subsequent rules. An
             empty list means no transformation will occur.
         volume_data_restore_policy_bindings (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicyBinding]):
-            Optional. A table that binds volumes by their scope to a
-            restore policy. Bindings must have a unique scope. Any
-            volumes not scoped in the bindings are subject to the policy
-            defined in volume_data_restore_policy.
+            Optional. A table that binds volumes by their
+            scope to a restore policy. Bindings must have a
+            unique scope. Any volumes not scoped in the
+            bindings are subject to the policy defined in
+            volume_data_restore_policy.
         restore_order (google.cloud.gke_backup_v1.types.RestoreConfig.RestoreOrder):
             Optional. RestoreOrder contains custom
             ordering to use on a Restore.

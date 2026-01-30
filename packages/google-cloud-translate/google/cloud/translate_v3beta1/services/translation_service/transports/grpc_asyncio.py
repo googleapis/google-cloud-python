@@ -551,8 +551,9 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the create glossary method over gRPC.
 
-        Creates a glossary and returns the long-running operation.
-        Returns NOT_FOUND, if the project doesn't exist.
+        Creates a glossary and returns the long-running
+        operation. Returns NOT_FOUND, if the project doesn't
+        exist.
 
         Returns:
             Callable[[~.CreateGlossaryRequest],
@@ -581,8 +582,8 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the list glossaries method over gRPC.
 
-        Lists glossaries in a project. Returns NOT_FOUND, if the project
-        doesn't exist.
+        Lists glossaries in a project. Returns NOT_FOUND, if the
+        project doesn't exist.
 
         Returns:
             Callable[[~.ListGlossariesRequest],
@@ -611,8 +612,8 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the get glossary method over gRPC.
 
-        Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
-        exist.
+        Gets a glossary. Returns NOT_FOUND, if the glossary
+        doesn't exist.
 
         Returns:
             Callable[[~.GetGlossaryRequest],
@@ -640,9 +641,9 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the delete glossary method over gRPC.
 
-        Deletes a glossary, or cancels glossary construction if the
-        glossary isn't created yet. Returns NOT_FOUND, if the glossary
-        doesn't exist.
+        Deletes a glossary, or cancels glossary construction
+        if the glossary isn't created yet.
+        Returns NOT_FOUND, if the glossary doesn't exist.
 
         Returns:
             Callable[[~.DeleteGlossaryRequest],

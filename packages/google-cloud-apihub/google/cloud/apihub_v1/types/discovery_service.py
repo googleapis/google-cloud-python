@@ -109,8 +109,9 @@ class ListDiscoveredApiOperationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            DiscoveredApiOperations. Format:
+            Required. The parent, which owns this collection
+            of DiscoveredApiOperations. Format:
+
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
         page_size (int):
             Optional. DiscoveredApiOperations will be
@@ -176,8 +177,9 @@ class GetDiscoveredApiObservationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DiscoveredApiObservation to
-            retrieve. Format:
+            Required. The name of the
+            DiscoveredApiObservation to retrieve. Format:
+
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
     """
 
@@ -192,8 +194,9 @@ class GetDiscoveredApiOperationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DiscoveredApiOperation to
-            retrieve. Format:
+            Required. The name of the DiscoveredApiOperation
+            to retrieve. Format:
+
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}
     """
 

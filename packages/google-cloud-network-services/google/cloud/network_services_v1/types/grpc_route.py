@@ -141,9 +141,10 @@ class GrpcRoute(proto.Message):
                 Required. Name of the method to match
                 against. If unspecified, will match all methods.
             case_sensitive (bool):
-                Optional. Specifies that matches are case sensitive. The
-                default value is true. case_sensitive must not be used with
-                a type of REGULAR_EXPRESSION.
+                Optional. Specifies that matches are case
+                sensitive. The default value is true.
+                case_sensitive must not be used with a type of
+                REGULAR_EXPRESSION.
 
                 This field is a member of `oneof`_ ``_case_sensitive``.
         """
@@ -157,8 +158,8 @@ class GrpcRoute(proto.Message):
                 EXACT (1):
                     Will only match the exact name provided.
                 REGULAR_EXPRESSION (2):
-                    Will interpret grpc_method and grpc_service as regexes. RE2
-                    syntax is supported.
+                    Will interpret grpc_method and grpc_service as
+                    regexes. RE2 syntax is supported.
             """
             TYPE_UNSPECIFIED = 0
             EXACT = 1
@@ -345,8 +346,8 @@ class GrpcRoute(proto.Message):
 
                     This field is a member of `oneof`_ ``_fixed_delay``.
                 percentage (int):
-                    The percentage of traffic on which delay will be injected.
-
+                    The percentage of traffic on which delay will be
+                    injected.
                     The value must be between [0, 100]
 
                     This field is a member of `oneof`_ ``_percentage``.
@@ -485,16 +486,19 @@ class GrpcRoute(proto.Message):
                 split between Backend Service(s) according to
                 the weight field of these destinations.
             fault_injection_policy (google.cloud.network_services_v1.types.GrpcRoute.FaultInjectionPolicy):
-                Optional. The specification for fault injection introduced
-                into traffic to test the resiliency of clients to
-                destination service failure. As part of fault injection,
-                when clients send requests to a destination, delays can be
-                introduced on a percentage of requests before sending those
-                requests to the destination service. Similarly requests from
-                clients can be aborted by for a percentage of requests.
+                Optional. The specification for fault injection
+                introduced into traffic to test the resiliency
+                of clients to destination service failure. As
+                part of fault injection, when clients send
+                requests to a destination, delays can be
+                introduced on a percentage of requests before
+                sending those requests to the destination
+                service. Similarly requests from clients can be
+                aborted by for a percentage of requests.
 
-                timeout and retry_policy will be ignored by clients that are
-                configured with a fault_injection_policy
+                timeout and retry_policy will be ignored by
+                clients that are configured with a
+                fault_injection_policy
             timeout (google.protobuf.duration_pb2.Duration):
                 Optional. Specifies the timeout for selected
                 route. Timeout is computed from the time the
@@ -752,12 +756,14 @@ class UpdateGrpcRouteRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the GrpcRoute resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the GrpcRoute
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         grpc_route (google.cloud.network_services_v1.types.GrpcRoute):
             Required. Updated GrpcRoute resource.
     """

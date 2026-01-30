@@ -383,8 +383,8 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.CreateDatasetRequest, dict]]):
                 The request object. Request message for CreateDataset.
             parent (:class:`str`):
-                Required. Dataset resource parent, format:
-                projects/{project_id}
+                Required. Dataset resource parent,
+                format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -619,8 +619,8 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest, dict]]):
                 The request object. Request message for ListDataset.
             parent (:class:`str`):
-                Required. Dataset resource parent, format:
-                projects/{project_id}
+                Required. Dataset resource parent,
+                format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1007,9 +1007,11 @@ class DataLabelingServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             annotated_dataset (:class:`str`):
-                Required. Annotated dataset resource name. DataItem in
-                Dataset and their annotations in specified annotated
-                dataset will be exported. It's in format of
+                Required. Annotated dataset resource
+                name. DataItem in Dataset and their
+                annotations in specified annotated
+                dataset will be exported. It's in format
+                of
                 projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
                 {annotated_dataset_id}
 
@@ -1152,7 +1154,8 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetDataItemRequest, dict]]):
                 The request object. Request message for GetDataItem.
             name (:class:`str`):
-                Required. The name of the data item to get, format:
+                Required. The name of the data item to
+                get, format:
                 projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
 
                 This corresponds to the ``name`` field
@@ -1268,8 +1271,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest, dict]]):
                 The request object. Request message for ListDataItems.
             parent (:class:`str`):
-                Required. Name of the dataset to list data items,
-                format: projects/{project_id}/datasets/{dataset_id}
+                Required. Name of the dataset to list
+                data items, format:
+                projects/{project_id}/datasets/{dataset_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1404,7 +1408,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 GetAnnotatedDataset.
             name (:class:`str`):
-                Required. Name of the annotated dataset to get, format:
+                Required. Name of the annotated dataset
+                to get, format:
                 projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
                 {annotated_dataset_id}
 
@@ -1524,8 +1529,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 ListAnnotatedDatasets.
             parent (:class:`str`):
-                Required. Name of the dataset to list annotated
-                datasets, format:
+                Required. Name of the dataset to list
+                annotated datasets, format:
                 projects/{project_id}/datasets/{dataset_id}
 
                 This corresponds to the ``parent`` field
@@ -1752,8 +1757,9 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for starting an image
                 labeling task.
             parent (:class:`str`):
-                Required. Name of the dataset to request labeling task,
-                format: projects/{project_id}/datasets/{dataset_id}
+                Required. Name of the dataset to request
+                labeling task, format:
+                projects/{project_id}/datasets/{dataset_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1908,8 +1914,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.LabelVideoRequest, dict]]):
                 The request object. Request message for LabelVideo.
             parent (:class:`str`):
-                Required. Name of the dataset to request labeling task,
-                format: projects/{project_id}/datasets/{dataset_id}
+                Required. Name of the dataset to request
+                labeling task, format:
+                projects/{project_id}/datasets/{dataset_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2064,8 +2071,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.LabelTextRequest, dict]]):
                 The request object. Request message for LabelText.
             parent (:class:`str`):
-                Required. Name of the data set to request labeling task,
-                format: projects/{project_id}/datasets/{dataset_id}
+                Required. Name of the data set to
+                request labeling task, format:
+                projects/{project_id}/datasets/{dataset_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2206,6 +2214,7 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for GetExample
             name (:class:`str`):
                 Required. Name of example, format:
+
                 projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
                 {annotated_dataset_id}/examples/{example_id}
 
@@ -2213,9 +2222,12 @@ class DataLabelingServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                Optional. An expression for filtering Examples. Filter
-                by annotation_spec.display_name is supported. Format
-                "annotation_spec.display_name = {display_name}"
+                Optional. An expression for filtering
+                Examples. Filter by
+                annotation_spec.display_name is
+                supported. Format
+                "annotation_spec.display_name =
+                {display_name}"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2337,10 +2349,13 @@ class DataLabelingServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                Optional. An expression for filtering Examples. For
-                annotated datasets that have annotation spec set, filter
-                by annotation_spec.display_name is supported. Format
-                "annotation_spec.display_name = {display_name}"
+                Optional. An expression for filtering
+                Examples. For annotated datasets that
+                have annotation spec set, filter by
+                annotation_spec.display_name is
+                supported. Format
+                "annotation_spec.display_name =
+                {display_name}"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2470,16 +2485,17 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 CreateAnnotationSpecSet.
             parent (:class:`str`):
-                Required. AnnotationSpecSet resource parent, format:
-                projects/{project_id}
+                Required. AnnotationSpecSet resource
+                parent, format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             annotation_spec_set (:class:`google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet`):
-                Required. Annotation spec set to create. Annotation
-                specs must be included. Only one annotation spec will be
-                accepted for annotation specs with same display_name.
+                Required. Annotation spec set to create.
+                Annotation specs must be included. Only
+                one annotation spec will be accepted for
+                annotation specs with same display_name.
 
                 This corresponds to the ``annotation_spec_set`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2599,7 +2615,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 GetAnnotationSpecSet.
             name (:class:`str`):
-                Required. AnnotationSpecSet resource name, format:
+                Required. AnnotationSpecSet resource
+                name, format:
                 projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
 
                 This corresponds to the ``name`` field
@@ -2719,8 +2736,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 ListAnnotationSpecSets.
             parent (:class:`str`):
-                Required. Parent of AnnotationSpecSet resource, format:
-                projects/{project_id}
+                Required. Parent of AnnotationSpecSet
+                resource, format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2964,8 +2981,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 CreateInstruction.
             parent (:class:`str`):
-                Required. Instruction resource parent, format:
-                projects/{project_id}
+                Required. Instruction resource parent,
+                format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3095,7 +3112,8 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetInstructionRequest, dict]]):
                 The request object. Request message for GetInstruction.
             name (:class:`str`):
-                Required. Instruction resource name, format:
+                Required. Instruction resource name,
+                format:
                 projects/{project_id}/instructions/{instruction_id}
 
                 This corresponds to the ``name`` field
@@ -3212,8 +3230,8 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest, dict]]):
                 The request object. Request message for ListInstructions.
             parent (:class:`str`):
-                Required. Instruction resource parent, format:
-                projects/{project_id}
+                Required. Instruction resource parent,
+                format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3345,7 +3363,8 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 DeleteInstruction.
             name (:class:`str`):
-                Required. Instruction resource name, format:
+                Required. Instruction resource name,
+                format:
                 projects/{project_id}/instructions/{instruction_id}
 
                 This corresponds to the ``name`` field
@@ -3449,9 +3468,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationRequest, dict]]):
                 The request object. Request message for GetEvaluation.
             name (:class:`str`):
-                Required. Name of the evaluation. Format:
-
-                "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
+                Required. Name of the evaluation.
+                Format:
+                "projects/<var>{project_id}</var>/datasets/<var>{dataset_id}</var>/evaluations/<var>{evaluation_id}</var>'
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3568,8 +3587,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest, dict]]):
                 The request object. Request message for SearchEvaluation.
             parent (:class:`str`):
-                Required. Evaluation search parent (project ID). Format:
-                "projects/{project_id}"
+                Required. Evaluation search parent
+                (project ID). Format:
+                "projects/<var>{project_id}</var>"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3872,8 +3892,9 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 CreateEvaluationJob.
             parent (:class:`str`):
-                Required. Evaluation job resource parent. Format:
-                "projects/{project_id}"
+                Required. Evaluation job resource
+                parent. Format:
+                "projects/<var>{project_id}</var>"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4139,9 +4160,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.GetEvaluationJobRequest, dict]]):
                 The request object. Request message for GetEvaluationJob.
             name (:class:`str`):
-                Required. Name of the evaluation job. Format:
-
-                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
+                Required. Name of the evaluation job.
+                Format:
+                "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4255,10 +4276,9 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 PauseEvaluationJob.
             name (:class:`str`):
-                Required. Name of the evaluation job that is going to be
-                paused. Format:
-
-                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
+                Required. Name of the evaluation job
+                that is going to be paused. Format:
+                "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4359,10 +4379,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.ResumeEvaluationJobRequest, dict]]):
                 The request object. Request message ResumeEvaluationJob.
             name (:class:`str`):
-                Required. Name of the evaluation job that is going to be
-                resumed. Format:
-
-                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
+                Required. Name of the evaluation job
+                that is going to be resumed. Format:
+                "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4461,10 +4480,9 @@ class DataLabelingServiceAsyncClient:
             request (Optional[Union[google.cloud.datalabeling_v1beta1.types.DeleteEvaluationJobRequest, dict]]):
                 The request object. Request message DeleteEvaluationJob.
             name (:class:`str`):
-                Required. Name of the evaluation job that is going to be
-                deleted. Format:
-
-                "projects/{project_id}/evaluationJobs/{evaluation_job_id}"
+                Required. Name of the evaluation job
+                that is going to be deleted. Format:
+                "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4570,8 +4588,9 @@ class DataLabelingServiceAsyncClient:
                 The request object. Request message for
                 ListEvaluationJobs.
             parent (:class:`str`):
-                Required. Evaluation job resource parent. Format:
-                "projects/{project_id}"
+                Required. Evaluation job resource
+                parent. Format:
+                "projects/<var>{project_id}</var>"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

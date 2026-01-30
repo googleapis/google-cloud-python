@@ -398,9 +398,10 @@ class ListPolicyBasedRoutesResponse(proto.Message):
         policy_based_routes (MutableSequence[google.cloud.networkconnectivity_v1.types.PolicyBasedRoute]):
             Policy-based routes to be returned.
         next_page_token (str):
-            The next pagination token in the List response. It should be
-            used as page_token for the following request. An empty value
-            means no more result.
+            The next pagination token in the List response.
+            It should be used as page_token for the
+            following request. An empty value means no more
+            result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """

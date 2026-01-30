@@ -152,9 +152,9 @@ class EkmMetadata(proto.Message):
     """
 
     class EkmSolution(proto.Enum):
-        r"""Represents Google Cloud supported external key management partners
-        `Google Cloud EKM partners
-        docs <https://cloud.google.com/kms/docs/ekm#supported_partners>`__.
+        r"""Represents Google Cloud supported external key management
+        partners [Google Cloud EKM partners
+        docs](https://cloud.google.com/kms/docs/ekm#supported_partners).
 
         Values:
             EKM_SOLUTION_UNSPECIFIED (0):

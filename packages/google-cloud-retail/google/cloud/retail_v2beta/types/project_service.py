@@ -38,8 +38,8 @@ class GetAlertConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Full AlertConfig resource name. Format:
-            projects/{project_number}/alertConfig
+            Required. Full AlertConfig resource name.
+            Format: projects/{project_number}/alertConfig
     """
 
     name: str = proto.Field(

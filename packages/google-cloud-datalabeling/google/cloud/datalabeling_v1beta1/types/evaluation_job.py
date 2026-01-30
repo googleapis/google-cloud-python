@@ -46,10 +46,11 @@ class EvaluationJob(proto.Message):
 
     Attributes:
         name (str):
-            Output only. After you create a job, Data Labeling Service
-            assigns a name to the job with the following format:
+            Output only. After you create a job, Data
+            Labeling Service assigns a name to the job with
+            the following format:
 
-            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
+            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
         description (str):
             Required. Description of the job. The
             description can be up to 25,000 characters long.
@@ -71,15 +72,17 @@ class EvaluationJob(proto.Message):
             UTC. Only the interval from this schedule is used, not the
             specific time of day.
         model_version (str):
-            Required. The `AI Platform Prediction model
-            version </ml-engine/docs/prediction-overview>`__ to be
-            evaluated. Prediction input and output is sampled from this
-            model version. When creating an evaluation job, specify the
-            model version in the following format:
+            Required. The [AI Platform Prediction model
+            version](/ml-engine/docs/prediction-overview) to
+            be evaluated. Prediction input and output is
+            sampled from this model version. When creating
+            an evaluation job, specify the model version in
+            the following format:
 
-            "projects/{project_id}/models/{model_name}/versions/{version_name}"
+            "projects/<var>{project_id}</var>/models/<var>{model_name}</var>/versions/<var>{version_name}</var>"
 
-            There can only be one evaluation job per model version.
+            There can only be one evaluation job per model
+            version.
         evaluation_job_config (google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig):
             Required. Configuration details for the
             evaluation job.

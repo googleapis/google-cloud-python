@@ -597,8 +597,9 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetCloudExadataInfrastructureRequest, dict]]):
                 The request object. The request for ``CloudExadataInfrastructure.Get``.
             name (:class:`str`):
-                Required. The name of the Cloud Exadata Infrastructure
-                in the following format:
+                Required. The name of the Cloud Exadata
+                Infrastructure in the following format:
+
                 projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
 
                 This corresponds to the ``name`` field
@@ -876,8 +877,9 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteCloudExadataInfrastructureRequest, dict]]):
                 The request object. The request for ``CloudExadataInfrastructure.Delete``.
             name (:class:`str`):
-                Required. The name of the Cloud Exadata Infrastructure
-                in the following format:
+                Required. The name of the Cloud Exadata
+                Infrastructure in the following format:
+
                 projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
 
                 This corresponds to the ``name`` field
@@ -1135,8 +1137,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetCloudVmClusterRequest, dict]]):
                 The request object. The request for ``CloudVmCluster.Get``.
             name (:class:`str`):
-                Required. The name of the Cloud VM Cluster in the
-                following format:
+                Required. The name of the Cloud VM
+                Cluster in the following format:
                 projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}.
 
                 This corresponds to the ``name`` field
@@ -1407,8 +1409,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteCloudVmClusterRequest, dict]]):
                 The request object. The request for ``CloudVmCluster.Delete``.
             name (:class:`str`):
-                Required. The name of the Cloud VM Cluster in the
-                following format:
+                Required. The name of the Cloud VM
+                Cluster in the following format:
                 projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}.
 
                 This corresponds to the ``name`` field
@@ -2042,8 +2044,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.ListMinorVersionsRequest, dict]]):
                 The request object. The request for ``MinorVersion.List``.
             parent (:class:`str`):
-                Required. The parent value for the MinorVersion resource
-                with the format:
+                Required. The parent value for the
+                MinorVersion resource with the format:
                 projects/{project}/locations/{location}/giVersions/{gi_version}
 
                 This corresponds to the ``parent`` field
@@ -2424,8 +2426,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Get``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -2704,12 +2706,15 @@ class OracleDatabaseAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Exadata resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                Exadata resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2838,8 +2843,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Delete``.
             name (:class:`str`):
-                Required. The name of the resource in the following
-                format:
+                Required. The name of the resource in
+                the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -2974,8 +2979,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.RestoreAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Restore``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -3110,8 +3115,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GenerateAutonomousDatabaseWalletRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.GenerateWallet``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -3648,8 +3653,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.StopAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Stop``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -3775,8 +3780,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.StartAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Start``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -3902,8 +3907,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.RestartAutonomousDatabaseRequest, dict]]):
                 The request object. The request for ``AutonomousDatabase.Restart``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -4033,8 +4038,8 @@ class OracleDatabaseAsyncClient:
                 The request object. The request for
                 ``OracleDatabase.SwitchoverAutonomousDatabase``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -4173,8 +4178,8 @@ class OracleDatabaseAsyncClient:
                 The request object. The request for
                 ``OracleDatabase.FailoverAutonomousDatabase``.
             name (:class:`str`):
-                Required. The name of the Autonomous Database in the
-                following format:
+                Required. The name of the Autonomous
+                Database in the following format:
                 projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
 
                 This corresponds to the ``name`` field
@@ -4429,8 +4434,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetOdbNetworkRequest, dict]]):
                 The request object. The request for ``OdbNetwork.Get``.
             name (:class:`str`):
-                Required. The name of the OdbNetwork in the following
-                format:
+                Required. The name of the OdbNetwork in
+                the following format:
                 projects/{project}/locations/{location}/odbNetworks/{odb_network}.
 
                 This corresponds to the ``name`` field
@@ -4697,8 +4702,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteOdbNetworkRequest, dict]]):
                 The request object. The request for ``OdbNetwork.Delete``.
             name (:class:`str`):
-                Required. The name of the resource in the following
-                format:
+                Required. The name of the resource in
+                the following format:
                 projects/{project}/locations/{location}/odbNetworks/{odb_network}.
 
                 This corresponds to the ``name`` field
@@ -4827,8 +4832,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.ListOdbSubnetsRequest, dict]]):
                 The request object. The request for ``OdbSubnet.List``.
             parent (:class:`str`):
-                Required. The parent value for the OdbSubnet in the
-                following format:
+                Required. The parent value for the
+                OdbSubnet in the following format:
                 projects/{project}/locations/{location}/odbNetworks/{odb_network}.
 
                 This corresponds to the ``parent`` field
@@ -4951,8 +4956,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetOdbSubnetRequest, dict]]):
                 The request object. The request for ``OdbSubnet.Get``.
             name (:class:`str`):
-                Required. The name of the OdbSubnet in the following
-                format:
+                Required. The name of the OdbSubnet in
+                the following format:
                 projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
 
                 This corresponds to the ``name`` field
@@ -5072,8 +5077,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.CreateOdbSubnetRequest, dict]]):
                 The request object. The request for ``OdbSubnet.Create``.
             parent (:class:`str`):
-                Required. The parent value for the OdbSubnet in the
-                following format:
+                Required. The parent value for the
+                OdbSubnet in the following format:
                 projects/{project}/locations/{location}/odbNetworks/{odb_network}.
 
                 This corresponds to the ``parent`` field
@@ -5219,8 +5224,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteOdbSubnetRequest, dict]]):
                 The request object. The request for ``OdbSubnet.Delete``.
             name (:class:`str`):
-                Required. The name of the resource in the following
-                format:
+                Required. The name of the resource in
+                the following format:
                 projects/{project}/locations/{region}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
 
                 This corresponds to the ``name`` field
@@ -5476,8 +5481,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetExadbVmClusterRequest, dict]]):
                 The request object. The request for ``ExadbVmCluster.Get``.
             name (:class:`str`):
-                Required. The name of the ExadbVmCluster in the
-                following format:
+                Required. The name of the ExadbVmCluster
+                in the following format:
                 projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
 
                 This corresponds to the ``name`` field
@@ -5759,8 +5764,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteExadbVmClusterRequest, dict]]):
                 The request object. The request for ``ExadbVmCluster.Delete``.
             name (:class:`str`):
-                Required. The name of the ExadbVmCluster in the
-                following format:
+                Required. The name of the ExadbVmCluster
+                in the following format:
                 projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
 
                 This corresponds to the ``name`` field
@@ -6056,8 +6061,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.RemoveVirtualMachineExadbVmClusterRequest, dict]]):
                 The request object. The request for ``ExadbVmCluster.RemoveVirtualMachine``.
             name (:class:`str`):
-                Required. The name of the ExadbVmCluster in the
-                following format:
+                Required. The name of the ExadbVmCluster
+                in the following format:
                 projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
 
                 This corresponds to the ``name`` field
@@ -6325,8 +6330,9 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetExascaleDbStorageVaultRequest, dict]]):
                 The request object. The request for ``ExascaleDbStorageVault.Get``.
             name (:class:`str`):
-                Required. The name of the ExascaleDbStorageVault in the
-                following format:
+                Required. The name of the
+                ExascaleDbStorageVault in the following
+                format:
                 projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
 
                 This corresponds to the ``name`` field
@@ -6615,8 +6621,9 @@ class OracleDatabaseAsyncClient:
                 The request object. The request message for
                 ``ExascaleDbStorageVault.Delete``.
             name (:class:`str`):
-                Required. The name of the ExascaleDbStorageVault in the
-                following format:
+                Required. The name of the
+                ExascaleDbStorageVault in the following
+                format:
                 projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
 
                 This corresponds to the ``name`` field
@@ -7255,8 +7262,10 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetPluggableDatabaseRequest, dict]]):
                 The request object. The request for ``PluggableDatabase.Get``.
             name (:class:`str`):
-                Required. The name of the PluggableDatabase resource in
-                the following format:
+                Required. The name of the
+                PluggableDatabase resource in the
+                following format:
+
                 projects/{project}/locations/{region}/pluggableDatabases/{pluggable_database}
 
                 This corresponds to the ``name`` field
@@ -7492,8 +7501,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.GetDbSystemRequest, dict]]):
                 The request object. The request for ``DbSystem.Get``.
             name (:class:`str`):
-                Required. The name of the DbSystem in the following
-                format:
+                Required. The name of the DbSystem in
+                the following format:
                 projects/{project}/locations/{location}/dbSystems/{db_system}.
 
                 This corresponds to the ``name`` field
@@ -7761,8 +7770,8 @@ class OracleDatabaseAsyncClient:
             request (Optional[Union[google.cloud.oracledatabase_v1.types.DeleteDbSystemRequest, dict]]):
                 The request object. The request for ``DbSystem.Delete``.
             name (:class:`str`):
-                Required. The name of the DbSystem in the following
-                format:
+                Required. The name of the DbSystem in
+                the following format:
                 projects/{project}/locations/{location}/dbSystems/{db_system}.
 
                 This corresponds to the ``name`` field

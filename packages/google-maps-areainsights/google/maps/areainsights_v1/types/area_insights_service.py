@@ -182,8 +182,8 @@ class ComputeInsightsRequest(proto.Message):
 
     Attributes:
         insights (MutableSequence[google.maps.areainsights_v1.types.Insight]):
-            Required. Insights to compute. Currently only INSIGHT_COUNT
-            and INSIGHT_PLACES are supported.
+            Required. Insights to compute. Currently only
+            INSIGHT_COUNT and INSIGHT_PLACES are supported.
         filter (google.maps.areainsights_v1.types.Filter):
             Required. Insight filter.
     """
@@ -231,10 +231,10 @@ class PlaceInsight(proto.Message):
 
     Attributes:
         place (str):
-            The unique identifier of the place. This resource name can
-            be used to retrieve details about the place using the
-            `Places
-            API <https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places/get>`__.
+            The unique identifier of the place. This
+            resource name can be used to retrieve details
+            about the place using the [Places
+            API](https://developers.google.com/maps/documentation/places/web-service/reference/rest/v1/places/get).
     """
 
     place: str = proto.Field(
@@ -254,18 +254,19 @@ class Filter(proto.Message):
         type_filter (google.maps.areainsights_v1.types.TypeFilter):
             Required. Place type filters.
         operating_status (MutableSequence[google.maps.areainsights_v1.types.OperatingStatus]):
-            Optional. Restricts results to places whose operating status
-            is included on this list. If operating_status is not set,
+            Optional. Restricts results to places whose
+            operating status is included on this list. If
+            operating_status is not set,
             OPERATING_STATUS_OPERATIONAL is used as default.
         price_levels (MutableSequence[google.maps.areainsights_v1.types.PriceLevel]):
             Optional. Restricts results to places whose price level is
             included on this list. If ``price_levels`` is not set, all
             price levels are included in the results.
         rating_filter (google.maps.areainsights_v1.types.RatingFilter):
-            Optional. Restricts results to places whose average user
-            ratings are in the range specified by rating_filter. If
-            rating_filter is not set, all ratings are included in the
-            result.
+            Optional. Restricts results to places whose
+            average user ratings are in the range specified
+            by rating_filter. If rating_filter is not set,
+            all ratings are included in the result.
     """
 
     location_filter: "LocationFilter" = proto.Field(
@@ -443,31 +444,36 @@ class LocationFilter(proto.Message):
 class TypeFilter(proto.Message):
     r"""Place type filters.
 
-    Only Place types from `Table
-    a <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+    Only Place types from
+    [Table
+    a](https://developers.google.com/maps/documentation/places/web-service/place-types#table-a)
     are supported.
 
-    A place can only have a single primary type associated with it. For
-    example, the primary type might be "mexican_restaurant" or
-    "steak_house". Use included_primary_types and excluded_primary_types
-    to filter the results on a place's primary type.
+    A place can only have a single primary type associated with it.
+    For example, the primary type might be "mexican_restaurant" or
+    "steak_house". Use included_primary_types and
+    excluded_primary_types to filter the results on a place's
+    primary type.
 
-    A place can also have multiple type values associated with it. For
-    example a restaurant might have the following types:
+    A place can also have multiple type values associated with it.
+    For example a restaurant might have the following types:
     "seafood_restaurant", "restaurant", "food", "point_of_interest",
-    "establishment". Use included_types and excluded_types to filter the
-    results on the list of types associated with a place.
+    "establishment". Use included_types and excluded_types to filter
+    the results on the list of types associated with a place.
 
     If a search is specified with multiple type restrictions, only
     places that satisfy all of the restrictions are returned. For
     example, if you specify {"included_types": ["restaurant"],
-    "excluded_primary_types": ["steak_house"]}, the returned places
-    provide "restaurant" related services but do not operate primarily
-    as a "steak_house".
+    "excluded_primary_types":
+
+    ["steak_house"]}, the returned places provide "restaurant"
+    related services but do not operate primarily as a
+    "steak_house".
 
     If there are any conflicting types, i.e. a type appears in both
-    included_types and excluded_types types or included_primary_types
-    and excluded_primary_types, an INVALID_ARGUMENT error is returned.
+    included_types and excluded_types types or
+    included_primary_types and excluded_primary_types, an
+    INVALID_ARGUMENT error is returned.
 
     One of included_types or included_primary_types must be set.
 
@@ -507,15 +513,16 @@ class RatingFilter(proto.Message):
 
     Attributes:
         min_rating (float):
-            Optional. Restricts results to places whose average user
-            rating is greater than or equal to min_rating. Values must
-            be between 1.0 and 5.0.
+            Optional. Restricts results to places whose
+            average user rating is greater than or equal to
+            min_rating. Values must be between 1.0 and 5.0.
 
             This field is a member of `oneof`_ ``_min_rating``.
         max_rating (float):
-            Optional. Restricts results to places whose average user
-            rating is strictly less than or equal to max_rating. Values
-            must be between 1.0 and 5.0.
+            Optional. Restricts results to places whose
+            average user rating is strictly less than or
+            equal to max_rating. Values must be between 1.0
+            and 5.0.
 
             This field is a member of `oneof`_ ``_max_rating``.
     """

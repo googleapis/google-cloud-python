@@ -139,9 +139,10 @@ class TrainCustomModelRequest(proto.Message):
                 - ``query-id\tcorpus-id\tscore``
                 - ``query1\tdoc1\t1``
             test_data_path (str):
-                Cloud Storage test data. Same format as train_data_path. If
-                not provided, a random 80/20 train/test split will be
-                performed on train_data_path.
+                Cloud Storage test data. Same format as
+                train_data_path. If not provided, a random 80/20
+                train/test split will be performed on
+                train_data_path.
         """
 
         corpus_data_path: str = proto.Field(

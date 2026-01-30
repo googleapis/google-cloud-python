@@ -93,11 +93,12 @@ class AuthorizationPolicy(proto.Message):
 
         Attributes:
             sources (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthorizationPolicy.Rule.Source]):
-                Optional. List of attributes for the traffic source. All of
-                the sources must match. A source is a match if both
-                principals and ip_blocks match. If not set, the action
-                specified in the 'action' field will be applied without any
-                rule checks for the source.
+                Optional. List of attributes for the traffic
+                source. All of the sources must match. A source
+                is a match if both principals and ip_blocks
+                match. If not set, the action specified in the
+                'action' field will be applied without any rule
+                checks for the source.
             destinations (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthorizationPolicy.Rule.Destination]):
                 Optional. List of attributes for the traffic
                 destination. All of the destinations must match.
@@ -359,10 +360,11 @@ class CreateAuthorizationPolicyRequest(proto.Message):
             Must be in the format
             ``projects/{project}/locations/{location}``.
         authorization_policy_id (str):
-            Required. Short name of the AuthorizationPolicy resource to
-            be created. This value should be 1-63 characters long,
-            containing only letters, numbers, hyphens, and underscores,
-            and should not start with a number. E.g. "authz_policy".
+            Required. Short name of the AuthorizationPolicy
+            resource to be created. This value should be
+            1-63 characters long, containing only letters,
+            numbers, hyphens, and underscores, and should
+            not start with a number. E.g. "authz_policy".
         authorization_policy (google.cloud.network_security_v1alpha1.types.AuthorizationPolicy):
             Required. AuthorizationPolicy resource to be
             created.
@@ -388,12 +390,14 @@ class UpdateAuthorizationPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the AuthorizationPolicy resource by the
-            update. The fields specified in the update_mask are relative
-            to the resource, not the full request. A field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the
+            AuthorizationPolicy resource by the update. The
+            fields specified in the update_mask are relative
+            to the resource, not the full request. A field
+            will be overwritten if it is in the mask. If the
+            user does not provide a mask then all fields
+            will be overwritten.
         authorization_policy (google.cloud.network_security_v1alpha1.types.AuthorizationPolicy):
             Required. Updated AuthorizationPolicy
             resource.

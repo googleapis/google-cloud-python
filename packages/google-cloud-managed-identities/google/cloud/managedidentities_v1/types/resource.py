@@ -47,10 +47,11 @@ class Domain(proto.Message):
             listed in ``authorized_networks``. If CIDR subnets overlap
             between networks, domain creation will fail.
         reserved_ip_range (str):
-            Required. The CIDR range of internal addresses that are
-            reserved for this domain. Reserved networks must be /24 or
-            larger. Ranges must be unique and non-overlapping with
-            existing subnets in [Domain].[authorized_networks].
+            Required. The CIDR range of internal addresses
+            that are reserved for this domain. Reserved
+            networks must be /24 or larger. Ranges must be
+            unique and non-overlapping with existing subnets
+            in [Domain].[authorized_networks].
         locations (MutableSequence[str]):
             Required. Locations where domain needs to be provisioned.
             [regions][compute/docs/regions-zones/] e.g. us-west1 or

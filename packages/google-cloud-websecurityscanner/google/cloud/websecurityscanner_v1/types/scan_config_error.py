@@ -38,9 +38,10 @@ class ScanConfigError(proto.Message):
             Output only. Indicates the reason code for a
             configuration failure.
         field_name (str):
-            Output only. Indicates the full name of the ScanConfig field
-            that triggers this error, for example "scan_config.max_qps".
-            This field is provided for troubleshooting purposes only and
+            Output only. Indicates the full name of the
+            ScanConfig field that triggers this error, for
+            example "scan_config.max_qps". This field is
+            provided for troubleshooting purposes only and
             its actual value can change in the future.
     """
 

@@ -37,10 +37,10 @@ class DeletionMetadata(proto.Message):
     """
 
     class DeletionType(proto.Enum):
-        r"""Who deleted the message and how it was deleted. More values may be
-        added in the future. See `Edit or delete a message in Google
-        Chat <https://support.google.com/chat/answer/7653281>`__ for details
-        on when messages can be deleted.
+        r"""Who deleted the message and how it was deleted. More values may
+        be added in the future. See [Edit or delete a message in Google
+        Chat](https://support.google.com/chat/answer/7653281) for
+        details on when messages can be deleted.
 
         Values:
             DELETION_TYPE_UNSPECIFIED (0):

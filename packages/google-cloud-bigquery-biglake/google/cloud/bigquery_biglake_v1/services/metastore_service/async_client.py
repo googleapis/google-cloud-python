@@ -352,8 +352,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the CreateCatalog
                 method.
             parent (:class:`str`):
-                Required. The parent resource where this catalog will be
-                created. Format:
+                Required. The parent resource where this
+                catalog will be created. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -485,7 +485,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the DeleteCatalog
                 method.
             name (:class:`str`):
-                Required. The name of the catalog to delete. Format:
+                Required. The name of the catalog to
+                delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -596,7 +598,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetCatalog
                 method.
             name (:class:`str`):
-                Required. The name of the catalog to retrieve. Format:
+                Required. The name of the catalog to
+                retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -708,8 +712,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListCatalogs
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                catalogs. Format:
+                Required. The parent, which owns this
+                collection of catalogs. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -837,8 +841,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the
                 CreateDatabase method.
             parent (:class:`str`):
-                Required. The parent resource where this database will
-                be created. Format:
+                Required. The parent resource where this
+                database will be created. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -968,7 +973,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the
                 DeleteDatabase method.
             name (:class:`str`):
-                Required. The name of the database to delete. Format:
+                Required. The name of the database to
+                delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1205,7 +1212,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetDatabase
                 method.
             name (:class:`str`):
-                Required. The name of the database to retrieve. Format:
+                Required. The name of the database to
+                retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1315,8 +1324,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListDatabases
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                databases. Format:
+                Required. The parent, which owns this
+                collection of databases. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -1444,8 +1454,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the CreateTable
                 method.
             parent (:class:`str`):
-                Required. The parent resource where this table will be
-                created. Format:
+                Required. The parent resource where this
+                table will be created. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field
@@ -1573,7 +1584,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the DeleteTable
                 method.
             name (:class:`str`):
-                Required. The name of the table to delete. Format:
+                Required. The name of the table to
+                delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -1931,7 +1944,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetTable
                 method.
             name (:class:`str`):
-                Required. The name of the table to retrieve. Format:
+                Required. The name of the table to
+                retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -2041,8 +2056,9 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListTables
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                tables. Format:
+                Required. The parent, which owns this
+                collection of tables. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field

@@ -80,9 +80,10 @@ class ScanRun(proto.Message):
             running, the value ranges from 0 to 100. If the
             scan is finished, the value is 100.
         error_trace (google.cloud.websecurityscanner_v1.types.ScanRunErrorTrace):
-            Output only. If result_state is an ERROR, this field
-            provides the primary reason for scan's termination and more
-            details, if such are available.
+            Output only. If result_state is an ERROR, this
+            field provides the primary reason for scan's
+            termination and more details, if such are
+            available.
         warning_traces (MutableSequence[google.cloud.websecurityscanner_v1.types.ScanRunWarningTrace]):
             Output only. A list of warnings, if such are
             encountered during this scan run.

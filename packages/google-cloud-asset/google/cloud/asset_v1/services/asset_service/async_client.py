@@ -466,13 +466,17 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]]):
                 The request object. ListAssets request.
             parent (:class:`str`):
-                Required. Name of the organization, folder, or project
-                the assets belong to. Format:
-                "organizations/[organization-number]" (such as
-                "organizations/123"), "projects/[project-id]" (such as
-                "projects/my-project-id"), "projects/[project-number]"
-                (such as "projects/12345"), or "folders/[folder-number]"
-                (such as "folders/12345").
+                Required. Name of the organization,
+                folder, or project the assets belong to.
+                Format:
+                "organizations/[organization-number]"
+                (such as "organizations/123"),
+                "projects/[project-id]" (such as
+                "projects/my-project-id"),
+                "projects/[project-number]" (such as
+                "projects/12345"), or
+                "folders/[folder-number]" (such as
+                "folders/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -564,12 +568,13 @@ class AssetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> asset_service.BatchGetAssetsHistoryResponse:
-        r"""Batch gets the update history of assets that overlap a time
-        window. For IAM_POLICY content, this API outputs history when
-        the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. Otherwise, this API outputs
-        history with asset in both non-delete or deleted status. If a
-        specified asset does not exist, this API returns an
+        r"""Batch gets the update history of assets that overlap a
+        time window. For IAM_POLICY content, this API outputs
+        history when the asset and its attached IAM POLICY both
+        exist. This can create gaps in the output history.
+        Otherwise, this API outputs history with asset in both
+        non-delete or deleted status.
+        If a specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
         .. code-block:: python
@@ -816,8 +821,9 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.GetFeedRequest, dict]]):
                 The request object. Get asset feed request.
             name (:class:`str`):
-                Required. The name of the Feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the Feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -1166,8 +1172,9 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the feed and it must be in the
-                format of: projects/project_number/feeds/feed_id
+                Required. The name of the feed and it
+                must be in the format of:
+                projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -2151,12 +2158,15 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.CreateSavedQueryRequest, dict]]):
                 The request object. Request to create a saved query.
             parent (:class:`str`):
-                Required. The name of the project/folder/organization
-                where this saved_query should be created in. It can only
-                be an organization number (such as "organizations/123"),
-                a folder number (such as "folders/123"), a project ID
-                (such as "projects/my-project-id"), or a project number
-                (such as "projects/12345").
+                Required. The name of the
+                project/folder/organization where this
+                saved_query should be created in. It can
+                only be an organization number (such as
+                "organizations/123"), a folder number
+                (such as "folders/123"), a project ID
+                (such as "projects/my-project-id"), or a
+                project number (such as
+                "projects/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -34,8 +34,8 @@ __protobuf__ = proto.module(
 
 
 class AutomaticImprovements(proto.Message):
-    r"""Collection of information related to the `automatic
-    improvements <https://developers.google.com/shopping-content/guides/automatic-improvements>`__
+    r"""Collection of information related to the [automatic
+    improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
     of an account.
 
 
@@ -46,27 +46,31 @@ class AutomaticImprovements(proto.Message):
             Identifier. The resource name of the automatic improvements.
             Format: ``accounts/{account}/automaticImprovements``.
         item_updates (google.shopping.merchant_accounts_v1beta.types.AutomaticItemUpdates):
-            Turning on `item
-            updates <https://support.google.com/merchants/answer/3246284>`__
-            allows Google to automatically update items for you. When
-            item updates are on, Google uses the structured data markup
-            on the website and advanced data extractors to update the
-            price and availability of the items. When the item updates
-            are off, items with mismatched data aren't shown. This field
-            is only updated (cleared) if provided in the update mask.
+            Turning on [item
+            updates](https://support.google.com/merchants/answer/3246284)
+            allows Google to automatically update items for
+            you. When item updates are on, Google uses the
+            structured data markup on the website and
+            advanced data extractors to update the price and
+            availability of the items. When the item updates
+            are off, items with mismatched data aren't
+            shown. This field is only updated (cleared) if
+            provided in the update mask.
 
             This field is a member of `oneof`_ ``_item_updates``.
         image_improvements (google.shopping.merchant_accounts_v1beta.types.AutomaticImageImprovements):
-            This improvement will attempt to automatically correct
-            submitted images if they don't meet the `image
-            requirements <https://support.google.com/merchants/answer/6324350>`__,
-            for example, removing overlays. If successful, the image
-            will be replaced and approved. This improvement is only
-            applied to images of disapproved offers. For more
-            information see: `Automatic image
-            improvements <https://support.google.com/merchants/answer/9242973>`__
-            This field is only updated (cleared) if provided in the
-            update mask.
+            This improvement will attempt to automatically
+            correct submitted images if they don't meet the
+            [image
+            requirements](https://support.google.com/merchants/answer/6324350),
+            for example, removing overlays. If successful,
+            the image will be replaced and approved. This
+            improvement is only applied to images of
+            disapproved offers. For more information see:
+            [Automatic image
+            improvements](https://support.google.com/merchants/answer/9242973)
+            This field is only updated (cleared) if provided
+            in the update mask.
 
             This field is a member of `oneof`_ ``_image_improvements``.
         shipping_improvements (google.shopping.merchant_accounts_v1beta.types.AutomaticShippingImprovements):
@@ -114,13 +118,13 @@ class AutomaticImprovements(proto.Message):
 
 
 class AutomaticItemUpdates(proto.Message):
-    r"""Turning on `item
-    updates <https://support.google.com/merchants/answer/3246284>`__
+    r"""Turning on [item
+    updates](https://support.google.com/merchants/answer/3246284)
     allows Google to automatically update items for you. When item
     updates are on, Google uses the structured data markup on the
     website and advanced data extractors to update the price and
-    availability of the items. When the item updates are off, items with
-    mismatched data aren't shown.
+    availability of the items. When the item updates are off, items
+    with mismatched data aren't shown.
 
     Attributes:
         account_item_updates_settings (google.shopping.merchant_accounts_v1beta.types.AutomaticItemUpdates.ItemUpdatesAccountLevelSettings):
@@ -131,30 +135,37 @@ class AutomaticItemUpdates(proto.Message):
             there are no settings for subaccount, they are
             inherited from aggregator.
         effective_allow_price_updates (bool):
-            Output only. The effective value of allow_price_updates. If
-            account_item_updates_settings is present, then this value is
-            the same. Otherwise, it represents the inherited value of
-            the parent account. The default value is true if no settings
-            are present. Read-only.
+            Output only. The effective value of
+            allow_price_updates. If
+            account_item_updates_settings is present, then
+            this value is the same. Otherwise, it represents
+            the inherited value of the parent account. The
+            default value is true if no settings are
+            present. Read-only.
         effective_allow_availability_updates (bool):
             Output only. The effective value of
-            allow_availability_updates. If account_item_updates_settings
-            is present, then this value is the same. Otherwise, it
-            represents the inherited value of the parent account. The
-            default value is true if no settings are present. Read-only.
+            allow_availability_updates. If
+            account_item_updates_settings is present, then
+            this value is the same. Otherwise, it represents
+            the inherited value of the parent account. The
+            default value is true if no settings are
+            present. Read-only.
         effective_allow_strict_availability_updates (bool):
             Output only. The effective value of
-            allow_strict_availability_updates. If
-            account_item_updates_settings is present, then this value is
-            the same. Otherwise, it represents the inherited value of
-            the parent account. The default value is true if no settings
-            are present. Read-only.
+            allow_strict_availability_updates.
+            If account_item_updates_settings is present,
+            then this value is the same. Otherwise, it
+            represents the inherited value of the parent
+            account. The default value is true if no
+            settings are present. Read-only.
         effective_allow_condition_updates (bool):
-            Output only. The effective value of allow_condition_updates.
-            If account_item_updates_settings is present, then this value
-            is the same. Otherwise, it represents the inherited value of
-            the parent account. The default value is true if no settings
-            are present. Read-only.
+            Output only. The effective value of
+            allow_condition_updates. If
+            account_item_updates_settings is present, then
+            this value is the same. Otherwise, it represents
+            the inherited value of the parent account. The
+            default value is true if no settings are
+            present. Read-only.
     """
 
     class ItemUpdatesAccountLevelSettings(proto.Message):
@@ -243,12 +254,13 @@ class AutomaticItemUpdates(proto.Message):
 
 class AutomaticImageImprovements(proto.Message):
     r"""This improvement will attempt to automatically correct submitted
-    images if they don't meet the `image
-    requirements <https://support.google.com/merchants/answer/6324350>`__,
+    images if they don't meet the [image
+    requirements](https://support.google.com/merchants/answer/6324350),
     for example, removing overlays. If successful, the image will be
-    replaced and approved. This improvement is only applied to images of
-    disapproved offers. For more information see: `Automatic image
-    improvements <https://support.google.com/merchants/answer/9242973>`__
+    replaced and approved. This improvement is only applied to
+    images of disapproved offers. For more information see:
+    [Automatic image
+    improvements](https://support.google.com/merchants/answer/9242973)
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -266,9 +278,10 @@ class AutomaticImageImprovements(proto.Message):
         effective_allow_automatic_image_improvements (bool):
             Output only. The effective value of
             allow_automatic_image_improvements. If
-            account_image_improvements_settings is present, then this
-            value is the same. Otherwise, it represents the inherited
-            value of the parent account. Read-only.
+            account_image_improvements_settings is present,
+            then this value is the same. Otherwise, it
+            represents the inherited value of the parent
+            account. Read-only.
     """
 
     class ImageImprovementsAccountLevelSettings(proto.Message):

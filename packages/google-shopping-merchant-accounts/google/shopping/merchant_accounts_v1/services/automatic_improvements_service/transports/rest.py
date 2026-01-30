@@ -346,8 +346,9 @@ class AutomaticImprovementsServiceRestTransport(
 
                 Returns:
                     ~.automaticimprovements.AutomaticImprovements:
-                        Collection of information related to the `automatic
-                    improvements <https://developers.google.com/shopping-content/guides/automatic-improvements>`__
+                        Collection of information related to the
+                    [automatic
+                    improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                     of an account.
 
             """
@@ -503,8 +504,9 @@ class AutomaticImprovementsServiceRestTransport(
 
                 Returns:
                     ~.automaticimprovements.AutomaticImprovements:
-                        Collection of information related to the `automatic
-                    improvements <https://developers.google.com/shopping-content/guides/automatic-improvements>`__
+                        Collection of information related to the
+                    [automatic
+                    improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
                     of an account.
 
             """

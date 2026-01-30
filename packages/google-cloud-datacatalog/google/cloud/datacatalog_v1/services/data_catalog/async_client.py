@@ -3527,13 +3527,15 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Tag:
-                Tags contain custom metadata and are attached to Data Catalog resources. Tags
-                   conform with the specification of their tag template.
+                Tags contain custom metadata and are
+                attached to Data Catalog resources. Tags
+                conform with the specification of their
+                tag template.
 
-                   See [Data Catalog
-                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-                   for information on the permissions needed to create
-                   or view tags.
+                See [Data Catalog
+                IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
+                for information on the permissions
+                needed to create or view tags.
 
         """
         warnings.warn(
@@ -3667,13 +3669,15 @@ class DataCatalogAsyncClient:
 
         Returns:
             google.cloud.datacatalog_v1.types.Tag:
-                Tags contain custom metadata and are attached to Data Catalog resources. Tags
-                   conform with the specification of their tag template.
+                Tags contain custom metadata and are
+                attached to Data Catalog resources. Tags
+                conform with the specification of their
+                tag template.
 
-                   See [Data Catalog
-                   IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-                   for information on the permissions needed to create
-                   or view tags.
+                See [Data Catalog
+                IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
+                for information on the permissions
+                needed to create or view tags.
 
         """
         warnings.warn(

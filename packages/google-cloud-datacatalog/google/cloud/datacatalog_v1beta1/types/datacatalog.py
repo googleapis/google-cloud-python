@@ -122,9 +122,10 @@ class SearchCatalogRequest(proto.Message):
             Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
             for more information.
         page_size (int):
-            Number of results in the search page. If <=0 then defaults
-            to 10. Max limit for page_size is 1000. Throws an invalid
-            argument for page_size > 1000.
+            Number of results in the search page. If <=0
+            then defaults to 10. Max limit for page_size is
+            1000. Throws an invalid argument for page_size >
+            1000.
         page_token (str):
             Optional. Pagination token returned in an earlier
             [SearchCatalogResponse.next_page_token][google.cloud.datacatalog.v1beta1.SearchCatalogResponse.next_page_token],
@@ -748,11 +749,12 @@ class Entry(proto.Message):
             Schema of the entry. An entry might not have
             any schema attached to it.
         source_system_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
-            Output only. Timestamps about the underlying resource, not
-            about this Data Catalog entry. Output only when Entry is of
-            type in the EntryType enum. For entries with
-            user_specified_type, this field is optional and defaults to
-            an empty timestamp.
+            Output only. Timestamps about the underlying
+            resource, not about this Data Catalog entry.
+            Output only when Entry is of type in the
+            EntryType enum. For entries with
+            user_specified_type, this field is optional and
+            defaults to an empty timestamp.
         usage_signal (google.cloud.datacatalog_v1beta1.types.UsageSignal):
             Output only. Statistics on the usage level of
             the resource.
@@ -1307,10 +1309,11 @@ class ListEntriesRequest(proto.Message):
             Token that specifies which page is requested.
             If empty, the first page is returned.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The fields to return for each Entry. If not set or empty,
-            all fields are returned. For example, setting read_mask to
-            contain only one path "name" will cause ListEntries to
-            return a list of Entries with only "name" field.
+            The fields to return for each Entry. If not set
+            or empty, all fields are returned.
+            For example, setting read_mask to contain only
+            one path "name" will cause ListEntries to return
+            a list of Entries with only "name" field.
     """
 
     parent: str = proto.Field(

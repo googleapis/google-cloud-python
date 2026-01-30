@@ -326,12 +326,13 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Specifies the fields to be overwritten in the
-            instance resource by the update.
+            Optional. Specifies the fields to be overwritten
+            in the instance resource by the update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If no mask is provided then all fields
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask. If no mask is provided then all fields
             present in the request are overwritten.
         instance (google.cloud.lustre_v1.types.Instance):
             Required. The resource name of the instance to update, in

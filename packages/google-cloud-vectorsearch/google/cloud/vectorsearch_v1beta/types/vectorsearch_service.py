@@ -71,8 +71,8 @@ class Collection(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         schema (google.protobuf.struct_pb2.Struct):
-            Optional. Deprecated: JSON Schema for data. Please use
-            data_schema instead.
+            Optional. Deprecated: JSON Schema for data.
+            Please use data_schema instead.
         vector_schema (MutableMapping[str, google.cloud.vectorsearch_v1beta.types.VectorField]):
             Optional. Schema for vector fields. Only
             vector fields in this schema will be searchable.
@@ -457,8 +457,8 @@ class Index(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. [Output only] Update time stamp
         distance_metric (google.cloud.vectorsearch_v1beta.types.DistanceMetric):
-            Optional. Distance metric used for indexing. If not
-            specified, will default to DOT_PRODUCT.
+            Optional. Distance metric used for indexing. If
+            not specified, will default to DOT_PRODUCT.
         index_field (str):
             Required. The collection schema field to
             index.

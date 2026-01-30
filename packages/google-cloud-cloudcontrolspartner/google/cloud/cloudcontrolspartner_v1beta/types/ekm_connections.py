@@ -73,7 +73,8 @@ class EkmConnection(proto.Message):
 
     Attributes:
         connection_name (str):
-            Resource name of the EKM connection in the format:
+            Resource name of the EKM connection in the
+            format:
             projects/{project}/locations/{location}/ekmConnections/{ekm_connection}
         connection_state (google.cloud.cloudcontrolspartner_v1beta.types.EkmConnection.ConnectionState):
             Output only. The connection state

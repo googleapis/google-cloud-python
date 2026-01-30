@@ -768,9 +768,11 @@ class OrganizationsClient(metaclass=OrganizationsClientMeta):
                 ``name`` field is required. ``organization_id`` is no
                 longer accepted.
             name (str):
-                Required. The resource name of the Organization to
-                fetch. This is the organization's relative path in the
-                API, formatted as "organizations/[organizationId]". For
+                Required. The resource name of the
+                Organization to fetch. This is the
+                organization's relative path in the API,
+                formatted as
+                "organizations/[organizationId]". For
                 example, "organizations/1234".
 
                 This corresponds to the ``name`` field

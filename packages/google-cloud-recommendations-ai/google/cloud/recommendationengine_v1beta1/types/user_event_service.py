@@ -275,8 +275,9 @@ class ListUserEventsResponse(proto.Message):
         user_events (MutableSequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             The user events.
         next_page_token (str):
-            If empty, the list is complete. If nonempty, the token to
-            pass to the next request's ListUserEvents.page_token.
+            If empty, the list is complete. If nonempty, the
+            token to pass to the next request's
+            ListUserEvents.page_token.
     """
 
     @property

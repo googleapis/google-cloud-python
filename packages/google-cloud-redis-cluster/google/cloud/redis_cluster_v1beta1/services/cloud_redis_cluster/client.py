@@ -1236,8 +1236,9 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
             request (Union[google.cloud.redis_cluster_v1beta1.types.UpdateClusterRequest, dict]):
                 The request object. Request for [UpdateCluster][CloudRedis.UpdateCluster].
             cluster (google.cloud.redis_cluster_v1beta1.types.Cluster):
-                Required. Update description. Only fields specified in
-                update_mask are updated.
+                Required. Update description.
+                Only fields specified in update_mask are
+                updated.
 
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1802,8 +1803,9 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (google.cloud.redis_cluster_v1beta1.types.RescheduleClusterMaintenanceRequest.RescheduleType):
-                Required. If reschedule type is SPECIFIC_TIME, must set
-                up schedule_time as well.
+                Required. If reschedule type is
+                SPECIFIC_TIME, must set up schedule_time
+                as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1964,8 +1966,9 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
             google.cloud.redis_cluster_v1beta1.services.cloud_redis_cluster.pagers.ListBackupCollectionsPager:
                 Response for [ListBackupCollections].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2195,8 +2198,9 @@ class CloudRedisClusterClient(metaclass=CloudRedisClusterClientMeta):
             google.cloud.redis_cluster_v1beta1.services.cloud_redis_cluster.pagers.ListBackupsPager:
                 Response for [ListBackups].
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

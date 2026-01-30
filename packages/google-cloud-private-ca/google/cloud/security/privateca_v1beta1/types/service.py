@@ -164,15 +164,15 @@ class ListCertificatesRequest(proto.Message):
             Optional. Pagination token, returned earlier via
             [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1beta1.ListCertificatesResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For details on supported filters and syntax,
-            see `Certificates Filtering
-            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support>`__.
+            Optional. Only include resources that match the
+            filter in the response. For details on supported
+            filters and syntax, see [Certificates Filtering
+            documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support).
         order_by (str):
-            Optional. Specify how the results should be sorted. For
-            details on supported fields and syntax, see `Certificates
-            Sorting
-            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support>`__.
+            Optional. Specify how the results should be
+            sorted. For details on supported fields and
+            syntax, see [Certificates Sorting
+            documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support).
     """
 
     parent: str = proto.Field(
@@ -348,9 +348,9 @@ class ActivateCertificateAuthorityRequest(proto.Message):
             Required. The signed CA certificate issued from
             [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1beta1.FetchCertificateAuthorityCsrResponse.pem_csr].
         subordinate_config (google.cloud.security.privateca_v1beta1.types.SubordinateConfig):
-            Required. Must include information about the issuer of
-            'pem_ca_certificate', and any further issuers until the
-            self-signed CA.
+            Required. Must include information about the
+            issuer of 'pem_ca_certificate', and any further
+            issuers until the self-signed CA.
         request_id (str):
             Optional. An ID to identify requests. Specify
             a unique request ID so that if you must retry

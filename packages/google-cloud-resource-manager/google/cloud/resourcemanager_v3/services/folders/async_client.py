@@ -1076,8 +1076,9 @@ class FoldersAsyncClient:
             request (Optional[Union[google.cloud.resourcemanager_v3.types.MoveFolderRequest, dict]]):
                 The request object. The MoveFolder request message.
             name (:class:`str`):
-                Required. The resource name of the Folder to move. Must
-                be of the form folders/{folder_id}
+                Required. The resource name of the
+                Folder to move. Must be of the form
+                folders/{folder_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

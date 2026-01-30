@@ -288,9 +288,10 @@ class Space(proto.Message):
 
     class PredefinedPermissionSettings(proto.Enum):
         r"""Predefined permission settings that you can only specify when
-        creating a named space. More settings might be added in the future.
-        For details about permission settings for named spaces, see `Learn
-        about spaces <https://support.google.com/chat/answer/7659784>`__.
+        creating a named space. More settings might be added in the
+        future. For details about permission settings for named spaces,
+        see [Learn about
+        spaces](https://support.google.com/chat/answer/7659784).
 
         Values:
             PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED (0):
@@ -356,8 +357,8 @@ class Space(proto.Message):
         )
 
     class AccessSettings(proto.Message):
-        r"""Represents the `access
-        setting <https://support.google.com/chat/answer/11971020>`__ of the
+        r"""Represents the [access
+        setting](https://support.google.com/chat/answer/11971020) of the
         space.
 
         Attributes:
@@ -411,15 +412,16 @@ class Space(proto.Message):
                     Google Workspace administrators can discover and
                     access the space.
                 DISCOVERABLE (2):
-                    A space manager has granted a target audience access to the
-                    space. Users or Google Groups that have been individually
-                    added or invited to the space can also discover and access
-                    the space. To learn more, see `Make a space discoverable to
+                    A space manager has granted a target audience
+                    access to the space. Users or Google Groups that
+                    have been individually added or invited to the
+                    space can also discover and access the space. To
+                    learn more, see [Make a space discoverable to
                     specific
-                    users <https://developers.google.com/workspace/chat/space-target-audience>`__.
+                    users](https://developers.google.com/workspace/chat/space-target-audience).
 
-                    Creating discoverable spaces requires `user
-                    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
+                    Creating discoverable spaces requires [user
+                    authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
             """
             ACCESS_STATE_UNSPECIFIED = 0
             PRIVATE = 1

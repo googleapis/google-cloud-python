@@ -458,11 +458,13 @@ class GetWorkflowRequest(proto.Message):
             information should be retrieved. Format:
             projects/{project}/locations/{location}/workflows/{workflow}
         revision_id (str):
-            Optional. The revision of the workflow to retrieve. If the
-            revision_id is empty, the latest revision is retrieved. The
-            format is "000001-a4d", where the first six characters
-            define the zero-padded decimal revision number. They are
-            followed by a hyphen and three hexadecimal characters.
+            Optional. The revision of the workflow to
+            retrieve. If the revision_id is empty, the
+            latest revision is retrieved. The format is
+            "000001-a4d", where the first six characters
+            define the zero-padded decimal revision number.
+            They are followed by a hyphen and three
+            hexadecimal characters.
     """
 
     name: str = proto.Field(

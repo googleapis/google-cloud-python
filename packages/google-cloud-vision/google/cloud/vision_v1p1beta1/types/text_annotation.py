@@ -56,8 +56,8 @@ class TextAnnotation(proto.Message):
 
         Attributes:
             language_code (str):
-                The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more information, see
+                The BCP-47 language code, such as "en-US" or
+                "sr-Latn". For more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
@@ -167,7 +167,8 @@ class Page(proto.Message):
             List of blocks of text, images etc on this
             page.
         confidence (float):
-            Confidence of the OCR results on the page. Range [0, 1].
+            Confidence of the OCR results on the page. Range
+            [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -220,7 +221,8 @@ class Block(proto.Message):
             Detected block type (text, image etc) for
             this block.
         confidence (float):
-            Confidence of the OCR results on the block. Range [0, 1].
+            Confidence of the OCR results on the block.
+            Range [0, 1].
     """
 
     class BlockType(proto.Enum):
@@ -296,8 +298,8 @@ class Paragraph(proto.Message):
         words (MutableSequence[google.cloud.vision_v1p1beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
-            Confidence of the OCR results for the paragraph. Range [0,
-            1].
+            Confidence of the OCR results for the paragraph.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -344,7 +346,8 @@ class Word(proto.Message):
             The order of the symbols follows the natural
             reading order.
         confidence (float):
-            Confidence of the OCR results for the word. Range [0, 1].
+            Confidence of the OCR results for the word.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -391,7 +394,8 @@ class Symbol(proto.Message):
             The actual UTF-8 representation of the
             symbol.
         confidence (float):
-            Confidence of the OCR results for the symbol. Range [0, 1].
+            Confidence of the OCR results for the symbol.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(

@@ -49,12 +49,11 @@ class Control(proto.Message):
             Immutable. Fully qualified name
             ``projects/*/locations/global/catalogs/*/controls/*``
         display_name (str):
-            Required. The human readable control display name. Used in
-            Retail UI.
-
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is thrown.
+            Required. The human readable control display
+            name. Used in Retail UI.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is thrown.
         associated_serving_config_ids (MutableSequence[str]):
             Output only. List of [serving
             config][google.cloud.retail.v2.ServingConfig] ids that are

@@ -351,9 +351,9 @@ class SubscriptionsServiceGrpcTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the create subscription method over gRPC.
 
-        Creates a Google Workspace subscription. To learn how to use
-        this method, see `Create a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/create-subscription>`__.
+        Creates a Google Workspace subscription. To learn how to
+        use this method, see [Create a Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/create-subscription).
 
         Returns:
             Callable[[~.CreateSubscriptionRequest],
@@ -381,9 +381,10 @@ class SubscriptionsServiceGrpcTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the delete subscription method over gRPC.
 
-        Deletes a Google Workspace subscription. To learn how to use
-        this method, see `Delete a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/delete-subscription>`__.
+        Deletes a Google Workspace subscription.
+        To learn how to use this method, see [Delete a Google
+        Workspace
+        subscription](https://developers.google.com/workspace/events/guides/delete-subscription).
 
         Returns:
             Callable[[~.DeleteSubscriptionRequest],
@@ -412,9 +413,10 @@ class SubscriptionsServiceGrpcTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the get subscription method over gRPC.
 
-        Gets details about a Google Workspace subscription. To learn how
-        to use this method, see `Get details about a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/get-subscription>`__.
+        Gets details about a Google Workspace subscription. To
+        learn how to use this method, see [Get details about a
+        Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/get-subscription).
 
         Returns:
             Callable[[~.GetSubscriptionRequest],
@@ -443,9 +445,9 @@ class SubscriptionsServiceGrpcTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the list subscriptions method over gRPC.
 
-        Lists Google Workspace subscriptions. To learn how to use this
-        method, see `List Google Workspace
-        subscriptions <https://developers.google.com/workspace/events/guides/list-subscriptions>`__.
+        Lists Google Workspace subscriptions. To learn how to
+        use this method, see [List Google Workspace
+        subscriptions](https://developers.google.com/workspace/events/guides/list-subscriptions).
 
         Returns:
             Callable[[~.ListSubscriptionsRequest],
@@ -473,9 +475,10 @@ class SubscriptionsServiceGrpcTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the update subscription method over gRPC.
 
-        Updates or renews a Google Workspace subscription. To learn how
-        to use this method, see `Update or renew a Google Workspace
-        subscription <https://developers.google.com/workspace/events/guides/update-subscription>`__.
+        Updates or renews a Google Workspace subscription. To
+        learn how to use this method, see [Update or renew a
+        Google Workspace
+        subscription](https://developers.google.com/workspace/events/guides/update-subscription).
 
         Returns:
             Callable[[~.UpdateSubscriptionRequest],

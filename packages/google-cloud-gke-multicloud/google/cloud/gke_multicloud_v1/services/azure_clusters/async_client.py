@@ -2713,9 +2713,10 @@ class AzureClustersAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> azure_resources.AzureOpenIdConfig:
-        r"""Gets the OIDC discovery document for the cluster. See the
-        `OpenID Connect Discovery 1.0
-        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
+        r"""Gets the OIDC discovery document for the cluster.
+        See the
+        [OpenID Connect Discovery 1.0
+        specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
         for details.
 
         .. code-block:: python
@@ -2872,11 +2873,13 @@ class AzureClustersAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAzureJsonWebKeysRequest, dict]]):
-                The request object. GetAzureJsonWebKeysRequest gets the public component of
-                the keys used by the cluster to sign token requests.
-                This will be the jwks_uri for the discover document
-                returned by getOpenIDConfig. See the OpenID Connect
-                Discovery 1.0 specification for details.
+                The request object. GetAzureJsonWebKeysRequest gets the
+                public component of the keys used by the
+                cluster to sign token requests. This
+                will be the jwks_uri for the discover
+                document returned by getOpenIDConfig.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
             azure_cluster (:class:`str`):
                 Required. The AzureCluster, which owns the JsonWebKeys.
                 Format:

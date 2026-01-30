@@ -306,9 +306,10 @@ class Version(proto.Message):
         endpoints_api_service (google.cloud.appengine_admin_v1.types.EndpointsApiService):
             Cloud Endpoints configuration.
 
-            If endpoints_api_service is set, the Cloud Endpoints
-            Extensible Service Proxy will be provided to serve the API
-            implemented by the app.
+            If endpoints_api_service is set, the Cloud
+            Endpoints Extensible Service Proxy will be
+            provided to serve the API implemented by the
+            app.
         entrypoint (google.cloud.appengine_admin_v1.types.Entrypoint):
             The entrypoint for the application.
         vpc_access_connector (google.cloud.appengine_admin_v1.types.VpcAccessConnector):

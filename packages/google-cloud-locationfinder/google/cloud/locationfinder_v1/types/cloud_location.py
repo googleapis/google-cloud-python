@@ -178,15 +178,16 @@ class ListCloudLocationsRequest(proto.Message):
             parameters provided to 'ListCloudLocations' must
             match the call that provided the page token.
         filter (str):
-            Optional. A filter expression that filters resources listed
-            in the response. The expression is in the form of
-            field=value. For example,
-            'cloud_location_type=CLOUD_LOCATION_TYPE_REGION'. Multiple
-            filter queries are space-separated. For example,
+            Optional. A filter expression that filters
+            resources listed in the response. The expression
+            is in the form of field=value. For example,
+            'cloud_location_type=CLOUD_LOCATION_TYPE_REGION'.
+            Multiple filter queries are space-separated. For
+            example,
             'cloud_location_type=CLOUD_LOCATION_TYPE_REGION
-            territory_code="US"' By default, each expression is an AND
-            expression. However, you can include AND and OR expressions
-            explicitly.
+            territory_code="US"' By default, each expression
+            is an AND expression. However, you can include
+            AND and OR expressions explicitly.
     """
 
     parent: str = proto.Field(
@@ -214,10 +215,11 @@ class ListCloudLocationsResponse(proto.Message):
         cloud_locations (MutableSequence[google.cloud.locationfinder_v1.types.CloudLocation]):
             Output only. List of cloud locations.
         next_page_token (str):
-            Output only. The continuation token, used to page through
-            large result sets. Provide this value in a subsequent
-            request as page_token in subsequent requests to retrieve the
-            next page. If this field is not present, there are no
+            Output only. The continuation token, used to
+            page through large result sets. Provide this
+            value in a subsequent request as page_token in
+            subsequent requests to retrieve the next page.
+            If this field is not present, there are no
             subsequent results.
     """
 
@@ -314,10 +316,11 @@ class SearchCloudLocationsResponse(proto.Message):
         cloud_locations (MutableSequence[google.cloud.locationfinder_v1.types.CloudLocation]):
             Output only. List of cloud locations.
         next_page_token (str):
-            Output only. The continuation token, used to page through
-            large result sets. Provide this value in a subsequent
-            request as page_token in subsequent requests to retrieve the
-            next page. If this field is not present, there are no
+            Output only. The continuation token, used to
+            page through large result sets. Provide this
+            value in a subsequent request as page_token in
+            subsequent requests to retrieve the next page.
+            If this field is not present, there are no
             subsequent results.
     """
 

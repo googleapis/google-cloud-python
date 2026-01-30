@@ -213,8 +213,8 @@ class ListAssetsResponse(proto.Message):
         assets (MutableSequence[google.cloud.video.live_stream_v1.types.Asset]):
             The list of Assets
         next_page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -323,12 +323,13 @@ class ListChannelsRequest(proto.Message):
             [next_page_token][google.cloud.video.livestream.v1.ListChannelsResponse.next_page_token]
             to determine if there are more items left to be queried.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         filter (str):
             The filter to apply to list results.
         order_by (str):
-            Specifies the ordering of results following syntax at
+            Specifies the ordering of results following
+            syntax at
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 
@@ -745,14 +746,14 @@ class ListInputsRequest(proto.Message):
             [next_page_token][google.cloud.video.livestream.v1.ListInputsResponse.next_page_token]
             to determine if there are more items left to be queried.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         filter (str):
             The filter to apply to list results.
         order_by (str):
-            Specifies the ordering of results following syntax at
-            `Sorting
-            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+            Specifies the ordering of results following
+            syntax at [Sorting
+            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
     """
 
     parent: str = proto.Field(
@@ -991,12 +992,13 @@ class ListEventsRequest(proto.Message):
             [next_page_token][google.cloud.video.livestream.v1.ListEventsResponse.next_page_token]
             to determine if there are more items left to be queried.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
         filter (str):
             The filter to apply to list results.
         order_by (str):
-            Specifies the ordering of results following syntax at
+            Specifies the ordering of results following
+            syntax at
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 

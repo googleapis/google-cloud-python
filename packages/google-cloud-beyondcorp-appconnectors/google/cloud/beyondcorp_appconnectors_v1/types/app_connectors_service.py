@@ -58,14 +58,16 @@ class ListAppConnectorsRequest(proto.Message):
             [next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            ListAppConnectorsRequest, if any.
+            Optional. The next_page_token value returned
+            from a previous ListAppConnectorsRequest, if
+            any.
         filter (str):
             Optional. A filter specifying constraints of
             a list operation.
         order_by (str):
-            Optional. Specifies the ordering of results. See `Sorting
-            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
+            Optional. Specifies the ordering of results. See
+            [Sorting
+            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
             for more information.
     """
 
@@ -220,8 +222,9 @@ class UpdateAppConnectorRequest(proto.Message):
             - ``labels``
             - ``display_name``
         app_connector (google.cloud.beyondcorp_appconnectors_v1.types.AppConnector):
-            Required. AppConnector message with updated fields. Only
-            supported fields specified in update_mask are updated.
+            Required. AppConnector message with updated
+            fields. Only supported fields specified in
+            update_mask are updated.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

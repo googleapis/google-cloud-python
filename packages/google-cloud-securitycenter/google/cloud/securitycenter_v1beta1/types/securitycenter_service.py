@@ -66,8 +66,8 @@ class CreateFindingRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new finding's parent. Its
-            format should be
+            Required. Resource name of the new finding's
+            parent. Its format should be
             "organizations/[organization_id]/sources/[source_id]".
         finding_id (str):
             Required. Unique identifier provided by the
@@ -76,9 +76,9 @@ class CreateFindingRequest(proto.Message):
             characters and greater than 0 characters in
             length.
         finding (google.cloud.securitycenter_v1beta1.types.Finding):
-            Required. The Finding being created. The name and
-            security_marks will be ignored as they are both output only
-            fields on this resource.
+            Required. The Finding being created. The name
+            and security_marks will be ignored as they are
+            both output only fields on this resource.
     """
 
     parent: str = proto.Field(
@@ -101,12 +101,13 @@ class CreateSourceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new source's parent. Its
-            format should be "organizations/[organization_id]".
+            Required. Resource name of the new source's
+            parent. Its format should be
+            "organizations/[organization_id]".
         source (google.cloud.securitycenter_v1beta1.types.Source):
-            Required. The Source being created, only the display_name
-            and description will be used. All other fields will be
-            ignored.
+            Required. The Source being created, only the
+            display_name and description will be used. All
+            other fields will be ignored.
     """
 
     parent: str = proto.Field(
@@ -125,8 +126,8 @@ class GetOrganizationSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the organization to get organization
-            settings for. Its format is
+            Required. Name of the organization to get
+            organization settings for. Its format is
             "organizations/[organization_id]/organizationSettings".
     """
 
@@ -141,8 +142,9 @@ class GetSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Relative resource name of the source. Its format
-            is "organizations/[organization_id]/source/[source_id]".
+            Required. Relative resource name of the source.
+            Its format is
+            "organizations/[organization_id]/source/[source_id]".
     """
 
     name: str = proto.Field(
@@ -156,8 +158,8 @@ class GroupAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to groupBy. Its format is
-            "organizations/[organization_id]".
+            Required. Name of the organization to groupBy.
+            Its format is "organizations/[organization_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -479,8 +481,9 @@ class ListSourcesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent of sources to list.
-            Its format should be "organizations/[organization_id]".
+            Required. Resource name of the parent of sources
+            to list. Its format should be
+            "organizations/[organization_id]".
         page_token (str):
             The value returned by the last ``ListSourcesResponse``;
             indicates that this is a continuation of a prior
@@ -537,8 +540,9 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization assets should belong to.
-            Its format is "organizations/[organization_id]".
+            Required. Name of the organization assets should
+            belong to. Its format is
+            "organizations/[organization_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -571,16 +575,20 @@ class ListAssetsRequest(proto.Message):
             For example, ``resource_properties.size = 100`` is a valid
             filter string.
         order_by (str):
-            Expression that defines what fields and order to use for
-            sorting. The string value should follow SQL syntax: comma
-            separated list of fields. For example:
-            "name,resource_properties.a_property". The default sorting
-            order is ascending. To specify descending order for a field,
-            a suffix " desc" should be appended to the field name. For
-            example: "name desc,resource_properties.a_property".
-            Redundant space characters in the syntax are insignificant.
-            "name desc,resource_properties.a_property" and " name desc ,
-            resource_properties.a_property " are equivalent.
+            Expression that defines what fields and order to
+            use for sorting. The string value should follow
+            SQL syntax: comma separated list of fields. For
+            example: "name,resource_properties.a_property".
+            The default sorting order is ascending. To
+            specify descending order for a field, a suffix "
+            desc" should be appended to the field name. For
+            example: "name
+            desc,resource_properties.a_property". Redundant
+            space characters in the syntax are
+            insignificant. "name
+            desc,resource_properties.a_property" and " name
+            desc , resource_properties.a_property " are
+            equivalent.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             assets. The filter is limited to assets existing
@@ -696,9 +704,10 @@ class ListAssetsResponse(proto.Message):
         class State(proto.Enum):
             r"""State of the asset.
 
-            When querying across two points in time this describes the change
-            between the two points: ADDED, REMOVED, or ACTIVE. If there was no
-            compare_duration supplied in the request the state should be: UNUSED
+            When querying across two points in time this describes the
+            change between the two points: ADDED, REMOVED, or ACTIVE. If
+            there was no compare_duration supplied in the request the state
+            should be: UNUSED
 
             Values:
                 STATE_UNSPECIFIED (0):
@@ -794,16 +803,20 @@ class ListFindingsRequest(proto.Message):
             For example, ``source_properties.size = 100`` is a valid
             filter string.
         order_by (str):
-            Expression that defines what fields and order to use for
-            sorting. The string value should follow SQL syntax: comma
-            separated list of fields. For example:
-            "name,resource_properties.a_property". The default sorting
-            order is ascending. To specify descending order for a field,
-            a suffix " desc" should be appended to the field name. For
-            example: "name desc,source_properties.a_property". Redundant
-            space characters in the syntax are insignificant. "name
-            desc,source_properties.a_property" and " name desc ,
-            source_properties.a_property " are equivalent.
+            Expression that defines what fields and order to
+            use for sorting. The string value should follow
+            SQL syntax: comma separated list of fields. For
+            example: "name,resource_properties.a_property".
+            The default sorting order is ascending. To
+            specify descending order for a field, a suffix "
+            desc" should be appended to the field name. For
+            example: "name
+            desc,source_properties.a_property". Redundant
+            space characters in the syntax are
+            insignificant. "name
+            desc,source_properties.a_property" and " name
+            desc , source_properties.a_property " are
+            equivalent.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             findings. The filter is limited to findings
@@ -902,9 +915,11 @@ class SetFindingStateRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The relative resource name of the finding. See:
+            Required. The relative resource name of the
+            finding. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
+
             "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
         state (google.cloud.securitycenter_v1beta1.types.Finding.State):
             Required. The desired State of the finding.
@@ -935,8 +950,9 @@ class RunAssetDiscoveryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to run asset discovery
-            for. Its format is "organizations/[organization_id]".
+            Required. Name of the organization to run asset
+            discovery for. Its format is
+            "organizations/[organization_id]".
     """
 
     parent: str = proto.Field(
@@ -950,13 +966,14 @@ class UpdateFindingRequest(proto.Message):
 
     Attributes:
         finding (google.cloud.securitycenter_v1beta1.types.Finding):
-            Required. The finding resource to update or create if it
-            does not already exist. parent, security_marks, and
-            update_time will be ignored.
+            Required. The finding resource to update or
+            create if it does not already exist. parent,
+            security_marks, and update_time will be ignored.
 
-            In the case of creation, the finding id portion of the name
-            must alphanumeric and less than or equal to 32 characters
-            and greater than 0 characters in length.
+            In the case of creation, the finding id portion
+            of the name must alphanumeric and less than or
+            equal to 32 characters and greater than 0
+            characters in length.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the
             finding resource. This field should not be

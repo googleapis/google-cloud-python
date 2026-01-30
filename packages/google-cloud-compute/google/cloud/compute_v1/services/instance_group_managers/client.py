@@ -3478,10 +3478,11 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
 
         Returns:
             google.cloud.compute_v1.services.instance_group_managers.pagers.ListPager:
-                [Output Only] A list of managed instance groups.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                [Output Only] A list of managed instance
+                groups.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

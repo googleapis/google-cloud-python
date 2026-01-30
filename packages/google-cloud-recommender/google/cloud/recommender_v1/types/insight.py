@@ -56,9 +56,10 @@ class Insight(proto.Message):
             Timestamp of the latest data used to generate
             the insight.
         observation_period (google.protobuf.duration_pb2.Duration):
-            Observation period that led to the insight. The source data
-            used to generate the insight ends at last_refresh_time and
-            begins at (last_refresh_time - observation_period).
+            Observation period that led to the insight. The
+            source data used to generate the insight ends at
+            last_refresh_time and begins at
+            (last_refresh_time - observation_period).
         state_info (google.cloud.recommender_v1.types.InsightStateInfo):
             Information state and metadata.
         category (google.cloud.recommender_v1.types.Insight.Category):

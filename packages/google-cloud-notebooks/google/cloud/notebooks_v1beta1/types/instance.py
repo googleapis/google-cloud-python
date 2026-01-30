@@ -120,17 +120,19 @@ class Instance(proto.Message):
             the service account users of your VM instance's service
             account can use the instance.
         service_account (str):
-            The service account on this instance, giving access to other
-            Google Cloud services. You can use any service account
-            within the same project, but you must have the service
-            account user permission to use the instance.
+            The service account on this instance, giving
+            access to other Google Cloud services.
+            You can use any service account within the same
+            project, but you must have the service account
+            user permission to use the instance.
 
-            If not specified, the `Compute Engine default service
-            account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
+            If not specified, the [Compute Engine default
+            service
+            account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
             is used.
         machine_type (str):
-            Required. The `Compute Engine machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__
+            Required. The [Compute Engine machine
+            type](https://cloud.google.com/compute/docs/machine-types)
             of this instance.
         accelerator_config (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
@@ -205,9 +207,10 @@ class Instance(proto.Message):
             Optional. The type of vNIC to be used on this
             interface. This may be gVNIC or VirtioNet.
         reservation_affinity (google.cloud.notebooks_v1beta1.types.ReservationAffinity):
-            Optional. The optional reservation affinity. Setting this
-            field will apply the specified `Zonal Compute
-            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+            Optional. The optional reservation affinity.
+            Setting this field will apply the specified
+            [Zonal Compute
+            Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
             to this notebook instance.
         can_ip_forward (bool):
             Optional. Flag to enable ip forwarding or
@@ -346,7 +349,8 @@ class Instance(proto.Message):
 
         Values:
             UNSPECIFIED_NIC_TYPE (0):
-                No type specified. Default should be UNSPECIFIED_NIC_TYPE.
+                No type specified. Default should be
+                UNSPECIFIED_NIC_TYPE.
             VIRTIO_NET (1):
                 VIRTIO. Default in Notebooks DLVM.
             GVNIC (2):

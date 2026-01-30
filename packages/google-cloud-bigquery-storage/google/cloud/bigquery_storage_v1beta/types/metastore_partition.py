@@ -82,12 +82,14 @@ class BatchCreateMetastorePartitionsRequest(proto.Message):
             Required. Requests to add metastore
             partitions to the table.
         skip_existing_partitions (bool):
-            Optional. Mimics the ifNotExists flag in IMetaStoreClient
-            add_partitions(..). If the flag is set to false, the server
-            will return ALREADY_EXISTS if any partition already exists.
-            If the flag is set to true, the server will skip existing
-            partitions and insert only the non-existing partitions. A
-            maximum of 900 partitions can be inserted in a batch.
+            Optional. Mimics the ifNotExists flag in
+            IMetaStoreClient add_partitions(..). If the flag
+            is set to false, the server will return
+            ALREADY_EXISTS if any partition already exists.
+            If the flag is set to true, the server will skip
+            existing partitions and insert only the
+            non-existing partitions. A maximum of 900
+            partitions can be inserted in a batch.
         trace_id (str):
             Optional. Optional trace id to be used for debugging. It is
             expected that the client sets the same ``trace_id`` for all

@@ -1429,8 +1429,8 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             Args:
                 request (~.data_chat_service.ListMessagesRequest):
-                    The request object. Request for listing chat messages based on parent and
-                conversation_id.
+                    The request object. Request for listing chat messages based
+                on parent and conversation_id.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

@@ -200,18 +200,21 @@ class DeploymentLevel(proto.Enum):
             catalog and are configured and deployed by TNA
             automation.
         SINGLE_DEPLOYMENT (2):
-            Blueprints at SINGLE_DEPLOYMENT level can be a) Modified in
-            private catalog. b) Used to create a deployment on
-            orchestration cluster by the user, once approved.
+            Blueprints at SINGLE_DEPLOYMENT level can be
+            a) Modified in private catalog.
+            b) Used to create a deployment on orchestration
+            cluster by the user, once approved.
         MULTI_DEPLOYMENT (3):
-            Blueprints at MULTI_DEPLOYMENT level can be a) Modified in
-            private catalog. b) Used to create a deployment on
-            orchestration cluster which will create further hydrated
+            Blueprints at MULTI_DEPLOYMENT level can be
+            a) Modified in private catalog.
+            b) Used to create a deployment on orchestration
+            cluster which will create further hydrated
             deployments.
         WORKLOAD_CLUSTER_DEPLOYMENT (4):
-            Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level can be a)
-            Modified in private catalog. b) Used to create a deployment
-            on workload cluster by the user, once approved.
+            Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level
+            can be a) Modified in private catalog.
+            b) Used to create a deployment on workload
+            cluster by the user, once approved.
     """
     DEPLOYMENT_LEVEL_UNSPECIFIED = 0
     HYDRATION = 1
@@ -314,9 +317,9 @@ class EdgeSlm(proto.Message):
         name (str):
             Name of the EdgeSlm resource.
         orchestration_cluster (str):
-            Immutable. Reference to the orchestration cluster on which
-            templates for this resources will be applied. This should be
-            of format
+            Immutable. Reference to the orchestration
+            cluster on which templates for this resources
+            will be applied. This should be of format
             projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. [Output only] Create time stamp.
@@ -470,9 +473,10 @@ class Blueprint(proto.Message):
             a public blueprint, from which this blueprint is
             created.
         deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
-            Output only. DeploymentLevel of a blueprint signifies where
-            the blueprint will be applied. e.g. [HYDRATION,
-            SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT]
+            Output only. DeploymentLevel of a blueprint
+            signifies where the blueprint will be applied.
+            e.g. [HYDRATION, SINGLE_DEPLOYMENT,
+            MULTI_DEPLOYMENT]
         rollback_support (bool):
             Output only. Indicates if the deployment
             created from this blueprint can be rolled back.
@@ -590,9 +594,9 @@ class PublicBlueprint(proto.Message):
         description (str):
             The description of the public blueprint.
         deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
-            DeploymentLevel of a blueprint signifies where the blueprint
-            will be applied. e.g. [HYDRATION, SINGLE_DEPLOYMENT,
-            MULTI_DEPLOYMENT]
+            DeploymentLevel of a blueprint signifies where
+            the blueprint will be applied. e.g. [HYDRATION,
+            SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT]
         source_provider (str):
             Source provider is the author of a public
             blueprint. e.g. Google, vendors
@@ -676,15 +680,16 @@ class Deployment(proto.Message):
             a public blueprint, from which this deployment
             is created.
         workload_cluster (str):
-            Optional. Immutable. The WorkloadCluster on which to create
-            the Deployment. This field should only be passed when the
-            deployment_level of the source blueprint specifies
-            deployments on workload clusters e.g.
+            Optional. Immutable. The WorkloadCluster on
+            which to create the Deployment. This field
+            should only be passed when the deployment_level
+            of the source blueprint specifies deployments on
+            workload clusters e.g.
             WORKLOAD_CLUSTER_DEPLOYMENT.
         deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
-            Output only. Attributes to where the deployment can inflict
-            changes. The value can only be [SINGLE_DEPLOYMENT,
-            MULTI_DEPLOYMENT].
+            Output only. Attributes to where the deployment
+            can inflict changes. The value can only be
+            [SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT].
         rollback_support (bool):
             Output only. Indicates if the deployment can
             be rolled back, exported from public blueprint.
@@ -953,9 +958,10 @@ class CreateOrchestrationClusterRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         orchestration_cluster_id (str):
-            Required. Id of the requesting object If auto-generating Id
-            server-side, remove this field and orchestration_cluster_id
-            from the method_signature of Create RPC
+            Required. Id of the requesting object
+            If auto-generating Id server-side, remove this
+            field and orchestration_cluster_id from the
+            method_signature of Create RPC
         orchestration_cluster (google.cloud.telcoautomation_v1alpha1.types.OrchestrationCluster):
             Required. The resource being created
         request_id (str):
@@ -1132,9 +1138,10 @@ class CreateEdgeSlmRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         edge_slm_id (str):
-            Required. Id of the requesting object If auto-generating Id
-            server-side, remove this field and edge_slm_id from the
-            method_signature of Create RPC
+            Required. Id of the requesting object
+            If auto-generating Id server-side, remove this
+            field and edge_slm_id from the method_signature
+            of Create RPC
         edge_slm (google.cloud.telcoautomation_v1alpha1.types.EdgeSlm):
             Required. The resource being created
         request_id (str):
@@ -1221,7 +1228,8 @@ class CreateBlueprintRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent resource. Format should be -
+            Required. The name of parent resource.
+            Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         blueprint_id (str):
             Optional. The name of the blueprint.
@@ -1272,15 +1280,17 @@ class GetBlueprintRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the blueprint. Case 1: If the name
-            provided in the request is {blueprint_id}@{revision_id},
-            then the revision with revision_id will be returned. Case 2:
-            If the name provided in the request is {blueprint}, then the
-            current state of the blueprint is returned.
+            Required. The name of the blueprint.
+            Case 1: If the name provided in the request is
+            {blueprint_id}@{revision_id}, then the revision
+            with revision_id will be returned. Case 2: If
+            the name provided in the request is {blueprint},
+            then the current state of the blueprint is
+            returned.
         view (google.cloud.telcoautomation_v1alpha1.types.BlueprintView):
-            Optional. Defines the type of view of the blueprint. When
-            field is not present BLUEPRINT_VIEW_BASIC is considered as
-            default.
+            Optional. Defines the type of view of the
+            blueprint. When field is not present
+            BLUEPRINT_VIEW_BASIC is considered as default.
     """
 
     name: str = proto.Field(
@@ -1299,10 +1309,10 @@ class DeleteBlueprintRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of blueprint to delete. Blueprint name
-            should be in the format {blueprint_id}, if
-            {blueprint_id}@{revision_id} is passed then the API throws
-            invalid argument.
+            Required. The name of blueprint to delete.
+            Blueprint name should be in the format
+            {blueprint_id}, if {blueprint_id}@{revision_id}
+            is passed then the API throws invalid argument.
     """
 
     name: str = proto.Field(
@@ -1316,8 +1326,8 @@ class ListBlueprintsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent orchestration cluster resource.
-            Format should be -
+            Required. The name of parent orchestration
+            cluster resource. Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         filter (str):
             Optional. Filtering only supports equality on blueprint
@@ -1486,8 +1496,8 @@ class SearchBlueprintRevisionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent orchestration cluster resource.
-            Format should be -
+            Required. The name of parent orchestration
+            cluster resource. Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         query (str):
             Required. Supported queries:
@@ -1579,8 +1589,9 @@ class ListPublicBlueprintsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent value of public blueprint. Format should be
-            - "projects/{project_id}/locations/{location_name}".
+            Required. Parent value of public blueprint.
+            Format should be -
+            "projects/{project_id}/locations/{location_name}".
         page_size (int):
             Optional. Requested page size. Server may
             return fewer items than requested. If
@@ -1650,7 +1661,8 @@ class CreateDeploymentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent resource. Format should be -
+            Required. The name of parent resource.
+            Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         deployment_id (str):
             Optional. The name of the deployment.
@@ -1701,14 +1713,17 @@ class GetDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment. Case 1: If the name
-            provided in the request is {deployment_id}@{revision_id},
-            then the revision with revision_id will be returned. Case 2:
-            If the name provided in the request is {deployment}, then
-            the current state of the deployment is returned.
+            Required. The name of the deployment.
+            Case 1: If the name provided in the request is
+            {deployment_id}@{revision_id}, then the revision
+            with revision_id will be returned.
+            Case 2: If the name provided in the request is
+            {deployment}, then the current state of the
+            deployment is returned.
         view (google.cloud.telcoautomation_v1alpha1.types.DeploymentView):
-            Optional. Defines the type of view of the deployment. When
-            field is not present VIEW_BASIC is considered as default.
+            Optional. Defines the type of view of the
+            deployment. When field is not present VIEW_BASIC
+            is considered as default.
     """
 
     name: str = proto.Field(
@@ -1742,8 +1757,8 @@ class ListDeploymentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent orchestration cluster resource.
-            Format should be -
+            Required. The name of parent orchestration
+            cluster resource. Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         filter (str):
             Optional. Filtering only supports equality on deployment
@@ -1866,8 +1881,8 @@ class SearchDeploymentRevisionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of parent orchestration cluster resource.
-            Format should be -
+            Required. The name of parent orchestration
+            cluster resource. Format should be -
             "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
         query (str):
             Required. Supported queries:
@@ -2286,19 +2301,22 @@ class StandardManagementConfig(proto.Message):
             (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)
             to pick a specific range to use.
         cluster_named_range (str):
-            Optional. The name of the existing secondary range in the
-            cluster's subnetwork to use for pod IP addresses.
-            Alternatively, cluster_cidr_block can be used to
-            automatically create a GKE-managed one.
+            Optional. The name of the existing secondary
+            range in the cluster's subnetwork to use for pod
+            IP addresses. Alternatively, cluster_cidr_block
+            can be used to automatically create a
+            GKE-managed one.
         services_named_range (str):
-            Optional. The name of the existing secondary range in the
-            cluster's subnetwork to use for service ClusterIPs.
-            Alternatively, services_cidr_block can be used to
-            automatically create a GKE-managed one.
+            Optional. The name of the existing secondary
+            range in the cluster's subnetwork to use for
+            service ClusterIPs. Alternatively,
+            services_cidr_block can be used to automatically
+            create a GKE-managed one.
         master_authorized_networks_config (google.cloud.telcoautomation_v1alpha1.types.MasterAuthorizedNetworksConfig):
-            Optional. Master Authorized Network that supports multiple
-            CIDR blocks. Allows access to the k8s master from multiple
-            blocks. It cannot be set at the same time with the field
+            Optional. Master Authorized Network that
+            supports multiple CIDR blocks. Allows access to
+            the k8s master from multiple blocks. It cannot
+            be set at the same time with the field
             man_block.
     """
 
@@ -2372,19 +2390,22 @@ class FullManagementConfig(proto.Message):
             (e.g. 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)
             to pick a specific range to use.
         cluster_named_range (str):
-            Optional. The name of the existing secondary range in the
-            cluster's subnetwork to use for pod IP addresses.
-            Alternatively, cluster_cidr_block can be used to
-            automatically create a GKE-managed one.
+            Optional. The name of the existing secondary
+            range in the cluster's subnetwork to use for pod
+            IP addresses. Alternatively, cluster_cidr_block
+            can be used to automatically create a
+            GKE-managed one.
         services_named_range (str):
-            Optional. The name of the existing secondary range in the
-            cluster's subnetwork to use for service ClusterIPs.
-            Alternatively, services_cidr_block can be used to
-            automatically create a GKE-managed one.
+            Optional. The name of the existing secondary
+            range in the cluster's subnetwork to use for
+            service ClusterIPs. Alternatively,
+            services_cidr_block can be used to automatically
+            create a GKE-managed one.
         master_authorized_networks_config (google.cloud.telcoautomation_v1alpha1.types.MasterAuthorizedNetworksConfig):
-            Optional. Master Authorized Network that supports multiple
-            CIDR blocks. Allows access to the k8s master from multiple
-            blocks. It cannot be set at the same time with the field
+            Optional. Master Authorized Network that
+            supports multiple CIDR blocks. Allows access to
+            the k8s master from multiple blocks. It cannot
+            be set at the same time with the field
             man_block.
     """
 
@@ -2429,8 +2450,9 @@ class MasterAuthorizedNetworksConfig(proto.Message):
 
     Attributes:
         cidr_blocks (MutableSequence[google.cloud.telcoautomation_v1alpha1.types.MasterAuthorizedNetworksConfig.CidrBlock]):
-            Optional. cidr_blocks define up to 50 external networks that
-            could access Kubernetes master through HTTPS.
+            Optional. cidr_blocks define up to 50 external
+            networks that could access Kubernetes master
+            through HTTPS.
     """
 
     class CidrBlock(proto.Message):
@@ -2438,14 +2460,15 @@ class MasterAuthorizedNetworksConfig(proto.Message):
 
         Attributes:
             display_name (str):
-                Optional. display_name is an optional field for users to
-                identify CIDR blocks.
+                Optional. display_name is an optional field for
+                users to identify CIDR blocks.
             cidr_block (str):
-                Optional. cidr_block must be specified in CIDR notation when
-                using master_authorized_networks_config. Currently, the user
-                could still use the deprecated man_block field, so this
-                field is currently optional, but will be required in the
-                future.
+                Optional. cidr_block must be specified in CIDR
+                notation when using
+                master_authorized_networks_config. Currently,
+                the user could still use the deprecated
+                man_block field, so this field is currently
+                optional, but will be required in the future.
         """
 
         display_name: str = proto.Field(

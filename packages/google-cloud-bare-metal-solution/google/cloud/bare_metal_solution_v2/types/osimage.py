@@ -40,8 +40,9 @@ class OSImage(proto.Message):
         description (str):
             OS Image description.
         applicable_instance_types (MutableSequence[str]):
-            Instance types this image is applicable to. `Available
-            types <https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations>`__
+            Instance types this image is applicable to.
+            [Available
+            types](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
         supported_network_templates (MutableSequence[str]):
             Network templates that can be used with this
             OS Image.
@@ -77,11 +78,12 @@ class ListOSImagesRequest(proto.Message):
             Required. Parent value for
             ListProvisioningQuotasRequest.
         page_size (int):
-            Requested page size. The server might return fewer items
-            than requested. If unspecified, server will pick an
-            appropriate default. Notice that page_size field is not
-            supported and won't be respected in the API request for now,
-            will be updated when pagination is supported.
+            Requested page size. The server might return
+            fewer items than requested. If unspecified,
+            server will pick an appropriate default. Notice
+            that page_size field is not supported and won't
+            be respected in the API request for now, will be
+            updated when pagination is supported.
         page_token (str):
             A token identifying a page of results from
             the server.

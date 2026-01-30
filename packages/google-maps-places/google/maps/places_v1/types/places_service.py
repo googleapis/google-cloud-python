@@ -105,109 +105,121 @@ class SearchNearbyRequest(proto.Message):
 
             https://developers.google.com/maps/faq#languagesupport.
         region_code (str):
-            The Unicode country/region code (CLDR) of the location where
-            the request is coming from. This parameter is used to
-            display the place details, like region-specific place name,
-            if available. The parameter can affect results based on
+            The Unicode country/region code (CLDR) of the
+            location where the request is coming from. This
+            parameter is used to display the place details,
+            like region-specific place name, if available.
+            The parameter can affect results based on
             applicable law.
 
             For more information, see
             https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
-            Note that 3-digit region codes are not currently supported.
+            Note that 3-digit region codes are not currently
+            supported.
         included_types (MutableSequence[str]):
-            Included Place type (eg, "restaurant" or "gas_station") from
+            Included Place type (eg, "restaurant" or
+            "gas_station") from
             https://developers.google.com/maps/documentation/places/web-service/place-types.
 
-            Up to 50 types from `Table
-            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            Up to 50 types from [Table
+            A](https://developers.google.com/maps/documentation/places/web-service/place-types#table-a)
             may be specified.
 
-            If there are any conflicting types, i.e. a type appears in
-            both included_types and excluded_types, an INVALID_ARGUMENT
-            error is returned.
+            If there are any conflicting types, i.e. a type
+            appears in both included_types and
+            excluded_types, an INVALID_ARGUMENT error is
+            returned.
 
             If a Place type is specified with multiple type
-            restrictions, only places that satisfy all of the
-            restrictions are returned. For example, if we have
-            {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places provide "restaurant"
-            related services but do not operate primarily as
+            restrictions, only places that satisfy all of
+            the restrictions are returned. For example, if
+            we have {included_types = ["restaurant"],
+            excluded_primary_types = ["restaurant"]}, the
+            returned places provide "restaurant" related
+            services but do not operate primarily as
             "restaurants".
         excluded_types (MutableSequence[str]):
-            Excluded Place type (eg, "restaurant" or "gas_station") from
+            Excluded Place type (eg, "restaurant" or
+            "gas_station") from
             https://developers.google.com/maps/documentation/places/web-service/place-types.
 
-            Up to 50 types from `Table
-            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            Up to 50 types from [Table
+            A](https://developers.google.com/maps/documentation/places/web-service/place-types#table-a)
             may be specified.
 
-            If the client provides both included_types (e.g. restaurant)
-            and excluded_types (e.g. cafe), then the response should
-            include places that are restaurant but not cafe. The
-            response includes places that match at least one of the
+            If the client provides both included_types (e.g.
+            restaurant) and excluded_types (e.g. cafe), then
+            the response should include places that are
+            restaurant but not cafe. The response includes
+            places that match at least one of the
             included_types and none of the excluded_types.
 
-            If there are any conflicting types, i.e. a type appears in
-            both included_types and excluded_types, an INVALID_ARGUMENT
+            If there are any conflicting types, i.e. a type
+            appears in both included_types and
+            excluded_types, an INVALID_ARGUMENT error is
+            returned.
+
+            If a Place type is specified with multiple type
+            restrictions, only places that satisfy all of
+            the restrictions are returned. For example, if
+            we have {included_types = ["restaurant"],
+            excluded_primary_types = ["restaurant"]}, the
+            returned places provide "restaurant" related
+            services but do not operate primarily as
+            "restaurants".
+        included_primary_types (MutableSequence[str]):
+            Included primary Place type (e.g. "restaurant"
+            or "gas_station") from
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            A place can only have a single primary type from
+            the supported types table associated with it.
+
+            Up to 50 types from [Table
+            A](https://developers.google.com/maps/documentation/places/web-service/place-types#table-a)
+            may be specified.
+
+            If there are any conflicting primary types, i.e.
+            a type appears in both included_primary_types
+            and excluded_primary_types, an INVALID_ARGUMENT
             error is returned.
 
             If a Place type is specified with multiple type
-            restrictions, only places that satisfy all of the
-            restrictions are returned. For example, if we have
-            {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places provide "restaurant"
-            related services but do not operate primarily as
-            "restaurants".
-        included_primary_types (MutableSequence[str]):
-            Included primary Place type (e.g. "restaurant" or
-            "gas_station") from
-            https://developers.google.com/maps/documentation/places/web-service/place-types.
-            A place can only have a single primary type from the
-            supported types table associated with it.
-
-            Up to 50 types from `Table
-            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
-            may be specified.
-
-            If there are any conflicting primary types, i.e. a type
-            appears in both included_primary_types and
-            excluded_primary_types, an INVALID_ARGUMENT error is
-            returned.
-
-            If a Place type is specified with multiple type
-            restrictions, only places that satisfy all of the
-            restrictions are returned. For example, if we have
-            {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places provide "restaurant"
-            related services but do not operate primarily as
+            restrictions, only places that satisfy all of
+            the restrictions are returned. For example, if
+            we have {included_types = ["restaurant"],
+            excluded_primary_types = ["restaurant"]}, the
+            returned places provide "restaurant" related
+            services but do not operate primarily as
             "restaurants".
         excluded_primary_types (MutableSequence[str]):
-            Excluded primary Place type (e.g. "restaurant" or
-            "gas_station") from
+            Excluded primary Place type (e.g. "restaurant"
+            or "gas_station") from
             https://developers.google.com/maps/documentation/places/web-service/place-types.
 
-            Up to 50 types from `Table
-            A <https://developers.google.com/maps/documentation/places/web-service/place-types#table-a>`__
+            Up to 50 types from [Table
+            A](https://developers.google.com/maps/documentation/places/web-service/place-types#table-a)
             may be specified.
 
-            If there are any conflicting primary types, i.e. a type
-            appears in both included_primary_types and
-            excluded_primary_types, an INVALID_ARGUMENT error is
-            returned.
+            If there are any conflicting primary types, i.e.
+            a type appears in both included_primary_types
+            and excluded_primary_types, an INVALID_ARGUMENT
+            error is returned.
 
             If a Place type is specified with multiple type
-            restrictions, only places that satisfy all of the
-            restrictions are returned. For example, if we have
-            {included_types = ["restaurant"], excluded_primary_types =
-            ["restaurant"]}, the returned places provide "restaurant"
-            related services but do not operate primarily as
+            restrictions, only places that satisfy all of
+            the restrictions are returned. For example, if
+            we have {included_types = ["restaurant"],
+            excluded_primary_types = ["restaurant"]}, the
+            returned places provide "restaurant" related
+            services but do not operate primarily as
             "restaurants".
         max_result_count (int):
-            Maximum number of results to return. It must be between 1
-            and 20 (default), inclusively. If the number is unset, it
-            falls back to the upper limit. If the number is set to
-            negative or exceeds the upper limit, an INVALID_ARGUMENT
+            Maximum number of results to return. It must be
+            between 1 and 20 (default), inclusively. If the
+            number is unset, it falls back to the upper
+            limit. If the number is set to negative or
+            exceeds the upper limit, an INVALID_ARGUMENT
             error is returned.
         location_restriction (google.maps.places_v1.types.SearchNearbyRequest.LocationRestriction):
             Required. The region to search.
@@ -345,16 +357,18 @@ class SearchTextRequest(proto.Message):
 
             https://developers.google.com/maps/faq#languagesupport.
         region_code (str):
-            The Unicode country/region code (CLDR) of the location where
-            the request is coming from. This parameter is used to
-            display the place details, like region-specific place name,
-            if available. The parameter can affect results based on
+            The Unicode country/region code (CLDR) of the
+            location where the request is coming from. This
+            parameter is used to display the place details,
+            like region-specific place name, if available.
+            The parameter can affect results based on
             applicable law.
 
             For more information, see
             https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
-            Note that 3-digit region codes are not currently supported.
+            Note that 3-digit region codes are not currently
+            supported.
         rank_preference (google.maps.places_v1.types.SearchTextRequest.RankPreference):
             How results will be ranked in the response.
         included_type (str):
@@ -366,35 +380,41 @@ class SearchTextRequest(proto.Message):
             Used to restrict the search to places that
             are currently open.  The default is false.
         min_rating (float):
-            Filter out results whose average user rating is strictly
-            less than this limit. A valid value must be a float between
-            0 and 5 (inclusively) at a 0.5 cadence i.e. [0, 0.5, 1.0,
-            ... , 5.0] inclusively. The input rating will round up to
-            the nearest 0.5(ceiling). For instance, a rating of 0.6 will
-            eliminate all results with a less than 1.0 rating.
+            Filter out results whose average user rating is
+            strictly less than this limit. A valid value
+            must be a float between 0 and 5 (inclusively) at
+            a 0.5 cadence i.e. [0, 0.5, 1.0, ... , 5.0]
+            inclusively. The input rating will round up to
+            the nearest 0.5(ceiling). For instance, a rating
+            of 0.6 will eliminate all results with a less
+            than 1.0 rating.
         max_result_count (int):
-            Maximum number of results to return. It must be between 1
-            and 20, inclusively. The default is 20. If the number is
-            unset, it falls back to the upper limit. If the number is
-            set to negative or exceeds the upper limit, an
-            INVALID_ARGUMENT error is returned.
+            Maximum number of results to return. It must be
+            between 1 and 20, inclusively. The default is
+            20. If the number is unset, it falls back to the
+            upper limit. If the number is set to negative or
+            exceeds the upper limit, an INVALID_ARGUMENT
+            error is returned.
         price_levels (MutableSequence[google.maps.places_v1.types.PriceLevel]):
             Used to restrict the search to places that
             are marked as certain price levels. Users can
             choose any combinations of price levels. Default
             to select all price levels.
         strict_type_filtering (bool):
-            Used to set strict type filtering for included_type. If set
-            to true, only results of the same type will be returned.
-            Default to false.
+            Used to set strict type filtering for
+            included_type. If set to true, only results of
+            the same type will be returned. Default to
+            false.
         location_bias (google.maps.places_v1.types.SearchTextRequest.LocationBias):
-            The region to search. This location serves as a bias which
-            means results around given location might be returned.
-            Cannot be set along with location_restriction.
+            The region to search. This location serves as a
+            bias which means results around given location
+            might be returned. Cannot be set along with
+            location_restriction.
         location_restriction (google.maps.places_v1.types.SearchTextRequest.LocationRestriction):
-            The region to search. This location serves as a restriction
-            which means results outside given location will not be
-            returned. Cannot be set along with location_bias.
+            The region to search. This location serves as a
+            restriction which means results outside given
+            location will not be returned. Cannot be set
+            along with location_bias.
         ev_options (google.maps.places_v1.types.SearchTextRequest.EVOptions):
             Optional. Set the searchable EV options of a
             place search request.
@@ -698,33 +718,39 @@ class GetPhotoMediaRequest(proto.Message):
             append ``/media`` at the end of the photo resource to get
             the photo media resource name.
         max_width_px (int):
-            Optional. Specifies the maximum desired width, in pixels, of
-            the image. If the image is smaller than the values
-            specified, the original image will be returned. If the image
-            is larger in either dimension, it will be scaled to match
-            the smaller of the two dimensions, restricted to its
-            original aspect ratio. Both the max_height_px and
-            max_width_px properties accept an integer between 1 and
-            4800, inclusively. If the value is not within the allowed
-            range, an INVALID_ARGUMENT error will be returned.
+            Optional. Specifies the maximum desired width,
+            in pixels, of the image. If the image is smaller
+            than the values specified, the original image
+            will be returned. If the image is larger in
+            either dimension, it will be scaled to match the
+            smaller of the two dimensions, restricted to its
+            original aspect ratio. Both the max_height_px
+            and max_width_px properties accept an integer
+            between 1 and 4800, inclusively. If the value is
+            not within the allowed range, an
+            INVALID_ARGUMENT error will be returned.
 
-            At least one of max_height_px or max_width_px needs to be
-            specified. If neither max_height_px nor max_width_px is
-            specified, an INVALID_ARGUMENT error will be returned.
+            At least one of max_height_px or max_width_px
+            needs to be specified. If neither max_height_px
+            nor max_width_px is specified, an
+            INVALID_ARGUMENT error will be returned.
         max_height_px (int):
-            Optional. Specifies the maximum desired height, in pixels,
-            of the image. If the image is smaller than the values
-            specified, the original image will be returned. If the image
-            is larger in either dimension, it will be scaled to match
-            the smaller of the two dimensions, restricted to its
-            original aspect ratio. Both the max_height_px and
-            max_width_px properties accept an integer between 1 and
-            4800, inclusively. If the value is not within the allowed
-            range, an INVALID_ARGUMENT error will be returned.
+            Optional. Specifies the maximum desired height,
+            in pixels, of the image. If the image is smaller
+            than the values specified, the original image
+            will be returned. If the image is larger in
+            either dimension, it will be scaled to match the
+            smaller of the two dimensions, restricted to its
+            original aspect ratio. Both the max_height_px
+            and max_width_px properties accept an integer
+            between 1 and 4800, inclusively. If the value is
+            not within the allowed range, an
+            INVALID_ARGUMENT error will be returned.
 
-            At least one of max_height_px or max_width_px needs to be
-            specified. If neither max_height_px nor max_width_px is
-            specified, an INVALID_ARGUMENT error will be returned.
+            At least one of max_height_px or max_width_px
+            needs to be specified. If neither max_height_px
+            nor max_width_px is specified, an
+            INVALID_ARGUMENT error will be returned.
         skip_http_redirect (bool):
             Optional. If set, skip the default HTTP
             redirect behavior and render a text format (for
@@ -790,14 +816,17 @@ class GetPlaceRequest(proto.Message):
 
             https://developers.google.com/maps/faq#languagesupport.
         region_code (str):
-            Optional. The Unicode country/region code (CLDR) of the
-            location where the request is coming from. This parameter is
-            used to display the place details, like region-specific
-            place name, if available. The parameter can affect results
-            based on applicable law. For more information, see
+            Optional. The Unicode country/region code (CLDR)
+            of the location where the request is coming
+            from. This parameter is used to display the
+            place details, like region-specific place name,
+            if available. The parameter can affect results
+            based on applicable law.
+            For more information, see
             https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
-            Note that 3-digit region codes are not currently supported.
+            Note that 3-digit region codes are not currently
+            supported.
         session_token (str):
             Optional. A string which identifies an Autocomplete session
             for billing purposes. Must be a URL and filename safe base64

@@ -3907,8 +3907,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcb_volume_snapshot.VolumeSnapshot:
-        r"""Takes a snapshot of a boot volume. Returns INVALID_ARGUMENT if
-        called for a non-boot volume.
+        r"""Takes a snapshot of a boot volume.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         .. code-block:: python
 
@@ -4023,8 +4024,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Uses the specified snapshot to restore its parent volume.
-        Returns INVALID_ARGUMENT if called for a non-boot volume.
+        r"""Uses the specified snapshot to restore its parent
+        volume. Returns INVALID_ARGUMENT if called for a
+        non-boot volume.
 
         .. code-block:: python
 
@@ -4153,8 +4155,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a volume snapshot. Returns INVALID_ARGUMENT if called
-        for a non-boot volume.
+        r"""Deletes a volume snapshot.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         .. code-block:: python
 
@@ -4250,8 +4253,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> volume_snapshot.VolumeSnapshot:
-        r"""Returns the specified snapshot resource. Returns
-        INVALID_ARGUMENT if called for a non-boot volume.
+        r"""Returns the specified snapshot resource.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         .. code-block:: python
 

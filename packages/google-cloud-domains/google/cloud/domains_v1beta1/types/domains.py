@@ -104,11 +104,12 @@ class DomainNotice(proto.Enum):
         DOMAIN_NOTICE_UNSPECIFIED (0):
             The notice is undefined.
         HSTS_PRELOADED (1):
-            Indicates that the domain is preloaded on the HTTP Strict
-            Transport Security list in browsers. Serving a website on
-            such domain requires an SSL certificate. For details, see
-            `how to get an SSL
-            certificate <https://support.google.com/domains/answer/7638036>`__.
+            Indicates that the domain is preloaded on the
+            HTTP Strict Transport Security list in browsers.
+            Serving a website on such domain requires an SSL
+            certificate. For details, see
+            [how to get an SSL
+            certificate](https://support.google.com/domains/answer/7638036).
     """
     DOMAIN_NOTICE_UNSPECIFIED = 0
     HSTS_PRELOADED = 1
@@ -879,8 +880,9 @@ class RegisterDomainRequest(proto.Message):
             can be obtained from RetrieveRegisterParameters
             or SearchDomains calls.
         validate_only (bool):
-            When true, only validation is performed, without actually
-            registering the domain. Follows:
+            When true, only validation is performed, without
+            actually registering the domain. Follows:
+
             https://cloud.google.com/apis/design/design_patterns#request_validation
     """
 

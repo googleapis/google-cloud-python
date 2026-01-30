@@ -458,7 +458,8 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
     ]:
         r"""Return a callable for the reidentify content method over gRPC.
 
-        Re-identifies content that has been de-identified. See
+        Re-identifies content that has been de-identified.
+        See
         https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 

@@ -1022,8 +1022,9 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     ]:
         r"""Return a callable for the create volume snapshot method over gRPC.
 
-        Takes a snapshot of a boot volume. Returns INVALID_ARGUMENT if
-        called for a non-boot volume.
+        Takes a snapshot of a boot volume.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         Returns:
             Callable[[~.CreateVolumeSnapshotRequest],
@@ -1052,8 +1053,9 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     ]:
         r"""Return a callable for the restore volume snapshot method over gRPC.
 
-        Uses the specified snapshot to restore its parent volume.
-        Returns INVALID_ARGUMENT if called for a non-boot volume.
+        Uses the specified snapshot to restore its parent
+        volume. Returns INVALID_ARGUMENT if called for a
+        non-boot volume.
 
         Returns:
             Callable[[~.RestoreVolumeSnapshotRequest],
@@ -1081,8 +1083,9 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     ]:
         r"""Return a callable for the delete volume snapshot method over gRPC.
 
-        Deletes a volume snapshot. Returns INVALID_ARGUMENT if called
-        for a non-boot volume.
+        Deletes a volume snapshot.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         Returns:
             Callable[[~.DeleteVolumeSnapshotRequest],
@@ -1111,8 +1114,9 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     ]:
         r"""Return a callable for the get volume snapshot method over gRPC.
 
-        Returns the specified snapshot resource. Returns
-        INVALID_ARGUMENT if called for a non-boot volume.
+        Returns the specified snapshot resource.
+        Returns INVALID_ARGUMENT if called for a non-boot
+        volume.
 
         Returns:
             Callable[[~.GetVolumeSnapshotRequest],

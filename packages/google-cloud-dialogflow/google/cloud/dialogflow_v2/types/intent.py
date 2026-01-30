@@ -60,16 +60,16 @@ class IntentView(proto.Enum):
 
 
 class Intent(proto.Message):
-    r"""An intent categorizes an end-user's intention for one conversation
-    turn. For each agent, you define many intents, where your combined
-    intents can handle a complete conversation. When an end-user writes
-    or says something, referred to as an end-user expression or end-user
-    input, Dialogflow matches the end-user input to the best intent in
-    your agent. Matching an intent is also known as intent
-    classification.
+    r"""An intent categorizes an end-user's intention for one
+    conversation turn. For each agent, you define many intents,
+    where your combined intents can handle a complete conversation.
+    When an end-user writes or says something, referred to as an
+    end-user expression or end-user input, Dialogflow matches the
+    end-user input to the best intent in your agent. Matching an
+    intent is also known as intent classification.
 
-    For more information, see the `intent
-    guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+    For more information, see the [intent
+    guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
     Attributes:
         name (str):
@@ -103,10 +103,11 @@ class Intent(proto.Message):
             in ``ML ONLY`` match mode. Also, auto-markup in the UI is
             turned off.
         live_agent_handoff (bool):
-            Optional. Indicates that a live agent should be brought in
-            to handle the interaction with the user. In most cases, when
-            you set this flag to true, you would also want to set
-            end_interaction to true as well. Default is false.
+            Optional. Indicates that a live agent should be
+            brought in to handle the interaction with the
+            user. In most cases, when you set this flag to
+            true, you would also want to set end_interaction
+            to true as well. Default is false.
         end_interaction (bool):
             Optional. Indicates that this intent ends an
             interaction. Some integrations (e.g., Actions on
@@ -149,9 +150,9 @@ class Intent(proto.Message):
             Optional. The collection of rich messages corresponding to
             the ``Response`` field in the Dialogflow console.
         default_response_platforms (MutableSequence[google.cloud.dialogflow_v2.types.Intent.Message.Platform]):
-            Optional. The list of platforms for which the first
-            responses will be copied from the messages in
-            PLATFORM_UNSPECIFIED (i.e. default platform).
+            Optional. The list of platforms for which the
+            first responses will be copied from the messages
+            in PLATFORM_UNSPECIFIED (i.e. default platform).
         root_followup_intent_name (str):
             Output only. Read-only. The unique identifier of the root
             intent in the chain of followup intents. It identifies the
@@ -494,8 +495,9 @@ class Intent(proto.Message):
                 VIBER (7):
                     Viber.
                 ACTIONS_ON_GOOGLE (8):
-                    Google Assistant See `Dialogflow webhook
-                    format <https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json>`__
+                    Google Assistant
+                    See [Dialogflow webhook
+                    format](https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json)
                 GOOGLE_HANGOUTS (11):
                     Google Hangouts.
             """
@@ -624,12 +626,14 @@ class Intent(proto.Message):
 
             Attributes:
                 text_to_speech (str):
-                    One of text_to_speech or ssml must be provided. The plain
-                    text of the speech output. Mutually exclusive with ssml.
+                    One of text_to_speech or ssml must be provided.
+                    The plain text of the speech output. Mutually
+                    exclusive with ssml.
                 ssml (str):
-                    One of text_to_speech or ssml must be provided. Structured
-                    spoken response to the user in the SSML format. Mutually
-                    exclusive with text_to_speech.
+                    One of text_to_speech or ssml must be provided.
+                    Structured spoken response to the user in the
+                    SSML format. Mutually exclusive with
+                    text_to_speech.
                 display_text (str):
                     Optional. The text to display.
             """
@@ -1519,11 +1523,12 @@ class ListIntentsRequest(proto.Message):
             Note: training phrases of the intents will not be returned
             for non-draft environment.
         language_code (str):
-            Optional. The language used to access language-specific
-            data. If not specified, the agent's default language is
-            used. For more information, see `Multilingual intent and
-            entity
-            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+            Optional. The language used to access
+            language-specific data. If not specified, the
+            agent's default language is used. For more
+            information, see
+            [Multilingual intent and entity
+            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1532,8 +1537,8 @@ class ListIntentsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -1565,8 +1570,9 @@ class ListIntentsResponse(proto.Message):
 
     Attributes:
         intents (MutableSequence[google.cloud.dialogflow_v2.types.Intent]):
-            The list of agent intents. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of agent intents. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -1597,11 +1603,12 @@ class GetIntentRequest(proto.Message):
             Required. The name of the intent. Format:
             ``projects/<Project ID>/agent/intents/<Intent ID>``.
         language_code (str):
-            Optional. The language used to access language-specific
-            data. If not specified, the agent's default language is
-            used. For more information, see `Multilingual intent and
-            entity
-            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+            Optional. The language used to access
+            language-specific data. If not specified, the
+            agent's default language is used. For more
+            information, see
+            [Multilingual intent and entity
+            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1633,11 +1640,12 @@ class CreateIntentRequest(proto.Message):
         intent (google.cloud.dialogflow_v2.types.Intent):
             Required. The intent to create.
         language_code (str):
-            Optional. The language used to access language-specific
-            data. If not specified, the agent's default language is
-            used. For more information, see `Multilingual intent and
-            entity
-            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+            Optional. The language used to access
+            language-specific data. If not specified, the
+            agent's default language is used. For more
+            information, see
+            [Multilingual intent and entity
+            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1671,11 +1679,12 @@ class UpdateIntentRequest(proto.Message):
         intent (google.cloud.dialogflow_v2.types.Intent):
             Required. The intent to update.
         language_code (str):
-            Optional. The language used to access language-specific
-            data. If not specified, the agent's default language is
-            used. For more information, see `Multilingual intent and
-            entity
-            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+            Optional. The language used to access
+            language-specific data. If not specified, the
+            agent's default language is used. For more
+            information, see
+            [Multilingual intent and entity
+            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
@@ -1751,11 +1760,12 @@ class BatchUpdateIntentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``intent_batch``.
         language_code (str):
-            Optional. The language used to access language-specific
-            data. If not specified, the agent's default language is
-            used. For more information, see `Multilingual intent and
-            entity
-            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+            Optional. The language used to access
+            language-specific data. If not specified, the
+            agent's default language is used. For more
+            information, see
+            [Multilingual intent and entity
+            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.

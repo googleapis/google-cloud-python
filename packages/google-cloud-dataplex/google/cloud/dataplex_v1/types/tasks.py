@@ -44,8 +44,8 @@ class Task(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the task, of the
-            form:
+            Output only. The relative resource name of the
+            task, of the form:
             projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
             tasks/{task_id}.
         uid (str):
@@ -115,12 +115,14 @@ class Task(proto.Message):
 
             Attributes:
                 executors_count (int):
-                    Optional. Total number of job executors. Executor Count
-                    should be between 2 and 100. [Default=2]
+                    Optional. Total number of job executors.
+                    Executor Count should be between 2 and 100.
+                    [Default=2]
                 max_executors_count (int):
-                    Optional. Max configurable executors. If max_executors_count
-                    > executors_count, then auto-scaling is enabled. Max
-                    Executor Count should be between 2 and 1000. [Default=1000]
+                    Optional. Max configurable executors.
+                    If max_executors_count > executors_count, then
+                    auto-scaling is enabled. Max Executor Count
+                    should be between 2 and 1000. [Default=1000]
             """
 
             executors_count: int = proto.Field(
@@ -247,10 +249,10 @@ class Task(proto.Message):
                 Required. Immutable. Trigger type of the
                 user-specified Task.
             start_time (google.protobuf.timestamp_pb2.Timestamp):
-                Optional. The first run of the task will be after this time.
-                If not specified, the task will run shortly after being
-                submitted if ON_DEMAND and based on the schedule if
-                RECURRING.
+                Optional. The first run of the task will be
+                after this time. If not specified, the task will
+                run shortly after being submitted if ON_DEMAND
+                and based on the schedule if RECURRING.
             disabled (bool):
                 Optional. Prevent the task from executing.
                 This does not cancel already running tasks. It

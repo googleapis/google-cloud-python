@@ -305,18 +305,21 @@ class Principal(proto.Message):
 
     Attributes:
         user_id (str):
-            User identifier. For Google Workspace user account, user_id
-            should be the google workspace user email. For non-google
-            identity provider user account, user_id is the mapped user
-            identifier configured during the workforcepool config.
+            User identifier.
+            For Google Workspace user account, user_id
+            should be the google workspace user email.
+            For non-google identity provider user account,
+            user_id is the mapped user identifier configured
+            during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         group_id (str):
-            Group identifier. For Google Workspace user account,
-            group_id should be the google workspace group email. For
-            non-google identity provider user account, group_id is the
-            mapped group identifier configured during the workforcepool
-            config.
+            Group identifier.
+            For Google Workspace user account, group_id
+            should be the google workspace group email.
+            For non-google identity provider user account,
+            group_id is the mapped group identifier
+            configured during the workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         external_entity_id (str):

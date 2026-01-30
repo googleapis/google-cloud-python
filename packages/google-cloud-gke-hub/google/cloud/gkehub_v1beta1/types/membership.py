@@ -130,10 +130,11 @@ class Membership(proto.Message):
             that have never connected successfully, this
             field will be unset.
         unique_id (str):
-            Output only. Google-generated UUID for this resource. This
-            is unique across all Membership resources. If a Membership
-            resource is deleted and another resource with the same name
-            is created, it gets a different unique_id.
+            Output only. Google-generated UUID for this
+            resource. This is unique across all Membership
+            resources. If a Membership resource is deleted
+            and another resource with the same name is
+            created, it gets a different unique_id.
         infrastructure_type (google.cloud.gkehub_v1beta1.types.Membership.InfrastructureType):
             Optional. The infrastructure type this
             Membership is running on.
@@ -409,9 +410,10 @@ class ResourceOptions(proto.Message):
     Attributes:
         connect_version (str):
             Optional. The Connect agent version to use for
-            connect_resources. Defaults to the latest GKE Connect
-            version. The version must be a currently supported version,
-            obsolete versions will be rejected.
+            connect_resources. Defaults to the latest GKE
+            Connect version. The version must be a currently
+            supported version, obsolete versions will be
+            rejected.
         v1beta1_crd (bool):
             Optional. Use ``apiextensions/v1beta1`` instead of
             ``apiextensions/v1`` for CustomResourceDefinition resources.
@@ -484,8 +486,9 @@ class GkeCluster(proto.Message):
 
             Zonal clusters are also supported.
         cluster_missing (bool):
-            Output only. If cluster_missing is set then it denotes that
-            the GKE cluster no longer exists in the GKE Control Plane.
+            Output only. If cluster_missing is set then it
+            denotes that the GKE cluster no longer exists in
+            the GKE Control Plane.
     """
 
     resource_link: str = proto.Field(
@@ -510,9 +513,10 @@ class OnPremCluster(proto.Message):
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/vmwareClusters/my-cluster
             //gkeonprem.googleapis.com/projects/my-project/locations/us-west1-a/bareMetalClusters/my-cluster
         cluster_missing (bool):
-            Output only. If cluster_missing is set then it denotes that
-            API(gkeonprem.googleapis.com) resource for this GKE On-Prem
-            cluster no longer exists.
+            Output only. If cluster_missing is set then it
+            denotes that API(gkeonprem.googleapis.com)
+            resource for this GKE On-Prem cluster no longer
+            exists.
         admin_cluster (bool):
             Immutable. Whether the cluster is an admin
             cluster.
@@ -574,9 +578,10 @@ class MultiCloudCluster(proto.Message):
             //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/azureClusters/my-cluster
             //gkemulticloud.googleapis.com/projects/my-project/locations/us-west1-a/attachedClusters/my-cluster
         cluster_missing (bool):
-            Output only. If cluster_missing is set then it denotes that
-            API(gkemulticloud.googleapis.com) resource for this GKE
-            Multi-Cloud cluster no longer exists.
+            Output only. If cluster_missing is set then it
+            denotes that API(gkemulticloud.googleapis.com)
+            resource for this GKE Multi-Cloud cluster no
+            longer exists.
     """
 
     resource_link: str = proto.Field(
@@ -634,9 +639,10 @@ class KubernetesMetadata(proto.Message):
             Output only. Kubernetes API server version
             string as reported by '/version'.
         node_provider_id (str):
-            Output only. Node providerID as reported by the first node
-            in the list of nodes on the Kubernetes endpoint. On
-            Kubernetes platforms that support zero-node clusters (like
+            Output only. Node providerID as reported by the
+            first node in the list of nodes on the
+            Kubernetes endpoint. On Kubernetes platforms
+            that support zero-node clusters (like
             GKE-on-GCP), the node_count will be zero and the
             node_provider_id will be empty.
         node_count (int):
@@ -650,10 +656,11 @@ class KubernetesMetadata(proto.Message):
             reported by the sum of all Kubernetes nodes
             resources, defined in MB.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time at which these details were last
-            updated. This update_time is different from the
-            Membership-level update_time since EndpointDetails are
-            updated internally for API consumers.
+            Output only. The time at which these details
+            were last updated. This update_time is different
+            from the Membership-level update_time since
+            EndpointDetails are updated internally for API
+            consumers.
     """
 
     kubernetes_api_server_version: str = proto.Field(

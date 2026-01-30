@@ -37,24 +37,26 @@ class CloudArmor(proto.Message):
 
     Attributes:
         security_policy (google.cloud.securitycenter_v2.types.SecurityPolicy):
-            Information about the `Google Cloud Armor security
-            policy <https://cloud.google.com/armor/docs/security-policy-overview>`__
+            Information about the [Google Cloud Armor
+            security
+            policy](https://cloud.google.com/armor/docs/security-policy-overview)
             relevant to the finding.
         requests (google.cloud.securitycenter_v2.types.Requests):
-            Information about incoming requests evaluated by `Google
-            Cloud Armor security
-            policies <https://cloud.google.com/armor/docs/security-policy-overview>`__.
+            Information about incoming requests evaluated by
+            [Google Cloud Armor security
+            policies](https://cloud.google.com/armor/docs/security-policy-overview).
         adaptive_protection (google.cloud.securitycenter_v2.types.AdaptiveProtection):
-            Information about potential Layer 7 DDoS attacks identified
-            by `Google Cloud Armor Adaptive
-            Protection <https://cloud.google.com/armor/docs/adaptive-protection-overview>`__.
+            Information about potential Layer 7 DDoS attacks
+            identified by [Google Cloud Armor Adaptive
+            Protection](https://cloud.google.com/armor/docs/adaptive-protection-overview).
         attack (google.cloud.securitycenter_v2.types.Attack):
             Information about DDoS attack volume and
             classification.
         threat_vector (str):
-            Distinguish between volumetric & protocol DDoS attack and
-            application layer attacks. For example, "L3_4" for Layer 3
-            and Layer 4 DDoS attacks, or "L_7" for Layer 7 DDoS attacks.
+            Distinguish between volumetric & protocol DDoS
+            attack and application layer attacks. For
+            example, "L3_4" for Layer 3 and Layer 4 DDoS
+            attacks, or "L_7" for Layer 7 DDoS attacks.
         duration (google.protobuf.duration_pb2.Duration):
             Duration of attack from the start until the
             current moment (updated every 5 minutes).
@@ -92,8 +94,8 @@ class CloudArmor(proto.Message):
 
 
 class SecurityPolicy(proto.Message):
-    r"""Information about the `Google Cloud Armor security
-    policy <https://cloud.google.com/armor/docs/security-policy-overview>`__
+    r"""Information about the [Google Cloud Armor security
+    policy](https://cloud.google.com/armor/docs/security-policy-overview)
     relevant to the finding.
 
     Attributes:
@@ -164,16 +166,17 @@ class Requests(proto.Message):
 
 
 class AdaptiveProtection(proto.Message):
-    r"""Information about `Google Cloud Armor Adaptive
-    Protection <https://cloud.google.com/armor/docs/cloud-armor-overview#google-cloud-armor-adaptive-protection>`__.
+    r"""Information about [Google Cloud Armor Adaptive
+    Protection](https://cloud.google.com/armor/docs/cloud-armor-overview#google-cloud-armor-adaptive-protection).
 
     Attributes:
         confidence (float):
-            A score of 0 means that there is low confidence that the
-            detected event is an actual attack. A score of 1 means that
-            there is high confidence that the detected event is an
-            attack. See the `Adaptive Protection
-            documentation <https://cloud.google.com/armor/docs/adaptive-protection-overview#configure-alert-tuning>`__
+            A score of 0 means that there is low confidence
+            that the detected event is an actual attack. A
+            score of 1 means that there is high confidence
+            that the detected event is an attack. See the
+            [Adaptive Protection
+            documentation](https://cloud.google.com/armor/docs/adaptive-protection-overview#configure-alert-tuning)
             for further explanation.
     """
 
@@ -197,11 +200,11 @@ class Attack(proto.Message):
             Type of attack, for example, 'SYN-flood',
             'NTP-udp', or 'CHARGEN-udp'.
         volume_pps (int):
-            Total PPS (packets per second) volume of attack. Deprecated
-            - refer to volume_pps_long instead.
+            Total PPS (packets per second) volume of attack.
+            Deprecated - refer to volume_pps_long instead.
         volume_bps (int):
-            Total BPS (bytes per second) volume of attack. Deprecated -
-            refer to volume_bps_long instead.
+            Total BPS (bytes per second) volume of attack.
+            Deprecated - refer to volume_bps_long instead.
     """
 
     volume_pps_long: int = proto.Field(

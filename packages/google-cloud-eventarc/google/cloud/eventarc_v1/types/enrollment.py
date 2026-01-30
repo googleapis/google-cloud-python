@@ -68,9 +68,10 @@ class Enrollment(proto.Message):
             messages. It matches the form
             projects/{project}/locations/{location}/messageBuses/{messageBus}.
         destination (str):
-            Required. Destination is the Pipeline that the Enrollment is
-            delivering to. It must point to the full resource name of a
-            Pipeline. Format:
+            Required. Destination is the Pipeline that the
+            Enrollment is delivering to. It must point to
+            the full resource name of a Pipeline. Format:
+
             "projects/{PROJECT_ID}/locations/{region}/pipelines/{PIPELINE_ID)".
     """
 

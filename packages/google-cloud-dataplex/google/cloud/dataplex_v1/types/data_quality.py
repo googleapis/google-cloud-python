@@ -54,10 +54,11 @@ class DataQualitySpec(proto.Message):
 
             100.
         row_filter (str):
-            Optional. A filter applied to all rows in a single DataScan
-            job. The filter needs to be a valid SQL expression for a
-            `WHERE clause in GoogleSQL
-            syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause>`__.
+            Optional. A filter applied to all rows in a
+            single DataScan job. The filter needs to be a
+            valid SQL expression for a [WHERE clause in
+            GoogleSQL
+            syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax#where_clause).
 
             Example: col1 >= 0 AND col2 < 10
         post_scan_actions (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions):
@@ -86,10 +87,12 @@ class DataQualitySpec(proto.Message):
 
             Attributes:
                 results_table (str):
-                    Optional. The BigQuery table to export DataQualityScan
-                    results to. Format:
+                    Optional. The BigQuery table to export
+                    DataQualityScan results to. Format:
+
                     //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
-                    or projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
+                    or
+                    projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             """
 
             results_table: str = proto.Field(
@@ -328,20 +331,29 @@ class DataQualityResult(proto.Message):
 
         Attributes:
             result_table (str):
-                Output only. The result table for anomaly detection. Format:
-                PROJECT_ID.DATASET_ID.TABLE_ID If the result table is set at
-                AnomalyDetectionAssets, the result table here would be the
-                same as the one set in the
+                Output only. The result table for anomaly
+                detection. Format:
+
+                PROJECT_ID.DATASET_ID.TABLE_ID
+                If the result table is set at
+                AnomalyDetectionAssets, the result table here
+                would be the same as the one set in the
                 AnomalyDetectionAssets.result_table.
             data_intermediate_table (str):
-                Output only. The intermediate table for data anomaly
-                detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID
+                Output only. The intermediate table for data
+                anomaly detection. Format:
+
+                PROJECT_ID.DATASET_ID.TABLE_ID
             freshness_intermediate_table (str):
-                Output only. The intermediate table for freshness anomaly
-                detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID
+                Output only. The intermediate table for
+                freshness anomaly detection. Format:
+
+                PROJECT_ID.DATASET_ID.TABLE_ID
             volume_intermediate_table (str):
-                Output only. The intermediate table for volume anomaly
-                detection. Format: PROJECT_ID.DATASET_ID.TABLE_ID
+                Output only. The intermediate table for volume
+                anomaly detection. Format:
+
+                PROJECT_ID.DATASET_ID.TABLE_ID
         """
 
         result_table: str = proto.Field(
@@ -820,8 +832,8 @@ class DataQualityRule(proto.Message):
     class RowConditionExpectation(proto.Message):
         r"""Evaluates whether each row passes the specified condition.
 
-        The SQL expression needs to use `GoogleSQL
-        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__
+        The SQL expression needs to use [GoogleSQL
+        syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax)
         and should produce a boolean value per row as the result.
 
         Example: col1 >= 0 AND col2 < 10
@@ -839,8 +851,8 @@ class DataQualityRule(proto.Message):
     class TableConditionExpectation(proto.Message):
         r"""Evaluates whether the provided expression is true.
 
-        The SQL expression needs to use `GoogleSQL
-        syntax <https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax>`__
+        The SQL expression needs to use [GoogleSQL
+        syntax](https://cloud.google.com/bigquery/docs/reference/standard-sql/query-syntax)
         and should produce a scalar boolean result.
 
         Example: MIN(col1) >= 0

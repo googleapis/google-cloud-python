@@ -349,8 +349,8 @@ class UpdateConversionSourceRequest(proto.Message):
 
     Attributes:
         conversion_source (google.shopping.merchant_conversions_v1beta.types.ConversionSource):
-            Required. The new version of the conversion source data.
-            Format:
+            Required. The new version of the conversion
+            source data. Format:
             accounts/{account}/conversionSources/{conversion_source}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields being updated.
@@ -373,8 +373,8 @@ class DeleteConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to be deleted.
-            Format:
+            Required. The name of the conversion source to
+            be deleted. Format:
             accounts/{account}/conversionSources/{conversion_source}
     """
 
@@ -389,8 +389,8 @@ class UndeleteConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to be undeleted.
-            Format:
+            Required. The name of the conversion source to
+            be undeleted. Format:
             accounts/{account}/conversionSources/{conversion_source}
     """
 
@@ -405,8 +405,8 @@ class GetConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to be fetched.
-            Format:
+            Required. The name of the conversion source to
+            be fetched. Format:
             accounts/{account}/conversionsources/{conversion_source}
     """
 

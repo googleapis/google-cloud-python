@@ -267,10 +267,11 @@ class CreateEndpointRequest(proto.Message):
         parent (str):
             Required. The endpoint's parent.
         endpoint_id (str):
-            Required. The endpoint identifier. This will be part of the
-            endpoint's resource name. This value must start with a
-            lowercase letter followed by up to 62 lowercase letters,
-            numbers, or hyphens, and cannot end with a hyphen. Values
+            Required. The endpoint identifier. This will be
+            part of the endpoint's resource name.
+            This value must start with a lowercase letter
+            followed by up to 62 lowercase letters, numbers,
+            or hyphens, and cannot end with a hyphen. Values
             that do not match this pattern will trigger an
             INVALID_ARGUMENT error.
         endpoint (google.cloud.ids_v1.types.Endpoint):

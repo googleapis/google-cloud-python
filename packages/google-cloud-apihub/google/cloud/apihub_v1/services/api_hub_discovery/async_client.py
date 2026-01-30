@@ -487,8 +487,10 @@ class ApiHubDiscoveryAsyncClient:
                 The request object. Message for requesting a
                 DiscoveredApiObservation
             name (:class:`str`):
-                Required. The name of the DiscoveredApiObservation to
-                retrieve. Format:
+                Required. The name of the
+                DiscoveredApiObservation to retrieve.
+                Format:
+
                 projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
 
                 This corresponds to the ``name`` field
@@ -605,8 +607,10 @@ class ApiHubDiscoveryAsyncClient:
                 The request object. Message for requesting list of
                 DiscoveredApiOperations
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                DiscoveredApiOperations. Format:
+                Required. The parent, which owns this
+                collection of DiscoveredApiOperations.
+                Format:
+
                 projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
 
                 This corresponds to the ``parent`` field
@@ -736,8 +740,10 @@ class ApiHubDiscoveryAsyncClient:
                 The request object. Message for requesting a
                 DiscoveredApiOperation
             name (:class:`str`):
-                Required. The name of the DiscoveredApiOperation to
-                retrieve. Format:
+                Required. The name of the
+                DiscoveredApiOperation to retrieve.
+                Format:
+
                 projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}
 
                 This corresponds to the ``name`` field

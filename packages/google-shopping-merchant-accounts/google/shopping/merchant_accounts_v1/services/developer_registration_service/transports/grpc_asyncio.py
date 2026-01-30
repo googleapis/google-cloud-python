@@ -341,10 +341,10 @@ class DeveloperRegistrationServiceGrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the register gcp method over gRPC.
 
-        Registers the GCP used for the API call to the shopping account
-        passed in the request. Will create a user with an "API
-        developer" and add the "developer_email" as a contact with "API
-        notifications" email preference on.
+        Registers the GCP used for the API call to the shopping
+        account passed in the request. Will create a user with
+        an "API developer" and add the "developer_email" as a
+        contact with "API notifications" email preference on.
 
         Returns:
             Callable[[~.RegisterGcpRequest],

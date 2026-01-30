@@ -938,12 +938,9 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
             request (Union[google.cloud.monitoring_v3.types.GetAlertPolicyRequest, dict]):
                 The request object. The protocol for the ``GetAlertPolicy`` request.
             name (str):
-                Required. The alerting policy to retrieve. The format
-                is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+                Required. The alerting policy to
+                retrieve. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

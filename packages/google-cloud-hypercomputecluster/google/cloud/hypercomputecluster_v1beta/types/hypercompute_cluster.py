@@ -629,8 +629,8 @@ class BucketReference(proto.Message):
 
 
 class LustreReference(proto.Message):
-    r"""A reference to a `Managed
-    Lustre <https://cloud.google.com/products/managed-lustre>`__
+    r"""A reference to a [Managed
+    Lustre](https://cloud.google.com/products/managed-lustre)
     instance.
 
     Attributes:
@@ -761,9 +761,9 @@ class NewFilestoreConfig(proto.Message):
     """
 
     class Tier(proto.Enum):
-        r"""Available `service
-        tiers <https://cloud.google.com/filestore/docs/service-tiers>`__ for
-        Filestore instances.
+        r"""Available [service
+        tiers](https://cloud.google.com/filestore/docs/service-tiers)
+        for Filestore instances.
 
         Values:
             TIER_UNSPECIFIED (0):
@@ -896,9 +896,9 @@ class NewBucketConfig(proto.Message):
             Required. Immutable. Name of the Cloud
             Storage bucket to create.
         hierarchical_namespace (google.cloud.hypercomputecluster_v1beta.types.GcsHierarchicalNamespaceConfig):
-            Optional. Immutable. If set, indicates that the bucket
-            should use `hierarchical
-            namespaces <https://cloud.google.com/storage/docs/hns-overview>`__.
+            Optional. Immutable. If set, indicates that the
+            bucket should use [hierarchical
+            namespaces](https://cloud.google.com/storage/docs/hns-overview).
     """
 
     class StorageClass(proto.Enum):
@@ -1357,15 +1357,17 @@ class SlurmOrchestrator(proto.Message):
             than one partition, in which case it must match
             the id of one of the partitions.
         prolog_bash_scripts (MutableSequence[str]):
-            Optional. Slurm `prolog
-            scripts <https://slurm.schedmd.com/prolog_epilog.html>`__,
-            which will be executed by compute nodes before a node begins
-            running a new job. Values must not be empty.
+            Optional. Slurm [prolog
+            scripts](https://slurm.schedmd.com/prolog_epilog.html),
+            which will be executed by compute nodes before a
+            node begins running a new job. Values must not
+            be empty.
         epilog_bash_scripts (MutableSequence[str]):
-            Optional. Slurm `epilog
-            scripts <https://slurm.schedmd.com/prolog_epilog.html>`__,
-            which will be executed by compute nodes whenever a node
-            finishes running a job. Values must not be empty.
+            Optional. Slurm [epilog
+            scripts](https://slurm.schedmd.com/prolog_epilog.html),
+            which will be executed by compute nodes whenever
+            a node finishes running a job. Values must not
+            be empty.
     """
 
     login_nodes: "SlurmLoginNodes" = proto.Field(
@@ -1477,9 +1479,10 @@ class ComputeInstanceSlurmNodeSet(proto.Message):
 
     Attributes:
         startup_script (str):
-            Optional. `Startup
-            script <https://cloud.google.com/compute/docs/instances/startup-scripts/linux>`__
-            to be run on each VM instance in the nodeset. Max 256KB.
+            Optional. [Startup
+            script](https://cloud.google.com/compute/docs/instances/startup-scripts/linux)
+            to be run on each VM instance in the nodeset.
+            Max 256KB.
         labels (MutableMapping[str, str]):
             Optional.
             `Labels <https://cloud.google.com/compute/docs/labeling-resources>`__
@@ -1532,10 +1535,10 @@ class SlurmPartition(proto.Message):
 
 
 class SlurmLoginNodes(proto.Message):
-    r"""Configuration for Slurm `login
-    nodes <https://slurm.schedmd.com/quickstart_admin.html#login>`__ in
-    the cluster. Login nodes are Compute Engine VM instances that allow
-    users to access the cluster over SSH.
+    r"""Configuration for Slurm [login
+    nodes](https://slurm.schedmd.com/quickstart_admin.html#login) in
+    the cluster. Login nodes are Compute Engine VM instances that
+    allow users to access the cluster over SSH.
 
     Attributes:
         count (int):
@@ -1551,17 +1554,18 @@ class SlurmLoginNodes(proto.Message):
             type <https://cloud.google.com/compute/docs/machine-resource>`__
             to use for login nodes, e.g. ``n2-standard-2``.
         startup_script (str):
-            Optional. `Startup
-            script <https://cloud.google.com/compute/docs/instances/startup-scripts/linux>`__
-            to be run on each login node instance. Max 256KB.
+            Optional. [Startup
+            script](https://cloud.google.com/compute/docs/instances/startup-scripts/linux)
+            to be run on each login node instance. Max
+            256KB.
         enable_os_login (bool):
             Optional. Whether `OS
             Login <https://cloud.google.com/compute/docs/oslogin>`__
             should be enabled on login node instances.
         enable_public_ips (bool):
-            Optional. Whether login node instances should be assigned
-            `external IP
-            addresses <https://cloud.google.com/compute/docs/ip-addresses#externaladdresses>`__.
+            Optional. Whether login node instances should be
+            assigned [external IP
+            addresses](https://cloud.google.com/compute/docs/ip-addresses#externaladdresses).
         labels (MutableMapping[str, str]):
             Optional.
             `Labels <https://cloud.google.com/compute/docs/labeling-resources>`__

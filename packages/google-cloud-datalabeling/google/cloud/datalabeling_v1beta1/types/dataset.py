@@ -77,6 +77,7 @@ class Dataset(proto.Message):
     Attributes:
         name (str):
             Output only. Dataset resource name, format is:
+
             projects/{project_id}/datasets/{dataset_id}
         display_name (str):
             Required. The display name of the dataset.
@@ -398,7 +399,8 @@ class DataItem(proto.Message):
 
             This field is a member of `oneof`_ ``payload``.
         name (str):
-            Output only. Name of the data item, in format of:
+            Output only. Name of the data item, in format
+            of:
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
@@ -433,7 +435,8 @@ class AnnotatedDataset(proto.Message):
 
     Attributes:
         name (str):
-            Output only. AnnotatedDataset resource name in format of:
+            Output only. AnnotatedDataset resource name in
+            format of:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}
         display_name (str):

@@ -103,10 +103,10 @@ class GenerativeSettings(proto.Message):
         )
 
     class KnowledgeConnectorSettings(proto.Message):
-        r"""Settings for knowledge connector. These parameters are used for LLM
-        prompt like "You are . You are a helpful and verbose
-        <agent_identity> at , <business_description>. Your task is to help
-        humans on <agent_scope>".
+        r"""Settings for knowledge connector. These parameters are used for
+        LLM prompt like "You are <agent>. You are a helpful and verbose
+        <agent_identity> at <business>, <business_description>. Your
+        task is to help humans on <agent_scope>".
 
         Attributes:
             business (str):
@@ -209,11 +209,13 @@ class LlmModelSettings(proto.Message):
 
         Attributes:
             temperature (float):
-                The temperature used for sampling during response
-                generation. Value ranges from 0 to 1. Temperature controls
-                the degree of randomness in token selection. Lower
-                temperature means less randomness, while higher temperature
-                means more randomness. Valid range: [0.0, 1.0]
+                The temperature used for sampling during
+                response generation. Value ranges from 0 to 1.
+                Temperature controls the degree of randomness in
+                token selection. Lower temperature means less
+                randomness, while higher temperature means more
+                randomness.
+                Valid range: [0.0, 1.0]
 
                 This field is a member of `oneof`_ ``_temperature``.
             input_token_limit (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings.Parameters.InputTokenLimit):
@@ -223,8 +225,9 @@ class LlmModelSettings(proto.Message):
 
                 This field is a member of `oneof`_ ``_input_token_limit``.
             output_token_limit (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings.Parameters.OutputTokenLimit):
-                The output token limit. This setting is currently only
-                supported by playbooks. Only one of output_token_limit and
+                The output token limit.
+                This setting is currently only supported by
+                playbooks. Only one of output_token_limit and
                 max_output_tokens is allowed to be set.
 
                 This field is a member of `oneof`_ ``_output_token_limit``.
@@ -238,7 +241,8 @@ class LlmModelSettings(proto.Message):
 
             Values:
                 INPUT_TOKEN_LIMIT_UNSPECIFIED (0):
-                    Limit not specified. Treated as 'INPUT_TOKEN_LIMIT_SHORT'.
+                    Limit not specified. Treated as
+                    'INPUT_TOKEN_LIMIT_SHORT'.
                 INPUT_TOKEN_LIMIT_SHORT (1):
                     Input token limit up to 8k.
                 INPUT_TOKEN_LIMIT_MEDIUM (2):

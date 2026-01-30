@@ -735,12 +735,12 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> event.ClientEvent:
-        r"""Report events issued when end user interacts with customer's
-        application that uses Cloud Talent Solution. You may inspect the
-        created events in `self service
-        tools <https://console.cloud.google.com/talent-solution/overview>`__.
-        `Learn
-        more <https://cloud.google.com/talent-solution/docs/management-tools>`__
+        r"""Report events issued when end user interacts with
+        customer's application that uses Cloud Talent Solution.
+        You may inspect the created events in [self service
+        tools](https://console.cloud.google.com/talent-solution/overview).
+        [Learn
+        more](https://cloud.google.com/talent-solution/docs/management-tools)
         about self service tools.
 
         .. code-block:: python
@@ -779,13 +779,13 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.CreateClientEventRequest, dict]):
                 The request object. The report event request.
             parent (str):
-                Required. Resource name of the tenant under which the
-                event is created.
-
+                Required. Resource name of the tenant
+                under which the event is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}", for
-                example, "projects/foo/tenant/bar". If tenant id is
-                unspecified, a default tenant is created, for example,
+                "projects/{project_id}/tenants/{tenant_id}",
+                for example, "projects/foo/tenant/bar".
+                If tenant id is unspecified, a default
+                tenant is created, for example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field

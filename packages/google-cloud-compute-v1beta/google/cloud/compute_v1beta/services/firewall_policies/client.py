@@ -2644,10 +2644,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 FirewallPolicies.Insert. See the method
                 description for details.
             parent_id (str):
-                Parent ID for this request. The ID can be either be
-                "folders/[FOLDER_ID]" if the parent is a folder or
-                "organizations/[ORGANIZATION_ID]" if the parent is an
-                organization.
+                Parent ID for this request. The ID can
+                be either be "folders/[FOLDER_ID]" if
+                the parent is a folder or
+                "organizations/[ORGANIZATION_ID]" if the
+                parent is an organization.
 
                 This corresponds to the ``parent_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2758,10 +2759,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 FirewallPolicies.Insert. See the method
                 description for details.
             parent_id (str):
-                Parent ID for this request. The ID can be either be
-                "folders/[FOLDER_ID]" if the parent is a folder or
-                "organizations/[ORGANIZATION_ID]" if the parent is an
-                organization.
+                Parent ID for this request. The ID can
+                be either be "folders/[FOLDER_ID]" if
+                the parent is a folder or
+                "organizations/[ORGANIZATION_ID]" if the
+                parent is an organization.
 
                 This corresponds to the ``parent_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3074,9 +3076,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_id (str):
-                The new parent of the firewall policy. The ID can be
-                either be "folders/[FOLDER_ID]" if the parent is a
-                folder or "organizations/[ORGANIZATION_ID]" if the
+                The new parent of the firewall policy.
+                The ID can be either be
+                "folders/[FOLDER_ID]" if the parent is a
+                folder or
+                "organizations/[ORGANIZATION_ID]" if the
                 parent is an organization.
 
                 This corresponds to the ``parent_id`` field
@@ -3198,9 +3202,11 @@ class FirewallPoliciesClient(metaclass=FirewallPoliciesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_id (str):
-                The new parent of the firewall policy. The ID can be
-                either be "folders/[FOLDER_ID]" if the parent is a
-                folder or "organizations/[ORGANIZATION_ID]" if the
+                The new parent of the firewall policy.
+                The ID can be either be
+                "folders/[FOLDER_ID]" if the parent is a
+                folder or
+                "organizations/[ORGANIZATION_ID]" if the
                 parent is an organization.
 
                 This corresponds to the ``parent_id`` field

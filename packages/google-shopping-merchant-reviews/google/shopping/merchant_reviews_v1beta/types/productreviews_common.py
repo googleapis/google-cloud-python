@@ -407,11 +407,14 @@ class ProductReviewStatus(proto.Message):
             Output only. A list of all issues associated
             with the product review.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Date on which the item has been created, in
-            `ISO 8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Output only. Date on which the item has been
+            created, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Date on which the item has been last updated,
-            in `ISO 8601 <http://en.wikipedia.org/wiki/ISO_8601>`__
+            Output only. Date on which the item has been
+            last updated, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
             format.
     """
 

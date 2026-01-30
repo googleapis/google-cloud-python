@@ -130,11 +130,12 @@ class CompleteQueryResponse(proto.Message):
             result list is ordered and the first result is a
             top suggestion.
         tail_match_triggered (bool):
-            True if the returned suggestions are all tail suggestions.
-
-            For tail matching to be triggered, include_tail_suggestions
-            in the request must be true and there must be no suggestions
-            that match the full query.
+            True if the returned suggestions are all tail
+            suggestions.
+            For tail matching to be triggered,
+            include_tail_suggestions in the request must be
+            true and there must be no suggestions that match
+            the full query.
     """
 
     class QuerySuggestion(proto.Message):
@@ -315,19 +316,21 @@ class AdvancedCompleteQueryRequest(proto.Message):
                     - To boost suggestions in languages ``en`` or ``fr``:
                       ``(lang_code: ANY("en", "fr"))``
                 boost (float):
-                    Strength of the boost, which should be in [-1, 1]. Negative
-                    boost means demotion. Default is 0.0.
+                    Strength of the boost, which should be in [-1,
+                    1]. Negative boost means demotion. Default is
+                    0.0.
 
-                    Setting to 1.0 gives the suggestions a big promotion.
-                    However, it does not necessarily mean that the top result
-                    will be a boosted suggestion.
+                    Setting to 1.0 gives the suggestions a big
+                    promotion. However, it does not necessarily mean
+                    that the top result will be a boosted
+                    suggestion.
 
-                    Setting to -1.0 gives the suggestions a big demotion.
-                    However, other suggestions that are relevant might still be
-                    shown.
+                    Setting to -1.0 gives the suggestions a big
+                    demotion. However, other suggestions that are
+                    relevant might still be shown.
 
-                    Setting to 0.0 means no boost applied. The boosting
-                    condition is ignored.
+                    Setting to 0.0 means no boost applied. The
+                    boosting condition is ignored.
             """
 
             condition: str = proto.Field(
@@ -395,11 +398,12 @@ class AdvancedCompleteQueryResponse(proto.Message):
             result list is ordered and the first result is a
             top suggestion.
         tail_match_triggered (bool):
-            True if the returned suggestions are all tail suggestions.
-
-            For tail matching to be triggered, include_tail_suggestions
-            in the request must be true and there must be no suggestions
-            that match the full query.
+            True if the returned suggestions are all tail
+            suggestions.
+            For tail matching to be triggered,
+            include_tail_suggestions in the request must be
+            true and there must be no suggestions that match
+            the full query.
         people_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.PersonSuggestion]):
             Results of the matched people suggestions.
             The result list is ordered and the first result
@@ -470,7 +474,8 @@ class AdvancedCompleteQueryResponse(proto.Message):
                 CLOUD_IDENTITY (1):
                     The suggestion is from a GOOGLE_IDENTITY source.
                 THIRD_PARTY_IDENTITY (2):
-                    The suggestion is from a THIRD_PARTY_IDENTITY source.
+                    The suggestion is from a THIRD_PARTY_IDENTITY
+                    source.
             """
             PERSON_TYPE_UNSPECIFIED = 0
             CLOUD_IDENTITY = 1

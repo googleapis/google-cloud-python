@@ -199,10 +199,11 @@ class CreateClientTlsPolicyRequest(proto.Message):
             Required. The parent resource of the ClientTlsPolicy. Must
             be in the format ``projects/*/locations/{location}``.
         client_tls_policy_id (str):
-            Required. Short name of the ClientTlsPolicy resource to be
-            created. This value should be 1-63 characters long,
-            containing only letters, numbers, hyphens, and underscores,
-            and should not start with a number. E.g.
+            Required. Short name of the ClientTlsPolicy
+            resource to be created. This value should be
+            1-63 characters long, containing only letters,
+            numbers, hyphens, and underscores, and should
+            not start with a number. E.g.
             "client_mtls_policy".
         client_tls_policy (google.cloud.network_security_v1beta1.types.ClientTlsPolicy):
             Required. ClientTlsPolicy resource to be
@@ -229,12 +230,14 @@ class UpdateClientTlsPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the ClientTlsPolicy resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the ClientTlsPolicy
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         client_tls_policy (google.cloud.network_security_v1beta1.types.ClientTlsPolicy):
             Required. Updated ClientTlsPolicy resource.
     """

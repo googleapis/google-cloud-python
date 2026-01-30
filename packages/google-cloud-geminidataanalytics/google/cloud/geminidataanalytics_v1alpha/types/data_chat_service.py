@@ -124,8 +124,9 @@ class GenerationOptions(proto.Message):
             generated query will be returned in the
             response.
         generate_disambiguation_question (bool):
-            Optional. If true (default to false), the service may return
-            a clarifying_question if the input query is ambiguous.
+            Optional. If true (default to false), the
+            service may return a clarifying_question if the
+            input query is ambiguous.
     """
 
     generate_query_result: bool = proto.Field(
@@ -170,26 +171,30 @@ class QueryDataResponse(proto.Message):
         generated_query (str):
             Generated query for the given user prompt.
         intent_explanation (str):
-            A natural language explanation of the generated query.
-            Populated if options.generate_explanation was true in the
-            request.
+            A natural language explanation of the generated
+            query. Populated if options.generate_explanation
+            was true in the request.
         query_result (google.cloud.geminidataanalytics_v1alpha.types.ExecutedQueryResult):
-            The result of executing the query. Populated if
-            options.generate_query_result or
-            options.generate_natural_language_answer was true in the
-            request, and execution was successful or attempted.
+            The result of executing the query.
+            Populated if options.generate_query_result or
+            options.generate_natural_language_answer was
+            true in the request, and execution was
+            successful or attempted.
         natural_language_answer (str):
-            A natural language answer to the query, based on the
-            query_result. Populated if
-            options.generate_natural_language_answer was true in the
-            request and query execution was successful based in the
-            response from executeSql API.
+            A natural language answer to the query, based on
+            the query_result. Populated if
+            options.generate_natural_language_answer was
+            true in the request and query execution was
+            successful based in the response from executeSql
+            API.
         disambiguation_question (MutableSequence[str]):
-            If ambiguity was detected in the natural language query and
-            options.generate_disambiguation_question was true, this
-            field contains a question to the user for clarification. The
-            returned represents the service's best effort based on the
-            ambiguous input.
+            If ambiguity was detected in the natural
+            language query and
+            options.generate_disambiguation_question was
+            true, this field contains a question to the user
+            for clarification. The returned represents the
+            service's best effort based on the ambiguous
+            input.
     """
 
     generated_query: str = proto.Field(
@@ -505,12 +510,12 @@ class DataAgentContext(proto.Message):
             Required. The name of the data agent
             resource.
         credentials (google.cloud.geminidataanalytics_v1alpha.types.Credentials):
-            Optional. The credentials to use when calling the Looker
-            data source.
-
-            Currently supports both OAuth token and API key-based
-            credentials, as described in `Authentication with an
-            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
+            Optional. The credentials to use when calling
+            the Looker data source.
+            Currently supports both OAuth token and API
+            key-based credentials, as described in
+            [Authentication with an
+            SDK](https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk).
         context_version (google.cloud.geminidataanalytics_v1alpha.types.DataAgentContext.ContextVersion):
             Optional. Version of context to be used by
             DCS (e.g. STAGING, PUBLISHED)

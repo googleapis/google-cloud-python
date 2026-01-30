@@ -756,22 +756,26 @@ class CryptoKeyVersion(proto.Message):
             RSA_SIGN_PSS_4096_SHA512 (15):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
-                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_3072_SHA256 (6):
-                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA256 (7):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA512 (16):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
+                SHA512 digest.
             RSA_SIGN_RAW_PKCS1_2048 (28):
-                RSASSA-PKCS1-v1_5 signing without encoding, with a 2048 bit
-                key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with
+                a 2048 bit key.
             RSA_SIGN_RAW_PKCS1_3072 (29):
-                RSASSA-PKCS1-v1_5 signing without encoding, with a 3072 bit
-                key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with
+                a 3072 bit key.
             RSA_SIGN_RAW_PKCS1_4096 (30):
-                RSASSA-PKCS1-v1_5 signing without encoding, with a 4096 bit
-                key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with
+                a 4096 bit key.
             RSA_DECRYPT_OAEP_2048_SHA256 (8):
                 RSAES-OAEP 2048 bit key with a SHA256 digest.
             RSA_DECRYPT_OAEP_3072_SHA256 (9):
@@ -787,17 +791,20 @@ class CryptoKeyVersion(proto.Message):
             RSA_DECRYPT_OAEP_4096_SHA1 (39):
                 RSAES-OAEP 4096 bit key with a SHA1 digest.
             EC_SIGN_P256_SHA256 (12):
-                ECDSA on the NIST P-256 curve with a SHA256 digest. Other
-                hash functions can also be used:
+                ECDSA on the NIST P-256 curve with a SHA256
+                digest. Other hash functions can also be used:
+
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_P384_SHA384 (13):
-                ECDSA on the NIST P-384 curve with a SHA384 digest. Other
-                hash functions can also be used:
+                ECDSA on the NIST P-384 curve with a SHA384
+                digest. Other hash functions can also be used:
+
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_SECP256K1_SHA256 (31):
-                ECDSA on the non-NIST secp256k1 curve. This curve is only
-                supported for HSM protection level. Other hash functions can
-                also be used:
+                ECDSA on the non-NIST secp256k1 curve. This
+                curve is only supported for HSM protection
+                level. Other hash functions can also be used:
+
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_ED25519 (40):
                 EdDSA on the Curve25519 in pure mode (taking

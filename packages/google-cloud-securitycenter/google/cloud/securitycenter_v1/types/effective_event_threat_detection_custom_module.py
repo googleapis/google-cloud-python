@@ -58,7 +58,8 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
             enablement for the module at the given level of
             the hierarchy.
         type_ (str):
-            Output only. Type for the module. e.g. CONFIGURABLE_BAD_IP.
+            Output only. Type for the module. e.g.
+            CONFIGURABLE_BAD_IP.
         display_name (str):
             Output only. The human readable name to be
             displayed for the module.

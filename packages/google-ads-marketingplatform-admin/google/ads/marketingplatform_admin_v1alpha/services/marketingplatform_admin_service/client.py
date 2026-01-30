@@ -845,8 +845,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for GetOrganization
                 RPC.
             name (str):
-                Required. The name of the Organization to retrieve.
-                Format: organizations/{org_id}
+                Required. The name of the Organization
+                to retrieve. Format:
+                organizations/{org_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1149,8 +1150,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 ListAnalyticsAccountLinks RPC.
             parent (str):
-                Required. The parent organization, which owns this
-                collection of Analytics account links. Format:
+                Required. The parent organization, which
+                owns this collection of Analytics
+                account links. Format:
                 organizations/{org_id}
 
                 This corresponds to the ``parent`` field
@@ -1290,9 +1292,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 CreateAnalyticsAccountLink RPC.
             parent (str):
-                Required. The parent resource where this Analytics
-                account link will be created. Format:
-                organizations/{org_id}
+                Required. The parent resource where this
+                Analytics account link will be created.
+                Format: organizations/{org_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1418,8 +1420,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 DeleteAnalyticsAccountLink RPC.
             name (str):
-                Required. The name of the Analytics account link to
-                delete. Format:
+                Required. The name of the Analytics
+                account link to delete. Format:
+
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``name`` field
@@ -1526,8 +1529,10 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 SetPropertyServiceLevel RPC.
             analytics_account_link (str):
-                Required. The parent AnalyticsAccountLink scope where
-                this property is in. Format:
+                Required. The parent
+                AnalyticsAccountLink scope where this
+                property is in. Format:
+
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``analytics_account_link`` field
@@ -1655,9 +1660,8 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 ReportPropertyUsage RPC.
             organization (str):
-                Required. Specifies the organization whose property
-                usage will be listed.
-
+                Required. Specifies the organization
+                whose property usage will be listed.
                 Format: organizations/{org_id}
 
                 This corresponds to the ``organization`` field

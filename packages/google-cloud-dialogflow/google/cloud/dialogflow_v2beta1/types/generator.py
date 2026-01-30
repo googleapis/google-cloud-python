@@ -147,8 +147,8 @@ class ListGeneratorsRequest(proto.Message):
             models to return in a single page. Default to
             10.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -240,9 +240,11 @@ class MessageEntry(proto.Message):
         text (str):
             Optional. Transcript content of the message.
         language_code (str):
-            Optional. The language of the text. See `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
+            Optional. The language of the text. See
+            [Language
+            Support](https://cloud.google.com/dialogflow/docs/reference/language)
+            for a list of the currently supported language
+            codes.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Create time of the message entry.
     """
@@ -386,31 +388,36 @@ class InferenceParameter(proto.Message):
 
             This field is a member of `oneof`_ ``_temperature``.
         top_k (int):
-            Optional. Top-k changes how the model selects tokens for
-            output. A top-k of 1 means the selected token is the most
-            probable among all tokens in the model's vocabulary (also
-            called greedy decoding), while a top-k of 3 means that the
-            next token is selected from among the 3 most probable tokens
-            (using temperature). For each token selection step, the top
-            K tokens with the highest probabilities are sampled. Then
-            tokens are further filtered based on topP with the final
-            token selected using temperature sampling. Specify a lower
-            value for less random responses and a higher value for more
-            random responses. Acceptable value is [1, 40], default to
-            40.
+            Optional. Top-k changes how the model selects
+            tokens for output. A top-k of 1 means the
+            selected token is the most probable among all
+            tokens in the model's vocabulary (also called
+            greedy decoding), while a top-k of 3 means that
+            the next token is selected from among the 3 most
+            probable tokens (using temperature). For each
+            token selection step, the top K tokens with the
+            highest probabilities are sampled. Then tokens
+            are further filtered based on topP with the
+            final token selected using temperature sampling.
+            Specify a lower value for less random responses
+            and a higher value for more random responses.
+            Acceptable value is [1, 40], default to 40.
 
             This field is a member of `oneof`_ ``_top_k``.
         top_p (float):
-            Optional. Top-p changes how the model selects tokens for
-            output. Tokens are selected from most K (see topK parameter)
-            probable to least until the sum of their probabilities
-            equals the top-p value. For example, if tokens A, B, and C
-            have a probability of 0.3, 0.2, and 0.1 and the top-p value
-            is 0.5, then the model will select either A or B as the next
-            token (using temperature) and doesn't consider C. The
-            default top-p value is 0.95. Specify a lower value for less
-            random responses and a higher value for more random
-            responses. Acceptable value is [0.0, 1.0], default to 0.95.
+            Optional. Top-p changes how the model selects
+            tokens for output. Tokens are selected from most
+            K (see topK parameter) probable to least until
+            the sum of their probabilities equals the top-p
+            value. For example, if tokens A, B, and C have a
+            probability of 0.3, 0.2, and 0.1 and the top-p
+            value is 0.5, then the model will select either
+            A or B as the next token (using temperature) and
+            doesn't consider C. The default top-p value is
+            0.95. Specify a lower value for less random
+            responses and a higher value for more random
+            responses. Acceptable value is [0.0, 1.0],
+            default to 0.95.
 
             This field is a member of `oneof`_ ``_top_p``.
     """
@@ -449,8 +456,9 @@ class AgentCoachingContext(proto.Message):
             Optional. Customized instructions for agent
             coaching.
         version (str):
-            Optional. Version of the feature. If not set, default to
-            latest version. Current candidates are ["2.5"].
+            Optional. Version of the feature. If not set,
+            default to latest version. Current candidates
+            are ["2.5"].
         output_language_code (str):
             Optional. Output language code.
     """
@@ -509,12 +517,13 @@ class SummarizationSection(proto.Message):
                 describing the result of the conversation.
                 Section name: "resolution".
             REASON_FOR_CANCELLATION (4):
-                Reason for cancellation if the customer requests for a
-                cancellation. "N/A" otherwise. Section name:
-                "reason_for_cancellation".
+                Reason for cancellation if the customer requests
+                for a cancellation. "N/A" otherwise.
+                Section name: "reason_for_cancellation".
             CUSTOMER_SATISFACTION (5):
-                "Unsatisfied" or "Satisfied" depending on the customer's
-                feelings at the end of the conversation. Section name:
+                "Unsatisfied" or "Satisfied" depending on the
+                customer's feelings at the end of the
+                conversation. Section name:
                 "customer_satisfaction".
             ENTITIES (6):
                 Key entities extracted from the conversation,
@@ -569,8 +578,9 @@ class SummarizationContext(proto.Message):
         few_shot_examples (MutableSequence[google.cloud.dialogflow_v2beta1.types.FewShotExample]):
             Optional. List of few shot examples.
         version (str):
-            Optional. Version of the feature. If not set, default to
-            latest version. Current candidates are ["1.0"].
+            Optional. Version of the feature. If not set,
+            default to latest version. Current candidates
+            are ["1.0"].
         output_language_code (str):
             Optional. The target language of the
             generated summary. The language code for
@@ -803,8 +813,9 @@ class AgentCoachingSuggestion(proto.Message):
 
         Attributes:
             instruction_indexes (MutableSequence[int]):
-                Output only. Source instruction indexes for the suggestion.
-                This is the index of the applicable_instructions field.
+                Output only. Source instruction indexes for the
+                suggestion. This is the index of the
+                applicable_instructions field.
         """
 
         instruction_indexes: MutableSequence[int] = proto.RepeatedField(
@@ -821,8 +832,9 @@ class AgentCoachingSuggestion(proto.Message):
         """
 
         class DuplicateSuggestion(proto.Message):
-            r"""The duplicate suggestion details. Keeping answer_record and sources
-            together as they are identifiers for duplicate suggestions.
+            r"""The duplicate suggestion details.
+            Keeping answer_record and sources together as they are
+            identifiers for duplicate suggestions.
 
             Attributes:
                 answer_record (str):
@@ -1023,15 +1035,17 @@ class GeneratorSuggestion(proto.Message):
 
 
 class SuggestionDedupingConfig(proto.Message):
-    r"""Config for suggestion deduping. NEXT_ID: 3
+    r"""Config for suggestion deduping.
+    NEXT_ID: 3
 
     Attributes:
         enable_deduping (bool):
             Optional. Whether to enable suggestion
             deduping.
         similarity_threshold (float):
-            Optional. The threshold for similarity between two
-            suggestions. Acceptable value is [0.0, 1.0], default to 0.8
+            Optional. The threshold for similarity between
+            two suggestions. Acceptable value is [0.0, 1.0],
+            default to 0.8
     """
 
     enable_deduping: bool = proto.Field(

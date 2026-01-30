@@ -1233,8 +1233,8 @@ class VpcFlowLogsServiceClient(metaclass=VpcFlowLogsServiceClientMeta):
             request (Union[google.cloud.network_management_v1.types.UpdateVpcFlowLogsConfigRequest, dict]):
                 The request object. Request for the ``UpdateVpcFlowLogsConfig`` method.
             vpc_flow_logs_config (google.cloud.network_management_v1.types.VpcFlowLogsConfig):
-                Required. Only fields specified in update_mask are
-                updated.
+                Required. Only fields specified in
+                update_mask are updated.
 
                 This corresponds to the ``vpc_flow_logs_config`` field
                 on the ``request`` instance; if ``request`` is provided, this

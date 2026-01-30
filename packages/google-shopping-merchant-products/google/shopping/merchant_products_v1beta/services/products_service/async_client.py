@@ -357,22 +357,27 @@ class ProductsServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_products_v1beta.types.Product:
-                The processed product, built from multiple [product
-                   inputs][google.shopping.merchant.products.v1main.ProductInput]
-                   after applying rules and supplemental data sources.
-                   This processed product matches what is shown in your
-                   Merchant Center account. Each product is built from
-                   exactly one primary data source product input, and
-                   multiple supplemental data source inputs. After
-                   inserting, updating, or deleting a product input, it
-                   may take several minutes before the updated processed
-                   product can be retrieved.
+                The processed product, built from
+                multiple [product
+                inputs][google.shopping.merchant.products.v1main.ProductInput]
+                after applying rules and supplemental
+                data sources. This processed product
+                matches what is shown in your Merchant
+                Center account. Each product is built
+                from exactly one primary data source
+                product input, and multiple supplemental
+                data source inputs. After inserting,
+                updating, or deleting a product input,
+                it may take several minutes before the
+                updated processed product can be
+                retrieved.
 
-                   All fields in the processed product and its
-                   sub-messages match the name of their corresponding
-                   attribute in the [Product data
-                   specification](https://support.google.com/merchants/answer/7052112)
-                   with some exceptions.
+                All fields in the processed product and
+                its sub-messages match the name of their
+                corresponding attribute in the [Product
+                data
+                specification](https://support.google.com/merchants/answer/7052112)
+                with some exceptions.
 
         """
         # Create or coerce a protobuf request object.

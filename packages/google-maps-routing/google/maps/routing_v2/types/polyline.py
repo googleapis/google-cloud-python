@@ -60,11 +60,13 @@ class PolylineEncoding(proto.Enum):
             No polyline type preference specified. Defaults to
             ``ENCODED_POLYLINE``.
         ENCODED_POLYLINE (1):
-            Specifies a polyline encoded using the `polyline encoding
-            algorithm </maps/documentation/utilities/polylinealgorithm>`__.
+            Specifies a polyline encoded using the [polyline
+            encoding
+            algorithm](/maps/documentation/utilities/polylinealgorithm).
         GEO_JSON_LINESTRING (2):
-            Specifies a polyline using the `GeoJSON LineString
-            format <https://tools.ietf.org/html/rfc7946#section-3.1.4>`__
+            Specifies a polyline using the [GeoJSON
+            LineString
+            format](https://tools.ietf.org/html/rfc7946#section-3.1.4)
     """
     POLYLINE_ENCODING_UNSPECIFIED = 0
     ENCODED_POLYLINE = 1
@@ -83,14 +85,15 @@ class Polyline(proto.Message):
 
     Attributes:
         encoded_polyline (str):
-            The string encoding of the polyline using the `polyline
-            encoding
-            algorithm <https://developers.google.com/maps/documentation/utilities/polylinealgorithm>`__
+            The string encoding of the polyline using the
+            [polyline encoding
+            algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
 
             This field is a member of `oneof`_ ``polyline_type``.
         geo_json_linestring (google.protobuf.struct_pb2.Struct):
-            Specifies a polyline using the `GeoJSON LineString
-            format <https://tools.ietf.org/html/rfc7946#section-3.1.4>`__.
+            Specifies a polyline using the [GeoJSON
+            LineString
+            format](https://tools.ietf.org/html/rfc7946#section-3.1.4).
 
             This field is a member of `oneof`_ ``polyline_type``.
     """

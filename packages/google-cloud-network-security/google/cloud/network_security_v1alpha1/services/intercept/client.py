@@ -1016,8 +1016,9 @@ class InterceptClient(metaclass=InterceptClientMeta):
                 The request object. Request message for
                 GetInterceptEndpointGroup.
             name (str):
-                Required. The name of the endpoint group to retrieve.
-                Format:
+                Required. The name of the endpoint group
+                to retrieve. Format:
+
                 projects/{project}/locations/{location}/interceptEndpointGroups/{intercept_endpoint_group}
 
                 This corresponds to the ``name`` field
@@ -1725,8 +1726,9 @@ class InterceptClient(metaclass=InterceptClientMeta):
                 The request object. Request message for
                 GetInterceptEndpointGroupAssociation.
             name (str):
-                Required. The name of the association to retrieve.
-                Format:
+                Required. The name of the association to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/interceptEndpointGroupAssociations/{intercept_endpoint_group_association}
 
                 This corresponds to the ``name`` field
@@ -2452,8 +2454,9 @@ class InterceptClient(metaclass=InterceptClientMeta):
                 The request object. Request message for
                 GetInterceptDeploymentGroup.
             name (str):
-                Required. The name of the deployment group to retrieve.
-                Format:
+                Required. The name of the deployment
+                group to retrieve. Format:
+
                 projects/{project}/locations/{location}/interceptDeploymentGroups/{intercept_deployment_group}
 
                 This corresponds to the ``name`` field
@@ -3144,8 +3147,9 @@ class InterceptClient(metaclass=InterceptClientMeta):
                 The request object. Request message for
                 GetInterceptDeployment.
             name (str):
-                Required. The name of the deployment to retrieve.
-                Format:
+                Required. The name of the deployment to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}
 
                 This corresponds to the ``name`` field

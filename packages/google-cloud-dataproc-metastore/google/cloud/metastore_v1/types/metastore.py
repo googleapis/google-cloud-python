@@ -1093,9 +1093,9 @@ class ScalingConfig(proto.Message):
 
     Attributes:
         instance_size (google.cloud.metastore_v1.types.ScalingConfig.InstanceSize):
-            An enum of readable instance sizes, with each instance size
-            mapping to a float value (e.g. InstanceSize.EXTRA_SMALL =
-            scaling_factor(0.1))
+            An enum of readable instance sizes, with each
+            instance size mapping to a float value (e.g.
+            InstanceSize.EXTRA_SMALL = scaling_factor(0.1))
 
             This field is a member of `oneof`_ ``scaling_model``.
         scaling_factor (float):
@@ -1178,11 +1178,11 @@ class ListServicesRequest(proto.Message):
             Optional. The filter to apply to list
             results.
         order_by (str):
-            Optional. Specify the ordering of results as described in
-            `Sorting
-            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
-            If not specified, the results will be sorted in the default
-            order.
+            Optional. Specify the ordering of results as
+            described in [Sorting
+            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+            If not specified, the results will be sorted in
+            the default order.
     """
 
     parent: str = proto.Field(
@@ -1439,11 +1439,11 @@ class ListMetadataImportsRequest(proto.Message):
             Optional. The filter to apply to list
             results.
         order_by (str):
-            Optional. Specify the ordering of results as described in
-            `Sorting
-            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
-            If not specified, the results will be sorted in the default
-            order.
+            Optional. Specify the ordering of results as
+            described in [Sorting
+            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+            If not specified, the results will be sorted in
+            the default order.
     """
 
     parent: str = proto.Field(
@@ -1662,11 +1662,11 @@ class ListBackupsRequest(proto.Message):
             Optional. The filter to apply to list
             results.
         order_by (str):
-            Optional. Specify the ordering of results as described in
-            `Sorting
-            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
-            If not specified, the results will be sorted in the default
-            order.
+            Optional. Specify the ordering of results as
+            described in [Sorting
+            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+            If not specified, the results will be sorted in
+            the default order.
     """
 
     parent: str = proto.Field(

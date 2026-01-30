@@ -49,8 +49,8 @@ __protobuf__ = proto.module(
 
 
 class ShippingSettings(proto.Message):
-    r"""The merchant account's `shipping
-    setting <https://support.google.com/merchants/answer/6069284>`__.
+    r"""The merchant account's [shipping
+    setting](https://support.google.com/merchants/answer/6069284).
 
     Attributes:
         name (str):
@@ -150,16 +150,17 @@ class Service(proto.Message):
 
             This field is a member of `oneof`_ ``_shipment_type``.
         minimum_order_value (google.shopping.type.types.Price):
-            Minimum order value for this service. If set, indicates that
-            customers will have to spend at least this amount. All
-            prices within a service must have the same currency. Cannot
-            be set together with minimum_order_value_table.
+            Minimum order value for this service. If set,
+            indicates that customers will have to spend at
+            least this amount. All prices within a service
+            must have the same currency. Cannot be set
+            together with minimum_order_value_table.
 
             This field is a member of `oneof`_ ``_minimum_order_value``.
         minimum_order_value_table (google.shopping.merchant_accounts_v1beta.types.MinimumOrderValueTable):
-            Table of per store minimum order values for the pickup
-            fulfillment type. Cannot be set together with
-            minimum_order_value.
+            Table of per store minimum order values for the
+            pickup fulfillment type. Cannot be set together
+            with minimum_order_value.
 
             This field is a member of `oneof`_ ``_minimum_order_value_table``.
         store_config (google.shopping.merchant_accounts_v1beta.types.Service.StoreConfig):
@@ -374,11 +375,12 @@ class Service(proto.Message):
 
             Attributes:
                 tier_label (str):
-                    The tier label [tier_label] sub-attribute differentiates
-                    offer level benefits between each tier. This value is also
-                    set in your program settings in Merchant Center, and is
-                    required for data source changes even if your loyalty
-                    program only has 1 tier.
+                    The tier label [tier_label] sub-attribute
+                    differentiates offer level benefits between each
+                    tier. This value is also set in your program
+                    settings in Merchant Center, and is required for
+                    data source changes even if your loyalty program
+                    only has 1 tier.
 
                     This field is a member of `oneof`_ ``_tier_label``.
             """
@@ -647,8 +649,8 @@ class Address(proto.Message):
 
             This field is a member of `oneof`_ ``_postal_code``.
         region_code (str):
-            Required. `CLDR country
-            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+            Required. [CLDR country
+            code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml)
             (For example "US").
 
             This field is a member of `oneof`_ ``_region_code``.
@@ -709,10 +711,11 @@ class DeliveryTime(proto.Message):
 
             This field is a member of `oneof`_ ``_cutoff_time``.
         min_handling_days (int):
-            Minimum number of business days spent before an order is
-            shipped. 0 means same day shipped, 1 means next day shipped.
-            'min_handling_days' and 'max_handling_days' should be either
-            set or not set at the same time.
+            Minimum number of business days spent before an
+            order is shipped. 0 means same day shipped, 1
+            means next day shipped. 'min_handling_days' and
+            'max_handling_days' should be either set or not
+            set at the same time.
 
             This field is a member of `oneof`_ ``_min_handling_days``.
         max_handling_days (int):
@@ -743,10 +746,11 @@ class DeliveryTime(proto.Message):
 
             This field is a member of `oneof`_ ``_transit_business_day_config``.
         warehouse_based_delivery_times (MutableSequence[google.shopping.merchant_accounts_v1beta.types.WarehouseBasedDeliveryTime]):
-            Optional. Indicates that the delivery time should be
-            calculated per warehouse (shipping origin location) based on
-            the settings of the selected carrier. When set, no other
-            transit time related field in [delivery
+            Optional. Indicates that the delivery time
+            should be calculated per warehouse (shipping
+            origin location) based on the settings of the
+            selected carrier. When set, no other transit
+            time related field in [delivery
             time][[google.shopping.content.bundles.ShippingSetting.DeliveryTime]
             should be set.
     """
@@ -823,8 +827,8 @@ class CutoffTime(proto.Message):
 
             This field is a member of `oneof`_ ``_minute``.
         time_zone (str):
-            Required. `Timezone
-            identifier <https://developers.google.com/adwords/api/docs/appendix/codes-formats#timezone-ids>`__
+            Required. [Timezone
+            identifier](https://developers.google.com/adwords/api/docs/appendix/codes-formats#timezone-ids)
             For example "Europe/Zurich".
 
             This field is a member of `oneof`_ ``_time_zone``.
@@ -948,12 +952,13 @@ class RateGroup(proto.Message):
 
     Attributes:
         applicable_shipping_labels (MutableSequence[str]):
-            Required. A list of `shipping
-            labels <https://support.google.com/merchants/answer/6324504>`__
-            defining the products to which this rate group applies to.
-            This is a disjunction: only one of the labels has to match
-            for the rate group to apply. May only be empty for the last
-            rate group of a service.
+            Required. A list of [shipping
+            labels](https://support.google.com/merchants/answer/6324504)
+            defining the products to which this rate group
+            applies to. This is a disjunction: only one of
+            the labels has to match for the rate group to
+            apply. May only be empty for the last rate group
+            of a service.
         single_value (google.shopping.merchant_accounts_v1beta.types.Value):
             The value of the rate group (For example flat rate $10). Can
             only be set if ``main_table`` and ``subtables`` are not set.
@@ -1283,10 +1288,11 @@ class LocationIdSet(proto.Message):
 
     Attributes:
         location_ids (MutableSequence[str]):
-            Required. A non-empty list of `location
-            IDs <https://developers.google.com/adwords/api/docs/appendix/geotargeting>`__.
-            They must all be of the same location type (For example,
-            state).
+            Required. A non-empty list of
+            [location
+            IDs](https://developers.google.com/adwords/api/docs/appendix/geotargeting).
+            They must all be of the same location type (For
+            example, state).
     """
 
     location_ids: MutableSequence[str] = proto.RepeatedField(

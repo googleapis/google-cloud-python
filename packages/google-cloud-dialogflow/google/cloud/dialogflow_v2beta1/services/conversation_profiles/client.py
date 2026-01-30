@@ -1591,9 +1591,10 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-                Required. The participant role to add or update the
-                suggestion feature config. Only HUMAN_AGENT or END_USER
-                can be used.
+                Required. The participant role to add or
+                update the suggestion feature config.
+                Only HUMAN_AGENT or END_USER can be
+                used.
 
                 This corresponds to the ``participant_role`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1764,9 +1765,9 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-                Required. The participant role to remove the suggestion
-                feature config. Only HUMAN_AGENT or END_USER can be
-                used.
+                Required. The participant role to remove
+                the suggestion feature config. Only
+                HUMAN_AGENT or END_USER can be used.
 
                 This corresponds to the ``participant_role`` field
                 on the ``request`` instance; if ``request`` is provided, this

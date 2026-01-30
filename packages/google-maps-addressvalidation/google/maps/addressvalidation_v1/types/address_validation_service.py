@@ -323,13 +323,13 @@ class Verdict(proto.Message):
             [``unexpected``][google.maps.addressvalidation.v1.AddressComponent.unexpected]
             fields for more details.
         has_unconfirmed_components (bool):
-            At least one address component cannot be categorized or
-            validated, see
+            At least one address component cannot be
+            categorized or validated, see
             [google.maps.addressvalidation.v1.Address.address_components]
             for details.
         has_inferred_components (bool):
-            At least one address component was inferred (added) that
-            wasn't in the input, see
+            At least one address component was inferred
+            (added) that wasn't in the input, see
             [google.maps.addressvalidation.v1.Address.address_components]
             for details.
         has_replaced_components (bool):
@@ -337,7 +337,8 @@ class Verdict(proto.Message):
             [google.maps.addressvalidation.v1.Address.address_components]
             for details.
         has_spell_corrected_components (bool):
-            At least one address component was spell-corrected, see
+            At least one address component was
+            spell-corrected, see
             [google.maps.addressvalidation.v1.Address.address_components]
             for details.
     """

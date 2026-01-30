@@ -73,51 +73,63 @@ class QuotaOperation(proto.Message):
 
     Attributes:
         operation_id (str):
-            Identity of the operation. This is expected to be unique
-            within the scope of the service that generated the
-            operation, and guarantees idempotency in case of retries.
+            Identity of the operation. This is expected to
+            be unique within the scope of the service that
+            generated the operation, and guarantees
+            idempotency in case of retries.
 
-            In order to ensure best performance and latency in the Quota
-            backends, operation_ids are optimally associated with time,
-            so that related operations can be accessed fast in storage.
-            For this reason, the recommended token for services that
-            intend to operate at a high QPS is Unix time in nanos + UUID
+            In order to ensure best performance and latency
+            in the Quota backends, operation_ids are
+            optimally associated with time, so that related
+            operations can be accessed fast in storage. For
+            this reason, the recommended token for services
+            that intend to operate at a high QPS is Unix
+            time in nanos + UUID
         method_name (str):
-            Fully qualified name of the API method for which this quota
-            operation is requested. This name is used for matching quota
-            rules or metric rules and billing status rules defined in
-            service configuration.
+            Fully qualified name of the API method for which
+            this quota operation is requested. This name is
+            used for matching quota rules or metric rules
+            and billing status rules defined in service
+            configuration.
 
-            This field should not be set if any of the following is
-            true: (1) the quota operation is performed on non-API
-            resources. (2) quota_metrics is set because the caller is
-            doing quota override.
+            This field should not be set if any of the
+            following is true:
+
+            (1) the quota operation is performed on non-API
+            resources. (2) quota_metrics is set because the
+            caller is doing quota override.
 
             Example of an RPC method name:
+
             google.example.library.v1.LibraryService.CreateShelf
         consumer_id (str):
-            Identity of the consumer for whom this quota operation is
-            being performed.
-
+            Identity of the consumer for whom this quota
+            operation is being performed.
             This can be in one of the following formats:
-            project:<project_id>, project_number:<project_number>,
+
+            project:<project_id>,
+            project_number:<project_number>,
             api_key:<api_key>.
         labels (MutableMapping[str, str]):
             Labels describing the operation.
         quota_metrics (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
-            Represents information about this operation. Each
-            MetricValueSet corresponds to a metric defined in the
-            service configuration. The data type used in the
-            MetricValueSet must agree with the data type specified in
-            the metric definition.
+            Represents information about this operation.
+            Each MetricValueSet corresponds to a metric
+            defined in the service configuration. The data
+            type used in the MetricValueSet must agree with
+            the data type specified in the metric
+            definition.
 
-            Within a single operation, it is not allowed to have more
-            than one MetricValue instances that have the same metric
-            names and identical label value combinations. If a request
-            has such duplicated MetricValue instances, the entire
-            request is rejected with an invalid argument error.
+            Within a single operation, it is not allowed to
+            have more than one MetricValue instances that
+            have the same metric names and identical label
+            value combinations. If a request has such
+            duplicated MetricValue instances, the entire
+            request is rejected with an invalid argument
+            error.
 
-            This field is mutually exclusive with method_name.
+            This field is mutually exclusive with
+            method_name.
         quota_mode (google.cloud.servicecontrol_v1.types.QuotaOperation.QuotaMode):
             Quota mode for this operation.
     """
@@ -140,15 +152,18 @@ class QuotaOperation(proto.Message):
                 one fails, none of the quotas are allocated or
                 released.
             BEST_EFFORT (2):
-                The operation allocates quota for the amount specified in
-                the service configuration or specified using the quota
-                metrics. If the amount is higher than the available quota,
-                request does not fail but all available quota will be
-                allocated. For rate quota, BEST_EFFORT will continue to
-                deduct from other groups even if one does not have enough
-                quota. For allocation, it will find the minimum available
-                amount across all groups and deduct that amount from all the
-                affected groups.
+                The operation allocates quota for the amount
+                specified in the service configuration or
+                specified using the quota metrics. If the amount
+                is higher than the available quota, request does
+                not fail but all available quota will be
+                allocated.
+                For rate quota, BEST_EFFORT will continue to
+                deduct from other groups even if one does not
+                have enough quota. For allocation, it will find
+                the minimum available amount across all groups
+                and deduct that amount from all the affected
+                groups.
             CHECK_ONLY (3):
                 For AllocateQuota request, only checks if
                 there is enough quota available and does not
@@ -213,8 +228,8 @@ class AllocateQuotaResponse(proto.Message):
     Attributes:
         operation_id (str):
             The same operation_id value used in the
-            AllocateQuotaRequest. Used for logging and diagnostics
-            purposes.
+            AllocateQuotaRequest. Used for logging and
+            diagnostics purposes.
         allocate_errors (MutableSequence[google.cloud.servicecontrol_v1.types.QuotaError]):
             Indicates the decision of the allocate.
         quota_metrics (MutableSequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
@@ -276,11 +291,11 @@ class QuotaError(proto.Message):
 
     class Code(proto.Enum):
         r"""Error codes related to project config validations are deprecated
-        since the quota controller methods do not perform these validations.
-        Instead services have to call the Check method, without
-        quota_properties field, to perform these validations before calling
-        the quota controller methods. These methods check only for project
-        deletion to be wipe out compliant.
+        since the quota controller methods do not perform these
+        validations. Instead services have to call the Check method,
+        without quota_properties field, to perform these validations
+        before calling the quota controller methods. These methods check
+        only for project deletion to be wipe out compliant.
 
         Values:
             UNSPECIFIED (0):

@@ -198,7 +198,8 @@ class ActorType(proto.Enum):
         ACTOR_TYPE_UNSPECIFIED (0):
             Unknown or unspecified actor type.
         USER (1):
-            Changes made by the user specified in actor_email.
+            Changes made by the user specified in
+            actor_email.
         SYSTEM (2):
             Changes made by the Google Analytics system.
         SUPPORT (3):
@@ -335,8 +336,8 @@ class GoogleSignalsState(proto.Enum):
     Values:
         GOOGLE_SIGNALS_STATE_UNSPECIFIED (0):
             Google Signals status defaults to
-            GOOGLE_SIGNALS_STATE_UNSPECIFIED to represent that the user
-            has not made an explicit choice.
+            GOOGLE_SIGNALS_STATE_UNSPECIFIED to represent
+            that the user has not made an explicit choice.
         GOOGLE_SIGNALS_ENABLED (1):
             Google Signals is enabled.
         GOOGLE_SIGNALS_DISABLED (2):
@@ -353,8 +354,8 @@ class GoogleSignalsConsent(proto.Enum):
     Values:
         GOOGLE_SIGNALS_CONSENT_UNSPECIFIED (0):
             Google Signals consent value defaults to
-            GOOGLE_SIGNALS_CONSENT_UNSPECIFIED. This will be treated as
-            GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED.
+            GOOGLE_SIGNALS_CONSENT_UNSPECIFIED. This will be
+            treated as GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED.
         GOOGLE_SIGNALS_CONSENT_CONSENTED (2):
             Terms of service have been accepted
         GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED (1):
@@ -494,9 +495,10 @@ class Account(proto.Message):
             excluded from List results unless specifically
             requested.
         gmp_organization (str):
-            Output only. The URI for a Google Marketing Platform
-            organization resource. Only set when this account is
-            connected to a GMP organization. Format:
+            Output only. The URI for a Google Marketing
+            Platform organization resource. Only set when
+            this account is connected to a GMP organization.
+            Format:
             marketingplatformadmin.googleapis.com/organizations/{org_id}
     """
 
@@ -537,13 +539,14 @@ class Property(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this property. Format:
-            properties/{property_id} Example: "properties/1000".
+            Output only. Resource name of this property.
+            Format: properties/{property_id}
+            Example: "properties/1000".
         property_type (google.analytics.admin_v1alpha.types.PropertyType):
-            Immutable. The property type for this Property resource.
-            When creating a property, if the type is
-            "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
-            be implied.
+            Immutable. The property type for this Property
+            resource. When creating a property, if the type
+            is "PROPERTY_TYPE_UNSPECIFIED", then
+            "ORDINARY_PROPERTY" will be implied.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -563,24 +566,26 @@ class Property(proto.Message):
             The max allowed display name length is 100
             UTF-16 code units.
         industry_category (google.analytics.admin_v1alpha.types.IndustryCategory):
-            Industry associated with this property Example: AUTOMOTIVE,
-            FOOD_AND_DRINK
+            Industry associated with this property
+            Example: AUTOMOTIVE, FOOD_AND_DRINK
         time_zone (str):
-            Required. Reporting Time Zone, used as the day boundary for
-            reports, regardless of where the data originates. If the
-            time zone honors DST, Analytics will automatically adjust
-            for the changes.
+            Required. Reporting Time Zone, used as the day
+            boundary for reports, regardless of where the
+            data originates. If the time zone honors DST,
+            Analytics will automatically adjust for the
+            changes.
 
-            NOTE: Changing the time zone only affects data going
-            forward, and is not applied retroactively.
+            NOTE: Changing the time zone only affects data
+            going forward, and is not applied retroactively.
 
-            Format: https://www.iana.org/time-zones Example:
-            "America/Los_Angeles".
+            Format: https://www.iana.org/time-zones
+            Example: "America/Los_Angeles".
         currency_code (str):
-            The currency type used in reports involving monetary values.
+            The currency type used in reports involving
+            monetary values.
 
-            Format: https://en.wikipedia.org/wiki/ISO_4217 Examples:
-            "USD", "EUR", "JPY".
+            Format: https://en.wikipedia.org/wiki/ISO_4217
+            Examples: "USD", "EUR", "JPY".
         service_level (google.analytics.admin_v1alpha.types.ServiceLevel):
             Output only. The Google Analytics service
             level that applies to this property.
@@ -594,8 +599,9 @@ class Property(proto.Message):
             not set, then this property is not currently in
             the trash can and is not slated to be deleted.
         account (str):
-            Immutable. The resource name of the parent account Format:
-            accounts/{account_id} Example: "accounts/123".
+            Immutable. The resource name of the parent
+            account Format: accounts/{account_id}
+            Example: "accounts/123".
     """
 
     name: str = proto.Field(
@@ -671,24 +677,25 @@ class DataStream(proto.Message):
 
     Attributes:
         web_stream_data (google.analytics.admin_v1alpha.types.DataStream.WebStreamData):
-            Data specific to web streams. Must be populated if type is
-            WEB_DATA_STREAM.
+            Data specific to web streams. Must be populated
+            if type is WEB_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         android_app_stream_data (google.analytics.admin_v1alpha.types.DataStream.AndroidAppStreamData):
-            Data specific to Android app streams. Must be populated if
-            type is ANDROID_APP_DATA_STREAM.
+            Data specific to Android app streams. Must be
+            populated if type is ANDROID_APP_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         ios_app_stream_data (google.analytics.admin_v1alpha.types.DataStream.IosAppStreamData):
-            Data specific to iOS app streams. Must be populated if type
-            is IOS_APP_DATA_STREAM.
+            Data specific to iOS app streams. Must be
+            populated if type is IOS_APP_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         name (str):
-            Output only. Resource name of this Data Stream. Format:
-            properties/{property_id}/dataStreams/{stream_id} Example:
-            "properties/1000/dataStreams/2000".
+            Output only. Resource name of this Data Stream.
+            Format:
+            properties/{property_id}/dataStreams/{stream_id}
+            Example: "properties/1000/dataStreams/2000".
         type_ (google.analytics.admin_v1alpha.types.DataStream.DataStreamType):
             Required. Immutable. The type of this
             DataStream resource.
@@ -853,13 +860,15 @@ class FirebaseLink(proto.Message):
             Output only. Example format:
             properties/1234/firebaseLinks/5678
         project (str):
-            Immutable. Firebase project resource name. When creating a
-            FirebaseLink, you may provide this resource name using
-            either a project number or project ID. Once this resource
-            has been created, returned FirebaseLinks will always have a
+            Immutable. Firebase project resource name. When
+            creating a FirebaseLink, you may provide this
+            resource name using either a project number or
+            project ID. Once this resource has been created,
+            returned FirebaseLinks will always have a
             project_name that contains a project number.
 
-            Format: 'projects/{project number}' Example: 'projects/1234'
+            Format: 'projects/{project number}'
+            Example: 'projects/1234'
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this FirebaseLink was
             originally created.
@@ -887,10 +896,11 @@ class GlobalSiteTag(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this GlobalSiteTag resource.
-            Format:
+            Output only. Resource name for this
+            GlobalSiteTag resource. Format:
             properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-            Example: "properties/123/dataStreams/456/globalSiteTag".
+            Example:
+            "properties/123/dataStreams/456/globalSiteTag".
         snippet (str):
             Immutable. JavaScript code snippet to be
             pasted as the first item into the head tag of
@@ -1065,12 +1075,13 @@ class AccountSummary(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this account summary. Format:
-            accountSummaries/{account_id} Example:
-            "accountSummaries/1000".
+            Resource name for this account summary.
+            Format: accountSummaries/{account_id}
+            Example: "accountSummaries/1000".
         account (str):
-            Resource name of account referred to by this account summary
-            Format: accounts/{account_id} Example: "accounts/1000".
+            Resource name of account referred to by this
+            account summary Format: accounts/{account_id}
+            Example: "accounts/1000".
         display_name (str):
             Display name for the account referred to in
             this account summary.
@@ -1104,8 +1115,9 @@ class PropertySummary(proto.Message):
 
     Attributes:
         property (str):
-            Resource name of property referred to by this property
-            summary Format: properties/{property_id} Example:
+            Resource name of property referred to by this
+            property summary Format:
+            properties/{property_id} Example:
             "properties/1000".
         display_name (str):
             Display name for the property referred to in
@@ -1154,10 +1166,10 @@ class MeasurementProtocolSecret(proto.Message):
             Required. Human-readable display name for
             this secret.
         secret_value (str):
-            Output only. The measurement protocol secret value. Pass
-            this value to the api_secret field of the Measurement
-            Protocol API when sending hits to this secret's parent
-            property.
+            Output only. The measurement protocol secret
+            value. Pass this value to the api_secret field
+            of the Measurement Protocol API when sending
+            hits to this secret's parent property.
     """
 
     name: str = proto.Field(
@@ -1197,25 +1209,26 @@ class SKAdNetworkConversionValueSchema(proto.Message):
             inherit this window's settings if unset or
             disabled.
         postback_window_two (google.analytics.admin_v1alpha.types.PostbackWindow):
-            The conversion value settings for the second postback
-            window.
+            The conversion value settings for the second
+            postback window.
+            This field should only be configured if there is
+            a need to define different conversion values for
+            this postback window.
 
-            This field should only be configured if there is a need to
-            define different conversion values for this postback window.
-
-            If enable_postback_window_settings is set to false for this
-            postback window, the values from postback_window_one will be
-            used.
+            If enable_postback_window_settings is set to
+            false for this postback window, the values from
+            postback_window_one will be used.
         postback_window_three (google.analytics.admin_v1alpha.types.PostbackWindow):
-            The conversion value settings for the third postback window.
-
-            This field should only be set if the user chose to define
-            different conversion values for this postback window. It is
-            allowed to configure window 3 without setting window 2. In
-            case window 1 & 2 settings are set and
-            enable_postback_window_settings for this postback window is
-            set to false, the schema will inherit settings from
-            postback_window_two.
+            The conversion value settings for the third
+            postback window.
+            This field should only be set if the user chose
+            to define different conversion values for this
+            postback window. It is allowed to configure
+            window 3 without setting window 2. In case
+            window 1 & 2 settings are set and
+            enable_postback_window_settings for this
+            postback window is set to false, the schema will
+            inherit settings from postback_window_two.
         apply_conversion_values (bool):
             If enabled, the GA SDK will set conversion
             values using this schema definition, and schema
@@ -1255,20 +1268,23 @@ class PostbackWindow(proto.Message):
 
     Attributes:
         conversion_values (MutableSequence[google.analytics.admin_v1alpha.types.ConversionValues]):
-            Ordering of the repeated field will be used to prioritize
-            the conversion value settings. Lower indexed entries are
-            prioritized higher. The first conversion value setting that
-            evaluates to true will be selected. It must have at least
-            one entry if enable_postback_window_settings is set to true.
-            It can have maximum of 128 entries.
+            Ordering of the repeated field will be used to
+            prioritize the conversion value settings. Lower
+            indexed entries are prioritized higher. The
+            first conversion value setting that evaluates to
+            true will be selected. It must have at least one
+            entry if enable_postback_window_settings is set
+            to true. It can have maximum of 128 entries.
         postback_window_settings_enabled (bool):
             If enable_postback_window_settings is true,
-            conversion_values must be populated and will be used for
-            determining when and how to set the Conversion Value on a
-            client device and exporting schema to linked Ads accounts.
-            If false, the settings are not used, but are retained in
-            case they may be used in the future. This must always be
-            true for postback_window_one.
+            conversion_values must be populated and will be
+            used for determining when and how to set the
+            Conversion Value on a client device and
+            exporting schema to linked Ads accounts. If
+            false, the settings are not used, but are
+            retained in case they may be used in the future.
+            This must always be true for
+            postback_window_one.
     """
 
     conversion_values: MutableSequence["ConversionValues"] = proto.RepeatedField(
@@ -1295,15 +1311,16 @@ class ConversionValues(proto.Message):
             value. The max allowed display name length is 50
             UTF-16 code units.
         fine_value (int):
-            The fine-grained conversion value. This is applicable only
-            to the first postback window. Its valid values are [0,63],
-            both inclusive. It must be set for postback window 1, and
-            must not be set for postback window 2 & 3. This value is not
-            guaranteed to be unique.
+            The fine-grained conversion value. This is
+            applicable only to the first postback window.
+            Its valid values are [0,63], both inclusive. It
+            must be set for postback window 1, and must not
+            be set for postback window 2 & 3. This value is
+            not guaranteed to be unique.
 
-            If the configuration for the first postback window is
-            re-used for second or third postback windows this field has
-            no effect.
+            If the configuration for the first postback
+            window is re-used for second or third postback
+            windows this field has no effect.
 
             This field is a member of `oneof`_ ``_fine_value``.
         coarse_value (google.analytics.admin_v1alpha.types.CoarseValue):
@@ -1970,10 +1987,11 @@ class DisplayVideo360AdvertiserLinkProposal(proto.Message):
             data from Display & Video 360. If this field is
             not set on create, it will be defaulted to true.
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
-            Immutable. Enables the import of cost data from Display &
-            Video 360. This can only be enabled if
-            campaign_data_sharing_enabled is enabled. If this field is
-            not set on create, it will be defaulted to true.
+            Immutable. Enables the import of cost data from
+            Display & Video 360. This can only be enabled if
+            campaign_data_sharing_enabled is enabled. If
+            this field is not set on create, it will be
+            defaulted to true.
     """
 
     name: str = proto.Field(
@@ -2038,12 +2056,13 @@ class SearchAds360Link(proto.Message):
             product. If this field is not set on create, it
             will be defaulted to true.
         cost_data_sharing_enabled (google.protobuf.wrappers_pb2.BoolValue):
-            Immutable. Enables the import of cost data from Search Ads
-            360 to the Google Analytics property. This can only be
-            enabled if campaign_data_sharing_enabled is enabled. After
-            link creation, this can only be updated from the Search Ads
-            360 product. If this field is not set on create, it will be
-            defaulted to true.
+            Immutable. Enables the import of cost data from
+            Search Ads 360 to the Google Analytics property.
+            This can only be enabled if
+            campaign_data_sharing_enabled is enabled. After
+            link creation, this can only be updated from the
+            Search Ads 360 product. If this field is not set
+            on create, it will be defaulted to true.
         advertiser_display_name (str):
             Output only. The display name of the Search
             Ads 360 Advertiser. Allows users to easily
@@ -2128,7 +2147,8 @@ class ConversionEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this conversion event. Format:
+            Output only. Resource name of this conversion
+            event. Format:
             properties/{property}/conversionEvents/{conversion_event}
         event_name (str):
             Immutable. The event name for this conversion
@@ -2188,16 +2208,18 @@ class ConversionEvent(proto.Message):
 
         Attributes:
             value (float):
-                This value will be used to populate the value for all
-                conversions of the specified event_name where the event
-                "value" parameter is unset.
+                This value will be used to populate the value
+                for all conversions of the specified event_name
+                where the event "value" parameter is unset.
 
                 This field is a member of `oneof`_ ``_value``.
             currency_code (str):
-                When a conversion event for this event_name has no set
-                currency, this currency will be applied as the default. Must
-                be in ISO 4217 currency code format. See
-                https://en.wikipedia.org/wiki/ISO_4217 for more information.
+                When a conversion event for this event_name has
+                no set currency, this currency will be applied
+                as the default. Must be in ISO 4217 currency
+                code format. See
+                https://en.wikipedia.org/wiki/ISO_4217 for more
+                information.
 
                 This field is a member of `oneof`_ ``_currency_code``.
         """
@@ -2252,7 +2274,8 @@ class KeyEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this key event. Format:
+            Output only. Resource name of this key event.
+            Format:
             properties/{property}/keyEvents/{key_event}
         event_name (str):
             Immutable. The event name for this key event.
@@ -2305,17 +2328,18 @@ class KeyEvent(proto.Message):
 
         Attributes:
             numeric_value (float):
-                Required. This will be used to populate the "value"
-                parameter for all occurrences of this Key Event (specified
-                by event_name) where that parameter is unset.
+                Required. This will be used to populate the
+                "value" parameter for all occurrences of this
+                Key Event (specified by event_name) where that
+                parameter is unset.
             currency_code (str):
-                Required. When an occurrence of this Key Event (specified by
-                event_name) has no set currency this currency will be
-                applied as the default. Must be in ISO 4217 currency code
-                format.
+                Required. When an occurrence of this Key Event
+                (specified by event_name) has no set currency
+                this currency will be applied as the default.
+                Must be in ISO 4217 currency code format.
 
-                See https://en.wikipedia.org/wiki/ISO_4217 for more
-                information.
+                See https://en.wikipedia.org/wiki/ISO_4217 for
+                more information.
         """
 
         numeric_value: float = proto.Field(
@@ -2366,9 +2390,10 @@ class GoogleSignalsSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this setting. Format:
-            properties/{property_id}/googleSignalsSettings Example:
-            "properties/1000/googleSignalsSettings".
+            Output only. Resource name of this setting.
+            Format:
+            properties/{property_id}/googleSignalsSettings
+            Example: "properties/1000/googleSignalsSettings".
         state (google.analytics.admin_v1alpha.types.GoogleSignalsState):
             Status of this setting.
         consent (google.analytics.admin_v1alpha.types.GoogleSignalsConsent):
@@ -2631,8 +2656,8 @@ class CalculatedMetric(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this CalculatedMetric.
-            Format:
+            Output only. Resource name for this
+            CalculatedMetric. Format:
             'properties/{property_id}/calculatedMetrics/{calculated_metric_id}'
         description (str):
             Optional. Description for this calculated
@@ -2642,11 +2667,13 @@ class CalculatedMetric(proto.Message):
             metric as shown in the Google Analytics UI. Max
             length 82 characters.
         calculated_metric_id (str):
-            Output only. The ID to use for the calculated metric. In the
-            UI, this is referred to as the "API name."
+            Output only. The ID to use for the calculated
+            metric. In the UI, this is referred to as the
+            "API name."
 
-            The calculated_metric_id is used when referencing this
-            calculated metric from external APIs. For example,
+            The calculated_metric_id is used when
+            referencing this calculated metric from external
+            APIs. For example,
             "calcMetric:{calculated_metric_id}".
         metric_unit (google.analytics.admin_v1alpha.types.CalculatedMetric.MetricUnit):
             Required. The type for the calculated
@@ -2666,10 +2693,11 @@ class CalculatedMetric(proto.Message):
               number). Example formula: "( customEvent:parameter_name +
               cartPurchaseQuantity ) / 2.0".
         invalid_metric_reference (bool):
-            Output only. If true, this calculated metric has a invalid
-            metric reference. Anything using a calculated metric with
-            invalid_metric_reference set to true may fail, produce
-            warnings, or produce unexpected results.
+            Output only. If true, this calculated metric has
+            a invalid metric reference. Anything using a
+            calculated metric with invalid_metric_reference
+            set to true may fail, produce warnings, or
+            produce unexpected results.
     """
 
     class MetricUnit(proto.Enum):
@@ -2842,10 +2870,10 @@ class AttributionSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this attribution settings
-            resource. Format:
-            properties/{property_id}/attributionSettings Example:
-            "properties/1000/attributionSettings".
+            Output only. Resource name of this attribution
+            settings resource. Format:
+            properties/{property_id}/attributionSettings
+            Example: "properties/1000/attributionSettings".
         acquisition_conversion_event_lookback_window (google.analytics.admin_v1alpha.types.AttributionSettings.AcquisitionConversionEventLookbackWindow):
             Required. The lookback window configuration
             for acquisition conversion events. The default
@@ -2914,19 +2942,22 @@ class AttributionSettings(proto.Message):
             REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED (0):
                 Reporting attribution model unspecified.
             PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN (1):
-                Data-driven attribution distributes credit for the
-                conversion based on data for each conversion event. Each
-                Data-driven model is specific to each advertiser and each
-                conversion event. Previously CROSS_CHANNEL_DATA_DRIVEN
+                Data-driven attribution distributes credit for
+                the conversion based on data for each conversion
+                event. Each Data-driven model is specific to
+                each advertiser and each conversion event.
+                Previously CROSS_CHANNEL_DATA_DRIVEN
             PAID_AND_ORGANIC_CHANNELS_LAST_CLICK (2):
-                Ignores direct traffic and attributes 100% of the conversion
-                value to the last channel that the customer clicked through
-                (or engaged view through for YouTube) before converting.
+                Ignores direct traffic and attributes 100% of
+                the conversion value to the last channel that
+                the customer clicked through (or engaged view
+                through for YouTube) before converting.
                 Previously CROSS_CHANNEL_LAST_CLICK
             GOOGLE_PAID_CHANNELS_LAST_CLICK (7):
-                Attributes 100% of the conversion value to the last Google
-                Paid channel that the customer clicked through before
-                converting. Previously ADS_PREFERRED_LAST_CLICK
+                Attributes 100% of the conversion value to the
+                last Google Paid channel that the customer
+                clicked through before converting. Previously
+                ADS_PREFERRED_LAST_CLICK
         """
         REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED = 0
         PAID_AND_ORGANIC_CHANNELS_DATA_DRIVEN = 1
@@ -2945,15 +2976,17 @@ class AttributionSettings(proto.Message):
                 Export scope can never be changed back to this
                 value.
             PAID_AND_ORGANIC_CHANNELS (2):
-                Paid and organic channels are eligible to receive conversion
-                credit, but only credit assigned to Google Ads channels will
-                appear in your Ads accounts. To learn more, see `Paid and
+                Paid and organic channels are eligible to
+                receive conversion credit, but only credit
+                assigned to Google Ads channels will appear in
+                your Ads accounts. To learn more, see [Paid and
                 Organic
-                channels <https://support.google.com/analytics/answer/10632359>`__.
+                channels](https://support.google.com/analytics/answer/10632359).
             GOOGLE_PAID_CHANNELS (3):
-                Only Google Ads paid channels are eligible to receive
-                conversion credit. To learn more, see `Google Paid
-                channels <https://support.google.com/analytics/answer/10632359>`__.
+                Only Google Ads paid channels are eligible to
+                receive conversion credit. To learn more, see
+                [Google Paid
+                channels](https://support.google.com/analytics/answer/10632359).
         """
         ADS_WEB_CONVERSION_DATA_EXPORT_SCOPE_UNSPECIFIED = 0
         NOT_SELECTED_YET = 1
@@ -3002,10 +3035,14 @@ class AccessBinding(proto.Message):
         name (str):
             Output only. Resource name of this binding.
 
-            Format: accounts/{account}/accessBindings/{access_binding}
-            or properties/{property}/accessBindings/{access_binding}
+            Format:
+            accounts/{account}/accessBindings/{access_binding}
+            or
+            properties/{property}/accessBindings/{access_binding}
 
-            Example: "accounts/100/accessBindings/200".
+            Example:
+
+            "accounts/100/accessBindings/200".
         roles (MutableSequence[str]):
             A list of roles for to grant to the parent
             resource.
@@ -3043,7 +3080,8 @@ class BigQueryLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this BigQuery link. Format:
+            Output only. Resource name of this BigQuery
+            link. Format:
             'properties/{property_id}/bigQueryLinks/{bigquery_link_id}'
             Format: 'properties/1234/bigQueryLinks/abc567'
         project (str):
@@ -3070,10 +3108,11 @@ class BigQueryLink(proto.Message):
             If set true, exported data will include
             advertising identifiers for mobile app streams.
         export_streams (MutableSequence[str]):
-            The list of streams under the parent property for which data
-            will be exported. Format:
-            properties/{property_id}/dataStreams/{stream_id} Example:
-            ['properties/1000/dataStreams/2000']
+            The list of streams under the parent property
+            for which data will be exported.
+            Format:
+            properties/{property_id}/dataStreams/{stream_id}
+            Example: ['properties/1000/dataStreams/2000']
         excluded_events (MutableSequence[str]):
             The list of event names that will be excluded
             from exports.
@@ -3134,8 +3173,9 @@ class EnhancedMeasurementSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the Enhanced Measurement
-            Settings. Format:
+            Output only. Resource name of the Enhanced
+            Measurement Settings. Format:
+
             properties/{property_id}/dataStreams/{data_stream}/enhancedMeasurementSettings
             Example:
             "properties/1000/dataStreams/2000/enhancedMeasurementSettings".
@@ -3236,8 +3276,9 @@ class DataRedactionSettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Name of this Data Redaction Settings resource.
-            Format:
+            Output only. Name of this Data Redaction
+            Settings resource. Format:
+
             properties/{property_id}/dataStreams/{data_stream}/dataRedactionSettings
             Example:
             "properties/1000/dataStreams/2000/dataRedactionSettings".
@@ -3246,21 +3287,21 @@ class DataRedactionSettings(proto.Message):
             property values that look like an email will be
             redacted.
         query_parameter_redaction_enabled (bool):
-            Query Parameter redaction removes the key and value portions
-            of a query parameter if it is in the configured set of query
-            parameters.
+            Query Parameter redaction removes the key and
+            value portions of a query parameter if it is in
+            the configured set of query parameters.
 
-            If enabled, URL query replacement logic will be run for the
-            Stream. Any query parameters defined in query_parameter_keys
-            will be redacted.
+            If enabled, URL query replacement logic will be
+            run for the Stream. Any query parameters defined
+            in query_parameter_keys will be redacted.
         query_parameter_keys (MutableSequence[str]):
-            The query parameter keys to apply redaction logic to if
-            present in the URL. Query parameter matching is
-            case-insensitive.
+            The query parameter keys to apply redaction
+            logic to if present in the URL. Query parameter
+            matching is case-insensitive.
 
             Must contain at least one element if
-            query_parameter_replacement_enabled is true. Keys cannot
-            contain commas.
+            query_parameter_replacement_enabled is true.
+            Keys cannot contain commas.
     """
 
     name: str = proto.Field(
@@ -3313,13 +3354,16 @@ class RollupPropertySourceLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this RollupPropertySourceLink.
-            Format:
+            Output only. Resource name of this
+            RollupPropertySourceLink. Format:
+
             'properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link}'
-            Format: 'properties/123/rollupPropertySourceLinks/456'
+            Format:
+            'properties/123/rollupPropertySourceLinks/456'
         source_property (str):
-            Immutable. Resource name of the source property. Format:
-            properties/{property_id} Example: "properties/789".
+            Immutable. Resource name of the source property.
+            Format: properties/{property_id}
+            Example: "properties/789".
     """
 
     name: str = proto.Field(
@@ -3358,10 +3402,12 @@ class ReportingDataAnnotation(proto.Message):
 
             This field is a member of `oneof`_ ``target``.
         name (str):
-            Required. Identifier. Resource name of this Reporting Data
-            Annotation. Format:
+            Required. Identifier. Resource name of this
+            Reporting Data Annotation. Format:
+
             'properties/{property_id}/reportingDataAnnotations/{reporting_data_annotation}'
-            Format: 'properties/123/reportingDataAnnotations/456'
+            Format:
+            'properties/123/reportingDataAnnotations/456'
         title (str):
             Required. Human-readable title for this
             Reporting Data Annotation.
@@ -3481,8 +3527,10 @@ class SubpropertySyncConfig(proto.Message):
     Attributes:
         name (str):
             Output only. Identifier. Format:
+
             properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
-            Example: properties/1234/subpropertySyncConfigs/5678
+            Example:
+            properties/1234/subpropertySyncConfigs/5678
         apply_to_property (str):
             Output only. Immutable. Resource name of the
             subproperty that these settings apply to.
@@ -3542,9 +3590,13 @@ class ReportingIdentitySettings(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. Resource name for this reporting
-            identity settings singleton resource. Format:
-            properties/{property_id}/reportingIdentitySettings Example:
+            Output only. Identifier. Resource name for this
+            reporting identity settings singleton resource.
+            Format:
+
+            properties/{property_id}/reportingIdentitySettings
+            Example:
+
             "properties/1234/reportingIdentitySettings".
         reporting_identity (google.analytics.admin_v1alpha.types.ReportingIdentitySettings.ReportingIdentity):
             The strategy used for identifying user

@@ -412,9 +412,9 @@ class Cluster(proto.Message):
                 not specified, a Google-managed key will be used
                 instead.
             kms_key_active_version (str):
-                Output only. The Cloud KMS CryptoKeyVersion currently in use
-                for protecting control plane disks. Only applicable if
-                kms_key is set.
+                Output only. The Cloud KMS CryptoKeyVersion
+                currently in use for protecting control plane
+                disks. Only applicable if kms_key is set.
             kms_key_state (google.cloud.edgecontainer_v1.types.KmsKeyState):
                 Output only. Availability of the Cloud KMS CryptoKey. If not
                 ``KEY_AVAILABLE``, then nodes may go offline as they cannot
@@ -491,10 +491,11 @@ class Cluster(proto.Message):
                 Output only. The time when the maintenance
                 event started.
             end_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. The time when the maintenance event ended,
-                either successfully or not. If the maintenance event is
-                split into multiple maintenance windows, end_time is only
-                updated when the whole flow ends.
+                Output only. The time when the maintenance event
+                ended, either successfully or not. If the
+                maintenance event is split into multiple
+                maintenance windows, end_time is only updated
+                when the whole flow ends.
             update_time (google.protobuf.timestamp_pb2.Timestamp):
                 Output only. The time when the maintenance
                 event message was updated.
@@ -919,9 +920,9 @@ class NodePool(proto.Message):
                 specified, a Google-managed key will be used
                 instead.
             kms_key_active_version (str):
-                Output only. The Cloud KMS CryptoKeyVersion currently in use
-                for protecting node local disks. Only applicable if kms_key
-                is set.
+                Output only. The Cloud KMS CryptoKeyVersion
+                currently in use for protecting node local
+                disks. Only applicable if kms_key is set.
             kms_key_state (google.cloud.edgecontainer_v1.types.KmsKeyState):
                 Output only. Availability of the Cloud KMS CryptoKey. If not
                 ``KEY_AVAILABLE``, then nodes may go offline as they cannot
@@ -1051,14 +1052,15 @@ class Machine(proto.Message):
         labels (MutableMapping[str, str]):
             Labels associated with this resource.
         hosted_node (str):
-            Canonical resource name of the node that this machine is
-            responsible for hosting e.g.
+            Canonical resource name of the node that this
+            machine is responsible for hosting e.g.
             projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
-            Or empty if the machine is not assigned to assume the role
-            of a node.
+            Or empty if the machine is not assigned to
+            assume the role of a node.
 
-            For control plane nodes hosted on edge machines, this will
-            return the following format:
+            For control plane nodes hosted on edge machines,
+            this will return the following format:
+
             "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
         zone (str):
             The Google Distributed Cloud Edge zone of
@@ -1569,7 +1571,8 @@ class ServerConfig(proto.Message):
             Output only. Mapping from release channel to
             channel config.
         versions (MutableSequence[google.cloud.edgecontainer_v1.types.Version]):
-            Output only. Supported versions, e.g.: ["1.4.0", "1.5.0"].
+            Output only. Supported versions, e.g.: ["1.4.0",
+            "1.5.0"].
         default_version (str):
             Output only. Default version, e.g.: "1.4.0".
     """

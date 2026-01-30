@@ -1815,9 +1815,9 @@ class ApiHubResource(proto.Message):
 
     Attributes:
         api (google.cloud.apihub_v1.types.Api):
-            This represents Api resource in search results. Only name,
-            display_name, description and owner fields are populated in
-            search results.
+            This represents Api resource in search results.
+            Only name, display_name, description and owner
+            fields are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
         operation (google.cloud.apihub_v1.types.ApiOperation):
@@ -1827,15 +1827,17 @@ class ApiHubResource(proto.Message):
 
             This field is a member of `oneof`_ ``resource``.
         deployment (google.cloud.apihub_v1.types.Deployment):
-            This represents Deployment resource in search results. Only
-            name, display_name, description, deployment_type and
-            api_versions fields are populated in search results.
+            This represents Deployment resource in search
+            results. Only name, display_name, description,
+            deployment_type and api_versions fields are
+            populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
         spec (google.cloud.apihub_v1.types.Spec):
-            This represents Spec resource in search results. Only name,
-            display_name, description, spec_type and documentation
-            fields are populated in search results.
+            This represents Spec resource in search results.
+            Only name, display_name, description, spec_type
+            and documentation fields are populated in search
+            results.
 
             This field is a member of `oneof`_ ``resource``.
         definition (google.cloud.apihub_v1.types.Definition):
@@ -1845,9 +1847,10 @@ class ApiHubResource(proto.Message):
 
             This field is a member of `oneof`_ ``resource``.
         version (google.cloud.apihub_v1.types.Version):
-            This represents Version resource in search results. Only
-            name, display_name, description, lifecycle, compliance and
-            accreditation fields are populated in search results.
+            This represents Version resource in search
+            results. Only name, display_name, description,
+            lifecycle, compliance and accreditation fields
+            are populated in search results.
 
             This field is a member of `oneof`_ ``resource``.
     """

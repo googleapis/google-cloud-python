@@ -138,8 +138,8 @@ class ListEnvironmentsRequest(proto.Message):
         page_size (int):
             The maximum number of environments to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
     """
 
     parent: str = proto.Field(
@@ -748,8 +748,8 @@ class ListUserWorkloadsSecretsRequest(proto.Message):
             Optional. The maximum number of Secrets to
             return.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
     """
 
     parent: str = proto.Field(
@@ -847,8 +847,8 @@ class ListUserWorkloadsConfigMapsRequest(proto.Message):
             Optional. The maximum number of ConfigMaps to
             return.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
     """
 
     parent: str = proto.Field(
@@ -975,14 +975,18 @@ class UserWorkloadsConfigMap(proto.Message):
             ConfigMap, in the form:
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}".
         data (MutableMapping[str, str]):
-            Optional. The "data" field of Kubernetes ConfigMap,
-            organized in key-value pairs. For details see:
+            Optional. The "data" field of Kubernetes
+            ConfigMap, organized in key-value pairs. For
+            details see:
+
             https://kubernetes.io/docs/concepts/configuration/configmap/
 
             Example:
 
-            { "example_key": "example_value", "another_key":
-            "another_value" }
+            {
+            "example_key": "example_value",
+            "another_key": "another_value"
+            }
     """
 
     name: str = proto.Field(
@@ -1038,15 +1042,18 @@ class ListWorkloadsRequest(proto.Message):
             Optional. The maximum number of environments
             to return.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            List request, if any.
+            Optional. The next_page_token value returned
+            from a previous List request, if any.
         filter (str):
-            Optional. The list filter. Currently only supports equality
-            on the type field. The value of a field specified in the
-            filter expression must be one ComposerWorkloadType enum
-            option. It's possible to get multiple types using "OR"
-            operator, e.g.: "type=SCHEDULER OR type=CELERY_WORKER". If
-            not specified, all items are returned.
+            Optional. The list filter.
+            Currently only supports equality on the type
+            field. The value of a field specified in the
+            filter expression must be one
+            ComposerWorkloadType enum option. It's possible
+            to get multiple types using "OR" operator, e.g.:
+
+            "type=SCHEDULER OR type=CELERY_WORKER". If not
+            specified, all items are returned.
     """
 
     parent: str = proto.Field(
@@ -1240,11 +1247,12 @@ class SaveSnapshotResponse(proto.Message):
 
     Attributes:
         snapshot_path (str):
-            The fully-resolved Cloud Storage path of the created
-            snapshot, e.g.:
+            The fully-resolved Cloud Storage path of the
+            created snapshot, e.g.:
+
             "gs://my-bucket/snapshots/project_location_environment_timestamp".
-            This field is populated only if the snapshot creation was
-            successful.
+            This field is populated only if the snapshot
+            creation was successful.
     """
 
     snapshot_path: str = proto.Field(
@@ -1262,7 +1270,8 @@ class LoadSnapshotRequest(proto.Message):
             in the form:
             "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
         snapshot_path (str):
-            A Cloud Storage path to a snapshot to load, e.g.:
+            A Cloud Storage path to a snapshot to load,
+            e.g.:
             "gs://my-bucket/snapshots/project_location_environment_timestamp".
         skip_pypi_packages_installation (bool):
             Whether or not to skip installing Pypi
@@ -1424,16 +1433,18 @@ class EnvironmentConfig(proto.Message):
             This field is supported for Cloud Composer environments in
             versions composer-1.\ *.*-airflow-*.*.\*.
         airflow_uri (str):
-            Output only. The URI of the Apache Airflow Web UI hosted
-            within this environment (see `Airflow web
-            interface </composer/docs/how-to/accessing/airflow-web-interface>`__).
+            Output only. The URI of the Apache Airflow Web
+            UI hosted within this environment (see [Airflow
+            web
+            interface](/composer/docs/how-to/accessing/airflow-web-interface)).
         airflow_byoid_uri (str):
-            Output only. The 'bring your own identity' variant of the
-            URI of the Apache Airflow Web UI hosted within this
-            environment, to be accessed with external identities using
-            workforce identity federation (see `Access environments with
-            workforce identity
-            federation </composer/docs/composer-2/access-environments-with-workforce-identity-federation>`__).
+            Output only. The 'bring your own identity'
+            variant of the URI of the Apache Airflow Web UI
+            hosted within this environment, to be accessed
+            with external identities using workforce
+            identity federation (see [Access environments
+            with workforce identity
+            federation](/composer/docs/composer-2/access-environments-with-workforce-identity-federation)).
         encryption_config (google.cloud.orchestration.airflow.service_v1beta1.types.EncryptionConfig):
             Optional. The encryption options for the
             Cloud Composer environment and its dependencies.
@@ -1723,14 +1734,16 @@ class SoftwareConfig(proto.Message):
             `blocked </composer/docs/concepts/airflow-configurations>`__,
             and cannot be overridden.
         pypi_packages (MutableMapping[str, str]):
-            Optional. Custom Python Package Index (PyPI) packages to be
-            installed in the environment.
+            Optional. Custom Python Package Index (PyPI)
+            packages to be installed in the environment.
 
-            Keys refer to the lowercase package name such as "numpy" and
-            values are the lowercase extras and version specifier such
-            as "==1.12.0", "[devel,gcp_api]", or "[devel]>=1.8.2,
-            <1.9.2". To specify a package without pinning it to a
-            version specifier, use the empty string as the value.
+            Keys refer to the lowercase package name such as
+            "numpy" and values are the lowercase extras and
+            version specifier such as "==1.12.0",
+            "[devel,gcp_api]", or "[devel]>=1.8.2, <1.9.2".
+            To specify a package without pinning it to a
+            version specifier, use the empty string as the
+            value.
         env_variables (MutableMapping[str, str]):
             Optional. Additional environment variables to provide to the
             Apache Airflow scheduler, worker, and webserver processes.
@@ -2255,9 +2268,10 @@ class PrivateEnvironmentConfig(proto.Message):
             This field is supported for Cloud Composer environments in
             versions composer-1.\ *.*-airflow-*.*.\*.
         cloud_sql_ipv4_cidr_block (str):
-            Optional. The CIDR block from which IP range in tenant
-            project will be reserved for Cloud SQL. Needs to be disjoint
-            from web_server_ipv4_cidr_block
+            Optional. The CIDR block from which IP range in
+            tenant project will be reserved for Cloud SQL.
+            Needs to be disjoint from
+            web_server_ipv4_cidr_block
         web_server_ipv4_reserved_range (str):
             Output only. The IP range reserved for the tenant project's
             App Engine VMs.
@@ -2841,8 +2855,8 @@ class ScheduledSnapshotsConfig(proto.Message):
             This field is subject to additional validation
             around frequency of execution.
         time_zone (str):
-            Optional. Time zone that sets the context to interpret
-            snapshot_creation_schedule.
+            Optional. Time zone that sets the context to
+            interpret snapshot_creation_schedule.
     """
 
     enabled: bool = proto.Field(

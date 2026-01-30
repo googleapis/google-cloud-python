@@ -84,7 +84,8 @@ class PredictRequest(proto.Message):
             prediction results required. If zero, the
             service will choose a reasonable default.
         page_token (str):
-            Optional. The previous PredictResponse.next_page_token.
+            Optional. The previous
+            PredictResponse.next_page_token.
         filter (str):
             Optional. Filter for restricting prediction results. Accepts
             values for tags and the ``filterOutOfStockItems`` flag.
@@ -205,8 +206,9 @@ class PredictResponse(proto.Message):
             Additional domain specific prediction
             response metadata.
         next_page_token (str):
-            If empty, the list is complete. If nonempty, the token to
-            pass to the next request's PredictRequest.page_token.
+            If empty, the list is complete. If nonempty, the
+            token to pass to the next request's
+            PredictRequest.page_token.
     """
 
     class PredictionResult(proto.Message):

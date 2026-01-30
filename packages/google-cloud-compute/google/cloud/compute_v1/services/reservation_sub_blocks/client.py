@@ -775,8 +775,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field
@@ -1100,8 +1100,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field
@@ -1255,8 +1255,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field
@@ -1409,8 +1409,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field
@@ -1590,8 +1590,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field
@@ -1759,8 +1759,8 @@ class ReservationSubBlocksClient(metaclass=ReservationSubBlocksClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             parent_name (str):
-                The name of the parent reservation and parent block. In
-                the format of
+                The name of the parent reservation and
+                parent block. In the format of
                 reservations/{reservation_name}/reservationBlocks/{reservation_block_name}
 
                 This corresponds to the ``parent_name`` field

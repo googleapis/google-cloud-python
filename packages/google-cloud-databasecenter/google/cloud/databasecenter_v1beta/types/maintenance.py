@@ -111,8 +111,8 @@ class ResourceMaintenanceDenySchedule(proto.Message):
         end_date (google.type.date_pb2.Date):
             Optional. Deny period end date.
         time (google.type.timeofday_pb2.TimeOfDay):
-            Optional. Time in UTC when the deny period starts on
-            start_date and ends on end_date.
+            Optional. Time in UTC when the deny period
+            starts on start_date and ends on end_date.
     """
 
     start_date: date_pb2.Date = proto.Field(
@@ -144,8 +144,9 @@ class MaintenanceInfo(proto.Message):
             Optional. List of Deny maintenance period for
             the database resource.
         maintenance_version (str):
-            Optional. Current Maintenance version of the database
-            resource. Example: "MYSQL_8_0_41.R20250531.01_15".
+            Optional. Current Maintenance version of the
+            database resource. Example:
+            "MYSQL_8_0_41.R20250531.01_15".
     """
 
     maintenance_schedule: "ResourceMaintenanceSchedule" = proto.Field(

@@ -523,9 +523,10 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             Returns:
                 ~.productreviews.ProductReview:
-                    A review for a product. For more information, see
-                `Introduction to Product Review
-                Feeds <https://developers.google.com/product-review-feeds>`__
+                    A review for a product. For more
+                information, see [Introduction to
+                Product Review
+                Feeds](https://developers.google.com/product-review-feeds)
 
             """
 
@@ -676,9 +677,10 @@ class ProductReviewsServiceRestTransport(_BaseProductReviewsServiceRestTransport
 
             Returns:
                 ~.productreviews.ProductReview:
-                    A review for a product. For more information, see
-                `Introduction to Product Review
-                Feeds <https://developers.google.com/product-review-feeds>`__
+                    A review for a product. For more
+                information, see [Introduction to
+                Product Review
+                Feeds](https://developers.google.com/product-review-feeds)
 
             """
 

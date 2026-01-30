@@ -614,8 +614,9 @@ class DeveloperConnectAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             connection_id (:class:`str`):
-                Required. Id of the requesting object If auto-generating
-                Id server-side, remove this field and connection_id from
+                Required. Id of the requesting object
+                If auto-generating Id server-side,
+                remove this field and connection_id from
                 the method_signature of Create RPC
 
                 This corresponds to the ``connection_id`` field
@@ -755,12 +756,15 @@ class DeveloperConnectAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Connection resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Connection resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2937,7 +2941,8 @@ class DeveloperConnectAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListUsersAsyncPager:
-        r"""Lists Users in a given project, location, and account_connector.
+        r"""Lists Users in a given project, location, and
+        account_connector.
 
         .. code-block:: python
 

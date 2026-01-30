@@ -57,18 +57,19 @@ class Likelihood(proto.Enum):
     r"""Coarse-grained confidence level of how well a particular finding
     satisfies the criteria to match a particular infoType.
 
-    Likelihood is calculated based on the number of signals a finding
-    has that implies that the finding matches the infoType. For example,
-    a string that has an '@' and a '.com' is more likely to be a match
-    for an email address than a string that only has an '@'.
+    Likelihood is calculated based on the number of signals a
+    finding has that implies that the finding matches the infoType.
+    For example, a string that has an '@' and a '.com' is more
+    likely to be a match for an email address than a string that
+    only has an '@'.
 
-    In general, the highest likelihood level has the strongest signals
-    that indicate a match. That is, a finding with a high likelihood has
-    a low chance of being a false positive.
+    In general, the highest likelihood level has the strongest
+    signals that indicate a match. That is, a finding with a high
+    likelihood has a low chance of being a false positive.
 
-    For more information about each likelihood level and how likelihood
-    works, see `Match
-    likelihood <https://cloud.google.com/sensitive-data-protection/docs/likelihood>`__.
+    For more information about each likelihood level
+    and how likelihood works, see [Match
+    likelihood](https://cloud.google.com/sensitive-data-protection/docs/likelihood).
 
     Values:
         LIKELIHOOD_UNSPECIFIED (0):
@@ -101,11 +102,13 @@ class FileType(proto.Enum):
         FILE_TYPE_UNSPECIFIED (0):
             Includes all files.
         BINARY_FILE (1):
-            Includes all file extensions not covered by another entry.
-            Binary scanning attempts to convert the content of the file
-            to utf_8 to scan the file. If you wish to avoid this fall
-            back, specify one or more of the other file types in your
-            storage scan.
+            Includes all file extensions not covered by
+            another entry. Binary scanning attempts to
+            convert the content of the file to utf_8 to scan
+            the file.
+            If you wish to avoid this fall back, specify one
+            or more of the other file types in your storage
+            scan.
         TEXT_FILE (2):
             Included file extensions:
 
@@ -336,9 +339,9 @@ class CustomInfoType(proto.Message):
             specified. Not supported for the ``surrogate_type``
             CustomInfoType.
         exclusion_type (google.cloud.dlp_v2.types.CustomInfoType.ExclusionType):
-            If set to EXCLUSION_TYPE_EXCLUDE this infoType will not
-            cause a finding to be returned. It still can be used for
-            rules matching.
+            If set to EXCLUSION_TYPE_EXCLUDE this infoType
+            will not cause a finding to be returned. It
+            still can be used for rules matching.
         sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
             Sensitivity for this CustomInfoType. If this
             CustomInfoType extends an existing InfoType, the
@@ -413,10 +416,10 @@ class CustomInfoType(proto.Message):
 
             Attributes:
                 words (MutableSequence[str]):
-                    Words or phrases defining the dictionary. The dictionary
-                    must contain at least one phrase and every phrase must
-                    contain at least 2 characters that are letters or digits.
-                    [required]
+                    Words or phrases defining the dictionary. The
+                    dictionary must contain at least one phrase and
+                    every phrase must contain at least 2 characters
+                    that are letters or digits. [required]
             """
 
             words: MutableSequence[str] = proto.RepeatedField(
@@ -836,24 +839,29 @@ class CloudStorageOptions(proto.Message):
             more information, see `Limits on bytes scanned per
             file <https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>`__.
         bytes_limit_per_file_percent (int):
-            Max percentage of bytes to scan from a file. The rest are
-            omitted. The number of bytes scanned is rounded down. Must
-            be between 0 and 100, inclusively. Both 0 and 100 means no
-            limit. Defaults to 0. Only one of bytes_limit_per_file and
-            bytes_limit_per_file_percent can be specified. This field
-            can't be set if de-identification is requested. For certain
-            file types, setting this field has no effect. For more
-            information, see `Limits on bytes scanned per
-            file <https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>`__.
+            Max percentage of bytes to scan from a file. The
+            rest are omitted. The number of bytes scanned is
+            rounded down. Must be between 0 and 100,
+            inclusively. Both 0 and 100 means no limit.
+            Defaults to 0. Only one of bytes_limit_per_file
+            and bytes_limit_per_file_percent can be
+            specified. This field can't be set if
+            de-identification is requested. For certain file
+            types, setting this field has no effect. For
+            more information, see [Limits on bytes scanned
+            per
+            file](https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file).
         file_types (MutableSequence[google.cloud.dlp_v2.types.FileType]):
-            List of file type groups to include in the scan. If empty,
-            all files are scanned and available data format processors
-            are applied. In addition, the binary content of the selected
-            files is always scanned as well. Images are scanned only as
-            binary if the specified region does not support image
-            inspection and no file_types were specified. Image
-            inspection is restricted to 'global', 'us', 'asia', and
-            'europe'.
+            List of file type groups to include in the scan.
+            If empty, all files are scanned and available
+            data format processors are applied. In addition,
+            the binary content of the selected files is
+            always scanned as well.
+            Images are scanned only as binary if the
+            specified region does not support image
+            inspection and no file_types were specified.
+            Image inspection is restricted to 'global',
+            'us', 'asia', and 'europe'.
         sample_method (google.cloud.dlp_v2.types.CloudStorageOptions.SampleMethod):
             How to sample the data.
         files_limit_percent (int):
@@ -865,8 +873,8 @@ class CloudStorageOptions(proto.Message):
     """
 
     class SampleMethod(proto.Enum):
-        r"""How to sample bytes if not all bytes are scanned. Meaningful only
-        when used in conjunction with bytes_limit_per_file. If not
+        r"""How to sample bytes if not all bytes are scanned. Meaningful
+        only when used in conjunction with bytes_limit_per_file. If not
         specified, scanning would start from the top.
 
         Values:
@@ -875,9 +883,9 @@ class CloudStorageOptions(proto.Message):
             TOP (1):
                 Scan from the top (default).
             RANDOM_START (2):
-                For each file larger than bytes_limit_per_file, randomly
-                pick the offset to start scanning. The scanned bytes are
-                contiguous.
+                For each file larger than bytes_limit_per_file,
+                randomly pick the offset to start scanning. The
+                scanned bytes are contiguous.
         """
         SAMPLE_METHOD_UNSPECIFIED = 0
         TOP = 1
@@ -988,11 +996,12 @@ class BigQueryOptions(proto.Message):
             ``location.content_locations.record_location.record_key.id_values``.
             Nested fields such as ``person.birthdate.year`` are allowed.
         rows_limit (int):
-            Max number of rows to scan. If the table has more rows than
-            this value, the rest of the rows are omitted. If not set, or
-            if set to 0, all rows will be scanned. Only one of
-            rows_limit and rows_limit_percent can be specified. Cannot
-            be used in conjunction with TimespanConfig.
+            Max number of rows to scan. If the table has
+            more rows than this value, the rest of the rows
+            are omitted. If not set, or if set to 0, all
+            rows will be scanned. Only one of rows_limit and
+            rows_limit_percent can be specified. Cannot be
+            used in conjunction with TimespanConfig.
         rows_limit_percent (int):
             Max percentage of rows to scan. The rest are omitted. The
             number of rows scanned is rounded down. Must be between 0
@@ -1024,9 +1033,10 @@ class BigQueryOptions(proto.Message):
     """
 
     class SampleMethod(proto.Enum):
-        r"""How to sample rows if not all rows are scanned. Meaningful only when
-        used in conjunction with either rows_limit or rows_limit_percent. If
-        not specified, rows are scanned in the order BigQuery reads them.
+        r"""How to sample rows if not all rows are scanned. Meaningful only
+        when used in conjunction with either rows_limit or
+        rows_limit_percent. If not specified, rows are scanned in the
+        order BigQuery reads them.
 
         Values:
             SAMPLE_METHOD_UNSPECIFIED (0):

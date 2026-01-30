@@ -89,8 +89,8 @@ class OperationMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
-            Output only. Progress of operation. Range: [0, 100]. Not
-            used currently.
+            Output only. Progress of operation. Range: [0,
+            100]. Not used currently.
         partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.

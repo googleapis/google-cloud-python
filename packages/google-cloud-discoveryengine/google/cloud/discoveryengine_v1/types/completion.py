@@ -49,10 +49,11 @@ class SuggestionDenyListEntry(proto.Message):
             MATCH_OPERATOR_UNSPECIFIED (0):
                 Default value. Should not be used
             EXACT_MATCH (1):
-                If the suggestion is an exact match to the block_phrase,
-                then block it.
+                If the suggestion is an exact match to the
+                block_phrase, then block it.
             CONTAINS (2):
-                If the suggestion contains the block_phrase, then block it.
+                If the suggestion contains the block_phrase,
+                then block it.
         """
         MATCH_OPERATOR_UNSPECIFIED = 0
         EXACT_MATCH = 1

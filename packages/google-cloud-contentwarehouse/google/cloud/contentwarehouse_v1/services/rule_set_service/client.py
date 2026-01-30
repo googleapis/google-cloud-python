@@ -814,7 +814,8 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
                 The request object. Request message for
                 RuleSetService.CreateRuleSet.
             parent (str):
-                Required. The parent name. Format:
+                Required. The parent name.
+                Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -898,7 +899,8 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rule_engine.RuleSet:
-        r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
+        r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does
+        not exist.
 
         .. code-block:: python
 
@@ -931,7 +933,9 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
                 The request object. Request message for
                 RuleSetService.GetRuleSet.
             name (str):
-                Required. The name of the rule set to retrieve. Format:
+                Required. The name of the rule set to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -1009,8 +1013,9 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rule_engine.RuleSet:
-        r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
-        ruleset is non-empty and does not equal the existing name.
+        r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name
+        of the ruleset is non-empty and does not equal the
+        existing name.
 
         .. code-block:: python
 
@@ -1043,7 +1048,9 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
                 The request object. Request message for
                 RuleSetService.UpdateRuleSet.
             name (str):
-                Required. The name of the rule set to update. Format:
+                Required. The name of the rule set to
+                update. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -1127,8 +1134,8 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a ruleset. Returns NOT_FOUND if the document does not
-        exist.
+        r"""Deletes a ruleset. Returns NOT_FOUND if the document
+        does not exist.
 
         .. code-block:: python
 
@@ -1158,7 +1165,9 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
                 The request object. Request message for
                 RuleSetService.DeleteRuleSet.
             name (str):
-                Required. The name of the rule set to delete. Format:
+                Required. The name of the rule set to
+                delete. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -1260,8 +1269,8 @@ class RuleSetServiceClient(metaclass=RuleSetServiceClientMeta):
                 The request object. Request message for
                 RuleSetService.ListRuleSets.
             parent (str):
-                Required. The parent, which owns this collection of
-                document. Format:
+                Required. The parent, which owns this
+                collection of document. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

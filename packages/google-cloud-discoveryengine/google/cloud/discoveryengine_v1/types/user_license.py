@@ -73,15 +73,17 @@ class UserLicense(proto.Message):
             ASSIGNED (1):
                 License assigned to the user.
             UNASSIGNED (2):
-                No license assigned to the user. Deprecated, translated to
-                NO_LICENSE.
+                No license assigned to the user.
+                Deprecated, translated to NO_LICENSE.
             NO_LICENSE (3):
                 No license assigned to the user.
             NO_LICENSE_ATTEMPTED_LOGIN (4):
-                User attempted to login but no license assigned to the user.
-                This state is only used for no user first time login attempt
-                but cannot get license assigned. Users already logged in but
-                cannot get license assigned will be assigned NO_LICENSE
+                User attempted to login but no license assigned
+                to the user. This state is only used for no user
+                first time login attempt but cannot get license
+                assigned.
+                Users already logged in but cannot get license
+                assigned will be assigned NO_LICENSE
                 state(License could be unassigned by admin).
         """
         LICENSE_ASSIGNMENT_STATE_UNSPECIFIED = 0

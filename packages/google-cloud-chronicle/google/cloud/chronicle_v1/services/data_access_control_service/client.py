@@ -1213,11 +1213,14 @@ class DataAccessControlServiceClient(metaclass=DataAccessControlServiceClientMet
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to update. If not included, all
-                fields with a non-empty value will be overwritten.
-                Currently, only the description and definition fields
-                are supported for update; an update call that attempts
-                to update any other fields will return INVALID_ARGUMENT.
+                The list of fields to update. If not
+                included, all fields with a non-empty
+                value will be overwritten. Currently,
+                only the description and definition
+                fields are supported for update; an
+                update call that attempts to update any
+                other fields will return
+                INVALID_ARGUMENT.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1831,12 +1834,14 @@ class DataAccessControlServiceClient(metaclass=DataAccessControlServiceClientMet
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The list of fields to update. If not included, all
-                fields with a non-empty value will be overwritten.
-                Currently, only the description, the allowed and denied
-                labels list fields are supported for update; an update
-                call that attempts to update any other fields will
-                return INVALID_ARGUMENT.
+                The list of fields to update. If not
+                included, all fields with a non-empty
+                value will be overwritten. Currently,
+                only the description, the allowed and
+                denied labels list fields are supported
+                for update; an update call that attempts
+                to update any other fields will return
+                INVALID_ARGUMENT.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

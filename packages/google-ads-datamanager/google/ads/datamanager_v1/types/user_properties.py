@@ -85,8 +85,8 @@ class UserProperties(proto.Message):
             Optional. The advertiser-assessed value of
             the customer.
         additional_user_properties (MutableSequence[google.ads.datamanager_v1.types.UserProperty]):
-            Optional. A bucket of any additional `user
-            properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
+            Optional. A bucket of any additional [user
+            properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties)
             for the user associated with this event.
     """
 
@@ -108,8 +108,8 @@ class UserProperties(proto.Message):
 
 
 class UserProperty(proto.Message):
-    r"""A bucket of any additional `user
-    properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
+    r"""A bucket of any additional [user
+    properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties)
     for the user associated with this event.
 
     Attributes:

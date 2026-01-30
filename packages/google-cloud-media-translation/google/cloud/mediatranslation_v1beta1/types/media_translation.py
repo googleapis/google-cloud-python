@@ -271,8 +271,9 @@ class StreamingTranslateSpeechResponse(proto.Message):
             [google.rpc.Status][google.rpc.Status] message that
             specifies the error for the operation.
         result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult):
-            Output only. The translation result that is currently being
-            processed (is_final could be true or false).
+            Output only. The translation result that is
+            currently being processed (is_final could be
+            true or false).
         speech_event_type (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse.SpeechEventType):
             Output only. Indicates the type of speech
             event.

@@ -912,10 +912,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> assuredworkloads.Workload:
-        r"""Updates an existing workload. Currently allows updating of
-        workload display_name and labels. For force updates don't set
-        etag field in the Workload. Only one update operation per
-        workload can be in progress.
+        r"""Updates an existing workload.
+        Currently allows updating of workload display_name and
+        labels. For force updates don't set etag field in the
+        Workload. Only one update operation per workload can be
+        in progress.
 
         .. code-block:: python
 
@@ -1136,9 +1137,9 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the workload. Make sure that workload's direct children
-        are already in a deleted state, otherwise the request will fail
-        with a FAILED_PRECONDITION error.
+        r"""Deletes the workload. Make sure that workload's direct
+        children are already in a deleted state, otherwise the
+        request will fail with a FAILED_PRECONDITION error.
 
         .. code-block:: python
 
@@ -1266,8 +1267,9 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             request (Union[google.cloud.assuredworkloads_v1.types.GetWorkloadRequest, dict]):
                 The request object. Request for fetching a workload.
             name (str):
-                Required. The resource name of the Workload to fetch.
-                This is the workload's relative path in the API,
+                Required. The resource name of the
+                Workload to fetch. This is the
+                workload's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,

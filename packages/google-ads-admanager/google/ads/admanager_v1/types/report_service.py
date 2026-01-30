@@ -301,17 +301,21 @@ class FetchReportResultRowsResponse(proto.Message):
             run. For non-scheduled reports, this is the time
             at which the report was requested to be run.
         date_ranges (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.DateRange.FixedDateRange]):
-            The computed fixed date ranges this report includes. Only
-            returned with the first page of results (when page_token is
-            not included in the request).
+            The computed fixed date ranges this report
+            includes. Only returned with the first page of
+            results (when page_token is not included in the
+            request).
         comparison_date_ranges (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.DateRange.FixedDateRange]):
-            The computed comparison fixed date ranges this report
-            includes. Only returned with the first page of results (when
-            page_token is not included in the request).
+            The computed comparison fixed date ranges this
+            report includes. Only returned with the first
+            page of results (when page_token is not included
+            in the request).
         total_row_count (int):
-            The total number of rows available from this report. Useful
-            for pagination. Only returned with the first page of results
-            (when page_token is not included in the request).
+            The total number of rows available from this
+            report. Useful for pagination.
+            Only returned with the first page of results
+            (when page_token is not included in the
+            request).
         next_page_token (str):
             A token that can be sent as ``page_token`` to retrieve the
             next page. If this field is omitted, there are no subsequent

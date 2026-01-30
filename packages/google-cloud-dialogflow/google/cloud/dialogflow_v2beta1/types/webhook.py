@@ -149,10 +149,11 @@ class WebhookResponse(proto.Message):
             set, Dialogflow ignores the ``fulfillment_text``,
             ``fulfillment_messages``, and ``payload`` fields.
         live_agent_handoff (bool):
-            Indicates that a live agent should be brought in to handle
-            the interaction with the user. In most cases, when you set
-            this flag to true, you would also want to set
-            end_interaction to true as well. Default is false.
+            Indicates that a live agent should be brought in
+            to handle the interaction with the user. In most
+            cases, when you set this flag to true, you would
+            also want to set end_interaction to true as
+            well. Default is false.
         end_interaction (bool):
             Optional. Indicates that this intent ends an
             interaction. Some integrations (e.g., Actions on

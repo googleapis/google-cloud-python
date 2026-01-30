@@ -51,10 +51,10 @@ class Permission(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The permission name. A unique name will be
-            generated on create. Example:
-            tunedModels/{tuned_model}permssions/{permission} Output
-            only.
+            Output only. The permission name. A unique name
+            will be generated on create. Example:
+            tunedModels/{tuned_model}permssions/{permission}
+            Output only.
         grantee_type (google.ai.generativelanguage_v1beta3.types.Permission.GranteeType):
             Required. Immutable. The type of the grantee.
 
@@ -80,11 +80,11 @@ class Permission(proto.Message):
             GRANTEE_TYPE_UNSPECIFIED (0):
                 The default value. This value is unused.
             USER (1):
-                Represents a user. When set, you must provide email_address
-                for the user.
+                Represents a user. When set, you must provide
+                email_address for the user.
             GROUP (2):
-                Represents a group. When set, you must provide email_address
-                for the group.
+                Represents a group. When set, you must provide
+                email_address for the group.
             EVERYONE (3):
                 Represents access to everyone. No extra
                 information is required.

@@ -791,7 +791,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         Returns:
             google.shopping.merchant_accounts_v1beta.types.ShippingSettings:
                 The merchant account's [shipping
-                   setting](https://support.google.com/merchants/answer/6069284).
+                setting](https://support.google.com/merchants/answer/6069284).
 
         """
         # Create or coerce a protobuf request object.
@@ -899,7 +899,7 @@ class ShippingSettingsServiceClient(metaclass=ShippingSettingsServiceClientMeta)
         Returns:
             google.shopping.merchant_accounts_v1beta.types.ShippingSettings:
                 The merchant account's [shipping
-                   setting](https://support.google.com/merchants/answer/6069284).
+                setting](https://support.google.com/merchants/answer/6069284).
 
         """
         # Create or coerce a protobuf request object.

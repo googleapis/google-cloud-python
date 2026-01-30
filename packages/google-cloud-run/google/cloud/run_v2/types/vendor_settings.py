@@ -108,8 +108,8 @@ class VpcAccess(proto.Message):
             connector, visit
             https://cloud.google.com/run/docs/configuring/vpc-connectors.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
-            Optional. Traffic VPC egress settings. If not provided, it
-            defaults to PRIVATE_RANGES_ONLY.
+            Optional. Traffic VPC egress settings. If not
+            provided, it defaults to PRIVATE_RANGES_ONLY.
         network_interfaces (MutableSequence[google.cloud.run_v2.types.VpcAccess.NetworkInterface]):
             Optional. Direct VPC egress settings.
             Currently only single network interface is
@@ -212,9 +212,10 @@ class BinaryAuthorization(proto.Message):
 
             This field is a member of `oneof`_ ``binauthz_method``.
         breakglass_justification (str):
-            Optional. If present, indicates to use Breakglass using this
-            justification. If use_default is False, then it must be
-            empty. For more information on breakglass, see
+            Optional. If present, indicates to use
+            Breakglass using this justification. If
+            use_default is False, then it must be empty. For
+            more information on breakglass, see
             https://cloud.google.com/binary-authorization/docs/using-breakglass
     """
 

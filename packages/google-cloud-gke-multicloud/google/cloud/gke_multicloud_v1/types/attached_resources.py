@@ -71,9 +71,8 @@ class AttachedCluster(proto.Message):
             region by calling
             [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
         distribution (str):
-            Required. The Kubernetes distribution of the underlying
-            attached cluster.
-
+            Required. The Kubernetes distribution of the
+            underlying attached cluster.
             Supported values: ["eks", "aks", "generic"].
         cluster_region (str):
             Output only. The region where this cluster

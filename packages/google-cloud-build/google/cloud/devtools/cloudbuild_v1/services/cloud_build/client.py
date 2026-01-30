@@ -1884,7 +1884,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 The request object. Request to approve or reject a
                 pending build.
             name (str):
-                Required. Name of the target build. For example:
+                Required. Name of the target build.
+                For example:
                 "projects/{$project_id}/builds/{$build_id}"
 
                 This corresponds to the ``name`` field
@@ -2848,8 +2849,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
-        r"""ReceiveTriggerWebhook [Experimental] is called when the API
-        receives a webhook request targeted at a specific trigger.
+        r"""ReceiveTriggerWebhook [Experimental] is called when the
+        API receives a webhook request targeted at a specific
+        trigger.
 
         .. code-block:: python
 
@@ -2878,8 +2880,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]):
-                The request object. ReceiveTriggerWebhookRequest [Experimental] is the
-                request object accepted by the ReceiveTriggerWebhook
+                The request object. ReceiveTriggerWebhookRequest
+                [Experimental] is the request object
+                accepted by the ReceiveTriggerWebhook
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2891,8 +2894,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         Returns:
             google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookResponse:
-                ReceiveTriggerWebhookResponse [Experimental] is the response object for the
-                   ReceiveTriggerWebhook method.
+                ReceiveTriggerWebhookResponse
+                [Experimental] is the response object
+                for the ReceiveTriggerWebhook method.
 
         """
         # Create or coerce a protobuf request object.

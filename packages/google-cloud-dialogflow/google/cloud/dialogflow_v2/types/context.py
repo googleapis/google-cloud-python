@@ -134,8 +134,8 @@ class ListContextsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -158,8 +158,9 @@ class ListContextsResponse(proto.Message):
 
     Attributes:
         contexts (MutableSequence[google.cloud.dialogflow_v2.types.Context]):
-            The list of contexts. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of contexts. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

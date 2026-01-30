@@ -599,10 +599,10 @@ class Router(proto.Message):
                 Peer BGP Autonomous System Number (ASN). Each
                 BGP interface may use a different value.
             local_asn (int):
-                Output only. Local BGP Autonomous System Number (ASN). This
-                field is ST_NOT_REQUIRED because it stores private ASNs,
-                which are meaningless outside the zone in which they are
-                being used.
+                Output only. Local BGP Autonomous System Number
+                (ASN). This field is ST_NOT_REQUIRED because it
+                stores private ASNs, which are meaningless
+                outside the zone in which they are being used.
         """
 
         name: str = proto.Field(

@@ -1267,7 +1267,8 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> dlp.ReidentifyContentResponse:
-        r"""Re-identifies content that has been de-identified. See
+        r"""Re-identifies content that has been de-identified.
+        See
         https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
@@ -5491,7 +5492,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
                 generated for a given organization or
                 project.
             parent (str):
-                Required. organizations/{org_id}/locations/{loc_id}
+                Required.
+                organizations/{org_id}/locations/{loc_id}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

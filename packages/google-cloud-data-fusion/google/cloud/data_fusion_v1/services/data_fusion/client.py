@@ -1403,13 +1403,16 @@ class DataFusionClient(metaclass=DataFusionClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Field mask is used to specify the fields that the update
-                will overwrite in an instance resource. The fields
-                specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask, all the supported fields (labels,
-                options, and version currently) will be overwritten.
+                Field mask is used to specify the fields
+                that the update will overwrite in an
+                instance resource. The fields specified
+                in the update_mask are relative to the
+                resource, not the full request. A field
+                will be overwritten if it is in the
+                mask. If the user does not provide a
+                mask, all the supported fields (labels,
+                options, and version currently) will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

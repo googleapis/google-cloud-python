@@ -367,7 +367,8 @@ class RuleSetServiceGrpcAsyncIOTransport(RuleSetServiceTransport):
     ]:
         r"""Return a callable for the get rule set method over gRPC.
 
-        Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
+        Gets a ruleset. Returns NOT_FOUND if the ruleset does
+        not exist.
 
         Returns:
             Callable[[~.GetRuleSetRequest],
@@ -395,8 +396,9 @@ class RuleSetServiceGrpcAsyncIOTransport(RuleSetServiceTransport):
     ]:
         r"""Return a callable for the update rule set method over gRPC.
 
-        Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
-        ruleset is non-empty and does not equal the existing name.
+        Updates a ruleset. Returns INVALID_ARGUMENT if the name
+        of the ruleset is non-empty and does not equal the
+        existing name.
 
         Returns:
             Callable[[~.UpdateRuleSetRequest],
@@ -424,8 +426,8 @@ class RuleSetServiceGrpcAsyncIOTransport(RuleSetServiceTransport):
     ]:
         r"""Return a callable for the delete rule set method over gRPC.
 
-        Deletes a ruleset. Returns NOT_FOUND if the document does not
-        exist.
+        Deletes a ruleset. Returns NOT_FOUND if the document
+        does not exist.
 
         Returns:
             Callable[[~.DeleteRuleSetRequest],

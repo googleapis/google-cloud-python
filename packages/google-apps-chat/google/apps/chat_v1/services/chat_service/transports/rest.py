@@ -4432,10 +4432,11 @@ class ChatServiceRestTransport(_BaseChatServiceRestTransport):
 
             Returns:
                 ~.space_event.SpaceEvent:
-                    An event that represents a change or activity in a
-                Google Chat space. To learn more, see `Work with events
-                from Google
-                Chat <https://developers.google.com/workspace/chat/events-overview>`__.
+                    An event that represents a change or
+                activity in a Google Chat space. To
+                learn more, see [Work with events from
+                Google
+                Chat](https://developers.google.com/workspace/chat/events-overview).
 
             """
 

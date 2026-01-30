@@ -123,9 +123,9 @@ class DomainOverrideStrategy(proto.Enum):
         UNSPECIFIED_DOMAIN_OVERRIDE_STRATEGY (0):
             Strategy unspecified. Defaults to ``STRICT``.
         STRICT (1):
-            Overrides not allowed. If a mapping already exists for the
-            specified domain, the request will return an ALREADY_EXISTS
-            (409).
+            Overrides not allowed. If a mapping already
+            exists for the specified domain, the request
+            will return an ALREADY_EXISTS (409).
         OVERRIDE (2):
             Overrides allowed. If a mapping already
             exists for the specified domain, the request

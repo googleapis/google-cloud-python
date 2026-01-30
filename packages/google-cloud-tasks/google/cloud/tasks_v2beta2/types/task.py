@@ -135,16 +135,18 @@ class Task(proto.Message):
             VIEW_UNSPECIFIED (0):
                 Unspecified. Defaults to BASIC.
             BASIC (1):
-                The basic view omits fields which can be large or can
-                contain sensitive data.
+                The basic view omits fields which can be large
+                or can contain sensitive data.
 
-                This view does not include the ([payload in
+                This view does not include the
+                ([payload in
                 AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest]
                 and [payload in
                 PullMessage][google.cloud.tasks.v2beta2.PullMessage.payload]).
-                These payloads are desirable to return only when needed,
-                because they can be large and because of the sensitivity of
-                the data that you choose to store in it.
+                These payloads are desirable to return only when
+                needed, because they can be large and because of
+                the sensitivity of the data that you choose to
+                store in it.
             FULL (2):
                 All information is returned.
 
@@ -212,9 +214,8 @@ class TaskStatus(proto.Message):
             This count includes attempts which have been
             dispatched but haven't received a response.
         attempt_response_count (int):
-            Output only. The number of attempts which have received a
-            response.
-
+            Output only. The number of attempts which have
+            received a response.
             This field is not calculated for [pull
             tasks][google.cloud.tasks.v2beta2.PullMessage].
         first_attempt_status (google.cloud.tasks_v2beta2.types.AttemptStatus):
@@ -229,8 +230,8 @@ class TaskStatus(proto.Message):
             This field is not calculated for [pull
             tasks][google.cloud.tasks.v2beta2.PullMessage].
         last_attempt_status (google.cloud.tasks_v2beta2.types.AttemptStatus):
-            Output only. The status of the task's last attempt.
-
+            Output only. The status of the task's last
+            attempt.
             This field is not calculated for [pull
             tasks][google.cloud.tasks.v2beta2.PullMessage].
     """

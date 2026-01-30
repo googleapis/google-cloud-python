@@ -356,16 +356,18 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchJob:
-                A high level representation of a patch job that is either in progress
-                   or has completed.
+                A high level representation of a patch
+                job that is either in progress or has
+                completed.
 
-                   Instance details are not included in the job. To
-                   paginate through instance details, use
-                   ListPatchJobInstanceDetails.
+                Instance details are not included in the
+                job. To paginate through instance
+                details, use
+                ListPatchJobInstanceDetails.
 
-                   For more information about patch jobs, see [Creating
-                   patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs,
+                see [Creating patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -460,16 +462,18 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchJob:
-                A high level representation of a patch job that is either in progress
-                   or has completed.
+                A high level representation of a patch
+                job that is either in progress or has
+                completed.
 
-                   Instance details are not included in the job. To
-                   paginate through instance details, use
-                   ListPatchJobInstanceDetails.
+                Instance details are not included in the
+                job. To paginate through instance
+                details, use
+                ListPatchJobInstanceDetails.
 
-                   For more information about patch jobs, see [Creating
-                   patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs,
+                see [Creating patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -571,16 +575,18 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchJob:
-                A high level representation of a patch job that is either in progress
-                   or has completed.
+                A high level representation of a patch
+                job that is either in progress or has
+                completed.
 
-                   Instance details are not included in the job. To
-                   paginate through instance details, use
-                   ListPatchJobInstanceDetails.
+                Instance details are not included in the
+                job. To paginate through instance
+                details, use
+                ListPatchJobInstanceDetails.
 
-                   For more information about patch jobs, see [Creating
-                   patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs,
+                see [Creating patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -951,12 +957,15 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchDeployment:
-                Patch deployments are configurations that individual patch jobs use to
-                   complete a patch. These configurations include
-                   instance filter, package repository settings, and a
-                   schedule. For more information about creating and
-                   managing patch deployments, see [Scheduling patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                Patch deployments are configurations
+                that individual patch jobs use to
+                complete a patch. These configurations
+                include instance filter, package
+                repository settings, and a schedule. For
+                more information about creating and
+                managing patch deployments, see
+                [Scheduling patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1072,12 +1081,15 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchDeployment:
-                Patch deployments are configurations that individual patch jobs use to
-                   complete a patch. These configurations include
-                   instance filter, package repository settings, and a
-                   schedule. For more information about creating and
-                   managing patch deployments, see [Scheduling patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                Patch deployments are configurations
+                that individual patch jobs use to
+                complete a patch. These configurations
+                include instance filter, package
+                repository settings, and a schedule. For
+                more information about creating and
+                managing patch deployments, see
+                [Scheduling patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1426,12 +1438,15 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchDeployment:
-                Patch deployments are configurations that individual patch jobs use to
-                   complete a patch. These configurations include
-                   instance filter, package repository settings, and a
-                   schedule. For more information about creating and
-                   managing patch deployments, see [Scheduling patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                Patch deployments are configurations
+                that individual patch jobs use to
+                complete a patch. These configurations
+                include instance filter, package
+                repository settings, and a schedule. For
+                more information about creating and
+                managing patch deployments, see
+                [Scheduling patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1549,12 +1564,15 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchDeployment:
-                Patch deployments are configurations that individual patch jobs use to
-                   complete a patch. These configurations include
-                   instance filter, package repository settings, and a
-                   schedule. For more information about creating and
-                   managing patch deployments, see [Scheduling patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                Patch deployments are configurations
+                that individual patch jobs use to
+                complete a patch. These configurations
+                include instance filter, package
+                repository settings, and a schedule. For
+                more information about creating and
+                managing patch deployments, see
+                [Scheduling patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1668,12 +1686,15 @@ class OsConfigServiceAsyncClient:
 
         Returns:
             google.cloud.osconfig_v1.types.PatchDeployment:
-                Patch deployments are configurations that individual patch jobs use to
-                   complete a patch. These configurations include
-                   instance filter, package repository settings, and a
-                   schedule. For more information about creating and
-                   managing patch deployments, see [Scheduling patch
-                   jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                Patch deployments are configurations
+                that individual patch jobs use to
+                complete a patch. These configurations
+                include instance filter, package
+                repository settings, and a schedule. For
+                more information about creating and
+                managing patch deployments, see
+                [Scheduling patch
+                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.

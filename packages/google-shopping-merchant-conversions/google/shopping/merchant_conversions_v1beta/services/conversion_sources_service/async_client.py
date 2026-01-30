@@ -490,8 +490,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 UpdateConversionSource method.
             conversion_source (:class:`google.shopping.merchant_conversions_v1beta.types.ConversionSource`):
-                Required. The new version of the conversion source data.
-                Format:
+                Required. The new version of the
+                conversion source data. Format:
                 accounts/{account}/conversionSources/{conversion_source}
 
                 This corresponds to the ``conversion_source`` field
@@ -618,8 +618,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 DeleteConversionSource method.
             name (:class:`str`):
-                Required. The name of the conversion source to be
-                deleted. Format:
+                Required. The name of the conversion
+                source to be deleted. Format:
                 accounts/{account}/conversionSources/{conversion_source}
 
                 This corresponds to the ``name`` field
@@ -815,8 +815,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 GetConversionSource method.
             name (:class:`str`):
-                Required. The name of the conversion source to be
-                fetched. Format:
+                Required. The name of the conversion
+                source to be fetched. Format:
                 accounts/{account}/conversionsources/{conversion_source}
 
                 This corresponds to the ``name`` field

@@ -1360,12 +1360,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_participant.AnalyzeContentResponse:
-        r"""Adds a text (chat, for example), or audio (phone recording, for
-        example) message from a participant into the conversation.
+        r"""Adds a text (chat, for example), or audio (phone
+        recording, for example) message from a participant into
+        the conversation.
 
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+        Note: Always use agent versions for production traffic
+        sent to virtual agents. See [Versions and
+        environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
 
         .. code-block:: python
 

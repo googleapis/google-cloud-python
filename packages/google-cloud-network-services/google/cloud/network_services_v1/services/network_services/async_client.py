@@ -861,13 +861,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the EndpointPolicy resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                EndpointPolicy resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2729,12 +2731,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Gateway resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                Gateway resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3398,12 +3403,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the GrpcRoute resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                GrpcRoute resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4062,12 +4070,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the HttpRoute resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                HttpRoute resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4718,12 +4729,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the TcpRoute resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                TcpRoute resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5382,12 +5396,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the TlsRoute resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                TlsRoute resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6064,13 +6081,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ServiceBinding resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ServiceBinding resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6733,12 +6752,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Mesh resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the Mesh
+                resource by the update. The fields
+                specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7409,13 +7431,15 @@ class NetworkServicesAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ServiceLbPolicy resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ServiceLbPolicy resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7676,8 +7700,9 @@ class NetworkServicesAsyncClient:
                 The request object. Request used with the
                 GetGatewayRouteView method.
             name (:class:`str`):
-                Required. Name of the GatewayRouteView resource.
-                Formats:
+                Required. Name of the GatewayRouteView
+                resource. Formats:
+
                 projects/{project}/locations/{location}/gateways/{gateway}/routeViews/{route_view}
 
                 This corresponds to the ``name`` field
@@ -7788,7 +7813,9 @@ class NetworkServicesAsyncClient:
                 The request object. Request used with the
                 GetMeshRouteView method.
             name (:class:`str`):
-                Required. Name of the MeshRouteView resource. Format:
+                Required. Name of the MeshRouteView
+                resource. Format:
+
                 projects/{project}/locations/{location}/meshes/{mesh}/routeViews/{route_view}
 
                 This corresponds to the ``name`` field

@@ -38,8 +38,8 @@ class OdbSubnet(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the OdbSubnet resource in the
-            following format:
+            Identifier. The name of the OdbSubnet resource
+            in the following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         cidr_range (str):
             Required. The CIDR range of the subnet.
@@ -130,8 +130,8 @@ class CreateOdbSubnetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent value for the OdbSubnet in the
-            following format:
+            Required. The parent value for the OdbSubnet in
+            the following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}.
         odb_subnet_id (str):
             Required. The ID of the OdbSubnet to create. This value is
@@ -180,7 +180,8 @@ class DeleteOdbSubnetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource in the following format:
+            Required. The name of the resource in the
+            following format:
             projects/{project}/locations/{region}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -212,8 +213,8 @@ class ListOdbSubnetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent value for the OdbSubnet in the
-            following format:
+            Required. The parent value for the OdbSubnet in
+            the following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}.
         page_size (int):
             Optional. The maximum number of items to
@@ -292,7 +293,8 @@ class GetOdbSubnetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the OdbSubnet in the following format:
+            Required. The name of the OdbSubnet in the
+            following format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}.
     """
 

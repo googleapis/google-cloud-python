@@ -444,12 +444,13 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
     ]:
         r"""Return a callable for the analyze content method over gRPC.
 
-        Adds a text (chat, for example), or audio (phone recording, for
-        example) message from a participant into the conversation.
+        Adds a text (chat, for example), or audio (phone
+        recording, for example) message from a participant into
+        the conversation.
 
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See `Versions and
-        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
+        Note: Always use agent versions for production traffic
+        sent to virtual agents. See [Versions and
+        environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
 
         Returns:
             Callable[[~.AnalyzeContentRequest],

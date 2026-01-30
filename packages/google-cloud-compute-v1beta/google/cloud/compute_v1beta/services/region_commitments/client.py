@@ -1564,10 +1564,10 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Updates the specified commitment with the data included in the
-        request. Update is performed only on selected fields included as
-        part of update-mask. Only the following fields can be updated:
-        auto_renew and plan.
+        r"""Updates the specified commitment with the data included
+        in the request. Update is performed only on selected
+        fields included as part of update-mask. Only the
+        following fields can be updated: auto_renew and plan.
 
         .. code-block:: python
 
@@ -1708,10 +1708,10 @@ class RegionCommitmentsClient(metaclass=RegionCommitmentsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Updates the specified commitment with the data included in the
-        request. Update is performed only on selected fields included as
-        part of update-mask. Only the following fields can be updated:
-        auto_renew and plan.
+        r"""Updates the specified commitment with the data included
+        in the request. Update is performed only on selected
+        fields included as part of update-mask. Only the
+        following fields can be updated: auto_renew and plan.
 
         .. code-block:: python
 

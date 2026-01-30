@@ -869,16 +869,17 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for creating a
                 source.
             parent (str):
-                Required. Resource name of the new source's parent. Its
-                format should be "organizations/[organization_id]".
+                Required. Resource name of the new
+                source's parent. Its format should be
+                "organizations/[organization_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source (google.cloud.securitycenter_v1beta1.types.Source):
-                Required. The Source being created, only the
-                display_name and description will be used. All other
-                fields will be ignored.
+                Required. The Source being created, only
+                the display_name and description will be
+                used. All other fields will be ignored.
 
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -997,8 +998,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for creating a
                 finding.
             parent (str):
-                Required. Resource name of the new finding's parent. Its
-                format should be
+                Required. Resource name of the new
+                finding's parent. Its format should be
                 "organizations/[organization_id]/sources/[source_id]".
 
                 This corresponds to the ``parent`` field
@@ -1015,9 +1016,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             finding (google.cloud.securitycenter_v1beta1.types.Finding):
-                Required. The Finding being created. The name and
-                security_marks will be ignored as they are both output
-                only fields on this resource.
+                Required. The Finding being created. The
+                name and security_marks will be ignored
+                as they are both output only fields on
+                this resource.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1278,8 +1280,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for getting
                 organization settings.
             name (str):
-                Required. Name of the organization to get organization
-                settings for. Its format is
+                Required. Name of the organization to
+                get organization settings for. Its
+                format is
                 "organizations/[organization_id]/organizationSettings".
 
                 This corresponds to the ``name`` field
@@ -1391,8 +1394,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request (Union[google.cloud.securitycenter_v1beta1.types.GetSourceRequest, dict]):
                 The request object. Request message for getting a source.
             name (str):
-                Required. Relative resource name of the source. Its
-                format is
+                Required. Relative resource name of the
+                source. Its format is
                 "organizations/[organization_id]/source/[source_id]".
 
                 This corresponds to the ``name`` field
@@ -1964,8 +1967,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request (Union[google.cloud.securitycenter_v1beta1.types.ListSourcesRequest, dict]):
                 The request object. Request message for listing sources.
             parent (str):
-                Required. Resource name of the parent of sources to
-                list. Its format should be
+                Required. Resource name of the parent of
+                sources to list. Its format should be
                 "organizations/[organization_id]".
 
                 This corresponds to the ``parent`` field
@@ -2059,9 +2062,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         r"""Runs asset discovery. The discovery is tracked with a
         long-running operation.
 
-        This API can only be called with limited frequency for an
-        organization. If it is called too frequently the caller will
-        receive a TOO_MANY_REQUESTS error.
+        This API can only be called with limited frequency for
+        an organization. If it is called too frequently the
+        caller will receive a TOO_MANY_REQUESTS error.
 
         .. code-block:: python
 
@@ -2098,8 +2101,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for running asset
                 discovery for an organization.
             parent (str):
-                Required. Name of the organization to run asset
-                discovery for. Its format is
+                Required. Name of the organization to
+                run asset discovery for. Its format is
                 "organizations/[organization_id]".
 
                 This corresponds to the ``parent`` field
@@ -2230,10 +2233,11 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for updating a
                 finding's state.
             name (str):
-                Required. The relative resource name of the finding.
-                See:
+                Required. The relative resource name of
+                the finding. See:
                 https://cloud.google.com/apis/design/resource_names#relative_resource_name
                 Example:
+
                 "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
 
                 This corresponds to the ``name`` field
@@ -2632,13 +2636,15 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for updating or
                 creating a finding.
             finding (google.cloud.securitycenter_v1beta1.types.Finding):
-                Required. The finding resource to update or create if it
-                does not already exist. parent, security_marks, and
-                update_time will be ignored.
+                Required. The finding resource to update
+                or create if it does not already exist.
+                parent, security_marks, and update_time
+                will be ignored.
 
-                In the case of creation, the finding id portion of the
-                name must alphanumeric and less than or equal to 32
-                characters and greater than 0 characters in length.
+                In the case of creation, the finding id
+                portion of the name must alphanumeric
+                and less than or equal to 32 characters
+                and greater than 0 characters in length.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this

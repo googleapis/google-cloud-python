@@ -419,9 +419,9 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Creates an entity type in the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.CreateEntityTypeRequest],
@@ -451,9 +451,9 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Updates the specified entity type.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.UpdateEntityTypeRequest],
@@ -481,9 +481,9 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
 
         Deletes the specified entity type.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.DeleteEntityTypeRequest],

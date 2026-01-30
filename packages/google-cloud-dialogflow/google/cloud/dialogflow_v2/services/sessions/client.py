@@ -115,8 +115,8 @@ class SessionsClientMeta(type):
 class SessionsClient(metaclass=SessionsClientMeta):
     """A service used for session interactions.
 
-    For more information, see the `API interactions
-    guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
+    For more information, see the [API interactions
+    guide](https://cloud.google.com/dialogflow/docs/api-overview).
     """
 
     @staticmethod

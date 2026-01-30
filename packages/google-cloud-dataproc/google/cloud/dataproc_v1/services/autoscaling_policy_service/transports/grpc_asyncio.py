@@ -374,8 +374,8 @@ class AutoscalingPolicyServiceGrpcAsyncIOTransport(AutoscalingPolicyServiceTrans
 
         Updates (replaces) autoscaling policy.
 
-        Disabled check for update_mask, because all updates will be full
-        replacements.
+        Disabled check for update_mask, because all updates will
+        be full replacements.
 
         Returns:
             Callable[[~.UpdateAutoscalingPolicyRequest],

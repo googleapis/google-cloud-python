@@ -1345,8 +1345,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (google.cloud.redis_v1beta1.types.Instance):
-                Required. Update description. Only fields specified in
-                update_mask are updated.
+                Required. Update description.
+                Only fields specified in update_mask are
+                updated.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1910,9 +1911,10 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_protection_mode (google.cloud.redis_v1beta1.types.FailoverInstanceRequest.DataProtectionMode):
-                Optional. Available data protection modes that the user
-                can choose. If it's unspecified, data protection mode
-                will be LIMITED_DATA_LOSS by default.
+                Optional. Available data protection
+                modes that the user can choose. If it's
+                unspecified, data protection mode will
+                be LIMITED_DATA_LOSS by default.
 
                 This corresponds to the ``data_protection_mode`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2182,8 +2184,9 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (google.cloud.redis_v1beta1.types.RescheduleMaintenanceRequest.RescheduleType):
-                Required. If reschedule type is SPECIFIC_TIME, must set
-                up schedule_time as well.
+                Required. If reschedule type is
+                SPECIFIC_TIME, must set up schedule_time
+                as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this

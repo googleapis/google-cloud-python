@@ -115,7 +115,8 @@ class TestCasesGrpcTransport(TestCasesTransport):
     """gRPC backend transport for TestCases.
 
     Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test Case
+    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test
+    Case
     Results][google.cloud.dialogflow.cx.v3beta1.TestCaseResult].
 
     This class defines the same methods as the primary client, so the

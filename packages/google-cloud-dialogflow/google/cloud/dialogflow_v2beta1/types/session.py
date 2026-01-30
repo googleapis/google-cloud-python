@@ -423,10 +423,11 @@ class QueryResult(proto.Message):
             - If automatic spell correction is enabled, ``query_text``
               will contain the corrected user input.
         language_code (str):
-            The language that was triggered during intent detection. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
+            The language that was triggered during intent
+            detection. See [Language
+            Support](https://cloud.google.com/dialogflow/docs/reference/language)
+            for a list of the currently supported language
+            codes.
         speech_recognition_confidence (float):
             The Speech recognition confidence between 0.0
             and 1.0. A higher number indicates an estimated
@@ -469,10 +470,10 @@ class QueryResult(proto.Message):
               collected, or if the matched intent doesn't contain any
               required parameters.
         cancels_slot_filling (bool):
-            Indicates whether the conversational query triggers a
-            cancellation for slot filling. For more information, see the
-            `cancel slot filling
-            documentation <https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel>`__.
+            Indicates whether the conversational query
+            triggers a cancellation for slot filling. For
+            more information, see the [cancel slot filling
+            documentation](https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel).
         fulfillment_text (str):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,
@@ -875,8 +876,9 @@ class CloudConversationDebuggingInfo(proto.Message):
             Time offsets of the speech partial results
             relative to the beginning of the stream.
         speech_final_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
-            Time offsets of the speech final results (is_final=true)
-            relative to the beginning of the stream.
+            Time offsets of the speech final results
+            (is_final=true) relative to the beginning of the
+            stream.
         partial_responses (int):
             Total number of partial responses.
         speaker_id_passive_latency_ms_offset (int):
@@ -1226,10 +1228,11 @@ class StreamingRecognitionResult(proto.Message):
             DTMF_DIGITS (3):
                 Message contains DTMF digits.
             PARTIAL_DTMF_DIGITS (4):
-                Message contains DTMF digits. Before a message with
-                DTMF_DIGITS is sent, a message with PARTIAL_DTMF_DIGITS may
-                be sent with DTMF digits collected up to the time of
-                sending, which represents an intermediate result.
+                Message contains DTMF digits. Before a message
+                with DTMF_DIGITS is sent, a message with
+                PARTIAL_DTMF_DIGITS may be sent with DTMF digits
+                collected up to the time of sending, which
+                represents an intermediate result.
         """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
@@ -1291,12 +1294,13 @@ class TextInput(proto.Message):
             exceed 256 characters for virtual agent
             interactions.
         language_code (str):
-            Required. The language of this conversational query. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes. Note
-            that queries in the same session do not necessarily need to
-            specify the same language.
+            Required. The language of this conversational
+            query. See [Language
+            Support](https://cloud.google.com/dialogflow/docs/reference/language)
+            for a list of the currently supported language
+            codes. Note that queries in the same session do
+            not necessarily need to specify the same
+            language.
     """
 
     text: str = proto.Field(
@@ -1410,8 +1414,9 @@ class SentimentAnalysisResult(proto.Message):
 
 
 class Sentiment(proto.Message):
-    r"""The sentiment, such as positive/negative feeling or association, for
-    a unit of analysis, such as the query text. See:
+    r"""The sentiment, such as positive/negative feeling or association,
+    for a unit of analysis, such as the query text. See:
+
     https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values
     for how to interpret the result.
 
@@ -1420,9 +1425,10 @@ class Sentiment(proto.Message):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive  sentiment).
         magnitude (float):
-            A non-negative number in the [0, +inf) range, which
-            represents the absolute magnitude of sentiment, regardless
-            of score (positive or negative).
+            A non-negative number in the [0, +inf) range,
+            which represents the absolute magnitude of
+            sentiment, regardless of score (positive or
+            negative).
     """
 
     score: float = proto.Field(

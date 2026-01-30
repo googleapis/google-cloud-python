@@ -100,8 +100,9 @@ class ListRevisionsResponse(proto.Message):
         revisions (MutableSequence[google.cloud.run_v2.types.Revision]):
             The resulting list of Revisions.
         next_page_token (str):
-            A token indicating there are more items than page_size. Use
-            it in the next ListRevisions request to continue.
+            A token indicating there are more items than
+            page_size. Use it in the next ListRevisions
+            request to continue.
     """
 
     @property
@@ -255,9 +256,9 @@ class Revision(proto.Message):
             The action to take if the encryption key is
             revoked.
         encryption_key_shutdown_duration (google.protobuf.duration_pb2.Duration):
-            If encryption_key_revocation_action is SHUTDOWN, the
-            duration before shutting down all instances. The minimum
-            increment is 1 hour.
+            If encryption_key_revocation_action is SHUTDOWN,
+            the duration before shutting down all instances.
+            The minimum increment is 1 hour.
         reconciling (bool):
             Output only. Indicates whether the resource's reconciliation
             is still in progress. See comments in

@@ -63,8 +63,9 @@ class ListStoragePoolsRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value to use if there are
-            additional results to retrieve for this list request.
+            Optional. The next_page_token value to use if
+            there are additional results to retrieve for
+            this list request.
         order_by (str):
             Optional. Sort results. Supported values are
             "name", "name desc" or "" (unsorted).
@@ -164,12 +165,14 @@ class UpdateStoragePoolRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the StoragePool resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the StoragePool
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         storage_pool (google.cloud.netapp_v1.types.StoragePool):
             Required. The pool being updated
     """
@@ -294,9 +297,9 @@ class StoragePool(proto.Message):
             Optional. Custom Performance Total Throughput
             of the pool (in MiBps)
         total_iops (int):
-            Optional. Custom Performance Total IOPS of the pool if not
-            provided, it will be calculated based on the
-            total_throughput_mibps
+            Optional. Custom Performance Total IOPS of the
+            pool if not provided, it will be calculated
+            based on the total_throughput_mibps
         hot_tier_size_gib (int):
             Optional. Total hot tier capacity for the
             Storage Pool. It is applicable only to Flex

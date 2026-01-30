@@ -334,7 +334,8 @@ class ProjectServiceAsyncClient:
                 [ProjectService.GetAlertConfig][google.cloud.retail.v2beta.ProjectService.GetAlertConfig]
                 method.
             name (:class:`str`):
-                Required. Full AlertConfig resource name. Format:
+                Required. Full AlertConfig resource
+                name. Format:
                 projects/{project_number}/alertConfig
 
                 This corresponds to the ``name`` field

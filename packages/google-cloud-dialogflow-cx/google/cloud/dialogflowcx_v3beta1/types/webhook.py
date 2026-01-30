@@ -73,8 +73,8 @@ class Webhook(proto.Message):
 
             This field is a member of `oneof`_ ``webhook``.
         service_directory (google.cloud.dialogflowcx_v3beta1.types.Webhook.ServiceDirectoryConfig):
-            Configuration for a `Service
-            Directory <https://cloud.google.com/service-directory>`__
+            Configuration for a [Service
+            Directory](https://cloud.google.com/service-directory)
             service.
 
             This field is a member of `oneof`_ ``webhook``.
@@ -138,10 +138,11 @@ class Webhook(proto.Message):
                 access token from the 3rd party platform and put
                 it in the auth header.
             service_agent_auth (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAgentAuth):
-                Optional. Indicate the auth token type generated from the
-                `Diglogflow service
-                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
-                The generated token is sent in the Authorization header.
+                Optional. Indicate the auth token type generated
+                from the [Diglogflow service
+                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+                The generated token is sent in the Authorization
+                header.
             service_account_auth_config (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAccountAuthConfig):
                 Optional. Configuration for service account
                 authentication.
@@ -163,12 +164,14 @@ class Webhook(proto.Message):
         """
 
         class ServiceAgentAuth(proto.Enum):
-            r"""Indicate the auth token type generated from the `Diglogflow service
-            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            r"""Indicate the auth token type generated from the [Diglogflow
+            service
+            agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
 
             Values:
                 SERVICE_AGENT_AUTH_UNSPECIFIED (0):
-                    Service agent auth type unspecified. Default to ID_TOKEN.
+                    Service agent auth type unspecified. Default to
+                    ID_TOKEN.
                 NONE (1):
                     No token used.
                 ID_TOKEN (2):
@@ -385,8 +388,8 @@ class Webhook(proto.Message):
         )
 
     class ServiceDirectoryConfig(proto.Message):
-        r"""Represents configuration for a `Service
-        Directory <https://cloud.google.com/service-directory>`__ service.
+        r"""Represents configuration for a [Service
+        Directory](https://cloud.google.com/service-directory) service.
 
         Attributes:
             service (str):
@@ -454,8 +457,8 @@ class ListWebhooksRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -478,8 +481,9 @@ class ListWebhooksResponse(proto.Message):
 
     Attributes:
         webhooks (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Webhook]):
-            The list of webhooks. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of webhooks. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -635,9 +639,9 @@ class WebhookRequest(proto.Message):
             This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
-            provided as input, this field will contain the transcript
-            for the audio.
+            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput]
+            was provided as input, this field will contain
+            the transcript for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
@@ -774,9 +778,10 @@ class WebhookRequest(proto.Message):
                 Sentiment score between -1.0 (negative
                 sentiment) and 1.0 (positive  sentiment).
             magnitude (float):
-                A non-negative number in the [0, +inf) range, which
-                represents the absolute magnitude of sentiment, regardless
-                of score (positive or negative).
+                A non-negative number in the [0, +inf) range,
+                which represents the absolute magnitude of
+                sentiment, regardless of score (positive or
+                negative).
         """
 
         score: float = proto.Field(

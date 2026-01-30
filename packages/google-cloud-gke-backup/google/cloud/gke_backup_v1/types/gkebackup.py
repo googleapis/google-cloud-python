@@ -1800,7 +1800,9 @@ class GetBackupIndexDownloadUrlRequest(proto.Message):
 
     Attributes:
         backup (str):
-            Required. Full name of Backup resource. Format:
+            Required. Full name of Backup resource.
+            Format:
+
             projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
     """
 

@@ -64,9 +64,9 @@ class EstimateDataSizeRequest(proto.Message):
 
         Attributes:
             estimator_uri_patterns (MutableSequence[google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern]):
-                Required. The URI patterns to estimate the data sizes. At
-                most 10 patterns are allowed, otherwise an INVALID_ARGUMENT
-                error is thrown.
+                Required. The URI patterns to estimate the data
+                sizes. At most 10 patterns are allowed,
+                otherwise an INVALID_ARGUMENT error is thrown.
         """
 
         class EstimatorUriPattern(proto.Message):

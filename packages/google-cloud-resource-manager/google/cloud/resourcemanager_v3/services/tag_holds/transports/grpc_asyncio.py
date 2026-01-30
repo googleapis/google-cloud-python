@@ -360,8 +360,9 @@ class TagHoldsGrpcAsyncIOTransport(TagHoldsTransport):
     ]:
         r"""Return a callable for the create tag hold method over gRPC.
 
-        Creates a TagHold. Returns ALREADY_EXISTS if a TagHold with the
-        same resource and origin exists under the same TagValue.
+        Creates a TagHold. Returns ALREADY_EXISTS if a TagHold
+        with the same resource and origin exists under the same
+        TagValue.
 
         Returns:
             Callable[[~.CreateTagHoldRequest],

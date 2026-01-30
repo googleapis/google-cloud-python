@@ -334,9 +334,9 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the create synonym set method over gRPC.
 
-        Creates a SynonymSet for a single context. Throws an
-        ALREADY_EXISTS exception if a synonymset already exists for the
-        context.
+        Creates a SynonymSet for a single context.
+        Throws an ALREADY_EXISTS exception if a synonymset
+        already exists for the context.
 
         Returns:
             Callable[[~.CreateSynonymSetRequest],
@@ -364,8 +364,9 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the get synonym set method over gRPC.
 
-        Gets a SynonymSet for a particular context. Throws a NOT_FOUND
-        exception if the Synonymset does not exist
+        Gets a SynonymSet for a particular context.
+        Throws a NOT_FOUND exception if the Synonymset
+        does not exist
 
         Returns:
             Callable[[~.GetSynonymSetRequest],
@@ -393,9 +394,10 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the update synonym set method over gRPC.
 
-        Remove the existing SynonymSet for the context and replaces it
-        with a new one. Throws a NOT_FOUND exception if the SynonymSet
-        is not found.
+        Remove the existing SynonymSet for the context and
+        replaces it with a new one.
+        Throws a NOT_FOUND exception if the SynonymSet is not
+        found.
 
         Returns:
             Callable[[~.UpdateSynonymSetRequest],
@@ -423,8 +425,9 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the delete synonym set method over gRPC.
 
-        Deletes a SynonymSet for a given context. Throws a NOT_FOUND
-        exception if the SynonymSet is not found.
+        Deletes a SynonymSet for a given context.
+        Throws a NOT_FOUND exception if the SynonymSet is not
+        found.
 
         Returns:
             Callable[[~.DeleteSynonymSetRequest],

@@ -42,9 +42,10 @@ class ExecutionView(proto.Enum):
         EXECUTION_VIEW_UNSPECIFIED (0):
             The default / unset value.
         BASIC (1):
-            Includes only basic metadata about the execution. The
-            following fields are returned: name, start_time, end_time,
-            duration, state, and workflow_revision_id.
+            Includes only basic metadata about the
+            execution. The following fields are returned:
+            name, start_time, end_time, duration, state, and
+            workflow_revision_id.
         FULL (2):
             Includes all data.
     """
@@ -435,16 +436,21 @@ class ListExecutionsRequest(proto.Message):
             be filled in the returned executions. The API
             will default to the BASIC view.
         filter (str):
-            Optional. Filters applied to the [Executions.ListExecutions]
-            results. The following fields are supported for filtering:
-            executionID, state, startTime, endTime, duration,
-            workflowRevisionID, stepName, and label.
+            Optional. Filters applied to the
+            [Executions.ListExecutions] results. The
+            following fields are supported for filtering:
+
+            executionID, state, startTime, endTime,
+            duration, workflowRevisionID, stepName, and
+            label.
         order_by (str):
             Optional. The ordering applied to the
-            [Executions.ListExecutions] results. By default the ordering
-            is based on descending start time. The following fields are
-            supported for order by: executionID, startTime, endTime,
-            duration, state, and workflowRevisionID.
+            [Executions.ListExecutions] results. By default
+            the ordering is based on descending start time.
+            The following fields are supported for order by:
+
+            executionID, startTime, endTime, duration,
+            state, and workflowRevisionID.
     """
 
     parent: str = proto.Field(

@@ -103,11 +103,13 @@ class UspsData(proto.Message):
         delivery_point_code (str):
             2 digit delivery point code
         delivery_point_check_digit (str):
-            The delivery point check digit. This number is added to the
-            end of the delivery_point_barcode for mechanically scanned
-            mail. Adding all the digits of the delivery_point_barcode,
-            delivery_point_check_digit, postal code, and ZIP+4 together
-            should yield a number divisible by 10.
+            The delivery point check digit. This number is
+            added to the end of the delivery_point_barcode
+            for mechanically scanned mail. Adding all the
+            digits of the delivery_point_barcode,
+            delivery_point_check_digit, postal code, and
+            ZIP+4 together should yield a number divisible
+            by 10.
         dpv_confirmation (str):
             The possible values for DPV confirmation. Returns a single
             character or returns no value.

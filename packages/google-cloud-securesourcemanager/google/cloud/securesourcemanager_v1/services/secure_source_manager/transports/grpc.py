@@ -1641,9 +1641,10 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
     ]:
         r"""Return a callable for the resolve pull request comments method over gRPC.
 
-        Resolves pull request comments. A list of PullRequestComment
-        names must be provided. The PullRequestComment names must be in
-        the same conversation thread. If auto_fill is set, all comments
+        Resolves pull request comments. A list of
+        PullRequestComment names must be provided. The
+        PullRequestComment names must be in the same
+        conversation thread. If auto_fill is set, all comments
         in the conversation thread will be resolved.
 
         Returns:
@@ -1676,9 +1677,10 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         r"""Return a callable for the unresolve pull request
         comments method over gRPC.
 
-        Unresolves pull request comments. A list of PullRequestComment
-        names must be provided. The PullRequestComment names must be in
-        the same conversation thread. If auto_fill is set, all comments
+        Unresolves pull request comments. A list of
+        PullRequestComment names must be provided. The
+        PullRequestComment names must be in the same
+        conversation thread. If auto_fill is set, all comments
         in the conversation thread will be unresolved.
 
         Returns:

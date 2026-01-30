@@ -182,9 +182,11 @@ class Backup(proto.Message):
             [permissive_mode][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.permissive_mode]
             value.
         satisfies_pzs (bool):
-            Output only. [Output Only] Reserved for future use.
+            Output only. [Output Only] Reserved for future
+            use.
         satisfies_pzi (bool):
-            Output only. [Output Only] Reserved for future use.
+            Output only. [Output Only] Reserved for future
+            use.
     """
 
     class State(proto.Enum):

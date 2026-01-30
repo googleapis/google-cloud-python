@@ -33,8 +33,9 @@ class ReportPhishingRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project for which the report will
-            be created, in the format "projects/{project_number}".
+            Required. The name of the project for which the
+            report will be created, in the format
+            "projects/{project_number}".
         uri (str):
             Required. The URI that is being reported for
             phishing content to be analyzed.

@@ -439,8 +439,8 @@ class ImportEntityTypesRequest(proto.Message):
 
         Values:
             MERGE_OPTION_UNSPECIFIED (0):
-                Unspecified. If used, system uses REPORT_CONFLICT as
-                default.
+                Unspecified. If used, system uses
+                REPORT_CONFLICT as default.
             REPLACE (1):
                 Replace the original entity type in the agent
                 with the new entity type when display name
@@ -574,8 +574,8 @@ class ListEntityTypesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -602,8 +602,9 @@ class ListEntityTypesResponse(proto.Message):
 
     Attributes:
         entity_types (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EntityType]):
-            The list of entity types. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of entity types. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

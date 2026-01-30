@@ -456,8 +456,9 @@ class CustomConstraint(proto.Message):
         action_type (google.cloud.orgpolicy_v2.types.CustomConstraint.ActionType):
             Allow or deny type.
         display_name (str):
-            One line display name for the UI. The max length of the
-            display_name is 200 characters.
+            One line display name for the UI.
+            The max length of the display_name is 200
+            characters.
         description (str):
             Detailed information about this custom policy
             constraint. The max length of the description is

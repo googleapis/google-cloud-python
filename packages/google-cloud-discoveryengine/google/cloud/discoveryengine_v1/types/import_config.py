@@ -471,10 +471,12 @@ class FhirStoreSource(proto.Message):
             have the FhirStore export to a specific Cloud
             Storage directory.
         resource_types (MutableSequence[str]):
-            The FHIR resource types to import. The resource types should
-            be a subset of all `supported FHIR resource
-            types <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
-            Default to all supported FHIR resource types if empty.
+            The FHIR resource types to import. The resource
+            types should be a subset of all [supported FHIR
+            resource
+            types](https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification).
+            Default to all supported FHIR resource types if
+            empty.
         update_from_latest_predefined_schema (bool):
             Optional. Whether to update the DataStore schema to the
             latest predefined schema.

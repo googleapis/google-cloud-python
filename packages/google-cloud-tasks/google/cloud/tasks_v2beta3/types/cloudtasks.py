@@ -86,10 +86,12 @@ class ListQueuesRequest(proto.Message):
             [filter][google.cloud.tasks.v2beta3.ListQueuesRequest.filter]
             while iterating through pages.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Read mask is used for a more granular control over
-            what the API returns. If the mask is not present all fields
-            will be returned except [Queue.stats]. [Queue.stats] will be
-            returned only if it was explicitly specified in the mask.
+            Optional. Read mask is used for a more granular
+            control over what the API returns. If the mask
+            is not present all fields will be returned
+            except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in
+            the mask.
     """
 
     parent: str = proto.Field(
@@ -159,10 +161,12 @@ class GetQueueRequest(proto.Message):
             Required. The resource name of the queue. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Read mask is used for a more granular control over
-            what the API returns. If the mask is not present all fields
-            will be returned except [Queue.stats]. [Queue.stats] will be
-            returned only if it was explicitly specified in the mask.
+            Optional. Read mask is used for a more granular
+            control over what the API returns. If the mask
+            is not present all fields will be returned
+            except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in
+            the mask.
     """
 
     name: str = proto.Field(

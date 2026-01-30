@@ -34,7 +34,8 @@ class AuditData(proto.Message):
 
     Attributes:
         permission_delta (google.cloud.iam_admin_v1.types.AuditData.PermissionDelta):
-            The permission_delta when when creating or updating a Role.
+            The permission_delta when when creating or
+            updating a Role.
     """
 
     class PermissionDelta(proto.Message):

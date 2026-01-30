@@ -51,8 +51,8 @@ class LogEntry(proto.Message):
 
 
 class CloudLoggingEntry(proto.Message):
-    r"""Metadata taken from a `Cloud Logging
-    LogEntry <https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry>`__
+    r"""Metadata taken from a [Cloud Logging
+    LogEntry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry)
 
     Attributes:
         insert_id (str):

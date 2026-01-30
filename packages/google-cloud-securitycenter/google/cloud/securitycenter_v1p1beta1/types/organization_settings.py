@@ -36,6 +36,7 @@ class OrganizationSettings(proto.Message):
             The relative resource name of the settings. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
+
             "organizations/{organization_id}/organizationSettings".
         enable_asset_discovery (bool):
             A flag that indicates if Asset Discovery should be enabled.
@@ -64,14 +65,15 @@ class OrganizationSettings(proto.Message):
         """
 
         class InclusionMode(proto.Enum):
-            r"""The mode of inclusion when running Asset Discovery. Asset discovery
-            can be limited by explicitly identifying projects to be included or
-            excluded. If INCLUDE_ONLY is set, then only those projects within
-            the organization and their children are discovered during asset
-            discovery. If EXCLUDE is set, then projects that don't match those
-            projects are discovered during asset discovery. If neither are set,
-            then all projects within the organization are discovered during
-            asset discovery.
+            r"""The mode of inclusion when running Asset Discovery.
+            Asset discovery can be limited by explicitly identifying
+            projects to be included or excluded. If INCLUDE_ONLY is set,
+            then only those projects within the organization and their
+            children are discovered during asset discovery. If EXCLUDE is
+            set, then projects that don't match those projects are
+            discovered during asset discovery. If neither are set, then all
+            projects within the organization are discovered during asset
+            discovery.
 
             Values:
                 INCLUSION_MODE_UNSPECIFIED (0):

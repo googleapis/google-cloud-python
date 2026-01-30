@@ -344,8 +344,9 @@ class GetInterceptEndpointGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the endpoint group to retrieve.
-            Format:
+            Required. The name of the endpoint group to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/interceptEndpointGroups/{intercept_endpoint_group}
     """
 
@@ -727,7 +728,9 @@ class GetInterceptEndpointGroupAssociationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the association to retrieve. Format:
+            Required. The name of the association to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/interceptEndpointGroupAssociations/{intercept_endpoint_group_association}
     """
 
@@ -1094,8 +1097,9 @@ class GetInterceptDeploymentGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment group to retrieve.
-            Format:
+            Required. The name of the deployment group to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/interceptDeploymentGroups/{intercept_deployment_group}
     """
 
@@ -1422,7 +1426,9 @@ class GetInterceptDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment to retrieve. Format:
+            Required. The name of the deployment to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}
     """
 

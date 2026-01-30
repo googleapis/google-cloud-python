@@ -96,15 +96,16 @@ class ListKeyRingsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     """
 
     parent: str = proto.Field(
@@ -154,15 +155,16 @@ class ListCryptoKeysRequest(proto.Message):
             The fields of the primary version to include
             in the response.
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     """
 
     parent: str = proto.Field(
@@ -216,15 +218,16 @@ class ListCryptoKeyVersionsRequest(proto.Message):
         view (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionView):
             The fields to include in the response.
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     """
 
     parent: str = proto.Field(
@@ -276,15 +279,16 @@ class ListImportJobsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
     """
 
     parent: str = proto.Field(
@@ -2462,11 +2466,13 @@ class MacVerifyResponse(proto.Message):
             but this field is still false, discard the response and
             perform a limited number of retries.
         verified_success_integrity (bool):
-            Integrity verification field. This value is used for the
-            integrity verification of [MacVerifyResponse.success]. If
-            the value of this field contradicts the value of
-            [MacVerifyResponse.success], discard the response and
-            perform a limited number of retries.
+            Integrity verification field. This value is used
+            for the integrity verification of
+            [MacVerifyResponse.success]. If the value of
+            this field contradicts the value of
+            [MacVerifyResponse.success], discard the
+            response and perform a limited number of
+            retries.
         protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
             of the
@@ -2515,8 +2521,8 @@ class DecapsulateResponse(proto.Message):
             used for decapsulation. Check this field to verify that the
             intended resource was used for decapsulation.
         shared_secret (bytes):
-            The decapsulated shared_secret originally encapsulated with
-            the matching public key.
+            The decapsulated shared_secret originally
+            encapsulated with the matching public key.
         shared_secret_crc32c (int):
             Integrity verification field. A CRC32C checksum of the
             returned

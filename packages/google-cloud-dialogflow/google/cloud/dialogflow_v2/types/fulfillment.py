@@ -31,16 +31,17 @@ __protobuf__ = proto.module(
 
 
 class Fulfillment(proto.Message):
-    r"""By default, your agent responds to a matched intent with a static
-    response. As an alternative, you can provide a more dynamic response
-    by using fulfillment. When you enable fulfillment for an intent,
-    Dialogflow responds to that intent by calling a service that you
-    define. For example, if an end-user wants to schedule a haircut on
-    Friday, your service can check your database and respond to the
-    end-user with availability information for Friday.
+    r"""By default, your agent responds to a matched intent with a
+    static response. As an alternative, you can provide a more
+    dynamic response by using fulfillment. When you enable
+    fulfillment for an intent, Dialogflow responds to that intent by
+    calling a service that you define. For example, if an end-user
+    wants to schedule a haircut on Friday, your service can check
+    your database and respond to the end-user with availability
+    information for Friday.
 
-    For more information, see the `fulfillment
-    guide <https://cloud.google.com/dialogflow/docs/fulfillment-overview>`__.
+    For more information, see the [fulfillment
+    guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -96,11 +97,13 @@ class Fulfillment(proto.Message):
                 Optional. The HTTP request headers to send
                 together with fulfillment requests.
             is_cloud_function (bool):
-                Optional. Indicates if generic web service is created
-                through Cloud Functions integration. Defaults to false.
+                Optional. Indicates if generic web service is
+                created through Cloud Functions integration.
+                Defaults to false.
 
-                is_cloud_function is deprecated. Cloud functions can be
-                configured by its uri as a regular web service now.
+                is_cloud_function is deprecated. Cloud functions
+                can be configured by its uri as a regular web
+                service now.
         """
 
         uri: str = proto.Field(

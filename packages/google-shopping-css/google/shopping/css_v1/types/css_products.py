@@ -59,9 +59,9 @@ class CssProduct(proto.Message):
             Output only. Your unique raw identifier for
             the product.
         content_language (str):
-            Output only. The two-letter `ISO
-            639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
-            code for the product.
+            Output only. The two-letter [ISO
+            639-1](http://en.wikipedia.org/wiki/ISO_639-1)
+            language code for the product.
         feed_label (str):
             Output only. The feed label for the product.
         attributes (google.shopping.css_v1.types.Attributes):

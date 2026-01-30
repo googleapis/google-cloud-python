@@ -74,9 +74,10 @@ class GatewaySecurityPolicyRule(proto.Message):
             Optional. CEL expression for matching on
             L7/application level criteria.
         tls_inspection_enabled (bool):
-            Optional. Flag to enable TLS inspection of traffic matching
-            on <session_matcher>, can only be true if the parent
-            GatewaySecurityPolicy references a TLSInspectionConfig.
+            Optional. Flag to enable TLS inspection of
+            traffic matching on <session_matcher>, can only
+            be true if the parent GatewaySecurityPolicy
+            references a TLSInspectionConfig.
     """
 
     class BasicProfile(proto.Enum):
@@ -195,12 +196,14 @@ class UpdateGatewaySecurityPolicyRuleRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the GatewaySecurityPolicy resource by the
-            update. The fields specified in the update_mask are relative
-            to the resource, not the full request. A field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the
+            GatewaySecurityPolicy resource by the update.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then
+            all fields will be overwritten.
         gateway_security_policy_rule (google.cloud.network_security_v1alpha1.types.GatewaySecurityPolicyRule):
             Required. Updated GatewaySecurityPolicyRule
             resource.
@@ -260,10 +263,11 @@ class ListGatewaySecurityPolicyRulesResponse(proto.Message):
         gateway_security_policy_rules (MutableSequence[google.cloud.network_security_v1alpha1.types.GatewaySecurityPolicyRule]):
             List of GatewaySecurityPolicyRule resources.
         next_page_token (str):
-            If there might be more results than those appearing in this
-            response, then 'next_page_token' is included. To get the
-            next set of results, call this method again using the value
-            of 'next_page_token' as 'page_token'.
+            If there might be more results than those
+            appearing in this response, then
+            'next_page_token' is included. To get the next
+            set of results, call this method again using the
+            value of 'next_page_token' as 'page_token'.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """

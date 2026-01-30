@@ -436,10 +436,11 @@ class GetVersionRequest(proto.Message):
             or
             ``projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/subjects/{subject}/versions/{version}``
         deleted (bool):
-            Optional. If true, no matter if the subject/version is
-            soft-deleted or not, it returns the version details. If
-            false, it returns NOT_FOUND error if the subject/version is
-            soft-deleted. The default is false.
+            Optional. If true, no matter if the
+            subject/version is soft-deleted or not, it
+            returns the version details. If false, it
+            returns NOT_FOUND error if the subject/version
+            is soft-deleted. The default is false.
 
             This field is a member of `oneof`_ ``_deleted``.
     """

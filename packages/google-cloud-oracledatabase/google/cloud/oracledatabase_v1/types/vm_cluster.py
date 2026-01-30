@@ -39,13 +39,14 @@ class CloudVmCluster(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the VM Cluster resource with the
-            format:
+            Identifier. The name of the VM Cluster resource
+            with the format:
             projects/{project}/locations/{region}/cloudVmClusters/{cloud_vm_cluster}
         exadata_infrastructure (str):
-            Required. The name of the Exadata Infrastructure resource on
-            which VM cluster resource is created, in the following
-            format:
+            Required. The name of the Exadata Infrastructure
+            resource on which VM cluster resource is
+            created, in the following format:
+
             projects/{project}/locations/{region}/cloudExadataInfrastuctures/{cloud_extradata_infrastructure}
         display_name (str):
             Optional. User friendly name for this
@@ -69,22 +70,28 @@ class CloudVmCluster(proto.Message):
             Format:
             projects/{project}/global/networks/{network}
         gcp_oracle_zone (str):
-            Output only. The GCP Oracle zone where Oracle CloudVmCluster
-            is hosted. This will be the same as the gcp_oracle_zone of
-            the CloudExadataInfrastructure. Example: us-east4-b-r2.
+            Output only. The GCP Oracle zone where Oracle
+            CloudVmCluster is hosted. This will be the same
+            as the gcp_oracle_zone of the
+            CloudExadataInfrastructure. Example:
+            us-east4-b-r2.
         odb_network (str):
-            Optional. The name of the OdbNetwork associated with the VM
-            Cluster. Format:
+            Optional. The name of the OdbNetwork associated
+            with the VM Cluster. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
-            It is optional but if specified, this should match the
-            parent ODBNetwork of the odb_subnet and backup_odb_subnet.
+            It is optional but if specified, this should
+            match the parent ODBNetwork of the odb_subnet
+            and backup_odb_subnet.
         odb_subnet (str):
-            Optional. The name of the OdbSubnet associated with the VM
-            Cluster for IP allocation. Format:
+            Optional. The name of the OdbSubnet associated
+            with the VM Cluster for IP allocation. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         backup_odb_subnet (str):
-            Optional. The name of the backup OdbSubnet associated with
-            the VM Cluster. Format:
+            Optional. The name of the backup OdbSubnet
+            associated with the VM Cluster. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         identity_connector (google.cloud.oracledatabase_v1.types.IdentityConnector):
             Output only. The identity connector details
@@ -214,9 +221,10 @@ class CloudVmClusterProperties(proto.Message):
             ex:
             sp2-yi0xq-scan.ocispdelegated.ocisp10jvnet.oraclevcn.com
         hostname (str):
-            Output only. host name without domain. format:
-            "<hostname_prefix>-" with some suffix. ex: sp2-yi0xq where
-            "sp2" is the hostname_prefix.
+            Output only. host name without domain.
+            format: "<hostname_prefix>-" with some suffix.
+            ex: sp2-yi0xq where "sp2" is the
+            hostname_prefix.
         cpu_core_count (int):
             Required. Number of enabled CPU cores.
         system_version (str):

@@ -487,16 +487,18 @@ class PscAutoConnection(proto.Message):
             Output only. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Output only. The URI of the consumer side forwarding rule.
-            Format:
+            Output only. The URI of the consumer side
+            forwarding rule. Format:
+
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Required. The consumer project_id where PSC connections are
-            established. This should be the same project_id that the
-            instance is being created in.
+            Required. The consumer project_id where PSC
+            connections are established. This should be the
+            same project_id that the instance is being
+            created in.
         network (str):
-            Required. The network where the PSC endpoints are created,
-            in the form of
+            Required. The network where the PSC endpoints
+            are created, in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Output only. The service attachment which is
@@ -566,15 +568,16 @@ class PscConnection(proto.Message):
             Required. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Required. The URI of the consumer side forwarding rule.
-            Format:
+            Required. The URI of the consumer side
+            forwarding rule. Format:
+
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Output only. The consumer project_id where the forwarding
-            rule is created from.
+            Output only. The consumer project_id where the
+            forwarding rule is created from.
         network (str):
-            Required. The consumer network where the IP address resides,
-            in the form of
+            Required. The consumer network where the IP
+            address resides, in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Required. The service attachment which is the
@@ -639,8 +642,9 @@ class DiscoveryEndpoint(proto.Message):
             Output only. The port number of the exposed
             endpoint.
         network (str):
-            Output only. The network where the IP address of the
-            discovery endpoint will be reserved, in the form of
+            Output only. The network where the IP address of
+            the discovery endpoint will be reserved, in the
+            form of
             projects/{network_project}/global/networks/{network_id}.
     """
 
@@ -810,11 +814,12 @@ class ZoneDistributionConfig(proto.Message):
 
     Attributes:
         zone (str):
-            Optional. Defines zone where all resources will be allocated
-            with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
+            Optional. Defines zone where all resources will
+            be allocated with SINGLE_ZONE mode. Ignored for
+            MULTI_ZONE mode.
         mode (google.cloud.memorystore_v1beta.types.ZoneDistributionConfig.ZoneDistributionMode):
-            Optional. Current zone distribution mode. Defaults to
-            MULTI_ZONE.
+            Optional. Current zone distribution mode.
+            Defaults to MULTI_ZONE.
     """
 
     class ZoneDistributionMode(proto.Enum):
@@ -863,8 +868,8 @@ class ListInstancesRequest(proto.Message):
         filter (str):
             Optional. Expression for filtering results.
         order_by (str):
-            Optional. Sort results by a defined order. Supported values:
-            "name", "create_time".
+            Optional. Sort results by a defined order.
+            Supported values: "name", "create_time".
     """
 
     parent: str = proto.Field(

@@ -156,11 +156,12 @@ class PluginCategory(proto.Enum):
         PLUGIN_CATEGORY_UNSPECIFIED (0):
             Default unspecified plugin type.
         API_GATEWAY (1):
-            API_GATEWAY plugins represent plugins built for API Gateways
-            like Apigee.
+            API_GATEWAY plugins represent plugins built for
+            API Gateways like Apigee.
         API_PRODUCER (2):
-            API_PRODUCER plugins represent plugins built for API
-            Producers like Cloud Run, Application Integration etc.
+            API_PRODUCER plugins represent plugins built for
+            API Producers like Cloud Run, Application
+            Integration etc.
     """
     PLUGIN_CATEGORY_UNSPECIFIED = 0
     API_GATEWAY = 1
@@ -1089,10 +1090,11 @@ class Attribute(proto.Message):
             Required. The type of the data of the
             attribute.
         allowed_values (MutableSequence[google.cloud.apihub_v1.types.Attribute.AllowedValue]):
-            Optional. The list of allowed values when the attribute
-            value is of type enum. This is required when the data_type
-            of the attribute is ENUM. The maximum number of allowed
-            values of an attribute will be 1000.
+            Optional. The list of allowed values when the
+            attribute value is of type enum. This is
+            required when the data_type of the attribute is
+            ENUM. The maximum number of allowed values of an
+            attribute will be 1000.
         cardinality (int):
             Optional. The maximum number of values that
             the attribute can have when associated with an
@@ -2205,9 +2207,10 @@ class ApiHubInstance(proto.Message):
                 Optional. The name of the Vertex AI location
                 where the data store is stored.
             encryption_type (google.cloud.apihub_v1.types.ApiHubInstance.Config.EncryptionType):
-                Optional. Encryption type for the region. If the encryption
-                type is CMEK, the cmek_key_name must be provided. If no
-                encryption type is provided, GMEK will be used.
+                Optional. Encryption type for the region. If the
+                encryption type is CMEK, the cmek_key_name must
+                be provided. If no encryption type is provided,
+                GMEK will be used.
         """
 
         class EncryptionType(proto.Enum):
@@ -2755,9 +2758,10 @@ class AuthConfig(proto.Message):
 
         Attributes:
             name (str):
-                Required. The parameter name of the API key. E.g. If the API
-                request is "https://example.com/act?api_key=", "api_key"
-                would be the parameter name.
+                Required. The parameter name of the API key.
+                E.g. If the API request is
+                "https://example.com/act?api_key=<API KEY>",
+                "api_key" would be the parameter name.
             api_key (google.cloud.apihub_v1.types.Secret):
                 Required. The name of the SecretManager secret version
                 resource storing the API key. Format:

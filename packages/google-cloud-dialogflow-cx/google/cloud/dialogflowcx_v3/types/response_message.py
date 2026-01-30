@@ -153,9 +153,9 @@ class ResponseMessage(proto.Message):
                 in the page.
             HANDLER_PROMPT (3):
                 The response is from a [transition
-                route][google.cloud.dialogflow.cx.v3.TransitionRoute] or an
-                [event handler][EventHandler] in the page or flow or
-                transition route group.
+                route][google.cloud.dialogflow.cx.v3.TransitionRoute]
+                or an [event handler][EventHandler] in the page
+                or flow or transition route group.
         """
         RESPONSE_TYPE_UNSPECIFIED = 0
         ENTRY_PROMPT = 1

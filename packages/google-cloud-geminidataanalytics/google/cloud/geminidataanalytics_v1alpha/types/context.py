@@ -130,7 +130,9 @@ class Context(proto.Message):
 
             Attributes:
                 table_fqn (str):
-                    The service-qualified full resource name of the table Ex:
+                    The service-qualified full resource name of the
+                    table Ex:
+
                     bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
                 paths (MutableSequence[str]):
                     The ordered list of paths within the table
@@ -264,8 +266,9 @@ class LookerGoldenQuery(proto.Message):
 
 
 class LookerQuery(proto.Message):
-    r"""Looker Query Object `Looker API
-    documentation <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
+    r"""Looker Query Object
+    [Looker API
+    documentation](https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query).
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -354,9 +357,9 @@ class GlossaryTerm(proto.Message):
             action", "An order that is waiting to be
             processed.".
         labels (MutableSequence[str]):
-            Optional. A list of general purpose labels associated to
-            this term. For example: ["click rate", "clickthrough",
-            "waiting"]
+            Optional. A list of general purpose labels
+            associated to this term. For example: ["click
+            rate", "clickthrough", "waiting"]
     """
 
     display_name: str = proto.Field(

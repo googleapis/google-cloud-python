@@ -653,9 +653,9 @@ class SecurityCenterGrpcTransport(SecurityCenterTransport):
         Runs asset discovery. The discovery is tracked with a
         long-running operation.
 
-        This API can only be called with limited frequency for an
-        organization. If it is called too frequently the caller will
-        receive a TOO_MANY_REQUESTS error.
+        This API can only be called with limited frequency for
+        an organization. If it is called too frequently the
+        caller will receive a TOO_MANY_REQUESTS error.
 
         Returns:
             Callable[[~.RunAssetDiscoveryRequest],

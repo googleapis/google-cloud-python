@@ -607,8 +607,8 @@ class GetAzureOpenIdConfigRequest(proto.Message):
 class GetAzureJsonWebKeysRequest(proto.Message):
     r"""GetAzureJsonWebKeysRequest gets the public component of the keys
     used by the cluster to sign token requests. This will be the
-    jwks_uri for the discover document returned by getOpenIDConfig. See
-    the OpenID Connect Discovery 1.0 specification for details.
+    jwks_uri for the discover document returned by getOpenIDConfig.
+    See the OpenID Connect Discovery 1.0 specification for details.
 
     Attributes:
         azure_cluster (str):

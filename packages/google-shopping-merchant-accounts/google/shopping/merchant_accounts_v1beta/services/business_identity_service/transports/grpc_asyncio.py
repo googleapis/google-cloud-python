@@ -116,8 +116,8 @@ class _LoggingClientAIOInterceptor(
 class BusinessIdentityServiceGrpcAsyncIOTransport(BusinessIdentityServiceTransport):
     """gRPC AsyncIO backend transport for BusinessIdentityService.
 
-    Service to support `business
-    identity <https://support.google.com/merchants/answer/12564247>`__
+    Service to support [business
+    identity](https://support.google.com/merchants/answer/12564247)
     API.
 
     This class defines the same methods as the primary client, so the

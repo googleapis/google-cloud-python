@@ -181,8 +181,8 @@ class Replication(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Replication create time.
         destination_volume (str):
-            Output only. Full name of destination volume resource.
-            Example :
+            Output only. Full name of destination volume
+            resource. Example :
             "projects/{project}/locations/{location}/volumes/{volume_id}".
         transfer_stats (google.cloud.netapp_v1.types.TransferStats):
             Output only. Replication transfer statistics.
@@ -198,7 +198,8 @@ class Replication(proto.Message):
             Required. Input only. Destination volume
             parameters
         source_volume (str):
-            Output only. Full name of source volume resource. Example :
+            Output only. Full name of source volume
+            resource. Example :
             "projects/{project}/locations/{location}/volumes/{volume_id}".
         hybrid_peering_details (google.cloud.netapp_v1.types.HybridPeeringDetails):
             Output only. Hybrid peering details.
@@ -510,8 +511,9 @@ class ListReplicationsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -726,8 +728,8 @@ class StopReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication, in the
-            format of
+            Required. The resource name of the replication,
+            in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
         force (bool):
             Indicates whether to stop replication
@@ -754,8 +756,8 @@ class ResumeReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication, in the
-            format of
+            Required. The resource name of the replication,
+            in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 
@@ -772,8 +774,8 @@ class ReverseReplicationDirectionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication, in the
-            format of
+            Required. The resource name of the replication,
+            in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 
@@ -789,8 +791,8 @@ class EstablishPeeringRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication, in the
-            format of
+            Required. The resource name of the replication,
+            in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
         peer_cluster_name (str):
             Required. Name of the user's local source
@@ -836,8 +838,8 @@ class SyncReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication, in the
-            format of
+            Required. The resource name of the replication,
+            in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 

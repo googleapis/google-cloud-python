@@ -2070,19 +2070,21 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             Returns:
                 ~.deployments_resources.Tenant:
-                    Tenant represents the service producer side of an
-                instance of the service created based on a request from
-                a consumer. In a typical scenario a Tenant has a
-                one-to-one mapping with a resource given out to a
-                service consumer.
+                    Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
                 Example:
 
-                ::
+                tenant:
 
-                   tenant:
-                     name: "projects/svc1/locations/loc/tenants/inst-068afff8"
-                     consumer_resource: "projects/gshoe/locations/loc/shoes/black-shoe"
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
             """
 
@@ -3671,19 +3673,21 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             Returns:
                 ~.deployments_resources.Tenant:
-                    Tenant represents the service producer side of an
-                instance of the service created based on a request from
-                a consumer. In a typical scenario a Tenant has a
-                one-to-one mapping with a resource given out to a
-                service consumer.
+                    Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
                 Example:
 
-                ::
+                tenant:
 
-                   tenant:
-                     name: "projects/svc1/locations/loc/tenants/inst-068afff8"
-                     consumer_resource: "projects/gshoe/locations/loc/shoes/black-shoe"
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
             """
 
@@ -5517,19 +5521,21 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             Returns:
                 ~.deployments_resources.Tenant:
-                    Tenant represents the service producer side of an
-                instance of the service created based on a request from
-                a consumer. In a typical scenario a Tenant has a
-                one-to-one mapping with a resource given out to a
-                service consumer.
+                    Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
                 Example:
 
-                ::
+                tenant:
 
-                   tenant:
-                     name: "projects/svc1/locations/loc/tenants/inst-068afff8"
-                     consumer_resource: "projects/gshoe/locations/loc/shoes/black-shoe"
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
             """
 

@@ -127,8 +127,8 @@ class ListVersionsRequest(proto.Message):
             The maximum number of versions to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request, if any.
+            The next_page_token value returned from a
+            previous list request, if any.
         view (google.cloud.artifactregistry_v1beta2.types.VersionView):
             The view that should be returned in the
             response.

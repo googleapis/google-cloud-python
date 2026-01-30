@@ -28,8 +28,8 @@ __protobuf__ = proto.module(
 
 
 class ItemParameter(proto.Message):
-    r"""A bucket of any `event parameters related to an
-    item <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
+    r"""A bucket of any [event parameters related to an
+    item](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
     to be included within the event that were not already specified
     using other structured fields.
 

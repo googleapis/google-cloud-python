@@ -92,10 +92,11 @@ class Item(proto.Message):
             Optional. A unique identifier to reference
             the item.
         additional_item_parameters (MutableSequence[google.ads.datamanager_v1.types.ItemParameter]):
-            Optional. A bucket of any `event parameters related to an
-            item <https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events>`__
-            to be included within the event that were not already
-            specified using other structured fields.
+            Optional. A bucket of any [event parameters
+            related to an
+            item](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
+            to be included within the event that were not
+            already specified using other structured fields.
     """
 
     merchant_product_id: str = proto.Field(

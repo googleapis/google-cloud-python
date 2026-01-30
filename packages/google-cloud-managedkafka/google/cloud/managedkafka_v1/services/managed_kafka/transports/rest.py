@@ -1623,9 +1623,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
 
             Returns:
                 ~.resources.Acl:
-                    Represents the set of ACLs for a given Kafka Resource
-                Pattern, which consists of resource_type, resource_name
-                and pattern_type.
+                    Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
             """
 
@@ -2557,9 +2558,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
 
             Returns:
                 ~.resources.Acl:
-                    Represents the set of ACLs for a given Kafka Resource
-                Pattern, which consists of resource_type, resource_name
-                and pattern_type.
+                    Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
             """
 
@@ -3899,9 +3901,10 @@ class ManagedKafkaRestTransport(_BaseManagedKafkaRestTransport):
 
             Returns:
                 ~.resources.Acl:
-                    Represents the set of ACLs for a given Kafka Resource
-                Pattern, which consists of resource_type, resource_name
-                and pattern_type.
+                    Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
             """
 

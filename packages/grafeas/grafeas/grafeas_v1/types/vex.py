@@ -135,9 +135,10 @@ class VulnerabilityAssessmentNote(proto.Message):
 
         Attributes:
             cve (str):
-                Holds the MITRE standard Common Vulnerabilities and
-                Exposures (CVE) tracking number for the vulnerability.
-                Deprecated: Use vulnerability_id instead to denote CVEs.
+                Holds the MITRE standard Common Vulnerabilities
+                and Exposures (CVE) tracking number for the
+                vulnerability. Deprecated: Use vulnerability_id
+                instead to denote CVEs.
             vulnerability_id (str):
                 The vulnerability identifier for this
                 Assessment. Will hold one of common identifiers
@@ -161,8 +162,8 @@ class VulnerabilityAssessmentNote(proto.Message):
                 Contains information about the impact of this
                 vulnerability, this will change with time.
             justification (grafeas.grafeas_v1.types.VulnerabilityAssessmentNote.Assessment.Justification):
-                Justification provides the justification when the state of
-                the assessment if NOT_AFFECTED.
+                Justification provides the justification when
+                the state of the assessment if NOT_AFFECTED.
             remediations (MutableSequence[grafeas.grafeas_v1.types.VulnerabilityAssessmentNote.Assessment.Remediation]):
                 Specifies details on how to handle (and
                 presumably, fix) a vulnerability.

@@ -774,11 +774,10 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
                 The request object. The Request of the CreateTenant
                 method.
             parent (str):
-                Required. Resource name of the project under which the
-                tenant is created.
-
-                The format is "projects/{project_id}", for example,
-                "projects/foo".
+                Required. Resource name of the project
+                under which the tenant is created.
+                The format is "projects/{project_id}",
+                for example, "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,12 +895,11 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.GetTenantRequest, dict]):
                 The request object. Request for getting a tenant by name.
             name (str):
-                Required. The resource name of the tenant to be
-                retrieved.
-
+                Required. The resource name of the
+                tenant to be retrieved.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}", for
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}",
+                for example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1128,11 +1126,11 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.DeleteTenantRequest, dict]):
                 The request object. Request to delete a tenant.
             name (str):
-                Required. The resource name of the tenant to be deleted.
-
+                Required. The resource name of the
+                tenant to be deleted.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}", for
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}",
+                for example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1231,11 +1229,10 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
                 The request object. List tenants for which the client has
                 ACL visibility.
             parent (str):
-                Required. Resource name of the project under which the
-                tenant is created.
-
-                The format is "projects/{project_id}", for example,
-                "projects/foo".
+                Required. Resource name of the project
+                under which the tenant is created.
+                The format is "projects/{project_id}",
+                for example, "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

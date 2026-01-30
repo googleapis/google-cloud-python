@@ -118,8 +118,8 @@ class GenerateContentRequest(proto.Message):
 
             Format: ``models/{model}``.
         system_instruction (google.ai.generativelanguage_v1alpha.types.Content):
-            Optional. Developer set `system
-            instruction(s) <https://ai.google.dev/gemini-api/docs/system-instructions>`__.
+            Optional. Developer set [system
+            instruction(s)](https://ai.google.dev/gemini-api/docs/system-instructions).
             Currently, text only.
 
             This field is a member of `oneof`_ ``_system_instruction``.
@@ -905,8 +905,9 @@ class LogprobsResult(proto.Message):
         top_candidates (MutableSequence[google.ai.generativelanguage_v1alpha.types.LogprobsResult.TopCandidates]):
             Length = total number of decoding steps.
         chosen_candidates (MutableSequence[google.ai.generativelanguage_v1alpha.types.LogprobsResult.Candidate]):
-            Length = total number of decoding steps. The chosen
-            candidates may or may not be in top_candidates.
+            Length = total number of decoding steps.
+            The chosen candidates may or may not be in
+            top_candidates.
     """
 
     class Candidate(proto.Message):
@@ -1081,13 +1082,14 @@ class RetrievalMetadata(proto.Message):
 
     Attributes:
         google_search_dynamic_retrieval_score (float):
-            Optional. Score indicating how likely information from
-            google search could help answer the prompt. The score is in
-            the range [0, 1], where 0 is the least likely and 1 is the
-            most likely. This score is only populated when google search
-            grounding and dynamic retrieval is enabled. It will be
-            compared to the threshold to determine whether to trigger
-            google search.
+            Optional. Score indicating how likely
+            information from google search could help answer
+            the prompt. The score is in the range [0, 1],
+            where 0 is the least likely and 1 is the most
+            likely. This score is only populated when google
+            search grounding and dynamic retrieval is
+            enabled. It will be compared to the threshold to
+            determine whether to trigger google search.
     """
 
     google_search_dynamic_retrieval_score: float = proto.Field(
@@ -1269,15 +1271,17 @@ class GroundingSupport(proto.Message):
 
             This field is a member of `oneof`_ ``_segment``.
         grounding_chunk_indices (MutableSequence[int]):
-            A list of indices (into 'grounding_chunk') specifying the
-            citations associated with the claim. For instance [1,3,4]
-            means that grounding_chunk[1], grounding_chunk[3],
-            grounding_chunk[4] are the retrieved content attributed to
-            the claim.
+            A list of indices (into 'grounding_chunk')
+            specifying the citations associated with the
+            claim. For instance [1,3,4] means that
+            grounding_chunk[1], grounding_chunk[3],
+            grounding_chunk[4] are the retrieved content
+            attributed to the claim.
         confidence_scores (MutableSequence[float]):
-            Confidence score of the support references. Ranges from 0 to
-            1. 1 is the most confident. This list must have the same
-            size as the grounding_chunk_indices.
+            Confidence score of the support references.
+            Ranges from 0 to 1. 1 is the most confident.
+            This list must have the same size as the
+            grounding_chunk_indices.
     """
 
     segment: "Segment" = proto.Field(
@@ -1359,10 +1363,11 @@ class GenerateAnswerRequest(proto.Message):
         temperature (float):
             Optional. Controls the randomness of the output.
 
-            Values can range from [0.0,1.0], inclusive. A value closer
-            to 1.0 will produce responses that are more varied and
-            creative, while a value closer to 0.0 will typically result
-            in more straightforward responses from the model. A low
+            Values can range from [0.0,1.0], inclusive. A
+            value closer to 1.0 will produce responses that
+            are more varied and creative, while a value
+            closer to 0.0 will typically result in more
+            straightforward responses from the model. A low
             temperature (~0.2) is usually recommended for
             Attributed-Question-Answering use cases.
 

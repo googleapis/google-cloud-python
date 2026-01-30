@@ -46,8 +46,8 @@ class DbSystem(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the DbSystem resource in the
-            following format:
+            Identifier. The name of the DbSystem resource in
+            the following format:
             projects/{project}/locations/{region}/dbSystems/{db_system}
         properties (google.cloud.oracledatabase_v1.types.DbSystemProperties):
             Optional. The properties of the DbSystem.
@@ -60,14 +60,15 @@ class DbSystem(proto.Message):
             Optional. The labels or tags associated with
             the DbSystem.
         odb_network (str):
-            Optional. The name of the OdbNetwork associated with the
-            DbSystem. Format:
+            Optional. The name of the OdbNetwork associated
+            with the DbSystem. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
-            It is optional but if specified, this should match the
-            parent ODBNetwork of the OdbSubnet.
+            It is optional but if specified, this should
+            match the parent ODBNetwork of the OdbSubnet.
         odb_subnet (str):
-            Required. The name of the OdbSubnet associated with the
-            DbSystem for IP allocation. Format:
+            Required. The name of the OdbSubnet associated
+            with the DbSystem for IP allocation. Format:
+
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         entitlement_id (str):
             Output only. The ID of the subscription
@@ -528,7 +529,8 @@ class DeleteDbSystemRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DbSystem in the following format:
+            Required. The name of the DbSystem in the
+            following format:
             projects/{project}/locations/{location}/dbSystems/{db_system}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -560,7 +562,8 @@ class GetDbSystemRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DbSystem in the following format:
+            Required. The name of the DbSystem in the
+            following format:
             projects/{project}/locations/{location}/dbSystems/{db_system}.
     """
 

@@ -289,19 +289,20 @@ class RateLimits(proto.Message):
             [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second]
             is updated.
         max_concurrent_dispatches (int):
-            The maximum number of concurrent tasks that Cloud Tasks
-            allows to be dispatched for this queue. After this threshold
-            has been reached, Cloud Tasks stops dispatching tasks until
-            the number of concurrent requests decreases.
+            The maximum number of concurrent tasks that
+            Cloud Tasks allows to be dispatched for this
+            queue. After this threshold has been reached,
+            Cloud Tasks stops dispatching tasks until the
+            number of concurrent requests decreases.
 
-            If unspecified when the queue is created, Cloud Tasks will
-            pick the default.
+            If unspecified when the queue is created, Cloud
+            Tasks will pick the default.
 
             The maximum allowed value is 5,000.
 
-            This field has the same meaning as `max_concurrent_requests
-            in
-            queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests>`__.
+            This field has the same meaning as
+            [max_concurrent_requests in
+            queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests).
     """
 
     max_dispatches_per_second: float = proto.Field(

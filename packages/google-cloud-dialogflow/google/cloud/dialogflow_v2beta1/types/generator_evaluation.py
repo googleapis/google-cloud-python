@@ -91,8 +91,8 @@ class ListGeneratorEvaluationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -754,10 +754,12 @@ class GeneratorEvaluationConfig(proto.Message):
         input_data_config (google.cloud.dialogflow_v2beta1.types.GeneratorEvaluationConfig.InputDataConfig):
             Required. The config/source of input data.
         output_gcs_bucket_path (str):
-            Required. The output Cloud Storage bucket path to store eval
-            files, e.g. per_summary_accuracy_score report. This path is
-            provided by customer and files stored in it are visible to
-            customer, no internal data should be stored in this path.
+            Required. The output Cloud Storage bucket path
+            to store eval files, e.g.
+            per_summary_accuracy_score report. This path is
+            provided by customer and files stored in it are
+            visible to customer, no internal data should be
+            stored in this path.
         summarization_config (google.cloud.dialogflow_v2beta1.types.GeneratorEvaluationConfig.SummarizationConfig):
             Evaluation configs for summarization
             generator.
@@ -773,13 +775,16 @@ class GeneratorEvaluationConfig(proto.Message):
                 Unspecified InputDataSourceType. Should not
                 be used.
             AGENT_ASSIST_CONVERSATIONS (1):
-                Fetch data from Agent Assist storage. If this source type is
-                chosen, input_data_config.start_time and
-                input_data_config.end_timestamp must be provided.
+                Fetch data from Agent Assist storage. If this
+                source type is chosen,
+                input_data_config.start_time and
+                input_data_config.end_timestamp must be
+                provided.
             INSIGHTS_CONVERSATIONS (2):
-                Fetch data from Insights storage. If this source type is
-                chosen, input_data_config.start_time and
-                input_data_config.end_timestamp must be provided.
+                Fetch data from Insights storage. If this source
+                type is chosen, input_data_config.start_time and
+                input_data_config.end_timestamp must be
+                provided.
         """
         INPUT_DATA_SOURCE_TYPE_UNSPECIFIED = 0
         AGENT_ASSIST_CONVERSATIONS = 1

@@ -510,8 +510,8 @@ class VehicleServiceAsyncClient:
     ) -> None:
         r"""Deletes a Vehicle from the Fleet Engine.
 
-        Returns FAILED_PRECONDITION if the Vehicle has active Trips.
-        assigned to it.
+        Returns FAILED_PRECONDITION if the Vehicle has active
+        Trips. assigned to it.
 
         .. code-block:: python
 

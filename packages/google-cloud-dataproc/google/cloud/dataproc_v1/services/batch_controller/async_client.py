@@ -493,8 +493,8 @@ class BatchControllerAsyncClient:
                 The request object. A request to get the resource
                 representation for a batch workload.
             name (:class:`str`):
-                Required. The fully qualified name of the batch to
-                retrieve in the format
+                Required. The fully qualified name of
+                the batch to retrieve in the format
                 "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID"
 
                 This corresponds to the ``name`` field
@@ -729,8 +729,8 @@ class BatchControllerAsyncClient:
             request (Optional[Union[google.cloud.dataproc_v1.types.DeleteBatchRequest, dict]]):
                 The request object. A request to delete a batch workload.
             name (:class:`str`):
-                Required. The fully qualified name of the batch to
-                retrieve in the format
+                Required. The fully qualified name of
+                the batch to retrieve in the format
                 "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID"
 
                 This corresponds to the ``name`` field

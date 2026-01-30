@@ -60,18 +60,21 @@ class CreateReadSessionRequest(proto.Message):
         read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
             Required. Session to be created.
         max_stream_count (int):
-            Max initial number of streams. If unset or zero, the server
-            will provide a value of streams so as to produce reasonable
-            throughput. Must be non-negative. The number of streams may
-            be lower than the requested number, depending on the amount
-            parallelism that is reasonable for the table. There is a
-            default system max limit of 1,000.
+            Max initial number of streams. If unset or zero,
+            the server will provide a value of streams so as
+            to produce reasonable throughput. Must be
+            non-negative. The number of streams may be lower
+            than the requested number, depending on the
+            amount parallelism that is reasonable for the
+            table. There is a default system max limit of
+            1,000.
 
             This must be greater than or equal to
-            preferred_min_stream_count. Typically, clients should either
-            leave this unset to let the system to determine an upper
-            bound OR set this a size for the maximum "units of work" it
-            can gracefully handle.
+            preferred_min_stream_count. Typically, clients
+            should either leave this unset to let the system
+            to determine an upper bound OR set this a size
+            for the maximum "units of work" it can
+            gracefully handle.
         preferred_min_stream_count (int):
             The minimum preferred stream count. This
             parameter can be used to inform the service that
@@ -229,24 +232,28 @@ class ReadRowsResponse(proto.Message):
 
             This field is a member of `oneof`_ ``schema``.
         uncompressed_byte_size (int):
-            Optional. If the row data in this ReadRowsResponse is
-            compressed, then uncompressed byte size is the original size
-            of the uncompressed row data. If it is set to a value
-            greater than 0, then decompress into a buffer of size
-            uncompressed_byte_size using the compression codec that was
-            requested during session creation time and which is
-            specified in TableReadOptions.response_compression_codec in
+            Optional. If the row data in this
+            ReadRowsResponse is compressed, then
+            uncompressed byte size is the original size of
+            the uncompressed row data. If it is set to a
+            value greater than 0, then decompress into a
+            buffer of size uncompressed_byte_size using the
+            compression codec that was requested during
+            session creation time and which is specified in
+            TableReadOptions.response_compression_codec in
             ReadSession. This value is not set if no
-            response_compression_codec was not requested and it is -1 if
-            the requested compression would not have reduced the size of
-            this ReadRowsResponse's row data. This attempts to match
-            Apache Arrow's behavior described here
-            https://github.com/apache/arrow/issues/15102 where the
-            uncompressed length may be set to -1 to indicate that the
-            data that follows is not compressed, which can be useful for
-            cases where compression does not yield appreciable savings.
-            When uncompressed_byte_size is not greater than 0, the
-            client should skip decompression.
+            response_compression_codec was not requested and
+            it is -1 if the requested compression would not
+            have reduced the size of this ReadRowsResponse's
+            row data. This attempts to match Apache Arrow's
+            behavior described here
+            https://github.com/apache/arrow/issues/15102
+            where the uncompressed length may be set to -1
+            to indicate that the data that follows is not
+            compressed, which can be useful for cases where
+            compression does not yield appreciable savings.
+            When uncompressed_byte_size is not greater than
+            0, the client should skip decompression.
 
             This field is a member of `oneof`_ ``_uncompressed_byte_size``.
     """
@@ -332,13 +339,14 @@ class SplitReadStreamResponse(proto.Message):
 
     Attributes:
         primary_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
-            Primary stream, which contains the beginning portion of
-            \|original_stream\|. An empty value indicates that the
-            original stream can no longer be split.
+            Primary stream, which contains the beginning
+            portion of \|original_stream\|. An empty value
+            indicates that the original stream can no longer
+            be split.
         remainder_stream (google.cloud.bigquery_storage_v1.types.ReadStream):
             Remainder stream, which contains the tail of
-            \|original_stream\|. An empty value indicates that the
-            original stream can no longer be split.
+            \|original_stream\|. An empty value indicates
+            that the original stream can no longer be split.
     """
 
     primary_stream: stream.ReadStream = proto.Field(
@@ -449,24 +457,29 @@ class AppendRowsRequest(proto.Message):
             Id set by client to annotate its identity.
             Only initial request setting is respected.
         missing_value_interpretations (MutableMapping[str, google.cloud.bigquery_storage_v1.types.AppendRowsRequest.MissingValueInterpretation]):
-            A map to indicate how to interpret missing value for some
-            fields. Missing values are fields present in user schema but
-            missing in rows. The key is the field name. The value is the
+            A map to indicate how to interpret missing value
+            for some fields. Missing values are fields
+            present in user schema but missing in rows. The
+            key is the field name. The value is the
             interpretation of missing values for the field.
 
-            For example, a map {'foo': NULL_VALUE, 'bar': DEFAULT_VALUE}
-            means all missing values in field foo are interpreted as
-            NULL, all missing values in field bar are interpreted as the
-            default value of field bar in table schema.
+            For example, a map {'foo': NULL_VALUE, 'bar':
+            DEFAULT_VALUE} means all missing values in field
+            foo are interpreted as NULL, all missing values
+            in field bar are interpreted as the default
+            value of field bar in table schema.
 
-            If a field is not in this map and has missing values, the
-            missing values in this field are interpreted as NULL.
+            If a field is not in this map and has missing
+            values, the missing values in this field are
+            interpreted as NULL.
 
-            This field only applies to the current request, it won't
-            affect other requests on the connection.
+            This field only applies to the current request,
+            it won't affect other requests on the
+            connection.
 
-            Currently, field name can only be top-level column name,
-            can't be a struct field path like 'foo.bar'.
+            Currently, field name can only be top-level
+            column name, can't be a struct field path like
+            'foo.bar'.
         default_missing_value_interpretation (google.cloud.bigquery_storage_v1.types.AppendRowsRequest.MissingValueInterpretation):
             Optional. Default missing value interpretation for all
             columns in the table. When a value is specified on an
@@ -616,29 +629,32 @@ class AppendRowsResponse(proto.Message):
 
             This field is a member of `oneof`_ ``response``.
         error (google.rpc.status_pb2.Status):
-            Error returned when problems were encountered. If present,
-            it indicates rows were not accepted into the system. Users
-            can retry or continue with other append requests within the
-            same connection.
+            Error returned when problems were encountered.
+            If present, it indicates rows were not accepted
+            into the system. Users can retry or continue
+            with other append requests within the same
+            connection.
 
             Additional information about error signalling:
 
-            ALREADY_EXISTS: Happens when an append specified an offset,
-            and the backend already has received data at this offset.
-            Typically encountered in retry scenarios, and can be
-            ignored.
+            ALREADY_EXISTS: Happens when an append specified
+            an offset, and the backend already has received
+            data at this offset. Typically encountered in
+            retry scenarios, and can be ignored.
 
-            OUT_OF_RANGE: Returned when the specified offset in the
-            stream is beyond the current end of the stream.
+            OUT_OF_RANGE: Returned when the specified offset
+            in the stream is beyond the current end of the
+            stream.
 
-            INVALID_ARGUMENT: Indicates a malformed request or data.
+            INVALID_ARGUMENT: Indicates a malformed request
+            or data.
 
-            ABORTED: Request processing is aborted because of prior
-            failures. The request can be retried if previous failure is
-            addressed.
+            ABORTED: Request processing is aborted because
+            of prior failures. The request can be retried if
+            previous failure is addressed.
 
-            INTERNAL: Indicates server side error(s) that can be
-            retried.
+            INTERNAL: Indicates server side error(s) that
+            can be retried.
 
             This field is a member of `oneof`_ ``response``.
         updated_schema (google.cloud.bigquery_storage_v1.types.TableSchema):
@@ -652,8 +668,8 @@ class AppendRowsResponse(proto.Message):
             return row level error info, so that the caller
             can remove the bad rows and retry the request.
         write_stream (str):
-            The target of the append operation. Matches the write_stream
-            in the corresponding request.
+            The target of the append operation. Matches the
+            write_stream in the corresponding request.
     """
 
     class AppendResult(proto.Message):

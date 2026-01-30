@@ -32,12 +32,9 @@ class AlertChart(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the alert policy. The format
-            is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+            Required. The resource name of the alert policy.
+            The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
     name: str = proto.Field(

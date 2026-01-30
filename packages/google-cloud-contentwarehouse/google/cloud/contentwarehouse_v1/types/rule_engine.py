@@ -48,8 +48,9 @@ class RuleSet(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the rule set. Managed internally.
-            Format:
+            The resource name of the rule set. Managed
+            internally. Format:
+
             projects/{project_number}/locations/{location}/ruleSet/{rule_set_id}.
 
             The name is ignored when creating a rule set.
@@ -94,9 +95,10 @@ class Rule(proto.Message):
             Identifies the trigger type for running the
             policy.
         condition (str):
-            Represents the conditional expression to be evaluated.
-            Expression should evaluate to a boolean result. When the
-            condition is true actions are executed. Example: user_role =
+            Represents the conditional expression to be
+            evaluated. Expression should evaluate to a
+            boolean result. When the condition is true
+            actions are executed. Example: user_role =
             "hsbc_role_1" AND doc.salary > 20000
         actions (MutableSequence[google.cloud.contentwarehouse_v1.types.Action]):
             List of actions that are executed when the
@@ -336,8 +338,9 @@ class AddToFolderAction(proto.Message):
 
     Attributes:
         folders (MutableSequence[str]):
-            Names of the folder under which new document is to be added.
-            Format:
+            Names of the folder under which new document is
+            to be added. Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 
@@ -355,8 +358,9 @@ class RemoveFromFolderAction(proto.Message):
         condition (str):
             Condition of the action to be executed.
         folder (str):
-            Name of the folder under which new document is to be added.
-            Format:
+            Name of the folder under which new document is
+            to be added. Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 

@@ -286,9 +286,10 @@ class Operation(proto.Message):
             from = "/", source_resource = and resource_name = . This
             field is empty for all other values of ``action``.
         source_path (str):
-            Can be set with action 'copy' or 'move' to indicate the
-            source field within resource or source_resource, ignored if
-            provided for other operation types.
+            Can be set with action 'copy' or 'move' to
+            indicate the source field within resource or
+            source_resource, ignored if provided for other
+            operation types.
         value (google.protobuf.struct_pb2.Value):
             Value for the ``path`` field. Will be set for
             actions:'add'/'replace'. Maybe set for action: 'test'.
@@ -483,9 +484,9 @@ class SustainabilityProjection(proto.Message):
 
     Attributes:
         kg_c_o2e (float):
-            Carbon Footprint generated in kg of CO2 equivalent. Chose
-            kg_c_o2e so that the name renders correctly in camelCase
-            (kgCO2e).
+            Carbon Footprint generated in kg of CO2
+            equivalent. Chose kg_c_o2e so that the name
+            renders correctly in camelCase (kgCO2e).
         duration (google.protobuf.duration_pb2.Duration):
             Duration for which this sustainability
             applies.

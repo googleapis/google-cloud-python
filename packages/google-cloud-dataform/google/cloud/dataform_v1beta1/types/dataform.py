@@ -1998,9 +1998,9 @@ class ReleaseConfig(proto.Message):
             Optional. Optional schedule (in cron format)
             for automatic creation of compilation results.
         time_zone (str):
-            Optional. Specifies the time zone to be used when
-            interpreting cron_schedule. Must be a time zone name from
-            the time zone database
+            Optional. Specifies the time zone to be used
+            when interpreting cron_schedule. Must be a time
+            zone name from the time zone database
             (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
             If left unspecified, the default is UTC.
         recent_scheduled_release_records (MutableSequence[google.cloud.dataform_v1beta1.types.ReleaseConfig.ScheduledReleaseRecord]):
@@ -3480,9 +3480,9 @@ class WorkflowConfig(proto.Message):
             Optional. Optional schedule (in cron format)
             for automatic execution of this workflow config.
         time_zone (str):
-            Optional. Specifies the time zone to be used when
-            interpreting cron_schedule. Must be a time zone name from
-            the time zone database
+            Optional. Specifies the time zone to be used
+            when interpreting cron_schedule. Must be a time
+            zone name from the time zone database
             (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
             If left unspecified, the default is UTC.
         recent_scheduled_execution_records (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowConfig.ScheduledExecutionRecord]):
@@ -4185,8 +4185,9 @@ class WorkflowInvocationAction(proto.Message):
                 Output only. The generated BigQuery SQL
                 script that will be executed.
             job_id (str):
-                Output only. The ID of the BigQuery job that executed the
-                SQL in sql_script. Only set once the job has started to run.
+                Output only. The ID of the BigQuery job that
+                executed the SQL in sql_script. Only set once
+                the job has started to run.
         """
 
         sql_script: str = proto.Field(
@@ -4252,8 +4253,9 @@ class WorkflowInvocationAction(proto.Message):
                 script that will be executed. For reference
                 only.
             job_id (str):
-                Output only. The ID of the BigQuery job that executed the
-                SQL in sql_script. Only set once the job has started to run.
+                Output only. The ID of the BigQuery job that
+                executed the SQL in sql_script. Only set once
+                the job has started to run.
         """
 
         class ActionSqlDefinition(proto.Message):

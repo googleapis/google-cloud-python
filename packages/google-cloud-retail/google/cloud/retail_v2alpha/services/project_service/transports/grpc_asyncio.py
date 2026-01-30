@@ -422,9 +422,9 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
 
         The [Recommendations AI solution
         type][google.cloud.retail.v2alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-        is enrolled by default when your project enables Retail API, so
-        you don't need to call the enrollSolution method for
-        recommendations.
+        is enrolled by default when your project enables Retail
+        API, so you don't need to call the enrollSolution method
+        for recommendations.
 
         Returns:
             Callable[[~.EnrollSolutionRequest],

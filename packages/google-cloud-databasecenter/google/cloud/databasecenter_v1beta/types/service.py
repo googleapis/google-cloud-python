@@ -734,9 +734,10 @@ class IssueGroupStats(proto.Message):
             groups as defined above that are healthy with
             respect to all of the specified issues.
         healthy_resources_count (int):
-            The number of resources from the total defined above in
-            field total_resources_count that are healthy with respect to
-            all of the specified issues.
+            The number of resources from the total defined
+            above in field total_resources_count that are
+            healthy with respect to all of the specified
+            issues.
         issue_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.IssueStats]):
             List of issues stats containing count of
             resources having particular issue category.
@@ -1298,10 +1299,13 @@ class Tag(proto.Message):
         source (str):
             The source of the tag. According to
             https://cloud.google.com/resource-manager/docs/tags/tags-overview#tags_and_labels,
-            tags can be created only at the project or organization
-            level. Tags can be inherited from different project as well
-            not just the current project where the database resource is
-            present. Format: "projects/{PROJECT_ID}",
+            tags can be created only at the project or
+            organization level. Tags can be inherited from
+            different project as well not just the current
+            project where the database resource is present.
+            Format:
+
+            "projects/{PROJECT_ID}",
             "projects/{PROJECT_NUMBER}",
             "organizations/{ORGANIZATION_ID}".
         inherited (bool):

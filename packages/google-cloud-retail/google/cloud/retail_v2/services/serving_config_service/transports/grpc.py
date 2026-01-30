@@ -486,13 +486,15 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     ]:
         r"""Return a callable for the add control method over gRPC.
 
-        Enables a Control on the specified ServingConfig. The control is
-        added in the last position of the list of controls it belongs to
-        (e.g. if it's a facet spec control it will be applied in the
-        last position of servingConfig.facetSpecIds) Returns a
-        ALREADY_EXISTS error if the control has already been applied.
-        Returns a FAILED_PRECONDITION error if the addition could exceed
-        maximum number of control allowed for that type of control.
+        Enables a Control on the specified ServingConfig.
+        The control is added in the last position of the list of
+        controls it belongs to (e.g. if it's a facet spec
+        control it will be applied in the last position of
+        servingConfig.facetSpecIds) Returns a ALREADY_EXISTS
+        error if the control has already been applied. Returns a
+        FAILED_PRECONDITION error if the addition could exceed
+        maximum number of control allowed for that type of
+        control.
 
         Returns:
             Callable[[~.AddControlRequest],
@@ -520,9 +522,10 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     ]:
         r"""Return a callable for the remove control method over gRPC.
 
-        Disables a Control on the specified ServingConfig. The control
-        is removed from the ServingConfig. Returns a NOT_FOUND error if
-        the Control is not enabled for the ServingConfig.
+        Disables a Control on the specified ServingConfig.
+        The control is removed from the ServingConfig.
+        Returns a NOT_FOUND error if the Control is not enabled
+        for the ServingConfig.
 
         Returns:
             Callable[[~.RemoveControlRequest],

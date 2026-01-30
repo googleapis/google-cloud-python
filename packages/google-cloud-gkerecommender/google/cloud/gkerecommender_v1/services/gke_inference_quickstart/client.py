@@ -1017,16 +1017,18 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchProfilesPager:
-        r"""Fetches available profiles. A profile contains performance
-        metrics and cost information for a specific model server setup.
-        Profiles can be filtered by parameters. If no filters are
-        provided, all profiles are returned.
+        r"""Fetches available profiles. A profile contains
+        performance metrics and cost information for a specific
+        model server setup. Profiles can be filtered by
+        parameters. If no filters are provided, all profiles are
+        returned.
 
-        Profiles display a single value per performance metric based on
-        the provided performance requirements. If no requirements are
-        given, the metrics represent the inflection point. See `Run best
-        practice inference with GKE Inference Quickstart
-        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how>`__
+        Profiles display a single value per performance metric
+        based on the provided performance requirements. If no
+        requirements are given, the metrics represent the
+        inflection point. See [Run best practice inference with
+        GKE Inference Quickstart
+        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how)
         for details.
 
         .. code-block:: python
@@ -1121,11 +1123,12 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gkerecommender.GenerateOptimizedManifestResponse:
-        r"""Generates an optimized deployment manifest for a given model and
-        model server, based on the specified accelerator, performance
-        targets, and configurations. See `Run best practice inference
-        with GKE Inference Quickstart
-        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart>`__
+        r"""Generates an optimized deployment manifest for a given
+        model and model server, based on the specified
+        accelerator, performance targets, and configurations.
+        See [Run best practice inference with GKE Inference
+        Quickstart
+        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart)
         for deployment details.
 
         .. code-block:: python

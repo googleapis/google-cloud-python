@@ -34,8 +34,8 @@ class CustomFieldValue(proto.Message):
 
     Attributes:
         custom_field (str):
-            Required. The custom field for which this is a value.
-            Format:
+            Required. The custom field for which this is a
+            value. Format:
             "networks/{network_code}/customFields/{custom_field_id}".
         value (google.ads.admanager_v1.types.CustomFieldValue.Value):
             Required. A typed value representation of the
@@ -56,8 +56,8 @@ class CustomFieldValue(proto.Message):
 
         Attributes:
             dropdown_value (int):
-                The custom_field_option_id, if the CustomFieldDataType is
-                DROPDOWN.
+                The custom_field_option_id, if the
+                CustomFieldDataType is DROPDOWN.
 
                 This field is a member of `oneof`_ ``value``.
             string_value (str):

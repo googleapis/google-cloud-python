@@ -94,9 +94,9 @@ class Price(proto.Message):
 
             This field is a member of `oneof`_ ``_amount_micros``.
         currency_code (str):
-            The currency of the price using three-letter acronyms
-            according to `ISO
-            4217 <http://en.wikipedia.org/wiki/ISO_4217>`__.
+            The currency of the price using three-letter
+            acronyms according to [ISO
+            4217](http://en.wikipedia.org/wiki/ISO_4217).
 
             This field is a member of `oneof`_ ``_currency_code``.
     """
@@ -173,14 +173,14 @@ class Destination(proto.Message):
                 `Display
                 ads <https://support.google.com/merchants/answer/6069387>`__.
             LOCAL_INVENTORY_ADS (3):
-                `Local inventory
-                ads <https://support.google.com/merchants/answer/3057972>`__.
+                [Local inventory
+                ads](https://support.google.com/merchants/answer/3057972).
             FREE_LISTINGS (4):
                 `Free
                 listings <https://support.google.com/merchants/answer/9199328>`__.
             FREE_LOCAL_LISTINGS (5):
-                `Free local product
-                listings <https://support.google.com/merchants/answer/9825611>`__.
+                [Free local product
+                listings](https://support.google.com/merchants/answer/9825611).
             YOUTUBE_SHOPPING (6):
                 `YouTube
                 Shopping <https://support.google.com/merchants/answer/12362804>`__.
@@ -195,14 +195,14 @@ class Destination(proto.Message):
 
 
 class ReportingContext(proto.Message):
-    r"""Reporting contexts that your account and product issues apply to.
-
-    Reporting contexts are groups of surfaces and formats for product
-    results on Google. They can represent the entire destination (for
-    example, `Shopping
-    ads <https://support.google.com/merchants/answer/6149970>`__) or a
-    subset of formats within a destination (for example, `Demand Gen
-    ads <https://support.google.com/merchants/answer/13389785>`__).
+    r"""Reporting contexts that your account and product issues apply
+    to.
+    Reporting contexts are groups of surfaces and formats for
+    product results on Google. They can represent the entire
+    destination (for example, [Shopping
+    ads](https://support.google.com/merchants/answer/6149970)) or a
+    subset of formats within a destination (for example, [Demand Gen
+    ads](https://support.google.com/merchants/answer/13389785)).
 
     """
 
@@ -223,8 +223,8 @@ class ReportingContext(proto.Message):
                 `Demand Gen
                 ads <https://support.google.com/merchants/answer/13389785>`__.
             DEMAND_GEN_ADS_DISCOVER_SURFACE (14):
-                `Demand Gen ads on Discover
-                surface <https://support.google.com/merchants/answer/13389785>`__.
+                [Demand Gen ads on Discover
+                surface](https://support.google.com/merchants/answer/13389785).
             VIDEO_ADS (3):
                 `Video
                 ads <https://support.google.com/google-ads/answer/6340491>`__.
@@ -232,23 +232,23 @@ class ReportingContext(proto.Message):
                 `Display
                 ads <https://support.google.com/merchants/answer/6069387>`__.
             LOCAL_INVENTORY_ADS (5):
-                `Local inventory
-                ads <https://support.google.com/merchants/answer/3271956>`__.
+                [Local inventory
+                ads](https://support.google.com/merchants/answer/3271956).
             VEHICLE_INVENTORY_ADS (6):
-                `Vehicle inventory
-                ads <https://support.google.com/merchants/answer/11544533>`__.
+                [Vehicle inventory
+                ads](https://support.google.com/merchants/answer/11544533).
             FREE_LISTINGS (7):
-                `Free product
-                listings <https://support.google.com/merchants/answer/9199328>`__.
+                [Free product
+                listings](https://support.google.com/merchants/answer/9199328).
             FREE_LOCAL_LISTINGS (8):
-                `Free local product
-                listings <https://support.google.com/merchants/answer/9825611>`__.
+                [Free local product
+                listings](https://support.google.com/merchants/answer/9825611).
             FREE_LOCAL_VEHICLE_LISTINGS (9):
-                `Free local vehicle
-                listings <https://support.google.com/merchants/answer/11544533>`__.
+                [Free local vehicle
+                listings](https://support.google.com/merchants/answer/11544533).
             YOUTUBE_SHOPPING (10):
-                `YouTube
-                Shopping <https://support.google.com/merchants/answer/13478370>`__.
+                [YouTube
+                Shopping](https://support.google.com/merchants/answer/13478370).
             CLOUD_RETAIL (11):
                 `Cloud
                 retail <https://cloud.google.com/solutions/retail>`__.

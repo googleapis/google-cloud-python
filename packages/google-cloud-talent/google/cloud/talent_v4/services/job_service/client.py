@@ -825,12 +825,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.CreateJobRequest, dict]):
                 The request object. Create job request.
             parent (str):
-                Required. The resource name of the tenant under which
-                the job is created.
-
+                Required. The resource name of the
+                tenant under which the job is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}". For
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}".
+                For example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -957,12 +956,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.BatchCreateJobsRequest, dict]):
                 The request object. Request to create a batch of jobs.
             parent (str):
-                Required. The resource name of the tenant under which
-                the job is created.
-
+                Required. The resource name of the
+                tenant under which the job is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}". For
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}".
+                For example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1092,11 +1090,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.GetJobRequest, dict]):
                 The request object. Get job request.
             name (str):
-                Required. The resource name of the job to retrieve.
-
+                Required. The resource name of the job
+                to retrieve.
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example, "projects/foo/tenants/bar/jobs/baz".
+                For example,
+                "projects/foo/tenants/bar/jobs/baz".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1352,12 +1351,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.BatchUpdateJobsRequest, dict]):
                 The request object. Request to update a batch of jobs.
             parent (str):
-                Required. The resource name of the tenant under which
-                the job is created.
-
+                Required. The resource name of the
+                tenant under which the job is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}". For
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}".
+                For example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1486,11 +1484,12 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.DeleteJobRequest, dict]):
                 The request object. Delete job request.
             name (str):
-                Required. The resource name of the job to be deleted.
-
+                Required. The resource name of the job
+                to be deleted.
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example, "projects/foo/tenants/bar/jobs/baz".
+                For example,
+                "projects/foo/tenants/bar/jobs/baz".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1610,9 +1609,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example, "projects/foo/tenants/bar/jobs/baz".
+                For example,
+                "projects/foo/tenants/bar/jobs/baz".
 
-                A maximum of 200 jobs can be deleted in a batch.
+                A maximum of 200 jobs can be deleted in
+                a batch.
 
                 This corresponds to the ``names`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1736,12 +1737,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.ListJobsRequest, dict]):
                 The request object. List jobs request.
             parent (str):
-                Required. The resource name of the tenant under which
-                the job is created.
-
+                Required. The resource name of the
+                tenant under which the job is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}". For
-                example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}".
+                For example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

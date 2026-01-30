@@ -341,8 +341,8 @@ class Instance(proto.Message):
         region (str):
             Output only. The location of the VM.
         product_activation (MutableMapping[str, google.cloud.licensemanager_v1.types.ActivationState]):
-            Output only. Map with Product_Name and Activation State of
-            the VM.
+            Output only. Map with Product_Name and
+            Activation State of the VM.
         license_version_id (str):
             Output only. license version id.
         compute_instance (str):

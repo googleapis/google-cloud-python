@@ -1476,11 +1476,11 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Initiates a cache invalidation operation, invalidating the
-        specified path, scoped to the specified UrlMap.
+        r"""Initiates a cache invalidation operation, invalidating
+        the specified path, scoped to the specified UrlMap.
 
-        For more information, see `Invalidating cached
-        content </cdn/docs/invalidating-cached-content>`__.
+        For more information, see [Invalidating cached
+        content](/cdn/docs/invalidating-cached-content).
 
         .. code-block:: python
 
@@ -1629,11 +1629,11 @@ class RegionUrlMapsClient(metaclass=RegionUrlMapsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Initiates a cache invalidation operation, invalidating the
-        specified path, scoped to the specified UrlMap.
+        r"""Initiates a cache invalidation operation, invalidating
+        the specified path, scoped to the specified UrlMap.
 
-        For more information, see `Invalidating cached
-        content </cdn/docs/invalidating-cached-content>`__.
+        For more information, see [Invalidating cached
+        content](/cdn/docs/invalidating-cached-content).
 
         .. code-block:: python
 

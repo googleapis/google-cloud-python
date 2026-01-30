@@ -202,16 +202,18 @@ class ListPredictionResultsRequest(proto.Message):
             Required. The parent of the PredictionResult
             is the Instance.
         page_size (int):
-            The number of resources to be included in the response. The
-            response contains a next_page_token, which can be used to
-            retrieve the next page of resources.
+            The number of resources to be included in the
+            response. The response contains a
+            next_page_token, which can be used to retrieve
+            the next page of resources.
         page_token (str):
-            In case of paginated results, this is the token that was
-            returned in the previous ListPredictionResultsResponse. It
-            should be copied here to retrieve the next page of
+            In case of paginated results, this is the token
+            that was returned in the previous
+            ListPredictionResultsResponse. It should be
+            copied here to retrieve the next page of
             resources. Empty will give the first page of
-            ListPredictionResultsRequest, and the last page will return
-            an empty page_token.
+            ListPredictionResultsRequest, and the last page
+            will return an empty page_token.
         filter (str):
             Specify a filter to narrow search results.
         order_by (str):
@@ -348,15 +350,18 @@ class UpdatePredictionResultRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the PredictionResult resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the PredictionResult
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         prediction_result (google.cloud.financialservices_v1.types.PredictionResult):
-            Required. The new value of the PredictionResult fields that
-            will be updated according to the update_mask.
+            Required. The new value of the PredictionResult
+            fields that will be updated according to the
+            update_mask.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

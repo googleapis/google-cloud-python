@@ -29,10 +29,10 @@ __protobuf__ = proto.module(
 
 
 class BackupChannel(proto.Message):
-    r"""A BackupChannel imposes constraints on where clusters can be backed
-    up. The BackupChannel should be in the same project and region as
-    the cluster being backed up. The backup can be created only in
-    destination_project.
+    r"""A BackupChannel imposes constraints on where clusters can be
+    backed up. The BackupChannel should be in the same project and
+    region as the cluster being backed up.
+    The backup can be created only in destination_project.
 
     Attributes:
         name (str):
@@ -71,9 +71,10 @@ class BackupChannel(proto.Message):
             that their change will be applied to the same version of the
             resource.
         destination_project_id (str):
-            Output only. The project_id where Backups are allowed to be
-            stored. Example Project ID: "my-project-id". This will be an
-            OUTPUT_ONLY field to return the project_id of the
+            Output only. The project_id where Backups are
+            allowed to be stored. Example Project ID:
+            "my-project-id". This will be an OUTPUT_ONLY
+            field to return the project_id of the
             destination project.
     """
 

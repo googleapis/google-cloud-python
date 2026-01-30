@@ -147,8 +147,8 @@ class ListFilesRequest(proto.Message):
         page_size (int):
             The maximum number of files to return.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request, if any.
+            The next_page_token value returned from a
+            previous list request, if any.
     """
 
     parent: str = proto.Field(

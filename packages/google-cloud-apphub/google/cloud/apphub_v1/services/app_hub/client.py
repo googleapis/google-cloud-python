@@ -1178,9 +1178,11 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             service_project_attachment_id (str):
-                Required. The service project attachment identifier must
-                contain the project id of the service project specified
-                in the service_project_attachment.service_project field.
+                Required. The service project attachment
+                identifier must contain the project id
+                of the service project specified in the
+                service_project_attachment.service_project
+                field.
 
                 This corresponds to the ``service_project_attachment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2452,16 +2454,20 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Service resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. The API changes the
-                values of the fields as specified in the update_mask.
-                The API ignores the values of all fields not covered by
-                the update_mask. You can also unset a field by not
-                specifying it in the updated message, but adding the
-                field to the mask. This clears whatever value the field
-                previously had.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Service resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request.
+                The API changes the values of the fields
+                as specified in the update_mask. The API
+                ignores the values of all fields not
+                covered by the update_mask. You can also
+                unset a field by not specifying it in
+                the updated message, but adding the
+                field to the mask. This clears whatever
+                value the field previously had.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3483,16 +3489,20 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Workload resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. The API changes the
-                values of the fields as specified in the update_mask.
-                The API ignores the values of all fields not covered by
-                the update_mask. You can also unset a field by not
-                specifying it in the updated message, but adding the
-                field to the mask. This clears whatever value the field
-                previously had.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Workload resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request.
+                The API changes the values of the fields
+                as specified in the update_mask. The API
+                ignores the values of all fields not
+                covered by the update_mask. You can also
+                unset a field by not specifying it in
+                the updated message, but adding the
+                field to the mask. This clears whatever
+                value the field previously had.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4145,16 +4155,20 @@ class AppHubClient(metaclass=AppHubClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the Application resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. The API changes the
-                values of the fields as specified in the update_mask.
-                The API ignores the values of all fields not covered by
-                the update_mask. You can also unset a field by not
-                specifying it in the updated message, but adding the
-                field to the mask. This clears whatever value the field
-                previously had.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                Application resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request.
+                The API changes the values of the fields
+                as specified in the update_mask. The API
+                ignores the values of all fields not
+                covered by the update_mask. You can also
+                unset a field by not specifying it in
+                the updated message, but adding the
+                field to the mask. This clears whatever
+                value the field previously had.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

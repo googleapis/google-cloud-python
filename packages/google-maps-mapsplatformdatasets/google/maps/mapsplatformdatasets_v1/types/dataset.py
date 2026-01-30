@@ -59,8 +59,8 @@ class Dataset(proto.Message):
 
     Attributes:
         name (str):
-            Resource name. Format:
-            projects/{project}/datasets/{dataset_id}
+            Resource name.
+            Format: projects/{project}/datasets/{dataset_id}
         display_name (str):
             Human readable name, shown in the console UI.
 

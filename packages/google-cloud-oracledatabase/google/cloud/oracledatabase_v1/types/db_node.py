@@ -35,8 +35,8 @@ class DbNode(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the database node resource in the
-            following format:
+            Identifier. The name of the database node
+            resource in the following format:
             projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}/dbNodes/{db_node}
         properties (google.cloud.oracledatabase_v1.types.DbNodeProperties):
             Optional. Various properties of the database

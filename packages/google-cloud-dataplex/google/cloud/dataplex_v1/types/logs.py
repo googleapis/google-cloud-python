@@ -1218,17 +1218,18 @@ class DataQualityScanRuleResult(proto.Message):
         rule_dimension (str):
             The dimension of the data quality rule.
         threshold_percent (float):
-            The passing threshold ([0.0, 100.0]) of the data quality
-            rule.
+            The passing threshold ([0.0, 100.0]) of the data
+            quality rule.
         result (google.cloud.dataplex_v1.types.DataQualityScanRuleResult.Result):
             The result of the data quality rule.
         evaluated_row_count (int):
-            The number of rows evaluated against the data quality rule.
-            This field is only valid for rules of PER_ROW evaluation
-            type.
+            The number of rows evaluated against the data
+            quality rule. This field is only valid for rules
+            of PER_ROW evaluation type.
         passed_row_count (int):
-            The number of rows which passed a rule evaluation. This
-            field is only valid for rules of PER_ROW evaluation type.
+            The number of rows which passed a rule
+            evaluation. This field is only valid for rules
+            of PER_ROW evaluation type.
         null_row_count (int):
             The number of rows with null values in the
             specified column.

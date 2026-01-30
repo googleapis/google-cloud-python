@@ -807,9 +807,10 @@ class AutomaticImprovementsServiceClient(
 
         Returns:
             google.shopping.merchant_accounts_v1.types.AutomaticImprovements:
-                Collection of information related to the [automatic
-                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
-                   of an account.
+                Collection of information related to the
+                [automatic
+                improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
+                of an account.
 
         """
         # Create or coerce a protobuf request object.
@@ -939,9 +940,10 @@ class AutomaticImprovementsServiceClient(
 
         Returns:
             google.shopping.merchant_accounts_v1.types.AutomaticImprovements:
-                Collection of information related to the [automatic
-                   improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
-                   of an account.
+                Collection of information related to the
+                [automatic
+                improvements](https://developers.google.com/shopping-content/guides/automatic-improvements)
+                of an account.
 
         """
         # Create or coerce a protobuf request object.

@@ -88,13 +88,16 @@ class Fingerprint(proto.Message):
 class ImageNote(proto.Message):
     r"""Basis describes the base image portion (Note) of the DockerImage
     relationship. Linked occurrences are derived from this or an
-    equivalent image via: FROM <Basis.resource_url> Or an equivalent
-    reference, e.g., a tag of the resource_url.
+    equivalent image via:
+
+    FROM <Basis.resource_url>
+    Or an equivalent reference, e.g., a tag of the resource_url.
 
     Attributes:
         resource_url (str):
-            Required. Immutable. The resource_url for the resource
-            representing the basis of associated occurrence images.
+            Required. Immutable. The resource_url for the
+            resource representing the basis of associated
+            occurrence images.
         fingerprint (grafeas.grafeas_v1.types.Fingerprint):
             Required. Immutable. The fingerprint of the
             base image.
@@ -125,10 +128,11 @@ class ImageOccurrence(proto.Message):
             this image differs from the associated image
             basis.
         layer_info (MutableSequence[grafeas.grafeas_v1.types.Layer]):
-            This contains layer-specific metadata, if populated it has
-            length "distance" and is ordered with [distance] being the
-            layer immediately following the base image and [1] being the
-            final layer.
+            This contains layer-specific metadata, if
+            populated it has length "distance" and is
+            ordered with [distance] being the layer
+            immediately following the base image and [1]
+            being the final layer.
         base_resource_url (str):
             Output only. This contains the base image URL
             for the derived image occurrence.

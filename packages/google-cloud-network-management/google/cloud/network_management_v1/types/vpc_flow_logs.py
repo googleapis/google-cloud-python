@@ -191,7 +191,8 @@ class UpdateVpcFlowLogsConfigRequest(proto.Message):
             ``"state"``, and the ``vpc_flow_logs_config`` would be:
             ``vpc_flow_logs_config = { name = "projects/my-project/locations/global/vpcFlowLogsConfigs/my-config" state = "ENABLED" }``
         vpc_flow_logs_config (google.cloud.network_management_v1.types.VpcFlowLogsConfig):
-            Required. Only fields specified in update_mask are updated.
+            Required. Only fields specified in update_mask
+            are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

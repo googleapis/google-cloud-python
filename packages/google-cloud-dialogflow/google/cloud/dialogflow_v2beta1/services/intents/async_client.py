@@ -354,11 +354,12 @@ class IntentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (:class:`str`):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -494,11 +495,12 @@ class IntentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (:class:`str`):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -513,17 +515,20 @@ class IntentsAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2beta1.types.Intent:
-                An intent categorizes an end-user's intention for one conversation turn. For
-                   each agent, you define many intents, where your
-                   combined intents can handle a complete conversation.
-                   When an end-user writes or says something, referred
-                   to as an end-user expression or end-user input,
-                   Dialogflow matches the end-user input to the best
-                   intent in your agent. Matching an intent is also
-                   known as intent classification.
+                An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                   For more information, see the [intent
-                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -590,9 +595,9 @@ class IntentsAsyncClient:
     ) -> gcd_intent.Intent:
         r"""Creates an intent in the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -644,11 +649,12 @@ class IntentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (:class:`str`):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -663,17 +669,20 @@ class IntentsAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2beta1.types.Intent:
-                An intent categorizes an end-user's intention for one conversation turn. For
-                   each agent, you define many intents, where your
-                   combined intents can handle a complete conversation.
-                   When an end-user writes or says something, referred
-                   to as an end-user expression or end-user input,
-                   Dialogflow matches the end-user input to the best
-                   intent in your agent. Matching an intent is also
-                   known as intent classification.
+                An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                   For more information, see the [intent
-                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -742,9 +751,9 @@ class IntentsAsyncClient:
     ) -> gcd_intent.Intent:
         r"""Updates the specified intent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -792,11 +801,12 @@ class IntentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (:class:`str`):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -811,17 +821,20 @@ class IntentsAsyncClient:
 
         Returns:
             google.cloud.dialogflow_v2beta1.types.Intent:
-                An intent categorizes an end-user's intention for one conversation turn. For
-                   each agent, you define many intents, where your
-                   combined intents can handle a complete conversation.
-                   When an end-user writes or says something, referred
-                   to as an end-user expression or end-user input,
-                   Dialogflow matches the end-user input to the best
-                   intent in your agent. Matching an intent is also
-                   known as intent classification.
+                An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                   For more information, see the [intent
-                   guide](https://cloud.google.com/dialogflow/docs/intents-overview).
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
         """
         # Create or coerce a protobuf request object.
@@ -888,12 +901,11 @@ class IntentsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the specified intent and its direct or indirect followup
-        intents.
-
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        r"""Deletes the specified intent and its direct or indirect
+        followup intents.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 

@@ -836,11 +836,14 @@ class HostProjectRegistrationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             host_project_registration_id (str):
-                Required. The ID to use for the Host Project
-                Registration, which will become the final component of
-                the host project registration's resource name. The ID
-                must be the same as the Google cloud project specified
-                in the host_project_registration.gcp_project field.
+                Required. The ID to use for the Host
+                Project Registration, which will become
+                the final component of the host project
+                registration's resource name. The ID
+                must be the same as the Google cloud
+                project specified in the
+                host_project_registration.gcp_project
+                field.
 
                 This corresponds to the ``host_project_registration_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -978,7 +981,8 @@ class HostProjectRegistrationServiceClient(
                 [GetHostProjectRegistration][google.cloud.apihub.v1.HostProjectRegistrationService.GetHostProjectRegistration]
                 method's request.
             name (str):
-                Required. Host project registration resource name.
+                Required. Host project registration
+                resource name.
                 projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration_id}
 
                 This corresponds to the ``name`` field

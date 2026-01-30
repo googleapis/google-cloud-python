@@ -72,8 +72,8 @@ _LOGGER = std_logging.getLogger(__name__)
 class SessionsAsyncClient:
     """A service used for session interactions.
 
-    For more information, see the `API interactions
-    guide <https://cloud.google.com/dialogflow/docs/api-overview>`__.
+    For more information, see the [API interactions
+    guide](https://cloud.google.com/dialogflow/docs/api-overview).
     """
 
     _client: SessionsClient

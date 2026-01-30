@@ -207,8 +207,8 @@ class BusinessIdentityServiceRestStub:
 class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTransport):
     """REST backend synchronous transport for BusinessIdentityService.
 
-    Service to support `business
-    identity <https://support.google.com/merchants/answer/12564247>`__
+    Service to support [business
+    identity](https://support.google.com/merchants/answer/12564247)
     API.
 
     This class defines the same methods as the primary client, so the
@@ -338,8 +338,9 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             Returns:
                 ~.businessidentity.BusinessIdentity:
-                    Collection of information related to the `identity of a
-                business <https://support.google.com/merchants/answer/12564247>`__.
+                    Collection of information related to the
+                [identity of a
+                business](https://support.google.com/merchants/answer/12564247).
 
             """
 
@@ -493,8 +494,9 @@ class BusinessIdentityServiceRestTransport(_BaseBusinessIdentityServiceRestTrans
 
             Returns:
                 ~.businessidentity.BusinessIdentity:
-                    Collection of information related to the `identity of a
-                business <https://support.google.com/merchants/answer/12564247>`__.
+                    Collection of information related to the
+                [identity of a
+                business](https://support.google.com/merchants/answer/12564247).
 
             """
 

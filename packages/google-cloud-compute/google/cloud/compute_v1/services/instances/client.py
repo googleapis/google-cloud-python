@@ -1109,9 +1109,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (str):
-                The instance name for this request stored as
-                resource_id. Name should conform to RFC1035 or be an
-                unsigned long integer.
+                The instance name for this request
+                stored as resource_id. Name should
+                conform to RFC1035 or be an unsigned
+                long integer.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1256,9 +1257,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (str):
-                The instance name for this request stored as
-                resource_id. Name should conform to RFC1035 or be an
-                unsigned long integer.
+                The instance name for this request
+                stored as resource_id. Name should
+                conform to RFC1035 or be an unsigned
+                long integer.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3143,9 +3145,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (str):
-                The instance name for this request stored as
-                resource_id. Name should conform to RFC1035 or be an
-                unsigned long integer.
+                The instance name for this request
+                stored as resource_id. Name should
+                conform to RFC1035 or be an unsigned
+                long integer.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3299,9 +3302,10 @@ class InstancesClient(metaclass=InstancesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             instance (str):
-                The instance name for this request stored as
-                resource_id. Name should conform to RFC1035 or be an
-                unsigned long integer.
+                The instance name for this request
+                stored as resource_id. Name should
+                conform to RFC1035 or be an unsigned
+                long integer.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this

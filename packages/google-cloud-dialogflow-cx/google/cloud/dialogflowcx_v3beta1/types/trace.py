@@ -997,9 +997,10 @@ class NamedMetric(proto.Message):
         value (google.protobuf.struct_pb2.Value):
             The value of the metric.
         unit (str):
-            The unit in which this metric is reported. Follows `The
-            Unified Code for Units of
-            Measure <https://unitsofmeasure.org/ucum.html>`__ standard.
+            The unit in which this metric is reported.
+            Follows [The Unified Code for Units of
+            Measure](https://unitsofmeasure.org/ucum.html)
+            standard.
     """
 
     name: str = proto.Field(

@@ -48,20 +48,20 @@ class CatalogItem(proto.Message):
             when logging user events in order for the user
             events to be joined with the Catalog.
         category_hierarchies (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
-            Required. Catalog item categories. This field is repeated
-            for supporting one catalog item belonging to several
-            parallel category hierarchies.
+            Required. Catalog item categories. This field is
+            repeated for supporting one catalog item
+            belonging to several parallel category
+            hierarchies.
 
-            For example, if a shoes product belongs to both ["Shoes &
-            Accessories" -> "Shoes"] and ["Sports & Fitness" ->
-            "Athletic Clothing" -> "Shoes"], it could be represented as:
+            For example, if a shoes product belongs to both
+            ["Shoes & Accessories" -> "Shoes"] and
+            ["Sports & Fitness" -> "Athletic Clothing" ->
+            "Shoes"], it could be represented as:
 
-            ::
-
-                 "categoryHierarchies": [
-                   { "categories": ["Shoes & Accessories", "Shoes"]},
-                   { "categories": ["Sports & Fitness", "Athletic Clothing", "Shoes"] }
-                 ]
+            "categoryHierarchies": [
+            { "categories": ["Shoes & Accessories",
+            "Shoes"]}, { "categories": ["Sports & Fitness",
+            "Athletic Clothing", "Shoes"] } ]
         title (str):
             Required. Catalog item title. UTF-8 encoded
             string with a length limit of 1 KiB.
@@ -77,12 +77,14 @@ class CatalogItem(proto.Message):
             signals for recommendation model, thus we highly
             recommend providing the item attributes here.
         language_code (str):
-            Optional. Language of the title/description/item_attributes.
-            Use language tags defined by BCP 47.
-            https://www.rfc-editor.org/rfc/bcp/bcp47.txt. Our supported
-            language codes include 'en', 'es', 'fr', 'de', 'ar', 'fa',
-            'zh', 'ja', 'ko', 'sv', 'ro', 'nl'. For other languages,
-            contact your Google account manager.
+            Optional. Language of the
+            title/description/item_attributes. Use language
+            tags defined by BCP 47.
+            https://www.rfc-editor.org/rfc/bcp/bcp47.txt.
+            Our supported language codes include 'en', 'es',
+            'fr', 'de', 'ar', 'fa', 'zh', 'ja', 'ko', 'sv',
+            'ro', 'nl'. For other languages, contact your
+            Google account manager.
         tags (MutableSequence[str]):
             Optional. Filtering tags associated with the
             catalog item. Each tag should be a UTF-8 encoded
@@ -92,11 +94,13 @@ class CatalogItem(proto.Message):
             recommendation results by passing the tag as
             part of the predict request filter.
         item_group_id (str):
-            Optional. Variant group identifier for prediction results.
-            UTF-8 encoded string with a length limit of 128 bytes.
+            Optional. Variant group identifier for
+            prediction results. UTF-8 encoded string with a
+            length limit of 128 bytes.
 
-            This field must be enabled before it can be used. `Learn
-            more </recommendations-ai/docs/catalog#item-group-id>`__.
+            This field must be enabled before it can be
+            used. [Learn
+            more](/recommendations-ai/docs/catalog#item-group-id).
         product_metadata (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem):
             Optional. Metadata specific to retail
             products.

@@ -108,8 +108,8 @@ class RedemptionChannel(proto.Enum):
 
 
 class CouponValueType(proto.Enum):
-    r"""`Coupon value
-    type <https://support.google.com/merchants/answer/13861986>`__ of a
+    r"""[Coupon value
+    type](https://support.google.com/merchants/answer/13861986) of a
     promotion.
 
     Values:
@@ -172,9 +172,9 @@ class Attributes(proto.Message):
 
     Attributes:
         product_applicability (google.shopping.merchant_promotions_v1.types.ProductApplicability):
-            Required. Applicability of the promotion to either all
-            products or `only specific
-            products <https://support.google.com/merchants/answer/6396257?ref_topic=6396150&sjid=17642868584668136159-NC>`__.
+            Required. Applicability of the promotion to
+            either all products or [only specific
+            products](https://support.google.com/merchants/answer/6396257?ref_topic=6396150&sjid=17642868584668136159-NC).
         offer_type (google.shopping.merchant_promotions_v1.types.OfferType):
             Required.
             `Type <https://support.google.com/merchants/answer/13837405?ref_topic=13773355&sjid=17642868584668136159-NC>`__
@@ -185,8 +185,8 @@ class Attributes(proto.Message):
             used with the ``offerType`` field and must meet the `minimum
             requirements <https://support.google.com/merchants/answer/13837405?ref_topic=13773355&sjid=17642868584668136159-NC>`__.
         long_title (str):
-            Required. `Long
-            title <https://support.google.com/merchants/answer/13838102?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Required. [Long
+            title](https://support.google.com/merchants/answer/13838102?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         coupon_value_type (google.shopping.merchant_promotions_v1.types.CouponValueType):
             Required. The [coupon value type]
@@ -264,42 +264,42 @@ class Attributes(proto.Message):
             applicability ``product_applicability`` attribute is set to
             `specific_products <https://support.google.com/merchants/answer/13837299?ref_topic=13773355&sjid=17642868584668136159-NC>`__.
         minimum_purchase_amount (google.shopping.type.types.Price):
-            Optional. `Minimum purchase
-            amount <https://support.google.com/merchants/answer/13837705?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. [Minimum purchase
+            amount](https://support.google.com/merchants/answer/13837705?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         minimum_purchase_quantity (int):
 
         limit_quantity (int):
-            Optional. `Maximum purchase
-            quantity <https://support.google.com/merchants/answer/13861564?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. [Maximum purchase
+            quantity](https://support.google.com/merchants/answer/13861564?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         limit_value (google.shopping.type.types.Price):
-            Optional. `Maximum product
-            price <https://support.google.com/merchants/answer/2906014>`__
+            Optional. [Maximum product
+            price](https://support.google.com/merchants/answer/2906014)
             for promotion.
         percent_off (int):
-            Optional. The `percentage
-            discount <https://support.google.com/merchants/answer/13837404?sjid=17642868584668136159-NC>`__
+            Optional. The [percentage
+            discount](https://support.google.com/merchants/answer/13837404?sjid=17642868584668136159-NC)
             offered in the promotion.
         money_off_amount (google.shopping.type.types.Price):
-            Optional. The `money off
-            amount <https://support.google.com/merchants/answer/13838101?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. The [money off
+            amount](https://support.google.com/merchants/answer/13838101?ref_topic=13773355&sjid=17642868584668136159-NC)
             offered in the promotion.
         get_this_quantity_discounted (int):
             Optional. The number of items discounted in the promotion.
             The attribute is set when ``couponValueType`` is equal to
             ``buy_m_get_n_money_off`` or ``buy_m_get_n_percent_off``.
         free_gift_value (google.shopping.type.types.Price):
-            Optional. `Free gift
-            value <https://support.google.com/merchants/answer/13844477?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. [Free gift
+            value](https://support.google.com/merchants/answer/13844477?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         free_gift_description (str):
-            Optional. `Free gift
-            description <https://support.google.com/merchants/answer/13847245?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. [Free gift
+            description](https://support.google.com/merchants/answer/13847245?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         free_gift_item_id (str):
-            Optional. `Free gift item
-            ID <https://support.google.com/merchants/answer/13857152?ref_topic=13773355&sjid=17642868584668136159-NC>`__
+            Optional. [Free gift item
+            ID](https://support.google.com/merchants/answer/13857152?ref_topic=13773355&sjid=17642868584668136159-NC)
             for the promotion.
         promotion_effective_time_period (google.type.interval_pb2.Interval):
             Required. ``TimePeriod`` representation of the promotion's

@@ -375,8 +375,8 @@ class VpcAccessServiceGrpcTransport(VpcAccessServiceTransport):
     ) -> Callable[[vpc_access.GetConnectorRequest], vpc_access.Connector]:
         r"""Return a callable for the get connector method over gRPC.
 
-        Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
-        resource does not exist.
+        Gets a Serverless VPC Access connector. Returns
+        NOT_FOUND if the resource does not exist.
 
         Returns:
             Callable[[~.GetConnectorRequest],
@@ -430,8 +430,8 @@ class VpcAccessServiceGrpcTransport(VpcAccessServiceTransport):
     ) -> Callable[[vpc_access.DeleteConnectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete connector method over gRPC.
 
-        Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
-        the resource does not exist.
+        Deletes a Serverless VPC Access connector. Returns
+        NOT_FOUND if the resource does not exist.
 
         Returns:
             Callable[[~.DeleteConnectorRequest],

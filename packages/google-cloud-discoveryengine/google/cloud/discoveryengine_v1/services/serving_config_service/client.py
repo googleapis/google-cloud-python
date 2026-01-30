@@ -757,7 +757,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
     ) -> gcd_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         .. code-block:: python
 

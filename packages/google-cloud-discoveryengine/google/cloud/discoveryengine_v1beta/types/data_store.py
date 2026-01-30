@@ -51,9 +51,9 @@ class DataStore(proto.Message):
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         industry_vertical (google.cloud.discoveryengine_v1beta.types.IndustryVertical):
             Immutable. The industry vertical that the
             data store registers.

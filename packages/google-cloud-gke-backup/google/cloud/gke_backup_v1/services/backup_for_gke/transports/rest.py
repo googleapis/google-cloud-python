@@ -4648,10 +4648,13 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             Returns:
                 ~.backup_channel.BackupChannel:
-                    A BackupChannel imposes constraints on where clusters
-                can be backed up. The BackupChannel should be in the
-                same project and region as the cluster being backed up.
-                The backup can be created only in destination_project.
+                    A BackupChannel imposes constraints on
+                where clusters can be backed up. The
+                BackupChannel should be in the same
+                project and region as the cluster being
+                backed up.
+                The backup can be created only in
+                destination_project.
 
             """
 

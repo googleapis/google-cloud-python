@@ -1048,17 +1048,20 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             Returns:
                 ~.gcd_intent.Intent:
-                    An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+                    An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
             """
 
@@ -1320,17 +1323,20 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             Returns:
                 ~.intent.Intent:
-                    An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+                    An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
             """
 
@@ -1626,17 +1632,20 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             Returns:
                 ~.gcd_intent.Intent:
-                    An intent categorizes an end-user's intention for one
-                conversation turn. For each agent, you define many
-                intents, where your combined intents can handle a
-                complete conversation. When an end-user writes or says
-                something, referred to as an end-user expression or
-                end-user input, Dialogflow matches the end-user input to
-                the best intent in your agent. Matching an intent is
-                also known as intent classification.
+                    An intent categorizes an end-user's
+                intention for one conversation turn. For
+                each agent, you define many intents,
+                where your combined intents can handle a
+                complete conversation. When an end-user
+                writes or says something, referred to as
+                an end-user expression or end-user
+                input, Dialogflow matches the end-user
+                input to the best intent in your agent.
+                Matching an intent is also known as
+                intent classification.
 
-                For more information, see the `intent
-                guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
+                For more information, see the [intent
+                guide](https://cloud.google.com/dialogflow/docs/intents-overview).
 
             """
 

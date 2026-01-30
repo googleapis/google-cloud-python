@@ -321,21 +321,24 @@ class LabelDetectionConfig(proto.Message):
             Supported values: "builtin/stable" (the default
             if unset) and "builtin/latest".
         frame_confidence_threshold (float):
-            The confidence threshold we perform filtering on the labels
-            from frame-level detection. If not set, it is set to 0.4 by
-            default. The valid range for this threshold is [0.1, 0.9].
-            Any value set outside of this range will be clipped. Note:
-            For best results, follow the default threshold. We will
-            update the default threshold everytime when we release a new
-            model.
+            The confidence threshold we perform filtering on
+            the labels from frame-level detection. If not
+            set, it is set to 0.4 by default. The valid
+            range for this threshold is [0.1, 0.9]. Any
+            value set outside of this range will be clipped.
+            Note: For best results, follow the default
+            threshold. We will update the default threshold
+            everytime when we release a new model.
         video_confidence_threshold (float):
-            The confidence threshold we perform filtering on the labels
-            from video-level and shot-level detections. If not set, it's
-            set to 0.3 by default. The valid range for this threshold is
-            [0.1, 0.9]. Any value set outside of this range will be
-            clipped. Note: For best results, follow the default
-            threshold. We will update the default threshold everytime
-            when we release a new model.
+            The confidence threshold we perform filtering on
+            the labels from video-level and shot-level
+            detections. If not set, it's set to 0.3 by
+            default. The valid range for this threshold is
+            [0.1, 0.9]. Any value set outside of this range
+            will be clipped.
+            Note: For best results, follow the default
+            threshold. We will update the default threshold
+            everytime when we release a new model.
     """
 
     label_detection_mode: "LabelDetectionMode" = proto.Field(
@@ -405,9 +408,10 @@ class FaceDetectionConfig(proto.Message):
             Whether bounding boxes are included in the
             face annotation output.
         include_attributes (bool):
-            Whether to enable face attributes detection, such as
-            glasses, dark_glasses, mouth_open etc. Ignored if
-            'include_bounding_boxes' is set to false.
+            Whether to enable face attributes detection,
+            such as glasses, dark_glasses, mouth_open etc.
+            Ignored if 'include_bounding_boxes' is set to
+            false.
     """
 
     model: str = proto.Field(
@@ -432,13 +436,16 @@ class PersonDetectionConfig(proto.Message):
             Whether bounding boxes are included in the
             person detection annotation output.
         include_pose_landmarks (bool):
-            Whether to enable pose landmarks detection. Ignored if
-            'include_bounding_boxes' is set to false.
+            Whether to enable pose landmarks detection.
+            Ignored if 'include_bounding_boxes' is set to
+            false.
         include_attributes (bool):
-            Whether to enable person attributes detection, such as cloth
-            color (black, blue, etc), type (coat, dress, etc), pattern
-            (plain, floral, etc), hair, etc. Ignored if
-            'include_bounding_boxes' is set to false.
+            Whether to enable person attributes detection,
+            such as cloth color (black, blue, etc), type
+            (coat, dress, etc), pattern (plain, floral,
+            etc), hair, etc.
+            Ignored if 'include_bounding_boxes' is set to
+            false.
     """
 
     include_bounding_boxes: bool = proto.Field(
@@ -533,7 +540,8 @@ class LabelSegment(proto.Message):
         segment (google.cloud.videointelligence_v1.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     segment: "VideoSegment" = proto.Field(
@@ -556,7 +564,8 @@ class LabelFrame(proto.Message):
             video, corresponding to the video frame for this
             location.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     time_offset: duration_pb2.Duration = proto.Field(
@@ -575,9 +584,9 @@ class Entity(proto.Message):
 
     Attributes:
         entity_id (str):
-            Opaque entity ID. Some IDs may be available in `Google
-            Knowledge Graph Search
-            API <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in
+            [Google Knowledge Graph Search
+            API](https://developers.google.com/knowledge-graph/).
         description (str):
             Textual description, e.g., ``Fixed-gear bicycle``.
         language_code (str):
@@ -693,8 +702,9 @@ class ExplicitContentAnnotation(proto.Message):
 
 
 class NormalizedBoundingBox(proto.Message):
-    r"""Normalized bounding box. The normalized vertex coordinates are
-    relative to the original image. Range: [0, 1].
+    r"""Normalized bounding box.
+    The normalized vertex coordinates are relative to the original
+    image. Range: [0, 1].
 
     Attributes:
         left (float):
@@ -847,8 +857,9 @@ class FaceAnnotation(proto.Message):
 
 
 class TimestampedObject(proto.Message):
-    r"""For tracking related features. An object at time_offset with
-    attributes, and located with normalized_bounding_box.
+    r"""For tracking related features.
+    An object at time_offset with attributes, and located with
+    normalized_bounding_box.
 
     Attributes:
         normalized_bounding_box (google.cloud.videointelligence_v1.types.NormalizedBoundingBox):
@@ -931,8 +942,9 @@ class DetectedAttribute(proto.Message):
     Attributes:
         name (str):
             The name of the attribute, for example, glasses,
-            dark_glasses, mouth_open. A full list of supported type
-            names will be provided in the document.
+            dark_glasses, mouth_open. A full list of
+            supported type names will be provided in the
+            document.
         confidence (float):
             Detected attribute confidence. Range [0, 1].
         value (str):
@@ -961,15 +973,16 @@ class DetectedLandmark(proto.Message):
 
     Attributes:
         name (str):
-            The name of this landmark, for example, left_hand,
-            right_shoulder.
+            The name of this landmark, for example,
+            left_hand, right_shoulder.
         point (google.cloud.videointelligence_v1.types.NormalizedVertex):
             The 2D point of the detected landmark using
             the normalized image coordindate system. The
             normalized coordinates have the range from 0 to
             1.
         confidence (float):
-            The confidence score of the detected landmark. Range [0, 1].
+            The confidence score of the detected landmark.
+            Range [0, 1].
     """
 
     name: str = proto.Field(
@@ -1287,18 +1300,21 @@ class SpeechTranscriptionConfig(proto.Message):
             MKV, supporting multiple audio tracks, specify
             up to two tracks. Default: track 0.
         enable_speaker_diarization (bool):
-            Optional. If 'true', enables speaker detection for each
-            recognized word in the top alternative of the recognition
-            result using a speaker_tag provided in the WordInfo. Note:
-            When this is true, we send all the words from the beginning
-            of the audio for the top alternative in every consecutive
-            response. This is done in order to improve our speaker tags
-            as our models learn to identify the speakers in the
+            Optional. If 'true', enables speaker detection
+            for each recognized word in the top alternative
+            of the recognition result using a speaker_tag
+            provided in the WordInfo.
+            Note: When this is true, we send all the words
+            from the beginning of the audio for the top
+            alternative in every consecutive response. This
+            is done in order to improve our speaker tags as
+            our models learn to identify the speakers in the
             conversation over time.
         diarization_speaker_count (int):
-            Optional. If set, specifies the estimated number of speakers
-            in the conversation. If not set, defaults to '2'. Ignored
-            unless enable_speaker_diarization is set to true.
+            Optional. If set, specifies the estimated number
+            of speakers in the conversation. If not set,
+            defaults to '2'. Ignored unless
+            enable_speaker_diarization is set to true.
         enable_word_confidence (bool):
             Optional. If ``true``, the top result includes a list of
             words and the confidence for those words. If ``false``, no
@@ -1464,11 +1480,13 @@ class WordInfo(proto.Message):
             provided. The default of 0.0 is a sentinel value indicating
             ``confidence`` was not set.
         speaker_tag (int):
-            Output only. A distinct integer value is assigned for every
-            speaker within the audio. This field specifies which one of
-            those speakers was detected to have spoken this word. Value
-            ranges from 1 up to diarization_speaker_count, and is only
-            set if speaker diarization is enabled.
+            Output only. A distinct integer value is
+            assigned for every speaker within the audio.
+            This field specifies which one of those speakers
+            was detected to have spoken this word. Value
+            ranges from 1 up to diarization_speaker_count,
+            and is only set if speaker diarization is
+            enabled.
     """
 
     start_time: duration_pb2.Duration = proto.Field(
@@ -1518,17 +1536,26 @@ class NormalizedVertex(proto.Message):
 
 
 class NormalizedBoundingPoly(proto.Message):
-    r"""Normalized bounding polygon for text (that might not be aligned with
-    axis). Contains list of the corner points in clockwise order
-    starting from top-left corner. For example, for a rectangular
-    bounding box: When the text is horizontal it might look like: 0----1
-    \| \| 3----2
+    r"""Normalized bounding polygon for text (that might not be aligned
+    with axis). Contains list of the corner points in clockwise
+    order starting from top-left corner. For example, for a
+    rectangular bounding box:
 
-    When it's clockwise rotated 180 degrees around the top-left corner
-    it becomes: 2----3 \| \| 1----0
+    When the text is horizontal it might look like:
 
-    and the vertex order will still be (0, 1, 2, 3). Note that values
-    can be less than 0, or greater than 1 due to trignometric
+    0----1
+    \| \|
+    3----2
+
+    When it's clockwise rotated 180 degrees around the top-left
+    corner it becomes:
+
+    2----3
+    \| \|
+    1----0
+
+    and the vertex order will still be (0, 1, 2, 3). Note that
+    values can be less than 0, or greater than 1 due to trignometric
     calculations for location of the box.
 
     Attributes:
@@ -1673,12 +1700,15 @@ class ObjectTrackingAnnotation(proto.Message):
 
             This field is a member of `oneof`_ ``track_info``.
         track_id (int):
-            Streaming mode ONLY. In streaming mode, we do not know the
-            end time of a tracked object before it is completed. Hence,
-            there is no VideoSegment info returned. Instead, we provide
-            a unique identifiable integer track_id so that the customers
-            can correlate the results of the ongoing
-            ObjectTrackAnnotation of the same track_id over time.
+            Streaming mode ONLY.
+            In streaming mode, we do not know the end time
+            of a tracked object before it is completed.
+            Hence, there is no VideoSegment info returned.
+            Instead, we provide a unique identifiable
+            integer track_id so that the customers can
+            correlate the results of the ongoing
+            ObjectTrackAnnotation of the same track_id over
+            time.
 
             This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1.types.Entity):

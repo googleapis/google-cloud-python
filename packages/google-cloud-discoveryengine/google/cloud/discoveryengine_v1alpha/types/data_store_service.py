@@ -68,10 +68,12 @@ class CreateDataStoreRequest(proto.Message):
             with a length limit of 63 characters. Otherwise, an
             INVALID_ARGUMENT error is returned.
         create_advanced_site_search (bool):
-            A boolean flag indicating whether user want to directly
-            create an advanced data store for site search. If the data
-            store is not configured as site search (GENERIC vertical and
-            PUBLIC_WEBSITE content_config), this flag will be ignored.
+            A boolean flag indicating whether user want to
+            directly create an advanced data store for site
+            search. If the data store is not configured as
+            site
+            search (GENERIC vertical and PUBLIC_WEBSITE
+            content_config), this flag will be ignored.
         skip_default_schema_creation (bool):
             A boolean flag indicating whether to skip the default schema
             creation for the data store. Only enable this flag if you

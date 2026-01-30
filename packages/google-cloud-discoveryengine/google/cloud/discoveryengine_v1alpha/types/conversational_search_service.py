@@ -310,10 +310,12 @@ class ListConversationsRequest(proto.Message):
             A page token, received from a previous ``ListConversations``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The supported
-            features are: user_pseudo_id, state.
+            A filter to apply on the list results. The
+            supported features are: user_pseudo_id, state.
 
-            Example: "user_pseudo_id = some_id".
+            Example:
+
+            "user_pseudo_id = some_id".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for

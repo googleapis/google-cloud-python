@@ -337,8 +337,8 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             Returns:
                 ~.shippingsettings.ShippingSettings:
-                    The merchant account's `shipping
-                setting <https://support.google.com/merchants/answer/6069284>`__.
+                    The merchant account's [shipping
+                setting](https://support.google.com/merchants/answer/6069284).
 
             """
 
@@ -492,8 +492,8 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             Returns:
                 ~.shippingsettings.ShippingSettings:
-                    The merchant account's `shipping
-                setting <https://support.google.com/merchants/answer/6069284>`__.
+                    The merchant account's [shipping
+                setting](https://support.google.com/merchants/answer/6069284).
 
             """
 

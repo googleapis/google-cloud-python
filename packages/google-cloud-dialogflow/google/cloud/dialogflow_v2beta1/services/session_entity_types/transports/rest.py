@@ -609,16 +609,20 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
                 Returns:
                     ~.gcd_session_entity_type.SessionEntityType:
-                        A session represents a conversation between a Dialogflow
-                    agent and an end-user. You can create special entities,
-                    called session entities, during a session. Session
-                    entities can extend or replace custom entity types and
-                    only exist during the session that they were created
-                    for. All session data, including session entities, is
-                    stored by Dialogflow for 20 minutes.
+                        A session represents a conversation
+                    between a Dialogflow agent and an
+                    end-user. You can create special
+                    entities, called session entities,
+                    during a session. Session entities can
+                    extend or replace custom entity types
+                    and only exist during the session that
+                    they were created for. All session data,
+                    including session entities, is stored by
+                    Dialogflow for 20 minutes.
 
-                    For more information, see the `session entity
-                    guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                    For more information, see the [session
+                    entity
+                    guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
             """
 
@@ -889,16 +893,20 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
             Returns:
                 ~.session_entity_type.SessionEntityType:
-                    A session represents a conversation between a Dialogflow
-                agent and an end-user. You can create special entities,
-                called session entities, during a session. Session
-                entities can extend or replace custom entity types and
-                only exist during the session that they were created
-                for. All session data, including session entities, is
-                stored by Dialogflow for 20 minutes.
+                    A session represents a conversation
+                between a Dialogflow agent and an
+                end-user. You can create special
+                entities, called session entities,
+                during a session. Session entities can
+                extend or replace custom entity types
+                and only exist during the session that
+                they were created for. All session data,
+                including session entities, is stored by
+                Dialogflow for 20 minutes.
 
-                For more information, see the `session entity
-                guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                For more information, see the [session
+                entity
+                guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
             """
 
@@ -1209,16 +1217,20 @@ class SessionEntityTypesRestTransport(_BaseSessionEntityTypesRestTransport):
 
                 Returns:
                     ~.gcd_session_entity_type.SessionEntityType:
-                        A session represents a conversation between a Dialogflow
-                    agent and an end-user. You can create special entities,
-                    called session entities, during a session. Session
-                    entities can extend or replace custom entity types and
-                    only exist during the session that they were created
-                    for. All session data, including session entities, is
-                    stored by Dialogflow for 20 minutes.
+                        A session represents a conversation
+                    between a Dialogflow agent and an
+                    end-user. You can create special
+                    entities, called session entities,
+                    during a session. Session entities can
+                    extend or replace custom entity types
+                    and only exist during the session that
+                    they were created for. All session data,
+                    including session entities, is stored by
+                    Dialogflow for 20 minutes.
 
-                    For more information, see the `session entity
-                    guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
+                    For more information, see the [session
+                    entity
+                    guide](https://cloud.google.com/dialogflow/docs/entities-session).
 
             """
 

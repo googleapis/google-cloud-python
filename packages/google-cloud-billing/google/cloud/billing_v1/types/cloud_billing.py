@@ -302,8 +302,8 @@ class UpdateBillingAccountRequest(proto.Message):
             Required. The billing account resource to
             replace the resource on the server.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The update mask applied to the resource. Only "display_name"
-            is currently supported.
+            The update mask applied to the resource.
+            Only "display_name" is currently supported.
     """
 
     name: str = proto.Field(

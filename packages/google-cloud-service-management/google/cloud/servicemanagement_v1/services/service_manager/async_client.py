@@ -93,8 +93,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ServiceManagerAsyncClient:
-    """`Google Service Management
-    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
+    """[Google Service Management
+    API](https://cloud.google.com/service-infrastructure/docs/overview)
     """
 
     _client: ServiceManagerClient
@@ -2062,18 +2062,19 @@ class ServiceManagerAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
-        r"""Generates and returns a report (errors, warnings and changes
-        from existing configurations) associated with
+        r"""Generates and returns a report (errors, warnings and
+        changes from existing configurations) associated with
         GenerateConfigReportRequest.new_value
 
         If GenerateConfigReportRequest.old_value is specified,
-        GenerateConfigReportRequest will contain a single ChangeReport
-        based on the comparison between
+        GenerateConfigReportRequest will contain a single
+        ChangeReport based on the comparison between
         GenerateConfigReportRequest.new_value and
-        GenerateConfigReportRequest.old_value. If
-        GenerateConfigReportRequest.old_value is not specified, this
-        method will compare GenerateConfigReportRequest.new_value with
-        the last pushed service configuration.
+        GenerateConfigReportRequest.old_value.
+        If GenerateConfigReportRequest.old_value is not
+        specified, this method will compare
+        GenerateConfigReportRequest.new_value with the last
+        pushed service configuration.
 
         .. code-block:: python
 

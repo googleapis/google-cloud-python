@@ -154,17 +154,20 @@ class Finding(proto.Message):
             - ``folders/{folders_id}/sources/{source_id}/locations/{location_id}``
             - ``projects/{projects_id}/sources/{source_id}/locations/{location_id}``
         resource_name (str):
-            Immutable. For findings on Google Cloud resources, the full
-            resource name of the Google Cloud resource this finding is
-            for. See:
+            Immutable. For findings on Google Cloud
+            resources, the full resource name of the Google
+            Cloud resource this finding is for. See:
+
             https://cloud.google.com/apis/design/resource_names#full_resource_name
-            When the finding is for a non-Google Cloud resource, the
-            resourceName can be a customer or partner defined string.
+            When the finding is for a non-Google Cloud
+            resource, the resourceName can be a customer or
+            partner defined string.
         state (google.cloud.securitycenter_v2.types.Finding.State):
             Output only. The state of the finding.
         category (str):
-            Immutable. The additional taxonomy group within findings
-            from a given source. Example: "XSS_FLASH_INJECTION".
+            Immutable. The additional taxonomy group within
+            findings from a given source. Example:
+            "XSS_FLASH_INJECTION".
         external_uri (str):
             The URI that, if available, points to a web
             page outside of Security Command Center where
@@ -172,10 +175,11 @@ class Finding(proto.Message):
             found. This field is guaranteed to be either
             empty or a well formed URL.
         source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Source specific properties. These properties are managed by
-            the source that writes the finding. The key names in the
-            source_properties map must be between 1 and 255 characters,
-            and must start with a letter and contain alphanumeric
+            Source specific properties. These properties are
+            managed by the source that writes the finding.
+            The key names in the source_properties map must
+            be between 1 and 255 characters, and must start
+            with a letter and contain alphanumeric
             characters or underscores only.
         security_marks (google.cloud.securitycenter_v2.types.SecurityMarks):
             Output only. User specified security marks.
@@ -239,34 +243,35 @@ class Finding(proto.Message):
             Contains information about the IP connection
             associated with the finding.
         mute_initiator (str):
-            Records additional information about the mute operation, for
-            example, the `mute
-            configuration <https://cloud.google.com/security-command-center/docs/how-to-mute-findings>`__
-            that muted the finding and the user who muted the finding.
+            Records additional information about the mute
+            operation, for example, the [mute
+            configuration](https://cloud.google.com/security-command-center/docs/how-to-mute-findings)
+            that muted the finding and the user who muted
+            the finding.
         processes (MutableSequence[google.cloud.securitycenter_v2.types.Process]):
             Represents operating system processes
             associated with the Finding.
         contacts (MutableMapping[str, google.cloud.securitycenter_v2.types.ContactDetails]):
-            Output only. Map containing the points of contact for the
-            given finding. The key represents the type of contact, while
-            the value contains a list of all the contacts that pertain.
-            Please refer to:
+            Output only. Map containing the points of
+            contact for the given finding. The key
+            represents the type of contact, while the value
+            contains a list of all the contacts that
+            pertain. Please refer to:
+
             https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories
 
-            ::
-
-                {
-                  "security": {
-                    "contacts": [
-                      {
-                        "email": "person1@company.com"
-                      },
-                      {
-                        "email": "person2@company.com"
-                      }
-                    ]
-                  }
-                }
+            {
+            "security": {
+            "contacts": [
+            {
+            "email": "person1@company.com"
+            },
+            {
+            "email": "person2@company.com"
+            }
+            ]
+            }
+            }
         compliances (MutableSequence[google.cloud.securitycenter_v2.types.Compliance]):
             Contains compliance information for security
             standards associated to the finding.

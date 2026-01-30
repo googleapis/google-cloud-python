@@ -311,13 +311,14 @@ class NodePoolUpdateStrategy(proto.Enum):
         BLUE_GREEN (2):
             blue-green upgrade.
         SURGE (3):
-            SURGE is the traditional way of upgrading a node pool.
-            max_surge and max_unavailable determines the level of
-            upgrade parallelism.
+            SURGE is the traditional way of upgrading a node
+            pool. max_surge and max_unavailable determines
+            the level of upgrade parallelism.
         SHORT_LIVED (5):
-            SHORT_LIVED is the dedicated upgrade strategy for
-            QueuedProvisioning and flex start nodepools scaled up only
-            by enqueueing to the Dynamic Workload Scheduler (DWS).
+            SHORT_LIVED is the dedicated upgrade strategy
+            for QueuedProvisioning and flex start nodepools
+            scaled up only by enqueueing to the Dynamic
+            Workload Scheduler (DWS).
     """
     NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED = 0
     BLUE_GREEN = 2
@@ -337,9 +338,9 @@ class DatapathProvider(proto.Enum):
             Use the IPTables implementation based on
             kube-proxy.
         ADVANCED_DATAPATH (2):
-            Use the eBPF based GKE Dataplane V2 with additional
-            features. See the `GKE Dataplane V2
-            documentation <https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2>`__
+            Use the eBPF based GKE Dataplane V2 with
+            additional features. See the [GKE Dataplane V2
+            documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2)
             for more.
     """
     DATAPATH_PROVIDER_UNSPECIFIED = 0
@@ -413,50 +414,80 @@ class LinuxNodeConfig(proto.Message):
 
     Attributes:
         sysctls (MutableMapping[str, str]):
-            The Linux kernel parameters to be applied to the nodes and
-            all pods running on the nodes.
+            The Linux kernel parameters to be applied to the
+            nodes and all pods running on the nodes.
 
             The following parameters are supported.
 
-            net.core.busy_poll net.core.busy_read
-            net.core.netdev_max_backlog net.core.rmem_max
-            net.core.rmem_default net.core.wmem_default
-            net.core.wmem_max net.core.optmem_max net.core.somaxconn
-            net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
-            net.ipv4.tcp_mtu_probing net.ipv4.tcp_max_orphans
-            net.ipv4.tcp_max_tw_buckets net.ipv4.tcp_syn_retries
-            net.ipv4.tcp_ecn net.ipv4.tcp_congestion_control
+            net.core.busy_poll
+            net.core.busy_read
+            net.core.netdev_max_backlog
+            net.core.rmem_max
+            net.core.rmem_default
+            net.core.wmem_default
+            net.core.wmem_max
+            net.core.optmem_max
+            net.core.somaxconn
+            net.ipv4.tcp_rmem
+            net.ipv4.tcp_wmem
+            net.ipv4.tcp_tw_reuse
+            net.ipv4.tcp_mtu_probing
+            net.ipv4.tcp_max_orphans
+            net.ipv4.tcp_max_tw_buckets
+            net.ipv4.tcp_syn_retries
+            net.ipv4.tcp_ecn
+            net.ipv4.tcp_congestion_control
             net.netfilter.nf_conntrack_max
             net.netfilter.nf_conntrack_buckets
             net.netfilter.nf_conntrack_tcp_timeout_close_wait
             net.netfilter.nf_conntrack_tcp_timeout_time_wait
             net.netfilter.nf_conntrack_tcp_timeout_established
-            net.netfilter.nf_conntrack_acct kernel.shmmni kernel.shmmax
-            kernel.shmall kernel.perf_event_paranoid
-            kernel.sched_rt_runtime_us kernel.softlockup_panic
-            kernel.yama.ptrace_scope kernel.kptr_restrict
-            kernel.dmesg_restrict kernel.sysrq fs.aio-max-nr fs.file-max
-            fs.inotify.max_user_instances fs.inotify.max_user_watches
-            fs.nr_open vm.dirty_background_ratio
-            vm.dirty_background_bytes vm.dirty_expire_centisecs
-            vm.dirty_ratio vm.dirty_bytes vm.dirty_writeback_centisecs
-            vm.max_map_count vm.overcommit_memory vm.overcommit_ratio
-            vm.vfs_cache_pressure vm.swappiness
-            vm.watermark_scale_factor vm.min_free_kbytes
+            net.netfilter.nf_conntrack_acct
+            kernel.shmmni
+            kernel.shmmax
+            kernel.shmall
+            kernel.perf_event_paranoid
+            kernel.sched_rt_runtime_us
+            kernel.softlockup_panic
+            kernel.yama.ptrace_scope
+            kernel.kptr_restrict
+            kernel.dmesg_restrict
+            kernel.sysrq
+            fs.aio-max-nr
+            fs.file-max
+            fs.inotify.max_user_instances
+            fs.inotify.max_user_watches
+            fs.nr_open
+            vm.dirty_background_ratio
+            vm.dirty_background_bytes
+            vm.dirty_expire_centisecs
+            vm.dirty_ratio
+            vm.dirty_bytes
+            vm.dirty_writeback_centisecs
+            vm.max_map_count
+            vm.overcommit_memory
+            vm.overcommit_ratio
+            vm.vfs_cache_pressure
+            vm.swappiness
+            vm.watermark_scale_factor
+            vm.min_free_kbytes
         cgroup_mode (google.cloud.container_v1beta1.types.LinuxNodeConfig.CgroupMode):
-            cgroup_mode specifies the cgroup mode to be used on the
-            node.
+            cgroup_mode specifies the cgroup mode to be used
+            on the node.
         hugepages (google.cloud.container_v1beta1.types.LinuxNodeConfig.HugepagesConfig):
             Optional. Amounts for 2M and 1G hugepages
 
             This field is a member of `oneof`_ ``_hugepages``.
         transparent_hugepage_enabled (google.cloud.container_v1beta1.types.LinuxNodeConfig.TransparentHugepageEnabled):
-            Optional. Transparent hugepage support for anonymous memory
-            can be entirely disabled (mostly for debugging purposes) or
-            only enabled inside MADV_HUGEPAGE regions (to avoid the risk
-            of consuming more memory resources) or enabled system wide.
+            Optional. Transparent hugepage support for
+            anonymous memory can be entirely disabled
+            (mostly for debugging purposes) or only enabled
+            inside MADV_HUGEPAGE regions (to avoid the risk
+            of consuming more memory resources) or enabled
+            system wide.
 
-            See https://docs.kernel.org/admin-guide/mm/transhuge.html
+            See
+            https://docs.kernel.org/admin-guide/mm/transhuge.html
             for more details.
         transparent_hugepage_defrag (google.cloud.container_v1beta1.types.LinuxNodeConfig.TransparentHugepageDefrag):
             Optional. Defines the transparent hugepage
@@ -487,15 +518,15 @@ class LinuxNodeConfig(proto.Message):
 
         Values:
             CGROUP_MODE_UNSPECIFIED (0):
-                CGROUP_MODE_UNSPECIFIED is when unspecified cgroup
-                configuration is used. The default for the GKE node OS image
-                will be used.
+                CGROUP_MODE_UNSPECIFIED is when unspecified
+                cgroup configuration is used. The default for
+                the GKE node OS image will be used.
             CGROUP_MODE_V1 (1):
-                CGROUP_MODE_V1 specifies to use cgroupv1 for the cgroup
-                configuration on the node image.
+                CGROUP_MODE_V1 specifies to use cgroupv1 for the
+                cgroup configuration on the node image.
             CGROUP_MODE_V2 (2):
-                CGROUP_MODE_V2 specifies to use cgroupv2 for the cgroup
-                configuration on the node image.
+                CGROUP_MODE_V2 specifies to use cgroupv2 for the
+                cgroup configuration on the node image.
         """
         CGROUP_MODE_UNSPECIFIED = 0
         CGROUP_MODE_V1 = 1
@@ -512,9 +543,9 @@ class LinuxNodeConfig(proto.Message):
                 Transparent hugepage support for anonymous
                 memory is enabled system wide.
             TRANSPARENT_HUGEPAGE_ENABLED_MADVISE (2):
-                Transparent hugepage support for anonymous memory is enabled
-                inside MADV_HUGEPAGE regions. This is the default kernel
-                configuration.
+                Transparent hugepage support for anonymous
+                memory is enabled inside MADV_HUGEPAGE regions.
+                This is the default kernel configuration.
             TRANSPARENT_HUGEPAGE_ENABLED_NEVER (3):
                 Transparent hugepage support for anonymous
                 memory is disabled.
@@ -544,16 +575,18 @@ class LinuxNodeConfig(proto.Message):
                 responsibility of khugepaged to then install the
                 THP pages later.
             TRANSPARENT_HUGEPAGE_DEFRAG_DEFER_WITH_MADVISE (3):
-                It means that an application will enter direct reclaim and
-                compaction like always, but only for regions that have used
-                madvise(MADV_HUGEPAGE); all other regions will wake kswapd
-                in the background to reclaim pages and wake kcompactd to
-                compact memory so that THP is available in the near future.
+                It means that an application will enter direct
+                reclaim and compaction like always, but only for
+                regions that have used madvise(MADV_HUGEPAGE);
+                all other regions will wake kswapd in the
+                background to reclaim pages and wake kcompactd
+                to compact memory so that THP is available in
+                the near future.
             TRANSPARENT_HUGEPAGE_DEFRAG_MADVISE (4):
-                It means that an application will enter direct reclaim like
-                always but only for regions that are have used
-                madvise(MADV_HUGEPAGE). This is the default kernel
-                configuration.
+                It means that an application will enter direct
+                reclaim like always but only for regions that
+                are have used madvise(MADV_HUGEPAGE). This is
+                the default kernel configuration.
             TRANSPARENT_HUGEPAGE_DEFRAG_NEVER (5):
                 It means that an application will never enter
                 direct reclaim or compaction.
@@ -925,13 +958,14 @@ class NodeKubeletConfig(proto.Message):
 
             The default value is 'true' if unspecified.
         cpu_cfs_quota_period (str):
-            Set the CPU CFS quota period value 'cpu.cfs_period_us'.
-
-            The string must be a sequence of decimal numbers, each with
-            optional fraction and a unit suffix, such as "300ms". Valid
-            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
-            The value must be a positive duration between 1ms and 1
-            second, inclusive.
+            Set the CPU CFS quota period value
+            'cpu.cfs_period_us'.
+            The string must be a sequence of decimal
+            numbers, each with optional fraction and a unit
+            suffix, such as "300ms".
+            Valid time units are "ns", "us" (or "µs"), "ms",
+            "s", "m", "h". The value must be a positive
+            duration between 1ms and 1 second, inclusive.
         pod_pids_limit (int):
             Set the Pod PID limits. See
             https://kubernetes.io/docs/concepts/policy/pid-limiting/#pod-pid-limits
@@ -944,22 +978,25 @@ class NodeKubeletConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_insecure_kubelet_readonly_port_enabled``.
         image_gc_low_threshold_percent (int):
-            Optional. Defines the percent of disk usage before which
-            image garbage collection is never run. Lowest disk usage to
-            garbage collect to. The percent is calculated as this field
-            value out of 100.
+            Optional. Defines the percent of disk usage
+            before which image garbage collection is never
+            run. Lowest disk usage to garbage collect to.
+            The percent is calculated as this field value
+            out of 100.
 
-            The value must be between 10 and 85, inclusive and smaller
-            than image_gc_high_threshold_percent.
+            The value must be between 10 and 85, inclusive
+            and smaller than
+            image_gc_high_threshold_percent.
 
             The default value is 80 if unspecified.
         image_gc_high_threshold_percent (int):
-            Optional. Defines the percent of disk usage after which
-            image garbage collection is always run. The percent is
-            calculated as this field value out of 100.
+            Optional. Defines the percent of disk usage
+            after which image garbage collection is always
+            run. The percent is calculated as this field
+            value out of 100.
 
-            The value must be between 10 and 85, inclusive and greater
-            than image_gc_low_threshold_percent.
+            The value must be between 10 and 85, inclusive
+            and greater than image_gc_low_threshold_percent.
 
             The default value is 85 if unspecified.
         image_minimum_gc_age (str):
@@ -977,18 +1014,21 @@ class NodeKubeletConfig(proto.Message):
 
             The default value is "2m0s" if unspecified.
         image_maximum_gc_age (str):
-            Optional. Defines the maximum age an image can be unused
-            before it is garbage collected. The string must be a
-            sequence of decimal numbers, each with optional fraction and
-            a unit suffix, such as "300s", "1.5h", and "2h45m". Valid
-            time units are "ns", "us" (or "µs"), "ms", "s", "m", "h".
+            Optional. Defines the maximum age an image can
+            be unused before it is garbage collected. The
+            string must be a sequence of decimal numbers,
+            each with optional fraction and a unit suffix,
+            such as "300s", "1.5h", and "2h45m". Valid time
+            units are "ns", "us" (or "µs"), "ms", "s", "m",
+            "h".
 
-            The value must be a positive duration greater than
-            image_minimum_gc_age or "0s".
+            The value must be a positive duration greater
+            than image_minimum_gc_age or "0s".
 
-            The default value is "0s" if unspecified, which disables
-            this field, meaning images won't be garbage collected based
-            on being unused for too long.
+            The default value is "0s" if unspecified, which
+            disables this field, meaning images won't be
+            garbage collected based on being unused for too
+            long.
         container_log_max_size (str):
             Optional. Defines the maximum size of the container log file
             before it is rotated. See
@@ -1030,28 +1070,32 @@ class NodeKubeletConfig(proto.Message):
             https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
             for more details.
         eviction_soft (google.cloud.container_v1beta1.types.EvictionSignals):
-            Optional. eviction_soft is a map of signal names to
-            quantities that defines soft eviction thresholds. Each
-            signal is compared to its corresponding threshold to
-            determine if a pod eviction should occur.
+            Optional. eviction_soft is a map of signal names
+            to quantities that defines soft eviction
+            thresholds. Each signal is compared to its
+            corresponding threshold to determine if a pod
+            eviction should occur.
         eviction_soft_grace_period (google.cloud.container_v1beta1.types.EvictionGracePeriod):
-            Optional. eviction_soft_grace_period is a map of signal
-            names to quantities that defines grace periods for each soft
-            eviction signal. The grace period is the amount of time that
-            a pod must be under pressure before an eviction occurs.
+            Optional. eviction_soft_grace_period is a map of
+            signal names to quantities that defines grace
+            periods for each soft eviction signal. The grace
+            period is the amount of time that a pod must be
+            under pressure before an eviction occurs.
         eviction_minimum_reclaim (google.cloud.container_v1beta1.types.EvictionMinimumReclaim):
-            Optional. eviction_minimum_reclaim is a map of signal names
-            to quantities that defines minimum reclaims, which describe
-            the minimum amount of a given resource the kubelet will
-            reclaim when performing a pod eviction while that resource
-            is under pressure.
+            Optional. eviction_minimum_reclaim is a map of
+            signal names to quantities that defines minimum
+            reclaims, which describe the minimum amount of a
+            given resource the kubelet will reclaim when
+            performing a pod eviction while that resource is
+            under pressure.
         eviction_max_pod_grace_period_seconds (int):
-            Optional. eviction_max_pod_grace_period_seconds is the
-            maximum allowed grace period (in seconds) to use when
-            terminating pods in response to a soft eviction threshold
-            being met. This value effectively caps the Pod's
-            terminationGracePeriodSeconds value during soft evictions.
-            Default: 0. Range: [0, 300].
+            Optional. eviction_max_pod_grace_period_seconds
+            is the maximum allowed grace period (in seconds)
+            to use when terminating pods in response to a
+            soft eviction threshold being met. This value
+            effectively caps the Pod's
+            terminationGracePeriodSeconds value during soft
+            evictions. Default: 0. Range: [0, 300].
         max_parallel_image_pulls (int):
             Optional. Defines the maximum number of image
             pulls in parallel. The range is 2 to 5,
@@ -1071,23 +1115,27 @@ class NodeKubeletConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_single_process_oom_kill``.
         shutdown_grace_period_seconds (int):
-            Optional. shutdown_grace_period_seconds is the maximum
-            allowed grace period (in seconds) the total duration that
-            the node should delay the shutdown during a graceful
-            shutdown. This is the total grace period for pod termination
-            for both regular and critical pods.
+            Optional. shutdown_grace_period_seconds is the
+            maximum allowed grace period (in seconds) the
+            total duration that the node should delay the
+            shutdown during a graceful shutdown. This is the
+            total grace period for pod termination for both
+            regular and critical pods.
             https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
-            If set to 0, node will not enable the graceful node shutdown
-            functionality. This field is only valid for Spot VMs.
+            If set to 0, node will not enable the graceful
+            node shutdown functionality. This field is only
+            valid for Spot VMs.
             Allowed values: 0, 30, 120.
 
             This field is a member of `oneof`_ ``_shutdown_grace_period_seconds``.
         shutdown_grace_period_critical_pods_seconds (int):
-            Optional. shutdown_grace_period_critical_pod_seconds is the
-            maximum allowed grace period (in seconds) used to terminate
-            critical pods during a node shutdown. This value should be
-            <= shutdown_grace_period_seconds, and is only valid if
-            shutdown_grace_period_seconds is set.
+            Optional.
+            shutdown_grace_period_critical_pod_seconds is
+            the maximum allowed grace period (in seconds)
+            used to terminate critical pods during a node
+            shutdown. This value should be <=
+            shutdown_grace_period_seconds, and is only valid
+            if shutdown_grace_period_seconds is set.
             https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
             Range: [0, 120].
 
@@ -1622,14 +1670,14 @@ class NodeConfig(proto.Message):
         sandbox_config (google.cloud.container_v1beta1.types.SandboxConfig):
             Sandbox configuration for this node.
         node_group (str):
-            Setting this field will assign instances of this pool to run
-            on the specified node group. This is useful for running
-            workloads on `sole tenant
-            nodes <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes>`__.
+            Setting this field will assign instances of this
+            pool to run on the specified node group. This is
+            useful for running workloads on [sole tenant
+            nodes](https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes).
         reservation_affinity (google.cloud.container_v1beta1.types.ReservationAffinity):
-            The optional reservation affinity. Setting this field will
-            apply the specified `Zonal Compute
-            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+            The optional reservation affinity. Setting this
+            field will apply the specified [Zonal Compute
+            Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
             to this node pool.
         disk_type (str):
             Type of the disk attached to each node (e.g.
@@ -1656,12 +1704,13 @@ class NodeConfig(proto.Message):
 
             https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
         boot_disk_kms_key (str):
-            The Customer Managed Encryption Key used to encrypt the boot
-            disk attached to each node in the node pool. This should be
-            of the form
+            The Customer Managed Encryption Key used to
+            encrypt the boot disk attached to each node in
+            the node pool. This should be of the form
             projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
-            For more information about protecting resources with Cloud
-            KMS Keys please see:
+            For more information about protecting resources
+            with Cloud KMS Keys please see:
+
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         shielded_instance_config (google.cloud.container_v1beta1.types.ShieldedInstanceConfig):
             Shielded Instance options.
@@ -1705,9 +1754,10 @@ class NodeConfig(proto.Message):
             Parameters for using raw-block Local NVMe
             SSDs.
         ephemeral_storage_local_ssd_config (google.cloud.container_v1beta1.types.EphemeralStorageLocalSsdConfig):
-            Parameters for the node ephemeral storage using Local SSDs.
-            If unspecified, ephemeral storage is backed by the boot
-            disk. This field is functionally equivalent to the
+            Parameters for the node ephemeral storage using
+            Local SSDs. If unspecified, ephemeral storage is
+            backed by the boot disk. This field is
+            functionally equivalent to the
             ephemeral_storage_config
         sole_tenant_config (google.cloud.container_v1beta1.types.SoleTenantConfig):
             Parameters for node pools to be backed by
@@ -1747,10 +1797,11 @@ class NodeConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_local_ssd_encryption_mode``.
         effective_cgroup_mode (google.cloud.container_v1beta1.types.NodeConfig.EffectiveCgroupMode):
-            Output only. effective_cgroup_mode is the cgroup mode
-            actually used by the node pool. It is determined by the
-            cgroup mode specified in the LinuxNodeConfig or the default
-            cgroup mode based on the cluster creation version.
+            Output only. effective_cgroup_mode is the cgroup
+            mode actually used by the node pool. It is
+            determined by the cgroup mode specified in the
+            LinuxNodeConfig or the default cgroup mode based
+            on the cluster creation version.
         flex_start (bool):
             Flex Start flag for enabling Flex Start VM.
 
@@ -1793,15 +1844,16 @@ class NodeConfig(proto.Message):
 
         Values:
             EFFECTIVE_CGROUP_MODE_UNSPECIFIED (0):
-                EFFECTIVE_CGROUP_MODE_UNSPECIFIED means the cgroup
-                configuration for the node pool is unspecified, i.e. the
-                node pool is a Windows node pool.
+                EFFECTIVE_CGROUP_MODE_UNSPECIFIED means the
+                cgroup configuration for the node pool is
+                unspecified, i.e. the node pool is a Windows
+                node pool.
             EFFECTIVE_CGROUP_MODE_V1 (1):
-                CGROUP_MODE_V1 means the node pool is configured to use
-                cgroupv1 for the cgroup configuration.
+                CGROUP_MODE_V1 means the node pool is configured
+                to use cgroupv1 for the cgroup configuration.
             EFFECTIVE_CGROUP_MODE_V2 (2):
-                CGROUP_MODE_V2 means the node pool is configured to use
-                cgroupv2 for the cgroup configuration.
+                CGROUP_MODE_V2 means the node pool is configured
+                to use cgroupv2 for the cgroup configuration.
         """
         EFFECTIVE_CGROUP_MODE_UNSPECIFIED = 0
         EFFECTIVE_CGROUP_MODE_V1 = 1
@@ -2171,19 +2223,22 @@ class NodeNetworkConfig(proto.Message):
 
             This field is a member of `oneof`_ ``_network_performance_config``.
         pod_cidr_overprovision_config (google.cloud.container_v1beta1.types.PodCIDROverprovisionConfig):
-            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
-            the nodepool.
+            [PRIVATE FIELD]
+            Pod CIDR size overprovisioning config for the
+            nodepool.
 
-            Pod CIDR size per node depends on max_pods_per_node. By
-            default, the value of max_pods_per_node is rounded off to
-            next power of 2 and we then double that to get the size of
-            pod CIDR block per node. Example: max_pods_per_node of 30
-            would result in 64 IPs (/26).
+            Pod CIDR size per node depends on
+            max_pods_per_node. By default, the value of
+            max_pods_per_node is rounded off to next power
+            of 2 and we then double that to get the size of
+            pod CIDR block per node. Example:
+            max_pods_per_node of 30 would result in 64 IPs
+            (/26).
 
-            This config can disable the doubling of IPs (we still round
-            off to next power of 2) Example: max_pods_per_node of 30
-            will result in 32 IPs (/27) when overprovisioning is
-            disabled.
+            This config can disable the doubling of IPs (we
+            still round off to next power of 2)
+            Example: max_pods_per_node of 30 will result in
+            32 IPs (/27) when overprovisioning is disabled.
         additional_node_network_configs (MutableSequence[google.cloud.container_v1beta1.types.AdditionalNodeNetworkConfig]):
             We specify the additional node networks for
             this node pool using this list. Each node
@@ -2596,10 +2651,12 @@ class ReservationAffinity(proto.Message):
             Corresponds to the type of reservation
             consumption.
         key (str):
-            Corresponds to the label key of a reservation resource. To
-            target a SPECIFIC_RESERVATION by name, specify
-            "compute.googleapis.com/reservation-name" as the key and
-            specify the name of your reservation as its value.
+            Corresponds to the label key of a reservation
+            resource. To target a SPECIFIC_RESERVATION by
+            name, specify
+            "compute.googleapis.com/reservation-name" as the
+            key and specify the name of your reservation as
+            its value.
         values (MutableSequence[str]):
             Corresponds to the label value(s) of
             reservation resource(s).
@@ -2664,8 +2721,8 @@ class SoleTenantConfig(proto.Message):
 
     class NodeAffinity(proto.Message):
         r"""Specifies the NodeAffinity key, values, and affinity operator
-        according to `shared sole tenant node group
-        affinities <https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_affinity_and_anti-affinity>`__.
+        according to [shared sole tenant node group
+        affinities](https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes#node_affinity_and_anti-affinity).
 
         Attributes:
             key (str):
@@ -2731,9 +2788,10 @@ class ContainerdConfig(proto.Message):
             Optional. WritableCgroups defines writable
             cgroups configuration for the node pool.
         registry_hosts (MutableSequence[google.cloud.container_v1beta1.types.ContainerdConfig.RegistryHostConfig]):
-            RegistryHostConfig configures containerd registry host
-            configuration. Each registry_hosts represents a hosts.toml
-            file. At most 25 registry_hosts are allowed.
+            RegistryHostConfig configures containerd
+            registry host configuration. Each registry_hosts
+            represents a hosts.toml file. At most 25
+            registry_hosts are allowed.
     """
 
     class PrivateRegistryAccessConfig(proto.Message):
@@ -3086,13 +3144,14 @@ class HostMaintenancePolicy(proto.Message):
                 (live migrations or terminations) for the node
                 than the PERIODIC option.
             PERIODIC (2):
-                Nodes receive infrastructure and hypervisor updates on a
-                periodic basis, minimizing the number of maintenance
-                operations (live migrations or terminations) on an
-                individual VM. This may mean underlying VMs will take longer
-                to receive an update than if it was configured for
-                AS_NEEDED. Security updates will still be applied as soon as
-                they are available.
+                Nodes receive infrastructure and hypervisor
+                updates on a periodic basis, minimizing the
+                number of maintenance operations (live
+                migrations or terminations) on an individual VM.
+                This may mean underlying VMs will take longer to
+                receive an update than if it was configured for
+                AS_NEEDED. Security updates will still be
+                applied as soon as they are available.
         """
         MAINTENANCE_INTERVAL_UNSPECIFIED = 0
         AS_NEEDED = 1
@@ -3214,8 +3273,8 @@ class NodeTaint(proto.Message):
 
 
 class NodeTaints(proto.Message):
-    r"""Collection of Kubernetes `node
-    taints <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration>`__.
+    r"""Collection of Kubernetes [node
+    taints](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration).
 
     Attributes:
         taints (MutableSequence[google.cloud.container_v1beta1.types.NodeTaint]):
@@ -3230,8 +3289,8 @@ class NodeTaints(proto.Message):
 
 
 class NodeLabels(proto.Message):
-    r"""Collection of node-level `Kubernetes
-    labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels>`__.
+    r"""Collection of node-level [Kubernetes
+    labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels).
 
     Attributes:
         labels (MutableMapping[str, str]):
@@ -3246,8 +3305,8 @@ class NodeLabels(proto.Message):
 
 
 class ResourceLabels(proto.Message):
-    r"""Collection of `Resource Manager
-    labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
+    r"""Collection of [Resource Manager
+    labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
 
     Attributes:
         labels (MutableMapping[str, str]):
@@ -3320,9 +3379,10 @@ class MasterAuth(proto.Message):
             certificate that is the root of trust for the
             cluster.
         client_certificate (str):
-            Output only. Base64-encoded public certificate used by
-            clients to authenticate to the cluster endpoint. Issued only
-            if client_certificate_config is set.
+            Output only. Base64-encoded public certificate
+            used by clients to authenticate to the cluster
+            endpoint. Issued only if
+            client_certificate_config is set.
         client_key (str):
             Output only. Base64-encoded private key used
             by clients to authenticate to the cluster
@@ -4048,8 +4108,9 @@ class MasterAuthorizedNetworksConfig(proto.Message):
             Whether or not master authorized networks is
             enabled.
         cidr_blocks (MutableSequence[google.cloud.container_v1beta1.types.MasterAuthorizedNetworksConfig.CidrBlock]):
-            cidr_blocks define up to 10 external networks that could
-            access Kubernetes master through HTTPS.
+            cidr_blocks define up to 10 external networks
+            that could access Kubernetes master through
+            HTTPS.
         gcp_public_cidrs_access_enabled (bool):
             Whether master is accessible via Google
             Compute Engine Public IP addresses.
@@ -4067,8 +4128,8 @@ class MasterAuthorizedNetworksConfig(proto.Message):
 
         Attributes:
             display_name (str):
-                display_name is an optional field for users to identify CIDR
-                blocks.
+                display_name is an optional field for users to
+                identify CIDR blocks.
             cidr_block (str):
                 cidr_block must be specified in CIDR notation.
         """
@@ -4159,7 +4220,8 @@ class NetworkPolicy(proto.Message):
 
 
 class PodCIDROverprovisionConfig(proto.Message):
-    r"""[PRIVATE FIELD] Config for pod CIDR size overprovisioning.
+    r"""[PRIVATE FIELD]
+    Config for pod CIDR size overprovisioning.
 
     Attributes:
         disable (bool):
@@ -4180,10 +4242,11 @@ class IPAllocationPolicy(proto.Message):
 
     Attributes:
         use_ip_aliases (bool):
-            Whether alias IPs will be used for pod IPs in the cluster.
-            This is used in conjunction with use_routes. It cannot be
-            true if use_routes is true. If both use_ip_aliases and
-            use_routes are false, then the server picks the default IP
+            Whether alias IPs will be used for pod IPs in
+            the cluster. This is used in conjunction with
+            use_routes. It cannot be true if use_routes is
+            true. If both use_ip_aliases and use_routes are
+            false, then the server picks the default IP
             allocation mode
         create_subnetwork (bool):
             Whether a new subnetwork will be created automatically for
@@ -4196,27 +4259,32 @@ class IPAllocationPolicy(proto.Message):
             is true. If this field is empty, then an automatic name will
             be chosen for the new subnetwork.
         cluster_ipv4_cidr (str):
-            This field is deprecated, use cluster_ipv4_cidr_block.
+            This field is deprecated, use
+            cluster_ipv4_cidr_block.
         node_ipv4_cidr (str):
-            This field is deprecated, use node_ipv4_cidr_block.
+            This field is deprecated, use
+            node_ipv4_cidr_block.
         services_ipv4_cidr (str):
-            This field is deprecated, use services_ipv4_cidr_block.
+            This field is deprecated, use
+            services_ipv4_cidr_block.
         cluster_secondary_range_name (str):
-            The name of the secondary range to be used for the cluster
-            CIDR block. The secondary range will be used for pod IP
-            addresses. This must be an existing secondary range
-            associated with the cluster subnetwork.
+            The name of the secondary range to be used for
+            the cluster CIDR block. The secondary range will
+            be used for pod IP addresses. This must be an
+            existing secondary range associated with the
+            cluster subnetwork.
 
-            This field is only applicable with use_ip_aliases and
-            create_subnetwork is false.
+            This field is only applicable with
+            use_ip_aliases and create_subnetwork is false.
         services_secondary_range_name (str):
-            The name of the secondary range to be used as for the
-            services CIDR block. The secondary range will be used for
-            service ClusterIPs. This must be an existing secondary range
-            associated with the cluster subnetwork.
+            The name of the secondary range to be used as
+            for the services CIDR block. The secondary range
+            will be used for service ClusterIPs. This must
+            be an existing secondary range associated with
+            the cluster subnetwork.
 
-            This field is only applicable with use_ip_aliases and
-            create_subnetwork is false.
+            This field is only applicable with
+            use_ip_aliases and create_subnetwork is false.
         cluster_ipv4_cidr_block (str):
             The IP address range for the cluster pod IPs. If this field
             is set, then ``cluster.cluster_ipv4_cidr`` must be left
@@ -4306,30 +4374,34 @@ class IPAllocationPolicy(proto.Message):
             field is deprecated, use cluster.tpu_config.ipv4_cidr_block
             instead.
         use_routes (bool):
-            Whether routes will be used for pod IPs in the cluster. This
-            is used in conjunction with use_ip_aliases. It cannot be
-            true if use_ip_aliases is true. If both use_ip_aliases and
-            use_routes are false, then the server picks the default IP
-            allocation mode
+            Whether routes will be used for pod IPs in the
+            cluster. This is used in conjunction with
+            use_ip_aliases. It cannot be true if
+            use_ip_aliases is true. If both use_ip_aliases
+            and use_routes are false, then the server picks
+            the default IP allocation mode
         stack_type (google.cloud.container_v1beta1.types.IPAllocationPolicy.StackType):
             IP stack type
         ipv6_access_type (google.cloud.container_v1beta1.types.IPAllocationPolicy.IPv6AccessType):
             The ipv6 access type (internal or external) when
             create_subnetwork is true
         pod_cidr_overprovision_config (google.cloud.container_v1beta1.types.PodCIDROverprovisionConfig):
-            [PRIVATE FIELD] Pod CIDR size overprovisioning config for
-            the cluster.
+            [PRIVATE FIELD]
+            Pod CIDR size overprovisioning config for the
+            cluster.
 
-            Pod CIDR size per node depends on max_pods_per_node. By
-            default, the value of max_pods_per_node is doubled and then
-            rounded off to next power of 2 to get the size of pod CIDR
-            block per node. Example: max_pods_per_node of 30 would
-            result in 64 IPs (/26).
+            Pod CIDR size per node depends on
+            max_pods_per_node. By default, the value of
+            max_pods_per_node is doubled and then rounded
+            off to next power of 2 to get the size of pod
+            CIDR block per node.
+            Example: max_pods_per_node of 30 would result in
+            64 IPs (/26).
 
-            This config can disable the doubling of IPs (we still round
-            off to next power of 2) Example: max_pods_per_node of 30
-            will result in 32 IPs (/27) when overprovisioning is
-            disabled.
+            This config can disable the doubling of IPs (we
+            still round off to next power of 2)
+            Example: max_pods_per_node of 30 will result in
+            32 IPs (/27) when overprovisioning is disabled.
         subnet_ipv6_cidr_block (str):
             Output only. The subnet's IPv6 CIDR block
             used by nodes and pods.
@@ -4511,10 +4583,11 @@ class BinaryAuthorization(proto.Message):
 
     Attributes:
         enabled (bool):
-            This field is deprecated. Leave this unset and instead
-            configure BinaryAuthorization using evaluation_mode. If
-            evaluation_mode is set to anything other than
-            EVALUATION_MODE_UNSPECIFIED, this field is ignored.
+            This field is deprecated. Leave this unset and
+            instead configure BinaryAuthorization using
+            evaluation_mode. If evaluation_mode is set to
+            anything other than EVALUATION_MODE_UNSPECIFIED,
+            this field is ignored.
         evaluation_mode (google.cloud.container_v1beta1.types.BinaryAuthorization.EvaluationMode):
             Mode of operation for binauthz policy
             evaluation. If unspecified, defaults to
@@ -4538,13 +4611,14 @@ class BinaryAuthorization(proto.Message):
                 singleton policy. This is equivalent to setting
                 the enabled boolean to true.
             POLICY_BINDINGS (5):
-                Use Binary Authorization Continuous Validation with the
-                policies specified in policy_bindings.
+                Use Binary Authorization Continuous Validation
+                with the policies specified in policy_bindings.
             POLICY_BINDINGS_AND_PROJECT_SINGLETON_POLICY_ENFORCE (6):
-                Use Binary Authorization Continuous Validation with the
-                policies specified in policy_bindings and enforce Kubernetes
-                admission requests with Binary Authorization using the
-                project's singleton policy.
+                Use Binary Authorization Continuous Validation
+                with the policies specified in policy_bindings
+                and enforce Kubernetes admission requests with
+                Binary Authorization using the project's
+                singleton policy.
         """
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
@@ -4680,18 +4754,22 @@ class Cluster(proto.Message):
         description (str):
             An optional description of this cluster.
         initial_node_count (int):
-            The number of nodes to create in this cluster. You must
-            ensure that your Compute Engine `resource
-            quota <https://cloud.google.com/compute/quotas>`__ is
-            sufficient for this number of instances. You must also have
-            available firewall and routes quota. For requests, this
-            field should only be used in lieu of a "node_pool" object,
-            since this configuration (along with the "node_config") will
-            be used to create a "NodePool" object with an auto-generated
-            name. Do not use this and a node_pool at the same time.
+            The number of nodes to create in this cluster.
+            You must ensure that your Compute Engine
+            [resource
+            quota](https://cloud.google.com/compute/quotas)
+            is sufficient for this number of instances. You
+            must also have available firewall and routes
+            quota.
+            For requests, this field should only be used in
+            lieu of a "node_pool" object, since this
+            configuration (along with the "node_config")
+            will be used to create a "NodePool" object with
+            an auto-generated name. Do not use this and a
+            node_pool at the same time.
 
-            This field is deprecated, use node_pool.initial_node_count
-            instead.
+            This field is deprecated, use
+            node_pool.initial_node_count instead.
         node_config (google.cloud.container_v1beta1.types.NodeConfig):
             Parameters used in creating the cluster's nodes. For
             requests, this field should only be used in lieu of a
@@ -4761,9 +4839,9 @@ class Cluster(proto.Message):
             to which the cluster is connected. On output this shows the
             subnetwork ID instead of the name.
         node_pools (MutableSequence[google.cloud.container_v1beta1.types.NodePool]):
-            The node pools associated with this cluster. This field
-            should not be set if "node_config" or "initial_node_count"
-            are specified.
+            The node pools associated with this cluster.
+            This field should not be set if "node_config" or
+            "initial_node_count" are specified.
         locations (MutableSequence[str]):
             The list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
@@ -4829,17 +4907,21 @@ class Cluster(proto.Message):
         network_config (google.cloud.container_v1beta1.types.NetworkConfig):
             Configuration for cluster networking.
         private_cluster (bool):
-            If this is a private cluster setup. Private clusters are
-            clusters that, by default have no external IP addresses on
-            the nodes and where nodes and the master communicate over
-            private IP addresses. This field is deprecated, use
-            private_cluster_config.enable_private_nodes instead.
+            If this is a private cluster setup. Private
+            clusters are clusters that, by default have no
+            external IP addresses on the nodes and where
+            nodes and the master communicate over private IP
+            addresses. This field is deprecated, use
+            private_cluster_config.enable_private_nodes
+            instead.
         master_ipv4_cidr_block (str):
-            The IP prefix in CIDR notation to use for the hosted master
-            network. This prefix will be used for assigning private IP
-            addresses to the master or set of masters, as well as the
-            ILB VIP. This field is deprecated, use
-            private_cluster_config.master_ipv4_cidr_block instead.
+            The IP prefix in CIDR notation to use for the
+            hosted master network. This prefix will be used
+            for assigning private IP addresses to the master
+            or set of masters, as well as the ILB VIP. This
+            field is deprecated, use
+            private_cluster_config.master_ipv4_cidr_block
+            instead.
         default_max_pods_constraint (google.cloud.container_v1beta1.types.MaxPodsConstraint):
             The default constraint on the maximum number
             of pods that can be run simultaneously on a node
@@ -4980,7 +5062,8 @@ class Cluster(proto.Message):
             notation (e.g. ``1.2.3.4/29``). Service addresses are
             typically put in the last ``/16`` from the container CIDR.
         instance_group_urls (MutableSequence[str]):
-            Output only. Deprecated. Use node_pools.instance_group_urls.
+            Output only. Deprecated. Use
+            node_pools.instance_group_urls.
         current_node_count (int):
             Output only. The number of nodes currently in
             the cluster. Deprecated. Call Kubernetes API
@@ -4997,10 +5080,11 @@ class Cluster(proto.Message):
             `region <https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>`__
             in which the cluster resides.
         enable_tpu (bool):
-            Enable the ability to use Cloud TPUs in this cluster. This
-            field is deprecated, use tpu_config.enabled instead. This
-            field is deprecated due to the deprecation of 2VM TPU. The
-            end of life date for 2VM TPU is 2025-04-25.
+            Enable the ability to use Cloud TPUs in this
+            cluster. This field is deprecated, use
+            tpu_config.enabled instead. This field is
+            deprecated due to the deprecation of 2VM TPU.
+            The end of life date for 2VM TPU is 2025-04-25.
         tpu_ipv4_cidr_block (str):
             Output only. The IP address range of the Cloud TPUs in this
             cluster, in
@@ -6136,18 +6220,21 @@ class ClusterUpdate(proto.Message):
             Configurations for the various addons
             available to run in the cluster.
         desired_node_pool_id (str):
-            The node pool to be upgraded. This field is mandatory if
-            "desired_node_version", "desired_image_family",
+            The node pool to be upgraded. This field is
+            mandatory if "desired_node_version",
+            "desired_image_family",
             "desired_node_pool_autoscaling", or
-            "desired_workload_metadata_config" is specified and there is
-            more than one node pool on the cluster.
+            "desired_workload_metadata_config" is specified
+            and there is more than one node pool on the
+            cluster.
         desired_image_type (str):
-            The desired image type for the node pool. NOTE: Set the
-            "desired_node_pool" field as well.
+            The desired image type for the node pool.
+            NOTE: Set the "desired_node_pool" field as well.
         desired_node_pool_autoscaling (google.cloud.container_v1beta1.types.NodePoolAutoscaling):
-            Autoscaler configuration for the node pool specified in
-            desired_node_pool_id. If there is only one pool in the
-            cluster and desired_node_pool_id is not provided then the
+            Autoscaler configuration for the node pool
+            specified in desired_node_pool_id. If there is
+            only one pool in the cluster and
+            desired_node_pool_id is not provided then the
             change applies to that single node pool.
         desired_locations (MutableSequence[str]):
             The desired list of Google Compute Engine
@@ -6160,9 +6247,8 @@ class ClusterUpdate(proto.Message):
             locations of all node pools and will result in nodes being
             added and/or removed.
         desired_master_authorized_networks_config (google.cloud.container_v1beta1.types.MasterAuthorizedNetworksConfig):
-            The desired configuration options for master authorized
-            networks feature.
-
+            The desired configuration options for master
+            authorized networks feature.
             Deprecated: Use
             desired_control_plane_endpoints_config.ip_endpoints_config.authorized_networks_config
             instead.
@@ -6295,12 +6381,13 @@ class ClusterUpdate(proto.Message):
             The desired Identity Service component
             configuration.
         desired_enable_private_endpoint (bool):
-            Enable/Disable private endpoint for the cluster's master.
-
+            Enable/Disable private endpoint for the
+            cluster's master.
             Deprecated: Use
             desired_control_plane_endpoints_config.ip_endpoints_config.enable_public_endpoint
-            instead. Note that the value of enable_public_endpoint is
-            reversed: if enable_private_endpoint is false, then
+            instead. Note that the value of
+            enable_public_endpoint is reversed: if
+            enable_private_endpoint is false, then
             enable_public_endpoint will be true.
 
             This field is a member of `oneof`_ ``_desired_enable_private_endpoint``.
@@ -6352,10 +6439,10 @@ class ClusterUpdate(proto.Message):
             cluster. These pod ranges can be used by node
             pools to allocate pod IPs.
         removed_additional_pod_ranges_config (google.cloud.container_v1beta1.types.AdditionalPodRangesConfig):
-            The additional pod ranges that are to be removed from the
-            cluster. The pod ranges specified here must have been
-            specified earlier in the 'additional_pod_ranges_config'
-            argument.
+            The additional pod ranges that are to be removed
+            from the cluster. The pod ranges specified here
+            must have been specified earlier in the
+            'additional_pod_ranges_config' argument.
         enable_k8s_beta_apis (google.cloud.container_v1beta1.types.K8sBetaAPIConfig):
             Kubernetes open source beta apis enabled on
             the cluster. Only beta apis
@@ -6954,12 +7041,14 @@ class AdditionalIPRangesConfig(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""Additional subnet with DRAINING status will not be selected during
-        new node pool creation. To undrain the draining status, update the
-        cluster to set the sunbet to ACTIVE status. To remove the additional
-        subnet, use the update cluster API to remove the subnet from the
+        r"""Additional subnet with DRAINING status will not be selected
+        during new node pool creation. To undrain the draining status,
+        update the cluster to set the sunbet to ACTIVE status. To remove
+        the additional subnet, use the update cluster API to remove the
+        subnet from the
         desired_additional_ip_ranges list. IP ranges can be removed
-        regardless of its status, as long as no node pools are using them.
+        regardless of its status, as long as no node pools are using
+        them.
 
         Values:
             STATUS_UNSPECIFIED (0):
@@ -7055,13 +7144,13 @@ class RangeInfo(proto.Message):
 class DesiredEnterpriseConfig(proto.Message):
     r"""DesiredEnterpriseConfig is a wrapper used for updating
     enterprise_config.
-
     Deprecated: GKE Enterprise features are now available without an
     Enterprise tier.
 
     Attributes:
         desired_tier (google.cloud.container_v1beta1.types.EnterpriseConfig.ClusterTier):
-            desired_tier specifies the desired tier of the cluster.
+            desired_tier specifies the desired tier of the
+            cluster.
     """
 
     desired_tier: "EnterpriseConfig.ClusterTier" = proto.Field(
@@ -7173,19 +7262,23 @@ class Operation(proto.Message):
             TYPE_UNSPECIFIED (0):
                 Not set.
             CREATE_CLUSTER (1):
-                The cluster is being created. The cluster should be assumed
-                to be unusable until the operation finishes.
+                The cluster is being created. The cluster should
+                be assumed to be unusable until the operation
+                finishes.
 
-                In the event of the operation failing, the cluster will
-                enter the [ERROR state][Cluster.Status.ERROR] and eventually
-                be deleted.
+                In the event of the operation failing, the
+                cluster will enter the [ERROR
+                state][Cluster.Status.ERROR] and eventually be
+                deleted.
             DELETE_CLUSTER (2):
-                The cluster is being deleted. The cluster should be assumed
-                to be unusable as soon as this operation starts.
+                The cluster is being deleted. The cluster should
+                be assumed to be unusable as soon as this
+                operation starts.
 
-                In the event of the operation failing, the cluster will
-                enter the [ERROR state][Cluster.Status.ERROR] and the
-                deletion will be automatically retried until completed.
+                In the event of the operation failing, the
+                cluster will enter the [ERROR
+                state][Cluster.Status.ERROR] and the deletion
+                will be automatically retried until completed.
             UPGRADE_MASTER (3):
                 The [cluster
                 version][google.container.v1beta1.ClusterUpdate.desired_master_version]
@@ -7210,34 +7303,40 @@ class Operation(proto.Message):
                 configuration <https://cloud.google.com/kubernetes-engine/docs/concepts/node-pool-upgrade-strategies>`__.
                 The nodes are generally still usable during this operation.
             REPAIR_CLUSTER (5):
-                A problem has been detected with the control plane and is
-                being repaired. This operation type is initiated by GKE. For
-                more details, see `documentation on
-                repairs <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
+                A problem has been detected with the control
+                plane and is being repaired. This operation type
+                is initiated by GKE. For more details, see
+                [documentation on
+                repairs](https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs).
             UPDATE_CLUSTER (6):
-                The cluster is being updated. This is a broad category of
-                operations and includes operations that only change metadata
-                as well as those that must recreate the entire cluster. If
-                the control plane must be recreated, this will cause
+                The cluster is being updated. This is a broad
+                category of operations and includes operations
+                that only change metadata as well as those that
+                must recreate the entire cluster. If the control
+                plane must be recreated, this will cause
                 temporary downtime for zonal clusters.
 
-                Some features require recreating the nodes as well. Those
-                will be recreated as separate operations and the update may
-                not be completely functional until the node pools
-                recreations finish. Node recreations will generally follow
-                `maintenance
-                policies <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions>`__.
+                Some features require recreating the nodes as
+                well. Those will be recreated as separate
+                operations and the update may not be completely
+                functional until the node pools recreations
+                finish. Node recreations will generally follow
+                [maintenance
+                policies](https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions).
 
-                Some GKE-initiated operations use this type. This includes
-                certain types of auto-upgrades and incident mitigations.
+                Some GKE-initiated operations use this type.
+                This includes certain types of auto-upgrades and
+                incident mitigations.
             CREATE_NODE_POOL (7):
-                A node pool is being created. The node pool should be
-                assumed to be unusable until this operation finishes. In the
-                event of an error, the node pool may be partially created.
+                A node pool is being created. The node pool
+                should be assumed to be unusable until this
+                operation finishes. In the event of an error,
+                the node pool may be partially created.
 
-                If enabled, `node
-                autoprovisioning <https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning>`__
-                may have automatically initiated such operations.
+                If enabled, [node
+                autoprovisioning](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning)
+                may have automatically initiated such
+                operations.
             DELETE_NODE_POOL (8):
                 The node pool is being deleted. The node pool
                 should be assumed to be unusable as soon as this
@@ -7248,12 +7347,14 @@ class Operation(proto.Message):
                 field is being updated. These operations only update
                 metadata and may be concurrent with most other operations.
             AUTO_REPAIR_NODES (10):
-                A problem has been detected with nodes and `they are being
-                repaired <https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair>`__.
-                This operation type is initiated by GKE, typically
-                automatically. This operation may be concurrent with other
-                operations and there may be multiple repairs occurring on
-                the same node pool.
+                A problem has been detected with nodes and [they
+                are being
+                repaired](https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-repair).
+                This operation type is initiated by GKE,
+                typically automatically. This operation may be
+                concurrent with other operations and there may
+                be multiple repairs occurring on the same node
+                pool.
             AUTO_UPGRADE_NODES (11):
                 Unused. Automatic node upgrade uses
                 [UPGRADE_NODES][google.container.v1beta1.Operation.Type.UPGRADE_NODES].
@@ -7275,12 +7376,14 @@ class Operation(proto.Message):
                 Unused. Updating maintenance policy uses
                 [UPDATE_CLUSTER][google.container.v1beta1.Operation.Type.UPDATE_CLUSTER].
             RESIZE_CLUSTER (18):
-                The control plane is being resized. This operation type is
-                initiated by GKE. These operations are often performed
-                preemptively to ensure that the control plane has sufficient
-                resources and is not typically an indication of issues. For
-                more details, see `documentation on
-                resizes <https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs>`__.
+                The control plane is being resized. This
+                operation type is initiated by GKE. These
+                operations are often performed preemptively to
+                ensure that the control plane has sufficient
+                resources and is not typically an indication of
+                issues. For more details, see
+                [documentation on
+                resizes](https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#repairs).
             FLEET_FEATURE_UPGRADE (19):
                 Fleet features of GKE Enterprise are being
                 upgraded. The cluster should be assumed to be
@@ -7387,16 +7490,20 @@ class OperationProgress(proto.Message):
             Status of an operation stage.
             Unset for single-stage operations.
         metrics (MutableSequence[google.cloud.container_v1beta1.types.OperationProgress.Metric]):
-            Progress metric bundle, for example: metrics: [{name: "nodes
-            done", int_value: 15}, {name: "nodes total", int_value: 32}]
-            or metrics: [{name: "progress", double_value: 0.56}, {name:
-            "progress scale", double_value: 1.0}]
+            Progress metric bundle, for example:
+
+            metrics: [{name: "nodes done", int_value: 15},
+            {name: "nodes total", int_value: 32}]
+            or
+            metrics: [{name: "progress", double_value:
+            0.56}, {name: "progress scale", double_value:
+            1.0}]
         stages (MutableSequence[google.cloud.container_v1beta1.types.OperationProgress]):
             Substages of an operation or a stage.
     """
 
     class Metric(proto.Message):
-        r"""Progress metric is (string, int|float|string) pair.
+        r"""Progress metric is (string, int\|float\|string) pair.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -7470,19 +7577,19 @@ class CreateClusterRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the parent
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the parent field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
             in which the cluster resides. This field has been deprecated
             and replaced by the parent field.
         cluster (google.cloud.container_v1beta1.types.Cluster):
-            Required. A `cluster
-            resource <https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>`__
+            Required. A [cluster
+            resource](https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters)
         parent (str):
             The parent (project and location) where the cluster will be
             created. Specified in the format ``projects/*/locations/*``.
@@ -7512,11 +7619,11 @@ class GetClusterRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -7555,11 +7662,11 @@ class UpdateClusterRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -7607,11 +7714,11 @@ class UpdateNodePoolRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -7962,11 +8069,11 @@ class SetNodePoolAutoscalingRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8022,11 +8129,11 @@ class SetLoggingServiceRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8084,11 +8191,11 @@ class SetMonitoringServiceRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8145,11 +8252,11 @@ class SetAddonsConfigRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8196,11 +8303,11 @@ class SetLocationsRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8252,11 +8359,11 @@ class UpdateMasterRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8315,11 +8422,11 @@ class SetMasterAuthRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8395,11 +8502,11 @@ class DeleteClusterRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8438,11 +8545,11 @@ class ListClustersRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the parent
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the parent field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8496,11 +8603,11 @@ class GetOperationRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8539,11 +8646,11 @@ class ListOperationsRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the parent
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the parent field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8575,11 +8682,11 @@ class CancelOperationRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8643,11 +8750,11 @@ class GetServerConfigRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8708,7 +8815,8 @@ class ServerConfig(proto.Message):
                 The default version for newly created
                 clusters on the channel.
             available_versions (MutableSequence[google.cloud.container_v1beta1.types.ServerConfig.ReleaseChannelConfig.AvailableVersion]):
-                Deprecated. This field has been deprecated and replaced with
+                Deprecated.
+                This field has been deprecated and replaced with
                 the valid_versions field.
             valid_versions (MutableSequence[str]):
                 List of valid versions for the channel.
@@ -8868,11 +8976,11 @@ class CreateNodePoolRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the parent
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the parent field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8918,11 +9026,11 @@ class DeleteNodePoolRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -8969,11 +9077,11 @@ class ListNodePoolsRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the parent
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the parent field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -9012,11 +9120,11 @@ class GetNodePoolRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -9097,8 +9205,9 @@ class BlueGreenSettings(proto.Message):
 
         Attributes:
             batch_percentage (float):
-                Percentage of the blue pool nodes to drain in a batch. The
-                range of this field should be (0.0, 1.0].
+                Percentage of the blue pool nodes to drain in a
+                batch. The range of this field should be (0.0,
+                1.0].
 
                 This field is a member of `oneof`_ ``update_batch_size``.
             batch_node_count (int):
@@ -9183,11 +9292,12 @@ class NodePool(proto.Message):
         config (google.cloud.container_v1beta1.types.NodeConfig):
             The node configuration of the pool.
         initial_node_count (int):
-            The initial node count for the pool. You must ensure that
-            your Compute Engine `resource
-            quota <https://cloud.google.com/compute/quotas>`__ is
-            sufficient for this number of instances. You must also have
-            available firewall and routes quota.
+            The initial node count for the pool. You must
+            ensure that your Compute Engine [resource
+            quota](https://cloud.google.com/compute/quotas)
+            is sufficient for this number of instances. You
+            must also have available firewall and routes
+            quota.
         locations (MutableSequence[str]):
             The list of Google Compute Engine
             `zones <https://cloud.google.com/compute/docs/zones#available>`__
@@ -9211,11 +9321,13 @@ class NodePool(proto.Message):
             If unspecified, it defaults as described
             `here <https://cloud.google.com/kubernetes-engine/versioning#specifying_node_version>`__.
         instance_group_urls (MutableSequence[str]):
-            Output only. The resource URLs of the `managed instance
-            groups <https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>`__
-            associated with this node pool. During the node pool
-            blue-green upgrade operation, the URLs contain both blue and
-            green resources.
+            Output only. The resource URLs of the [managed
+            instance
+            groups](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances)
+            associated with this node pool.
+            During the node pool blue-green upgrade
+            operation, the URLs contain both blue and green
+            resources.
         status (google.cloud.container_v1beta1.types.NodePool.Status):
             Output only. The status of the nodes in this
             pool instance.
@@ -9277,10 +9389,11 @@ class NodePool(proto.Message):
                 The RUNNING state indicates the node pool has
                 been created and is fully usable.
             RUNNING_WITH_ERROR (3):
-                The RUNNING_WITH_ERROR state indicates the node pool has
-                been created and is partially usable. Some error state has
-                occurred and some functionality may be impaired. Customer
-                may need to reissue a request or trigger a new update.
+                The RUNNING_WITH_ERROR state indicates the node
+                pool has been created and is partially usable.
+                Some error state has occurred and some
+                functionality may be impaired. Customer may need
+                to reissue a request or trigger a new update.
             RECONCILING (4):
                 The RECONCILING state indicates that some work is actively
                 being done on the node pool, such as upgrading node
@@ -9518,8 +9631,8 @@ class NodePool(proto.Message):
 
             Values:
                 TYPE_UNSPECIFIED (0):
-                    TYPE_UNSPECIFIED specifies no requirements on nodes
-                    placement.
+                    TYPE_UNSPECIFIED specifies no requirements on
+                    nodes placement.
                 COMPACT (1):
                     COMPACT specifies node placement in the same
                     availability domain to ensure low communication
@@ -9873,16 +9986,18 @@ class MaintenanceExclusionOptions(proto.Message):
 
         Values:
             NO_UPGRADES (0):
-                NO_UPGRADES excludes all upgrades, including patch upgrades
-                and minor upgrades across control planes and nodes. This is
-                the default exclusion behavior.
+                NO_UPGRADES excludes all upgrades, including
+                patch upgrades and minor upgrades across control
+                planes and nodes. This is the default exclusion
+                behavior.
             NO_MINOR_UPGRADES (1):
-                NO_MINOR_UPGRADES excludes all minor upgrades for the
-                cluster, only patches are allowed.
+                NO_MINOR_UPGRADES excludes all minor upgrades
+                for the cluster, only patches are allowed.
             NO_MINOR_OR_NODE_UPGRADES (2):
-                NO_MINOR_OR_NODE_UPGRADES excludes all minor upgrades for
-                the cluster, and also exclude all node pool upgrades. Only
-                control plane patches are allowed.
+                NO_MINOR_OR_NODE_UPGRADES excludes all minor
+                upgrades for the cluster, and also exclude all
+                node pool upgrades. Only control plane patches
+                are allowed.
         """
         NO_UPGRADES = 0
         NO_MINOR_UPGRADES = 1
@@ -9894,12 +10009,12 @@ class MaintenanceExclusionOptions(proto.Message):
 
         Values:
             END_TIME_BEHAVIOR_UNSPECIFIED (0):
-                END_TIME_BEHAVIOR_UNSPECIFIED is the default behavior, which
-                is fixed end time.
+                END_TIME_BEHAVIOR_UNSPECIFIED is the default
+                behavior, which is fixed end time.
             UNTIL_END_OF_SUPPORT (1):
-                UNTIL_END_OF_SUPPORT means the exclusion will be in effect
-                until the end of the support of the cluster's current
-                version.
+                UNTIL_END_OF_SUPPORT means the exclusion will be
+                in effect until the end of the support of the
+                cluster's current version.
         """
         END_TIME_BEHAVIOR_UNSPECIFIED = 0
         UNTIL_END_OF_SUPPORT = 1
@@ -9979,9 +10094,10 @@ class DailyMaintenanceWindow(proto.Message):
 
     Attributes:
         start_time (str):
-            Time within the maintenance window to start the maintenance
-            operations. It must be in format "HH:MM", where HH : [00-23]
-            and MM : [00-59] GMT.
+            Time within the maintenance window to start the
+            maintenance operations. It must be in format
+            "HH:MM", where HH : [00-23] and MM : [00-59]
+            GMT.
         duration (str):
             Output only. Duration of the time window,
             automatically chosen to be smallest possible in
@@ -10004,11 +10120,11 @@ class SetNodePoolManagementRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10063,11 +10179,11 @@ class SetNodePoolSizeRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10140,11 +10256,11 @@ class RollbackNodePoolUpgradeRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10369,12 +10485,13 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
         shielded_instance_config (google.cloud.container_v1beta1.types.ShieldedInstanceConfig):
             Shielded Instance options.
         boot_disk_kms_key (str):
-            The Customer Managed Encryption Key used to encrypt the boot
-            disk attached to each node in the node pool. This should be
-            of the form
+            The Customer Managed Encryption Key used to
+            encrypt the boot disk attached to each node in
+            the node pool. This should be of the form
             projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
-            For more information about protecting resources with Cloud
-            KMS Keys please see:
+            For more information about protecting resources
+            with Cloud KMS Keys please see:
+
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         image_type (str):
             The image type to use for NAP created node.
@@ -10492,13 +10609,13 @@ class NodePoolAutoscaling(proto.Message):
         enabled (bool):
             Is autoscaling enabled for this node pool.
         min_node_count (int):
-            Minimum number of nodes for one location in the node pool.
-            Must be greater than or equal to 0 and less than or equal to
-            max_node_count.
+            Minimum number of nodes for one location in the
+            node pool. Must be greater than or equal to 0
+            and less than or equal to max_node_count.
         max_node_count (int):
-            Maximum number of nodes for one location in the node pool.
-            Must be >= min_node_count. There has to be enough quota to
-            scale up the cluster.
+            Maximum number of nodes for one location in the
+            node pool. Must be >= min_node_count. There has
+            to be enough quota to scale up the cluster.
         autoprovisioned (bool):
             Can this node pool be deleted automatically.
         location_policy (google.cloud.container_v1beta1.types.NodePoolAutoscaling.LocationPolicy):
@@ -10573,11 +10690,11 @@ class SetLabelsRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10636,11 +10753,11 @@ class SetLegacyAbacRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10688,11 +10805,11 @@ class StartIPRotationRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10739,11 +10856,11 @@ class CompleteIPRotationRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -10791,9 +10908,9 @@ class AcceleratorConfig(proto.Message):
             accelerators
             `here <https://cloud.google.com/compute/docs/gpus>`__
         gpu_partition_size (str):
-            Size of partitions to create on the GPU. Valid values are
-            described in the NVIDIA `mig user
-            guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning>`__.
+            Size of partitions to create on the GPU. Valid
+            values are described in the NVIDIA [mig user
+            guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
         max_time_shared_clients_per_gpu (int):
             The number of time-shared GPU resources to
             expose for each physical GPU.
@@ -11069,11 +11186,11 @@ class SetNetworkPolicyRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Deprecated. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
-            This field has been deprecated and replaced by the name
-            field.
+            Deprecated. The Google Developers Console
+            [project ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+            This field has been deprecated and replaced by
+            the name field.
         zone (str):
             Deprecated. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -11121,9 +11238,9 @@ class SetMaintenancePolicyRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Required. The Google Developers Console `project ID or
-            project
-            number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+            Required. The Google Developers Console [project
+            ID or project
+            number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
         zone (str):
             Required. The name of the Google Compute Engine
             `zone <https://cloud.google.com/compute/docs/zones#available>`__
@@ -11187,11 +11304,13 @@ class ListLocationsResponse(proto.Message):
         locations (MutableSequence[google.cloud.container_v1beta1.types.Location]):
             A full list of GKE locations.
         next_page_token (str):
-            Only return ListLocationsResponse that occur after the
-            page_token. This value should be populated from the
-            ListLocationsResponse.next_page_token if that response token
-            was set (which happens when listing more Locations than fit
-            in a single ListLocationsResponse).
+            Only return ListLocationsResponse that occur
+            after the page_token. This value should be
+            populated from the
+            ListLocationsResponse.next_page_token if that
+            response token was set (which happens when
+            listing more Locations than fit in a single
+            ListLocationsResponse).
     """
 
     @property
@@ -11230,8 +11349,8 @@ class Location(proto.Message):
 
         Values:
             LOCATION_TYPE_UNSPECIFIED (0):
-                LOCATION_TYPE_UNSPECIFIED means the location type was not
-                determined.
+                LOCATION_TYPE_UNSPECIFIED means the location
+                type was not determined.
             ZONE (1):
                 A GKE Location where Zonal clusters can be
                 created.
@@ -11264,8 +11383,8 @@ class StatusCondition(proto.Message):
 
     Attributes:
         code (google.cloud.container_v1beta1.types.StatusCondition.Code):
-            Machine-friendly representation of the condition Deprecated.
-            Use canonical_code instead.
+            Machine-friendly representation of the condition
+            Deprecated. Use canonical_code instead.
         message (str):
             Human-friendly representation of the
             condition
@@ -11280,11 +11399,11 @@ class StatusCondition(proto.Message):
             UNKNOWN (0):
                 UNKNOWN indicates a generic condition.
             GCE_STOCKOUT (1):
-                GCE_STOCKOUT indicates that Google Compute Engine resources
-                are temporarily unavailable.
+                GCE_STOCKOUT indicates that Google Compute
+                Engine resources are temporarily unavailable.
             GKE_SERVICE_ACCOUNT_DELETED (2):
-                GKE_SERVICE_ACCOUNT_DELETED indicates that the user deleted
-                their robot service account.
+                GKE_SERVICE_ACCOUNT_DELETED indicates that the
+                user deleted their robot service account.
             GCE_QUOTA_EXCEEDED (3):
                 Google Compute Engine quota was exceeded.
             SET_BY_OPERATOR (4):
@@ -11353,10 +11472,11 @@ class NetworkConfig(proto.Message):
             this cluster. This makes same node pod to pod
             traffic visible for VPC network.
         default_snat_status (google.cloud.container_v1beta1.types.DefaultSnatStatus):
-            Whether the cluster disables default in-node sNAT rules.
-            In-node sNAT rules will be disabled when default_snat_status
-            is disabled. When disabled is set to false, default IP
-            masquerade rules will be applied to the nodes to prevent
+            Whether the cluster disables default in-node
+            sNAT rules. In-node sNAT rules will be disabled
+            when default_snat_status is disabled. When
+            disabled is set to false, default IP masquerade
+            rules will be applied to the nodes to prevent
             sNAT on cluster internal traffic.
         enable_l4ilb_subsetting (bool):
             Whether L4ILB Subsetting is enabled for this
@@ -11550,8 +11670,9 @@ class GatewayAPIConfig(proto.Message):
             CHANNEL_DISABLED (1):
                 Gateway API support is disabled
             CHANNEL_EXPERIMENTAL (3):
-                Deprecated: use CHANNEL_STANDARD instead. Gateway API
-                support is enabled, experimental CRDs are installed
+                Deprecated: use CHANNEL_STANDARD instead.
+                Gateway API support is enabled, experimental
+                CRDs are installed
             CHANNEL_STANDARD (4):
                 Gateway API support is enabled, standard CRDs
                 are installed
@@ -11686,15 +11807,18 @@ class UsableSubnetworkSecondaryRange(proto.Message):
                 UNUSED denotes that this range is unclaimed
                 by any cluster.
             IN_USE_SERVICE (2):
-                IN_USE_SERVICE denotes that this range is claimed by a
-                cluster for services. It cannot be used for other clusters.
+                IN_USE_SERVICE denotes that this range is
+                claimed by a cluster for services. It cannot be
+                used for other clusters.
             IN_USE_SHAREABLE_POD (3):
-                IN_USE_SHAREABLE_POD denotes this range was created by the
-                network admin and is currently claimed by a cluster for
-                pods. It can only be used by other clusters as a pod range.
+                IN_USE_SHAREABLE_POD denotes this range was
+                created by the network admin and is currently
+                claimed by a cluster for pods. It can only be
+                used by other clusters as a pod range.
             IN_USE_MANAGED_POD (4):
-                IN_USE_MANAGED_POD denotes this range was created by GKE and
-                is claimed for pods. It cannot be used for other clusters.
+                IN_USE_MANAGED_POD denotes this range was
+                created by GKE and is claimed for pods. It
+                cannot be used for other clusters.
         """
         UNKNOWN = 0
         UNUSED = 1
@@ -11736,11 +11860,13 @@ class UsableSubnetwork(proto.Message):
         secondary_ip_ranges (MutableSequence[google.cloud.container_v1beta1.types.UsableSubnetworkSecondaryRange]):
             Secondary IP ranges.
         status_message (str):
-            A human readable status message representing the reasons for
-            cases where the caller cannot use the secondary ranges under
-            the subnet. For example if the secondary_ip_ranges is empty
-            due to a permission issue, an insufficient permission
-            message will be given by status_message.
+            A human readable status message representing the
+            reasons for cases where the caller cannot use
+            the secondary ranges under the subnet. For
+            example if the secondary_ip_ranges is empty due
+            to a permission issue, an insufficient
+            permission message will be given by
+            status_message.
     """
 
     subnetwork: str = proto.Field(
@@ -11836,14 +11962,14 @@ class DNSConfig(proto.Message):
 
     Attributes:
         cluster_dns (google.cloud.container_v1beta1.types.DNSConfig.Provider):
-            cluster_dns indicates which in-cluster DNS provider should
-            be used.
+            cluster_dns indicates which in-cluster DNS
+            provider should be used.
         cluster_dns_scope (google.cloud.container_v1beta1.types.DNSConfig.DNSScope):
-            cluster_dns_scope indicates the scope of access to cluster
-            DNS records.
+            cluster_dns_scope indicates the scope of access
+            to cluster DNS records.
         cluster_dns_domain (str):
-            cluster_dns_domain is the suffix used for all cluster
-            service records.
+            cluster_dns_domain is the suffix used for all
+            cluster service records.
         additive_vpc_scope_dns_domain (str):
             Optional. The domain used in Additive VPC
             scope.
@@ -12374,10 +12500,10 @@ class GetOpenIDConfigResponse(proto.Message):
 
 
 class GetJSONWebKeysRequest(proto.Message):
-    r"""GetJSONWebKeysRequest gets the public component of the keys used by
-    the cluster to sign token requests. This will be the jwks_uri for
-    the discover document returned by getOpenIDConfig. See the OpenID
-    Connect Discovery 1.0 specification for details.
+    r"""GetJSONWebKeysRequest gets the public component of the keys used
+    by the cluster to sign token requests. This will be the jwks_uri
+    for the discover document returned by getOpenIDConfig. See the
+    OpenID Connect Discovery 1.0 specification for details.
 
     Attributes:
         parent (str):
@@ -12764,7 +12890,8 @@ class AutopilotConversionStatus(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                STATE_UNSPECIFIED indicates the state is unspecified.
+                STATE_UNSPECIFIED indicates the state is
+                unspecified.
             DONE (5):
                 DONE indicates the conversion has been
                 completed. Old node pools will continue being
@@ -13117,8 +13244,9 @@ class UpgradeInfoEvent(proto.Message):
         event_type (google.cloud.container_v1beta1.types.UpgradeInfoEvent.EventType):
             The type of the event.
         disruption_event (google.cloud.container_v1beta1.types.DisruptionEvent):
-            The information about the disruption event. This field is
-            only populated when event_type is DISRUPTION_EVENT.
+            The information about the disruption event. This
+            field is only populated when event_type is
+            DISRUPTION_EVENT.
 
             This field is a member of `oneof`_ ``_disruption_event``.
     """
@@ -13128,7 +13256,8 @@ class UpgradeInfoEvent(proto.Message):
 
         Values:
             STATE_UNSPECIFIED (0):
-                STATE_UNSPECIFIED indicates the state is unspecified.
+                STATE_UNSPECIFIED indicates the state is
+                unspecified.
             STARTED (3):
                 STARTED indicates the upgrade has started.
             SUCCEEDED (4):
@@ -13150,22 +13279,23 @@ class UpgradeInfoEvent(proto.Message):
 
         Values:
             EVENT_TYPE_UNSPECIFIED (0):
-                EVENT_TYPE_UNSPECIFIED indicates the event type is
-                unspecified.
+                EVENT_TYPE_UNSPECIFIED indicates the event type
+                is unspecified.
             END_OF_SUPPORT (1):
-                END_OF_SUPPORT indicates GKE version reaches end of support,
-                check standard_support_end_time and
+                END_OF_SUPPORT indicates GKE version reaches end
+                of support, check standard_support_end_time and
                 extended_support_end_time for more details.
             COS_MILESTONE_VERSION_UPDATE (2):
-                COS_MILESTONE_VERSION_UPDATE indicates that the COS node
-                image will update COS milestone version for new patch
-                versions starting with the one in the description.
+                COS_MILESTONE_VERSION_UPDATE indicates that the
+                COS node image will update COS milestone version
+                for new patch versions starting with the one in
+                the description.
             UPGRADE_LIFECYCLE (3):
-                UPGRADE_LIFECYCLE indicates the event is about the upgrade
-                lifecycle.
+                UPGRADE_LIFECYCLE indicates the event is about
+                the upgrade lifecycle.
             DISRUPTION_EVENT (4):
-                DISRUPTION_EVENT indicates the event is about the
-                disruption.
+                DISRUPTION_EVENT indicates the event is about
+                the disruption.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SUPPORT = 1
@@ -13257,16 +13387,18 @@ class DisruptionEvent(proto.Message):
         disruption_type (google.cloud.container_v1beta1.types.DisruptionEvent.DisruptionType):
             The type of the disruption event.
         pdb_blocked_node (str):
-            The node whose drain is blocked by PDB. This field is set
-            for both POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+            The node whose drain is blocked by PDB. This
+            field is set for both POD_PDB_VIOLATION and
+            POD_NOT_ENOUGH_PDB event.
         pdb_blocked_pod (MutableSequence[google.cloud.container_v1beta1.types.DisruptionEvent.PdbBlockedPod]):
-            The pods whose evictions are blocked by PDB. This field is
-            set for both POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+            The pods whose evictions are blocked by PDB.
+            This field is set for both POD_PDB_VIOLATION and
+            POD_NOT_ENOUGH_PDB event.
         pdb_violation_timeout (google.protobuf.duration_pb2.Duration):
-            The timeout in seconds for which the node drain is blocked
-            by PDB. After this timeout, pods are forcefully evicted.
-            This field is only populated when event_type is
-            POD_PDB_VIOLATION.
+            The timeout in seconds for which the node drain
+            is blocked by PDB. After this timeout, pods are
+            forcefully evicted. This field is only populated
+            when event_type is POD_PDB_VIOLATION.
 
             This field is a member of `oneof`_ ``_pdb_violation_timeout``.
     """
@@ -13276,15 +13408,16 @@ class DisruptionEvent(proto.Message):
 
         Values:
             DISRUPTION_TYPE_UNSPECIFIED (0):
-                DISRUPTION_TYPE_UNSPECIFIED indicates the disruption type is
-                unspecified.
+                DISRUPTION_TYPE_UNSPECIFIED indicates the
+                disruption type is unspecified.
             POD_NOT_ENOUGH_PDB (1):
-                POD_NOT_ENOUGH_PDB indicates there are still running pods on
-                the node during node drain because their evictions are
-                blocked by PDB.
+                POD_NOT_ENOUGH_PDB indicates there are still
+                running pods on the node during node drain
+                because their evictions are blocked by PDB.
             POD_PDB_VIOLATION (2):
-                POD_PDB_VIOLATION indicates that there are force pod
-                evictions during node drain which violate the PDB.
+                POD_PDB_VIOLATION indicates that there are force
+                pod evictions during node drain which violate
+                the PDB.
         """
         DISRUPTION_TYPE_UNSPECIFIED = 0
         POD_NOT_ENOUGH_PDB = 1
@@ -13399,9 +13532,9 @@ class SecurityBulletinEvent(proto.Message):
             The URI link to the bulletin on the website
             for more information.
         brief_description (str):
-            A brief description of the bulletin. See the bulletin
-            pointed to by the bulletin_uri field for an expanded
-            description.
+            A brief description of the bulletin. See the
+            bulletin pointed to by the bulletin_uri field
+            for an expanded description.
         affected_supported_minors (MutableSequence[str]):
             The GKE minor versions affected by this
             vulnerability.
@@ -13409,12 +13542,14 @@ class SecurityBulletinEvent(proto.Message):
             The GKE versions where this vulnerability is
             patched.
         suggested_upgrade_target (str):
-            This represents a version selected from the patched_versions
-            field that the cluster receiving this notification should
-            most likely want to upgrade to based on its current version.
-            Note that if this notification is being received by a given
-            cluster, it means that this version is currently available
-            as an upgrade target in that cluster's location.
+            This represents a version selected from the
+            patched_versions field that the cluster
+            receiving this notification should most likely
+            want to upgrade to based on its current version.
+            Note that if this notification is being received
+            by a given cluster, it means that this version
+            is currently available as an upgrade target in
+            that cluster's location.
         manual_steps_required (bool):
             If this field is specified, it means there
             are manual steps that the user must take to make
@@ -13805,8 +13940,8 @@ class PodAutoscaling(proto.Message):
 
         Values:
             HPA_PROFILE_UNSPECIFIED (0):
-                HPA_PROFILE_UNSPECIFIED is used when no custom HPA profile
-                is set.
+                HPA_PROFILE_UNSPECIFIED is used when no custom
+                HPA profile is set.
             NONE (1):
                 Customers explicitly opt-out of HPA profiles.
             PERFORMANCE (2):
@@ -14068,10 +14203,11 @@ class EnterpriseConfig(proto.Message):
 
     Attributes:
         cluster_tier (google.cloud.container_v1beta1.types.EnterpriseConfig.ClusterTier):
-            Output only. cluster_tier indicates the effective tier of
-            the cluster.
+            Output only. cluster_tier indicates the
+            effective tier of the cluster.
         desired_tier (google.cloud.container_v1beta1.types.EnterpriseConfig.ClusterTier):
-            desired_tier specifies the desired tier of the cluster.
+            desired_tier specifies the desired tier of the
+            cluster.
     """
 
     class ClusterTier(proto.Enum):
@@ -14082,7 +14218,8 @@ class EnterpriseConfig(proto.Message):
 
         Values:
             CLUSTER_TIER_UNSPECIFIED (0):
-                CLUSTER_TIER_UNSPECIFIED is when cluster_tier is not set.
+                CLUSTER_TIER_UNSPECIFIED is when cluster_tier is
+                not set.
             STANDARD (1):
                 STANDARD indicates a standard GKE cluster.
             ENTERPRISE (2):
@@ -14173,7 +14310,8 @@ class BootDisk(proto.Message):
             Disk type of the boot disk.
             (i.e. Hyperdisk-Balanced, PD-Balanced, etc.)
         size_gb (int):
-            Disk size in GB. Replaces NodeConfig.disk_size_gb
+            Disk size in GB. Replaces
+            NodeConfig.disk_size_gb
         provisioned_iops (int):
             For Hyperdisk-Balanced only, the provisioned
             IOPS config value.
@@ -14220,8 +14358,8 @@ class SecondaryBootDisk(proto.Message):
             MODE_UNSPECIFIED (0):
                 MODE_UNSPECIFIED is when mode is not set.
             CONTAINER_IMAGE_CACHE (1):
-                CONTAINER_IMAGE_CACHE is for using the secondary boot disk
-                as a container image cache.
+                CONTAINER_IMAGE_CACHE is for using the secondary
+                boot disk as a container image cache.
         """
         MODE_UNSPECIFIED = 0
         CONTAINER_IMAGE_CACHE = 1
@@ -14279,13 +14417,13 @@ class ClusterUpgradeInfo(proto.Message):
 
     Attributes:
         minor_target_version (str):
-            minor_target_version indicates the target version for minor
-            upgrade.
+            minor_target_version indicates the target
+            version for minor upgrade.
 
             This field is a member of `oneof`_ ``_minor_target_version``.
         patch_target_version (str):
-            patch_target_version indicates the target version for patch
-            upgrade.
+            patch_target_version indicates the target
+            version for patch upgrade.
 
             This field is a member of `oneof`_ ``_patch_target_version``.
         auto_upgrade_status (MutableSequence[google.cloud.container_v1beta1.types.ClusterUpgradeInfo.AutoUpgradeStatus]):
@@ -14317,8 +14455,8 @@ class ClusterUpgradeInfo(proto.Message):
             ACTIVE (1):
                 ACTIVE indicates an active status.
             MINOR_UPGRADE_PAUSED (4):
-                MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
-                paused.
+                MINOR_UPGRADE_PAUSED indicates the minor version
+                upgrade is paused.
             UPGRADE_PAUSED (5):
                 UPGRADE_PAUSED indicates the upgrade is paused.
         """
@@ -14333,28 +14471,29 @@ class ClusterUpgradeInfo(proto.Message):
 
         Values:
             AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED (0):
-                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an
-                unspecified reason.
+                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates
+                an unspecified reason.
             MAINTENANCE_WINDOW (1):
-                MAINTENANCE_WINDOW indicates the cluster is outside customer
-                maintenance window.
+                MAINTENANCE_WINDOW indicates the cluster is
+                outside customer maintenance window.
             MAINTENANCE_EXCLUSION_NO_UPGRADES (5):
-                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is
-                in a maintenance exclusion with scope NO_UPGRADES.
-            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (6):
-                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the
+                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the
                 cluster is in a maintenance exclusion with scope
-                NO_MINOR_UPGRADES.
+                NO_UPGRADES.
+            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (6):
+                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES
+                indicates the cluster is in a maintenance
+                exclusion with scope NO_MINOR_UPGRADES.
             CLUSTER_DISRUPTION_BUDGET (4):
-                CLUSTER_DISRUPTION_BUDGET indicates the cluster is outside
-                the cluster disruption budget.
+                CLUSTER_DISRUPTION_BUDGET indicates the cluster
+                is outside the cluster disruption budget.
             CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE (7):
-                CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE indicates the
-                cluster is outside the cluster disruption budget for minor
-                version upgrade.
+                CLUSTER_DISRUPTION_BUDGET_MINOR_UPGRADE
+                indicates the cluster is outside the cluster
+                disruption budget for minor version upgrade.
             SYSTEM_CONFIG (8):
-                SYSTEM_CONFIG indicates the cluster upgrade is paused by
-                system config.
+                SYSTEM_CONFIG indicates the cluster upgrade is
+                paused by system config.
         """
         AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
         MAINTENANCE_WINDOW = 1
@@ -14425,11 +14564,12 @@ class RollbackSafeUpgradeStatus(proto.Message):
 
         Values:
             MODE_UNSPECIFIED (0):
-                MODE_UNSPECIFIED means it's in regular upgrade mode.
+                MODE_UNSPECIFIED means it's in regular upgrade
+                mode.
             KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE (1):
-                KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE means it's in
-                rollback-safe mode after a KCP minor version step-one
-                upgrade.
+                KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE means it's
+                in rollback-safe mode after a KCP minor version
+                step-one upgrade.
         """
         MODE_UNSPECIFIED = 0
         KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE = 1
@@ -14590,13 +14730,13 @@ class NodePoolUpgradeInfo(proto.Message):
 
     Attributes:
         minor_target_version (str):
-            minor_target_version indicates the target version for minor
-            upgrade.
+            minor_target_version indicates the target
+            version for minor upgrade.
 
             This field is a member of `oneof`_ ``_minor_target_version``.
         patch_target_version (str):
-            patch_target_version indicates the target version for patch
-            upgrade.
+            patch_target_version indicates the target
+            version for patch upgrade.
 
             This field is a member of `oneof`_ ``_patch_target_version``.
         auto_upgrade_status (MutableSequence[google.cloud.container_v1beta1.types.NodePoolUpgradeInfo.AutoUpgradeStatus]):
@@ -14626,8 +14766,8 @@ class NodePoolUpgradeInfo(proto.Message):
             ACTIVE (1):
                 ACTIVE indicates an active status.
             MINOR_UPGRADE_PAUSED (2):
-                MINOR_UPGRADE_PAUSED indicates the minor version upgrade is
-                paused.
+                MINOR_UPGRADE_PAUSED indicates the minor version
+                upgrade is paused.
             UPGRADE_PAUSED (3):
                 UPGRADE_PAUSED indicates the upgrade is paused.
         """
@@ -14642,21 +14782,22 @@ class NodePoolUpgradeInfo(proto.Message):
 
         Values:
             AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED (0):
-                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates an
-                unspecified reason.
+                AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED indicates
+                an unspecified reason.
             MAINTENANCE_WINDOW (1):
-                MAINTENANCE_WINDOW indicates the cluster is outside customer
-                maintenance window.
+                MAINTENANCE_WINDOW indicates the cluster is
+                outside customer maintenance window.
             MAINTENANCE_EXCLUSION_NO_UPGRADES (2):
-                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the cluster is
-                in a maintenance exclusion with scope NO_UPGRADES.
-            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (3):
-                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES indicates the
+                MAINTENANCE_EXCLUSION_NO_UPGRADES indicates the
                 cluster is in a maintenance exclusion with scope
-                NO_MINOR_UPGRADES.
+                NO_UPGRADES.
+            MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES (3):
+                MAINTENANCE_EXCLUSION_NO_MINOR_UPGRADES
+                indicates the cluster is in a maintenance
+                exclusion with scope NO_MINOR_UPGRADES.
             SYSTEM_CONFIG (4):
-                SYSTEM_CONFIG indicates the cluster upgrade is paused by
-                system config.
+                SYSTEM_CONFIG indicates the cluster upgrade is
+                paused by system config.
         """
         AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
         MAINTENANCE_WINDOW = 1
@@ -14717,9 +14858,9 @@ class GkeAutoUpgradeConfig(proto.Message):
 
         Values:
             PATCH_MODE_UNSPECIFIED (0):
-                PATCH_MODE_UNSPECIFIED defaults to using the upgrade target
-                from the channel's patch upgrade targets as the upgrade
-                target for the version.
+                PATCH_MODE_UNSPECIFIED defaults to using the
+                upgrade target from the channel's patch upgrade
+                targets as the upgrade target for the version.
             ACCELERATED (1):
                 ACCELERATED denotes that the latest patch
                 build in the channel should be used as the
@@ -14748,9 +14889,10 @@ class NetworkTierConfig(proto.Message):
 
         Values:
             NETWORK_TIER_UNSPECIFIED (0):
-                By default, use project-level configuration. When
-                unspecified, the behavior defaults to NETWORK_TIER_DEFAULT.
-                For cluster updates, this implies no action (no-op).
+                By default, use project-level configuration.
+                When unspecified, the behavior defaults to
+                NETWORK_TIER_DEFAULT. For cluster updates, this
+                implies no action (no-op).
             NETWORK_TIER_DEFAULT (1):
                 Default network tier. Use project-level
                 configuration. User can specify this value,
@@ -14862,9 +15004,10 @@ class ManagedOpenTelemetryConfig(proto.Message):
                 NONE is used to disable the Managed
                 OpenTelemetry pipeline.
             COLLECTION_AND_INSTRUMENTATION_COMPONENTS (2):
-                COLLECTION_AND_INSTRUMENTATION_COMPONENTS is used to enable
-                the Managed OpenTelemetry pipeline for collection and
-                instrumentation components.
+                COLLECTION_AND_INSTRUMENTATION_COMPONENTS is
+                used to enable the Managed OpenTelemetry
+                pipeline for collection and instrumentation
+                components.
         """
         SCOPE_UNSPECIFIED = 0
         NONE = 1

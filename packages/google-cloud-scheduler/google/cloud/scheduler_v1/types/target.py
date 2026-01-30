@@ -342,15 +342,15 @@ class PubsubTarget(proto.Message):
 class AppEngineRouting(proto.Message):
     r"""App Engine Routing.
 
-    For more information about services, versions, and instances see `An
-    Overview of App
-    Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`__,
-    `Microservices Architecture on Google App
-    Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`__,
-    `App Engine Standard request
-    routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__,
-    and `App Engine Flex request
-    routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
+    For more information about services, versions, and instances see
+    [An Overview of App
+    Engine](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine),
+    [Microservices Architecture on Google App
+    Engine](https://cloud.google.com/appengine/docs/python/microservices-on-app-engine),
+    [App Engine Standard request
+    routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed),
+    and [App Engine Flex request
+    routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
 
     Attributes:
         service (str):
@@ -368,17 +368,18 @@ class AppEngineRouting(proto.Message):
         instance (str):
             App instance.
 
-            By default, the job is sent to an instance which is
-            available when the job is attempted.
+            By default, the job is sent to an instance which
+            is available when the job is attempted.
 
-            Requests can only be sent to a specific instance if `manual
-            scaling is used in App Engine
-            Standard <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?#scaling_types_and_instance_classes>`__.
-            App Engine Flex does not support instances. For more
-            information, see `App Engine Standard request
-            routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__
-            and `App Engine Flex request
-            routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
+            Requests can only be sent to a specific instance
+            if [manual scaling is used in App Engine
+            Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?#scaling_types_and_instance_classes).
+            App Engine Flex does not support instances. For
+            more information, see [App Engine Standard
+            request
+            routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
+            and [App Engine Flex request
+            routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
         host (str):
             Output only. The host that the job is sent to.
 
@@ -506,11 +507,12 @@ class OAuthToken(proto.Message):
 
 
 class OidcToken(proto.Message):
-    r"""Contains information needed for generating an `OpenID Connect
-    token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
-    This type of authorization can be used for many scenarios, including
-    calling Cloud Run, or endpoints where you intend to validate the
-    token yourself.
+    r"""Contains information needed for generating an
+    [OpenID Connect
+    token](https://developers.google.com/identity/protocols/OpenIDConnect).
+    This type of authorization can be used for many scenarios,
+    including calling Cloud Run, or endpoints where you intend to
+    validate the token yourself.
 
     Attributes:
         service_account_email (str):

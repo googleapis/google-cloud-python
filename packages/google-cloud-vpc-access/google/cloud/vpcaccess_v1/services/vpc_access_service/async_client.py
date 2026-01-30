@@ -454,8 +454,8 @@ class VpcAccessServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> vpc_access.Connector:
-        r"""Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
-        resource does not exist.
+        r"""Gets a Serverless VPC Access connector. Returns
+        NOT_FOUND if the resource does not exist.
 
         .. code-block:: python
 
@@ -692,8 +692,8 @@ class VpcAccessServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
-        the resource does not exist.
+        r"""Deletes a Serverless VPC Access connector. Returns
+        NOT_FOUND if the resource does not exist.
 
         .. code-block:: python
 

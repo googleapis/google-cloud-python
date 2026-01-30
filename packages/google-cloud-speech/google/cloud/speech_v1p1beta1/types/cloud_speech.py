@@ -392,14 +392,17 @@ class RecognitionConfig(proto.Message):
             all. The default 'false' value does not add
             punctuation to result hypotheses.
         enable_spoken_punctuation (google.protobuf.wrappers_pb2.BoolValue):
-            The spoken punctuation behavior for the call If not set,
-            uses default behavior based on model of choice e.g.
-            command_and_search will enable spoken punctuation by default
-            If 'true', replaces spoken punctuation with the
-            corresponding symbols in the request. For example, "how are
-            you question mark" becomes "how are you?". See
+            The spoken punctuation behavior for the call
+            If not set, uses default behavior based on model
+            of choice e.g. command_and_search will enable
+            spoken punctuation by default If 'true',
+            replaces spoken punctuation with the
+            corresponding symbols in the request. For
+            example, "how are you question mark" becomes
+            "how are you?". See
             https://cloud.google.com/speech-to-text/docs/spoken-punctuation
-            for support. If 'false', spoken punctuation is not replaced.
+            for support. If 'false', spoken punctuation is
+            not replaced.
         enable_spoken_emojis (google.protobuf.wrappers_pb2.BoolValue):
             The spoken emoji behavior for the call
             If not set, uses default behavior based on model
@@ -409,15 +412,16 @@ class RecognitionConfig(proto.Message):
             symbols in the final transcript. If 'false',
             spoken emojis are not replaced.
         enable_speaker_diarization (bool):
-            If 'true', enables speaker detection for each recognized
-            word in the top alternative of the recognition result using
-            a speaker_label provided in the WordInfo. Note: Use
-            diarization_config instead.
+            If 'true', enables speaker detection for each
+            recognized word in the top alternative of the
+            recognition result using a speaker_label
+            provided in the WordInfo.
+            Note: Use diarization_config instead.
         diarization_speaker_count (int):
-            If set, specifies the estimated number of speakers in the
-            conversation. Defaults to '2'. Ignored unless
-            enable_speaker_diarization is set to true. Note: Use
-            diarization_config instead.
+            If set, specifies the estimated number of
+            speakers in the conversation. Defaults to '2'.
+            Ignored unless enable_speaker_diarization is set
+            to true. Note: Use diarization_config instead.
         diarization_config (google.cloud.speech_v1p1beta1.types.SpeakerDiarizationConfig):
             Config to enable speaker diarization and set
             additional parameters to make diarization better
@@ -434,60 +438,62 @@ class RecognitionConfig(proto.Message):
         metadata (google.cloud.speech_v1p1beta1.types.RecognitionMetadata):
             Metadata regarding this request.
         model (str):
-            Which model to select for the given request. Select the
-            model best suited to your domain to get best results. If a
-            model is not explicitly specified, then we auto-select a
-            model based on the parameters in the RecognitionConfig.
-
-            .. raw:: html
-
-                <table>
-                  <tr>
-                    <td><b>Model</b></td>
-                    <td><b>Description</b></td>
-                  </tr>
-                  <tr>
-                    <td><code>latest_long</code></td>
-                    <td>Best for long form content like media or conversation.</td>
-                  </tr>
-                  <tr>
-                    <td><code>latest_short</code></td>
-                    <td>Best for short form content like commands or single shot directed
-                    speech.</td>
-                  </tr>
-                  <tr>
-                    <td><code>command_and_search</code></td>
-                    <td>Best for short queries such as voice commands or voice search.</td>
-                  </tr>
-                  <tr>
-                    <td><code>phone_call</code></td>
-                    <td>Best for audio that originated from a phone call (typically
-                    recorded at an 8khz sampling rate).</td>
-                  </tr>
-                  <tr>
-                    <td><code>video</code></td>
-                    <td>Best for audio that originated from video or includes multiple
-                        speakers. Ideally the audio is recorded at a 16khz or greater
-                        sampling rate. This is a premium model that costs more than the
-                        standard rate.</td>
-                  </tr>
-                  <tr>
-                    <td><code>default</code></td>
-                    <td>Best for audio that is not one of the specific audio models.
-                        For example, long-form audio. Ideally the audio is high-fidelity,
-                        recorded at a 16khz or greater sampling rate.</td>
-                  </tr>
-                  <tr>
-                    <td><code>medical_conversation</code></td>
-                    <td>Best for audio that originated from a conversation between a
-                        medical provider and patient.</td>
-                  </tr>
-                  <tr>
-                    <td><code>medical_dictation</code></td>
-                    <td>Best for audio that originated from dictation notes by a medical
-                        provider.</td>
-                  </tr>
-                </table>
+            Which model to select for the given request.
+            Select the model best suited to your domain to
+            get best results. If a model is not explicitly
+            specified, then we auto-select a model based on
+            the parameters in the RecognitionConfig.
+            <table>
+            <tr>
+            <td><b>Model</b></td>
+            <td><b>Description</b></td>
+            </tr>
+            <tr>
+            <td><code>latest_long</code></td>
+            <td>Best for long form content like media or
+            conversation.</td> </tr>
+            <tr>
+            <td><code>latest_short</code></td>
+            <td>Best for short form content like commands or
+            single shot directed speech.</td>
+            </tr>
+            <tr>
+            <td><code>command_and_search</code></td>
+            <td>Best for short queries such as voice
+            commands or voice search.</td> </tr>
+            <tr>
+            <td><code>phone_call</code></td>
+            <td>Best for audio that originated from a phone
+            call (typically recorded at an 8khz sampling
+            rate).</td>
+            </tr>
+            <tr>
+            <td><code>video</code></td>
+            <td>Best for audio that originated from video or
+            includes multiple speakers. Ideally the audio is
+            recorded at a 16khz or greater sampling rate.
+            This is a premium model that costs more than the
+            standard rate.</td>
+            </tr>
+            <tr>
+            <td><code>default</code></td>
+            <td>Best for audio that is not one of the
+            specific audio models. For example, long-form
+            audio. Ideally the audio is high-fidelity,
+            recorded at a 16khz or greater sampling
+            rate.</td> </tr>
+            <tr>
+            <td><code>medical_conversation</code></td>
+            <td>Best for audio that originated from a
+            conversation between a medical provider and
+            patient.</td>
+            </tr>
+            <tr>
+            <td><code>medical_dictation</code></td>
+            <td>Best for audio that originated from
+            dictation notes by a medical provider.</td>
+            </tr>
+            </table>
         use_enhanced (bool):
             Set to true to use an enhanced model for speech recognition.
             If ``use_enhanced`` is set to true and the ``model`` field
@@ -700,9 +706,10 @@ class SpeakerDiarizationConfig(proto.Message):
 
     Attributes:
         enable_speaker_diarization (bool):
-            If 'true', enables speaker detection for each recognized
-            word in the top alternative of the recognition result using
-            a speaker_label provided in the WordInfo.
+            If 'true', enables speaker detection for each
+            recognized word in the top alternative of the
+            recognition result using a speaker_label
+            provided in the WordInfo.
         min_speaker_count (int):
             Minimum number of speakers in the
             conversation. This range gives you more
@@ -789,10 +796,11 @@ class RecognitionMetadata(proto.Message):
                 Use case is either unknown or is something
                 other than one of the other values below.
             DISCUSSION (1):
-                Multiple people in a conversation or discussion. For example
-                in a meeting with two or more people actively participating.
-                Typically all the primary people speaking would be in the
-                same room (if not, see PHONE_CALL)
+                Multiple people in a conversation or discussion.
+                For example in a meeting with two or more people
+                actively participating. Typically all the
+                primary people speaking would be in the same
+                room (if not, see PHONE_CALL)
             PRESENTATION (2):
                 One or more persons lecturing or presenting
                 to others, mostly uninterrupted.
@@ -1375,10 +1383,11 @@ class StreamingRecognitionResult(proto.Message):
             Time offset of the end of this result
             relative to the beginning of the audio.
         channel_tag (int):
-            For multi-channel audio, this is the channel number
-            corresponding to the recognized result for the audio from
-            that channel. For audio_channel_count = N, its output values
-            can range from '1' to 'N'.
+            For multi-channel audio, this is the channel
+            number corresponding to the recognized result
+            for the audio from that channel. For
+            audio_channel_count = N, its output values can
+            range from '1' to 'N'.
         language_code (str):
             Output only. The
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
@@ -1427,10 +1436,11 @@ class SpeechRecognitionResult(proto.Message):
             (first) alternative being the most probable, as ranked by
             the recognizer.
         channel_tag (int):
-            For multi-channel audio, this is the channel number
-            corresponding to the recognized result for the audio from
-            that channel. For audio_channel_count = N, its output values
-            can range from '1' to 'N'.
+            For multi-channel audio, this is the channel
+            number corresponding to the recognized result
+            for the audio from that channel. For
+            audio_channel_count = N, its output values can
+            range from '1' to 'N'.
         result_end_time (google.protobuf.duration_pb2.Duration):
             Time offset of the end of this result
             relative to the beginning of the audio.
@@ -1532,21 +1542,25 @@ class WordInfo(proto.Message):
             provided. The default of 0.0 is a sentinel value indicating
             ``confidence`` was not set.
         speaker_tag (int):
-            Output only. A distinct integer value is assigned for every
-            speaker within the audio. This field specifies which one of
-            those speakers was detected to have spoken this word. Value
-            ranges from '1' to diarization_speaker_count. speaker_tag is
-            set if enable_speaker_diarization = 'true' and only for the
-            top alternative. Note: Use speaker_label instead.
+            Output only. A distinct integer value is
+            assigned for every speaker within the audio.
+            This field specifies which one of those speakers
+            was detected to have spoken this word. Value
+            ranges from '1' to diarization_speaker_count.
+            speaker_tag is set if enable_speaker_diarization
+            = 'true' and only for the top alternative.
+            Note: Use speaker_label instead.
         speaker_label (str):
-            Output only. A label value assigned for every unique speaker
-            within the audio. This field specifies which speaker was
-            detected to have spoken this word. For some models, like
-            medical_conversation this can be actual speaker role, for
-            example "patient" or "provider", but generally this would be
-            a number identifying a speaker. This field is only set if
-            enable_speaker_diarization = 'true' and only for the top
-            alternative.
+            Output only. A label value assigned for every
+            unique speaker within the audio. This field
+            specifies which speaker was detected to have
+            spoken this word. For some models, like
+            medical_conversation this can be actual speaker
+            role, for example "patient" or "provider", but
+            generally this would be a number identifying a
+            speaker. This field is only set if
+            enable_speaker_diarization = 'true' and only for
+            the top alternative.
     """
 
     start_time: duration_pb2.Duration = proto.Field(

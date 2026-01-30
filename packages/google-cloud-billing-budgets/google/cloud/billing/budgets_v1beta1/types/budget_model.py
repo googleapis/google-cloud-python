@@ -225,9 +225,9 @@ class ThresholdRule(proto.Message):
             is exceeded. This is a 1.0-based percentage, so
             0.5 = 50%. Validation: non-negative number.
         spend_basis (google.cloud.billing.budgets_v1beta1.types.ThresholdRule.Basis):
-            Optional. The type of basis used to determine if spend has
-            passed the threshold. Behavior defaults to CURRENT_SPEND if
-            not set.
+            Optional. The type of basis used to determine if
+            spend has passed the threshold. Behavior
+            defaults to CURRENT_SPEND if not set.
     """
 
     class Basis(proto.Enum):
@@ -430,9 +430,9 @@ class Filter(proto.Message):
     class CreditTypesTreatment(proto.Enum):
         r"""Specifies how credits are applied when determining the spend for
         threshold calculations. Budgets track the total cost minus any
-        applicable selected credits. `See the documentation for a list of
-        credit
-        types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
+        applicable selected credits.
+        [See the documentation for a list of credit
+        types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
 
         Values:
             CREDIT_TYPES_TREATMENT_UNSPECIFIED (0):
@@ -446,11 +446,11 @@ class Filter(proto.Message):
                 to determine the spend for threshold
                 calculations.
             INCLUDE_SPECIFIED_CREDITS (3):
-                `Credit
-                types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__
-                specified in the credit_types field are subtracted from the
-                gross cost to determine the spend for threshold
-                calculations.
+                [Credit
+                types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type)
+                specified in the credit_types field are
+                subtracted from the gross cost to determine the
+                spend for threshold calculations.
         """
         CREDIT_TYPES_TREATMENT_UNSPECIFIED = 0
         INCLUDE_ALL_CREDITS = 1
@@ -511,9 +511,10 @@ class CustomPeriod(proto.Message):
             Required. The start date must be after
             January 1, 2017.
         end_date (google.type.date_pb2.Date):
-            Optional. The end date of the time period. Budgets with
-            elapsed end date won't be processed. If unset, specifies to
-            track all usage incurred since the start_date.
+            Optional. The end date of the time period.
+            Budgets with elapsed end date won't be
+            processed. If unset, specifies to track all
+            usage incurred since the start_date.
     """
 
     start_date: date_pb2.Date = proto.Field(

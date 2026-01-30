@@ -91,8 +91,8 @@ class ListPackagesRequest(proto.Message):
             The maximum number of packages to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request, if any.
+            The next_page_token value returned from a
+            previous list request, if any.
         filter (str):
             Optional. An expression for filtering the results of the
             request. Filter rules are case insensitive. The fields

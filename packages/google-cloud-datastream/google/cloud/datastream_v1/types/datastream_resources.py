@@ -636,8 +636,9 @@ class StandardConnectionFormat(proto.Message):
 
     Attributes:
         direct_connection (bool):
-            Optional. Specifies whether the client connects directly to
-            the host[:port] in the connection URI.
+            Optional. Specifies whether the client connects
+            directly to the host[:port] in the connection
+            URI.
     """
 
     direct_connection: bool = proto.Field(
@@ -967,27 +968,29 @@ class MongodbSslConfig(proto.Message):
 
     Attributes:
         client_key (str):
-            Optional. Input only. PEM-encoded private key associated
-            with the Client Certificate. If this field is used then the
-            'client_certificate' and the 'ca_certificate' fields are
-            mandatory.
+            Optional. Input only. PEM-encoded private key
+            associated with the Client Certificate. If this
+            field is used then the 'client_certificate' and
+            the 'ca_certificate' fields are mandatory.
         client_key_set (bool):
-            Output only. Indicates whether the client_key field is set.
+            Output only. Indicates whether the client_key
+            field is set.
         client_certificate (str):
-            Optional. Input only. PEM-encoded certificate that will be
-            used by the replica to authenticate against the source
-            database server. If this field is used then the 'client_key'
-            and the 'ca_certificate' fields are mandatory.
+            Optional. Input only. PEM-encoded certificate
+            that will be used by the replica to authenticate
+            against the source database server. If this
+            field is used then the 'client_key' and the
+            'ca_certificate' fields are mandatory.
         client_certificate_set (bool):
-            Output only. Indicates whether the client_certificate field
-            is set.
+            Output only. Indicates whether the
+            client_certificate field is set.
         ca_certificate (str):
             Optional. Input only. PEM-encoded certificate
             of the CA that signed the source database
             server's certificate.
         ca_certificate_set (bool):
-            Output only. Indicates whether the ca_certificate field is
-            set.
+            Output only. Indicates whether the
+            ca_certificate field is set.
         secret_manager_stored_client_key (str):
             Optional. Input only. A reference to a Secret Manager
             resource name storing the PEM-encoded private key associated
@@ -1031,27 +1034,29 @@ class MysqlSslConfig(proto.Message):
 
     Attributes:
         client_key (str):
-            Optional. Input only. PEM-encoded private key associated
-            with the Client Certificate. If this field is used then the
-            'client_certificate' and the 'ca_certificate' fields are
-            mandatory.
+            Optional. Input only. PEM-encoded private key
+            associated with the Client Certificate. If this
+            field is used then the 'client_certificate' and
+            the 'ca_certificate' fields are mandatory.
         client_key_set (bool):
-            Output only. Indicates whether the client_key field is set.
+            Output only. Indicates whether the client_key
+            field is set.
         client_certificate (str):
-            Optional. Input only. PEM-encoded certificate that will be
-            used by the replica to authenticate against the source
-            database server. If this field is used then the 'client_key'
-            and the 'ca_certificate' fields are mandatory.
+            Optional. Input only. PEM-encoded certificate
+            that will be used by the replica to authenticate
+            against the source database server. If this
+            field is used then the 'client_key' and the
+            'ca_certificate' fields are mandatory.
         client_certificate_set (bool):
-            Output only. Indicates whether the client_certificate field
-            is set.
+            Output only. Indicates whether the
+            client_certificate field is set.
         ca_certificate (str):
             Input only. PEM-encoded certificate of the CA
             that signed the source database server's
             certificate.
         ca_certificate_set (bool):
-            Output only. Indicates whether the ca_certificate field is
-            set.
+            Output only. Indicates whether the
+            ca_certificate field is set.
     """
 
     client_key: str = proto.Field(
@@ -1089,15 +1094,16 @@ class OracleSslConfig(proto.Message):
             that signed the source database server's
             certificate.
         ca_certificate_set (bool):
-            Output only. Indicates whether the ca_certificate field has
-            been set for this Connection-Profile.
+            Output only. Indicates whether the
+            ca_certificate field has been set for this
+            Connection-Profile.
         server_certificate_distinguished_name (str):
-            Optional. The distinguished name (DN) mentioned in the
-            server certificate. This corresponds to SSL_SERVER_CERT_DN
-            sqlnet parameter. Refer
+            Optional. The distinguished name (DN) mentioned
+            in the server certificate. This corresponds to
+            SSL_SERVER_CERT_DN sqlnet parameter. Refer
             https://docs.oracle.com/en/database/oracle/oracle-database/19/netrf/local-naming-parameters-in-tns-ora-file.html#GUID-70AB0695-A9AA-4A94-B141-4C605236EEB7
-            If this field is not provided, the DN matching is not
-            enforced.
+            If this field is not provided, the DN matching
+            is not enforced.
     """
 
     ca_certificate: str = proto.Field(
@@ -1142,8 +1148,8 @@ class PostgresqlSslConfig(proto.Message):
 
     class ServerVerification(proto.Message):
         r"""Message represents the option where Datastream will enforce the
-        encryption and authenticate the server identity. ca_certificate must
-        be set if user selects this option.
+        encryption and authenticate the server identity. ca_certificate
+        must be set if user selects this option.
 
         Attributes:
             ca_certificate (str):
@@ -1169,8 +1175,8 @@ class PostgresqlSslConfig(proto.Message):
     class ServerAndClientVerification(proto.Message):
         r"""Message represents the option where Datastream will enforce the
         encryption and authenticate the server identity as well as the
-        client identity. ca_certificate, client_certificate and client_key
-        must be set if user selects this option.
+        client identity. ca_certificate, client_certificate and
+        client_key must be set if user selects this option.
 
         Attributes:
             client_certificate (str):
@@ -1819,9 +1825,9 @@ class PostgresqlSourceConfig(proto.Message):
             replication slot that's configured with the
             pgoutput plugin.
         publication (str):
-            Required. The name of the publication that includes the set
-            of all tables that are defined in the stream's
-            include_objects.
+            Required. The name of the publication that
+            includes the set of all tables that are defined
+            in the stream's include_objects.
         max_concurrent_backfill_tasks (int):
             Maximum number of concurrent backfill tasks.
             The number should be non negative. If not set
@@ -2729,10 +2735,11 @@ class BigQueryDestinationConfig(proto.Message):
                     prefixed by the provided value. The prefix and name will be
                     separated by an underscore. i.e. \_<dataset_name>.
                 kms_key_name (str):
-                    Describes the Cloud KMS encryption key that will be used to
-                    protect destination BigQuery table. The BigQuery Service
-                    Account associated with your project requires access to this
-                    encryption key. i.e.
+                    Describes the Cloud KMS encryption key that will
+                    be used to protect destination BigQuery table.
+                    The BigQuery Service Account associated with
+                    your project requires access to this encryption
+                    key. i.e.
                     projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{cryptoKey}.
                     See
                     https://cloud.google.com/bigquery/docs/customer-managed-encryption

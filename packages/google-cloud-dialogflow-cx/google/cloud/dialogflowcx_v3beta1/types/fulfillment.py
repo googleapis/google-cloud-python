@@ -143,13 +143,14 @@ class Fulfillment(proto.Message):
 
             Attributes:
                 condition (str):
-                    The condition to activate and select this case. Empty means
-                    the condition is always true. The condition is evaluated
-                    against [form parameters][Form.parameters] or [session
+                    The condition to activate and select this case.
+                    Empty means the condition is always true. The
+                    condition is evaluated against [form
+                    parameters][Form.parameters] or [session
                     parameters][SessionInfo.parameters].
 
-                    See the `conditions
-                    reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
+                    See the [conditions
+                    reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
                 case_content (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Fulfillment.ConditionalCases.Case.CaseContent]):
                     A list of case content.
             """

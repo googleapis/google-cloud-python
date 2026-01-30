@@ -5346,8 +5346,8 @@ class DisksClient(metaclass=DisksClientMeta):
     ) -> compute.Operation:
         r"""Updates the specified disk with the data included in the
         request. The update is performed only on selected fields
-        included as part of update-mask. Only the following fields can
-        be modified: user_license.
+        included as part of update-mask. Only the following
+        fields can be modified: user_license.
 
         .. code-block:: python
 
@@ -5489,8 +5489,8 @@ class DisksClient(metaclass=DisksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified disk with the data included in the
         request. The update is performed only on selected fields
-        included as part of update-mask. Only the following fields can
-        be modified: user_license.
+        included as part of update-mask. Only the following
+        fields can be modified: user_license.
 
         .. code-block:: python
 

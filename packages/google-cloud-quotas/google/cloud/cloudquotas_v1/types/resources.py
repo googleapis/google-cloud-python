@@ -213,9 +213,10 @@ class QuotaIncreaseEligibility(proto.Message):
             Whether a higher quota value can be requested
             for the quota.
         ineligibility_reason (google.cloud.cloudquotas_v1.types.QuotaIncreaseEligibility.IneligibilityReason):
-            The reason of why it is ineligible to request increased
-            value of the quota. If the is_eligible field is true, it
-            defaults to INELIGIBILITY_REASON_UNSPECIFIED.
+            The reason of why it is ineligible to request
+            increased value of the quota. If the is_eligible
+            field is true, it defaults to
+            INELIGIBILITY_REASON_UNSPECIFIED.
     """
 
     class IneligibilityReason(proto.Enum):
@@ -267,22 +268,25 @@ class QuotaPreference(proto.Message):
             "locations/" must be "global". Example:
             ``projects/123/locations/global/quotaPreferences/my-config-for-us-east1``
         dimensions (MutableMapping[str, str]):
-            Immutable. The dimensions that this quota preference applies
-            to. The key of the map entry is the name of a dimension,
-            such as "region", "zone", "network_id", and the value of the
-            map entry is the dimension value.
+            Immutable. The dimensions that this quota
+            preference applies to. The key of the map entry
+            is the name of a dimension, such as "region",
+            "zone", "network_id", and the value of the map
+            entry is the dimension value.
 
-            If a dimension is missing from the map of dimensions, the
-            quota preference applies to all the dimension values except
-            for those that have other quota preferences configured for
-            the specific value.
+            If a dimension is missing from the map of
+            dimensions, the quota preference applies to all
+            the dimension values except for those that have
+            other quota preferences configured for the
+            specific value.
 
-            NOTE: QuotaPreferences can only be applied across all values
-            of "user" and "resource" dimension. Do not set values for
-            "user" or "resource" in the dimension map.
+            NOTE: QuotaPreferences can only be applied
+            across all values of "user" and "resource"
+            dimension. Do not set values for "user" or
+            "resource" in the dimension map.
 
-            Example: {"provider", "Foo Inc"} where "provider" is a
-            service specific dimension.
+            Example: {"provider", "Foo Inc"} where
+            "provider" is a service specific dimension.
         quota_config (google.cloud.cloudquotas_v1.types.QuotaConfig):
             Required. Preferred quota configuration.
         etag (str):
@@ -469,10 +473,12 @@ class DimensionsInfo(proto.Message):
         details (google.cloud.cloudquotas_v1.types.QuotaDetails):
             Quota details for the specified dimensions.
         applicable_locations (MutableSequence[str]):
-            The applicable regions or zones of this dimensions info. The
-            field will be set to ['global'] for quotas that are not per
-            region or per zone. Otherwise, it will be set to the list of
-            locations this dimension info is applicable to.
+            The applicable regions or zones of this
+            dimensions info. The field will be set to
+            ['global'] for quotas that are not per region or
+            per zone. Otherwise, it will be set to the list
+            of locations this dimension info is applicable
+            to.
     """
 
     dimensions: MutableMapping[str, str] = proto.MapField(

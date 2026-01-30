@@ -43,18 +43,19 @@ class Kubernetes(proto.Message):
             `node <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#nodes>`__
             information.
         node_pools (MutableSequence[google.cloud.securitycenter_v2.types.Kubernetes.NodePool]):
-            GKE `node
-            pools <https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools>`__
-            associated with the finding. This field contains node pool
-            information for each node, when it is available.
+            GKE [node
+            pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
+            associated with the finding. This field contains
+            node pool information for each node, when it is
+            available.
         roles (MutableSequence[google.cloud.securitycenter_v2.types.Kubernetes.Role]):
-            Provides Kubernetes role information for findings that
-            involve `Roles or
-            ClusterRoles <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
+            Provides Kubernetes role information for
+            findings that involve [Roles or
+            ClusterRoles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
         bindings (MutableSequence[google.cloud.securitycenter_v2.types.Kubernetes.Binding]):
-            Provides Kubernetes role binding information for findings
-            that involve `RoleBindings or
-            ClusterRoleBindings <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
+            Provides Kubernetes role binding information for
+            findings that involve [RoleBindings or
+            ClusterRoleBindings](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
         access_reviews (MutableSequence[google.cloud.securitycenter_v2.types.Kubernetes.AccessReview]):
             Provides information on any Kubernetes access
             reviews (privilege checks) relevant to the

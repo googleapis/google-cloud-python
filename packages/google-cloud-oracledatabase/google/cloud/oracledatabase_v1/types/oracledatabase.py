@@ -173,8 +173,9 @@ class GetCloudExadataInfrastructureRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Cloud Exadata Infrastructure in
-            the following format:
+            Required. The name of the Cloud Exadata
+            Infrastructure in the following format:
+
             projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
     """
 
@@ -242,8 +243,9 @@ class DeleteCloudExadataInfrastructureRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Cloud Exadata Infrastructure in
-            the following format:
+            Required. The name of the Cloud Exadata
+            Infrastructure in the following format:
+
             projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -347,8 +349,8 @@ class GetCloudVmClusterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Cloud VM Cluster in the following
-            format:
+            Required. The name of the Cloud VM Cluster in
+            the following format:
             projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}.
     """
 
@@ -412,8 +414,8 @@ class DeleteCloudVmClusterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Cloud VM Cluster in the following
-            format:
+            Required. The name of the Cloud VM Cluster in
+            the following format:
             projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -909,8 +911,8 @@ class GetAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     """
 
@@ -976,12 +978,13 @@ class UpdateAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Exadata resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Exadata resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         autonomous_database (google.cloud.oracledatabase_v1.types.AutonomousDatabase):
             Required. The resource being updated
         request_id (str):
@@ -1020,7 +1023,8 @@ class DeleteAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource in the following format:
+            Required. The name of the resource in the
+            following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -1052,8 +1056,8 @@ class RestoreAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         restore_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The time and date to restore the
@@ -1076,8 +1080,8 @@ class StopAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     """
 
@@ -1092,8 +1096,8 @@ class StartAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     """
 
@@ -1108,8 +1112,8 @@ class RestartAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
     """
 
@@ -1124,8 +1128,8 @@ class SwitchoverAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         peer_autonomous_database (str):
             Required. The peer database name to switch
@@ -1147,8 +1151,8 @@ class FailoverAutonomousDatabaseRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         peer_autonomous_database (str):
             Required. The peer database name to fail over
@@ -1170,8 +1174,8 @@ class GenerateAutonomousDatabaseWalletRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Autonomous Database in the
-            following format:
+            Required. The name of the Autonomous Database in
+            the following format:
             projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}.
         type_ (google.cloud.oracledatabase_v1.types.GenerateType):
             Optional. The type of wallet generation for
@@ -1487,8 +1491,8 @@ class DeleteExadbVmClusterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExadbVmCluster in the following
-            format:
+            Required. The name of the ExadbVmCluster in the
+            following format:
             projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -1520,8 +1524,8 @@ class GetExadbVmClusterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExadbVmCluster in the following
-            format:
+            Required. The name of the ExadbVmCluster in the
+            following format:
             projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
     """
 
@@ -1656,8 +1660,8 @@ class RemoveVirtualMachineExadbVmClusterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExadbVmCluster in the following
-            format:
+            Required. The name of the ExadbVmCluster in the
+            following format:
             projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}.
         request_id (str):
             Optional. An optional ID to identify the

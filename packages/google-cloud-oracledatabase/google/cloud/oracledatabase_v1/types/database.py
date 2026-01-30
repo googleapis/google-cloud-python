@@ -52,8 +52,8 @@ class Database(proto.Message):
             characters. Special characters are not
             permitted.
         db_unique_name (str):
-            Optional. The DB_UNIQUE_NAME of the Oracle Database being
-            backed up.
+            Optional. The DB_UNIQUE_NAME of the Oracle
+            Database being backed up.
         admin_password (str):
             Required. The password for the default ADMIN
             user.

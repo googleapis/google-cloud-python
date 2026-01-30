@@ -43,22 +43,26 @@ class AgentCoachingInstruction(proto.Message):
             triggered unconditionally, the condition can be
             empty.
         agent_action (str):
-            Optional. The action that human agent should take. For
-            example, "apologize for the slow shipping". If the users
-            only want to use agent coaching for intent detection,
-            agent_action can be empty
+            Optional. The action that human agent should
+            take. For example, "apologize for the slow
+            shipping". If the users only want to use agent
+            coaching for intent detection, agent_action can
+            be empty
         system_action (str):
-            Optional. The action that system should take. For example,
-            "call GetOrderTime with order_number={order number provided
-            by the customer}". If the users don't have plugins or don't
-            want to trigger plugins, the system_action can be empty
+            Optional. The action that system should take.
+            For example, "call GetOrderTime with
+            order_number={order number provided by the
+            customer}". If the users don't have plugins or
+            don't want to trigger plugins, the system_action
+            can be empty
         duplicate_check_result (google.cloud.dialogflow_v2.types.AgentCoachingInstruction.DuplicateCheckResult):
             Output only. Duplication check for the
             AgentCoachingInstruction.
         triggering_event (google.cloud.dialogflow_v2.types.AgentCoachingInstruction.TriggerEvent):
-            Optional. The event that should trigger this instruction. If
-            UNSPECIFIED, the instruction triggering will be same as the
-            generator's trigger_event.
+            Optional. The event that should trigger this
+            instruction. If UNSPECIFIED, the instruction
+            triggering will be same as the generator's
+            trigger_event.
     """
 
     class TriggerEvent(proto.Enum):

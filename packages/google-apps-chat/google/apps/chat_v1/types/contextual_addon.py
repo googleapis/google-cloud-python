@@ -113,12 +113,15 @@ class ContextualAddOnMarkup(proto.Message):
 
             Attributes:
                 header (str):
-                    The header of the section. Formatted text is supported. For
-                    more information about formatting text, see `Formatting text
-                    in Google Chat
-                    apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
-                    and `Formatting text in Google Workspace
-                    Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
+                    The header of the section. Formatted text is
+                    supported. For more information
+                    about formatting text, see
+                    [Formatting text in Google Chat
+                    apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
+                    and
+                    [Formatting
+                    text in Google Workspace
+                    Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
                 widgets (MutableSequence[google.apps.chat_v1.types.WidgetMarkup]):
                     A section must contain at least one widget.
             """

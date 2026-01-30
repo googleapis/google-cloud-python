@@ -54,10 +54,11 @@ class LocalInventory(proto.Message):
             product. This field will be ignored if set by
             the client.
         store_code (str):
-            Required. Immutable. Store code (the store ID from your
-            Business Profile) of the physical store the product is sold
-            in. See the `Local product inventory data
-            specification <https://support.google.com/merchants/answer/3061342>`__
+            Required. Immutable. Store code (the store ID
+            from your Business Profile) of the physical
+            store the product is sold in. See the [Local
+            product inventory data
+            specification](https://support.google.com/merchants/answer/3061342)
             for more information.
         price (google.shopping.type.types.Price):
             Price of the product at this store.
@@ -68,9 +69,10 @@ class LocalInventory(proto.Message):
         sale_price_effective_date (google.type.interval_pb2.Interval):
             The ``TimePeriod`` of the sale at this store.
         availability (str):
-            Availability of the product at this store. For accepted
-            attribute values, see the `local product inventory data
-            specification <https://support.google.com/merchants/answer/3061342>`__
+            Availability of the product at this store.
+            For accepted attribute values, see the [local
+            product inventory data
+            specification](https://support.google.com/merchants/answer/3061342)
 
             This field is a member of `oneof`_ ``_availability``.
         quantity (int):

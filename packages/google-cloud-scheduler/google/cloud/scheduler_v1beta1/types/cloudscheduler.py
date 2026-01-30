@@ -58,10 +58,11 @@ class ListJobsRequest(proto.Message):
         page_size (int):
             Requested page size.
 
-            The maximum page size is 500. If unspecified, the page size
-            will be the maximum. Fewer jobs than requested might be
-            returned, even if more jobs exist; use next_page_token to
-            determine if more jobs exist.
+            The maximum page size is 500. If unspecified,
+            the page size will be the maximum. Fewer jobs
+            than requested might be returned, even if more
+            jobs exist; use next_page_token to determine if
+            more jobs exist.
         page_token (str):
             A token identifying a page of results the server will
             return. To request the first page results, page_token must

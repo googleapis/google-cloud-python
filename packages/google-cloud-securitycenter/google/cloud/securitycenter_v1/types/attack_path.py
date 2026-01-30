@@ -49,13 +49,13 @@ class AttackPath(proto.Message):
 
         Attributes:
             resource (str):
-                The name of the resource at this point in the attack path.
-                The format of the name follows the Cloud Asset Inventory
-                `resource name
-                format <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+                The name of the resource at this point in the
+                attack path. The format of the name follows the
+                Cloud Asset Inventory [resource name
+                format](https://cloud.google.com/asset-inventory/docs/resource-name-format)
             resource_type (str):
-                The `supported resource
-                type <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+                The [supported resource
+                type](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
             display_name (str):
                 Human-readable name of this resource.
             associated_findings (MutableSequence[google.cloud.securitycenter_v1.types.AttackPath.AttackPathNode.PathNodeAssociatedFinding]):

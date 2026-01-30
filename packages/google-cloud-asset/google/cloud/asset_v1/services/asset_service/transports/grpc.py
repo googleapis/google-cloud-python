@@ -414,12 +414,13 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
     ]:
         r"""Return a callable for the batch get assets history method over gRPC.
 
-        Batch gets the update history of assets that overlap a time
-        window. For IAM_POLICY content, this API outputs history when
-        the asset and its attached IAM POLICY both exist. This can
-        create gaps in the output history. Otherwise, this API outputs
-        history with asset in both non-delete or deleted status. If a
-        specified asset does not exist, this API returns an
+        Batch gets the update history of assets that overlap a
+        time window. For IAM_POLICY content, this API outputs
+        history when the asset and its attached IAM POLICY both
+        exist. This can create gaps in the output history.
+        Otherwise, this API outputs history with asset in both
+        non-delete or deleted status.
+        If a specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
         Returns:

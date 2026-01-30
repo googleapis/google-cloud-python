@@ -2226,8 +2226,10 @@ class ManagedKafkaAsyncClient:
 
         Returns:
             google.cloud.managedkafka_v1.types.Acl:
-                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
-                   of resource_type, resource_name and pattern_type.
+                Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
         """
         # Create or coerce a protobuf request object.
@@ -2381,8 +2383,10 @@ class ManagedKafkaAsyncClient:
 
         Returns:
             google.cloud.managedkafka_v1.types.Acl:
-                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
-                   of resource_type, resource_name and pattern_type.
+                Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
         """
         # Create or coerce a protobuf request object.
@@ -2495,11 +2499,13 @@ class ManagedKafkaAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Acl resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A field will be
-                overwritten if it is in the mask.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the Acl
+                resource by the update. The fields
+                specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2514,8 +2520,10 @@ class ManagedKafkaAsyncClient:
 
         Returns:
             google.cloud.managedkafka_v1.types.Acl:
-                Represents the set of ACLs for a given Kafka Resource Pattern, which consists
-                   of resource_type, resource_name and pattern_type.
+                Represents the set of ACLs for a given
+                Kafka Resource Pattern, which consists
+                of resource_type, resource_name and
+                pattern_type.
 
         """
         # Create or coerce a protobuf request object.

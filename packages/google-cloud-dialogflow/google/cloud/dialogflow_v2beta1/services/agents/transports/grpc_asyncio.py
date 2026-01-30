@@ -384,9 +384,9 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
 
         Creates/updates the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.SetAgentRequest],
@@ -438,12 +438,13 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
     ) -> Callable[[agent.SearchAgentsRequest], Awaitable[agent.SearchAgentsResponse]]:
         r"""Return a callable for the search agents method over gRPC.
 
-        Returns the list of agents. Since there is at most one
-        conversational agent per project, this method is useful
-        primarily for listing all agents across projects the caller has
-        access to. One can achieve that with a wildcard project
-        collection id "-". Refer to `List
-        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
+        Returns the list of agents.
+        Since there is at most one conversational agent per
+        project, this method is useful primarily for listing all
+        agents across projects the caller has access to. One can
+        achieve that with a wildcard project collection id "-".
+        Refer to [List
+        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
 
         Returns:
             Callable[[~.SearchAgentsRequest],

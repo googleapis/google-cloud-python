@@ -385,9 +385,10 @@ class Interpretation(proto.Message):
             List of data sources used in the current
             understanding.
         confidence (float):
-            The level of confidence that one of the interpretations is
-            correct. This is a value in the range [0, 1] where a value
-            of 0.5 or below is to be considered a low confidence.
+            The level of confidence that one of the
+            interpretations is correct. This is a value in
+            the range [0, 1] where a value of 0.5 or below
+            is to be considered a low confidence.
         unused_phrases (MutableSequence[str]):
             A list of unused phrases. Clients should
             display a Did You Mean (DYM)  dialog if this is
@@ -510,29 +511,29 @@ class InterpretationStructure(proto.Message):
             TABLE (1):
                 Show a table.
             BAR_CHART (2):
-                Show a `bar
-                chart <https://developers.google.com/chart/interactive/docs/gallery/barchart>`__.
+                Show a [bar
+                chart](https://developers.google.com/chart/interactive/docs/gallery/barchart).
             COLUMN_CHART (3):
-                Show a `column
-                chart <https://developers.google.com/chart/interactive/docs/gallery/columnchart>`__.
+                Show a [column
+                chart](https://developers.google.com/chart/interactive/docs/gallery/columnchart).
             TIMELINE (4):
                 Show a
                 `timeline <https://developers.google.com/chart/interactive/docs/gallery/timeline>`__.
             SCATTER_PLOT (5):
-                Show a `scatter
-                plot <https://developers.google.com/chart/interactive/docs/gallery/scatterchart>`__.
+                Show a [scatter
+                plot](https://developers.google.com/chart/interactive/docs/gallery/scatterchart).
             PIE_CHART (6):
-                Show a `pie
-                chart <https://developers.google.com/chart/interactive/docs/gallery/piechart>`__.
+                Show a [pie
+                chart](https://developers.google.com/chart/interactive/docs/gallery/piechart).
             LINE_CHART (7):
-                Show a `line
-                chart <https://developers.google.com/chart/interactive/docs/gallery/linechart>`__.
+                Show a [line
+                chart](https://developers.google.com/chart/interactive/docs/gallery/linechart).
             AREA_CHART (8):
-                Show an `area
-                chart <https://developers.google.com/chart/interactive/docs/gallery/areachart>`__.
+                Show an [area
+                chart](https://developers.google.com/chart/interactive/docs/gallery/areachart).
             COMBO_CHART (9):
-                Show a `combo
-                chart <https://developers.google.com/chart/interactive/docs/gallery/combochart>`__.
+                Show a [combo
+                chart](https://developers.google.com/chart/interactive/docs/gallery/combochart).
             HISTOGRAM (10):
                 Show a
                 `histogram <https://developers.google.com/chart/interactive/docs/gallery/histogram>`__.
@@ -613,10 +614,11 @@ class DebugFlags(proto.Message):
         include_aqua_debug_response (bool):
             Whether to include the Aqua debug response.
         time_override (int):
-            The time in milliseconds from Unix epoch to be used to
-            process the query. This is useful for testing the queries at
-            different time period. If not set or time_override <= 0,
-            then the current time is used.
+            The time in milliseconds from Unix epoch to be
+            used to process the query. This is useful for
+            testing the queries at different time period.
+            If not set or time_override <= 0, then the
+            current time is used.
         is_internal_google_user (bool):
             Set to true if request is initiated by an
             internal Google user.

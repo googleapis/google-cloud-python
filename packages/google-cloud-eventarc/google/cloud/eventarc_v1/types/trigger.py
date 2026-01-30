@@ -211,12 +211,14 @@ class EventFilter(proto.Message):
 
     Attributes:
         attribute (str):
-            Required. The name of a CloudEvents attribute. Currently,
-            only a subset of attributes are supported for filtering. You
-            can `retrieve a specific provider's supported event
-            types </eventarc/docs/list-providers#describe-provider>`__.
+            Required. The name of a CloudEvents attribute.
+            Currently, only a subset of attributes are
+            supported for filtering. You can [retrieve a
+            specific provider's supported event
+            types](/eventarc/docs/list-providers#describe-provider).
 
-            All triggers MUST provide a filter for the 'type' attribute.
+            All triggers MUST provide a filter for the
+            'type' attribute.
         value (str):
             Required. The value for the attribute.
         operator (str):

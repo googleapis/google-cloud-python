@@ -55,42 +55,50 @@ class Order(proto.Message):
 
             This field is a member of `oneof`_ ``_programmatic``.
         trafficker (str):
-            Required. The resource name of the User responsible for
-            trafficking the Order. Format:
+            Required. The resource name of the User
+            responsible for trafficking the Order. Format:
             "networks/{network_code}/users/{user_id}".
 
             This field is a member of `oneof`_ ``_trafficker``.
         advertiser_contacts (MutableSequence[str]):
-            Optional. Unordered list. The resource names of Contacts
-            from the advertiser of this Order. Format:
+            Optional. Unordered list. The resource names of
+            Contacts from the advertiser of this Order.
+            Format:
+
             "networks/{network_code}/contacts/{contact_id}".
         advertiser (str):
-            Required. The resource name of the Company, which is of type
-            Company.Type.ADVERTISER, to which this order belongs.
-            Format: "networks/{network_code}/companies/{company_id}".
+            Required. The resource name of the Company,
+            which is of type Company.Type.ADVERTISER, to
+            which this order belongs. Format:
+
+            "networks/{network_code}/companies/{company_id}".
 
             This field is a member of `oneof`_ ``_advertiser``.
         agency_contacts (MutableSequence[str]):
-            Optional. The resource names of Contacts from the
-            advertising Agency of this Order. Format:
+            Optional. The resource names of Contacts from
+            the advertising Agency of this Order. Format:
             "networks/{network_code}/contacts/{contact_id}".
         agency (str):
-            Optional. The resource name of the Company, which is of type
-            Company.Type.AGENCY, with which this order is associated.
-            Format: "networks/{network_code}/companies/{company_id}".
+            Optional. The resource name of the Company,
+            which is of type Company.Type.AGENCY, with which
+            this order is associated. Format:
+
+            "networks/{network_code}/companies/{company_id}".
 
             This field is a member of `oneof`_ ``_agency``.
         applied_teams (MutableSequence[str]):
-            Optional. The resource names of Teams directly applied to
-            this Order. Format:
+            Optional. The resource names of Teams directly
+            applied to this Order. Format:
             "networks/{network_code}/teams/{team_id}".
         effective_teams (MutableSequence[str]):
-            Output only. The resource names of Teams applied to this
-            Order including inherited values. Format:
+            Output only. The resource names of Teams applied
+            to this Order including inherited values.
+            Format:
             "networks/{network_code}/teams/{team_id}".
         creator (str):
-            Output only. The resource name of the User who created the
-            Order on behalf of the advertiser. Format:
+            Output only. The resource name of the User who
+            created the Order on behalf of the advertiser.
+            Format:
             "networks/{network_code}/users/{user_id}".
 
             This field is a member of `oneof`_ ``_creator``.
@@ -158,18 +166,22 @@ class Order(proto.Message):
 
             This field is a member of `oneof`_ ``_status``.
         salesperson (str):
-            Optional. The resource name of the User responsible for the
-            sales of the Order. Format:
+            Optional. The resource name of the User
+            responsible for the sales of the Order. Format:
             "networks/{network_code}/users/{user_id}".
 
             This field is a member of `oneof`_ ``_salesperson``.
         secondary_salespeople (MutableSequence[str]):
-            Optional. Unordered list. The resource names of the
-            secondary salespeople associated with the order. Format:
+            Optional. Unordered list. The resource names of
+            the secondary salespeople associated with the
+            order. Format:
+
             "networks/{network_code}/users/{user_id}".
         secondary_traffickers (MutableSequence[str]):
-            Optional. Unordered list. The resource names of the
-            secondary traffickers associated with the order. Format:
+            Optional. Unordered list. The resource names of
+            the secondary traffickers associated with the
+            order. Format:
+
             "networks/{network_code}/users/{user_id}".
         applied_labels (MutableSequence[google.ads.admanager_v1.types.AppliedLabel]):
             Optional. The set of labels applied directly

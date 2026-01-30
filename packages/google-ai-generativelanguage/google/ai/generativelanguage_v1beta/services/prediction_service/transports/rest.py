@@ -508,7 +508,9 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             Returns:
                 ~.prediction_service.PredictResponse:
-                    Response message for [PredictionService.Predict].
+                    Response message for
+                [PredictionService.Predict].
+
             """
 
             http_options = (

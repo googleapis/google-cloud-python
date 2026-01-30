@@ -41,11 +41,11 @@ class CreateCompanyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the tenant under which the
-            company is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}",
-            for example, "projects/foo/tenants/bar".
+            Required. Resource name of the tenant under
+            which the company is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}", for
+            example, "projects/foo/tenants/bar".
         company (google.cloud.talent_v4.types.Company):
             Required. The company to be created.
     """
@@ -66,8 +66,8 @@ class GetCompanyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the company to be retrieved.
-
+            Required. The resource name of the company to be
+            retrieved.
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
             for example,
@@ -118,11 +118,12 @@ class DeleteCompanyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the company to be deleted.
-
+            Required. The resource name of the company to be
+            deleted.
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-            for example, "projects/foo/tenants/bar/companies/baz".
+            for example,
+            "projects/foo/tenants/bar/companies/baz".
     """
 
     name: str = proto.Field(
@@ -136,11 +137,11 @@ class ListCompaniesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the tenant under which the
-            company is created.
-
-            The format is "projects/{project_id}/tenants/{tenant_id}",
-            for example, "projects/foo/tenants/bar".
+            Required. Resource name of the tenant under
+            which the company is created.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}", for
+            example, "projects/foo/tenants/bar".
         page_token (str):
             The starting indicator from which to return
             results.

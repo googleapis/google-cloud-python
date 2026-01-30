@@ -176,10 +176,11 @@ class ComputeThreatListDiffResponse(proto.Message):
             A set of entries to remove from a local
             threat type's list. This field may be empty.
         new_version_token (bytes):
-            The new opaque client version token. This should be retained
-            by the client and passed into the next call of
-            ComputeThreatListDiff as 'version_token'. A separate version
-            token should be stored and used for each threatList.
+            The new opaque client version token. This should
+            be retained by the client and passed into the
+            next call of ComputeThreatListDiff as
+            'version_token'. A separate version token should
+            be stored and used for each threatList.
         checksum (google.cloud.webrisk_v1.types.ComputeThreatListDiffResponse.Checksum):
             The expected SHA256 hash of the client state;
             that is, of the sorted list of all hashes
@@ -418,10 +419,11 @@ class ThreatEntryAdditions(proto.Message):
             Repeated to allow returning sets of hashes with
             different prefix sizes.
         rice_hashes (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
-            The encoded 4-byte prefixes of SHA256-formatted entries,
-            using a Golomb-Rice encoding. The hashes are converted to
-            uint32, sorted in ascending order, then delta encoded and
-            stored as encoded_data.
+            The encoded 4-byte prefixes of SHA256-formatted
+            entries, using a Golomb-Rice encoding. The
+            hashes are converted to uint32, sorted in
+            ascending order, then delta encoded and stored
+            as encoded_data.
     """
 
     raw_hashes: MutableSequence["RawHashes"] = proto.RepeatedField(
@@ -443,11 +445,11 @@ class ThreatEntryRemovals(proto.Message):
         raw_indices (google.cloud.webrisk_v1.types.RawIndices):
             The raw removal indices for a local list.
         rice_indices (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
-            The encoded local, lexicographically-sorted list indices,
-            using a Golomb-Rice encoding. Used for sending compressed
-            removal indices. The removal indices (uint32) are sorted in
-            ascending order, then delta encoded and stored as
-            encoded_data.
+            The encoded local, lexicographically-sorted list
+            indices, using a Golomb-Rice encoding. Used for
+            sending compressed removal indices. The removal
+            indices (uint32) are sorted in ascending order,
+            then delta encoded and stored as encoded_data.
     """
 
     raw_indices: "RawIndices" = proto.Field(
@@ -774,8 +776,8 @@ class CreateSubmissionRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project that is making the
-            submission. This string is in the format
+            Required. The name of the project that is making
+            the submission. This string is in the format
             "projects/{project_number}".
         submission (google.cloud.webrisk_v1.types.Submission):
             Required. The submission that contains the
@@ -798,8 +800,8 @@ class SubmitUriRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project that is making the
-            submission. This string is in the format
+            Required. The name of the project that is making
+            the submission. This string is in the format
             "projects/{project_number}".
         submission (google.cloud.webrisk_v1.types.Submission):
             Required. The submission that contains the

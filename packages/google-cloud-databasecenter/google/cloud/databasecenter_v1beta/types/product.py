@@ -90,8 +90,9 @@ class ProductType(proto.Enum):
 
     Values:
         PRODUCT_TYPE_UNSPECIFIED (0):
-            PRODUCT_TYPE_UNSPECIFIED means product type is not known or
-            that the user didn't provide this field in the request.
+            PRODUCT_TYPE_UNSPECIFIED means product type is
+            not known or that the user didn't provide this
+            field in the request.
         PRODUCT_TYPE_CLOUD_SQL (1):
             Cloud SQL product area in GCP
         PRODUCT_TYPE_ALLOYDB (2):

@@ -208,9 +208,8 @@ class ImportAttachedClusterRequest(proto.Message):
             region by calling
             [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
         distribution (str):
-            Required. The Kubernetes distribution of the underlying
-            attached cluster.
-
+            Required. The Kubernetes distribution of the
+            underlying attached cluster.
             Supported values: ["eks", "aks", "generic"].
         proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
             Optional. Proxy configuration for outbound

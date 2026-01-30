@@ -2989,11 +2989,13 @@ class AzureClustersRestTransport(_BaseAzureClustersRestTransport):
 
             Args:
                 request (~.azure_service.GetAzureJsonWebKeysRequest):
-                    The request object. GetAzureJsonWebKeysRequest gets the public component of
-                the keys used by the cluster to sign token requests.
-                This will be the jwks_uri for the discover document
-                returned by getOpenIDConfig. See the OpenID Connect
-                Discovery 1.0 specification for details.
+                    The request object. GetAzureJsonWebKeysRequest gets the
+                public component of the keys used by the
+                cluster to sign token requests. This
+                will be the jwks_uri for the discover
+                document returned by getOpenIDConfig.
+                See the OpenID Connect Discovery 1.0
+                specification for details.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

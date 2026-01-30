@@ -122,18 +122,20 @@ class SslConfig(proto.Message):
 
     Attributes:
         type_ (google.cloud.clouddms_v1.types.SslConfig.SslType):
-            Output only. The ssl config type according to 'client_key',
-            'client_certificate' and 'ca_certificate'.
+            Output only. The ssl config type according to
+            'client_key', 'client_certificate' and
+            'ca_certificate'.
         client_key (str):
-            Input only. The unencrypted PKCS#1 or PKCS#8 PEM-encoded
-            private key associated with the Client Certificate. If this
-            field is used then the 'client_certificate' field is
-            mandatory.
+            Input only. The unencrypted PKCS#1 or PKCS#8
+            PEM-encoded private key associated with the
+            Client Certificate. If this field is used then
+            the 'client_certificate' field is mandatory.
         client_certificate (str):
-            Input only. The x509 PEM-encoded certificate that will be
-            used by the replica to authenticate against the source
-            database server.If this field is used then the 'client_key'
-            field is mandatory.
+            Input only. The x509 PEM-encoded certificate
+            that will be used by the replica to authenticate
+            against the source database server.If this field
+            is used then the 'client_key' field is
+            mandatory.
         ca_certificate (str):
             Required. Input only. The x509 PEM-encoded
             certificate of the CA that signed the source
@@ -151,8 +153,8 @@ class SslConfig(proto.Message):
             SERVER_ONLY (1):
                 Only 'ca_certificate' specified.
             SERVER_CLIENT (2):
-                Both server ('ca_certificate'), and client ('client_key',
-                'client_certificate') specified.
+                Both server ('ca_certificate'), and client
+                ('client_key', 'client_certificate') specified.
         """
         SSL_TYPE_UNSPECIFIED = 0
         SERVER_ONLY = 1
@@ -677,13 +679,14 @@ class CloudSqlSettings(proto.Message):
             which external networks can connect to the
             instance. The IPv4 address cannot be disabled.
         auto_storage_increase (google.protobuf.wrappers_pb2.BoolValue):
-            [default: ON] If you enable this setting, Cloud SQL checks
-            your available storage every 30 seconds. If the available
-            storage falls below a threshold size, Cloud SQL
-            automatically adds additional storage capacity. If the
-            available storage repeatedly falls below the threshold size,
-            Cloud SQL continues to add storage until it reaches the
-            maximum of 30 TB.
+            [default: ON] If you enable this setting, Cloud
+            SQL checks your available storage every 30
+            seconds. If the available storage falls below a
+            threshold size, Cloud SQL automatically adds
+            additional storage capacity. If the available
+            storage repeatedly falls below the threshold
+            size, Cloud SQL continues to add storage until
+            it reaches the maximum of 30 TB.
         database_flags (MutableMapping[str, str]):
             The database flags passed to the Cloud SQL
             instance at startup. An object containing a list
@@ -815,8 +818,8 @@ class CloudSqlSettings(proto.Message):
         REGIONAL = 2
 
     class Edition(proto.Enum):
-        r"""The edition of the given Cloud SQL instance. Can be ENTERPRISE or
-        ENTERPRISE_PLUS.
+        r"""The edition of the given Cloud SQL instance.
+        Can be ENTERPRISE or ENTERPRISE_PLUS.
 
         Values:
             EDITION_UNSPECIFIED (0):
@@ -927,10 +930,11 @@ class AlloyDbSettings(proto.Message):
             Required. Input only. Initial user to setup
             during cluster creation. Required.
         vpc_network (str):
-            Required. The resource link for the VPC network in which
-            cluster resources are created and from which they are
-            accessible via Private IP. The network must belong to the
-            same project as the cluster. It is specified in the form:
+            Required. The resource link for the VPC network
+            in which cluster resources are created and from
+            which they are accessible via Private IP. The
+            network must belong to the same project as the
+            cluster. It is specified in the form:
             "projects/{project_number}/global/networks/{network_id}".
             This is required to create a cluster.
         labels (MutableMapping[str, str]):
@@ -959,8 +963,8 @@ class AlloyDbSettings(proto.Message):
             password (str):
                 The initial password for the user.
             password_set (bool):
-                Output only. Indicates if the initial_user.password field
-                has been set.
+                Output only. Indicates if the
+                initial_user.password field has been set.
         """
 
         user: str = proto.Field(
@@ -981,8 +985,9 @@ class AlloyDbSettings(proto.Message):
 
         Attributes:
             id (str):
-                Required. The ID of the AlloyDB primary instance. The ID
-                must satisfy the regex expression "[a-z0-9-]+".
+                Required. The ID of the AlloyDB primary
+                instance. The ID must satisfy the regex
+                expression "[a-z0-9-]+".
             machine_config (google.cloud.clouddms_v1.types.AlloyDbSettings.PrimaryInstanceSettings.MachineConfig):
                 Configuration for the machines that host the
                 underlying database engine.
@@ -1046,8 +1051,10 @@ class AlloyDbSettings(proto.Message):
 
         Attributes:
             kms_key_name (str):
-                The fully-qualified resource name of the KMS key. Each Cloud
-                KMS key is regionalized and has the following format:
+                The fully-qualified resource name of the KMS
+                key. Each Cloud KMS key is regionalized and has
+                the following format:
+
                 projects/[PROJECT]/locations/[REGION]/keyRings/[RING]/cryptoKeys/[KEY_NAME]
         """
 
@@ -1093,13 +1100,14 @@ class StaticIpConnectivity(proto.Message):
 
 
 class PrivateServiceConnectConnectivity(proto.Message):
-    r"""`Private Service Connect
-    connectivity <https://cloud.google.com/vpc/docs/private-service-connect#service-attachments>`__
+    r"""[Private Service Connect
+    connectivity](https://cloud.google.com/vpc/docs/private-service-connect#service-attachments)
 
     Attributes:
         service_attachment (str):
-            Required. A service attachment that exposes a database, and
-            has the following format:
+            Required. A service attachment that exposes a
+            database, and has the following format:
+
             projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
     """
 
@@ -1305,12 +1313,15 @@ class MigrationJob(proto.Message):
         type_ (google.cloud.clouddms_v1.types.MigrationJob.Type):
             Required. The migration job type.
         dump_path (str):
-            The path to the dump file in Google Cloud Storage, in the
-            format: (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field and
-            the "dump_flags" field are mutually exclusive.
+            The path to the dump file in Google Cloud
+            Storage, in the format:
+            (gs://[BUCKET_NAME]/[OBJECT_NAME]). This field
+            and the "dump_flags" field are mutually
+            exclusive.
         dump_flags (google.cloud.clouddms_v1.types.MigrationJob.DumpFlags):
-            The initial dump flags. This field and the "dump_path" field
-            are mutually exclusive.
+            The initial dump flags.
+            This field and the "dump_path" field are
+            mutually exclusive.
         source (str):
             Required. The resource name (URI) of the
             source connection profile.
@@ -1898,18 +1909,20 @@ class MigrationJobVerificationError(proto.Message):
                 pglogical node already exists on databases,
                 applicable for postgres.
             INVALID_WAL_LEVEL (9):
-                The value of parameter wal_level is not set to logical.
+                The value of parameter wal_level is not set to
+                logical.
             INVALID_SHARED_PRELOAD_LIBRARY (10):
-                The value of parameter shared_preload_libraries does not
-                include pglogical.
+                The value of parameter shared_preload_libraries
+                does not include pglogical.
             INSUFFICIENT_MAX_REPLICATION_SLOTS (11):
-                The value of parameter max_replication_slots is not
-                sufficient.
+                The value of parameter max_replication_slots is
+                not sufficient.
             INSUFFICIENT_MAX_WAL_SENDERS (12):
-                The value of parameter max_wal_senders is not sufficient.
-            INSUFFICIENT_MAX_WORKER_PROCESSES (13):
-                The value of parameter max_worker_processes is not
+                The value of parameter max_wal_senders is not
                 sufficient.
+            INSUFFICIENT_MAX_WORKER_PROCESSES (13):
+                The value of parameter max_worker_processes is
+                not sufficient.
             UNSUPPORTED_EXTENSIONS (14):
                 Extensions installed are either not supported
                 or having unsupported versions.
@@ -1918,7 +1931,8 @@ class MigrationJobVerificationError(proto.Message):
             INVALID_RDS_LOGICAL_REPLICATION (16):
                 Invalid RDS logical replication.
             UNSUPPORTED_GTID_MODE (17):
-                The gtid_mode is not supported, applicable for MySQL.
+                The gtid_mode is not supported, applicable for
+                MySQL.
             UNSUPPORTED_TABLE_DEFINITION (18):
                 The table definition is not support due to
                 missing primary key or replica identity.

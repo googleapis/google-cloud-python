@@ -935,8 +935,8 @@ class ServiceManagerRestStub:
 class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
     """REST backend synchronous transport for ServiceManager.
 
-    `Google Service Management
-    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
+    [Google Service Management
+    API](https://cloud.google.com/service-infrastructure/docs/overview)
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

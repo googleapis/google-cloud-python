@@ -155,8 +155,8 @@ class Plugin(proto.Message):
             plugins developed via plugin framework as the
             state will be managed at plugin instance level.
         ownership_type (google.cloud.apihub_v1.types.Plugin.OwnershipType):
-            Output only. The type of the plugin, indicating whether it
-            is 'SYSTEM_OWNED' or 'USER_OWNED'.
+            Output only. The type of the plugin, indicating
+            whether it is 'SYSTEM_OWNED' or 'USER_OWNED'.
         hosting_service (google.cloud.apihub_v1.types.Plugin.HostingService):
             Optional. This field is optional. It is used
             to notify the plugin hosting service for any
@@ -536,9 +536,10 @@ class PluginInstanceAction(proto.Message):
             Output only. The current state of the plugin
             action in the plugin instance.
         schedule_cron_expression (str):
-            Optional. The schedule for this plugin instance action. This
-            can only be set if the plugin supports
-            API_HUB_SCHEDULE_TRIGGER mode for this action.
+            Optional. The schedule for this plugin instance
+            action. This can only be set if the plugin
+            supports API_HUB_SCHEDULE_TRIGGER mode for this
+            action.
         curation_config (google.cloud.apihub_v1.types.CurationConfig):
             Optional. This configuration should be
             provided if the plugin action is publishing data
@@ -676,12 +677,13 @@ class PluginInstance(proto.Message):
             Optional. The authentication information for
             this plugin instance.
         additional_config (MutableMapping[str, google.cloud.apihub_v1.types.ConfigVariable]):
-            Optional. The additional information for this plugin
-            instance corresponding to the additional config template of
-            the plugin. This information will be sent to plugin hosting
-            service on each call to plugin hosted service. The key will
-            be the config_variable_template.display_name to uniquely
-            identify the config variable.
+            Optional. The additional information for this
+            plugin instance corresponding to the additional
+            config template of the plugin. This information
+            will be sent to plugin hosting service on each
+            call to plugin hosted service. The key will be
+            the config_variable_template.display_name to
+            uniquely identify the config variable.
         state (google.cloud.apihub_v1.types.PluginInstance.State):
             Output only. The current state of the plugin
             instance (e.g., enabled, disabled,

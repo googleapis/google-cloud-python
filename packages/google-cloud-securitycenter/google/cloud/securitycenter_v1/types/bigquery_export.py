@@ -36,12 +36,15 @@ class BigQueryExport(proto.Message):
             The relative resource name of this export. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name.
             Example format:
+
             "organizations/{organization_id}/bigQueryExports/{export_id}"
             Example format:
-            "folders/{folder_id}/bigQueryExports/{export_id}" Example
-            format: "projects/{project_id}/bigQueryExports/{export_id}"
-            This field is provided in responses, and is ignored when
-            provided in create requests.
+            "folders/{folder_id}/bigQueryExports/{export_id}"
+            Example format:
+
+            "projects/{project_id}/bigQueryExports/{export_id}"
+            This field is provided in responses, and is
+            ignored when provided in create requests.
         description (str):
             The description of the export (max of 1024
             characters).

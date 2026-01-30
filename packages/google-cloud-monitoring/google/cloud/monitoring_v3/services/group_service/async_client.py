@@ -471,11 +471,9 @@ class GroupServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]]):
                 The request object. The ``GetGroup`` request.
             name (:class:`str`):
-                Required. The group to retrieve. The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group to retrieve. The
+                format is:
+                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -914,11 +912,9 @@ class GroupServiceAsyncClient:
                 be able to delete a single group without any
                 descendants.
             name (:class:`str`):
-                Required. The group to delete. The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group to delete. The
+                format is:
+                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1020,12 +1016,9 @@ class GroupServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]]):
                 The request object. The ``ListGroupMembers`` request.
             name (:class:`str`):
-                Required. The group whose members are listed. The format
-                is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group whose members are
+                listed. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

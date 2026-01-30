@@ -798,9 +798,10 @@ class ProductReviewsServiceClient(metaclass=ProductReviewsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
-                A review for a product. For more information, see
-                   [Introduction to Product Review
-                   Feeds](https://developers.google.com/product-review-feeds)
+                A review for a product. For more
+                information, see [Introduction to
+                Product Review
+                Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.
@@ -1028,9 +1029,10 @@ class ProductReviewsServiceClient(metaclass=ProductReviewsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_reviews_v1beta.types.ProductReview:
-                A review for a product. For more information, see
-                   [Introduction to Product Review
-                   Feeds](https://developers.google.com/product-review-feeds)
+                A review for a product. For more
+                information, see [Introduction to
+                Product Review
+                Feeds](https://developers.google.com/product-review-feeds)
 
         """
         # Create or coerce a protobuf request object.

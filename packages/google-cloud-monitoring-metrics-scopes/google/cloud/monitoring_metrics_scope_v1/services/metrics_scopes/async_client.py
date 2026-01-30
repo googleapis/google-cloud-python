@@ -359,10 +359,10 @@ class MetricsScopesAsyncClient:
         Returns:
             google.cloud.monitoring_metrics_scope_v1.types.MetricsScope:
                 Represents a [Metrics
-                   Scope](https://cloud.google.com/monitoring/settings#concept-scope)
-                   in Cloud Monitoring, which specifies one or more
-                   Google projects and zero or more AWS accounts to
-                   monitor together.
+                Scope](https://cloud.google.com/monitoring/settings#concept-scope)
+                in Cloud Monitoring, which specifies one
+                or more Google projects and zero or more
+                AWS accounts to monitor together.
 
         """
         # Create or coerce a protobuf request object.

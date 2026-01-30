@@ -49,8 +49,8 @@ class User(proto.Message):
         state (google.shopping.merchant_accounts_v1beta.types.User.State):
             Output only. The state of the user.
         access_rights (MutableSequence[google.shopping.merchant_accounts_v1beta.types.AccessRight]):
-            Optional. The `access
-            rights <https://support.google.com/merchants/answer/12160472?sjid=6789834943175119429-EU#accesstypes>`__
+            Optional. The [access
+            rights](https://support.google.com/merchants/answer/12160472?sjid=6789834943175119429-EU#accesstypes)
             the user has.
     """
 

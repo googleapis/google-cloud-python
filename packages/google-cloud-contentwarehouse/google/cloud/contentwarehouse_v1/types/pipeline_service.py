@@ -41,8 +41,8 @@ class RunPipelineRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name which owns the resources of the
-            pipeline. Format:
+            Required. The resource name which owns the
+            resources of the pipeline. Format:
             projects/{project_number}/locations/{location}.
         gcs_ingest_pipeline (google.cloud.contentwarehouse_v1.types.GcsIngestPipeline):
             Cloud Storage ingestion pipeline.

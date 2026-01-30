@@ -31,9 +31,9 @@ __protobuf__ = proto.module(
 
 class CustomTargetTypeNotificationEvent(proto.Message):
     r"""Payload proto for
-    "clouddeploy.googleapis.com/customtargettype_notification" Platform
-    Log event that describes the failure to send a custom target type
-    status change Pub/Sub notification.
+    "clouddeploy.googleapis.com/customtargettype_notification"
+    Platform Log event that describes the failure to send a custom
+    target type status change Pub/Sub notification.
 
     Attributes:
         message (str):

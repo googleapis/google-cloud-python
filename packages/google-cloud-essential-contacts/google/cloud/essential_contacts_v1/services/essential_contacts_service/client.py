@@ -786,8 +786,10 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the CreateContact
                 method.
             parent (str):
-                Required. The resource to save this contact for. Format:
-                organizations/{organization_id}, folders/{folder_id} or
+                Required. The resource to save this
+                contact for. Format:
+                organizations/{organization_id},
+                folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -1035,8 +1037,9 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the ListContacts
                 method.
             parent (str):
-                Required. The parent resource name. Format:
-                organizations/{organization_id}, folders/{folder_id} or
+                Required. The parent resource name.
+                Format: organizations/{organization_id},
+                folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -1158,9 +1161,11 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the GetContact
                 method.
             name (str):
-                Required. The name of the contact to retrieve. Format:
+                Required. The name of the contact to
+                retrieve. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id} or
+                folders/{folder_id}/contacts/{contact_id}
+                or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field
@@ -1265,9 +1270,11 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the DeleteContact
                 method.
             name (str):
-                Required. The name of the contact to delete. Format:
+                Required. The name of the contact to
+                delete. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id} or
+                folders/{folder_id}/contacts/{contact_id}
+                or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field

@@ -1035,14 +1035,15 @@ class SessionsClient(metaclass=SessionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> session.DetectIntentResponse:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result. This method is not idempotent,
-        because it may cause session entity types to be updated, which
-        in turn might affect results of future queries.
+        r"""Processes a natural language query and returns
+        structured, actionable data as a result. This method is
+        not idempotent, because it may cause session entity
+        types to be updated, which in turn might affect results
+        of future queries.
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See [Versions and
+        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
 
         .. code-block:: python
 
@@ -1130,10 +1131,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[session.DetectIntentResponse]:
-        r"""Processes a natural language query and returns structured,
-        actionable data as a result through server-side streaming.
-        Server-side streaming allows Dialogflow to send `partial
-        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        r"""Processes a natural language query and returns
+        structured, actionable data as a result through
+        server-side streaming. Server-side streaming allows
+        Dialogflow to send [partial
+        responses](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response)
         earlier in a single request.
 
         .. code-block:: python
@@ -1226,13 +1228,13 @@ class SessionsClient(metaclass=SessionsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Iterable[session.StreamingDetectIntentResponse]:
         r"""Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable data as a
-        result. This method is only available via the gRPC API (not
-        REST).
+        streaming fashion and returns structured, actionable
+        data as a result. This method is only available via the
+        gRPC API (not REST).
 
-        Note: Always use agent versions for production traffic. See
-        `Versions and
-        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
+        Note: Always use agent versions for production traffic.
+        See [Versions and
+        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
 
         .. code-block:: python
 

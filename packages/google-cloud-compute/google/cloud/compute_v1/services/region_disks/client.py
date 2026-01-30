@@ -4942,10 +4942,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Update the specified disk with the data included in the request.
-        Update is performed only on selected fields included as part of
-        update-mask. Only the following fields can be modified:
-        user_license.
+        r"""Update the specified disk with the data included in the
+        request. Update is performed only on selected fields
+        included as part of update-mask. Only the following
+        fields can be modified: user_license.
 
         .. code-block:: python
 
@@ -5086,10 +5086,10 @@ class RegionDisksClient(metaclass=RegionDisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Update the specified disk with the data included in the request.
-        Update is performed only on selected fields included as part of
-        update-mask. Only the following fields can be modified:
-        user_license.
+        r"""Update the specified disk with the data included in the
+        request. Update is performed only on selected fields
+        included as part of update-mask. Only the following
+        fields can be modified: user_license.
 
         .. code-block:: python
 

@@ -338,7 +338,8 @@ class RuleSetServiceAsyncClient:
                 The request object. Request message for
                 RuleSetService.CreateRuleSet.
             parent (:class:`str`):
-                Required. The parent name. Format:
+                Required. The parent name.
+                Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -425,7 +426,8 @@ class RuleSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rule_engine.RuleSet:
-        r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
+        r"""Gets a ruleset. Returns NOT_FOUND if the ruleset does
+        not exist.
 
         .. code-block:: python
 
@@ -458,7 +460,9 @@ class RuleSetServiceAsyncClient:
                 The request object. Request message for
                 RuleSetService.GetRuleSet.
             name (:class:`str`):
-                Required. The name of the rule set to retrieve. Format:
+                Required. The name of the rule set to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -539,8 +543,9 @@ class RuleSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> rule_engine.RuleSet:
-        r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
-        ruleset is non-empty and does not equal the existing name.
+        r"""Updates a ruleset. Returns INVALID_ARGUMENT if the name
+        of the ruleset is non-empty and does not equal the
+        existing name.
 
         .. code-block:: python
 
@@ -573,7 +578,9 @@ class RuleSetServiceAsyncClient:
                 The request object. Request message for
                 RuleSetService.UpdateRuleSet.
             name (:class:`str`):
-                Required. The name of the rule set to update. Format:
+                Required. The name of the rule set to
+                update. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -660,8 +667,8 @@ class RuleSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a ruleset. Returns NOT_FOUND if the document does not
-        exist.
+        r"""Deletes a ruleset. Returns NOT_FOUND if the document
+        does not exist.
 
         .. code-block:: python
 
@@ -691,7 +698,9 @@ class RuleSetServiceAsyncClient:
                 The request object. Request message for
                 RuleSetService.DeleteRuleSet.
             name (:class:`str`):
-                Required. The name of the rule set to delete. Format:
+                Required. The name of the rule set to
+                delete. Format:
+
                 projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
 
                 This corresponds to the ``name`` field
@@ -796,8 +805,8 @@ class RuleSetServiceAsyncClient:
                 The request object. Request message for
                 RuleSetService.ListRuleSets.
             parent (:class:`str`):
-                Required. The parent, which owns this collection of
-                document. Format:
+                Required. The parent, which owns this
+                collection of document. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

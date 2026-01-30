@@ -659,7 +659,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryRequest, dict]]):
                 The request object. Delete Glossary Request
             name (:class:`str`):
-                Required. The name of the Glossary to delete. Format:
+                Required. The name of the Glossary to
+                delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
@@ -787,7 +789,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryRequest, dict]]):
                 The request object. Get Glossary Request
             name (:class:`str`):
-                Required. The name of the Glossary to retrieve. Format:
+                Required. The name of the Glossary to
+                retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
@@ -1304,8 +1308,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryCategoryRequest, dict]]):
                 The request object. Delete GlossaryCategory Request
             name (:class:`str`):
-                Required. The name of the GlossaryCategory to delete.
-                Format:
+                Required. The name of the
+                GlossaryCategory to delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
@@ -1408,8 +1413,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryCategoryRequest, dict]]):
                 The request object. Get GlossaryCategory Request
             name (:class:`str`):
-                Required. The name of the GlossaryCategory to retrieve.
-                Format:
+                Required. The name of the
+                GlossaryCategory to retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
@@ -1524,8 +1530,10 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.ListGlossaryCategoriesRequest, dict]]):
                 The request object. List GlossaryCategories Request
             parent (:class:`str`):
-                Required. The parent, which has this collection of
-                GlossaryCategories. Format:
+                Required. The parent, which has this
+                collection of GlossaryCategories.
+                Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
                 Location is the Google Cloud region.
 
@@ -1920,8 +1928,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryTermRequest, dict]]):
                 The request object. Delete GlossaryTerm Request
             name (:class:`str`):
-                Required. The name of the GlossaryTerm to delete.
-                Format:
+                Required. The name of the GlossaryTerm
+                to delete. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
                 This corresponds to the ``name`` field
@@ -2022,8 +2031,9 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryTermRequest, dict]]):
                 The request object. Get GlossaryTerm Request
             name (:class:`str`):
-                Required. The name of the GlossaryTerm to retrieve.
-                Format:
+                Required. The name of the GlossaryTerm
+                to retrieve. Format:
+
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
                 This corresponds to the ``name`` field

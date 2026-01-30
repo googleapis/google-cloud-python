@@ -274,12 +274,13 @@ class UpdateClusterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Cluster resource by the update. The fields specified
-            in the update_mask are relative to the resource, not the
-            full request. A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then all fields
-            will be overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the Cluster resource by the
+            update. The fields specified in the update_mask
+            are relative to the resource, not the full
+            request. A field will be overwritten if it is in
+            the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         cluster (google.cloud.edgecontainer_v1.types.Cluster):
             The updated cluster.
         request_id (str):
@@ -594,12 +595,13 @@ class UpdateNodePoolRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the NodePool resource by the update. The fields specified
-            in the update_mask are relative to the resource, not the
-            full request. A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then all fields
-            will be overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the NodePool resource by the
+            update. The fields specified in the update_mask
+            are relative to the resource, not the full
+            request. A field will be overwritten if it is in
+            the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         node_pool (google.cloud.edgecontainer_v1.types.NodePool):
             The updated node pool.
         request_id (str):

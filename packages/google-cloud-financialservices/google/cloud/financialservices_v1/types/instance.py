@@ -137,9 +137,10 @@ class ListInstancesRequest(proto.Message):
             location for that Instance. Every location has
             exactly one instance.
         page_size (int):
-            The number of resources to be included in the response. The
-            response contains a next_page_token, which can be used to
-            retrieve the next page of resources.
+            The number of resources to be included in the
+            response. The response contains a
+            next_page_token, which can be used to retrieve
+            the next page of resources.
         page_token (str):
             In case of paginated results, this is the
             token that was returned in the previous
@@ -280,15 +281,18 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Instance resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Instance
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         instance (google.cloud.financialservices_v1.types.Instance):
-            Required. The new value of the instance fields that will be
-            updated according to the update_mask
+            Required. The new value of the instance fields
+            that will be updated according to the
+            update_mask
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

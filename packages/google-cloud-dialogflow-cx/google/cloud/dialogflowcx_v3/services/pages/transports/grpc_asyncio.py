@@ -392,8 +392,8 @@ class PagesGrpcAsyncIOTransport(PagesTransport):
         Creates a page in the specified flow.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.CreatePageRequest],
@@ -422,8 +422,8 @@ class PagesGrpcAsyncIOTransport(PagesTransport):
         Updates the specified page.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.UpdatePageRequest],
@@ -452,8 +452,8 @@ class PagesGrpcAsyncIOTransport(PagesTransport):
         Deletes the specified page.
 
         Note: You should always train a flow prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+        queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
         Returns:
             Callable[[~.DeletePageRequest],

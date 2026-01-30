@@ -131,8 +131,9 @@ class EntryType(proto.Enum):
         MODEL (5):
             The type of models.
 
-            For more information, see `Supported models in BigQuery
-            ML </bigquery/docs/bqml-introduction#supported_models>`__.
+            For more information, see [Supported models in
+            BigQuery
+            ML](/bigquery/docs/bqml-introduction#supported_models).
         DATA_STREAM (3):
             An entry type for streaming entries. For
             example, a Pub/Sub topic.
@@ -893,12 +894,13 @@ class Entry(proto.Message):
             slashes (/), dashes (-), and hashes (#). The maximum size is
             200 bytes when encoded in UTF-8.
         fully_qualified_name (str):
-            `Fully Qualified Name
-            (FQN) <https://cloud.google.com//data-catalog/docs/fully-qualified-names>`__
-            of the resource. Set automatically for entries representing
-            resources from synced systems. Settable only during
-            creation, and read-only later. Can be used for search and
-            lookup of the entries.
+            [Fully Qualified Name
+            (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
+            of the resource. Set automatically for entries
+            representing resources from synced systems.
+            Settable only during creation, and read-only
+            later. Can be used for search and lookup of the
+            entries.
         type_ (google.cloud.datacatalog_v1.types.EntryType):
             The type of the entry.
 
@@ -1515,15 +1517,26 @@ class SqlDatabaseSystemSpec(proto.Message):
 
     Attributes:
         sql_engine (str):
-            SQL Database Engine. enum SqlEngine { UNDEFINED = 0; MY_SQL
-            = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of the
-            enclosing database instance.
+            SQL Database Engine.
+            enum SqlEngine {
+            UNDEFINED = 0;
+            MY_SQL = 1;
+            POSTGRE_SQL = 2;
+            SQL_SERVER = 3;
+            }
+            Engine of the enclosing database instance.
         database_version (str):
             Version of the database engine.
         instance_host (str):
-            Host of the SQL database enum InstanceHost { UNDEFINED = 0;
-            SELF_HOSTED = 1; CLOUD_SQL = 2; AMAZON_RDS = 3; AZURE_SQL =
-            4; } Host of the enclousing database instance.
+            Host of the SQL database
+            enum InstanceHost {
+            UNDEFINED = 0;
+            SELF_HOSTED = 1;
+            CLOUD_SQL = 2;
+            AMAZON_RDS = 3;
+            AZURE_SQL = 4;
+            }
+            Host of the enclousing database instance.
     """
 
     sql_engine: str = proto.Field(
@@ -2025,12 +2038,13 @@ class EntryGroup(proto.Message):
             Output only. Timestamps of the entry group.
             Default value is empty.
         transferred_to_dataplex (bool):
-            Optional. When set to [true], it means DataCatalog
-            EntryGroup was transferred to Dataplex Catalog Service. It
-            makes EntryGroup and its Entries to be read-only in
-            DataCatalog. However, new Tags on EntryGroup and its Entries
-            can be created. After setting the flag to [true] it cannot
-            be unset.
+            Optional. When set to [true], it means
+            DataCatalog EntryGroup was transferred to
+            Dataplex Catalog Service. It makes EntryGroup
+            and its Entries to be read-only in DataCatalog.
+            However, new Tags on EntryGroup and its Entries
+            can be created. After setting the flag to [true]
+            it cannot be unset.
     """
 
     name: str = proto.Field(

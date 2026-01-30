@@ -97,7 +97,8 @@ class NetworkInterface(proto.Message):
     """
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver. Default should be NIC_TYPE_UNSPECIFIED.
+        r"""The type of vNIC driver.
+        Default should be NIC_TYPE_UNSPECIFIED.
 
         Values:
             NIC_TYPE_UNSPECIFIED (0):
@@ -264,9 +265,9 @@ class AcceleratorConfig(proto.Message):
 
 
 class ShieldedInstanceConfig(proto.Message):
-    r"""A set of Shielded Instance options. See `Images using supported
-    Shielded VM
-    features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+    r"""A set of Shielded Instance options.
+    See [Images using supported Shielded VM
+    features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
     Not all combinations are valid.
 
     Attributes:
@@ -486,9 +487,9 @@ class GceSetup(proto.Message):
             Optional. Data disks attached to the VM
             instance. Currently supports only one data disk.
         shielded_instance_config (google.cloud.notebooks_v2.types.ShieldedInstanceConfig):
-            Optional. Shielded VM configuration. `Images using supported
-            Shielded VM
-            features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+            Optional. Shielded VM configuration.
+            [Images using supported Shielded VM
+            features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
         network_interfaces (MutableSequence[google.cloud.notebooks_v2.types.NetworkInterface]):
             Optional. The network interfaces for the VM.
             Supports only one interface.
@@ -496,9 +497,9 @@ class GceSetup(proto.Message):
             Optional. If true, no external IP will be
             assigned to this VM instance.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to runtime (see
-            `Tagging
-            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
+            Optional. The Compute Engine tags to add to
+            runtime (see [Tagging
+            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
         metadata (MutableMapping[str, str]):
             Optional. Custom metadata to apply to this
             instance.

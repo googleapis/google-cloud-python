@@ -76,8 +76,8 @@ class TermsOfServiceAgreementState(proto.Message):
             Terms of Service kind associated with the
             particular version.
         accepted (google.shopping.merchant_accounts_v1beta.types.Accepted):
-            The accepted terms of service of this kind and for the
-            associated region_code
+            The accepted terms of service of this kind and
+            for the associated region_code
 
             This field is a member of `oneof`_ ``_accepted``.
         required (google.shopping.merchant_accounts_v1beta.types.Required):

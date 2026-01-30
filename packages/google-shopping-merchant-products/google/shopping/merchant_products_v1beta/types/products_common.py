@@ -153,9 +153,10 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_availability``.
         availability_date (google.protobuf.timestamp_pb2.Timestamp):
-            The day a pre-ordered product becomes available for
-            delivery, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            The day a pre-ordered product becomes available
+            for delivery, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         brand (str):
             `Brand <https://support.google.com/merchants/answer/6324351>`__
             of the item. For example, "Google".
@@ -178,11 +179,13 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_gender``.
         google_product_category (str):
-            Google's category of the item (see `Google product
-            taxonomy <https://support.google.com/merchants/answer/1705911>`__).
-            When querying products, this field will contain the user
-            provided value. There is currently no way to get back the
-            auto assigned google product categories through the API.
+            Google's category of the item (see [Google
+            product
+            taxonomy](https://support.google.com/merchants/answer/1705911)).
+            When querying products, this field will contain
+            the user provided value. There is currently no
+            way to get back the auto assigned google product
+            categories through the API.
 
             This field is a member of `oneof`_ ``_google_product_category``.
         gtin (MutableSequence[str]):
@@ -240,14 +243,15 @@ class Attributes(proto.Message):
             better pricing, points, etc) to the user of this
             item.
         product_types (MutableSequence[str]):
-            Categories of the item (formatted as in `product data
-            specification <https://support.google.com/merchants/answer/7052112#product_category>`__).
+            Categories of the item (formatted as in [product
+            data
+            specification](https://support.google.com/merchants/answer/7052112#product_category)).
         sale_price (google.shopping.type.types.Price):
             Advertised sale price of the item.
         sale_price_effective_date (google.type.interval_pb2.Interval):
-            Date range during which the item is on sale, see `product
-            data
-            specification <https://support.google.com/merchants/answer/7052112#price_and_availability>`__.
+            Date range during which the item is on sale, see
+            [product data
+            specification](https://support.google.com/merchants/answer/7052112#price_and_availability).
         sell_on_google_quantity (int):
             The quantity of the product that is available
             for selling on Google. Supported only for online
@@ -358,10 +362,10 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_multipack``.
         ads_grouping (str):
-            Used to group items in an arbitrary way. Only for CPA%,
-            discouraged otherwise. For more information, see `Display
-            ads
-            attribute <https://support.google.com/merchants/answer/6069387>`__.
+            Used to group items in an arbitrary way. Only
+            for CPA%, discouraged otherwise. For more
+            information, see [Display ads
+            attribute](https://support.google.com/merchants/answer/6069387).
 
             This field is a member of `oneof`_ ``_ads_grouping``.
         ads_labels (MutableSequence[str]):
@@ -379,17 +383,18 @@ class Attributes(proto.Message):
             Technical specification or additional product
             details.
         product_highlights (MutableSequence[str]):
-            Bullet points describing the most relevant `product
-            highlights <https://support.google.com/merchants/answer/9216100>`__.
+            Bullet points describing the most relevant
+            [product
+            highlights](https://support.google.com/merchants/answer/9216100).
         display_ads_id (str):
             An identifier for an item for dynamic
             remarketing campaigns.
 
             This field is a member of `oneof`_ ``_display_ads_id``.
         display_ads_similar_ids (MutableSequence[str]):
-            Advertiser-specified recommendations. For more information,
-            see `Display ads attribute
-            specification <https://support.google.com/merchants/answer/6069387>`__.
+            Advertiser-specified recommendations. For more
+            information, see [Display ads attribute
+            specification](https://support.google.com/merchants/answer/6069387).
         display_ads_title (str):
             Title of an item for dynamic remarketing
             campaigns.
@@ -401,9 +406,9 @@ class Attributes(proto.Message):
 
             This field is a member of `oneof`_ ``_display_ads_link``.
         display_ads_value (float):
-            Offer margin for dynamic remarketing campaigns. For more
-            information, see `Display ads
-            attribute <https://support.google.com/merchants/answer/6069387>`__.
+            Offer margin for dynamic remarketing campaigns.
+            For more information, see [Display ads
+            attribute](https://support.google.com/merchants/answer/6069387).
 
             This field is a member of `oneof`_ ``_display_ads_value``.
         promotion_ids (MutableSequence[str]):
@@ -476,21 +481,24 @@ class Attributes(proto.Message):
             for most use cases. Use this field within products to only
             setup exceptions.
         excluded_destinations (MutableSequence[str]):
-            The list of destinations to exclude for this target
-            (corresponds to unchecked check boxes in Merchant Center).
+            The list of destinations to exclude for this
+            target (corresponds to unchecked check boxes in
+            Merchant Center).
 
-            For more information, see `Excluded
-            destination <https://support.google.com/merchants/answer/6324486>`__.
+            For more information, see
+            [Excluded
+            destination](https://support.google.com/merchants/answer/6324486).
 
-            Note: We recommend setting destinations on datasources level
-            for most use cases. Use this field within products to only
-            setup exceptions.
+            Note: We recommend setting destinations on
+            datasources level for most use cases. Use this
+            field within products to only setup exceptions.
         shopping_ads_excluded_countries (MutableSequence[str]):
-            List of country codes `(ISO 3166-1
-            alpha-2) <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`__
-            to exclude the offer from Shopping Ads destination.
-            Countries from this list are removed from countries
-            configured in data source settings.
+            List of country codes [(ISO 3166-1
+            alpha-2)](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)
+            to exclude the offer from Shopping Ads
+            destination. Countries from this list are
+            removed from countries configured in data source
+            settings.
         external_seller_id (str):
             Required for multi-seller accounts. Use this
             attribute if you're a marketplace uploading
@@ -1028,18 +1036,18 @@ class Tax(proto.Message):
             The percentage of tax rate that applies to
             the item price.
         country (str):
-            The country within which the item is taxed, specified as a
-            `CLDR territory
-            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__.
+            The country within which the item is taxed,
+            specified as a [CLDR territory
+            code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
         region (str):
             The geographic region to which the tax rate
             applies.
         tax_ship (bool):
             Set to true if tax is charged on shipping.
         location_id (int):
-            The numeric ID of a location that the tax rate applies to as
-            defined in the `AdWords
-            API <https://developers.google.com/adwords/api/docs/appendix/geotargeting>`__.
+            The numeric ID of a location that the tax rate
+            applies to as defined in the [AdWords
+            API](https://developers.google.com/adwords/api/docs/appendix/geotargeting).
         postal_code (str):
             The postal code range that the tax rate applies to,
             represented by a ZIP code, a ZIP code prefix using \*
@@ -1375,8 +1383,8 @@ class Shipping(proto.Message):
             Fixed shipping price, represented as a
             number.
         country (str):
-            The `CLDR territory
-            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+            The [CLDR territory
+            code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml)
             of the country to which an item will ship.
         region (str):
             The geographic region to which a shipping rate applies. See
@@ -1386,9 +1394,9 @@ class Shipping(proto.Message):
             A free-form description of the service class
             or delivery speed.
         location_id (int):
-            The numeric ID of a location that the shipping rate applies
-            to as defined in the `AdWords
-            API <https://developers.google.com/adwords/api/docs/appendix/geotargeting>`__.
+            The numeric ID of a location that the shipping
+            rate applies to as defined in the [AdWords
+            API](https://developers.google.com/adwords/api/docs/appendix/geotargeting).
         location_group_name (str):
             The location where the shipping is
             applicable, represented by a location group
@@ -1513,8 +1521,8 @@ class FreeShippingThreshold(proto.Message):
 
     Attributes:
         country (str):
-            The `CLDR territory
-            code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+            The [CLDR territory
+            code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml)
             of the country to which an item will ship.
 
             This field is a member of `oneof`_ ``_country``.
@@ -1577,7 +1585,8 @@ class Certification(proto.Message):
     Attributes:
         certification_authority (str):
             The certification authority, for example
-            "European_Commission". Maximum length is 2000 characters.
+            "European_Commission". Maximum length is 2000
+            characters.
 
             This field is a member of `oneof`_ ``_certification_authority``.
         certification_name (str):
@@ -1749,14 +1758,18 @@ class ProductStatus(proto.Message):
             A list of all issues associated with the
             product.
         creation_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item has been created, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item has been created, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         last_update_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item has been last updated, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item has been last updated, in
+            [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
         google_expiration_date (google.protobuf.timestamp_pb2.Timestamp):
-            Date on which the item expires, in `ISO
-            8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
+            Date on which the item expires, in [ISO
+            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            format.
     """
 
     class DestinationStatus(proto.Message):
@@ -2089,10 +2102,10 @@ class AutomatedDiscounts(proto.Message):
             information about the prior price of the product
             is not available.
         gad_price (google.shopping.type.types.Price):
-            The current sale price for products with a price optimized
-            using Google Automated Discounts (GAD). Absent if the
-            information about the GAD_price of the product is not
-            available.
+            The current sale price for products with a price
+            optimized using Google Automated Discounts
+            (GAD). Absent if the information about the
+            GAD_price of the product is not available.
     """
 
     prior_price: types.Price = proto.Field(

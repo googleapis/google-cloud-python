@@ -481,12 +481,13 @@ class DimensionExpression(proto.Message):
             delimiter (str):
                 The delimiter placed between dimension names.
 
-                Delimiters are often single characters such as "\|" or ","
-                but can be longer strings. If a dimension value contains the
-                delimiter, both will be present in response with no
-                distinction. For example if dimension 1 value = "US,FR",
-                dimension 2 value = "JP", and delimiter = ",", then the
-                response will contain "US,FR,JP".
+                Delimiters are often single characters such as
+                "\|" or "," but can be longer strings. If a
+                dimension value contains the delimiter, both
+                will be present in response with no distinction.
+                For example if dimension 1 value = "US,FR",
+                dimension 2 value = "JP", and delimiter = ",",
+                then the response will contain "US,FR,JP".
         """
 
         dimension_names: MutableSequence[str] = proto.RepeatedField(
@@ -585,11 +586,13 @@ class FilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.data_v1alpha.types.FilterExpressionList):
-            The FilterExpressions in and_group have an AND relationship.
+            The FilterExpressions in and_group have an AND
+            relationship.
 
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1alpha.types.FilterExpressionList):
-            The FilterExpressions in or_group have an OR relationship.
+            The FilterExpressions in or_group have an OR
+            relationship.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1alpha.types.FilterExpression):
@@ -1224,28 +1227,31 @@ class ResponseMetaData(proto.Message):
 
     Attributes:
         data_loss_from_other_row (bool):
-            If true, indicates some buckets of dimension combinations
-            are rolled into "(other)" row. This can happen for high
-            cardinality reports.
+            If true, indicates some buckets of dimension
+            combinations are rolled into "(other)" row. This
+            can happen for high cardinality reports.
 
-            The metadata parameter dataLossFromOtherRow is populated
-            based on the aggregated data table used in the report. The
-            parameter will be accurately populated regardless of the
-            filters and limits in the report.
+            The metadata parameter dataLossFromOtherRow is
+            populated based on the aggregated data table
+            used in the report. The parameter will be
+            accurately populated regardless of the filters
+            and limits in the report.
 
-            For example, the (other) row could be dropped from the
-            report because the request contains a filter on
-            sessionSource = google. This parameter will still be
-            populated if data loss from other row was present in the
-            input aggregate data used to generate this report.
+            For example, the (other) row could be dropped
+            from the report because the request contains a
+            filter on sessionSource = google. This parameter
+            will still be populated if data loss from other
+            row was present in the input aggregate data used
+            to generate this report.
 
-            To learn more, see `About the (other) row and data
-            sampling <https://support.google.com/analytics/answer/13208658#reports>`__.
+            To learn more, see [About the (other) row and
+            data
+            sampling](https://support.google.com/analytics/answer/13208658#reports).
         schema_restriction_response (google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse):
-            Describes the schema restrictions actively enforced in
-            creating this report. To learn more, see `Access and
-            data-restriction
-            management <https://support.google.com/analytics/answer/10851388>`__.
+            Describes the schema restrictions actively
+            enforced in creating this report. To learn more,
+            see [Access and data-restriction
+            management](https://support.google.com/analytics/answer/10851388).
 
             This field is a member of `oneof`_ ``_schema_restriction_response``.
         currency_code (str):
@@ -1301,9 +1307,9 @@ class ResponseMetaData(proto.Message):
     """
 
     class SchemaRestrictionResponse(proto.Message):
-        r"""The schema restrictions actively enforced in creating this report.
-        To learn more, see `Access and data-restriction
-        management <https://support.google.com/analytics/answer/10851388>`__.
+        r"""The schema restrictions actively enforced in creating this
+        report. To learn more, see [Access and data-restriction
+        management](https://support.google.com/analytics/answer/10851388).
 
         Attributes:
             active_metric_restrictions (MutableSequence[google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction]):
@@ -1469,9 +1475,9 @@ class Row(proto.Message):
 
     Attributes:
         dimension_values (MutableSequence[google.analytics.data_v1alpha.types.DimensionValue]):
-            List of requested dimension values. In a PivotReport,
-            dimension_values are only listed for dimensions included in
-            a pivot.
+            List of requested dimension values. In a
+            PivotReport, dimension_values are only listed
+            for dimensions included in a pivot.
         metric_values (MutableSequence[google.analytics.data_v1alpha.types.MetricValue]):
             List of requested visible metric values.
     """
@@ -2180,9 +2186,9 @@ class SessionSegmentExclusion(proto.Message):
 
 class EventSegment(proto.Message):
     r"""Event segments are subsets of events that were triggered on your
-    site or app. for example, all purchase events made in a particular
-    location; app_exception events that occurred on a specific operating
-    system.
+    site or app. for example, all purchase events made in a
+    particular location; app_exception events that occurred on a
+    specific operating system.
 
     Attributes:
         event_inclusion_criteria (google.analytics.data_v1alpha.types.EventSegmentCriteria):
@@ -2283,14 +2289,14 @@ class EventSegmentExclusion(proto.Message):
 
 
 class Segment(proto.Message):
-    r"""A segment is a subset of your Analytics data. For example, of your
-    entire set of users, one segment might be users from a particular
-    country or city. Another segment might be users who purchase a
-    particular line of products or who visit a specific part of your
-    site or trigger certain events in your app.
+    r"""A segment is a subset of your Analytics data. For example, of
+    your entire set of users, one segment might be users from a
+    particular country or city. Another segment might be users who
+    purchase a particular line of products or who visit a specific
+    part of your site or trigger certain events in your app.
 
-    To learn more, see `Segment
-    Builder <https://support.google.com/analytics/answer/9304353>`__.
+    To learn more, see [Segment
+    Builder](https://support.google.com/analytics/answer/9304353).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -2667,15 +2673,17 @@ class SegmentParameterFilter(proto.Message):
 
     Attributes:
         event_parameter_name (str):
-            This filter will be evaluated on the specified event
-            parameter. Event parameters are logged as parameters of the
-            event. Event parameters include fields like
-            "firebase_screen" & "currency".
+            This filter will be evaluated on the specified
+            event parameter. Event parameters are logged as
+            parameters of the event. Event parameters
+            include fields like "firebase_screen" &
+            "currency".
 
-            Event parameters can only be used in segments & funnels and
-            can only be used in a descendent filter from an EventFilter.
-            In a descendent filter from an EventFilter either event or
-            item parameters should be used.
+            Event parameters can only be used in segments &
+            funnels and can only be used in a descendent
+            filter from an EventFilter. In a descendent
+            filter from an EventFilter either event or item
+            parameters should be used.
 
             This field is a member of `oneof`_ ``one_parameter``.
         item_parameter_name (str):
@@ -3082,15 +3090,17 @@ class FunnelParameterFilter(proto.Message):
 
     Attributes:
         event_parameter_name (str):
-            This filter will be evaluated on the specified event
-            parameter. Event parameters are logged as parameters of the
-            event. Event parameters include fields like
-            "firebase_screen" & "currency".
+            This filter will be evaluated on the specified
+            event parameter. Event parameters are logged as
+            parameters of the event. Event parameters
+            include fields like "firebase_screen" &
+            "currency".
 
-            Event parameters can only be used in segments & funnels and
-            can only be used in a descendent filter from an EventFilter.
-            In a descendent filter from an EventFilter either event or
-            item parameters should be used.
+            Event parameters can only be used in segments &
+            funnels and can only be used in a descendent
+            filter from an EventFilter. In a descendent
+            filter from an EventFilter either event or item
+            parameters should be used.
 
             This field is a member of `oneof`_ ``one_parameter``.
         item_parameter_name (str):

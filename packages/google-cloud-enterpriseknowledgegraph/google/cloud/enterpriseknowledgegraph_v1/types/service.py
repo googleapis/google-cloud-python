@@ -344,8 +344,9 @@ class ListEntityReconciliationJobsRequest(proto.Message):
             resource. Format:
             ``projects/{project}/locations/{location}``
         filter (str):
-            An expression for filtering the results of the request. For
-            field names both snake_case and camelCase are supported.
+            An expression for filtering the results of the
+            request. For field names both snake_case and
+            camelCase are supported.
         page_size (int):
             The standard list page size.
         page_token (str):
@@ -446,8 +447,8 @@ class EntityReconciliationJob(proto.Message):
         state (google.cloud.enterpriseknowledgegraph_v1.types.JobState):
             Output only. The detailed state of the job.
         error (google.rpc.status_pb2.Status):
-            Output only. Only populated when the job's state is
-            JOB_STATE_FAILED or JOB_STATE_CANCELLED.
+            Output only. Only populated when the job's state
+            is JOB_STATE_FAILED or JOB_STATE_CANCELLED.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the
             EntityReconciliationJob was created.

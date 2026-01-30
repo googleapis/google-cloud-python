@@ -1664,8 +1664,8 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             Returns:
                 ~.customer_workloads.Workload:
-                    Contains metadata around the `Workload
-                resource <https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload>`__
+                    Contains metadata around the [Workload
+                resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
                 in the Assured Workloads API.
 
             """

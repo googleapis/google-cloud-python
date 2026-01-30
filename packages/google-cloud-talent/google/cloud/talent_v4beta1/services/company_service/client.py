@@ -783,13 +783,13 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. The Request of the CreateCompany
                 method.
             parent (str):
-                Required. Resource name of the tenant under which the
-                company is created.
-
+                Required. Resource name of the tenant
+                under which the company is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}", for
-                example, "projects/foo/tenant/bar". If tenant id is
-                unspecified, a default tenant is created, for example,
+                "projects/{project_id}/tenants/{tenant_id}",
+                for example, "projects/foo/tenant/bar".
+                If tenant id is unspecified, a default
+                tenant is created, for example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -908,16 +908,16 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. Request for getting a company by
                 name.
             name (str):
-                Required. The resource name of the company to be
-                retrieved.
-
+                Required. The resource name of the
+                company to be retrieved.
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
                 for example,
                 "projects/api-test-project/tenants/foo/companies/bar".
 
-                If tenant id is unspecified, the default tenant is used,
-                for example, "projects/api-test-project/companies/bar".
+                If tenant id is unspecified, the default
+                tenant is used, for example,
+                "projects/api-test-project/companies/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1145,15 +1145,16 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.DeleteCompanyRequest, dict]):
                 The request object. Request to delete a company.
             name (str):
-                Required. The resource name of the company to be
-                deleted.
-
+                Required. The resource name of the
+                company to be deleted.
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-                for example, "projects/foo/tenants/bar/companies/baz".
+                for example,
+                "projects/foo/tenants/bar/companies/baz".
 
-                If tenant id is unspecified, the default tenant is used,
-                for example, "projects/foo/companies/bar".
+                If tenant id is unspecified, the default
+                tenant is used, for example,
+                "projects/foo/companies/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1252,15 +1253,15 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. List companies for which the client
                 has ACL visibility.
             parent (str):
-                Required. Resource name of the tenant under which the
-                company is created.
-
+                Required. Resource name of the tenant
+                under which the company is created.
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}", for
-                example, "projects/foo/tenant/bar".
+                "projects/{project_id}/tenants/{tenant_id}",
+                for example, "projects/foo/tenant/bar".
 
-                If tenant id is unspecified, the default tenant will be
-                used, for example, "projects/foo".
+                If tenant id is unspecified, the default
+                tenant will be used, for example,
+                "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -275,8 +275,8 @@ class EntityReference(proto.Message):
 
     Attributes:
         fully_qualified_name (str):
-            Required. `Fully Qualified Name
-            (FQN) <https://cloud.google.com/data-catalog/docs/fully-qualified-names>`__
+            Required. [Fully Qualified Name
+            (FQN)](https://cloud.google.com/data-catalog/docs/fully-qualified-names)
             of the entity.
     """
 

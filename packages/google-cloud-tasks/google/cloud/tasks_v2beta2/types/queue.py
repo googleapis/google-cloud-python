@@ -86,8 +86,8 @@ class Queue(proto.Message):
 
             This field is a member of `oneof`_ ``target_type``.
         http_target (google.cloud.tasks_v2beta2.types.HttpTarget):
-            An http_target is used to override the target values for
-            HTTP tasks.
+            An http_target is used to override the target
+            values for HTTP tasks.
 
             This field is a member of `oneof`_ ``target_type``.
         rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):

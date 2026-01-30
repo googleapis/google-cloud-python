@@ -347,7 +347,8 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
     def get_table(self) -> Callable[[tables.GetTableRequest], Awaitable[tables.Table]]:
         r"""Return a callable for the get table method over gRPC.
 
-        Gets a table. Returns NOT_FOUND if the table does not exist.
+        Gets a table. Returns NOT_FOUND if the table does not
+        exist.
 
         Returns:
             Callable[[~.GetTableRequest],
@@ -399,8 +400,8 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
     ) -> Callable[[tables.GetWorkspaceRequest], Awaitable[tables.Workspace]]:
         r"""Return a callable for the get workspace method over gRPC.
 
-        Gets a workspace. Returns NOT_FOUND if the workspace does not
-        exist.
+        Gets a workspace. Returns NOT_FOUND if the workspace
+        does not exist.
 
         Returns:
             Callable[[~.GetWorkspaceRequest],
@@ -452,8 +453,8 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
     def get_row(self) -> Callable[[tables.GetRowRequest], Awaitable[tables.Row]]:
         r"""Return a callable for the get row method over gRPC.
 
-        Gets a row. Returns NOT_FOUND if the row does not exist in the
-        table.
+        Gets a row. Returns NOT_FOUND if the row does not exist
+        in the table.
 
         Returns:
             Callable[[~.GetRowRequest],
@@ -479,8 +480,8 @@ class TablesServiceGrpcAsyncIOTransport(TablesServiceTransport):
     ) -> Callable[[tables.ListRowsRequest], Awaitable[tables.ListRowsResponse]]:
         r"""Return a callable for the list rows method over gRPC.
 
-        Lists rows in a table. Returns NOT_FOUND if the table does not
-        exist.
+        Lists rows in a table. Returns NOT_FOUND if the table
+        does not exist.
 
         Returns:
             Callable[[~.ListRowsRequest],

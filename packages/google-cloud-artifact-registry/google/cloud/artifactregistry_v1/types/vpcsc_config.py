@@ -54,17 +54,18 @@ class VPCSCConfig(proto.Message):
 
         Values:
             VPCSC_POLICY_UNSPECIFIED (0):
-                VPCSC_POLICY_UNSPECIFIED - the VPS SC policy is not defined.
-                When VPS SC policy is not defined - the Service will use the
-                default behavior (VPCSC_DENY).
+                VPCSC_POLICY_UNSPECIFIED - the VPS SC policy is
+                not defined. When VPS SC policy is not defined -
+                the Service will use the default behavior
+                (VPCSC_DENY).
             DENY (1):
-                VPCSC_DENY - repository will block the requests to the
-                Upstreams for the Remote Repositories if the resource is in
-                the perimeter.
+                VPCSC_DENY - repository will block the requests
+                to the Upstreams for the Remote Repositories if
+                the resource is in the perimeter.
             ALLOW (2):
-                VPCSC_ALLOW - repository will allow the requests to the
-                Upstreams for the Remote Repositories if the resource is in
-                the perimeter.
+                VPCSC_ALLOW - repository will allow the requests
+                to the Upstreams for the Remote Repositories if
+                the resource is in the perimeter.
         """
         VPCSC_POLICY_UNSPECIFIED = 0
         DENY = 1

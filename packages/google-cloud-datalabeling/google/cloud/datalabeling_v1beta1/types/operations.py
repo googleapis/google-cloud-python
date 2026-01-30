@@ -93,7 +93,8 @@ class ExportDataOperationResponse(proto.Message):
             Output only. Statistic infos of labels in the
             exported dataset.
         output_config (google.cloud.datalabeling_v1beta1.types.OutputConfig):
-            Output only. output_config in the ExportData request.
+            Output only. output_config in the ExportData
+            request.
     """
 
     dataset: str = proto.Field(
@@ -257,7 +258,8 @@ class LabelOperationMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
-            Output only. Progress of label operation. Range: [0, 100].
+            Output only. Progress of label operation. Range:
+            [0, 100].
         partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.

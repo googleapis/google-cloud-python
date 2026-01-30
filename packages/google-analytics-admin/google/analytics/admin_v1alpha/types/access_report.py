@@ -128,13 +128,13 @@ class AccessFilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.admin_v1alpha.types.AccessFilterExpressionList):
-            Each of the FilterExpressions in the and_group has an AND
-            relationship.
+            Each of the FilterExpressions in the and_group
+            has an AND relationship.
 
             This field is a member of `oneof`_ ``one_expression``.
         or_group (google.analytics.admin_v1alpha.types.AccessFilterExpressionList):
-            Each of the FilterExpressions in the or_group has an OR
-            relationship.
+            Each of the FilterExpressions in the or_group
+            has an OR relationship.
 
             This field is a member of `oneof`_ ``one_expression``.
         not_expression (google.analytics.admin_v1alpha.types.AccessFilterExpression):

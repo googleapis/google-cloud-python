@@ -310,8 +310,8 @@ class CloudBillingAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cloud_billing.BillingAccount:
         r"""Gets information about a billing account. The current
-        authenticated user must be a `viewer of the billing
-        account <https://cloud.google.com/billing/docs/how-to/billing-access>`__.
+        authenticated user must be a [viewer of the billing
+        account](https://cloud.google.com/billing/docs/how-to/billing-access).
 
         .. code-block:: python
 

@@ -56,31 +56,33 @@ class Promotion(proto.Message):
             Identifier. The name of the promotion. Format:
             ``accounts/{account}/promotions/{promotion}``
         promotion_id (str):
-            Required. The user provided promotion ID to uniquely
-            identify the promotion. Follow `minimum
-            requirements <https://support.google.com/merchants/answer/7050148?ref_topic=7322920&sjid=871860036916537104-NC#minimum_requirements>`__
+            Required. The user provided promotion ID to
+            uniquely identify the promotion. Follow [minimum
+            requirements](https://support.google.com/merchants/answer/7050148?ref_topic=7322920&sjid=871860036916537104-NC#minimum_requirements)
             to prevent promotion disapprovals.
         content_language (str):
-            Required. The two-letter `ISO
-            639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
-            code for the promotion.
+            Required. The two-letter [ISO
+            639-1](http://en.wikipedia.org/wiki/ISO_639-1)
+            language code for the promotion.
 
-            Promotions is only for `selected
-            languages <https://support.google.com/merchants/answer/4588281?ref_topic=6396150&sjid=18314938579342094533-NC#option3&zippy=>`__.
+            Promotions is only for [selected
+            languages](https://support.google.com/merchants/answer/4588281?ref_topic=6396150&sjid=18314938579342094533-NC#option3&zippy=).
         target_country (str):
-            Required. The target country used as part of the unique
-            identifier. Represented as a `CLDR territory
-            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
+            Required. The target country used as part of the
+            unique identifier. Represented as a [CLDR
+            territory
+            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml).
 
-            Promotions are only available in selected countries, `Free
-            Listings and Shopping
-            ads <https://support.google.com/merchants/answer/4588460>`__
-            `Local Inventory
-            ads <https://support.google.com/merchants/answer/10146326>`__
+            Promotions are only available in selected
+            countries, [Free Listings and Shopping
+            ads](https://support.google.com/merchants/answer/4588460)
+            [Local Inventory
+            ads](https://support.google.com/merchants/answer/10146326)
         redemption_channel (MutableSequence[google.shopping.merchant_promotions_v1.types.RedemptionChannel]):
-            Required. `Redemption
-            channel <https://support.google.com/merchants/answer/13837674?ref_topic=13773355&sjid=17642868584668136159-NC>`__
-            for the promotion. At least one channel is required.
+            Required. [Redemption
+            channel](https://support.google.com/merchants/answer/13837674?ref_topic=13773355&sjid=17642868584668136159-NC)
+            for the promotion. At least one channel is
+            required.
         data_source (str):
             Output only. The primary data source of the
             promotion.
@@ -94,10 +96,10 @@ class Promotion(proto.Message):
             useful for submitting attributes not explicitly exposed by
             the API.
         promotion_status (google.shopping.merchant_promotions_v1.types.PromotionStatus):
-            Output only. The `status of a
-            promotion <https://support.google.com/merchants/answer/3398326?ref_topic=7322924&sjid=5155774230887277618-NC>`__,
-            data validation issues, that is, information about a
-            promotion computed asynchronously.
+            Output only. The [status of a
+            promotion](https://support.google.com/merchants/answer/3398326?ref_topic=7322924&sjid=5155774230887277618-NC),
+            data validation issues, that is, information
+            about a promotion computed asynchronously.
         version_number (int):
             Optional. Represents the existing version (freshness) of the
             promotion, which can be used to preserve the right order

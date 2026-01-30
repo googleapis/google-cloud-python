@@ -1524,10 +1524,11 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Updates the specified forwarding rule with the data included in
-        the request. This method supportsPATCH semantics and uses
-        theJSON merge patch format and processing rules. Currently, you
-        can only patch the network_tier field.
+        r"""Updates the specified forwarding rule with the data
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules. Currently, you can
+        only patch the network_tier field.
 
         .. code-block:: python
 
@@ -1658,10 +1659,11 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Updates the specified forwarding rule with the data included in
-        the request. This method supportsPATCH semantics and uses
-        theJSON merge patch format and processing rules. Currently, you
-        can only patch the network_tier field.
+        r"""Updates the specified forwarding rule with the data
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules. Currently, you can
+        only patch the network_tier field.
 
         .. code-block:: python
 

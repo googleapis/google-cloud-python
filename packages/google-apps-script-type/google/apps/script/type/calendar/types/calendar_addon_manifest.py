@@ -83,9 +83,10 @@ class CalendarAddOnManifest(proto.Message):
                 all actions, including adding attendees and
                 setting conference data.
             READ_WRITE (5):
-                READ_WRITE gives event triggers access to all provided event
-                fields including the metadata, attendees, and conference
-                data and the ability to perform all actions.
+                READ_WRITE gives event triggers access to all
+                provided event fields including the metadata,
+                attendees, and conference data and the ability
+                to perform all actions.
         """
         UNSPECIFIED = 0
         METADATA = 1

@@ -400,8 +400,8 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
     ]:
         r"""Return a callable for the get document schema method over gRPC.
 
-        Gets a document schema. Returns NOT_FOUND if the document schema
-        does not exist.
+        Gets a document schema. Returns NOT_FOUND if the
+        document schema does not exist.
 
         Returns:
             Callable[[~.GetDocumentSchemaRequest],
@@ -429,9 +429,9 @@ class DocumentSchemaServiceGrpcTransport(DocumentSchemaServiceTransport):
     ]:
         r"""Return a callable for the delete document schema method over gRPC.
 
-        Deletes a document schema. Returns NOT_FOUND if the document
-        schema does not exist. Returns BAD_REQUEST if the document
-        schema has documents depending on it.
+        Deletes a document schema. Returns NOT_FOUND if the
+        document schema does not exist. Returns BAD_REQUEST if
+        the document schema has documents depending on it.
 
         Returns:
             Callable[[~.DeleteDocumentSchemaRequest],

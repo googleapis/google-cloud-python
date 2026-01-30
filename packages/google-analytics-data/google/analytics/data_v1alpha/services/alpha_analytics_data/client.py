@@ -799,24 +799,27 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RunFunnelReportResponse:
-        r"""Returns a customized funnel report of your Google Analytics
-        event data. The data returned from the API is as a table with
-        columns for the requested dimensions and metrics.
+        r"""Returns a customized funnel report of your Google
+        Analytics event data. The data returned from the API is
+        as a table with columns for the requested dimensions and
+        metrics.
 
-        Funnel exploration lets you visualize the steps your users take
-        to complete a task and quickly see how well they are succeeding
-        or failing at each step. For example, how do prospects become
-        shoppers and then become buyers? How do one time buyers become
-        repeat buyers? With this information, you can improve
-        inefficient or abandoned customer journeys. To learn more, see
-        `GA4 Funnel
-        Explorations <https://support.google.com/analytics/answer/9327974>`__.
+        Funnel exploration lets you visualize the steps your
+        users take to complete a task and quickly see how well
+        they are succeeding or failing at each step. For
+        example, how do prospects become shoppers and then
+        become buyers? How do one time buyers become repeat
+        buyers? With this information, you can improve
+        inefficient or abandoned customer journeys. To learn
+        more, see [GA4 Funnel
+        Explorations](https://support.google.com/analytics/answer/9327974).
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
-        Analytics Data API Funnel Reporting
-        Feedback <https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform>`__.
+        This method is introduced at alpha stability with the
+        intention of gathering feedback on syntax and
+        capabilities before entering beta. To give your feedback
+        on this API, complete the [Google Analytics Data API
+        Funnel Reporting
+        Feedback](https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform).
 
         .. code-block:: python
 
@@ -1594,25 +1597,29 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RecurringAudienceList:
-        r"""Creates a recurring audience list. Recurring audience lists
-        produces new audience lists each day. Audience lists are users
-        in an audience at the time of the list's creation.
+        r"""Creates a recurring audience list. Recurring audience
+        lists produces new audience lists each day. Audience
+        lists are users in an audience at the time of the list's
+        creation.
 
-        A recurring audience list ensures that you have audience list
-        based on the most recent data available for use each day. If you
-        manually create audience list, you don't know when an audience
-        list based on an additional day's data is available. This
-        recurring audience list automates the creation of an audience
-        list when an additional day's data is available. You will
-        consume fewer quota tokens by using recurring audience list
-        versus manually creating audience list at various times of day
-        trying to guess when an additional day's data is ready.
+        A recurring audience list ensures that you have audience
+        list based on the most recent data available for use
+        each day. If you manually create audience list, you
+        don't know when an audience list based on an additional
+        day's data is available. This recurring audience list
+        automates the creation of an audience list when an
+        additional day's data is available. You will consume
+        fewer quota tokens by using recurring audience list
+        versus manually creating audience list at various times
+        of day trying to guess when an additional day's data is
+        ready.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
-        Analytics Audience Export API
-        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+        This method is introduced at alpha stability with the
+        intention of gathering feedback on syntax and
+        capabilities before entering beta. To give your feedback
+        on this API, complete the
+        [Google Analytics Audience Export API
+        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
 
         .. code-block:: python
 
@@ -1745,18 +1752,20 @@ class AlphaAnalyticsDataClient(metaclass=AlphaAnalyticsDataClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RecurringAudienceList:
-        r"""Gets configuration metadata about a specific recurring audience
-        list. This method can be used to understand a recurring audience
-        list's state after it has been created. For example, a recurring
-        audience list resource will generate audience list instances for
-        each day, and this method can be used to get the resource name
-        of the most recent audience list instance.
+        r"""Gets configuration metadata about a specific recurring
+        audience list. This method can be used to understand a
+        recurring audience list's state after it has been
+        created. For example, a recurring audience list resource
+        will generate audience list instances for each day, and
+        this method can be used to get the resource name of the
+        most recent audience list instance.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
-        Analytics Audience Export API
-        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
+        This method is introduced at alpha stability with the
+        intention of gathering feedback on syntax and
+        capabilities before entering beta. To give your feedback
+        on this API, complete the
+        [Google Analytics Audience Export API
+        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
 
         .. code-block:: python
 

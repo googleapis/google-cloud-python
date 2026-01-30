@@ -34,8 +34,8 @@ class Network(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the Network. Format:
-            networks/{network_code}
+            Identifier. The resource name of the Network.
+            Format: networks/{network_code}
         display_name (str):
             Optional. Display name for Network.
 

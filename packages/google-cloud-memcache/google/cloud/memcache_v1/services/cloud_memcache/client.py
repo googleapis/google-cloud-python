@@ -1201,8 +1201,9 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 The request object. Request for
                 [UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance].
             instance (google.cloud.memcache_v1.types.Instance):
-                Required. A Memcached Instance. Only fields specified in
-                update_mask are updated.
+                Required. A Memcached Instance.
+                Only fields specified in update_mask are
+                updated.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1777,8 +1778,9 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (google.cloud.memcache_v1.types.RescheduleMaintenanceRequest.RescheduleType):
-                Required. If reschedule type is SPECIFIC_TIME, must set
-                up schedule_time as well.
+                Required. If reschedule type is
+                SPECIFIC_TIME, must set up schedule_time
+                as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this

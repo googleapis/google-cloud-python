@@ -345,8 +345,10 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.ListLinkedTargets.
             parent (:class:`str`):
-                Required. The name of the document, for which all target
-                links are returned. Format:
+                Required. The name of the document, for
+                which all target links are returned.
+                Format:
+
                 projects/{project_number}/locations/{location}/documents/{target_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -460,8 +462,10 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Response message for
                 DocumentLinkService.ListLinkedSources.
             parent (:class:`str`):
-                Required. The name of the document, for which all source
-                links are returned. Format:
+                Required. The name of the document, for
+                which all source links are returned.
+                Format:
+
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -590,16 +594,19 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.CreateDocumentLink.
             parent (:class:`str`):
-                Required. Parent of the document-link to be created.
-                parent of document-link should be a document. Format:
+                Required. Parent of the document-link to
+                be created. parent of document-link
+                should be a document. Format:
+
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             document_link (:class:`google.cloud.contentwarehouse_v1.types.DocumentLink`):
-                Required. Document links associated with the source
-                documents (source_document_id).
+                Required. Document links associated with
+                the source documents
+                (source_document_id).
 
                 This corresponds to the ``document_link`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -711,8 +718,9 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.DeleteDocumentLink.
             name (:class:`str`):
-                Required. The name of the document-link to be deleted.
-                Format:
+                Required. The name of the document-link
+                to be deleted. Format:
+
                 projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
 
                 This corresponds to the ``name`` field

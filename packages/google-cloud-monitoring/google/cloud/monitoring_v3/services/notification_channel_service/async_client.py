@@ -513,12 +513,9 @@ class NotificationChannelServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetNotificationChannelDescriptorRequest, dict]]):
                 The request object. The ``GetNotificationChannelDescriptor`` response.
             name (:class:`str`):
-                Required. The channel type for which to execute the
-                request. The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
+                Required. The channel type for which to
+                execute the request. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -785,12 +782,9 @@ class NotificationChannelServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetNotificationChannelRequest, dict]]):
                 The request object. The ``GetNotificationChannel`` request.
             name (:class:`str`):
-                Required. The channel for which to execute the request.
-                The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+                Required. The channel for which to
+                execute the request. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1197,12 +1191,9 @@ class NotificationChannelServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.DeleteNotificationChannelRequest, dict]]):
                 The request object. The ``DeleteNotificationChannel`` request.
             name (:class:`str`):
-                Required. The channel for which to execute the request.
-                The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+                Required. The channel for which to
+                execute the request. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

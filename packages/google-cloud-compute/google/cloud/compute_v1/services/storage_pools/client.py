@@ -2335,11 +2335,13 @@ class StoragePoolsClient(metaclass=StoragePoolsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Updates the specified storagePool with the data included in the
-        request. The update is performed only on selected fields
-        included as part of update-mask. Only the following fields can
-        be modified: pool_provisioned_capacity_gb, pool_provisioned_iops
-        and pool_provisioned_throughput.
+        r"""Updates the specified storagePool with the data included
+        in the request. The update is performed only on selected
+        fields included as part of update-mask. Only the
+        following fields can be modified:
+
+        pool_provisioned_capacity_gb, pool_provisioned_iops and
+        pool_provisioned_throughput.
 
         .. code-block:: python
 
@@ -2482,11 +2484,13 @@ class StoragePoolsClient(metaclass=StoragePoolsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Updates the specified storagePool with the data included in the
-        request. The update is performed only on selected fields
-        included as part of update-mask. Only the following fields can
-        be modified: pool_provisioned_capacity_gb, pool_provisioned_iops
-        and pool_provisioned_throughput.
+        r"""Updates the specified storagePool with the data included
+        in the request. The update is performed only on selected
+        fields included as part of update-mask. Only the
+        following fields can be modified:
+
+        pool_provisioned_capacity_gb, pool_provisioned_iops and
+        pool_provisioned_throughput.
 
         .. code-block:: python
 

@@ -312,10 +312,11 @@ class ConversationTurn(proto.Message):
                 The session parameters available to the bot
                 at this point.
             differences (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestRunDifference]):
-                Output only. If this is part of a [result conversation
-                turn][TestCaseResult.conversation_turns], the list of
-                differences between the original run and the replay for this
-                output, if any.
+                Output only. If this is part of a [result
+                conversation
+                turn][TestCaseResult.conversation_turns], the
+                list of differences between the original run and
+                the replay for this output, if any.
             diagnostic_info (google.protobuf.struct_pb2.Struct):
                 Required. Input only. The diagnostic
                 [info][Session.DetectIntentResponse.QueryResult.diagnostic_info]
@@ -792,8 +793,8 @@ class ListTestCasesRequest(proto.Message):
             allowed is 20. When TestCaseView = BASIC, the
             maximum page size allowed is 500.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         view (google.cloud.dialogflowcx_v3beta1.types.ListTestCasesRequest.TestCaseView):
             Specifies whether response should include all
             fields or just the metadata.
@@ -843,8 +844,9 @@ class ListTestCasesResponse(proto.Message):
 
     Attributes:
         test_cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCase]):
-            The list of test cases. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of test cases. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -1040,7 +1042,8 @@ class BatchRunTestCasesResponse(proto.Message):
 
     Attributes:
         results (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
-            The test case results. The detailed [conversation
+            The test case results. The detailed
+            [conversation
             turns][google.cloud.dialogflow.cx.v3beta1.TestCaseResult.conversation_turns]
             are empty in this response.
     """
@@ -1336,8 +1339,8 @@ class ListTestCaseResultsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         filter (str):
             The filter expression used to filter test case results. See
             `API Filtering <https://aip.dev/160>`__.

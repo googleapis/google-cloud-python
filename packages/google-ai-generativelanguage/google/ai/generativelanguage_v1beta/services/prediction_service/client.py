@@ -800,7 +800,9 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
 
         Returns:
             google.ai.generativelanguage_v1beta.types.PredictResponse:
-                Response message for [PredictionService.Predict].
+                Response message for
+                [PredictionService.Predict].
+
         """
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have

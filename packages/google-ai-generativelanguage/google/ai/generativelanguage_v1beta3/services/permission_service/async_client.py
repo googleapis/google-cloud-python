@@ -621,8 +621,9 @@ class PermissionServiceAsyncClient:
             request (Optional[Union[google.ai.generativelanguage_v1beta3.types.ListPermissionsRequest, dict]]):
                 The request object. Request for listing permissions.
             parent (:class:`str`):
-                Required. The parent resource of the permissions.
-                Format: tunedModels/{tuned_model}
+                Required. The parent resource of the
+                permissions. Format:
+                tunedModels/{tuned_model}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -30,9 +30,10 @@ __protobuf__ = proto.module(
 
 
 class ReleaseNotificationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/release_notification"
-    Platform Log event that describes the failure to send release status
-    change Pub/Sub notification.
+    r"""Payload proto for
+    "clouddeploy.googleapis.com/release_notification" Platform Log
+    event that describes the failure to send release status change
+    Pub/Sub notification.
 
     Attributes:
         message (str):

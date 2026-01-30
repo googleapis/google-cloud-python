@@ -171,12 +171,14 @@ class ImportUserEventsRequest(proto.Message):
             Required.
             ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``
         request_id (str):
-            Optional. Unique identifier provided by client, within the
-            ancestor dataset scope. Ensures idempotency for expensive
-            long running operations. Server-generated if unspecified. Up
+            Optional. Unique identifier provided by client,
+            within the ancestor dataset scope. Ensures
+            idempotency for expensive long running
+            operations. Server-generated if unspecified. Up
             to 128 characters long. This is returned as
-            google.longrunning.Operation.name in the response. Note that
-            this field must not be set if the desired input config is
+            google.longrunning.Operation.name in the
+            response. Note that this field must not be set
+            if the desired input config is
             catalog_inline_source.
         input_config (google.cloud.recommendationengine_v1beta1.types.InputConfig):
             Required. The desired input location of the

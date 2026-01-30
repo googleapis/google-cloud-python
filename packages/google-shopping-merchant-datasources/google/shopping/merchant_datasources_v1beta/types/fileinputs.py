@@ -114,12 +114,16 @@ class FileInput(proto.Message):
         """
 
         class Frequency(proto.Enum):
-            r"""The required fields vary based on the frequency of fetching. For a
-            monthly fetch schedule, [day of
+            r"""The required fields vary based on the frequency of fetching. For
+            a monthly
+            fetch schedule,
+            [day of
             month][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_month]
-            and [hour of
+            and
+            [hour of
             day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
-            are required. For a weekly fetch schedule, [day of
+            are required. For a weekly fetch schedule,
+            [day of
             week][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_week]
             and [hour of
             day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]

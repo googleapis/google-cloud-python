@@ -67,9 +67,9 @@ class NetworkConfig(proto.Message):
             network <https://cloud.google.com/vpc/docs/vpc>`__ to which
             the instance is connected.
         modes (MutableSequence[google.cloud.filestore_v1.types.NetworkConfig.AddressMode]):
-            Internet protocol versions for which the instance has IP
-            addresses assigned. For this version, only MODE_IPV4 is
-            supported.
+            Internet protocol versions for which the
+            instance has IP addresses assigned. For this
+            version, only MODE_IPV4 is supported.
         reserved_ip_range (str):
             Optional, reserved_ip_range can have one of the following
             two types of values.
@@ -98,8 +98,9 @@ class NetworkConfig(proto.Message):
             the format
             ``{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}``.
         connect_mode (google.cloud.filestore_v1.types.NetworkConfig.ConnectMode):
-            The network connect mode of the Filestore instance. If not
-            provided, the connect mode defaults to DIRECT_PEERING.
+            The network connect mode of the Filestore
+            instance. If not provided, the connect mode
+            defaults to DIRECT_PEERING.
     """
 
     class AddressMode(proto.Enum):
@@ -218,13 +219,15 @@ class NfsExportOptions(proto.Message):
             will be returned. The limit is 64 IP ranges/addresses for
             each FileShareConfig among all NfsExportOptions.
         access_mode (google.cloud.filestore_v1.types.NfsExportOptions.AccessMode):
-            Either READ_ONLY, for allowing only read requests on the
-            exported directory, or READ_WRITE, for allowing both read
-            and write requests. The default is READ_WRITE.
+            Either READ_ONLY, for allowing only read
+            requests on the exported directory, or
+            READ_WRITE, for allowing both read and write
+            requests. The default is READ_WRITE.
         squash_mode (google.cloud.filestore_v1.types.NfsExportOptions.SquashMode):
-            Either NO_ROOT_SQUASH, for allowing root access on the
-            exported directory, or ROOT_SQUASH, for not allowing root
-            access. The default is NO_ROOT_SQUASH.
+            Either NO_ROOT_SQUASH, for allowing root access
+            on the exported directory, or ROOT_SQUASH, for
+            not allowing root access. The default is
+            NO_ROOT_SQUASH.
         anon_uid (int):
             An integer representing the anonymous user id with a default
             value of 65534. Anon_uid may only be set with squash_mode of
@@ -477,9 +480,10 @@ class Instance(proto.Message):
             cannot be changed after the instance has been created.
             Default value: ``NFS_V3``.
         custom_performance_supported (bool):
-            Output only. Indicates whether this instance supports
-            configuring its performance. If true, the user can configure
-            the instance's performance by using the 'performance_config'
+            Output only. Indicates whether this instance
+            supports configuring its performance. If true,
+            the user can configure the instance's
+            performance by using the 'performance_config'
             field.
         performance_config (google.cloud.filestore_v1.types.Instance.PerformanceConfig):
             Optional. Used to configure performance.
@@ -553,21 +557,22 @@ class Instance(proto.Message):
             TIER_UNSPECIFIED (0):
                 Not set.
             STANDARD (1):
-                STANDARD tier. BASIC_HDD is the preferred term for this
-                tier.
+                STANDARD tier. BASIC_HDD is the preferred term
+                for this tier.
             PREMIUM (2):
-                PREMIUM tier. BASIC_SSD is the preferred term for this tier.
+                PREMIUM tier. BASIC_SSD is the preferred term
+                for this tier.
             BASIC_HDD (3):
-                BASIC instances offer a maximum capacity of 63.9 TB.
-                BASIC_HDD is an alias for STANDARD Tier, offering economical
-                performance backed by HDD.
+                BASIC instances offer a maximum capacity of 63.9
+                TB. BASIC_HDD is an alias for STANDARD Tier,
+                offering economical performance backed by HDD.
             BASIC_SSD (4):
-                BASIC instances offer a maximum capacity of 63.9 TB.
-                BASIC_SSD is an alias for PREMIUM Tier, and offers improved
-                performance backed by SSD.
+                BASIC instances offer a maximum capacity of 63.9
+                TB. BASIC_SSD is an alias for PREMIUM Tier, and
+                offers improved performance backed by SSD.
             HIGH_SCALE_SSD (5):
-                HIGH_SCALE instances offer expanded capacity and performance
-                scaling capabilities.
+                HIGH_SCALE instances offer expanded capacity and
+                performance scaling capabilities.
             ENTERPRISE (6):
                 ENTERPRISE instances offer the features and
                 availability needed for mission-critical
@@ -609,8 +614,9 @@ class Instance(proto.Message):
 
         Values:
             FILE_PROTOCOL_UNSPECIFIED (0):
-                FILE_PROTOCOL_UNSPECIFIED serves a "not set" default value
-                when a FileProtocol is a separate field in a message.
+                FILE_PROTOCOL_UNSPECIFIED serves a "not set"
+                default value when a FileProtocol is a separate
+                field in a message.
             NFS_V3 (1):
                 NFS 3.0.
             NFS_V4_1 (2):
@@ -916,7 +922,8 @@ class UpdateInstanceRequest(proto.Message):
             - "deletion_protection_enabled"
             - "deletion_protection_reason".
         instance (google.cloud.filestore_v1.types.Instance):
-            Only fields specified in update_mask are updated.
+            Only fields specified in update_mask are
+            updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1031,8 +1038,9 @@ class ListInstancesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -1291,8 +1299,9 @@ class ListSnapshotsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -1548,13 +1557,15 @@ class CreateBackupRequest(proto.Message):
             Required. A [backup
             resource][google.cloud.filestore.v1.Backup]
         backup_id (str):
-            Required. The ID to use for the backup. The ID must be
-            unique within the specified project and location.
+            Required. The ID to use for the backup.
+            The ID must be unique within the specified
+            project and location.
 
-            This value must start with a lowercase letter followed by up
-            to 62 lowercase letters, numbers, or hyphens, and cannot end
-            with a hyphen. Values that do not match this pattern will
-            trigger an INVALID_ARGUMENT error.
+            This value must start with a lowercase letter
+            followed by up to 62 lowercase letters, numbers,
+            or hyphens, and cannot end with a hyphen. Values
+            that do not match this pattern will trigger an
+            INVALID_ARGUMENT error.
     """
 
     parent: str = proto.Field(
@@ -1667,8 +1678,9 @@ class ListBackupsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).

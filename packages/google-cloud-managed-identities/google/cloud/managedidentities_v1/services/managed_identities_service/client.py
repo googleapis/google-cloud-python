@@ -1344,8 +1344,9 @@ class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMet
                 The request object. Request message for
                 [UpdateDomain][google.cloud.managedidentities.v1.UpdateDomain]
             domain (google.cloud.managedidentities_v1.types.Domain):
-                Required. Domain message with updated fields. Only
-                supported fields specified in update_mask are updated.
+                Required. Domain message with updated
+                fields. Only supported fields specified
+                in update_mask are updated.
 
                 This corresponds to the ``domain`` field
                 on the ``request`` instance; if ``request`` is provided, this

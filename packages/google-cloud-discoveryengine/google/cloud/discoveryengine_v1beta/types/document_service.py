@@ -310,7 +310,9 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
         Attributes:
             fhir_resources (MutableSequence[str]):
-                Required. The FHIR resources to match by. Format:
+                Required. The FHIR resources to match by.
+                Format:
+
                 projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
         """
 
@@ -445,6 +447,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                     This field is a member of `oneof`_ ``matcher_value``.
                 fhir_resource (str):
                     Format:
+
                     projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
 
                     This field is a member of `oneof`_ ``matcher_value``.

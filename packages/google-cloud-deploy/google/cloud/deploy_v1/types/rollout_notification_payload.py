@@ -30,9 +30,10 @@ __protobuf__ = proto.module(
 
 
 class RolloutNotificationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/rollout_notification"
-    Platform Log event that describes the failure to send rollout status
-    change Pub/Sub notification.
+    r"""Payload proto for
+    "clouddeploy.googleapis.com/rollout_notification" Platform Log
+    event that describes the failure to send rollout status change
+    Pub/Sub notification.
 
     Attributes:
         message (str):

@@ -61,9 +61,10 @@ class Condition(proto.Message):
             value (str):
                 The specific query value to match against
 
-                Must be lowercase, must be UTF-8. Can have at most 3 space
-                separated terms if full_match is true. Cannot be an empty
-                string. Maximum length of 5000 characters.
+                Must be lowercase, must be UTF-8.
+                Can have at most 3 space separated terms if
+                full_match is true. Cannot be an empty string.
+                Maximum length of 5000 characters.
             full_match (bool):
                 Whether the search query needs to exactly
                 match the query term.
@@ -193,8 +194,9 @@ class Control(proto.Message):
 
         Attributes:
             boost (float):
-                Required. Strength of the boost, which should be in [-1, 1].
-                Negative boost means demotion. Default is 0.0 (No-op).
+                Required. Strength of the boost, which should be
+                in [-1, 1]. Negative boost means demotion.
+                Default is 0.0 (No-op).
             filter (str):
                 Required. Specifies which products to apply
                 the boost to.
@@ -205,8 +207,9 @@ class Control(proto.Message):
                 Maximum length is 5000 characters.
                 Otherwise an INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents can be
-                boosted by this control. Full data store name e.g.
+                Required. Specifies which data store's documents
+                can be boosted by this control. Full data store
+                name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
@@ -238,8 +241,9 @@ class Control(proto.Message):
                 Maximum length is 5000 characters. Otherwise an
                 INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents can be
-                filtered by this control. Full data store name e.g.
+                Required. Specifies which data store's documents
+                can be filtered by this control. Full data store
+                name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 

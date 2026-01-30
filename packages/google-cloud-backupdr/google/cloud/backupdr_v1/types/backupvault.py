@@ -219,11 +219,13 @@ class BackupVault(proto.Message):
             https://google.aip.dev/128#annotations Stores
             small amounts of arbitrary data.
         access_restriction (google.cloud.backupdr_v1.types.BackupVault.AccessRestriction):
-            Optional. Note: This field is added for future use case and
-            will not be supported in the current release.
+            Optional. Note: This field is added for future
+            use case and will not be supported in the
+            current release.
 
-            Access restriction for the backup vault. Default value is
-            WITHIN_ORGANIZATION if not provided during creation.
+            Access restriction for the backup vault.
+            Default value is WITHIN_ORGANIZATION if not
+            provided during creation.
         encryption_config (google.cloud.backupdr_v1.types.BackupVault.EncryptionConfig):
             Optional. The encryption config of the backup
             vault.
@@ -290,9 +292,9 @@ class BackupVault(proto.Message):
 
         Values:
             ACCESS_RESTRICTION_UNSPECIFIED (0):
-                Access restriction not set. If user does not provide any
-                value or pass this value, it will be changed to
-                WITHIN_ORGANIZATION.
+                Access restriction not set. If user does not
+                provide any value or pass this value, it will be
+                changed to WITHIN_ORGANIZATION.
             WITHIN_PROJECT (1):
                 Access to or from resources outside your
                 current project will be denied.
@@ -1401,8 +1403,9 @@ class CreateBackupVaultRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         backup_vault_id (str):
-            Required. ID of the requesting object If auto-generating ID
-            server-side, remove this field and backup_vault_id from the
+            Required. ID of the requesting object
+            If auto-generating ID server-side, remove this
+            field and backup_vault_id from the
             method_signature of Create RPC
         backup_vault (google.cloud.backupdr_v1.types.BackupVault):
             Required. The resource being created
@@ -1743,8 +1746,8 @@ class GetBackupVaultRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the backupvault store resource name, in
-            the format
+            Required. Name of the backupvault store resource
+            name, in the format
             'projects/{project_id}/locations/{location}/backupVaults/{resource_name}'
         view (google.cloud.backupdr_v1.types.BackupVaultView):
             Optional. Reserved for future use to provide
@@ -1767,12 +1770,14 @@ class UpdateBackupVaultRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the BackupVault resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then the request will fail.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the BackupVault
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then the request will
+            fail.
         backup_vault (google.cloud.backupdr_v1.types.BackupVault):
             Required. The resource being updated
         request_id (str):
@@ -2008,8 +2013,8 @@ class GetDataSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the data source resource name, in the
-            format
+            Required. Name of the data source resource name,
+            in the format
             'projects/{project_id}/locations/{location}/backupVaults/{resource_name}/dataSource/{resource_name}'
     """
 
@@ -2024,12 +2029,14 @@ class UpdateDataSourceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the DataSource resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then the request will fail.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the DataSource
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then the request will
+            fail.
         data_source (google.cloud.backupdr_v1.types.DataSource):
             Required. The resource being updated
         request_id (str):
@@ -2177,8 +2184,8 @@ class GetBackupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the data source resource name, in the
-            format
+            Required. Name of the data source resource name,
+            in the format
             'projects/{project_id}/locations/{location}/backupVaults/{backupVault}/dataSources/{datasource}/backups/{backup}'
         view (google.cloud.backupdr_v1.types.BackupView):
             Optional. Reserved for future use to provide
@@ -2201,12 +2208,13 @@ class UpdateBackupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Backup resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then the
-            request will fail.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Backup resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then the request will fail.
         backup (google.cloud.backupdr_v1.types.Backup):
             Required. The resource being updated
         request_id (str):

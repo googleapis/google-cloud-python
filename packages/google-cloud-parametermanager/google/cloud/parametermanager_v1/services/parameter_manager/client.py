@@ -1187,13 +1187,16 @@ class ParameterManagerClient(metaclass=ParameterManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the Parameter resource by the update. The
-                fields specified in the update_mask are relative to the
-                resource, not the full request. A mutable field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all mutable fields present in the
-                request will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                Parameter resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A mutable field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                mutable fields present in the request
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1880,13 +1883,16 @@ class ParameterManagerClient(metaclass=ParameterManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ParameterVersion resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A
-                mutable field will be overwritten if it is in the mask.
-                If the user does not provide a mask then all mutable
-                fields present in the request will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ParameterVersion resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A mutable field will be
+                overwritten if it is in the mask. If the
+                user does not provide a mask then all
+                mutable fields present in the request
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

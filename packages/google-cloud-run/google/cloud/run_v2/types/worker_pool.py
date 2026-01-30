@@ -191,8 +191,9 @@ class ListWorkerPoolsResponse(proto.Message):
         worker_pools (MutableSequence[google.cloud.run_v2.types.WorkerPool]):
             The resulting list of WorkerPools.
         next_page_token (str):
-            A token indicating there are more items than page_size. Use
-            it in the next ListWorkerPools request to continue.
+            A token indicating there are more items than
+            page_size. Use it in the next ListWorkerPools
+            request to continue.
     """
 
     @property

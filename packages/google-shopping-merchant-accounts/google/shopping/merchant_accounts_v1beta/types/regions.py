@@ -225,8 +225,8 @@ class Region(proto.Message):
 
         Attributes:
             region_code (str):
-                Required. `CLDR territory
-                code <http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml>`__
+                Required. [CLDR territory
+                code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml)
                 or the country the postal code group applies to.
             postal_codes (MutableSequence[google.shopping.merchant_accounts_v1beta.types.Region.PostalCodeArea.PostalCodeRange]):
                 Required. A range of postal codes.
@@ -278,10 +278,10 @@ class Region(proto.Message):
 
         Attributes:
             geotarget_criteria_ids (MutableSequence[int]):
-                Required. A non-empty list of `location
-                IDs <https://developers.google.com/adwords/api/docs/appendix/geotargeting>`__.
-                They must all be of the same location type (for example,
-                state).
+                Required. A non-empty list of [location
+                IDs](https://developers.google.com/adwords/api/docs/appendix/geotargeting).
+                They must all be of the same location type (for
+                example, state).
         """
 
         geotarget_criteria_ids: MutableSequence[int] = proto.RepeatedField(

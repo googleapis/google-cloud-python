@@ -98,8 +98,9 @@ class ListExecutionsResponse(proto.Message):
         executions (MutableSequence[google.cloud.run_v2.types.Execution]):
             The resulting list of Executions.
         next_page_token (str):
-            A token indicating there are more items than page_size. Use
-            it in the next ListExecutions request to continue.
+            A token indicating there are more items than
+            page_size. Use it in the next ListExecutions
+            request to continue.
     """
 
     @property
@@ -257,12 +258,14 @@ class Execution(proto.Message):
         job (str):
             Output only. The name of the parent Job.
         parallelism (int):
-            Output only. Specifies the maximum desired number of tasks
-            the execution should run at any given time. Must be <=
-            task_count. The actual number of tasks running in steady
-            state will be less than this number when ((.spec.task_count
-            - .status.successful) < .spec.parallelism), i.e. when the
-            work left to do is less than max parallelism.
+            Output only. Specifies the maximum desired
+            number of tasks the execution should run at any
+            given time. Must be <= task_count. The actual
+            number of tasks running in steady state will be
+            less than this number when ((.spec.task_count -
+            .status.successful) < .spec.parallelism), i.e.
+            when the work left to do is less than max
+            parallelism.
         task_count (int):
             Output only. Specifies the desired number of
             tasks the execution should run. Setting to 1

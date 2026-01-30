@@ -222,8 +222,9 @@ class CloudWorkspaceSourceContext(proto.Message):
         workspace_id (google.cloud.source_context_v1.types.CloudWorkspaceId):
             The ID of the workspace.
         snapshot_id (str):
-            The ID of the snapshot. An empty snapshot_id refers to the
-            most recent snapshot.
+            The ID of the snapshot.
+            An empty snapshot_id refers to the most recent
+            snapshot.
     """
 
     workspace_id: "CloudWorkspaceId" = proto.Field(

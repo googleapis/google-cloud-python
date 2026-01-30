@@ -1054,13 +1054,15 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
             google.cloud.compute_v1.types.TargetGrpcProxy:
                 Represents a Target gRPC Proxy resource.
 
-                   A target gRPC proxy is a component of load balancers
-                   intended for load balancing gRPC traffic. Only global
-                   forwarding rules with load balancing scheme
-                   INTERNAL_SELF_MANAGED can reference a target gRPC
-                   proxy. The target gRPC Proxy references a URL map
-                   that specifies how traffic is routed to gRPC backend
-                   services.
+                A target gRPC proxy is a component of
+                load balancers intended for load
+                balancing gRPC traffic. Only global
+                forwarding rules with load balancing
+                scheme INTERNAL_SELF_MANAGED can
+                reference a target gRPC proxy. The
+                target gRPC Proxy references a URL map
+                that specifies how traffic is routed to
+                gRPC backend services.
 
         """
         # Create or coerce a protobuf request object.

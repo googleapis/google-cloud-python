@@ -91,10 +91,11 @@ class ValuePresentInList(proto.Enum):
         VALUE_PRESENT_IN_LIST_UNSPECIFIED (0):
             Value present in list unspecified
         VALUE_PRESENT_IN_LIST_IF_VALUE_LIST (1):
-            If the source value is in the supplied list at value_list
-        VALUE_PRESENT_IN_LIST_IF_VALUE_NOT_LIST (2):
-            If the source value is not in the supplied list at
+            If the source value is in the supplied list at
             value_list
+        VALUE_PRESENT_IN_LIST_IF_VALUE_NOT_LIST (2):
+            If the source value is not in the supplied list
+            at value_list
     """
     VALUE_PRESENT_IN_LIST_UNSPECIFIED = 0
     VALUE_PRESENT_IN_LIST_IF_VALUE_LIST = 1
@@ -298,18 +299,21 @@ class ConversionWorkspace(proto.Message):
 
     Attributes:
         name (str):
-            Full name of the workspace resource, in the form of:
+            Full name of the workspace resource, in the form
+            of:
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         source (google.cloud.clouddms_v1.types.DatabaseEngineInfo):
             Required. The source engine details.
         destination (google.cloud.clouddms_v1.types.DatabaseEngineInfo):
             Required. The destination engine details.
         global_settings (MutableMapping[str, str]):
-            Optional. A generic list of settings for the workspace. The
-            settings are database pair dependant and can indicate
-            default behavior for the mapping rules engine or turn on or
-            off specific features. Such examples can be:
-            convert_foreign_key_to_interleave=true, skip_triggers=false,
+            Optional. A generic list of settings for the
+            workspace. The settings are database pair
+            dependant and can indicate default behavior for
+            the mapping rules engine or turn on or off
+            specific features. Such examples can be:
+            convert_foreign_key_to_interleave=true,
+            skip_triggers=false,
             ignore_non_table_synonyms=true
         has_uncommitted_changes (bool):
             Output only. Whether the workspace has
@@ -894,10 +898,11 @@ class MultiEntityRename(proto.Message):
 
             If unspecified, the default value for this field is '{name}'
         source_name_transformation (google.cloud.clouddms_v1.types.EntityNameTransformation):
-            Optional. Additional transformation that can be done on the
-            source entity name before it is being used by the
-            new_name_pattern, for example lower case. If no
-            transformation is desired, use NO_TRANSFORMATION
+            Optional. Additional transformation that can be
+            done on the source entity name before it is
+            being used by the new_name_pattern, for example
+            lower case. If no transformation is desired, use
+            NO_TRANSFORMATION
     """
 
     new_name_pattern: str = proto.Field(
@@ -1322,13 +1327,13 @@ class ValueTransformation(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         assign_min_value (google.protobuf.empty_pb2.Empty):
-            Optional. Set to min_value - if integer or numeric, will use
-            int.minvalue, etc
+            Optional. Set to min_value - if integer or
+            numeric, will use int.minvalue, etc
 
             This field is a member of `oneof`_ ``action``.
         assign_max_value (google.protobuf.empty_pb2.Empty):
-            Optional. Set to max_value - if integer or numeric, will use
-            int.maxvalue, etc
+            Optional. Set to max_value - if integer or
+            numeric, will use int.maxvalue, etc
 
             This field is a member of `oneof`_ ``action``.
         round_scale (google.cloud.clouddms_v1.types.RoundToScale):
@@ -2096,20 +2101,22 @@ class ConstraintEntity(proto.Message):
         custom_features (google.protobuf.struct_pb2.Struct):
             Custom engine specific features.
         reference_columns (MutableSequence[str]):
-            Reference columns which may be associated with the
-            constraint. For example, if the constraint is a FOREIGN_KEY,
-            this represents the list of full names of referenced columns
-            by the foreign key.
+            Reference columns which may be associated with
+            the constraint. For example, if the constraint
+            is a FOREIGN_KEY, this represents the list of
+            full names of referenced columns by the foreign
+            key.
         reference_table (str):
-            Reference table which may be associated with the constraint.
-            For example, if the constraint is a FOREIGN_KEY, this
-            represents the list of full name of the referenced table by
-            the foreign key.
+            Reference table which may be associated with the
+            constraint. For example, if the constraint is a
+            FOREIGN_KEY, this represents the list of full
+            name of the referenced table by the foreign key.
         table_name (str):
-            Table which is associated with the constraint. In case the
-            constraint is defined on a table, this field is left empty
-            as this information is stored in parent_name. However, if
-            constraint is defined on a view, this field stores the table
+            Table which is associated with the constraint.
+            In case the constraint is defined on a table,
+            this field is left empty as this information is
+            stored in parent_name. However, if constraint is
+            defined on a view, this field stores the table
             name on which the view is defined.
     """
 

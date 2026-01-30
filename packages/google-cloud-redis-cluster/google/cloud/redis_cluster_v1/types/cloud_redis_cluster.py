@@ -302,8 +302,9 @@ class UpdateClusterRequest(proto.Message):
             - ``size_gb``
             - ``replica_count``
         cluster (google.cloud.redis_cluster_v1.types.Cluster):
-            Required. Update description. Only fields specified in
-            update_mask are updated.
+            Required. Update description.
+            Only fields specified in update_mask are
+            updated.
         request_id (str):
             Idempotent request UUID.
     """
@@ -881,9 +882,10 @@ class Cluster(proto.Message):
         Attributes:
             backup (str):
                 Optional. Example:
+
                 //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
-                A shorter version (without the prefix) of the backup name is
-                also supported, like
+                A shorter version (without the prefix) of the
+                backup name is also supported, like
                 projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
                 In this case, it assumes the backup is under
                 redis.googleapis.com.
@@ -1541,10 +1543,10 @@ class ClusterMaintenancePolicy(proto.Message):
             updated i.e. Maintenance Window or Deny Period
             was updated.
         weekly_maintenance_window (MutableSequence[google.cloud.redis_cluster_v1.types.ClusterWeeklyMaintenanceWindow]):
-            Optional. Maintenance window that is applied to resources
-            covered by this policy. Minimum 1. For the current version,
-            the maximum number of weekly_maintenance_window is expected
-            to be one.
+            Optional. Maintenance window that is applied to
+            resources covered by this policy. Minimum 1. For
+            the current version, the maximum number of
+            weekly_maintenance_window is expected to be one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1618,8 +1620,9 @@ class PscConfig(proto.Message):
 
     Attributes:
         network (str):
-            Required. The network where the IP address of the discovery
-            endpoint will be reserved, in the form of
+            Required. The network where the IP address of
+            the discovery endpoint will be reserved, in the
+            form of
             projects/{network_project}/global/networks/{network_id}.
     """
 
@@ -1682,8 +1685,8 @@ class PscConnection(proto.Message):
             Optional. Project ID of the consumer project
             where the forwarding rule is created in.
         network (str):
-            Required. The consumer network where the IP address resides,
-            in the form of
+            Required. The consumer network where the IP
+            address resides, in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Required. The service attachment which is the
@@ -1811,11 +1814,11 @@ class PscAutoConnection(proto.Message):
 
             projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
         project_id (str):
-            Required. The consumer project_id where the forwarding rule
-            is created from.
+            Required. The consumer project_id where the
+            forwarding rule is created from.
         network (str):
-            Required. The consumer network where the IP address resides,
-            in the form of
+            Required. The consumer network where the IP
+            address resides, in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Output only. The service attachment which is
@@ -2125,12 +2128,13 @@ class ZoneDistributionConfig(proto.Message):
 
     Attributes:
         mode (google.cloud.redis_cluster_v1.types.ZoneDistributionConfig.ZoneDistributionMode):
-            Optional. The mode of zone distribution. Defaults to
-            MULTI_ZONE, when not specified.
+            Optional. The mode of zone distribution.
+            Defaults to MULTI_ZONE, when not specified.
         zone (str):
-            Optional. When SINGLE ZONE distribution is selected, zone
-            field would be used to allocate all resources in that zone.
-            This is not applicable to MULTI_ZONE, and would be ignored
+            Optional. When SINGLE ZONE distribution is
+            selected, zone field would be used to allocate
+            all resources in that zone. This is not
+            applicable to MULTI_ZONE, and would be ignored
             for MULTI_ZONE clusters.
     """
 
@@ -2173,8 +2177,8 @@ class RescheduleClusterMaintenanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
             where ``location_id`` refers to a GCP region.
         reschedule_type (google.cloud.redis_cluster_v1.types.RescheduleClusterMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME, must set up
-            schedule_time as well.
+            Required. If reschedule type is SPECIFIC_TIME,
+            must set up schedule_time as well.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Timestamp when the maintenance shall be
             rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339

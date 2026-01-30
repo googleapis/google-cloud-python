@@ -50,7 +50,8 @@ __protobuf__ = proto.module(
 
 
 class DataFilterType(proto.Enum):
-    r"""The type of filter present on a datasource, such as ALWAYS_FILTER.
+    r"""The type of filter present on a datasource, such as
+    ALWAYS_FILTER.
 
     Values:
         DATA_FILTER_TYPE_UNSPECIFIED (0):
@@ -483,12 +484,12 @@ class LookerExploreReferences(proto.Message):
         explore_references (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.LookerExploreReference]):
             Required. References to Looker explores.
         credentials (google.cloud.geminidataanalytics_v1beta.types.Credentials):
-            Optional. The credentials to use when calling the Looker
-            API.
-
-            Currently supports both OAuth token and API key-based
-            credentials, as described in `Authentication with an
-            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
+            Optional. The credentials to use when calling
+            the Looker API.
+            Currently supports both OAuth token and API
+            key-based credentials, as described in
+            [Authentication with an
+            SDK](https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk).
     """
 
     explore_references: MutableSequence["LookerExploreReference"] = proto.RepeatedField(
@@ -524,12 +525,14 @@ class LookerExploreReference(proto.Message):
 
             This field is a member of `oneof`_ ``instance``.
         lookml_model (str):
-            Required. Looker model, as outlined in `Major LookML
-            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
+            Required. Looker model, as outlined in
+            [Major LookML
+            structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
             Name of the LookML model.
         explore (str):
-            Required. Looker Explore, as outlined in `Major LookML
-            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
+            Required. Looker Explore, as outlined in
+            [Major LookML
+            structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
             Name of the LookML Explore.
         schema (google.cloud.geminidataanalytics_v1beta.types.Schema):
             Optional. The schema of the datasource.
@@ -690,19 +693,21 @@ class Schema(proto.Message):
             our e-commerce store." Currently only used for
             BigQuery data sources.
         synonyms (MutableSequence[str]):
-            Optional. A list of alternative names or synonyms that can
-            be used to refer to the table. For example: ["sales",
-            "orders", "purchases"]. Currently only used for BigQuery
-            data sources.
+            Optional. A list of alternative names or
+            synonyms that can be used to refer to the table.
+            For example: ["sales", "orders", "purchases"].
+            Currently only used for BigQuery data sources.
         tags (MutableSequence[str]):
-            Optional. A list of tags or keywords associated with the
-            table, used for categorization. For example: ["transaction",
-            "revenue", "customer_data"]. Currently only used for
+            Optional. A list of tags or keywords associated
+            with the table, used for categorization. For
+            example: ["transaction", "revenue",
+            "customer_data"]. Currently only used for
             BigQuery data sources.
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
-            not required, currently only Looker has this field.
+            not required, currently only Looker has this
+            field.
         filters (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.DataFilter]):
             Optional. The filters on the datasource's
             underlying data. Currently only used for Looker
@@ -751,15 +756,16 @@ class Field(proto.Message):
             Optional. The mode of the field (e.g.,
             NULLABLE, REPEATED).
         synonyms (MutableSequence[str]):
-            Optional. A list of alternative names or synonyms that can
-            be used to refer to this field. For example: ["id",
-            "customerid", "cust_id"]. Currently only used for BigQuery
+            Optional. A list of alternative names or
+            synonyms that can be used to refer to this
+            field. For example: ["id", "customerid",
+            "cust_id"]. Currently only used for BigQuery
             data sources.
         tags (MutableSequence[str]):
-            Optional. A list of tags or keywords associated with the
-            field, used for categorization. For example: ["identifier",
-            "customer", "pii"]. Currently only used for BigQuery data
-            sources.
+            Optional. A list of tags or keywords associated
+            with the field, used for categorization. For
+            example: ["identifier", "customer", "pii"].
+            Currently only used for BigQuery data sources.
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.Field]):
@@ -828,14 +834,15 @@ class DataFilter(proto.Message):
     Attributes:
         field (str):
             Optional. The field to filter on. For example:
-            ["event_date", "customer_id", "product_category"]
+            ["event_date", "customer_id",
+            "product_category"]
         value (str):
-            Optional. The default value used for this filter if the
-            filter is not overridden in a query. For example: ["after
-            2024-01-01", "123", "-fashion"]
+            Optional. The default value used for this filter
+            if the filter is not overridden in a query. For
+            example: ["after 2024-01-01", "123", "-fashion"]
         type_ (google.cloud.geminidataanalytics_v1beta.types.DataFilterType):
-            Optional. The type of filter present on a datasource, such
-            as ALWAYS_FILTER.
+            Optional. The type of filter present on a
+            datasource, such as ALWAYS_FILTER.
     """
 
     field: str = proto.Field(

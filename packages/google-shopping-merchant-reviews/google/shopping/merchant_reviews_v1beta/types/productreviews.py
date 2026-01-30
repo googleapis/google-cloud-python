@@ -160,9 +160,9 @@ class ListProductReviewsResponse(proto.Message):
 
 
 class ProductReview(proto.Message):
-    r"""A review for a product. For more information, see `Introduction to
-    Product Review
-    Feeds <https://developers.google.com/product-review-feeds>`__
+    r"""A review for a product. For more information, see
+    [Introduction to Product Review
+    Feeds](https://developers.google.com/product-review-feeds)
 
     Attributes:
         name (str):

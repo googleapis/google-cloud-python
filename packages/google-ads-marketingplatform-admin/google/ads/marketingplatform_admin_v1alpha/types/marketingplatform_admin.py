@@ -48,8 +48,8 @@ class GetOrganizationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Organization to retrieve. Format:
-            organizations/{org_id}
+            Required. The name of the Organization to
+            retrieve. Format: organizations/{org_id}
     """
 
     name: str = proto.Field(
@@ -124,8 +124,8 @@ class FindSalesPartnerManagedClientsRequest(proto.Message):
 
     Attributes:
         organization (str):
-            Required. The name of the sales partner organization.
-            Format: organizations/{org_id}
+            Required. The name of the sales partner
+            organization. Format: organizations/{org_id}
         is_active (bool):
             Optional. If set, only active and just ended
             clients will be returned.
@@ -192,9 +192,9 @@ class ListAnalyticsAccountLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent organization, which owns this
-            collection of Analytics account links. Format:
-            organizations/{org_id}
+            Required. The parent organization, which owns
+            this collection of Analytics account links.
+            Format: organizations/{org_id}
         page_size (int):
             Optional. The maximum number of Analytics
             account links to return in one call. The service
@@ -261,8 +261,9 @@ class CreateAnalyticsAccountLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this Analytics account
-            link will be created. Format: organizations/{org_id}
+            Required. The parent resource where this
+            Analytics account link will be created. Format:
+            organizations/{org_id}
         analytics_account_link (google.ads.marketingplatform_admin_v1alpha.types.AnalyticsAccountLink):
             Required. The Analytics account link to
             create.
@@ -284,8 +285,9 @@ class DeleteAnalyticsAccountLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Analytics account link to delete.
-            Format:
+            Required. The name of the Analytics account link
+            to delete. Format:
+
             organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
     """
 
@@ -300,13 +302,15 @@ class SetPropertyServiceLevelRequest(proto.Message):
 
     Attributes:
         analytics_account_link (str):
-            Required. The parent AnalyticsAccountLink scope where this
-            property is in. Format:
+            Required. The parent AnalyticsAccountLink scope
+            where this property is in. Format:
+
             organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
         analytics_property (str):
-            Required. The Analytics property to change the ServiceLevel
-            setting. This field is the name of the Google Analytics
-            Admin API property resource.
+            Required. The Analytics property to change the
+            ServiceLevel setting. This field is the name of
+            the Google Analytics Admin API property
+            resource.
 
             Format:
             analyticsadmin.googleapis.com/properties/{property_id}
@@ -339,9 +343,8 @@ class ReportPropertyUsageRequest(proto.Message):
 
     Attributes:
         organization (str):
-            Required. Specifies the organization whose property usage
-            will be listed.
-
+            Required. Specifies the organization whose
+            property usage will be listed.
             Format: organizations/{org_id}
         month (str):
             Required. The target month to list property
@@ -379,9 +382,8 @@ class ReportPropertyUsageResponse(proto.Message):
 
         Attributes:
             property (str):
-                The name of the Google Analytics Admin API property
-                resource.
-
+                The name of the Google Analytics Admin API
+                property resource.
                 Format:
                 analyticsadmin.googleapis.com/properties/{property_id}
             display_name (str):

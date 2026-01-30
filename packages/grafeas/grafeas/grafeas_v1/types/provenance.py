@@ -258,8 +258,9 @@ class Command(proto.Message):
             Working directory (relative to project source
             root) used when running this command.
         id (str):
-            Optional unique identifier for this command, used in
-            wait_for to reference this command as a dependency.
+            Optional unique identifier for this command,
+            used in wait_for to reference this command as a
+            dependency.
         wait_for (MutableSequence[str]):
             The ID(s) of the command(s) that this command
             depends on.

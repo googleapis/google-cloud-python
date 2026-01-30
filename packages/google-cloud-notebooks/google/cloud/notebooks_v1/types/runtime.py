@@ -367,10 +367,11 @@ class LocalDisk(proto.Message):
 
     class RuntimeGuestOsFeature(proto.Message):
         r"""Optional. A list of features to enable on the guest operating
-        system. Applicable only for bootable images. Read `Enabling guest
-        operating system
-        features <https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features>`__
-        to see a list of available options. Guest OS features for boot disk.
+        system. Applicable only for bootable images.
+        Read [Enabling guest operating system
+        features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features)
+        to see a list of available options.
+        Guest OS features for boot disk.
 
         Attributes:
             type_ (str):
@@ -731,9 +732,9 @@ class RuntimeMetrics(proto.Message):
 
 
 class RuntimeShieldedInstanceConfig(proto.Message):
-    r"""A set of Shielded Instance options. Check `Images using supported
-    Shielded VM
-    features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+    r"""A set of Shielded Instance options.
+    Check [Images using supported Shielded VM
+    features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
     Not all combinations are valid.
 
     Attributes:
@@ -870,17 +871,19 @@ class VirtualMachineConfig(proto.Message):
             networks, and all dependencies must be configured to be
             accessible without external IP addresses.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to runtime (see
-            `Tagging
-            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
+            Optional. The Compute Engine tags to add to
+            runtime (see [Tagging
+            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
         guest_attributes (MutableMapping[str, str]):
-            Output only. The Compute Engine guest attributes. (see
-            `Project and instance guest
-            attributes <https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes>`__).
+            Output only. The Compute Engine guest
+            attributes. (see [Project and instance
+            guest
+            attributes](https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes)).
         metadata (MutableMapping[str, str]):
-            Optional. The Compute Engine metadata entries to add to
-            virtual machine. (see `Project and instance
-            metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
+            Optional. The Compute Engine metadata entries to
+            add to virtual machine. (see [Project and
+            instance
+            metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
         labels (MutableMapping[str, str]):
             Optional. The labels to associate with this runtime. Label
             **keys** must contain 1 to 63 characters, and must conform
@@ -917,7 +920,8 @@ class VirtualMachineConfig(proto.Message):
     """
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
+        r"""The type of vNIC driver.
+        Default should be UNSPECIFIED_NIC_TYPE.
 
         Values:
             UNSPECIFIED_NIC_TYPE (0):

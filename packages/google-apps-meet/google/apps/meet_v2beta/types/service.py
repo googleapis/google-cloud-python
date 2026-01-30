@@ -171,11 +171,11 @@ class ConnectActiveConferenceRequest(proto.Message):
 class ConnectActiveConferenceResponse(proto.Message):
     r"""Response of ConnectActiveConference method.
 
-    A success response does not indicate the meeting is fully joined;
-    further communication must occur across WebRTC.
+    A success response does not indicate the meeting is fully
+    joined; further communication must occur across WebRTC.
 
-    See `Meet Media API
-    overview <https://developers.google.com/meet/media-api/guides/overview>`__
+    See [Meet Media API
+    overview](https://developers.google.com/meet/media-api/guides/overview)
     for more details about this connection.
 
     Attributes:

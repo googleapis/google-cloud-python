@@ -144,8 +144,8 @@ class ListDeploymentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -168,10 +168,11 @@ class ListDeploymentsResponse(proto.Message):
 
     Attributes:
         deployments (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Deployment]):
-            The list of deployments. There will be a maximum number of
-            items returned based on the page_size field in the request.
-            The list may in some cases be empty or contain fewer entries
-            than page_size even if this isn't the last page.
+            The list of deployments. There will be a maximum
+            number of items returned based on the page_size
+            field in the request. The list may in some cases
+            be empty or contain fewer entries than page_size
+            even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

@@ -195,9 +195,11 @@ class CreateServiceProjectAttachmentRequest(proto.Message):
             supported. Expected format:
             ``projects/{project}/locations/{location}``.
         service_project_attachment_id (str):
-            Required. The service project attachment identifier must
-            contain the project id of the service project specified in
-            the service_project_attachment.service_project field.
+            Required. The service project attachment
+            identifier must contain the project id of the
+            service project specified in the
+            service_project_attachment.service_project
+            field.
         service_project_attachment (google.cloud.apphub_v1.types.ServiceProjectAttachment):
             Required. The resource being created.
         request_id (str):
@@ -606,15 +608,18 @@ class UpdateServiceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Service resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. The API changes the values
-            of the fields as specified in the update_mask. The API
-            ignores the values of all fields not covered by the
-            update_mask. You can also unset a field by not specifying it
-            in the updated message, but adding the field to the mask.
-            This clears whatever value the field previously had.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Service resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request.
+            The API changes the values of the fields as
+            specified in the update_mask. The API ignores
+            the values of all fields not covered by the
+            update_mask. You can also unset a field by not
+            specifying it in the updated message, but adding
+            the field to the mask. This clears whatever
+            value the field previously had.
         service (google.cloud.apphub_v1.types.Service):
             Required. The resource being updated.
         request_id (str):
@@ -849,15 +854,18 @@ class UpdateApplicationRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Application resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. The API changes the values
-            of the fields as specified in the update_mask. The API
-            ignores the values of all fields not covered by the
-            update_mask. You can also unset a field by not specifying it
-            in the updated message, but adding the field to the mask.
-            This clears whatever value the field previously had.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Application
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request.
+            The API changes the values of the fields as
+            specified in the update_mask. The API ignores
+            the values of all fields not covered by the
+            update_mask. You can also unset a field by not
+            specifying it in the updated message, but adding
+            the field to the mask. This clears whatever
+            value the field previously had.
         application (google.cloud.apphub_v1.types.Application):
             Required. The resource being updated.
         request_id (str):
@@ -1226,15 +1234,18 @@ class UpdateWorkloadRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Workload resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. The API changes the values
-            of the fields as specified in the update_mask. The API
-            ignores the values of all fields not covered by the
-            update_mask. You can also unset a field by not specifying it
-            in the updated message, but adding the field to the mask.
-            This clears whatever value the field previously had.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Workload
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request.
+            The API changes the values of the fields as
+            specified in the update_mask. The API ignores
+            the values of all fields not covered by the
+            update_mask. You can also unset a field by not
+            specifying it in the updated message, but adding
+            the field to the mask. This clears whatever
+            value the field previously had.
         workload (google.cloud.apphub_v1.types.Workload):
             Required. The resource being updated.
         request_id (str):

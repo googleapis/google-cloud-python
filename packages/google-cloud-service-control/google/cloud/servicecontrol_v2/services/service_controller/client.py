@@ -109,12 +109,12 @@ class ServiceControllerClientMeta(type):
 
 
 class ServiceControllerClient(metaclass=ServiceControllerClientMeta):
-    """`Service Control API
-    v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
+    """[Service Control API
+    v2](https://cloud.google.com/service-infrastructure/docs/service-control/access-control)
 
     This API provides admission control and telemetry reporting for
-    services that are integrated with `Service
-    Infrastructure <https://cloud.google.com/service-infrastructure>`__.
+    services that are integrated with [Service
+    Infrastructure](https://cloud.google.com/service-infrastructure).
     """
 
     @staticmethod

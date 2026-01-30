@@ -108,8 +108,8 @@ class Parameter(proto.Message):
             Optional. Specifies the format of a
             Parameter.
         policy_member (google.iam.v1.resource_policy_member_pb2.ResourcePolicyMember):
-            Output only. [Output-only] policy member strings of a Google
-            Cloud resource.
+            Output only. [Output-only] policy member strings
+            of a Google Cloud resource.
         kms_key (str):
             Optional. Customer managed encryption key (CMEK) to use for
             encrypting the Parameter Versions. If not set, the default
@@ -306,13 +306,14 @@ class UpdateParameterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Parameter resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A mutable field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all mutable fields present in the
-            request will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Parameter
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A mutable field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all mutable fields
+            present in the request will be overwritten.
         parameter (google.cloud.parametermanager_v1.types.Parameter):
             Required. The Parameter resource being
             updated
@@ -422,10 +423,11 @@ class ParameterVersion(proto.Message):
             returned when the request provides the View
             value of FULL (default for GET request).
         kms_key_version (str):
-            Optional. Output only. [Output only] The resource name of
-            the KMS key version used to encrypt the ParameterVersion
-            payload. This field is populated only if the Parameter
-            resource has customer managed encryption key (CMEK)
+            Optional. Output only. [Output only] The
+            resource name of the KMS key version used to
+            encrypt the ParameterVersion payload. This field
+            is populated only if the Parameter resource has
+            customer managed encryption key (CMEK)
             configured.
 
             This field is a member of `oneof`_ ``_kms_key_version``.
@@ -685,13 +687,14 @@ class UpdateParameterVersionRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the ParameterVersion resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A mutable field will be
-            overwritten if it is in the mask. If the user does not
-            provide a mask then all mutable fields present in the
-            request will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the ParameterVersion
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A mutable field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all mutable fields
+            present in the request will be overwritten.
         parameter_version (google.cloud.parametermanager_v1.types.ParameterVersion):
             Required. The ParameterVersion resource being
             updated

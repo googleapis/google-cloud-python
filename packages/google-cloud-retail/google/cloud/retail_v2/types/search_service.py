@@ -231,11 +231,10 @@ class SearchRequest(proto.Message):
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
         facet_specs (MutableSequence[google.cloud.retail_v2.types.SearchRequest.FacetSpec]):
-            Facet specifications for faceted search. If empty, no facets
-            are returned.
-
-            A maximum of 200 values are allowed. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            Facet specifications for faceted search. If
+            empty, no facets are returned.
+            A maximum of 200 values are allowed. Otherwise,
+            an INVALID_ARGUMENT error is returned.
         dynamic_facet_spec (google.cloud.retail_v2.types.SearchRequest.DynamicFacetSpec):
             Deprecated. Refer to
             https://cloud.google.com/retail/docs/configs#dynamic
@@ -258,10 +257,10 @@ class SearchRequest(proto.Message):
             conditions, the final boost score is equal to the sum of the
             boost scores from all matched boost conditions.
         query_expansion_spec (google.cloud.retail_v2.types.SearchRequest.QueryExpansionSpec):
-            The query expansion specification that specifies the
-            conditions under which query expansion occurs. For more
-            information, see `Query
-            expansion <https://cloud.google.com/retail/docs/result-size#query_expansion>`__.
+            The query expansion specification that specifies
+            the conditions under which query expansion
+            occurs. For more information, see [Query
+            expansion](https://cloud.google.com/retail/docs/result-size#query_expansion).
         variant_rollup_keys (MutableSequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
@@ -503,11 +502,13 @@ class SearchRequest(proto.Message):
             facet_key (google.cloud.retail_v2.types.SearchRequest.FacetSpec.FacetKey):
                 Required. The facet key specification.
             limit (int):
-                Maximum of facet values that should be returned for this
-                facet. If unspecified, defaults to 50. The maximum allowed
-                value is 300. Values above 300 will be coerced to 300.
+                Maximum of facet values that should be returned
+                for this facet. If unspecified, defaults to 50.
+                The maximum allowed value is 300. Values above
+                300 will be coerced to 300.
 
-                If this field is negative, an INVALID_ARGUMENT is returned.
+                If this field is negative, an INVALID_ARGUMENT
+                is returned.
             excluded_filter_keys (MutableSequence[str]):
                 List of keys to exclude when faceting.
 
@@ -871,24 +872,28 @@ class SearchRequest(proto.Message):
                       - (id: ANY("product_1", "product_2")) AND (colorFamilies:
                         ANY("Red","Blue"))
                 boost (float):
-                    Strength of the condition boost, which should be in [-1, 1].
-                    Negative boost means demotion. Default is 0.0.
+                    Strength of the condition boost, which should be
+                    in [-1, 1]. Negative boost means demotion.
+                    Default is 0.0.
 
-                    Setting to 1.0 gives the item a big promotion. However, it
-                    does not necessarily mean that the boosted item will be the
-                    top result at all times, nor that other items will be
-                    excluded. Results could still be shown even when none of
+                    Setting to 1.0 gives the item a big promotion.
+                    However, it does not necessarily mean that the
+                    boosted item will be the top result at all
+                    times, nor that other items will be excluded.
+                    Results could still be shown even when none of
                     them matches the condition. And results that are
-                    significantly more relevant to the search query can still
-                    trump your heavily favored but irrelevant items.
+                    significantly more relevant to the search query
+                    can still trump your heavily favored but
+                    irrelevant items.
 
-                    Setting to -1.0 gives the item a big demotion. However,
-                    results that are deeply relevant might still be shown. The
-                    item will have an upstream battle to get a fairly high
-                    ranking, but it is not blocked out completely.
+                    Setting to -1.0 gives the item a big demotion.
+                    However, results that are deeply relevant might
+                    still be shown. The item will have an upstream
+                    battle to get a fairly high ranking, but it is
+                    not blocked out completely.
 
-                    Setting to 0.0 means no boost applied. The boosting
-                    condition is ignored.
+                    Setting to 0.0 means no boost applied. The
+                    boosting condition is ignored.
             """
 
             condition: str = proto.Field(
@@ -1315,10 +1320,10 @@ class SearchResponse(proto.Message):
             [total_size][google.cloud.retail.v2.SearchResponse.total_size]
             that matches.
         corrected_query (str):
-            Contains the spell corrected query, if found. If the spell
-            correction type is AUTOMATIC, then the search results are
-            based on corrected_query. Otherwise the original query is
-            used for search.
+            Contains the spell corrected query, if found. If
+            the spell correction type is AUTOMATIC, then the
+            search results are based on corrected_query.
+            Otherwise the original query is used for search.
         attribution_token (str):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.retail.v2.UserEvent] logs resulting
@@ -1537,8 +1542,8 @@ class SearchResponse(proto.Message):
 
                     This field is a member of `oneof`_ ``facet_value``.
                 interval (google.cloud.retail_v2.types.Interval):
-                    Interval value for a facet, such as [10, 20) for facet
-                    "price".
+                    Interval value for a facet, such as [10, 20) for
+                    facet "price".
 
                     This field is a member of `oneof`_ ``facet_value``.
                 count (int):

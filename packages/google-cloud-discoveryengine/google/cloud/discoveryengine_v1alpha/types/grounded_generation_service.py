@@ -38,12 +38,13 @@ class CheckGroundingSpec(proto.Message):
 
     Attributes:
         citation_threshold (float):
-            The threshold (in [0,1]) used for determining whether a fact
-            must be cited for a claim in the answer candidate. Choosing
-            a higher threshold will lead to fewer but very strong
-            citations, while choosing a lower threshold may lead to more
-            but somewhat weaker citations. If unset, the threshold will
-            default to 0.6.
+            The threshold (in [0,1]) used for determining
+            whether a fact must be cited for a claim in the
+            answer candidate. Choosing a higher threshold
+            will lead to fewer but very strong citations,
+            while choosing a lower threshold may lead to
+            more but somewhat weaker citations. If unset,
+            the threshold will default to 0.6.
 
             This field is a member of `oneof`_ ``_citation_threshold``.
     """
@@ -168,11 +169,13 @@ class CheckGroundingResponse(proto.Message):
                 Always provided regardless of whether citations
                 or anti-citations are found.
             citation_indices (MutableSequence[int]):
-                A list of indices (into 'cited_chunks') specifying the
-                citations associated with the claim. For instance [1,3,4]
-                means that cited_chunks[1], cited_chunks[3], cited_chunks[4]
-                are the facts cited supporting for the claim. A citation to
-                a fact indicates that the claim is supported by the fact.
+                A list of indices (into 'cited_chunks')
+                specifying the citations associated with the
+                claim. For instance [1,3,4] means that
+                cited_chunks[1], cited_chunks[3],
+                cited_chunks[4] are the facts cited supporting
+                for the claim. A citation to a fact indicates
+                that the claim is supported by the fact.
             grounding_check_required (bool):
                 Indicates that this claim required grounding check. When the
                 system decided this claim doesn't require

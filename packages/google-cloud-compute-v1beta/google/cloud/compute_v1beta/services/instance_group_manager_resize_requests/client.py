@@ -2007,8 +2007,9 @@ class InstanceGroupManagerResizeRequestsClient(
             google.cloud.compute_v1beta.services.instance_group_manager_resize_requests.pagers.ListPager:
                 [Output Only] A list of resize requests.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

@@ -368,8 +368,9 @@ class GetMirroringEndpointGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the endpoint group to retrieve.
-            Format:
+            Required. The name of the endpoint group to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/mirroringEndpointGroups/{mirroring_endpoint_group}
     """
 
@@ -751,7 +752,9 @@ class GetMirroringEndpointGroupAssociationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the association to retrieve. Format:
+            Required. The name of the association to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroring_endpoint_group_association}
     """
 
@@ -1122,8 +1125,9 @@ class GetMirroringDeploymentGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment group to retrieve.
-            Format:
+            Required. The name of the deployment group to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/mirroringDeploymentGroups/{mirroring_deployment_group}
     """
 
@@ -1450,7 +1454,9 @@ class GetMirroringDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment to retrieve. Format:
+            Required. The name of the deployment to
+            retrieve. Format:
+
             projects/{project}/locations/{location}/mirroringDeployments/{mirroring_deployment}
     """
 

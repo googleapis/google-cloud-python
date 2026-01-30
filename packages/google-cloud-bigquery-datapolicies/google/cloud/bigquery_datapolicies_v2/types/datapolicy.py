@@ -46,9 +46,10 @@ class CreateDataPolicyRequest(proto.Message):
             will belong to. The format is
             ``projects/{project_number}/locations/{location_id}``.
         data_policy_id (str):
-            Required. User-assigned (human readable) ID of the data
-            policy that needs to be unique within a project. Used as
-            {data_policy_id} in part of the resource name.
+            Required. User-assigned (human readable) ID of
+            the data policy that needs to be unique within a
+            project. Used as {data_policy_id} in part of the
+            resource name.
         data_policy (google.cloud.bigquery_datapolicies_v2.types.DataPolicy):
             Required. The data policy to create. The ``name`` field does
             not need to be provided for the data policy creation.
@@ -89,9 +90,9 @@ class UpdateDataPolicyRequest(proto.Message):
             Updates to the ``name`` and ``dataPolicyId`` fields are not
             allowed.
         allow_missing (bool):
-            Optional. If set to true, and the data policy is not found,
-            a new data policy will be created. In this situation,
-            update_mask is ignored.
+            Optional. If set to true, and the data policy is
+            not found, a new data policy will be created. In
+            this situation, update_mask is ignored.
     """
 
     data_policy: "DataPolicy" = proto.Field(
@@ -287,9 +288,9 @@ class DataPolicy(proto.Message):
 
     Attributes:
         data_masking_policy (google.cloud.bigquery_datapolicies_v2.types.DataMaskingPolicy):
-            Optional. The data masking policy that specifies the data
-            masking rule to use. It must be set if the data policy type
-            is DATA_MASKING_POLICY.
+            Optional. The data masking policy that specifies
+            the data masking rule to use. It must be set if
+            the data policy type is DATA_MASKING_POLICY.
 
             This field is a member of `oneof`_ ``policy``.
         name (str):
@@ -297,9 +298,10 @@ class DataPolicy(proto.Message):
             of
             ``projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}``.
         data_policy_id (str):
-            Output only. User-assigned (human readable) ID of the data
-            policy that needs to be unique within a project. Used as
-            {data_policy_id} in part of the resource name.
+            Output only. User-assigned (human readable) ID
+            of the data policy that needs to be unique
+            within a project. Used as {data_policy_id} in
+            part of the resource name.
         etag (str):
             The etag for this Data Policy.
             This field is used for UpdateDataPolicy calls.
@@ -316,16 +318,17 @@ class DataPolicy(proto.Message):
             ``projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{policyTag_id}``.
             policy_tag is supported only for V1 data policies.
         grantees (MutableSequence[str]):
-            Optional. The list of IAM principals that have Fine Grained
-            Access to the underlying data goverened by this data policy.
+            Optional. The list of IAM principals that have
+            Fine Grained Access to the underlying data
+            goverened by this data policy.
 
-            Uses the `IAM V2 principal
-            syntax <https://cloud.google.com/iam/docs/principal-identifiers#v2>`__
+            Uses the [IAM V2 principal
+            syntax](https://cloud.google.com/iam/docs/principal-identifiers#v2)
             Only supports principal types users, groups,
-            serviceaccounts, cloudidentity. This field is supported in
-            V2 Data Policy only. In case of V1 data policies (i.e.
-            verion = 1 and policy_tag is set), this field is not
-            populated.
+            serviceaccounts, cloudidentity. This field is
+            supported in V2 Data Policy only. In case of V1
+            data policies (i.e. verion = 1 and policy_tag is
+            set), this field is not populated.
         version (google.cloud.bigquery_datapolicies_v2.types.DataPolicy.Version):
             Output only. The version of the Data Policy
             resource.
@@ -438,6 +441,7 @@ class DataMaskingPolicy(proto.Message):
 
     class PredefinedExpression(proto.Enum):
         r"""The available masking rules. Learn more here:
+
         https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.
 
         Values:

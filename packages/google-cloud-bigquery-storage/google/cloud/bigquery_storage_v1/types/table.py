@@ -68,20 +68,20 @@ class TableFieldSchema(proto.Message):
             Optional. The field description. The maximum
             length is 1,024 characters.
         max_length (int):
-            Optional. Maximum length of values of this field for STRINGS
-            or BYTES.
+            Optional. Maximum length of values of this field
+            for STRINGS or BYTES.
+            If max_length is not specified, no maximum
+            length constraint is imposed on this field.
 
-            If max_length is not specified, no maximum length constraint
-            is imposed on this field.
+            If type = "STRING", then max_length represents
+            the maximum UTF-8 length of strings in this
+            field.
 
-            If type = "STRING", then max_length represents the maximum
-            UTF-8 length of strings in this field.
+            If type = "BYTES", then max_length represents
+            the maximum number of bytes in this field.
 
-            If type = "BYTES", then max_length represents the maximum
-            number of bytes in this field.
-
-            It is invalid to set this field if type is not "STRING" or
-            "BYTES".
+            It is invalid to set this field if type is not
+            "STRING" or "BYTES".
         precision (int):
             Optional. Precision (maximum number of total digits in base
             10) and scale (maximum number of digits in the fractional

@@ -778,14 +778,14 @@ class SecretManagerServiceGrpcAsyncIOTransport(SecretManagerServiceTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns permissions that a caller has for the specified secret.
-        If the secret does not exist, this call returns an empty set of
-        permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has for the specified
+        secret. If the secret does not exist, this call returns
+        an empty set of permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for
-        authorization checking. This operation may "fail open" without
-        warning.
+        authorization checking. This operation may "fail open"
+        without warning.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

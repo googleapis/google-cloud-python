@@ -35,12 +35,15 @@ class AutonomousDatabaseBackup(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Autonomous Database Backup
-            resource with the format:
+            Identifier. The name of the Autonomous Database
+            Backup resource with the format:
+
             projects/{project}/locations/{region}/autonomousDatabaseBackups/{autonomous_database_backup}
         autonomous_database (str):
-            Required. The name of the Autonomous Database resource for
-            which the backup is being created. Format:
+            Required. The name of the Autonomous Database
+            resource for which the backup is being created.
+            Format:
+
             projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}
         display_name (str):
             Optional. User friendly name for the Backup.

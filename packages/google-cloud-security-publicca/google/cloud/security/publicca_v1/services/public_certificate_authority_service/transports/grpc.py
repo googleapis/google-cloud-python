@@ -112,8 +112,8 @@ class PublicCertificateAuthorityServiceGrpcTransport(
 ):
     """gRPC backend transport for PublicCertificateAuthorityService.
 
-    Manages the resources required for ACME `external account
-    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__ for
+    Manages the resources required for ACME [external account
+    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4) for
     the public certificate authority service.
 
     This class defines the same methods as the primary client, so the

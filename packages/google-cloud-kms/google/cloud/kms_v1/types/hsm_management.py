@@ -808,15 +808,16 @@ class ListSingleTenantHsmInstancesRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListSingleTenantHsmInstancesResponse.next_page_token][google.cloud.kms.v1.ListSingleTenantHsmInstancesResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         show_deleted (bool):
             Optional. If set to true,
             [HsmManagement.ListSingleTenantHsmInstances][google.cloud.kms.v1.HsmManagement.ListSingleTenantHsmInstances]
@@ -1189,15 +1190,16 @@ class ListSingleTenantHsmInstanceProposalsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListSingleTenantHsmInstanceProposalsResponse.next_page_token][google.cloud.kms.v1.ListSingleTenantHsmInstanceProposalsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the filter in
-            the response. For more information, see `Sorting and
-            filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Only include resources that match the
+            filter in the response. For more information,
+            see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         order_by (str):
-            Optional. Specify how the results should be sorted. If not
-            specified, the results will be sorted in the default order.
-            For more information, see `Sorting and filtering list
-            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
+            Optional. Specify how the results should be
+            sorted. If not specified, the results will be
+            sorted in the default order. For more
+            information, see [Sorting and filtering list
+            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
         show_deleted (bool):
             Optional. If set to true,
             [HsmManagement.ListSingleTenantHsmInstanceProposals][google.cloud.kms.v1.HsmManagement.ListSingleTenantHsmInstanceProposals]

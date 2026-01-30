@@ -348,7 +348,8 @@ class ContentServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.CreateContentRequest, dict]]):
                 The request object. Create content request.
             parent (:class:`str`):
-                Required. The resource name of the parent lake:
+                Required. The resource name of the
+                parent lake:
                 projects/{project_id}/locations/{location_id}/lakes/{lake_id}
 
                 This corresponds to the ``parent`` field
@@ -587,7 +588,8 @@ class ContentServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteContentRequest, dict]]):
                 The request object. Delete content request.
             name (:class:`str`):
-                Required. The resource name of the content:
+                Required. The resource name of the
+                content:
                 projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
 
                 This corresponds to the ``name`` field
@@ -688,7 +690,8 @@ class ContentServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetContentRequest, dict]]):
                 The request object. Get content request.
             name (:class:`str`):
-                Required. The resource name of the content:
+                Required. The resource name of the
+                content:
                 projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
 
                 This corresponds to the ``name`` field
@@ -1161,7 +1164,8 @@ class ContentServiceAsyncClient:
                 The request object. List content request. Returns the
                 BASIC Content view.
             parent (:class:`str`):
-                Required. The resource name of the parent lake:
+                Required. The resource name of the
+                parent lake:
                 projects/{project_id}/locations/{location_id}/lakes/{lake_id}
 
                 This corresponds to the ``parent`` field

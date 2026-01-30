@@ -77,10 +77,10 @@ class Agent(proto.Message):
             The maximum length is 500 characters. If
             exceeded, the request is rejected.
         avatar_uri (str):
-            Optional. The URI of the agent's avatar. Avatars are used
-            throughout the Dialogflow console and in the self-hosted
-            `Web
-            Demo <https://cloud.google.com/dialogflow/docs/integrations/web-demo>`__
+            Optional. The URI of the agent's avatar.
+            Avatars are used throughout the Dialogflow
+            console and in the self-hosted [Web
+            Demo](https://cloud.google.com/dialogflow/docs/integrations/web-demo)
             integration.
         enable_logging (bool):
             Optional. Determines whether this agent
@@ -108,8 +108,8 @@ class Agent(proto.Message):
             bots connectors and webhook calls will follow
             the specified API version.
         tier (google.cloud.dialogflow_v2beta1.types.Agent.Tier):
-            Optional. The agent tier. If not specified, TIER_STANDARD is
-            assumed.
+            Optional. The agent tier. If not specified,
+            TIER_STANDARD is assumed.
     """
 
     class MatchMode(proto.Enum):
@@ -164,8 +164,8 @@ class Agent(proto.Message):
                 Essentials Edition, previously known as
                 Enterprise Essential Edition.
             TIER_ENTERPRISE_PLUS (3):
-                Essentials Edition (same as TIER_ENTERPRISE), previously
-                known as Enterprise Plus Edition.
+                Essentials Edition (same as TIER_ENTERPRISE),
+                previously known as Enterprise Plus Edition.
         """
         TIER_UNSPECIFIED = 0
         TIER_STANDARD = 1
@@ -321,8 +321,8 @@ class SearchAgentsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -345,8 +345,9 @@ class SearchAgentsResponse(proto.Message):
 
     Attributes:
         agents (MutableSequence[google.cloud.dialogflow_v2beta1.types.Agent]):
-            The list of agents. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of agents. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -471,14 +472,16 @@ class ImportAgentRequest(proto.Message):
             with. Format: ``projects/<Project ID>`` or
             ``projects/<Project ID>/locations/<Location ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file containing the agent
-            to import. Note: The URI must start with "gs://".
+            The URI to a Google Cloud Storage file
+            containing the agent to import. Note: The URI
+            must start with "gs://".
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see [Dialogflow access
+            control](https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
@@ -520,14 +523,16 @@ class RestoreAgentRequest(proto.Message):
             associated with. Format: ``projects/<Project ID>`` or
             ``projects/<Project ID>/locations/<Location ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file containing the agent
-            to restore. Note: The URI must start with "gs://".
+            The URI to a Google Cloud Storage file
+            containing the agent to restore. Note: The URI
+            must start with "gs://".
 
-            Dialogflow performs a read operation for the Cloud Storage
-            object on the caller's behalf, so your request
-            authentication must have read permissions for the object.
-            For more information, see `Dialogflow access
-            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+            Dialogflow performs a read operation for the
+            Cloud Storage object on the caller's behalf, so
+            your request authentication must have read
+            permissions for the object. For more
+            information, see [Dialogflow access
+            control](https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
@@ -562,12 +567,12 @@ class GetValidationResultRequest(proto.Message):
             Format: ``projects/<Project ID>`` or
             ``projects/<Project ID>/locations/<Location ID>``.
         language_code (str):
-            Optional. The language for which you want a validation
-            result. If not specified, the agent's default language is
-            used. `Many
-            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            are supported. Note: languages must be enabled in the agent
-            before they can be used.
+            Optional. The language for which you want a
+            validation result. If not specified, the agent's
+            default language is used. [Many
+            languages](https://cloud.google.com/dialogflow/docs/reference/language)
+            are supported. Note: languages must be enabled
+            in the agent before they can be used.
     """
 
     parent: str = proto.Field(

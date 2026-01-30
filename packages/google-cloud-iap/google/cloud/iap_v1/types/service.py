@@ -889,7 +889,8 @@ class ListBrandsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. GCP Project number/id. In the following format:
+            Required. GCP Project number/id.
+            In the following format:
             projects/{project_number/id}.
     """
 
@@ -919,8 +920,8 @@ class CreateBrandRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. GCP Project number/id under which the brand is to
-            be created. In the following format:
+            Required. GCP Project number/id under which the
+            brand is to be created. In the following format:
             projects/{project_number/id}.
         brand (google.cloud.iap_v1.types.Brand):
             Required. The brand to be created.
@@ -942,8 +943,9 @@ class GetBrandRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the brand to be fetched. In the following
-            format: projects/{project_number/id}/brands/{brand}.
+            Required. Name of the brand to be fetched.
+            In the following format:
+            projects/{project_number/id}/brands/{brand}.
     """
 
     name: str = proto.Field(
@@ -957,7 +959,8 @@ class ListIdentityAwareProxyClientsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full brand path. In the following format:
+            Required. Full brand path.
+            In the following format:
             projects/{project_number/id}/brands/{brand}.
         page_size (int):
             The maximum number of clients to return. The
@@ -1023,9 +1026,11 @@ class CreateIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Path to create the client in. In the following
-            format: projects/{project_number/id}/brands/{brand}. The
-            project must belong to a G Suite account.
+            Required. Path to create the client in.
+            In the following format:
+
+            projects/{project_number/id}/brands/{brand}.
+            The project must belong to a G Suite account.
         identity_aware_proxy_client (google.cloud.iap_v1.types.IdentityAwareProxyClient):
             Required. Identity Aware Proxy Client to be
             created.
@@ -1047,8 +1052,9 @@ class GetIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy client to be
-            fetched. In the following format:
+            Required. Name of the Identity Aware Proxy
+            client to be fetched. In the following format:
+
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
@@ -1063,8 +1069,10 @@ class ResetIdentityAwareProxyClientSecretRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy client to that
-            will have its secret reset. In the following format:
+            Required. Name of the Identity Aware Proxy
+            client to that will have its secret reset. In
+            the following format:
+
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
@@ -1079,8 +1087,9 @@ class DeleteIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy client to be
-            deleted. In the following format:
+            Required. Name of the Identity Aware Proxy
+            client to be deleted. In the following format:
+
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 

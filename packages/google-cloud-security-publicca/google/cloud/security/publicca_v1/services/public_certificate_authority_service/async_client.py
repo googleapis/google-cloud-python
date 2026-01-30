@@ -66,8 +66,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class PublicCertificateAuthorityServiceAsyncClient:
-    """Manages the resources required for ACME `external account
-    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__ for
+    """Manages the resources required for ACME [external account
+    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4) for
     the public certificate authority service.
     """
 
@@ -359,9 +359,11 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 in a given project.
             parent (:class:`str`):
                 Required. The parent resource where this
-                external_account_key will be created. Format:
-                projects/[project_id]/locations/[location]. At present
-                only the "global" location is supported.
+                external_account_key will be created.
+                Format:
+                projects/[project_id]/locations/[location].
+                At present only the "global" location is
+                supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -389,9 +391,11 @@ class PublicCertificateAuthorityServiceAsyncClient:
 
         Returns:
             google.cloud.security.publicca_v1.types.ExternalAccountKey:
-                A representation of an ExternalAccountKey used for [external account
-                   binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
-                   within ACME.
+                A representation of an
+                ExternalAccountKey used for [external
+                account
+                binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
+                within ACME.
 
         """
         # Create or coerce a protobuf request object.

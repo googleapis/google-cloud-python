@@ -76,9 +76,9 @@ class ListSaasRequest(proto.Message):
         page_size (int):
             The maximum number of saas to send per page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -169,9 +169,9 @@ class CreateSaasRequest(proto.Message):
         saas (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Saas):
             Required. The desired state for the saas.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -224,9 +224,9 @@ class UpdateSaasRequest(proto.Message):
         saas (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Saas):
             Required. The desired state for the saas.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -248,15 +248,16 @@ class UpdateSaasRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Saas resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the Saas resource by the update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            Saas will be overwritten.
+            If the user does not provide a mask then all
+            fields in the Saas will be overwritten.
     """
 
     saas: deployments_resources.Saas = proto.Field(
@@ -297,9 +298,9 @@ class DeleteSaasRequest(proto.Message):
             requires that the resource must already exists, and the Not
             Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -350,9 +351,9 @@ class ListTenantsRequest(proto.Message):
             The maximum number of tenants to send per
             page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -443,9 +444,9 @@ class CreateTenantRequest(proto.Message):
         tenant (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Tenant):
             Required. The desired state for the tenant.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -498,9 +499,9 @@ class UpdateTenantRequest(proto.Message):
         tenant (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Tenant):
             Required. The desired state for the tenant.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -522,15 +523,17 @@ class UpdateTenantRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Tenant resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the Tenant resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            Tenant will be overwritten.
+            If the user does not provide a mask then all
+            fields in the Tenant will be overwritten.
     """
 
     tenant: deployments_resources.Tenant = proto.Field(
@@ -571,9 +574,9 @@ class DeleteTenantRequest(proto.Message):
             requires that the resource must already exists, and the Not
             Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -624,9 +627,9 @@ class ListUnitKindsRequest(proto.Message):
             The maximum number of unit kinds to send per
             page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -718,9 +721,9 @@ class CreateUnitKindRequest(proto.Message):
             Required. The desired state for the unit
             kind.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -774,9 +777,9 @@ class UpdateUnitKindRequest(proto.Message):
             Required. The desired state for the unit
             kind.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -798,15 +801,17 @@ class UpdateUnitKindRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the UnitKind resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the UnitKind resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            UnitKind will be overwritten.
+            If the user does not provide a mask then all
+            fields in the UnitKind will be overwritten.
     """
 
     unit_kind: deployments_resources.UnitKind = proto.Field(
@@ -847,9 +852,9 @@ class DeleteUnitKindRequest(proto.Message):
             (``*``) requires that the resource must already exists, and
             the Not Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -899,9 +904,9 @@ class ListUnitsRequest(proto.Message):
         page_size (int):
             The maximum number of units to send per page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -992,9 +997,9 @@ class CreateUnitRequest(proto.Message):
         unit (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Unit):
             Required. The desired state for the unit.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1047,9 +1052,9 @@ class UpdateUnitRequest(proto.Message):
         unit (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Unit):
             Required. The desired state for the unit.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1071,15 +1076,16 @@ class UpdateUnitRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Unit resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the Unit resource by the update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            Unit will be overwritten.
+            If the user does not provide a mask then all
+            fields in the Unit will be overwritten.
     """
 
     unit: deployments_resources.Unit = proto.Field(
@@ -1120,9 +1126,9 @@ class DeleteUnitRequest(proto.Message):
             requires that the resource must already exists, and the Not
             Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1173,9 +1179,9 @@ class ListUnitOperationsRequest(proto.Message):
             The maximum number of unit operations to send
             per page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -1270,9 +1276,9 @@ class CreateUnitOperationRequest(proto.Message):
             Required. The desired state for the unit
             operation.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1326,9 +1332,9 @@ class UpdateUnitOperationRequest(proto.Message):
             Required. The desired state for the unit
             operation.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1350,15 +1356,17 @@ class UpdateUnitOperationRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the UnitOperation resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the UnitOperation resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            UnitOperation will be overwritten.
+            If the user does not provide a mask then all
+            fields in the UnitOperation will be overwritten.
     """
 
     unit_operation: deployments_resources.UnitOperation = proto.Field(
@@ -1399,9 +1407,9 @@ class DeleteUnitOperationRequest(proto.Message):
             (``*``) requires that the resource must already exists, and
             the Not Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1452,9 +1460,9 @@ class ListReleasesRequest(proto.Message):
             The maximum number of releases to send per
             page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.
@@ -1545,9 +1553,9 @@ class CreateReleaseRequest(proto.Message):
         release (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Release):
             Required. The desired state for the release.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1600,9 +1608,9 @@ class UpdateReleaseRequest(proto.Message):
         release (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Release):
             Required. The desired state for the release.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -1624,15 +1632,17 @@ class UpdateReleaseRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Release resource by the update.
+            Field mask is used to specify the fields to be
+            overwritten in the Release resource by the
+            update.
 
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask.
 
-            If the user does not provide a mask then all fields in the
-            Release will be overwritten.
+            If the user does not provide a mask then all
+            fields in the Release will be overwritten.
     """
 
     release: deployments_resources.Release = proto.Field(
@@ -1673,9 +1683,9 @@ class DeleteReleaseRequest(proto.Message):
             requires that the resource must already exists, and the Not
             Any wildcard (``!*``) requires that it must not.
         validate_only (bool):
-            If "validate_only" is set to true, the service will try to
-            validate that this request would succeed, but will not
-            actually make changes.
+            If "validate_only" is set to true, the service
+            will try to validate that this request would
+            succeed, but will not actually make changes.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must

@@ -127,8 +127,9 @@ class Conversation(proto.Message):
         COMPLETED = 2
 
     class ConversationStage(proto.Enum):
-        r"""Enumeration of the different conversation stages a conversation can
-        be in. Reference:
+        r"""Enumeration of the different conversation stages a conversation
+        can be in. Reference:
+
         https://cloud.google.com/agent-assist/docs/basics#conversation_stages
 
         Values:
@@ -441,8 +442,8 @@ class ListConversationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
         filter (str):
             Optional. A filter expression that filters conversations
             listed in the response. Only ``lifecycle_state`` can be
@@ -479,8 +480,9 @@ class ListConversationsResponse(proto.Message):
 
     Attributes:
         conversations (MutableSequence[google.cloud.dialogflow_v2.types.Conversation]):
-            The list of conversations. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of conversations. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -559,8 +561,8 @@ class ListMessagesRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -702,9 +704,10 @@ class SuggestConversationSummaryRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and including
-            [latest_message] to use as context when compiling the
-            suggestion. By default 500 and at most 1000.
+            Optional. Max number of messages prior to and
+            including [latest_message] to use as context
+            when compiling the suggestion. By default 500
+            and at most 1000.
         assist_query_params (google.cloud.dialogflow_v2.types.AssistQueryParameters):
             Optional. Parameters for a human assist
             query. Only used for POC/demo purpose.
@@ -816,9 +819,10 @@ class GenerateStatelessSummaryRequest(proto.Message):
             Required. The conversation to suggest a
             summary for.
         conversation_profile (google.cloud.dialogflow_v2.types.ConversationProfile):
-            Required. A ConversationProfile containing information
-            required for Summary generation. Required fields:
-            {language_code, security_settings} Optional fields:
+            Required. A ConversationProfile containing
+            information required for Summary generation.
+            Required fields: {language_code,
+            security_settings} Optional fields:
             {agent_assistant_config}
         latest_message (str):
             Optional. The name of the latest conversation
@@ -828,9 +832,10 @@ class GenerateStatelessSummaryRequest(proto.Message):
             specific to the user and the names of the
             messages provided.
         max_context_size (int):
-            Optional. Max number of messages prior to and including
-            [latest_message] to use as context when compiling the
-            suggestion. By default 500 and at most 1000.
+            Optional. Max number of messages prior to and
+            including [latest_message] to use as context
+            when compiling the suggestion. By default 500
+            and at most 1000.
     """
 
     class MinimalConversation(proto.Message):
@@ -839,12 +844,14 @@ class GenerateStatelessSummaryRequest(proto.Message):
 
         Attributes:
             messages (MutableSequence[google.cloud.dialogflow_v2.types.Message]):
-                Required. The messages that the Summary will be generated
-                from. It is expected that this message content is already
-                redacted and does not contain any PII. Required fields:
-                {content, language_code, participant, participant_role}
-                Optional fields: {send_time} If send_time is not provided,
-                then the messages must be provided in chronological order.
+                Required. The messages that the Summary will be
+                generated from. It is expected that this message
+                content is already redacted and does not contain
+                any PII. Required fields: {content,
+                language_code, participant, participant_role}
+                Optional fields: {send_time} If send_time is not
+                provided, then the messages must be provided in
+                chronological order.
             parent (str):
                 Required. The parent resource to charge for the Summary's
                 generation. Format:
@@ -1208,24 +1215,28 @@ class SearchKnowledgeRequest(proto.Message):
                               - (id: ANY("doc_1", "doc_2")) AND (color:
                                 ANY("Red","Blue"))
                         boost (float):
-                            Optional. Strength of the condition boost, which should be
-                            in [-1, 1]. Negative boost means demotion. Default is 0.0.
+                            Optional. Strength of the condition boost, which
+                            should be in [-1, 1]. Negative boost means
+                            demotion. Default is 0.0.
 
-                            Setting to 1.0 gives the document a big promotion. However,
-                            it does not necessarily mean that the boosted document will
-                            be the top result at all times, nor that other documents
-                            will be excluded. Results could still be shown even when
-                            none of them matches the condition. And results that are
-                            significantly more relevant to the search query can still
-                            trump your heavily favored but irrelevant documents.
+                            Setting to 1.0 gives the document a big
+                            promotion. However, it does not necessarily mean
+                            that the boosted document will be the top result
+                            at all times, nor that other documents will be
+                            excluded. Results could still be shown even when
+                            none of them matches the condition. And results
+                            that are significantly more relevant to the
+                            search query can still trump your heavily
+                            favored but irrelevant documents.
 
-                            Setting to -1.0 gives the document a big demotion. However,
-                            results that are deeply relevant might still be shown. The
-                            document will have an upstream battle to get a fairly high
+                            Setting to -1.0 gives the document a big
+                            demotion. However, results that are deeply
+                            relevant might still be shown. The document will
+                            have an upstream battle to get a fairly high
                             ranking, but it is not blocked out completely.
 
-                            Setting to 0.0 means no boost applied. The boosting
-                            condition is ignored.
+                            Setting to 0.0 means no boost applied. The
+                            boosting condition is ignored.
                         boost_control_spec (google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec):
                             Optional. Complex specification for custom
                             ranking based on customer defined attribute
@@ -1243,20 +1254,23 @@ class SearchKnowledgeRequest(proto.Message):
                                 Optional. The name of the field whose value
                                 will be used to determine the boost amount.
                             attribute_type (google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
-                                Optional. The attribute type to be used to determine the
-                                boost amount. The attribute value can be derived from the
-                                field value of the specified field_name. In the case of
-                                numerical it is straightforward i.e. attribute_value =
-                                numerical_field_value. In the case of freshness however,
-                                attribute_value = (time.now() - datetime_field_value).
+                                Optional. The attribute type to be used to
+                                determine the boost amount. The attribute value
+                                can be derived from the field value of the
+                                specified field_name. In the case of numerical
+                                it is straightforward i.e. attribute_value =
+                                numerical_field_value. In the case of freshness
+                                however, attribute_value = (time.now() -
+                                datetime_field_value).
                             interpolation_type (google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
                                 Optional. The interpolation type to be
                                 applied to connect the control points listed
                                 below.
                             control_points (MutableSequence[google.cloud.dialogflow_v2.types.SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
-                                Optional. The control points used to define the curve. The
-                                monotonic function (defined through the interpolation_type
-                                above) passes through the control points listed here.
+                                Optional. The control points used to define the
+                                curve. The monotonic function (defined through
+                                the interpolation_type above) passes through the
+                                control points listed here.
                         """
 
                         class AttributeType(proto.Enum):
@@ -1267,10 +1281,11 @@ class SearchKnowledgeRequest(proto.Message):
                                 ATTRIBUTE_TYPE_UNSPECIFIED (0):
                                     Unspecified AttributeType.
                                 NUMERICAL (1):
-                                    The value of the numerical field will be used to dynamically
-                                    update the boost amount. In this case, the attribute_value
-                                    (the x value) of the control point will be the actual value
-                                    of the numerical field for which the boost_amount is
+                                    The value of the numerical field will be used to
+                                    dynamically update the boost amount. In this
+                                    case, the attribute_value (the x value) of the
+                                    control point will be the actual value of the
+                                    numerical field for which the boost_amount is
                                     specified.
                                 FRESHNESS (2):
                                     For the freshness use case the attribute value will be the
@@ -1315,9 +1330,9 @@ class SearchKnowledgeRequest(proto.Message):
                                        restricted subset of an ISO 8601 duration value). The
                                        pattern for this is: ``[nD][T[nH][nM][nS]]``.
                                 boost_amount (float):
-                                    Optional. The value between -1 to 1 by which to boost the
-                                    score if the attribute_value evaluates to the value
-                                    specified above.
+                                    Optional. The value between -1 to 1 by which to
+                                    boost the score if the attribute_value evaluates
+                                    to the value specified above.
                             """
 
                             attribute_value: str = proto.Field(
@@ -1599,9 +1614,10 @@ class GenerateSuggestionsRequest(proto.Message):
             which the request is triggered. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         trigger_events (MutableSequence[google.cloud.dialogflow_v2.types.TriggerEvent]):
-            Optional. A list of trigger events. Only generators
-            configured in the conversation_profile whose trigger_event
-            is listed here will be triggered.
+            Optional. A list of trigger events. Only
+            generators configured in the
+            conversation_profile whose trigger_event is
+            listed here will be triggered.
     """
 
     conversation: str = proto.Field(

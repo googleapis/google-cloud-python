@@ -168,10 +168,11 @@ class DataExchange(proto.Message):
             Optional. Configurable data sharing
             environment option for a data exchange.
         discovery_type (google.cloud.bigquery_analyticshub_v1.types.DiscoveryType):
-            Optional. Type of discovery on the discovery page for all
-            the listings under this exchange. Updating this field also
-            updates (overwrites) the discovery_type field for all the
-            listings under this exchange.
+            Optional. Type of discovery on the discovery
+            page for all the listings under this exchange.
+            Updating this field also updates (overwrites)
+            the discovery_type field for all the listings
+            under this exchange.
 
             This field is a member of `oneof`_ ``_discovery_type``.
         log_linked_dataset_query_user_email (bool):
@@ -1481,18 +1482,21 @@ class Subscription(proto.Message):
             Output only. Current state of the
             subscription.
         linked_dataset_map (MutableMapping[str, google.cloud.bigquery_analyticshub_v1.types.Subscription.LinkedResource]):
-            Output only. Map of listing resource names to associated
-            linked resource, e.g.
-            projects/123/locations/us/dataExchanges/456/listings/789 ->
+            Output only. Map of listing resource names to
+            associated linked resource, e.g.
+            projects/123/locations/us/dataExchanges/456/listings/789
+            ->
             projects/123/datasets/my_dataset
 
-            For listing-level subscriptions, this is a map of size 1.
-            Only contains values if state == STATE_ACTIVE.
+            For listing-level subscriptions, this is a map
+            of size 1. Only contains values if state ==
+            STATE_ACTIVE.
         subscriber_contact (str):
             Output only. Email of the subscriber.
         linked_resources (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.Subscription.LinkedResource]):
-            Output only. Linked resources created in the subscription.
-            Only contains values if state = STATE_ACTIVE.
+            Output only. Linked resources created in the
+            subscription. Only contains values if state =
+            STATE_ACTIVE.
         resource_type (google.cloud.bigquery_analyticshub_v1.types.SharedResourceType):
             Output only. Listing shared asset type.
         commercial_info (google.cloud.bigquery_analyticshub_v1.types.Subscription.CommercialInfo):
@@ -1552,7 +1556,8 @@ class Subscription(proto.Message):
 
                 This field is a member of `oneof`_ ``reference``.
             linked_pubsub_subscription (str):
-                Output only. Name of the Pub/Sub subscription, e.g.
+                Output only. Name of the Pub/Sub subscription,
+                e.g.
                 projects/subscriberproject/subscriptions/subscriptions/sub_id
 
                 This field is a member of `oneof`_ ``reference``.

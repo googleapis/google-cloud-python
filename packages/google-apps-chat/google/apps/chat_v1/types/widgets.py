@@ -155,11 +155,14 @@ class WidgetMarkup(proto.Message):
         VIDEO_PLAY = 29
 
     class TextParagraph(proto.Message):
-        r"""A paragraph of text. Formatted text supported. For more information
-        about formatting text, see `Formatting text in Google Chat
-        apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
-        and `Formatting text in Google Workspace
-        Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
+        r"""A paragraph of text. Formatted text supported. For more
+        information about formatting text, see
+        [Formatting text in Google Chat
+        apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
+        and
+        [Formatting
+        text in Google Workspace
+        Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
 
         Attributes:
             text (str):
@@ -247,28 +250,35 @@ class WidgetMarkup(proto.Message):
 
                 This field is a member of `oneof`_ ``icons``.
             top_label (str):
-                The text of the top label. Formatted text supported. For
-                more information about formatting text, see `Formatting text
-                in Google Chat
-                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
-                and `Formatting text in Google Workspace
-                Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
+                The text of the top label. Formatted text
+                supported. For more information about formatting
+                text, see [Formatting text in Google Chat
+                apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
+                and
+                [Formatting
+                text in Google Workspace
+                Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
             content (str):
-                The text of the content. Formatted text supported and always
-                required. For more information about formatting text, see
-                `Formatting text in Google Chat
-                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
-                and `Formatting text in Google Workspace
-                Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
+                The text of the content. Formatted text
+                supported and always required. For more
+                information about formatting text, see
+                [Formatting text in Google Chat
+                apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
+                and
+                [Formatting
+                text in Google Workspace
+                Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
             content_multiline (bool):
                 If the content should be multiline.
             bottom_label (str):
-                The text of the bottom label. Formatted text supported. For
-                more information about formatting text, see `Formatting text
-                in Google Chat
-                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
-                and `Formatting text in Google Workspace
-                Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
+                The text of the bottom label. Formatted text
+                supported. For more information about formatting
+                text, see [Formatting text in Google Chat
+                apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
+                and
+                [Formatting
+                text in Google Workspace
+                Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
             on_click (google.apps.chat_v1.types.WidgetMarkup.OnClick):
                 The ``onclick`` action. Only the top label, bottom label,
                 and content region are clickable.

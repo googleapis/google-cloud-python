@@ -56,11 +56,11 @@ class Stream(proto.Message):
             Whether to enable the HLS playback service on
             this stream.
         media_warehouse_asset (str):
-            The name of the media warehouse asset for long term storage
-            of stream data. Format:
+            The name of the media warehouse asset for long
+            term storage of stream data. Format:
             projects/${p_id}/locations/${l_id}/corpora/${c_id}/assets/${a_id}
-            Remain empty if the media warehouse storage is not needed
-            for the stream.
+            Remain empty if the media warehouse storage is
+            not needed for the stream.
     """
 
     name: str = proto.Field(
@@ -119,10 +119,11 @@ class Event(proto.Message):
         alignment_clock (google.cloud.visionai_v1alpha1.types.Event.Clock):
             The clock used for joining streams.
         grace_period (google.protobuf.duration_pb2.Duration):
-            Grace period for cleaning up the event. This is the time the
-            controller waits for before deleting the event. During this
-            period, if there is any active channel on the event. The
-            deletion of the event after grace_period will be ignored.
+            Grace period for cleaning up the event. This is
+            the time the controller waits for before
+            deleting the event. During this period, if there
+            is any active channel on the event. The deletion
+            of the event after grace_period will be ignored.
     """
 
     class Clock(proto.Enum):

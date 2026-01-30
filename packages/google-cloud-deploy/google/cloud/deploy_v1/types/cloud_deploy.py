@@ -1751,10 +1751,11 @@ class ExecutionConfig(proto.Message):
             If this optional field is unspecified, the default Cloud
             Build pool will be used.
         service_account (str):
-            Optional. Google service account to use for execution. If
-            unspecified, the project execution service account
-            (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is
-            used.
+            Optional. Google service account to use for
+            execution. If unspecified, the project execution
+            service account
+            (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
+            is used.
         artifact_storage (str):
             Optional. Cloud Storage location in which to
             store execution outputs. This can either be a
@@ -1842,8 +1843,9 @@ class DefaultPool(proto.Message):
 
     Attributes:
         service_account (str):
-            Optional. Google service account to use for execution. If
-            unspecified, the project execution service account
+            Optional. Google service account to use for
+            execution. If unspecified, the project execution
+            service account
             (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
             will be used.
         artifact_storage (str):
@@ -1874,8 +1876,9 @@ class PrivatePool(proto.Message):
             use. The format is
             ``projects/{project}/locations/{location}/workerPools/{pool}``.
         service_account (str):
-            Optional. Google service account to use for execution. If
-            unspecified, the project execution service account
+            Optional. Google service account to use for
+            execution. If unspecified, the project execution
+            service account
             (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com)
             will be used.
         artifact_storage (str):
@@ -3226,8 +3229,9 @@ class TimeWindows(proto.Message):
 
     Attributes:
         time_zone (str):
-            Required. The time zone in IANA format `IANA Time Zone
-            Database <https://www.iana.org/time-zones>`__ (e.g.
+            Required. The time zone in IANA format [IANA
+            Time Zone
+            Database](https://www.iana.org/time-zones) (e.g.
             America/New_York).
         one_time_windows (MutableSequence[google.cloud.deploy_v1.types.OneTimeWindow]):
             Optional. One-time windows within which
@@ -3303,15 +3307,17 @@ class WeeklyWindow(proto.Message):
             Optional. Days of week. If left empty, all
             days of the week will be included.
         start_time (google.type.timeofday_pb2.TimeOfDay):
-            Optional. Start time (inclusive). Use 00:00 for the
-            beginning of the day. If you specify start_time you must
-            also specify end_time. If left empty, this will block for
-            the entire day for the days specified in days_of_week.
+            Optional. Start time (inclusive). Use 00:00 for
+            the beginning of the day. If you specify
+            start_time you must also specify end_time. If
+            left empty, this will block for the entire day
+            for the days specified in days_of_week.
         end_time (google.type.timeofday_pb2.TimeOfDay):
-            Optional. End time (exclusive). Use 24:00 to indicate
-            midnight. If you specify end_time you must also specify
-            start_time. If left empty, this will block for the entire
-            day for the days specified in days_of_week.
+            Optional. End time (exclusive). Use 24:00 to
+            indicate midnight. If you specify end_time you
+            must also specify start_time. If left empty,
+            this will block for the entire day for the days
+            specified in days_of_week.
     """
 
     days_of_week: MutableSequence[dayofweek_pb2.DayOfWeek] = proto.RepeatedField(
@@ -3548,25 +3554,27 @@ class Release(proto.Message):
                 FAILURE_CAUSE_UNSPECIFIED (0):
                     No reason for failure is specified.
                 CLOUD_BUILD_UNAVAILABLE (1):
-                    Cloud Build is not available, either because it is not
-                    enabled or because Cloud Deploy has insufficient
-                    permissions. See `required
-                    permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                    Cloud Build is not available, either because it
+                    is not enabled or because Cloud Deploy has
+                    insufficient permissions. See [required
+                    permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
                 EXECUTION_FAILED (2):
                     The render operation did not complete
                     successfully; check Cloud Build logs.
                 CLOUD_BUILD_REQUEST_FAILED (3):
-                    Cloud Build failed to fulfill Cloud Deploy's request. See
-                    failure_message for additional details.
+                    Cloud Build failed to fulfill Cloud Deploy's
+                    request. See failure_message for additional
+                    details.
                 VERIFICATION_CONFIG_NOT_FOUND (4):
                     The render operation did not complete
                     successfully because the verification stanza
                     required for verify was not found on the
                     Skaffold configuration.
                 CUSTOM_ACTION_NOT_FOUND (5):
-                    The render operation did not complete successfully because
-                    the custom action(s) required for Rollout jobs were not
-                    found in the Skaffold configuration. See failure_message for
+                    The render operation did not complete
+                    successfully because the custom action(s)
+                    required for Rollout jobs were not found in the
+                    Skaffold configuration. See failure_message for
                     additional details.
                 DEPLOYMENT_STRATEGY_NOT_SUPPORTED (6):
                     Release failed during rendering because the
@@ -4590,10 +4598,10 @@ class Rollout(proto.Message):
             FAILURE_CAUSE_UNSPECIFIED (0):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
-                Cloud Build is not available, either because it is not
-                enabled or because Cloud Deploy has insufficient
-                permissions. See `required
-                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                Cloud Build is not available, either because it
+                is not enabled or because Cloud Deploy has
+                insufficient permissions. See [required
+                permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
             EXECUTION_FAILED (2):
                 The deploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -4607,8 +4615,9 @@ class Rollout(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (6):
                 No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (7):
-                Cloud Build failed to fulfill Cloud Deploy's request. See
-                failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's
+                request. See failure_message for additional
+                details.
             OPERATION_FEATURE_NOT_SUPPORTED (8):
                 A Rollout operation had a feature configured
                 that is not supported.
@@ -5852,10 +5861,10 @@ class DeployJobRun(proto.Message):
             FAILURE_CAUSE_UNSPECIFIED (0):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
-                Cloud Build is not available, either because it is not
-                enabled or because Cloud Deploy has insufficient
-                permissions. See `Required
-                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                Cloud Build is not available, either because it
+                is not enabled or because Cloud Deploy has
+                insufficient permissions. See [Required
+                permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
             EXECUTION_FAILED (2):
                 The deploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -5867,8 +5876,9 @@ class DeployJobRun(proto.Message):
                 environment required for a canary deployment.
                 Check the Cloud Build logs for more information.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Cloud Deploy's request. See
-                failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's
+                request. See failure_message for additional
+                details.
             DEPLOY_FEATURE_NOT_SUPPORTED (6):
                 The deploy operation had a feature configured
                 that is not supported.
@@ -5937,10 +5947,10 @@ class VerifyJobRun(proto.Message):
             FAILURE_CAUSE_UNSPECIFIED (0):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
-                Cloud Build is not available, either because it is not
-                enabled or because Cloud Deploy has insufficient
-                permissions. See `required
-                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                Cloud Build is not available, either because it
+                is not enabled or because Cloud Deploy has
+                insufficient permissions. See [required
+                permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
             EXECUTION_FAILED (2):
                 The verify operation did not complete
                 successfully; check Cloud Build logs.
@@ -5950,8 +5960,9 @@ class VerifyJobRun(proto.Message):
             VERIFICATION_CONFIG_NOT_FOUND (4):
                 No Skaffold verify configuration was found.
             CLOUD_BUILD_REQUEST_FAILED (5):
-                Cloud Build failed to fulfill Cloud Deploy's request. See
-                failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's
+                request. See failure_message for additional
+                details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -6009,10 +6020,10 @@ class PredeployJobRun(proto.Message):
             FAILURE_CAUSE_UNSPECIFIED (0):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
-                Cloud Build is not available, either because it is not
-                enabled or because Cloud Deploy has insufficient
-                permissions. See `required
-                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                Cloud Build is not available, either because it
+                is not enabled or because Cloud Deploy has
+                insufficient permissions. See [required
+                permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
             EXECUTION_FAILED (2):
                 The predeploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -6020,8 +6031,9 @@ class PredeployJobRun(proto.Message):
                 The predeploy job run did not complete within
                 the allotted time.
             CLOUD_BUILD_REQUEST_FAILED (4):
-                Cloud Build failed to fulfill Cloud Deploy's request. See
-                failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's
+                request. See failure_message for additional
+                details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -6071,10 +6083,10 @@ class PostdeployJobRun(proto.Message):
             FAILURE_CAUSE_UNSPECIFIED (0):
                 No reason for failure is specified.
             CLOUD_BUILD_UNAVAILABLE (1):
-                Cloud Build is not available, either because it is not
-                enabled or because Cloud Deploy has insufficient
-                permissions. See `required
-                permission <https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions>`__.
+                Cloud Build is not available, either because it
+                is not enabled or because Cloud Deploy has
+                insufficient permissions. See [required
+                permission](https://cloud.google.com/deploy/docs/cloud-deploy-service-account#required_permissions).
             EXECUTION_FAILED (2):
                 The postdeploy operation did not complete
                 successfully; check Cloud Build logs.
@@ -6082,8 +6094,9 @@ class PostdeployJobRun(proto.Message):
                 The postdeploy job run did not complete
                 within the allotted time.
             CLOUD_BUILD_REQUEST_FAILED (4):
-                Cloud Build failed to fulfill Cloud Deploy's request. See
-                failure_message for additional details.
+                Cloud Build failed to fulfill Cloud Deploy's
+                request. See failure_message for additional
+                details.
         """
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
@@ -6597,8 +6610,9 @@ class TimedPromoteReleaseRule(proto.Message):
             Required. Schedule in crontab format. e.g. "0 9 \* \* 1" for
             every Monday at 9am.
         time_zone (str):
-            Required. The time zone in IANA format `IANA Time Zone
-            Database <https://www.iana.org/time-zones>`__ (e.g.
+            Required. The time zone in IANA format [IANA
+            Time Zone
+            Database](https://www.iana.org/time-zones) (e.g.
             America/New_York).
         condition (google.cloud.deploy_v1.types.AutomationRuleCondition):
             Output only. Information around the state of

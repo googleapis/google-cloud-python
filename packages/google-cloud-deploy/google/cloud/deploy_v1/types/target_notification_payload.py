@@ -30,9 +30,10 @@ __protobuf__ = proto.module(
 
 
 class TargetNotificationEvent(proto.Message):
-    r"""Payload proto for "clouddeploy.googleapis.com/target_notification"
-    Platform Log event that describes the failure to send target status
-    change Pub/Sub notification.
+    r"""Payload proto for
+    "clouddeploy.googleapis.com/target_notification" Platform Log
+    event that describes the failure to send target status change
+    Pub/Sub notification.
 
     Attributes:
         message (str):

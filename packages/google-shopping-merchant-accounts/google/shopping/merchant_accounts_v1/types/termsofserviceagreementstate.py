@@ -81,8 +81,8 @@ class TermsOfServiceAgreementState(proto.Message):
             Required. Terms of Service kind associated
             with the particular version.
         accepted (google.shopping.merchant_accounts_v1.types.Accepted):
-            Optional. The accepted terms of service of this kind and for
-            the associated region_code
+            Optional. The accepted terms of service of this
+            kind and for the associated region_code
 
             This field is a member of `oneof`_ ``_accepted``.
         required (google.shopping.merchant_accounts_v1.types.Required):
@@ -119,8 +119,8 @@ class TermsOfServiceAgreementState(proto.Message):
 
 
 class Accepted(proto.Message):
-    r"""Describes the `accepted terms of
-    service <https://developers.google.com/merchant/api/guides/accounts/create-and-configure#accept_the_merchant_center_terms_of_service>`__.
+    r"""Describes the [accepted terms of
+    service](https://developers.google.com/merchant/api/guides/accounts/create-and-configure#accept_the_merchant_center_terms_of_service).
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

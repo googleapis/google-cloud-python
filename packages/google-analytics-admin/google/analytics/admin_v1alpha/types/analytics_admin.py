@@ -267,12 +267,14 @@ class RunAccessReportRequest(proto.Message):
             ranges. Requests are allowed up to 2 date
             ranges.
         dimension_filter (google.analytics.admin_v1alpha.types.AccessFilterExpression):
-            Dimension filters let you restrict report response to
-            specific dimension values which match the filter. For
-            example, filtering on access records of a single user. To
-            learn more, see `Fundamentals of Dimension
-            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
-            for examples. Metrics cannot be used in this filter.
+            Dimension filters let you restrict report
+            response to specific dimension values which
+            match the filter. For example, filtering on
+            access records of a single user. To learn more,
+            see [Fundamentals of Dimension
+            Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
+            for examples. Metrics cannot be used in this
+            filter.
         metric_filter (google.analytics.admin_v1alpha.types.AccessFilterExpression):
             Metric filters allow you to restrict report
             response to specific metric values which match
@@ -304,13 +306,14 @@ class RunAccessReportRequest(proto.Message):
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         time_zone (str):
-            This request's time zone if specified. If unspecified, the
-            property's time zone is used. The request's time zone is
-            used to interpret the start & end dates of the report.
+            This request's time zone if specified. If
+            unspecified, the property's time zone is used.
+            The request's time zone is used to interpret the
+            start & end dates of the report.
 
-            Formatted as strings from the IANA Time Zone database
-            (https://www.iana.org/time-zones); for example
-            "America/New_York" or "Asia/Tokyo".
+            Formatted as strings from the IANA Time Zone
+            database (https://www.iana.org/time-zones); for
+            example "America/New_York" or "Asia/Tokyo".
         order_bys (MutableSequence[google.analytics.admin_v1alpha.types.AccessOrderBy]):
             Specifies how rows are ordered in the
             response.
@@ -328,11 +331,12 @@ class RunAccessReportRequest(proto.Message):
             an API call or not. If false, only the users who
             have made an API call will be included.
         expand_groups (bool):
-            Optional. Decides whether to return the users within user
-            groups. This field works only when include_all_users is set
-            to true. If true, it will return all users with access to
-            the specified property or account. If false, only the users
-            with direct access will be returned.
+            Optional. Decides whether to return the users
+            within user groups. This field works only when
+            include_all_users is set to true. If true, it
+            will return all users with access to the
+            specified property or account. If false, only
+            the users with direct access will be returned.
     """
 
     entity: str = proto.Field(
@@ -625,8 +629,9 @@ class GetPropertyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the property to lookup. Format:
-            properties/{property_id} Example: "properties/1000".
+            Required. The name of the property to lookup.
+            Format: properties/{property_id}
+            Example: "properties/1000".
     """
 
     name: str = proto.Field(
@@ -771,8 +776,9 @@ class DeletePropertyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Property to soft-delete. Format:
-            properties/{property_id} Example: "properties/1000".
+            Required. The name of the Property to
+            soft-delete. Format: properties/{property_id}
+            Example: "properties/1000".
     """
 
     name: str = proto.Field(
@@ -1416,8 +1422,9 @@ class GetSKAdNetworkConversionValueSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of SKAdNetwork conversion value
-            schema to look up. Format:
+            Required. The resource name of SKAdNetwork
+            conversion value schema to look up. Format:
+
             properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
     """
 
@@ -1460,8 +1467,10 @@ class DeleteSKAdNetworkConversionValueSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the SKAdNetworkConversionValueSchema
-            to delete. Format:
+            Required. The name of the
+            SKAdNetworkConversionValueSchema to delete.
+            Format:
+
             properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
     """
 
@@ -1503,8 +1512,10 @@ class ListSKAdNetworkConversionValueSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The DataStream resource to list schemas for.
-            Format: properties/{property_id}/dataStreams/{dataStream}
+            Required. The DataStream resource to list
+            schemas for. Format:
+
+            properties/{property_id}/dataStreams/{dataStream}
             Example: properties/1234/dataStreams/5678
         page_size (int):
             The maximum number of resources to return.
@@ -1665,8 +1676,8 @@ class GetConversionEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the conversion event to
-            retrieve. Format:
+            Required. The resource name of the conversion
+            event to retrieve. Format:
             properties/{property}/conversionEvents/{conversion_event}
             Example: "properties/123/conversionEvents/456".
     """
@@ -1682,8 +1693,8 @@ class DeleteConversionEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the conversion event to
-            delete. Format:
+            Required. The resource name of the conversion
+            event to delete. Format:
             properties/{property}/conversionEvents/{conversion_event}
             Example: "properties/123/conversionEvents/456".
     """
@@ -1809,9 +1820,10 @@ class GetKeyEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Key Event to retrieve.
-            Format: properties/{property}/keyEvents/{key_event} Example:
-            "properties/123/keyEvents/456".
+            Required. The resource name of the Key Event to
+            retrieve. Format:
+            properties/{property}/keyEvents/{key_event}
+            Example: "properties/123/keyEvents/456".
     """
 
     name: str = proto.Field(
@@ -1825,9 +1837,10 @@ class DeleteKeyEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Key Event to delete.
-            Format: properties/{property}/keyEvents/{key_event} Example:
-            "properties/123/keyEvents/456".
+            Required. The resource name of the Key Event to
+            delete. Format:
+            properties/{property}/keyEvents/{key_event}
+            Example: "properties/123/keyEvents/456".
     """
 
     name: str = proto.Field(
@@ -2649,8 +2662,8 @@ class CreateCalculatedMetricRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+            Example: properties/1234
         calculated_metric_id (str):
             Required. The ID to use for the calculated metric which will
             become the final component of the calculated metric's
@@ -2710,10 +2723,11 @@ class DeleteCalculatedMetricRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the CalculatedMetric to delete.
-            Format:
+            Required. The name of the CalculatedMetric to
+            delete. Format:
             properties/{property_id}/calculatedMetrics/{calculated_metric_id}
-            Example: properties/1234/calculatedMetrics/Metric01
+            Example:
+            properties/1234/calculatedMetrics/Metric01
     """
 
     name: str = proto.Field(
@@ -2791,9 +2805,11 @@ class GetCalculatedMetricRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the CalculatedMetric to get. Format:
+            Required. The name of the CalculatedMetric to
+            get. Format:
             properties/{property_id}/calculatedMetrics/{calculated_metric_id}
-            Example: properties/1234/calculatedMetrics/Metric01
+            Example:
+            properties/1234/calculatedMetrics/Metric01
     """
 
     name: str = proto.Field(
@@ -3789,7 +3805,8 @@ class GetBigQueryLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the BigQuery link to lookup. Format:
+            Required. The name of the BigQuery link to
+            lookup. Format:
             properties/{property_id}/bigQueryLinks/{bigquery_link_id}
             Example: properties/123/bigQueryLinks/456
     """
@@ -3805,8 +3822,9 @@ class ListBigQueryLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the property to list BigQuery links
-            under. Format: properties/{property_id} Example:
+            Required. The name of the property to list
+            BigQuery links under. Format:
+            properties/{property_id} Example:
             properties/1234
         page_size (int):
             The maximum number of resources to return.
@@ -3911,7 +3929,9 @@ class GetEnhancedMeasurementSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the settings to lookup. Format:
+            Required. The name of the settings to lookup.
+            Format:
+
             properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings
             Example:
             "properties/1000/dataStreams/2000/enhancedMeasurementSettings".
@@ -3954,7 +3974,9 @@ class GetDataRedactionSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the settings to lookup. Format:
+            Required. The name of the settings to lookup.
+            Format:
+
             properties/{property}/dataStreams/{data_stream}/dataRedactionSettings
             Example:
             "properties/1000/dataStreams/2000/dataRedactionSettings".
@@ -4481,10 +4503,12 @@ class GetRollupPropertySourceLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the roll-up property source link to
-            lookup. Format:
+            Required. The name of the roll-up property
+            source link to lookup. Format:
+
             properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
-            Example: properties/123/rollupPropertySourceLinks/456
+            Example:
+            properties/123/rollupPropertySourceLinks/456
     """
 
     name: str = proto.Field(
@@ -4498,9 +4522,10 @@ class ListRollupPropertySourceLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the roll-up property to list roll-up
-            property source links under. Format:
-            properties/{property_id} Example: properties/1234
+            Required. The name of the roll-up property to
+            list roll-up property source links under.
+            Format: properties/{property_id} Example:
+            properties/1234
         page_size (int):
             Optional. The maximum number of resources to
             return. The service may return fewer than this
@@ -4564,8 +4589,8 @@ class CreateRollupPropertySourceLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format: properties/{property_id} Example:
-            properties/1234
+            Required. Format: properties/{property_id}
+            Example: properties/1234
         rollup_property_source_link (google.analytics.admin_v1alpha.types.RollupPropertySourceLink):
             Required. The roll-up property source link to
             create.
@@ -4588,8 +4613,10 @@ class DeleteRollupPropertySourceLinkRequest(proto.Message):
     Attributes:
         name (str):
             Required. Format:
+
             properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
-            Example: properties/1234/rollupPropertySourceLinks/5678
+            Example:
+            properties/1234/rollupPropertySourceLinks/5678
     """
 
     name: str = proto.Field(
@@ -4661,9 +4688,9 @@ class CreateSubpropertyEventFilterRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The ordinary property for which to create a
-            subproperty event filter. Format: properties/property_id
-            Example: properties/123
+            Required. The ordinary property for which to
+            create a subproperty event filter. Format:
+            properties/property_id Example: properties/123
         subproperty_event_filter (google.analytics.admin_v1alpha.types.SubpropertyEventFilter):
             Required. The subproperty event filter to
             create.
@@ -4687,10 +4714,12 @@ class GetSubpropertyEventFilterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the subproperty event filter to
-            lookup. Format:
+            Required. Resource name of the subproperty event
+            filter to lookup. Format:
+
             properties/property_id/subpropertyEventFilters/subproperty_event_filter
-            Example: properties/123/subpropertyEventFilters/456
+            Example:
+            properties/123/subpropertyEventFilters/456
     """
 
     name: str = proto.Field(
@@ -4704,8 +4733,9 @@ class ListSubpropertyEventFiltersRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the ordinary property. Format:
-            properties/property_id Example: properties/123
+            Required. Resource name of the ordinary
+            property. Format: properties/property_id
+            Example: properties/123
         page_size (int):
             Optional. The maximum number of resources to
             return. The service may return fewer than this
@@ -4797,10 +4827,12 @@ class DeleteSubpropertyEventFilterRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the subproperty event filter to
-            delete. Format:
+            Required. Resource name of the subproperty event
+            filter to delete. Format:
+
             properties/property_id/subpropertyEventFilters/subproperty_event_filter
-            Example: properties/123/subpropertyEventFilters/456
+            Example:
+            properties/123/subpropertyEventFilters/456
     """
 
     name: str = proto.Field(
@@ -4814,9 +4846,9 @@ class CreateReportingDataAnnotationRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The property for which to create a Reporting Data
-            Annotation. Format: properties/property_id Example:
-            properties/123
+            Required. The property for which to create a
+            Reporting Data Annotation. Format:
+            properties/property_id Example: properties/123
         reporting_data_annotation (google.analytics.admin_v1alpha.types.ReportingDataAnnotation):
             Required. The Reporting Data Annotation to
             create.
@@ -4838,10 +4870,12 @@ class GetReportingDataAnnotationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the Reporting Data Annotation to
-            lookup. Format:
+            Required. Resource name of the Reporting Data
+            Annotation to lookup. Format:
+
             properties/property_id/reportingDataAnnotations/reportingDataAnnotation
-            Example: properties/123/reportingDataAnnotations/456
+            Example:
+            properties/123/reportingDataAnnotations/456
     """
 
     name: str = proto.Field(
@@ -4855,8 +4889,9 @@ class ListReportingDataAnnotationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the property. Format:
-            properties/property_id Example: properties/123
+            Required. Resource name of the property.
+            Format: properties/property_id
+            Example: properties/123
         filter (str):
             Optional. Filter that restricts which reporting data
             annotations under the parent property are listed.
@@ -5001,10 +5036,12 @@ class DeleteReportingDataAnnotationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the Reporting Data Annotation to
-            delete. Format:
+            Required. Resource name of the Reporting Data
+            Annotation to delete. Format:
+
             properties/property_id/reportingDataAnnotations/reporting_data_annotation
-            Example: properties/123/reportingDataAnnotations/456
+            Example:
+            properties/123/reportingDataAnnotations/456
     """
 
     name: str = proto.Field(
@@ -5025,18 +5062,18 @@ class SubmitUserDeletionRequest(proto.Message):
 
     Attributes:
         user_id (str):
-            Google Analytics `user
-            ID <https://firebase.google.com/docs/analytics/userid>`__.
+            Google Analytics [user
+            ID](https://firebase.google.com/docs/analytics/userid).
 
             This field is a member of `oneof`_ ``user``.
         client_id (str):
-            Google Analytics `client
-            ID <https://support.google.com/analytics/answer/11593727>`__.
+            Google Analytics [client
+            ID](https://support.google.com/analytics/answer/11593727).
 
             This field is a member of `oneof`_ ``user``.
         app_instance_id (str):
-            Firebase `application instance
-            ID <https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.html#getAppInstanceId>`__.
+            Firebase [application instance
+            ID](https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics.html#getAppInstanceId).
 
             This field is a member of `oneof`_ ``user``.
         user_provided_data (str):
@@ -5111,10 +5148,12 @@ class GetSubpropertySyncConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of the SubpropertySyncConfig to
-            lookup. Format:
+            Required. Resource name of the
+            SubpropertySyncConfig to lookup. Format:
+
             properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
-            Example: properties/1234/subpropertySyncConfigs/5678
+            Example:
+            properties/1234/subpropertySyncConfigs/5678
     """
 
     name: str = proto.Field(
@@ -5128,8 +5167,9 @@ class ListSubpropertySyncConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the property. Format:
-            properties/property_id Example: properties/123
+            Required. Resource name of the property.
+            Format: properties/property_id
+            Example: properties/123
         page_size (int):
             Optional. The maximum number of resources to
             return. The service may return fewer than this

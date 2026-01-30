@@ -115,12 +115,14 @@ class CloudIdentityInfo(proto.Message):
         primary_domain (str):
             Output only. The primary domain name.
         is_domain_verified (bool):
-            Output only. Whether the domain is verified. This field is
-            not returned for a Customer's cloud_identity_info resource.
-            Partners can use the domains.get() method of the Workspace
-            SDK's Directory API, or listen to the
-            PRIMARY_DOMAIN_VERIFIED Pub/Sub event in to track domain
-            verification of their resolve Workspace customers.
+            Output only. Whether the domain is verified.
+            This field is not returned for a Customer's
+            cloud_identity_info resource. Partners can use
+            the domains.get() method of the Workspace SDK's
+            Directory API, or listen to the
+            PRIMARY_DOMAIN_VERIFIED Pub/Sub event in to
+            track domain verification of their resolve
+            Workspace customers.
         alternate_email (str):
             The alternate email.
         phone_number (str):

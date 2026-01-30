@@ -116,8 +116,8 @@ class _LoggingClientAIOInterceptor(
 class LfpInventoryServiceGrpcAsyncIOTransport(LfpInventoryServiceTransport):
     """gRPC AsyncIO backend transport for LfpInventoryService.
 
-    Service for a `LFP
-    partner <https://support.google.com/merchants/answer/7676652>`__ to
+    Service for a [LFP
+    partner](https://support.google.com/merchants/answer/7676652) to
     submit local inventories for a merchant.
 
     This class defines the same methods as the primary client, so the

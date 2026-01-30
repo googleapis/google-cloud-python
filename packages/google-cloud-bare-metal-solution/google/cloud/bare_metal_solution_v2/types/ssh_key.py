@@ -41,8 +41,8 @@ class SSHKey(proto.Message):
             Currently, the only valid value for the location
             is "global".
         public_key (str):
-            The public SSH key. This must be in OpenSSH .authorized_keys
-            format.
+            The public SSH key. This must be in OpenSSH
+            .authorized_keys format.
     """
 
     name: str = proto.Field(
@@ -66,8 +66,8 @@ class ListSSHKeysRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a previous List
-            request, if any.
+            The next_page_token value returned from a
+            previous List request, if any.
     """
 
     parent: str = proto.Field(

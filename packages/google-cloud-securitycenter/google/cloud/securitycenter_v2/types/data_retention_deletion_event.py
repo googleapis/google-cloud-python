@@ -53,13 +53,15 @@ class DataRetentionDeletionEvent(proto.Message):
             the policy is greater than or equal to 1,000,
             then the value of this field is 1000.
         max_retention_allowed (google.protobuf.duration_pb2.Duration):
-            Maximum duration of retention allowed from the DRD control.
-            This comes from the DRD control where users set a max TTL
-            for their data. For example, suppose that a user sets the
-            max TTL for a Cloud Storage bucket to 90 days. However, an
-            object in that bucket is 100 days old. In this case, a
-            DataRetentionDeletionEvent will be generated for that Cloud
-            Storage bucket, and the max_retention_allowed is 90 days.
+            Maximum duration of retention allowed from the
+            DRD control. This comes from the DRD control
+            where users set a max TTL for their data. For
+            example, suppose that a user sets the max TTL
+            for a Cloud Storage bucket to 90 days. However,
+            an object in that bucket is 100 days old. In
+            this case, a DataRetentionDeletionEvent will be
+            generated for that Cloud Storage bucket, and the
+            max_retention_allowed is 90 days.
         event_type (google.cloud.securitycenter_v2.types.DataRetentionDeletionEvent.EventType):
             Type of the DRD event.
     """

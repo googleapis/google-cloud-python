@@ -41,8 +41,9 @@ class ExecutionView(proto.Enum):
         EXECUTION_VIEW_UNSPECIFIED (0):
             The default / unset value.
         BASIC (1):
-            Includes only basic metadata about the execution. Following
-            fields are returned: name, start_time, end_time, state and
+            Includes only basic metadata about the
+            execution. Following fields are returned: name,
+            start_time, end_time, state and
             workflow_revision_id.
         FULL (2):
             Includes all data.

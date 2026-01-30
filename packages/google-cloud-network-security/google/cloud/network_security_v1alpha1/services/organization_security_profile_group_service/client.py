@@ -1179,10 +1179,12 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             security_profile_group_id (str):
-                Required. Short name of the SecurityProfileGroup
-                resource to be created. This value should be 1-63
-                characters long, containing only letters, numbers,
-                hyphens, and underscores, and should not start with a
+                Required. Short name of the
+                SecurityProfileGroup resource to be
+                created. This value should be 1-63
+                characters long, containing only
+                letters, numbers, hyphens, and
+                underscores, and should not start with a
                 number. E.g. "security_profile_group1".
 
                 This corresponds to the ``security_profile_group_id`` field
@@ -1328,11 +1330,14 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the SecurityProfileGroup resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                SecurityProfileGroup resource by the
+                update. The fields specified in the
+                update_mask are relative to the
+                resource, not the full request. A field
+                will be overwritten if it is in the
+                mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1871,10 +1876,12 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             security_profile_id (str):
-                Required. Short name of the SecurityProfile resource to
-                be created. This value should be 1-63 characters long,
-                containing only letters, numbers, hyphens, and
-                underscores, and should not start with a number. E.g.
+                Required. Short name of the
+                SecurityProfile resource to be created.
+                This value should be 1-63 characters
+                long, containing only letters, numbers,
+                hyphens, and underscores, and should not
+                start with a number. E.g.
                 "security_profile1".
 
                 This corresponds to the ``security_profile_id`` field
@@ -2013,11 +2020,13 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify the fields to be
-                overwritten in the SecurityProfile resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask.
+                Required. Field mask is used to specify
+                the fields to be overwritten in the
+                SecurityProfile resource by the update.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

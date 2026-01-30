@@ -177,10 +177,11 @@ class ListMetricDescriptorsRequest(proto.Message):
 
                 metric.type = starts_with("custom.googleapis.com/")
         page_size (int):
-            Optional. A positive number that is the maximum number of
-            results to return. The default and maximum value is 10,000.
-            If a page_size <= 0 or > 10,000 is submitted, will instead
-            return a maximum of 10,000 results.
+            Optional. A positive number that is the maximum
+            number of results to return. The default and
+            maximum value is 10,000. If a page_size <= 0 or
+            > 10,000 is submitted, will instead return a
+            maximum of 10,000 results.
         page_token (str):
             Optional. If this field is not empty then it must contain
             the ``nextPageToken`` value returned by a previous call to
@@ -292,8 +293,8 @@ class CreateMetricDescriptorRequest(proto.Message):
             on which to execute the request. The format is: 4
             projects/[PROJECT_ID_OR_NUMBER]
         metric_descriptor (google.api.metric_pb2.MetricDescriptor):
-            Required. The new `custom
-            metric <https://cloud.google.com/monitoring/custom-metrics>`__
+            Required. The new [custom
+            metric](https://cloud.google.com/monitoring/custom-metrics)
             descriptor.
     """
 
@@ -346,17 +347,17 @@ class ListTimeSeriesRequest(proto.Message):
                 organizations/[ORGANIZATION_ID]
                 folders/[FOLDER_ID]
         filter (str):
-            Required. A `monitoring
-            filter <https://cloud.google.com/monitoring/api/v3/filters>`__
-            that specifies which time series should be returned. The
-            filter must specify a single metric type, and can
-            additionally specify metric labels and other information.
-            For example:
+            Required. A [monitoring
+            filter](https://cloud.google.com/monitoring/api/v3/filters)
+            that specifies which time series should be
+            returned. The filter must specify a single
+            metric type, and can additionally specify metric
+            labels and other information. For example:
 
-            ::
-
-                metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
-                    metric.labels.instance_name = "my-instance-name".
+            metric.type =
+            "compute.googleapis.com/instance/cpu/usage_time"
+            AND metric.labels.instance_name =
+            "my-instance-name".
         interval (google.cloud.monitoring_v3.types.TimeInterval):
             Required. The time interval for which results
             should be returned. Only time series that
@@ -623,8 +624,8 @@ class QueryTimeSeriesRequest(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]
         query (str):
-            Required. The query in the `Monitoring Query
-            Language <https://cloud.google.com/monitoring/mql/reference>`__
+            Required. The query in the [Monitoring Query
+            Language](https://cloud.google.com/monitoring/mql/reference)
             format. The default time zone is in UTC.
         page_size (int):
             A positive number that is the maximum number of
@@ -702,8 +703,8 @@ class QueryTimeSeriesResponse(proto.Message):
 
 
 class QueryErrorList(proto.Message):
-    r"""This is an error detail intended to be used with INVALID_ARGUMENT
-    errors.
+    r"""This is an error detail intended to be used with
+    INVALID_ARGUMENT errors.
 
     Attributes:
         errors (MutableSequence[google.cloud.monitoring_v3.types.QueryError]):

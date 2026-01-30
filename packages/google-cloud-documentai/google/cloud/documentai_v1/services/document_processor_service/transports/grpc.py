@@ -384,8 +384,9 @@ class DocumentProcessorServiceGrpcTransport(DocumentProcessorServiceTransport):
     ]:
         r"""Return a callable for the batch process documents method over gRPC.
 
-        LRO endpoint to batch process many documents. The output is
-        written to Cloud Storage as JSON in the [Document] format.
+        LRO endpoint to batch process many documents. The output
+        is written to Cloud Storage as JSON in the [Document]
+        format.
 
         Returns:
             Callable[[~.BatchProcessRequest],

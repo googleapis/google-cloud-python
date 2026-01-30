@@ -629,8 +629,9 @@ class RecommenderAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             state_metadata (:class:`MutableMapping[str, str]`):
-                Optional. State properties user wish to include with
-                this state. Full replace of the current state_metadata.
+                Optional. State properties user wish to
+                include with this state. Full replace of
+                the current state_metadata.
 
                 This corresponds to the ``state_metadata`` field
                 on the ``request`` instance; if ``request`` is provided, this

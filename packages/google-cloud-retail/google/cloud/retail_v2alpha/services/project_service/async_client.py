@@ -543,9 +543,9 @@ class ProjectServiceAsyncClient:
 
         The [Recommendations AI solution
         type][google.cloud.retail.v2alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-        is enrolled by default when your project enables Retail API, so
-        you don't need to call the enrollSolution method for
-        recommendations.
+        is enrolled by default when your project enables Retail
+        API, so you don't need to call the enrollSolution method
+        for recommendations.
 
         .. code-block:: python
 
@@ -797,7 +797,8 @@ class ProjectServiceAsyncClient:
                 [ProjectService.GetLoggingConfig][google.cloud.retail.v2alpha.ProjectService.GetLoggingConfig]
                 method.
             name (:class:`str`):
-                Required. Full LoggingConfig resource name. Format:
+                Required. Full LoggingConfig resource
+                name. Format:
                 projects/{project_number}/loggingConfig
 
                 This corresponds to the ``name`` field
@@ -1058,7 +1059,8 @@ class ProjectServiceAsyncClient:
                 [ProjectService.GetAlertConfig][google.cloud.retail.v2alpha.ProjectService.GetAlertConfig]
                 method.
             name (:class:`str`):
-                Required. Full AlertConfig resource name. Format:
+                Required. Full AlertConfig resource
+                name. Format:
                 projects/{project_number}/alertConfig
 
                 This corresponds to the ``name`` field

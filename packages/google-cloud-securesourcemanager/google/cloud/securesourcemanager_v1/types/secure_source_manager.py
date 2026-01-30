@@ -179,12 +179,14 @@ class Instance(proto.Message):
 
         Values:
             STATE_NOTE_UNSPECIFIED (0):
-                STATE_NOTE_UNSPECIFIED as the first value of State.
+                STATE_NOTE_UNSPECIFIED as the first value of
+                State.
             PAUSED_CMEK_UNAVAILABLE (1):
                 CMEK access is unavailable.
             INSTANCE_RESUMING (2):
-                INSTANCE_RESUMING indicates that the instance was previously
-                paused and is under the process of being brought back.
+                INSTANCE_RESUMING indicates that the instance
+                was previously paused and is under the process
+                of being brought back.
         """
         STATE_NOTE_UNSPECIFIED = 0
         PAUSED_CMEK_UNAVAILABLE = 1
@@ -382,8 +384,8 @@ class Repository(proto.Message):
                 Output only. HTML is the URI for user to view
                 the repository in a browser.
             git_https (str):
-                Output only. git_https is the git HTTPS URI for git
-                operations.
+                Output only. git_https is the git HTTPS URI for
+                git operations.
             api (str):
                 Output only. API is the URI for API access.
         """
@@ -1768,12 +1770,14 @@ class UpdateRepositoryRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the repository resource by the update. The
-            fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the repository
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         repository (google.cloud.securesourcemanager_v1.types.Repository):
             Required. The repository being updated.
         validate_only (bool):
@@ -2783,8 +2787,9 @@ class ListPullRequestCommentsResponse(proto.Message):
         pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
             The list of pull request comments.
         next_page_token (str):
-            A token to set as page_token to retrieve the next page. If
-            this field is omitted, there are no subsequent pages.
+            A token to set as page_token to retrieve the
+            next page. If this field is omitted, there are
+            no subsequent pages.
     """
 
     @property

@@ -64,8 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class CheckoutSettingsServiceAsyncClient:
-    """Service for supporting `checkout
-    settings <https://support.google.com/merchants/answer/13945960>`__.
+    """Service for supporting [checkout
+    settings](https://support.google.com/merchants/answer/13945960).
     """
 
     _client: CheckoutSettingsServiceClient

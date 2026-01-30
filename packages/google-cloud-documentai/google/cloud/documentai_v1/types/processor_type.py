@@ -63,8 +63,9 @@ class ProcessorType(proto.Message):
 
         Attributes:
             location_id (str):
-                The location ID. For supported locations, refer to `regional
-                and multi-regional support </document-ai/docs/regions>`__.
+                The location ID. For supported locations, refer
+                to [regional and multi-regional
+                support](/document-ai/docs/regions).
         """
 
         location_id: str = proto.Field(

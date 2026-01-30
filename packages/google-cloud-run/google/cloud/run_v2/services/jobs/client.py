@@ -926,8 +926,9 @@ class JobsClient(metaclass=JobsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             job_id (str):
-                Required. The unique identifier for the Job. The name of
-                the job becomes {parent}/jobs/{job_id}.
+                Required. The unique identifier for the
+                Job. The name of the job becomes
+                {parent}/jobs/{job_id}.
 
                 This corresponds to the ``job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

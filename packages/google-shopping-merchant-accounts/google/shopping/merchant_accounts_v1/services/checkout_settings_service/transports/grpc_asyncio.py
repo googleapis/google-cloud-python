@@ -117,8 +117,8 @@ class _LoggingClientAIOInterceptor(
 class CheckoutSettingsServiceGrpcAsyncIOTransport(CheckoutSettingsServiceTransport):
     """gRPC AsyncIO backend transport for CheckoutSettingsService.
 
-    Service for supporting `checkout
-    settings <https://support.google.com/merchants/answer/13945960>`__.
+    Service for supporting [checkout
+    settings](https://support.google.com/merchants/answer/13945960).
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

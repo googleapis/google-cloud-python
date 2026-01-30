@@ -57,12 +57,12 @@ class ServingConfig(proto.Message):
             Immutable. Fully qualified name
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/servingConfigs/{serving_config_id}``
         display_name (str):
-            Required. The human readable serving config display name.
-            Used in Discovery UI.
+            Required. The human readable serving config
+            display name. Used in Discovery UI.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         solution_type (google.cloud.discoveryengine_v1.types.SolutionType):
             Required. Immutable. Specifies the solution
             type that a serving config can be associated
@@ -231,9 +231,9 @@ class ServingConfig(proto.Message):
 
         Attributes:
             content_watched_percentage_threshold (float):
-                Specifies the content watched percentage threshold for
-                demotion. Threshold value must be between [0, 1.0]
-                inclusive.
+                Specifies the content watched percentage
+                threshold for demotion. Threshold value must be
+                between [0, 1.0] inclusive.
 
                 This field is a member of `oneof`_ ``demote_content_watched``.
             content_watched_seconds_threshold (float):

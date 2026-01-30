@@ -373,8 +373,8 @@ class ListParticipantsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -397,8 +397,9 @@ class ListParticipantsResponse(proto.Message):
 
     Attributes:
         participants (MutableSequence[google.cloud.dialogflow_v2beta1.types.Participant]):
-            The list of participants. There is a maximum number of items
-            returned based on the page_size field in the request.
+            The list of participants. There is a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results or
             empty if there are no more results in the list.
@@ -726,10 +727,11 @@ class IntentInput(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
         language_code (str):
-            Required. The language of this conversational query. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
+            Required. The language of this conversational
+            query. See [Language
+            Support](https://cloud.google.com/dialogflow/docs/reference/language)
+            for a list of the currently supported language
+            codes.
     """
 
     intent: str = proto.Field(
@@ -1113,10 +1115,11 @@ class InputTextConfig(proto.Message):
 
     Attributes:
         language_code (str):
-            Required. The language of this conversational query. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
+            Required. The language of this conversational
+            query. See [Language
+            Support](https://cloud.google.com/dialogflow/docs/reference/language)
+            for a list of the currently supported language
+            codes.
     """
 
     language_code: str = proto.Field(
@@ -1518,10 +1521,11 @@ class AnnotatedMessagePart(proto.Message):
             Required. A part of a message possibly
             annotated with an entity.
         entity_type (str):
-            Optional. The `Dialogflow system entity
-            type <https://cloud.google.com/dialogflow/docs/reference/system-entities>`__
-            of this message part. If this is empty, Dialogflow could not
-            annotate the phrase part with a system entity.
+            Optional. The [Dialogflow system entity
+            type](https://cloud.google.com/dialogflow/docs/reference/system-entities)
+            of this message part. If this is empty,
+            Dialogflow could not annotate the phrase part
+            with a system entity.
         formatted_value (google.protobuf.struct_pb2.Value):
             Optional. The `Dialogflow system entity formatted
             value <https://cloud.google.com/dialogflow/docs/reference/system-entities>`__
@@ -1558,10 +1562,10 @@ class MessageAnnotation(proto.Message):
 
     Attributes:
         parts (MutableSequence[google.cloud.dialogflow_v2beta1.types.AnnotatedMessagePart]):
-            Optional. The collection of annotated message parts ordered
-            by their position in the message. You can recover the
-            annotated message by concatenating
-            [AnnotatedMessagePart.text].
+            Optional. The collection of annotated message
+            parts ordered by their position in the message.
+            You can recover the annotated message by
+            concatenating [AnnotatedMessagePart.text].
         contain_entities (bool):
             Required. Indicates whether the text message
             contains entities.
@@ -1818,21 +1822,23 @@ class SuggestionResult(proto.Message):
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_faq_answers_response (google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersResponse):
-            SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
+            SuggestFaqAnswersResponse if request is for
+            FAQ_ANSWER.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_smart_replies_response (google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesResponse):
-            SuggestSmartRepliesResponse if request is for SMART_REPLY.
+            SuggestSmartRepliesResponse if request is for
+            SMART_REPLY.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_dialogflow_assists_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
-            SuggestDialogflowAssistsResponse if request is for
-            DIALOGFLOW_ASSIST.
+            SuggestDialogflowAssistsResponse if request is
+            for DIALOGFLOW_ASSIST.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_entity_extraction_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
-            SuggestDialogflowAssistsResponse if request is for
-            ENTITY_EXTRACTION.
+            SuggestDialogflowAssistsResponse if request is
+            for ENTITY_EXTRACTION.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         generate_suggestions_response (google.cloud.dialogflow_v2beta1.types.GenerateSuggestionsResponse):
@@ -1996,9 +2002,10 @@ class SuggestFaqAnswersRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and including
-            [latest_message] to use as context when compiling the
-            suggestion. By default 20 and at most 50.
+            Optional. Max number of messages prior to and
+            including [latest_message] to use as context
+            when compiling the suggestion. By default 20 and
+            at most 50.
         assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
             Optional. Parameters for a human assist
             query.
@@ -2084,9 +2091,10 @@ class SuggestSmartRepliesRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and including
-            [latest_message] to use as context when compiling the
-            suggestion. By default 20 and at most 50.
+            Optional. Max number of messages prior to and
+            including [latest_message] to use as context
+            when compiling the suggestion. By default 20 and
+            at most 50.
     """
 
     parent: str = proto.Field(
@@ -2411,8 +2419,8 @@ class ListSuggestionsRequest(proto.Message):
             return in a single page. The default value is
             100; the maximum value is 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
         filter (str):
             Optional. Filter on suggestions fields. Currently predicates
             on ``create_time`` and ``create_time_epoch_microseconds``
@@ -2491,9 +2499,10 @@ class CompileSuggestionRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and including
-            [latest_message] to use as context when compiling the
-            suggestion. If zero or less than zero, 20 is used.
+            Optional. Max number of messages prior to and
+            including [latest_message] to use as context
+            when compiling the suggestion. If zero or less
+            than zero, 20 is used.
     """
 
     parent: str = proto.Field(

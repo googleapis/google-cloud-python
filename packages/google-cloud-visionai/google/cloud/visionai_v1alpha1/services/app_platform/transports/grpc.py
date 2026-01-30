@@ -604,9 +604,9 @@ class AppPlatformGrpcTransport(AppPlatformTransport):
         input method over gRPC.
 
         Update target stream input to the Application, if the
-        Application is deployed, the corresponding instance based will
-        be deployed. For CreateOrUpdate behavior, set allow_missing to
-        true.
+        Application is deployed, the corresponding instance
+        based will be deployed. For CreateOrUpdate behavior, set
+        allow_missing to true.
 
         Returns:
             Callable[[~.UpdateApplicationStreamInputRequest],

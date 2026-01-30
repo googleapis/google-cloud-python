@@ -309,10 +309,12 @@ class ListConversationsRequest(proto.Message):
             A page token, received from a previous ``ListConversations``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The supported
-            features are: user_pseudo_id, state.
+            A filter to apply on the list results. The
+            supported features are: user_pseudo_id, state.
 
-            Example: "user_pseudo_id = some_id".
+            Example:
+
+            "user_pseudo_id = some_id".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for
@@ -823,9 +825,11 @@ class AnswerQueryRequest(proto.Message):
                         extractive_segments (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment]):
                             List of extractive segments.
                         extractive_answers (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer]):
-                            Deprecated: This field is deprecated and will have no effect
-                            on the Answer generation. Please use document_contexts and
-                            extractive_segments fields. List of extractive answers.
+                            Deprecated: This field is deprecated and will
+                            have no effect on the Answer generation.
+                            Please use document_contexts and
+                            extractive_segments fields. List of extractive
+                            answers.
                     """
 
                     class DocumentContext(proto.Message):

@@ -46,8 +46,10 @@ class Asset(proto.Message):
     Attributes:
         name (str):
             The relative resource name of this asset. See:
+
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
+
             "organizations/{organization_id}/assets/{asset_id}".
         security_center_properties (google.cloud.securitycenter_v1beta1.types.Asset.SecurityCenterProperties):
             Security Command Center managed properties.
@@ -77,9 +79,10 @@ class Asset(proto.Message):
 
         Attributes:
             resource_name (str):
-                Immutable. The full resource name of the Google Cloud
-                resource this asset represents. This field is immutable
-                after create time. See:
+                Immutable. The full resource name of the Google
+                Cloud resource this asset represents. This field
+                is immutable after create time. See:
+
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
             resource_type (str):
                 The type of the Google Cloud resource.
@@ -89,12 +92,12 @@ class Asset(proto.Message):
                 producer of the resource and is immutable after
                 create time.
             resource_parent (str):
-                The full resource name of the immediate parent of the
-                resource. See:
+                The full resource name of the immediate parent
+                of the resource. See:
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
             resource_project (str):
-                The full resource name of the project the resource belongs
-                to. See:
+                The full resource name of the project the
+                resource belongs to. See:
                 https://cloud.google.com/apis/design/resource_names#full_resource_name
             resource_owners (MutableSequence[str]):
                 Owners of the Google Cloud resource.

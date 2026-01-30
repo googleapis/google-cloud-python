@@ -782,11 +782,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -917,11 +918,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1014,9 +1016,9 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> gcd_entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -1066,11 +1068,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1164,9 +1167,9 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> gcd_entity_type.EntityType:
         r"""Updates the specified entity type.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -1208,11 +1211,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1305,9 +1309,9 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
     ) -> None:
         r"""Deletes the specified entity type.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         .. code-block:: python
 
@@ -1750,11 +1754,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1925,11 +1930,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2095,11 +2101,12 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             language_code (str):
-                Optional. The language used to access language-specific
-                data. If not specified, the agent's default language is
-                used. For more information, see `Multilingual intent and
-                entity
-                data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
+                Optional. The language used to access
+                language-specific data. If not
+                specified, the agent's default language
+                is used. For more information, see
+                [Multilingual intent and entity
+                data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
 
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -123,12 +123,9 @@ class GetNotificationChannelDescriptorRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel type for which to execute the request.
-            The format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
+            Required. The channel type for which to execute
+            the request. The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
     """
 
     name: str = proto.Field(
@@ -191,12 +188,12 @@ class ListNotificationChannelsRequest(proto.Message):
             [``GetNotificationChannel``][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
             operation.
         filter (str):
-            Optional. If provided, this field specifies the criteria
-            that must be met by notification channels to be included in
-            the response.
+            Optional. If provided, this field specifies the
+            criteria that must be met by notification
+            channels to be included in the response.
 
-            For more details, see `sorting and
-            filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
+            For more details, see [sorting and
+            filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
         order_by (str):
             Optional. A comma-separated list of fields by which to sort
             the result. Supports the same set of fields as in
@@ -283,12 +280,9 @@ class GetNotificationChannelRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel for which to execute the request. The
-            format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+            Required. The channel for which to execute the
+            request. The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     """
 
     name: str = proto.Field(
@@ -327,12 +321,9 @@ class DeleteNotificationChannelRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel for which to execute the request. The
-            format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+            Required. The channel for which to execute the
+            request. The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
         force (bool):
             If true, the notification channel will be
             deleted regardless of its use in alert policies

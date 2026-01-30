@@ -477,8 +477,8 @@ class TripServiceAsyncClient:
     ) -> None:
         r"""Deletes a single Trip.
 
-        Returns FAILED_PRECONDITION if the Trip is active and assigned
-        to a vehicle.
+        Returns FAILED_PRECONDITION if the Trip is active and
+        assigned to a vehicle.
 
         .. code-block:: python
 

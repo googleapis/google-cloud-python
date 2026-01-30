@@ -1934,12 +1934,15 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the repository resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                repository resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6781,9 +6784,10 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Resolves pull request comments. A list of PullRequestComment
-        names must be provided. The PullRequestComment names must be in
-        the same conversation thread. If auto_fill is set, all comments
+        r"""Resolves pull request comments. A list of
+        PullRequestComment names must be provided. The
+        PullRequestComment names must be in the same
+        conversation thread. If auto_fill is set, all comments
         in the conversation thread will be resolved.
 
         .. code-block:: python
@@ -6928,9 +6932,10 @@ class SecureSourceManagerClient(metaclass=SecureSourceManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Unresolves pull request comments. A list of PullRequestComment
-        names must be provided. The PullRequestComment names must be in
-        the same conversation thread. If auto_fill is set, all comments
+        r"""Unresolves pull request comments. A list of
+        PullRequestComment names must be provided. The
+        PullRequestComment names must be in the same
+        conversation thread. If auto_fill is set, all comments
         in the conversation thread will be unresolved.
 
         .. code-block:: python

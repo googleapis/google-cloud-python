@@ -741,15 +741,16 @@ class PhishingProtectionServiceV1Beta1Client(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> phishingprotection.ReportPhishingResponse:
-        r"""Reports a URI suspected of containing phishing content to be
-        reviewed. Once the report review is complete, its result can be
-        found in the Cloud Security Command Center findings dashboard
-        for Phishing Protection. If the result verifies the existence of
-        malicious phishing content, the site will be added the to
-        `Google's Social Engineering
-        lists <https://support.google.com/webmasters/answer/6350487/>`__
-        in order to protect users that could get exposed to this threat
-        in the future.
+        r"""Reports a URI suspected of containing phishing content
+        to be reviewed. Once the report review is complete, its
+        result can be found in the Cloud Security Command Center
+        findings dashboard for Phishing Protection. If the
+        result verifies the existence of malicious phishing
+        content, the site will be added the to [Google's Social
+        Engineering
+        lists](https://support.google.com/webmasters/answer/6350487/)
+        in order to protect users that could get exposed to this
+        threat in the future.
 
         .. code-block:: python
 
@@ -782,9 +783,9 @@ class PhishingProtectionServiceV1Beta1Client(
             request (Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]):
                 The request object. The ReportPhishing request message.
             parent (str):
-                Required. The name of the project for which the report
-                will be created, in the format
-                "projects/{project_number}".
+                Required. The name of the project for
+                which the report will be created, in the
+                format "projects/{project_number}".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

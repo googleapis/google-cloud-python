@@ -72,7 +72,8 @@ class CreateDocumentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent name. Format:
+            Required. The parent name.
+            Format:
             projects/{project_number}/locations/{location}.
         document (google.cloud.contentwarehouse_v1.types.Document):
             Required. The document to create.
@@ -137,7 +138,9 @@ class GetDocumentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document to retrieve. Format:
+            Required. The name of the document to retrieve.
+            Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}
             or
             projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -163,7 +166,9 @@ class UpdateDocumentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document to update. Format:
+            Required. The name of the document to update.
+            Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}
             or
             projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -215,7 +220,9 @@ class DeleteDocumentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document to delete. Format:
+            Required. The name of the document to delete.
+            Format:
+
             projects/{project_number}/locations/{location}/documents/{document_id}
             or
             projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -241,8 +248,8 @@ class SearchDocumentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection of
-            documents. Format:
+            Required. The parent, which owns this collection
+            of documents. Format:
             projects/{project_number}/locations/{location}.
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the end
@@ -422,7 +429,9 @@ class LockDocumentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document to lock. Format:
+            Required. The name of the document to lock.
+            Format:
+
             projects/{project_number}/locations/{location}/documents/{document}.
         collection_id (str):
             The collection the document connects to.
@@ -450,10 +459,12 @@ class FetchAclRequest(proto.Message):
 
     Attributes:
         resource (str):
-            Required. REQUIRED: The resource for which the policy is
-            being requested. Format for document:
+            Required. REQUIRED: The resource for which the
+            policy is being requested. Format for document:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
             Format for collection:
+
             projects/{project_number}/locations/{location}/collections/{collection_id}.
             Format for project: projects/{project_number}.
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
@@ -461,8 +472,9 @@ class FetchAclRequest(proto.Message):
             user, used to enforce access control for the
             service.
         project_owner (bool):
-            For Get Project ACL only. Authorization check for end user
-            will be ignored when project_owner=true.
+            For Get Project ACL only. Authorization check
+            for end user will be ignored when
+            project_owner=true.
     """
 
     resource: str = proto.Field(
@@ -485,10 +497,12 @@ class SetAclRequest(proto.Message):
 
     Attributes:
         resource (str):
-            Required. REQUIRED: The resource for which the policy is
-            being requested. Format for document:
+            Required. REQUIRED: The resource for which the
+            policy is being requested. Format for document:
+
             projects/{project_number}/locations/{location}/documents/{document_id}.
             Format for collection:
+
             projects/{project_number}/locations/{location}/collections/{collection_id}.
             Format for project: projects/{project_number}.
         policy (google.iam.v1.policy_pb2.Policy):
@@ -517,8 +531,9 @@ class SetAclRequest(proto.Message):
             user, used to enforce access control for the
             service.
         project_owner (bool):
-            For Set Project ACL only. Authorization check for end user
-            will be ignored when project_owner=true.
+            For Set Project ACL only. Authorization check
+            for end user will be ignored when
+            project_owner=true.
     """
 
     resource: str = proto.Field(

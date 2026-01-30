@@ -442,27 +442,29 @@ class MysqlSslConfig(proto.Message):
 
     Attributes:
         client_key (str):
-            Input only. PEM-encoded private key associated with the
-            Client Certificate. If this field is used then the
-            'client_certificate' and the 'ca_certificate' fields are
-            mandatory.
-        client_key_set (bool):
-            Output only. Indicates whether the client_key field is set.
-        client_certificate (str):
-            Input only. PEM-encoded certificate that will be used by the
-            replica to authenticate against the source database server.
-            If this field is used then the 'client_key' and the
+            Input only. PEM-encoded private key associated
+            with the Client Certificate. If this field is
+            used then the 'client_certificate' and the
             'ca_certificate' fields are mandatory.
+        client_key_set (bool):
+            Output only. Indicates whether the client_key
+            field is set.
+        client_certificate (str):
+            Input only. PEM-encoded certificate that will be
+            used by the replica to authenticate against the
+            source database server. If this field is used
+            then the 'client_key' and the 'ca_certificate'
+            fields are mandatory.
         client_certificate_set (bool):
-            Output only. Indicates whether the client_certificate field
-            is set.
+            Output only. Indicates whether the
+            client_certificate field is set.
         ca_certificate (str):
             Input only. PEM-encoded certificate of the CA
             that signed the source database server's
             certificate.
         ca_certificate_set (bool):
-            Output only. Indicates whether the ca_certificate field is
-            set.
+            Output only. Indicates whether the
+            ca_certificate field is set.
     """
 
     client_key: str = proto.Field(
@@ -991,8 +993,8 @@ class GcsDestinationConfig(proto.Message):
             Path inside the Cloud Storage bucket to write
             data to.
         gcs_file_format (google.cloud.datastream_v1alpha1.types.GcsFileFormat):
-            File format that data should be written in. Deprecated field
-            - use file_format instead.
+            File format that data should be written in.
+            Deprecated field - use file_format instead.
         file_rotation_mb (int):
             The maximum file size to be saved in the
             bucket.

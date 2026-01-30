@@ -70,8 +70,8 @@ class ExfilResource(proto.Message):
 
     Attributes:
         name (str):
-            The resource's `full resource
-            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__.
+            The resource's [full resource
+            name](https://cloud.google.com/apis/design/resource_names#full_resource_name).
         components (MutableSequence[str]):
             Subcomponents of the asset that was
             exfiltrated, like URIs used during exfiltration,

@@ -35,8 +35,8 @@ __protobuf__ = proto.module(
 
 class SpaceEvent(proto.Message):
     r"""An event that represents a change or activity in a Google Chat
-    space. To learn more, see `Work with events from Google
-    Chat <https://developers.google.com/workspace/chat/events-overview>`__.
+    space. To learn more, see [Work with events from Google
+    Chat](https://developers.google.com/workspace/chat/events-overview).
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

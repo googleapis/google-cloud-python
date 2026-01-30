@@ -1220,13 +1220,16 @@ class LustreClient(metaclass=LustreClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Specifies the fields to be overwritten in the
-                instance resource by the update.
+                Optional. Specifies the fields to be
+                overwritten in the instance resource by
+                the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If no mask is provided
-                then all fields present in the request are overwritten.
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
+                overwritten if it is in the mask. If no
+                mask is provided then all fields present
+                in the request are overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

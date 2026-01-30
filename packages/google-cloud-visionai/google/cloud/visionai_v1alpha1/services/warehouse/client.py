@@ -1135,7 +1135,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.GetAssetRequest, dict]):
                 The request object. Request message for GetAsset.
             name (str):
-                Required. The name of the asset to retrieve. Format:
+                Required. The name of the asset to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``name`` field
@@ -1248,8 +1250,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.ListAssetsRequest, dict]):
                 The request object. Request message for ListAssets.
             parent (str):
-                Required. The parent, which owns this collection of
-                assets. Format:
+                Required. The parent, which owns this
+                collection of assets. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}
 
                 This corresponds to the ``parent`` field
@@ -1374,7 +1377,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.DeleteAssetRequest, dict]):
                 The request object. Request message for DeleteAsset.
             name (str):
-                Required. The name of the asset to delete. Format:
+                Required. The name of the asset to
+                delete. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``name`` field
@@ -2325,8 +2330,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.GetDataSchemaRequest, dict]):
                 The request object. Request message for GetDataSchema.
             name (str):
-                Required. The name of the data schema to retrieve.
-                Format:
+                Required. The name of the data schema to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
 
                 This corresponds to the ``name`` field
@@ -2431,7 +2437,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.DeleteDataSchemaRequest, dict]):
                 The request object. Request message for DeleteDataSchema.
             name (str):
-                Required. The name of the data schema to delete. Format:
+                Required. The name of the data schema to
+                delete. Format:
+
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
 
                 This corresponds to the ``name`` field
@@ -2530,8 +2538,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.ListDataSchemasRequest, dict]):
                 The request object. Request message for ListDataSchemas.
             parent (str):
-                Required. The parent, which owns this collection of data
-                schemas. Format:
+                Required. The parent, which owns this
+                collection of data schemas. Format:
+
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}
 
                 This corresponds to the ``parent`` field
@@ -2786,8 +2795,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 The request object. Request message for GetAnnotation
                 API.
             name (str):
-                Required. The name of the annotation to retrieve.
-                Format:
+                Required. The name of the annotation to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
 
                 This corresponds to the ``name`` field
@@ -2896,8 +2906,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 The request object. Request message for GetAnnotation
                 API.
             parent (str):
-                The parent, which owns this collection of annotations.
-                Format:
+                The parent, which owns this collection
+                of annotations. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``parent`` field
@@ -3136,7 +3147,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 The request object. Request message for DeleteAnnotation
                 API.
             name (str):
-                Required. The name of the annotation to delete. Format:
+                Required. The name of the annotation to
+                delete. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
 
                 This corresponds to the ``name`` field
@@ -3289,11 +3302,12 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> warehouse.ClipAssetResponse:
-        r"""Generates clips for downloading. The api takes in a time range,
-        and generates a clip of the first content available after
-        start_time and before end_time, which may overflow beyond these
-        bounds. Returned clips are truncated if the total size of the
-        clips are larger than 100MB.
+        r"""Generates clips for downloading. The api takes in a time
+        range, and generates a clip of the first content
+        available after start_time and before end_time, which
+        may overflow beyond these bounds. Returned clips are
+        truncated if the total size of the clips are larger than
+        100MB.
 
         .. code-block:: python
 
@@ -3781,8 +3795,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
             request (Union[google.cloud.visionai_v1alpha1.types.GetSearchConfigRequest, dict]):
                 The request object. Request message for GetSearchConfig.
             name (str):
-                Required. The name of the search configuration to
-                retrieve. Format:
+                Required. The name of the search
+                configuration to retrieve. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
 
                 This corresponds to the ``name`` field
@@ -3891,8 +3906,9 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 The request object. Request message for
                 DeleteSearchConfig.
             name (str):
-                Required. The name of the search configuration to
-                delete. Format:
+                Required. The name of the search
+                configuration to delete. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
 
                 This corresponds to the ``name`` field
@@ -3992,8 +4008,10 @@ class WarehouseClient(metaclass=WarehouseClientMeta):
                 The request object. Request message for
                 ListSearchConfigs.
             parent (str):
-                Required. The parent, which owns this collection of
-                search configurations. Format:
+                Required. The parent, which owns this
+                collection of search configurations.
+                Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}
 
                 This corresponds to the ``parent`` field

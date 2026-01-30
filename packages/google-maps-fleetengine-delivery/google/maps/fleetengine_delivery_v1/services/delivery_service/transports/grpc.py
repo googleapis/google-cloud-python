@@ -391,8 +391,8 @@ class DeliveryServiceGrpcTransport(DeliveryServiceTransport):
 
         Deletes a DeliveryVehicle from the Fleet Engine.
 
-        Returns FAILED_PRECONDITION if the DeliveryVehicle has OPEN
-        Tasks assigned to it.
+        Returns FAILED_PRECONDITION if the DeliveryVehicle has
+        OPEN Tasks assigned to it.
 
         Returns:
             Callable[[~.DeleteDeliveryVehicleRequest],
@@ -532,8 +532,8 @@ class DeliveryServiceGrpcTransport(DeliveryServiceTransport):
 
         Deletes a single Task.
 
-        Returns FAILED_PRECONDITION if the Task is OPEN and assigned to
-        a DeliveryVehicle.
+        Returns FAILED_PRECONDITION if the Task is OPEN and
+        assigned to a DeliveryVehicle.
 
         Returns:
             Callable[[~.DeleteTaskRequest],

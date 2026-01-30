@@ -882,12 +882,13 @@ class Certificate(proto.Message):
                 from core Google data centers. If unsure, choose
                 this option.
             EDGE_CACHE (1):
-                Certificates with scope EDGE_CACHE are special-purposed
-                certificates, served from Edge Points of Presence. See
+                Certificates with scope EDGE_CACHE are
+                special-purposed certificates, served from Edge
+                Points of Presence. See
                 https://cloud.google.com/vpc/docs/edge-locations.
             ALL_REGIONS (2):
-                Certificates with ALL_REGIONS scope are served from all
-                Google Cloud regions. See
+                Certificates with ALL_REGIONS scope are served
+                from all Google Cloud regions. See
                 https://cloud.google.com/compute/docs/regions-zones.
         """
         DEFAULT = 0
@@ -1477,12 +1478,13 @@ class DnsAuthorization(proto.Message):
             TYPE_UNSPECIFIED (0):
                 Type is unspecified.
             FIXED_RECORD (1):
-                FIXED_RECORD DNS authorization uses DNS-01 validation
-                method.
+                FIXED_RECORD DNS authorization uses DNS-01
+                validation method.
             PER_PROJECT_RECORD (2):
-                PER_PROJECT_RECORD DNS authorization allows for independent
-                management of Google-managed certificates with DNS
-                authorization across multiple projects.
+                PER_PROJECT_RECORD DNS authorization allows for
+                independent management of Google-managed
+                certificates with DNS authorization across
+                multiple projects.
         """
         TYPE_UNSPECIFIED = 0
         FIXED_RECORD = 1

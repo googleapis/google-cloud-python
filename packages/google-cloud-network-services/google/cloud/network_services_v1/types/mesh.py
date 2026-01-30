@@ -251,12 +251,13 @@ class UpdateMeshRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the Mesh resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the Mesh resource by
+            the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         mesh (google.cloud.network_services_v1.types.Mesh):
             Required. Updated Mesh resource.
     """

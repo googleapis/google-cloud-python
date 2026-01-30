@@ -41,8 +41,9 @@ class EncryptionConfig(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the EncryptionConfig.
-            Format:
+            Identifier. The resource name of the
+            EncryptionConfig. Format:
+
             organizations/{organization}/locations/{location}/encryptionConfigs/{encryption_config}
             Global location is not supported.
         key (str):
@@ -103,8 +104,9 @@ class EncryptionConfig(proto.Message):
             error_code (google.cloud.dataplex_v1.types.EncryptionConfig.FailureDetails.ErrorCode):
                 Output only. The error code for the failure.
             error_message (str):
-                Output only. The error message will be shown to the user.
-                Set only if the error code is REQUIRE_USER_ACTION.
+                Output only. The error message will be shown to
+                the user. Set only if the error code is
+                REQUIRE_USER_ACTION.
         """
 
         class ErrorCode(proto.Enum):

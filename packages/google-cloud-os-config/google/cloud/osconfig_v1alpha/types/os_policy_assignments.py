@@ -42,17 +42,17 @@ __protobuf__ = proto.module(
 
 
 class OSPolicyAssignment(proto.Message):
-    r"""OS policy assignment is an API resource that is used to apply a set
-    of OS policies to a dynamically targeted group of Compute Engine VM
-    instances.
+    r"""OS policy assignment is an API resource that is used to
+    apply a set of OS policies to a dynamically targeted group of
+    Compute Engine VM instances.
 
-    An OS policy is used to define the desired state configuration for a
-    Compute Engine VM instance through a set of configuration resources
-    that provide capabilities such as installing or removing software
-    packages, or executing a script.
+    An OS policy is used to define the desired state configuration
+    for a Compute Engine VM instance through a set of configuration
+    resources that provide capabilities such as installing or
+    removing software packages, or executing a script.
 
-    For more information, see `OS policy and OS policy
-    assignment <https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies>`__.
+    For more information, see [OS policy and OS policy
+    assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
     Attributes:
         name (str):

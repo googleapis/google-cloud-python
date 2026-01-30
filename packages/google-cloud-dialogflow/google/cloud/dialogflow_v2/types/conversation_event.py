@@ -50,8 +50,8 @@ class ConversationEvent(proto.Message):
             The type of the event that this notification
             refers to.
         error_status (google.rpc.status_pb2.Status):
-            More detailed information about an error. Only set for type
-            UNRECOVERABLE_ERROR_IN_PHONE_CALL.
+            More detailed information about an error. Only
+            set for type UNRECOVERABLE_ERROR_IN_PHONE_CALL.
         new_message_payload (google.cloud.dialogflow_v2.types.Message):
             Payload of NEW_MESSAGE event.
 

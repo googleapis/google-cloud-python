@@ -772,11 +772,13 @@ class ParallelstoreAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Mask of fields to update. Field mask is used
-                to specify the fields to be overwritten in the Instance
-                resource by the update. At least one path must be
-                supplied in this field. The fields specified in the
-                update_mask are relative to the resource, not the full
+                Required. Mask of fields to update.
+                Field mask is used to specify the fields
+                to be overwritten in the Instance
+                resource by the update. At least one
+                path must be supplied in this field. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
                 request.
 
                 This corresponds to the ``update_mask`` field

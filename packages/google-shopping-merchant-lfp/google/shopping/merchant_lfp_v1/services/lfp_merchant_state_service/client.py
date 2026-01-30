@@ -107,12 +107,13 @@ class LfpMerchantStateServiceClientMeta(type):
 
 
 class LfpMerchantStateServiceClient(metaclass=LfpMerchantStateServiceClientMeta):
-    """Service for a `LFP
-    partner <https://support.google.com/merchants/answer/7676652>`__ to
+    """Service for a [LFP
+    partner](https://support.google.com/merchants/answer/7676652) to
     get the state of a merchant.
 
-    For information about onboarding a retailer, see `How to onboard a
-    retailer <https://support.google.com/merchants/answer/15243706>`__.
+    For information about onboarding a retailer, see [How to onboard
+    a
+    retailer](https://support.google.com/merchants/answer/15243706).
     """
 
     @staticmethod

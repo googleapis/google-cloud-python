@@ -90,8 +90,8 @@ class Organization(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the GMP organization.
-            Format: organizations/{org_id}
+            Identifier. The resource name of the GMP
+            organization. Format: organizations/{org_id}
         display_name (str):
             The human-readable name for the organization.
     """
@@ -112,20 +112,24 @@ class AnalyticsAccountLink(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name of this AnalyticsAccountLink. Note
-            the resource ID is the same as the ID of the Analtyics
-            account.
+            Identifier. Resource name of this
+            AnalyticsAccountLink. Note the resource ID is
+            the same as the ID of the Analtyics account.
 
             Format:
-            organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
-            Example: "organizations/xyz/analyticsAccountLinks/1234".
-        analytics_account (str):
-            Required. Immutable. The resource name of the AnalyticsAdmin
-            API account. The account ID will be used as the ID of this
-            AnalyticsAccountLink resource, which will become the final
-            component of the resource name.
 
-            Format: analyticsadmin.googleapis.com/accounts/{account_id}
+            organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
+            Example:
+            "organizations/xyz/analyticsAccountLinks/1234".
+        analytics_account (str):
+            Required. Immutable. The resource name of the
+            AnalyticsAdmin API account. The account ID will
+            be used as the ID of this AnalyticsAccountLink
+            resource, which will become the final component
+            of the resource name.
+
+            Format:
+            analyticsadmin.googleapis.com/accounts/{account_id}
         display_name (str):
             Output only. The human-readable name for the
             Analytics account.

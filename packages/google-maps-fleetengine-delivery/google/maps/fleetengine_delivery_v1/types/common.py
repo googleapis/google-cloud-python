@@ -185,8 +185,8 @@ class DeliveryVehicleLocation(proto.Message):
         latlng_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``location`` in meters as a radius.
         heading (google.protobuf.wrappers_pb2.Int32Value):
-            Direction the vehicle is moving in degrees. 0 represents
-            North. The valid range is [0,360).
+            Direction the vehicle is moving in degrees. 0
+            represents North. The valid range is [0,360).
         bearing_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Deprecated: Use ``heading_accuracy`` instead.
         heading_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
@@ -243,9 +243,9 @@ class DeliveryVehicleLocation(proto.Message):
         flp_latlng_accuracy_meters (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``flp_location`` in meters as a radius.
         flp_heading_degrees (google.protobuf.wrappers_pb2.Int32Value):
-            Direction the vehicle is moving in degrees, as determined by
-            the Fused Location Provider. 0 represents North. The valid
-            range is [0,360).
+            Direction the vehicle is moving in degrees, as
+            determined by the Fused Location Provider. 0
+            represents North. The valid range is [0,360).
         supplemental_location (google.type.latlng_pb2.LatLng):
             Supplemental location provided by the
             integrating app.

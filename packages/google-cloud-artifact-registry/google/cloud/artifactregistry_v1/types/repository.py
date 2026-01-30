@@ -1076,9 +1076,10 @@ class Repository(proto.Message):
 
             Values:
                 VERSION_POLICY_UNSPECIFIED (0):
-                    VERSION_POLICY_UNSPECIFIED - the version policy is not
-                    defined. When the version policy is not defined, no
-                    validation is performed for the versions.
+                    VERSION_POLICY_UNSPECIFIED - the version policy
+                    is not defined. When the version policy is not
+                    defined, no validation is performed for the
+                    versions.
                 RELEASE (1):
                     RELEASE - repository will accept only Release
                     versions.
@@ -1314,8 +1315,8 @@ class ListRepositoriesRequest(proto.Message):
             The maximum number of repositories to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request, if any.
+            The next_page_token value returned from a
+            previous list request, if any.
         filter (str):
             Optional. An expression for filtering the results of the
             request. Filter rules are case insensitive. The fields

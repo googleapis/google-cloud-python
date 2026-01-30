@@ -1922,8 +1922,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             Args:
                 request (~.catalog_service.SetDefaultBranchRequest):
-                    The request object. Request message to set a specified branch as new
-                default_branch.
+                    The request object. Request message to set a specified
+                branch as new default_branch.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

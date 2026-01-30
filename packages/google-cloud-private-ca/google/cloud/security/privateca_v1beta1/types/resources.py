@@ -133,8 +133,9 @@ class CertificateAuthority(proto.Message):
             Required. Immutable. The config used to
             create a self-signed X.509 certificate or CSR.
         lifetime (google.protobuf.duration_pb2.Duration):
-            Required. The desired lifetime of the CA certificate. Used
-            to create the "not_before_time" and "not_after_time" fields
+            Required. The desired lifetime of the CA
+            certificate. Used to create the
+            "not_before_time" and "not_after_time" fields
             inside an X.509 certificate.
         key_spec (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.KeyVersionSpec):
             Required. Immutable. Used when issuing certificates for this
@@ -291,21 +292,29 @@ class CertificateAuthority(proto.Message):
             SIGN_HASH_ALGORITHM_UNSPECIFIED (0):
                 Not specified.
             RSA_PSS_2048_SHA256 (1):
-                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_2048_SHA256
             RSA_PSS_3072_SHA256 (2):
-                maps to CryptoKeyVersionAlgorithm. RSA_SIGN_PSS_3072_SHA256
+                maps to CryptoKeyVersionAlgorithm.
+                RSA_SIGN_PSS_3072_SHA256
             RSA_PSS_4096_SHA256 (3):
-                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_4096_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.RSA_SIGN_PSS_4096_SHA256
             RSA_PKCS1_2048_SHA256 (6):
-                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_2048_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_2048_SHA256
             RSA_PKCS1_3072_SHA256 (7):
-                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_3072_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_3072_SHA256
             RSA_PKCS1_4096_SHA256 (8):
-                maps to CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_4096_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.RSA_SIGN_PKCS1_4096_SHA256
             EC_P256_SHA256 (4):
-                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P256_SHA256
+                maps to
+                CryptoKeyVersionAlgorithm.EC_SIGN_P256_SHA256
             EC_P384_SHA384 (5):
-                maps to CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
+                maps to
+                CryptoKeyVersionAlgorithm.EC_SIGN_P384_SHA384
         """
         SIGN_HASH_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1
@@ -763,15 +772,16 @@ class CertificateRevocationList(proto.Message):
             in the format
             ``projects/*/locations/*/certificateAuthorities/*/ certificateRevocationLists/*``.
         sequence_number (int):
-            Output only. The CRL sequence number that appears in
-            pem_crl.
+            Output only. The CRL sequence number that
+            appears in pem_crl.
         revoked_certificates (MutableSequence[google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.RevokedCertificate]):
-            Output only. The revoked serial numbers that appear in
-            pem_crl.
+            Output only. The revoked serial numbers that
+            appear in pem_crl.
         pem_crl (str):
             Output only. The PEM-encoded X.509 CRL.
         access_url (str):
-            Output only. The location where 'pem_crl' can be accessed.
+            Output only. The location where 'pem_crl' can be
+            accessed.
         state (google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.State):
             Output only. The
             [State][google.cloud.security.privateca.v1beta1.CertificateRevocationList.State]
@@ -915,11 +925,13 @@ class Certificate(proto.Message):
 
             This field is a member of `oneof`_ ``certificate_config``.
         lifetime (google.protobuf.duration_pb2.Duration):
-            Required. Immutable. The desired lifetime of a certificate.
-            Used to create the "not_before_time" and "not_after_time"
-            fields inside an X.509 certificate. Note that the lifetime
-            may be truncated if it would extend past the life of any
-            certificate authority in the issuing chain.
+            Required. Immutable. The desired lifetime of a
+            certificate. Used to create the
+            "not_before_time" and "not_after_time" fields
+            inside an X.509 certificate. Note that the
+            lifetime may be truncated if it would extend
+            past the life of any certificate authority in
+            the issuing chain.
         revocation_details (google.cloud.security.privateca_v1beta1.types.Certificate.RevocationDetails):
             Output only. Details regarding the revocation of this
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
@@ -1290,8 +1302,10 @@ class PublicKey(proto.Message):
     """
 
     class KeyType(proto.Enum):
-        r"""Types of public keys that are supported. At a minimum, we support
-        RSA and ECDSA, for the key sizes or curves listed:
+        r"""Types of public keys that are supported.
+        At a minimum, we support RSA and ECDSA, for the key sizes or
+        curves listed:
+
         https://cloud.google.com/kms/docs/algorithms#asymmetric_signing_algorithms
 
         Values:
@@ -1412,7 +1426,8 @@ class CertificateDescription(proto.Message):
             that contain a particular public key, per
             https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
         authority_key_id (google.cloud.security.privateca_v1beta1.types.CertificateDescription.KeyId):
-            Identifies the subject_key_id of the parent certificate, per
+            Identifies the subject_key_id of the parent
+            certificate, per
             https://tools.ietf.org/html/rfc5280#section-4.2.1.1
         crl_distribution_points (MutableSequence[str]):
             Describes a list of locations to obtain CRL
@@ -1444,9 +1459,9 @@ class CertificateDescription(proto.Message):
                 The serial number encoded in lowercase
                 hexadecimal.
             lifetime (google.protobuf.duration_pb2.Duration):
-                For convenience, the actual lifetime of an issued
-                certificate. Corresponds to 'not_after_time' -
-                'not_before_time'.
+                For convenience, the actual lifetime of an
+                issued certificate. Corresponds to
+                'not_after_time' - 'not_before_time'.
             not_before_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which the certificate becomes
                 valid.

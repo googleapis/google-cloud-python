@@ -204,8 +204,8 @@ class Offer(proto.Message):
 
     Attributes:
         name (str):
-            Resource Name of the Offer. Format:
-            accounts/{account_id}/offers/{offer_id}
+            Resource Name of the Offer.
+            Format: accounts/{account_id}/offers/{offer_id}
         marketing_info (google.cloud.channel_v1.types.MarketingInfo):
             Marketing information for the Offer.
         sku (google.cloud.channel_v1.types.Sku):
@@ -301,9 +301,10 @@ class ParameterDefinition(proto.Message):
             Standard. Applicable to INT64 and DOUBLE
             parameter types.
         allowed_values (MutableSequence[google.cloud.channel_v1.types.Value]):
-            If not empty, parameter values must be drawn from this list.
-            For example, [us-west1, us-west2, ...] Applicable to STRING
-            parameter type.
+            If not empty, parameter values must be drawn
+            from this list. For example, [us-west1,
+            us-west2, ...] Applicable to STRING parameter
+            type.
         optional (bool):
             If set to true, parameter is optional to
             purchase this Offer.

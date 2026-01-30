@@ -220,9 +220,10 @@ class Trip(proto.Message):
             ``UpdateTrip`` and ``CreateTrip`` calls, NOT on ``GetTrip``
             calls.
         route (MutableSequence[google.type.latlng_pb2.LatLng]):
-            Output only. Anticipated route for this trip to the first
-            entry in remaining_waypoints. Note that the first waypoint
-            may belong to a different trip.
+            Output only. Anticipated route for this trip to
+            the first entry in remaining_waypoints. Note
+            that the first waypoint may belong to a
+            different trip.
         current_route_segment (str):
             Output only. An encoded path to the next
             waypoint.

@@ -284,16 +284,17 @@ class AppEngineHttpRequest(proto.Message):
 
     Attributes:
         http_method (google.cloud.tasks_v2.types.HttpMethod):
-            The HTTP method to use for the request. The default is POST.
-
-            The app's request handler for the task's target URL must be
-            able to handle HTTP requests with this http_method,
-            otherwise the task attempt fails with error code 405 (Method
-            Not Allowed). See `Writing a push task request
-            handler <https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler>`__
-            and the App Engine documentation for your runtime on `How
-            Requests are
-            Handled <https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>`__.
+            The HTTP method to use for the request. The
+            default is POST.
+            The app's request handler for the task's target
+            URL must be able to handle HTTP requests with
+            this http_method, otherwise the task attempt
+            fails with error code 405 (Method Not Allowed).
+            See [Writing a push task request
+            handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)
+            and the App Engine documentation for your
+            runtime on [How Requests are
+            Handled](https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled).
         app_engine_routing (google.cloud.tasks_v2.types.AppEngineRouting):
             Task-level setting for App Engine routing.
 
@@ -470,17 +471,18 @@ class AppEngineRouting(proto.Message):
         instance (str):
             App instance.
 
-            By default, the task is sent to an instance which is
-            available when the task is attempted.
+            By default, the task is sent to an instance
+            which is available when the task is attempted.
 
-            Requests can only be sent to a specific instance if `manual
-            scaling is used in App Engine
-            Standard <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes>`__.
-            App Engine Flex does not support instances. For more
-            information, see `App Engine Standard request
-            routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__
-            and `App Engine Flex request
-            routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
+            Requests can only be sent to a specific instance
+            if [manual scaling is used in App Engine
+            Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).
+            App Engine Flex does not support instances. For
+            more information, see [App Engine Standard
+            request
+            routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
+            and [App Engine Flex request
+            routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
         host (str):
             Output only. The host that the task is sent to.
 
@@ -548,11 +550,12 @@ class OAuthToken(proto.Message):
 
 
 class OidcToken(proto.Message):
-    r"""Contains information needed for generating an `OpenID Connect
-    token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
-    This type of authorization can be used for many scenarios, including
-    calling Cloud Run, or endpoints where you intend to validate the
-    token yourself.
+    r"""Contains information needed for generating an
+    [OpenID Connect
+    token](https://developers.google.com/identity/protocols/OpenIDConnect).
+    This type of authorization can be used for many scenarios,
+    including calling Cloud Run, or endpoints where you intend to
+    validate the token yourself.
 
     Attributes:
         service_account_email (str):

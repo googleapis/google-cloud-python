@@ -33,7 +33,9 @@ class OrgPolicy(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the org policy. Example:
+            The resource name of the org policy.
+            Example:
+
             "organizations/{organization_id}/policies/{constraint_name}".
     """
 

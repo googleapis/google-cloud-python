@@ -302,13 +302,14 @@ class ProjectServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Provisions the project resource. During the process, related
-        systems will get prepared and initialized.
+        r"""Provisions the project resource. During the
+        process, related systems will get prepared and
+        initialized.
 
-        Caller must read the `Terms for data
-        use <https://cloud.google.com/retail/data-use-terms>`__, and
-        optionally specify in request to provide consent to that service
-        terms.
+        Caller must read the [Terms for data
+        use](https://cloud.google.com/retail/data-use-terms),
+        and optionally specify in request to provide consent to
+        that service terms.
 
         .. code-block:: python
 

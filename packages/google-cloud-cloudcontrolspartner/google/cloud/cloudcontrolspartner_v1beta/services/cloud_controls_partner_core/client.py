@@ -926,8 +926,8 @@ class CloudControlsPartnerCoreClient(metaclass=CloudControlsPartnerCoreClientMet
         Returns:
             google.cloud.cloudcontrolspartner_v1beta.types.Workload:
                 Contains metadata around the [Workload
-                   resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
-                   in the Assured Workloads API.
+                resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
+                in the Assured Workloads API.
 
         """
         # Create or coerce a protobuf request object.

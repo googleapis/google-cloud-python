@@ -69,10 +69,11 @@ class ReadSession(proto.Message):
             Output only. Unique identifier for the session, in the form
             ``projects/{project_id}/locations/{location}/sessions/{session_id}``.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time at which the session becomes invalid.
-            After this time, subsequent requests to read this Session
-            will return errors. The expire_time is automatically
-            assigned and currently cannot be specified or updated.
+            Output only. Time at which the session becomes
+            invalid. After this time, subsequent requests to
+            read this Session will return errors. The
+            expire_time is automatically assigned and
+            currently cannot be specified or updated.
         data_format (google.cloud.bigquery_storage_v1beta2.types.DataFormat):
             Immutable. Data format of the output data.
         avro_schema (google.cloud.bigquery_storage_v1beta2.types.AvroSchema):
@@ -123,19 +124,21 @@ class ReadSession(proto.Message):
 
         Attributes:
             selected_fields (MutableSequence[str]):
-                Names of the fields in the table that should be read. If
-                empty, all fields will be read. If the specified field is a
-                nested field, all the sub-fields in the field will be
-                selected. The output field order is unrelated to the order
-                of fields in selected_fields.
+                Names of the fields in the table that should be
+                read. If empty, all fields will be read. If the
+                specified field is a nested field, all the
+                sub-fields in the field will be selected. The
+                output field order is unrelated to the order of
+                fields in selected_fields.
             row_restriction (str):
-                SQL text filtering statement, similar to a WHERE clause in a
-                query. Aggregates are not supported.
+                SQL text filtering statement, similar to a WHERE
+                clause in a query. Aggregates are not supported.
 
-                Examples: "int_field > 5" "date_field = CAST('2014-9-27' as
-                DATE)" "nullable_field is not NULL" "st_equals(geo_field,
-                st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
-                AND 5.0"
+                Examples: "int_field > 5"
+                "date_field = CAST('2014-9-27' as DATE)"
+                "nullable_field is not NULL"
+                "st_equals(geo_field, st_geofromtext("POINT(2,
+                2)"))" "numeric_field BETWEEN 1.0 AND 5.0"
 
                 Restricted to a maximum length for 1 MB.
             arrow_serialization_options (google.cloud.bigquery_storage_v1beta2.types.ArrowSerializationOptions):

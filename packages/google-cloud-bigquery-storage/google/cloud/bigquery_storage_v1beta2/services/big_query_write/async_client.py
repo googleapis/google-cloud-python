@@ -72,8 +72,8 @@ class BigQueryWriteAsyncClient:
 
     The Write API can be used to write data to BigQuery.
 
-    The `google.cloud.bigquery.storage.v1
-    API </bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1>`__
+    The [google.cloud.bigquery.storage.v1
+    API](/bigquery/docs/reference/storage/rpc/google.cloud.bigquery.storage.v1)
     should be used instead of the v1beta2 API for BigQueryWrite
     operations.
     """

@@ -402,10 +402,11 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_code (:class:`str`):
-                Required. The ISO-639 language code to use for
-                translation of the input text, set to one of the
-                language codes listed in `Language
-                Support <https://cloud.google.com/translate/docs/languages>`__.
+                Required. The ISO-639 language code to
+                use for translation of the input text,
+                set to one of the language codes listed
+                in [Language
+                Support](https://cloud.google.com/translate/docs/languages).
 
                 This corresponds to the ``target_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -455,13 +456,15 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source_language_code (:class:`str`):
-                Optional. The ISO-639 language code of the input text if
-                known, for example, "en-US" or "sr-Latn". Supported
-                language codes are listed in `Language
-                Support <https://cloud.google.com/translate/docs/languages>`__.
-                If the source language isn't specified, the API attempts
-                to identify the source language automatically and
-                returns the source language within the response.
+                Optional. The ISO-639 language code of
+                the input text if known, for example,
+                "en-US" or "sr-Latn". Supported language
+                codes are listed in [Language
+                Support](https://cloud.google.com/translate/docs/languages).
+                If the source language isn't specified,
+                the API attempts to identify the source
+                language automatically and returns the
+                source language within the response.
 
                 This corresponds to the ``source_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1313,11 +1316,12 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_codes (:class:`MutableSequence[str]`):
-                Required. The ISO-639 language code to use for
-                translation of the input document. Specify up to 10
-                language codes here. Supported language codes are listed
-                in `Language
-                Support <https://cloud.google.com/translate/docs/languages>`__.
+                Required. The ISO-639 language code to
+                use for translation of the input
+                document. Specify up to 10 language
+                codes here. Supported language codes are
+                listed in [Language
+                Support](https://cloud.google.com/translate/docs/languages).
 
                 This corresponds to the ``target_language_codes`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1444,8 +1448,9 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a glossary and returns the long-running operation.
-        Returns NOT_FOUND, if the project doesn't exist.
+        r"""Creates a glossary and returns the long-running
+        operation. Returns NOT_FOUND, if the project doesn't
+        exist.
 
         .. code-block:: python
 
@@ -1725,8 +1730,8 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListGlossariesAsyncPager:
-        r"""Lists glossaries in a project. Returns NOT_FOUND, if the project
-        doesn't exist.
+        r"""Lists glossaries in a project. Returns NOT_FOUND, if the
+        project doesn't exist.
 
         .. code-block:: python
 
@@ -1852,8 +1857,8 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> translation_service.Glossary:
-        r"""Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
-        exist.
+        r"""Gets a glossary. Returns NOT_FOUND, if the glossary
+        doesn't exist.
 
         .. code-block:: python
 
@@ -1965,9 +1970,9 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a glossary, or cancels glossary construction if the
-        glossary isn't created yet. Returns NOT_FOUND, if the glossary
-        doesn't exist.
+        r"""Deletes a glossary, or cancels glossary construction
+        if the glossary isn't created yet.
+        Returns NOT_FOUND, if the glossary doesn't exist.
 
         .. code-block:: python
 

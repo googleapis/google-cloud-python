@@ -236,11 +236,11 @@ class ListFederationsRequest(proto.Message):
             Optional. The filter to apply to list
             results.
         order_by (str):
-            Optional. Specify the ordering of results as described in
-            `Sorting
-            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
-            If not specified, the results will be sorted in the default
-            order.
+            Optional. Specify the ordering of results as
+            described in [Sorting
+            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+            If not specified, the results will be sorted in
+            the default order.
     """
 
     parent: str = proto.Field(

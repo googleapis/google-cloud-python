@@ -120,13 +120,15 @@ class Instance(proto.Message):
             the service account users of your VM instance's service
             account can use the instance.
         service_account (str):
-            The service account on this instance, giving access to other
-            Google Cloud services. You can use any service account
-            within the same project, but you must have the service
-            account user permission to use the instance.
+            The service account on this instance, giving
+            access to other Google Cloud services.
+            You can use any service account within the same
+            project, but you must have the service account
+            user permission to use the instance.
 
-            If not specified, the `Compute Engine default service
-            account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
+            If not specified, the [Compute Engine default
+            service
+            account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
             is used.
         service_account_scopes (MutableSequence[str]):
             Optional. The URIs of service account scopes to be included
@@ -141,8 +143,8 @@ class Instance(proto.Message):
               using default scopes, you need at least:
               https://www.googleapis.com/auth/compute
         machine_type (str):
-            Required. The `Compute Engine machine
-            type <https://cloud.google.com/compute/docs/machine-types>`__
+            Required. The [Compute Engine machine
+            type](https://cloud.google.com/compute/docs/machine-types)
             of this instance.
         accelerator_config (google.cloud.notebooks_v1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
@@ -199,9 +201,9 @@ class Instance(proto.Message):
             Output only. Attached disks to notebook
             instance.
         shielded_instance_config (google.cloud.notebooks_v1.types.Instance.ShieldedInstanceConfig):
-            Optional. Shielded VM configuration. `Images using supported
-            Shielded VM
-            features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+            Optional. Shielded VM configuration.
+            [Images using supported Shielded VM
+            features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
         no_public_ip (bool):
             If true, no public IP will be assigned to
             this instance.
@@ -221,18 +223,19 @@ class Instance(proto.Message):
         metadata (MutableMapping[str, str]):
             Custom metadata to apply to this instance.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to runtime (see
-            `Tagging
-            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
+            Optional. The Compute Engine tags to add to
+            runtime (see [Tagging
+            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
         upgrade_history (MutableSequence[google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry]):
             The upgrade history of this instance.
         nic_type (google.cloud.notebooks_v1.types.Instance.NicType):
             Optional. The type of vNIC to be used on this
             interface. This may be gVNIC or VirtioNet.
         reservation_affinity (google.cloud.notebooks_v1.types.ReservationAffinity):
-            Optional. The optional reservation affinity. Setting this
-            field will apply the specified `Zonal Compute
-            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
+            Optional. The optional reservation affinity.
+            Setting this field will apply the specified
+            [Zonal Compute
+            Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
             to this notebook instance.
         creator (str):
             Output only. Email address of entity that
@@ -376,7 +379,8 @@ class Instance(proto.Message):
         CMEK = 2
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
+        r"""The type of vNIC driver.
+        Default should be UNSPECIFIED_NIC_TYPE.
 
         Values:
             UNSPECIFIED_NIC_TYPE (0):
@@ -562,9 +566,9 @@ class Instance(proto.Message):
         )
 
     class ShieldedInstanceConfig(proto.Message):
-        r"""A set of Shielded Instance options. Check `Images using supported
-        Shielded VM
-        features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
+        r"""A set of Shielded Instance options.
+        Check [Images using supported Shielded VM
+        features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
         Not all combinations are valid.
 
         Attributes:

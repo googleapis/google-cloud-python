@@ -2465,11 +2465,13 @@ class CatalogServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Mask of fields to update. To update Aspects,
-                the update_mask must contain the value "aspects".
+                Optional. Mask of fields to update. To
+                update Aspects, the update_mask must
+                contain the value "aspects".
 
-                If the update_mask is empty, the service will update all
-                modifiable fields present in the request.
+                If the update_mask is empty, the service
+                will update all modifiable fields
+                present in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2662,12 +2664,13 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEntriesAsyncPager:
-        r"""Lists Entries within an EntryGroup. Caution: The Vertex AI,
-        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
-        metadata that is stored in Dataplex Universal Catalog is
-        changing. For more information, see `Changes to metadata stored
-        in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        r"""Lists Entries within an EntryGroup.
+        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
+        Dataform, and Dataproc Metastore metadata that is stored
+        in Dataplex Universal Catalog is changing. For more
+        information, see [Changes to metadata stored in Dataplex
+        Universal
+        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
 
         .. code-block:: python
 
@@ -2792,12 +2795,13 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
-        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
-        stored in Dataplex Universal Catalog is changing. For more
-        information, see `Changes to metadata stored in Dataplex
+        r"""Gets an Entry.
+        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
+        Dataform, and Dataproc Metastore metadata that is stored
+        in Dataplex Universal Catalog is changing. For more
+        information, see [Changes to metadata stored in Dataplex
         Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
 
         .. code-block:: python
 
@@ -2907,12 +2911,13 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Looks up an entry by name using the permission on the source
-        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored in
-        Dataplex Universal Catalog is changing. For more information,
-        see `Changes to metadata stored in Dataplex Universal
-        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
+        r"""Looks up an entry by name using the permission on the
+        source system. Caution: The Vertex AI, Bigtable,
+        Spanner, Pub/Sub, Dataform, and Dataproc Metastore
+        metadata that is stored in Dataplex Universal Catalog is
+        changing. For more information, see [Changes to metadata
+        stored in Dataplex Universal
+        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
 
         .. code-block:: python
 
@@ -3045,10 +3050,11 @@ class CatalogServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (:class:`str`):
-                Required. The query against which entries in scope
-                should be matched. The query syntax is defined in
-                `Search syntax for Dataplex Universal
-                Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
+                Required. The query against which
+                entries in scope should be matched. The
+                query syntax is defined in [Search
+                syntax for Dataplex Universal
+                Catalog](https://cloud.google.com/dataplex/docs/search-syntax).
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this

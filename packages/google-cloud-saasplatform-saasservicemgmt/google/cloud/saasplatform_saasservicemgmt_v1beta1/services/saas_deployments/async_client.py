@@ -728,15 +728,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the Saas resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the Saas resource
+                by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the Saas will be overwritten.
+                If the user does not provide a mask then
+                all fields in the Saas will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1089,19 +1092,21 @@ class SaasDeploymentsAsyncClient:
 
         Returns:
             google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Tenant:
-                Tenant represents the service producer side of an instance of the
-                   service created based on a request from a consumer.
-                   In a typical scenario a Tenant has a one-to-one
-                   mapping with a resource given out to a service
-                   consumer.
+                Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
-                   Example:
+                Example:
 
-                      tenant:
-                         name:
-                         "projects/svc1/locations/loc/tenants/inst-068afff8"
-                         consumer_resource:
-                         "projects/gshoe/locations/loc/shoes/black-shoe"
+                tenant:
+
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
         """
         # Create or coerce a protobuf request object.
@@ -1230,19 +1235,21 @@ class SaasDeploymentsAsyncClient:
 
         Returns:
             google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Tenant:
-                Tenant represents the service producer side of an instance of the
-                   service created based on a request from a consumer.
-                   In a typical scenario a Tenant has a one-to-one
-                   mapping with a resource given out to a service
-                   consumer.
+                Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
-                   Example:
+                Example:
 
-                      tenant:
-                         name:
-                         "projects/svc1/locations/loc/tenants/inst-068afff8"
-                         consumer_resource:
-                         "projects/gshoe/locations/loc/shoes/black-shoe"
+                tenant:
+
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
         """
         # Create or coerce a protobuf request object.
@@ -1351,15 +1358,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the Tenant resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the Tenant resource
+                by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the Tenant will be overwritten.
+                If the user does not provide a mask then
+                all fields in the Tenant will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1374,19 +1384,21 @@ class SaasDeploymentsAsyncClient:
 
         Returns:
             google.cloud.saasplatform_saasservicemgmt_v1beta1.types.Tenant:
-                Tenant represents the service producer side of an instance of the
-                   service created based on a request from a consumer.
-                   In a typical scenario a Tenant has a one-to-one
-                   mapping with a resource given out to a service
-                   consumer.
+                Tenant represents the service producer
+                side of an instance of the service
+                created based on a request from a
+                consumer. In a typical scenario a Tenant
+                has a one-to-one mapping with a resource
+                given out to a service consumer.
 
-                   Example:
+                Example:
 
-                      tenant:
-                         name:
-                         "projects/svc1/locations/loc/tenants/inst-068afff8"
-                         consumer_resource:
-                         "projects/gshoe/locations/loc/shoes/black-shoe"
+                tenant:
+
+                name:
+                "projects/svc1/locations/loc/tenants/inst-068afff8"
+                consumer_resource:
+                "projects/gshoe/locations/loc/shoes/black-shoe"
 
         """
         # Create or coerce a protobuf request object.
@@ -1979,15 +1991,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the UnitKind resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the UnitKind
+                resource by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the UnitKind will be overwritten.
+                If the user does not provide a mask then
+                all fields in the UnitKind will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2586,15 +2601,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the Unit resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the Unit resource
+                by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the Unit will be overwritten.
+                If the user does not provide a mask then
+                all fields in the Unit will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3232,15 +3250,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the UnitOperation resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the UnitOperation
+                resource by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the UnitOperation will be overwritten.
+                If the user does not provide a mask then
+                all fields in the UnitOperation will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3857,15 +3878,18 @@ class SaasDeploymentsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields to be
-                overwritten in the Release resource by the update.
+                Field mask is used to specify the fields
+                to be overwritten in the Release
+                resource by the update.
 
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
+                The fields specified in the update_mask
+                are relative to the resource, not the
+                full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then all fields in
-                the Release will be overwritten.
+                If the user does not provide a mask then
+                all fields in the Release will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

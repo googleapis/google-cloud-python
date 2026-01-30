@@ -74,9 +74,11 @@ class BusinessInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_customer_service``.
         korean_business_registration_number (str):
-            Optional. The 10-digit `Korean business registration
-            number <https://support.google.com/merchants/answer/9037766>`__
-            separated with dashes in the format: XXX-XX-XXXXX.
+            Optional. The 10-digit [Korean business
+            registration
+            number](https://support.google.com/merchants/answer/9037766)
+            separated with dashes in the format:
+            XXX-XX-XXXXX.
 
             This field is a member of `oneof`_ ``_korean_business_registration_number``.
     """

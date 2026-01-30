@@ -78,9 +78,9 @@ class SummarizeMaintenancesRequest(proto.Message):
             to send per page. The default page size is 20
             and the maximum is 1000.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in https://google.aip.dev/160.
             Supported fields include:
@@ -416,11 +416,12 @@ class ResourceMaintenance(proto.Message):
                 Output only. The location of the resource. Format:
                 ``us-central1``
             type_ (str):
-                Output only. The type of the resource. Available values can
-                be found here:
+                Output only. The type of the resource.
+                Available values can be found here:
+
                 https://cloud.google.com/asset-inventory/docs/asset-types#supported_resource_types
-                Please note that not all the resource types will have their
-                maintenances reported.
+                Please note that not all the resource types will
+                have their maintenances reported.
         """
 
         resource_name: str = proto.Field(
@@ -615,9 +616,9 @@ class ListResourceMaintenancesRequest(proto.Message):
             The maximum number of resource maintenances
             to send per page.
         page_token (str):
-            The page token: If the next_page_token from a previous
-            response is provided, this request will send the subsequent
-            page.
+            The page token: If the next_page_token from a
+            previous response is provided, this request will
+            send the subsequent page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.

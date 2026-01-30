@@ -35,7 +35,8 @@ class RecommenderConfig(proto.Message):
 
     Attributes:
         name (str):
-            Name of recommender config. Eg,
+            Name of recommender config.
+            Eg,
             projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config
         recommender_generation_config (google.cloud.recommender_v1beta1.types.RecommenderGenerationConfig):
             RecommenderGenerationConfig which configures

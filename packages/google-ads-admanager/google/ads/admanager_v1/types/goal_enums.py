@@ -122,10 +122,11 @@ class UnitTypeEnum(proto.Message):
                 supported as secondary goal and the [LineItem.cost_type][]
                 must be [CostTypeEnum.CostType.CPA}.
             TOTAL_CPA_CONVERSIONS (5):
-                The number of total Cost-Per-Action (CPA) conversions from
-                creatives associated with the line item. This is only
-                supported as secondary goal and the [LineItem.cost_type}
-                must be [CostTypeEnum.CostType.CPA}.
+                The number of total Cost-Per-Action (CPA)
+                conversions from creatives associated with the
+                line item. This is only supported as secondary
+                goal and the [LineItem.cost_type} must be
+                [CostTypeEnum.CostType.CPA}.
             VIEWABLE_IMPRESSIONS (6):
                 The number of viewable impressions reported by creatives
                 associated with the line item. The

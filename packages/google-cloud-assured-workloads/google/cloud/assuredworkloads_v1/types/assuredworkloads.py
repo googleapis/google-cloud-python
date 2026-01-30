@@ -134,8 +134,9 @@ class GetWorkloadRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Workload to fetch. This
-            is the workload's relative path in the API, formatted as
+            Required. The resource name of the Workload to
+            fetch. This is the workload's relative path in
+            the API, formatted as
             "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
             For example,
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -260,17 +261,23 @@ class Workload(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
-            Input only. The parent resource for the resources managed by
-            this Assured Workload. May be either empty or a folder
-            resource which is a child of the Workload parent. If not
-            specified all resources are created under the parent
-            organization. Format: folders/{folder_id}
+            Input only. The parent resource for the
+            resources managed by this Assured Workload. May
+            be either empty or a folder resource which is a
+            child of the Workload parent. If not specified
+            all resources are created under the parent
+            organization.
+            Format:
+
+            folders/{folder_id}
         kms_settings (google.cloud.assuredworkloads_v1.types.Workload.KMSSettings):
-            Input only. Settings used to create a CMEK crypto key. When
-            set, a project with a KMS CMEK key is provisioned. This
-            field is deprecated as of Feb 28, 2022. In order to create a
-            Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
-            KEYRING in ResourceSettings.resource_type field.
+            Input only. Settings used to create a CMEK
+            crypto key. When set, a project with a KMS CMEK
+            key is provisioned. This field is deprecated as
+            of Feb 28, 2022.
+            In order to create a Keyring, callers should
+            specify, ENCRYPTION_KEYS_PROJECT or KEYRING in
+            ResourceSettings.resource_type field.
         resource_settings (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
@@ -388,8 +395,8 @@ class Workload(proto.Message):
 
         Attributes:
             resource_id (int):
-                Resource identifier. For a project this represents
-                project_number.
+                Resource identifier.
+                For a project this represents project_number.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
                 Indicates the type of resource.
         """
@@ -401,10 +408,12 @@ class Workload(proto.Message):
                 RESOURCE_TYPE_UNSPECIFIED (0):
                     Unknown resource type.
                 CONSUMER_PROJECT (1):
-                    Consumer project. AssuredWorkloads Projects are no longer
-                    supported. This field will be ignored only in CreateWorkload
-                    requests. ListWorkloads and GetWorkload will continue to
-                    provide projects information. Use CONSUMER_FOLDER instead.
+                    Consumer project.
+                    AssuredWorkloads Projects are no longer
+                    supported. This field will be ignored only in
+                    CreateWorkload requests. ListWorkloads and
+                    GetWorkload will continue to provide projects
+                    information. Use CONSUMER_FOLDER instead.
                 CONSUMER_FOLDER (4):
                     Consumer Folder.
                 ENCRYPTION_KEYS_PROJECT (2):
@@ -429,10 +438,11 @@ class Workload(proto.Message):
         )
 
     class KMSSettings(proto.Message):
-        r"""Settings specific to the Key Management Service. This message is
-        deprecated. In order to create a Keyring, callers should specify,
-        ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type
-        field.
+        r"""Settings specific to the Key Management Service.
+        This message is deprecated.
+        In order to create a Keyring, callers should specify,
+        ENCRYPTION_KEYS_PROJECT or KEYRING in
+        ResourceSettings.resource_type field.
 
         Attributes:
             next_rotation_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -441,10 +451,11 @@ class Workload(proto.Message):
                 automatically create a new version of the crypto
                 key and mark it as the primary.
             rotation_period (google.protobuf.duration_pb2.Duration):
-                Required. Input only. Immutable. [next_rotation_time] will
-                be advanced by this period when the Key Management Service
-                automatically rotates a key. Must be at least 24 hours and
-                at most 876,000 hours.
+                Required. Input only. Immutable.
+                [next_rotation_time] will be advanced by this
+                period when the Key Management Service
+                automatically rotates a key. Must be at least 24
+                hours and at most 876,000 hours.
         """
 
         next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
@@ -464,15 +475,18 @@ class Workload(proto.Message):
 
         Attributes:
             resource_id (str):
-                Resource identifier. For a project this represents
-                project_id. If the project is already taken, the workload
-                creation will fail. For KeyRing, this represents the
-                keyring_id. For a folder, don't set this value as folder_id
+                Resource identifier.
+                For a project this represents project_id. If the
+                project is already taken, the workload creation
+                will fail.
+                For KeyRing, this represents the keyring_id.
+                For a folder, don't set this value as folder_id
                 is assigned by Google.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
-                Indicates the type of resource. This field should be
-                specified to correspond the id to the right resource type
-                (CONSUMER_FOLDER or ENCRYPTION_KEYS_PROJECT)
+                Indicates the type of resource. This field
+                should be specified to correspond the id to the
+                right resource type (CONSUMER_FOLDER or
+                ENCRYPTION_KEYS_PROJECT)
             display_name (str):
                 User-assigned resource display name.
                 If not empty it will be used to create a
@@ -681,8 +695,9 @@ class RestrictAllowedResourcesRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Workload. This is the
-            workloads's relative path in the API, formatted as
+            Required. The resource name of the Workload.
+            This is the workloads's relative path in the
+            API, formatted as
             "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
             For example,
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -741,10 +756,13 @@ class AcknowledgeViolationRequest(proto.Message):
             Required. Business justification explaining
             the need for violation acknowledgement
         non_compliant_org_policy (str):
-            Optional. This field is deprecated and will be removed in
-            future version of the API. Name of the OrgPolicy which was
-            modified with non-compliant change and resulted in this
-            violation. Format:
+            Optional. This field is deprecated and will be
+            removed in future version of the API. Name of
+            the OrgPolicy which was modified with
+            non-compliant change and resulted in this
+            violation.
+            Format:
+
             projects/{project_number}/policies/{constraint_name}
             folders/{folder_id}/policies/{constraint_name}
             organizations/{organization_id}/policies/{constraint_name}
@@ -798,9 +816,10 @@ class ListViolationsRequest(proto.Message):
             Required. The Workload name. Format
             ``organizations/{org_id}/locations/{location}/workloads/{workload}``.
         interval (google.cloud.assuredworkloads_v1.types.TimeWindow):
-            Optional. Specifies the time window for retrieving active
-            Violations. When specified, retrieves Violations that were
-            active between start_time and end_time.
+            Optional. Specifies the time window for
+            retrieving active Violations. When specified,
+            retrieves Violations that were active between
+            start_time and end_time.
         page_size (int):
             Optional. Page size.
         page_token (str):
@@ -884,7 +903,9 @@ class Violation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Immutable. Name of the Violation. Format:
+            Output only. Immutable. Name of the Violation.
+            Format:
+
             organizations/{organization}/locations/{location}/workloads/{workload_id}/violations/{violations_id}
         description (str):
             Output only. Description for the Violation.
@@ -916,9 +937,10 @@ class Violation(proto.Message):
 
             https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{timeRange}{folder}
         non_compliant_org_policy (str):
-            Output only. Immutable. Name of the OrgPolicy which was
-            modified with non-compliant change and resulted this
-            violation. Format:
+            Output only. Immutable. Name of the OrgPolicy
+            which was modified with non-compliant change and
+            resulted this violation. Format:
+
             projects/{project_number}/policies/{constraint_name}
             folders/{folder_id}/policies/{constraint_name}
             organizations/{organization_id}/policies/{constraint_name}

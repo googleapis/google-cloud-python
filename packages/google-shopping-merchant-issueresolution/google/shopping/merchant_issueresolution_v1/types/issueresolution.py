@@ -799,8 +799,8 @@ class BuiltInSimpleAction(proto.Message):
                 content][google.shopping.merchant.issueresolution.v1.BuiltInSimpleAction.additional_content]
                 to the business.
 
-                This action will be used for example to deliver a
-                justification from national authority.
+                This action will be used for example to deliver
+                a justification from national authority.
         """
         BUILT_IN_SIMPLE_ACTION_TYPE_UNSPECIFIED = 0
         VERIFY_PHONE = 1
@@ -852,11 +852,11 @@ class BuiltInSimpleAction(proto.Message):
 
 class BuiltInUserInputAction(proto.Message):
     r"""Action that is implemented and performed in (your) third-party
-    application. The application needs to show an additional content and
-    input form to the business. They can start the action only when they
-    provided all required inputs. The application will request
-    processing of the action by calling the `triggeraction
-    method <https://developers.google.com/merchant/api/reference/rest/issueresolution_v1/issueresolution/triggeraction>`__.
+    application. The application needs to show an additional content
+    and input form to the business. They can start the action only
+    when they provided all required inputs. The application will
+    request processing of the action by calling the [triggeraction
+    method](https://developers.google.com/merchant/api/reference/rest/issueresolution_v1/issueresolution/triggeraction).
 
     Attributes:
         action_context (str):
@@ -984,23 +984,23 @@ class InputField(proto.Message):
 
     Attributes:
         text_input (google.shopping.merchant_issueresolution_v1.types.InputField.TextInput):
-            Input field to provide text information. Corresponds to the
-            `html input
-            type=text <https://www.w3.org/TR/2012/WD-html-markup-20121025/input.text.html#input.text>`__
-            or `html
-            textarea <https://www.w3.org/TR/2012/WD-html-markup-20121025/textarea.html#textarea>`__.
+            Input field to provide text information.
+            Corresponds to the [html input
+            type=text](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.text.html#input.text)
+            or [html
+            textarea](https://www.w3.org/TR/2012/WD-html-markup-20121025/textarea.html#textarea).
 
             This field is a member of `oneof`_ ``value_input``.
         choice_input (google.shopping.merchant_issueresolution_v1.types.InputField.ChoiceInput):
-            Input field to select one of the offered choices.
-            Corresponds to the `html input
-            type=radio <https://www.w3.org/TR/2012/WD-html-markup-20121025/input.radio.html#input.radio>`__.
+            Input field to select one of the offered
+            choices. Corresponds to the [html input
+            type=radio](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.radio.html#input.radio).
 
             This field is a member of `oneof`_ ``value_input``.
         checkbox_input (google.shopping.merchant_issueresolution_v1.types.InputField.CheckboxInput):
-            Input field to provide a boolean value. Corresponds to the
-            `html input
-            type=checkbox <https://www.w3.org/TR/2012/WD-html-markup-20121025/input.checkbox.html#input.checkbox>`__.
+            Input field to provide a boolean value.
+            Corresponds to the [html input
+            type=checkbox](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.checkbox.html#input.checkbox).
 
             This field is a member of `oneof`_ ``value_input``.
         id (str):
@@ -1056,9 +1056,9 @@ class InputField(proto.Message):
                     Default value. Will never be provided by the
                     API.
                 GENERIC_SHORT_TEXT (1):
-                    Used when a short text is expected. The field can be
-                    rendered as a `text
-                    field <https://www.w3.org/TR/2012/WD-html-markup-20121025/input.text.html#input.text>`__.
+                    Used when a short text is expected. The field
+                    can be rendered as a [text
+                    field](https://www.w3.org/TR/2012/WD-html-markup-20121025/input.text.html#input.text).
                 GENERIC_LONG_TEXT (2):
                     Used when a longer text is expected. The field should be
                     rendered as a

@@ -776,7 +776,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Table:
-        r"""Gets a table. Returns NOT_FOUND if the table does not exist.
+        r"""Gets a table. Returns NOT_FOUND if the table does not
+        exist.
 
         .. code-block:: python
 
@@ -974,8 +975,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Workspace:
-        r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
-        exist.
+        r"""Gets a workspace. Returns NOT_FOUND if the workspace
+        does not exist.
 
         .. code-block:: python
 
@@ -1174,8 +1175,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Row:
-        r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
-        table.
+        r"""Gets a row. Returns NOT_FOUND if the row does not exist
+        in the table.
 
         .. code-block:: python
 
@@ -1282,8 +1283,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRowsPager:
-        r"""Lists rows in a table. Returns NOT_FOUND if the table does not
-        exist.
+        r"""Lists rows in a table. Returns NOT_FOUND if the table
+        does not exist.
 
         .. code-block:: python
 

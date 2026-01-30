@@ -372,10 +372,11 @@ class ConversationalSearchResponse(proto.Message):
             [ConversationalSearchRequest.conversation_id][google.cloud.retail.v2.ConversationalSearchRequest.conversation_id]
             to restore conversation state in server.
         refined_search (MutableSequence[google.cloud.retail_v2.types.ConversationalSearchResponse.RefinedSearch]):
-            The proposed refined search queries. They can be used to
-            fetch the relevant search results. When using
-            CONVERSATIONAL_FILTER_ONLY mode, the refined_query from
-            search response will be populated here.
+            The proposed refined search queries. They can be
+            used to fetch the relevant search results. When
+            using CONVERSATIONAL_FILTER_ONLY mode, the
+            refined_query from search response will be
+            populated here.
         conversational_filtering_result (google.cloud.retail_v2.types.ConversationalSearchResponse.ConversationalFilteringResult):
             This field specifies all related information
             that is needed on client side for UI rendering
@@ -445,9 +446,10 @@ class ConversationalSearchResponse(proto.Message):
         )
 
     class RefinedSearch(proto.Message):
-        r"""The proposed refined search for intent-refinement/bundled shopping
-        conversation. When using CONVERSATIONAL_FILTER_ONLY mode, the
-        refined_query from search response will be populated here.
+        r"""The proposed refined search for intent-refinement/bundled
+        shopping conversation. When using CONVERSATIONAL_FILTER_ONLY
+        mode, the refined_query from search response will be populated
+        here.
 
         Attributes:
             query (str):

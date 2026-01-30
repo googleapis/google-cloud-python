@@ -680,10 +680,11 @@ class MigratingVm(proto.Message):
             Output only. Details of the current running
             replication cycle.
         last_replication_cycle (google.cloud.vmmigration_v1.types.ReplicationCycle):
-            Output only. Details of the last replication cycle. This
-            will be updated whenever a replication cycle is finished and
-            is not to be confused with last_sync which is only updated
-            on successful replication cycles.
+            Output only. Details of the last replication
+            cycle. This will be updated whenever a
+            replication cycle is finished and is not to be
+            confused with last_sync which is only updated on
+            successful replication cycles.
         group (str):
             Output only. The group this migrating vm is included in, if
             any. The group is represented by the full path of the
@@ -2406,12 +2407,13 @@ class UpdateSourceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Source resource by the update. The fields specified
-            in the update_mask are relative to the resource, not the
-            full request. A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then all fields
-            will be overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the Source resource by the
+            update. The fields specified in the update_mask
+            are relative to the resource, not the full
+            request. A field will be overwritten if it is in
+            the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         source (google.cloud.vmmigration_v1.types.Source):
             Required. The update request body.
         request_id (str):
@@ -3385,18 +3387,20 @@ class UtilizationReport(proto.Message):
         time_frame (google.cloud.vmmigration_v1.types.UtilizationReport.TimeFrame):
             Time frame of the report.
         frame_end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The point in time when the time frame ends.
-            Notice that the time frame is counted backwards. For
-            instance if the "frame_end_time" value is 2021/01/20 and the
-            time frame is WEEK then the report covers the week between
-            2021/01/20 and 2021/01/14.
+            Output only. The point in time when the time
+            frame ends. Notice that the time frame is
+            counted backwards. For instance if the
+            "frame_end_time" value is 2021/01/20 and the
+            time frame is WEEK then the report covers the
+            week between 2021/01/20 and 2021/01/14.
         vm_count (int):
             Output only. Total number of VMs included in
             the report.
         vms (MutableSequence[google.cloud.vmmigration_v1.types.VmUtilizationInfo]):
-            List of utilization information per VM. When sent as part of
-            the request, the "vm_id" field is used in order to specify
-            which VMs to include in the report. In that case all other
+            List of utilization information per VM.
+            When sent as part of the request, the "vm_id"
+            field is used in order to specify which VMs to
+            include in the report. In that case all other
             fields are ignored.
     """
 
@@ -4566,8 +4570,8 @@ class SchedulingNodeAffinity(proto.Message):
     """
 
     class Operator(proto.Enum):
-        r"""Possible types of node selection operators. Valid operators are IN
-        for affinity and NOT_IN for anti-affinity.
+        r"""Possible types of node selection operators. Valid operators are
+        IN for affinity and NOT_IN for anti-affinity.
 
         Values:
             OPERATOR_UNSPECIFIED (0):
@@ -4621,9 +4625,9 @@ class ComputeScheduling(proto.Message):
             A set of node affinity and anti-affinity
             configurations for sole tenant nodes.
         min_node_cpus (int):
-            The minimum number of virtual CPUs this instance will
-            consume when running on a sole-tenant node. Ignored if no
-            node_affinites are configured.
+            The minimum number of virtual CPUs this instance
+            will consume when running on a sole-tenant node.
+            Ignored if no node_affinites are configured.
     """
 
     class OnHostMaintenance(proto.Enum):
@@ -5300,12 +5304,13 @@ class UpdateMigratingVmRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the MigratingVm resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the MigratingVm resource by the
+            update. The fields specified in the update_mask
+            are relative to the resource, not the full
+            request. A field will be overwritten if it is in
+            the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         migrating_vm (google.cloud.vmmigration_v1.types.MigratingVm):
             Required. The update request body.
         request_id (str):
@@ -5649,12 +5654,13 @@ class UpdateTargetProjectRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the TargetProject resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the TargetProject resource by the
+            update. The fields specified in the update_mask
+            are relative to the resource, not the full
+            request. A field will be overwritten if it is in
+            the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         target_project (google.cloud.vmmigration_v1.types.TargetProject):
             Required. The update request body.
         request_id (str):
@@ -5953,12 +5959,13 @@ class UpdateGroupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be overwritten
-            in the Group resource by the update. The fields specified in
-            the update_mask are relative to the resource, not the full
-            request. A field will be overwritten if it is in the mask.
-            If the user does not provide a mask then all fields will be
-            overwritten.
+            Field mask is used to specify the fields to be
+            overwritten in the Group resource by the update.
+            The fields specified in the update_mask are
+            relative to the resource, not the full request.
+            A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then
+            all fields will be overwritten.
         group (google.cloud.vmmigration_v1.types.Group):
             Required. The update request body.
         request_id (str):
@@ -7202,8 +7209,9 @@ class DiskImageTargetDetails(proto.Message):
             Optional. A map of labels to associate with
             the image.
         additional_licenses (MutableSequence[str]):
-            Optional. Additional licenses to assign to the image.
-            Format:
+            Optional. Additional licenses to assign to the
+            image. Format:
+
             https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME
             Or
             https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME
@@ -7315,8 +7323,9 @@ class MachineImageTargetDetails(proto.Message):
             Optional. The service account to assign to
             the instance created by the machine image.
         additional_licenses (MutableSequence[str]):
-            Optional. Additional licenses to assign to the instance
-            created by the machine image. Format:
+            Optional. Additional licenses to assign to the
+            instance created by the machine image. Format:
+
             https://www.googleapis.com/compute/v1/projects/PROJECT_ID/global/licenses/LICENSE_NAME
             Or
             https://www.googleapis.com/compute/beta/projects/PROJECT_ID/global/licenses/LICENSE_NAME
@@ -8392,13 +8401,15 @@ class UpdateDiskMigrationJobRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the DiskMigrationJob resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask,
-            then a mask equivalent to all fields that are populated
-            (have a non-empty value), will be implied.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the DiskMigrationJob
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask, then a mask equivalent
+            to all fields that are populated (have a
+            non-empty value), will be implied.
         disk_migration_job (google.cloud.vmmigration_v1.types.DiskMigrationJob):
             Required. The update request body.
         request_id (str):

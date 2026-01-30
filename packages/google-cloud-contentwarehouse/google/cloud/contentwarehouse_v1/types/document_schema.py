@@ -42,10 +42,13 @@ class DocumentSchema(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the document schema. Format:
+            The resource name of the document schema.
+            Format:
+
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
 
-            The name is ignored when creating a document schema.
+            The name is ignored when creating a document
+            schema.
         display_name (str):
             Required. Name of the schema given by the
             user. Must be unique per project.

@@ -120,19 +120,21 @@ class ComputeRoutesRequest(proto.Message):
             Optional. A set of conditions to satisfy that
             affect the way routes are calculated.
         language_code (str):
-            Optional. The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see `Unicode Locale
-            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
-            See `Language
-            Support <https://developers.google.com/maps/faq#languagesupport>`__
-            for the list of supported languages. When you don't provide
-            this value, the display language is inferred from the
-            location of the route request.
+            Optional. The BCP-47 language code, such as
+            "en-US" or "sr-Latn". For more information, see
+            [Unicode Locale
+            Identifier](http://www.unicode.org/reports/tr35/#Unicode_locale_identifier).
+            See [Language
+            Support](https://developers.google.com/maps/faq#languagesupport)
+            for the list of supported languages. When you
+            don't provide this value, the display language
+            is inferred from the location of the route
+            request.
         region_code (str):
-            Optional. The region code, specified as a ccTLD ("top-level
-            domain") two-character value. For more information see
-            `Country code top-level
-            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
+            Optional. The region code, specified as a ccTLD
+            ("top-level domain") two-character value. For
+            more information see [Country code top-level
+            domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
             fields. These fields include the ``instruction`` field in
@@ -445,19 +447,21 @@ class ComputeRouteMatrixRequest(proto.Message):
             is set to ``TRANSIT``. You can specify either
             ``departure_time`` or ``arrival_time``, but not both.
         language_code (str):
-            Optional. The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see `Unicode Locale
-            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
-            See `Language
-            Support <https://developers.google.com/maps/faq#languagesupport>`__
-            for the list of supported languages. When you don't provide
-            this value, the display language is inferred from the
-            location of the first origin.
+            Optional. The BCP-47 language code, such as
+            "en-US" or "sr-Latn". For more information, see
+            [Unicode Locale
+            Identifier](http://www.unicode.org/reports/tr35/#Unicode_locale_identifier).
+            See [Language
+            Support](https://developers.google.com/maps/faq#languagesupport)
+            for the list of supported languages. When you
+            don't provide this value, the display language
+            is inferred from the location of the first
+            origin.
         region_code (str):
-            Optional. The region code, specified as a ccTLD ("top-level
-            domain") two-character value. For more information see
-            `Country code top-level
-            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
+            Optional. The region code, specified as a ccTLD
+            ("top-level domain") two-character value. For
+            more information see [Country code top-level
+            domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for
             the display fields.
@@ -663,9 +667,10 @@ class RouteMatrixElement(proto.Message):
             distance (google.type.localized_text_pb2.LocalizedText):
                 Travel distance represented in text form.
             duration (google.type.localized_text_pb2.LocalizedText):
-                Duration represented in text form taking traffic conditions
-                into consideration. Note: If traffic information was not
-                requested, this value is the same value as static_duration.
+                Duration represented in text form taking traffic
+                conditions into consideration. Note: If traffic
+                information was not requested, this value is the
+                same value as static_duration.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration represented in text form without
                 taking traffic conditions into consideration.

@@ -785,9 +785,11 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the access control policy for an Identity-Aware Proxy
-        protected resource. Replaces any existing policy. More
-        information about managing access via IAP can be found at:
+        r"""Sets the access control policy for an Identity-Aware
+        Proxy protected resource. Replaces any existing policy.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python
@@ -903,9 +905,11 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Gets the access control policy for an Identity-Aware Proxy
-        protected resource. More information about managing access via
-        IAP can be found at:
+        r"""Gets the access control policy for an Identity-Aware
+        Proxy protected resource.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python
@@ -1021,9 +1025,11 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Returns permissions that a caller has on the Identity-Aware
-        Proxy protected resource. More information about managing access
-        via IAP can be found at:
+        r"""Returns permissions that a caller has on the
+        Identity-Aware Proxy protected resource.
+        More information about managing access via IAP can be
+        found at:
+
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python

@@ -888,11 +888,14 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             folder_id (str):
-                Required. The full name of a folder, including all its
-                parent folders. Folders use single '/' characters as a
-                delimiter. The folder_id must end with a slash. For
-                example, the folder_id of "books/biographies/" would
-                create a new "biographies/" folder under the "books/"
+                Required. The full name of a folder,
+                including all its parent folders.
+                Folders use single '/' characters as a
+                delimiter. The folder_id must end with a
+                slash.
+                For example, the folder_id of
+                "books/biographies/" would create a new
+                "biographies/" folder under the "books/"
                 folder.
 
                 This corresponds to the ``folder_id`` field

@@ -33,7 +33,8 @@ class BillingAccount(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the billing account. Format:
+            Output only. Resource name of the billing
+            account. Format:
             accounts/{account_id}/billingAccounts/{billing_account_id}.
         display_name (str):
             Display name of the billing account.

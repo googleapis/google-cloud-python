@@ -55,8 +55,8 @@ class LfpInventory(proto.Message):
             **Note**: if the merchant sells the same product new and
             used, they should have different IDs.
         region_code (str):
-            Required. The `CLDR territory
-            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__
+            Required. The [CLDR territory
+            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml)
             for the country where the product is sold.
         content_language (str):
             Required. The two-letter ISO 639-1 language
@@ -69,10 +69,10 @@ class LfpInventory(proto.Message):
         price (google.shopping.type.types.Price):
             Optional. The current price of the product.
         availability (str):
-            Required. Availability of the product at this store. For
-            accepted attribute values, see the `local product inventory
-            data
-            specification <https://support.google.com/merchants/answer/3061342>`__
+            Required. Availability of the product at this
+            store. For accepted attribute values, see the
+            [local product inventory data
+            specification](https://support.google.com/merchants/answer/3061342)
         quantity (int):
             Optional. Quantity of the product available
             at this store. Must be greater than or equal to

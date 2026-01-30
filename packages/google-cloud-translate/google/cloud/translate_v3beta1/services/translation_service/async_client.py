@@ -1013,11 +1013,12 @@ class TranslationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_language_codes (:class:`MutableSequence[str]`):
-                Required. The BCP-47 language code to use for
-                translation of the input document. Specify up to 10
-                language codes here. Supported language codes are listed
-                in `Language
-                Support <https://cloud.google.com/translate/docs/languages>`__.
+                Required. The BCP-47 language code to
+                use for translation of the input
+                document. Specify up to 10 language
+                codes here. Supported language codes are
+                listed in [Language
+                Support](https://cloud.google.com/translate/docs/languages).
 
                 This corresponds to the ``target_language_codes`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1144,8 +1145,9 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a glossary and returns the long-running operation.
-        Returns NOT_FOUND, if the project doesn't exist.
+        r"""Creates a glossary and returns the long-running
+        operation. Returns NOT_FOUND, if the project doesn't
+        exist.
 
         .. code-block:: python
 
@@ -1282,8 +1284,8 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListGlossariesAsyncPager:
-        r"""Lists glossaries in a project. Returns NOT_FOUND, if the project
-        doesn't exist.
+        r"""Lists glossaries in a project. Returns NOT_FOUND, if the
+        project doesn't exist.
 
         .. code-block:: python
 
@@ -1445,8 +1447,8 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> translation_service.Glossary:
-        r"""Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
-        exist.
+        r"""Gets a glossary. Returns NOT_FOUND, if the glossary
+        doesn't exist.
 
         .. code-block:: python
 
@@ -1558,9 +1560,9 @@ class TranslationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a glossary, or cancels glossary construction if the
-        glossary isn't created yet. Returns NOT_FOUND, if the glossary
-        doesn't exist.
+        r"""Deletes a glossary, or cancels glossary construction
+        if the glossary isn't created yet.
+        Returns NOT_FOUND, if the glossary doesn't exist.
 
         .. code-block:: python
 

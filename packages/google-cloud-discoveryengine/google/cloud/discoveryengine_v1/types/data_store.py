@@ -51,9 +51,9 @@ class DataStore(proto.Message):
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
             Immutable. The industry vertical that the
             data store registers.
@@ -82,15 +82,15 @@ class DataStore(proto.Message):
             Optional. Configuration for advanced site
             search.
         kms_key_name (str):
-            Input only. The KMS key to be used to protect this DataStore
-            at creation time.
+            Input only. The KMS key to be used to protect
+            this DataStore at creation time.
 
-            Must be set for requests that need to comply with CMEK Org
-            Policy protections.
+            Must be set for requests that need to comply
+            with CMEK Org Policy protections.
 
-            If this field is set and processed successfully, the
-            DataStore will be protected by the KMS key, as indicated in
-            the cmek_config field.
+            If this field is set and processed successfully,
+            the DataStore will be protected by the KMS key,
+            as indicated in the cmek_config field.
         cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Output only. CMEK-related information for the
             DataStore.

@@ -525,11 +525,12 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     ]:
         r"""Return a callable for the schedule transfer runs method over gRPC.
 
-        Creates transfer runs for a time range [start_time, end_time].
-        For each date - or whatever granularity the data source supports
-        - in the range, one transfer run is created. Note that runs are
-        created per UTC time in the time range. DEPRECATED: use
-        StartManualTransferRuns instead.
+        Creates transfer runs for a time range [start_time,
+        end_time]. For each date - or whatever granularity the
+        data source supports - in the range, one transfer run is
+        created.
+        Note that runs are created per UTC time in the time
+        range. DEPRECATED: use StartManualTransferRuns instead.
 
         Returns:
             Callable[[~.ScheduleTransferRunsRequest],
@@ -558,10 +559,11 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     ]:
         r"""Return a callable for the start manual transfer runs method over gRPC.
 
-        Start manual transfer runs to be executed now with schedule_time
-        equal to current time. The transfer runs can be created for a
-        time range where the run_time is between start_time (inclusive)
-        and end_time (exclusive), or for a specific run_time.
+        Start manual transfer runs to be executed now with
+        schedule_time equal to current time. The transfer runs
+        can be created for a time range where the run_time is
+        between start_time (inclusive) and end_time (exclusive),
+        or for a specific run_time.
 
         Returns:
             Callable[[~.StartManualTransferRunsRequest],
@@ -762,13 +764,14 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     ) -> Callable[[datatransfer.UnenrollDataSourcesRequest], empty_pb2.Empty]:
         r"""Return a callable for the unenroll data sources method over gRPC.
 
-        Unenroll data sources in a user project. This allows users to
-        remove transfer configurations for these data sources. They will
-        no longer appear in the ListDataSources RPC and will also no
-        longer appear in the `BigQuery
-        UI <https://console.cloud.google.com/bigquery>`__. Data
-        transfers configurations of unenrolled data sources will not be
-        scheduled.
+        Unenroll data sources in a user project. This allows
+        users to remove transfer configurations for these data
+        sources. They will no longer appear in the
+        ListDataSources RPC and will also no longer appear in
+        the [BigQuery
+        UI](https://console.cloud.google.com/bigquery). Data
+        transfers configurations of unenrolled data sources will
+        not be scheduled.
 
         Returns:
             Callable[[~.UnenrollDataSourcesRequest],

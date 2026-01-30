@@ -78,14 +78,16 @@ class FutureReservation(proto.Message):
             Format of this field must be a valid RFC3339
             value.
         auto_delete_auto_created_reservations (bool):
-            Setting for enabling or disabling automatic deletion for
-            auto-created reservation. If set to true, auto-created
-            reservations will be deleted at Future Reservation's end
-            time (default) or at user's defined timestamp if any of the
+            Setting for enabling or disabling automatic
+            deletion for auto-created reservation. If set to
+            true, auto-created reservations will be deleted
+            at Future Reservation's end time (default) or at
+            user's defined timestamp if any of the
             [auto_created_reservations_delete_time,
-            auto_created_reservations_duration] values is specified. For
-            keeping auto-created reservation indefinitely, this value
-            should be set to false.
+            auto_created_reservations_duration] values is
+            specified.
+            For keeping auto-created reservation
+            indefinitely, this value should be set to false.
     """
 
     class SpecificSKUProperties(proto.Message):
@@ -139,15 +141,16 @@ class FutureReservation(proto.Message):
             procurement_status (google.cloud.capacityplanner_v1beta.types.FutureReservation.Status.ProcurementStatus):
                 Current state of this Future Reservation
             lock_time (google.protobuf.timestamp_pb2.Timestamp):
-                Time when Future Reservation would become LOCKED, after
-                which no modifications to Future Reservation will be
-                allowed. Applicable only after the Future Reservation is in
-                the APPROVED state. The lock_time is an RFC3339 string. The
-                procurement_status will transition to PROCURING state at
-                this time.
+                Time when Future Reservation would become
+                LOCKED, after which no modifications to Future
+                Reservation will be allowed. Applicable only
+                after the Future Reservation is in the APPROVED
+                state. The lock_time is an RFC3339 string. The
+                procurement_status will transition to PROCURING
+                state at this time.
             auto_created_reservations (MutableSequence[str]):
-                Fully qualified urls of the automatically created
-                reservations at start_time.
+                Fully qualified urls of the automatically
+                created reservations at start_time.
             fulfilled_count (int):
                 This count indicates the fulfilled capacity
                 so far. This is set during "PROVISIONING" state.
@@ -182,22 +185,25 @@ class FutureReservation(proto.Message):
                     reservation is locked and no further
                     modifications are allowed.
                 PROVISIONING (7):
-                    Future reservation capacity is being provisioned. This state
-                    will be entered after start_time, while reservations are
-                    being created to provide total_count reserved instance
-                    slots. This state will not persist past start_time + 24h.
+                    Future reservation capacity is being
+                    provisioned. This state will be entered after
+                    start_time, while reservations are being created
+                    to provide total_count reserved instance slots.
+                    This state will not persist past start_time +
+                    24h.
                 FULFILLED (8):
                     Future reservation is fulfilled completely.
                 FAILED (9):
                     Future reservation failed. No additional
                     reservations were provided.
                 FAILED_PARTIALLY_FULFILLED (10):
-                    Future reservation is partially fulfilled. Additional
-                    reservations were provided but did not reach total_count
-                    reserved instance slots.
+                    Future reservation is partially fulfilled.
+                    Additional reservations were provided but did
+                    not reach total_count reserved instance slots.
                 DRAFTING (11):
-                    Related status for PlanningStatus.Draft. Transitions to
-                    PENDING_APPROVAL upon user submitting FR.
+                    Related status for PlanningStatus.Draft.
+                    Transitions to PENDING_APPROVAL upon user
+                    submitting FR.
                 PENDING_AMENDMENT_APPROVAL (12):
                     An Amendment to the Future Reservation has
                     been requested. If the Amendment is declined,

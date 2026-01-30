@@ -236,9 +236,11 @@ class Flow(proto.Message):
 
         Attributes:
             enable_multi_language_detection (bool):
-                Optional. Enable multi-language detection for this flow.
-                This can be set only if [agent level multi language
-                setting][Agent.enable_multi_language_training] is enabled.
+                Optional. Enable multi-language detection for
+                this flow. This can be set only if [agent level
+                multi language
+                setting][Agent.enable_multi_language_training]
+                is enabled.
             supported_response_language_codes (MutableSequence[str]):
                 Optional. Agent will respond in the detected language if the
                 detected language code is in the supported resolved
@@ -409,8 +411,8 @@ class ListFlowsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
         language_code (str):
             The language to list flows for. The following fields are
             language dependent:
@@ -451,8 +453,9 @@ class ListFlowsResponse(proto.Message):
 
     Attributes:
         flows (MutableSequence[google.cloud.dialogflowcx_v3.types.Flow]):
-            The list of flows. There will be a maximum number of items
-            returned based on the page_size field in the request.
+            The list of flows. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -737,9 +740,10 @@ class FlowImportStrategy(proto.Message):
 
     Attributes:
         global_import_strategy (google.cloud.dialogflowcx_v3.types.ImportStrategy):
-            Optional. Import strategy for resource conflict resolution,
-            applied globally throughout the flow. It will be applied for
-            all display name conflicts in the imported content. If not
+            Optional. Import strategy for resource conflict
+            resolution, applied globally throughout the
+            flow. It will be applied for all display name
+            conflicts in the imported content. If not
             specified, 'CREATE_NEW' is assumed.
     """
 

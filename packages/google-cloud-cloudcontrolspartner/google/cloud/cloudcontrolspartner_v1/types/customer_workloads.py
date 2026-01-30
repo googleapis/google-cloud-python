@@ -38,8 +38,8 @@ __protobuf__ = proto.module(
 
 
 class Workload(proto.Message):
-    r"""Contains metadata around the `Workload
-    resource <https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload>`__
+    r"""Contains metadata around the [Workload
+    resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
     in the Assured Workloads API.
 
     Attributes:

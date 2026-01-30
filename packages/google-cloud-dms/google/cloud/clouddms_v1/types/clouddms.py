@@ -101,12 +101,14 @@ class DatabaseEntityView(proto.Enum):
             Return full entity details including
             mappings, ddl and issues.
         DATABASE_ENTITY_VIEW_ROOT_SUMMARY (3):
-            Top-most (Database, Schema) nodes which are returned
-            contains summary details for their decendents such as the
-            number of entities per type and issues rollups. When this
-            view is used, only a single page of result is returned and
-            the page_size property of the request is ignored. The
-            returned page will only include the top-most node types.
+            Top-most (Database, Schema) nodes which are
+            returned contains summary details for their
+            decendents such as the number of entities per
+            type and issues rollups. When this view is used,
+            only a single page of result is returned and the
+            page_size property of the request is ignored.
+            The returned page will only include the top-most
+            node types.
     """
     DATABASE_ENTITY_VIEW_UNSPECIFIED = 0
     DATABASE_ENTITY_VIEW_BASIC = 1
@@ -238,8 +240,8 @@ class CreateMigrationJobRequest(proto.Message):
         migration_job_id (str):
             Required. The ID of the instance to create.
         migration_job (google.cloud.clouddms_v1.types.MigrationJob):
-            Required. Represents a `migration
-            job <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs>`__
+            Required. Represents a [migration
+            job](https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs)
             object.
         request_id (str):
             Optional. A unique ID used to identify the request. If the
@@ -1430,8 +1432,10 @@ class ApplyConversionWorkspaceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion workspace resource for
-            which to apply the draft tree. Must be in the form of:
+            Required. The name of the conversion workspace
+            resource for which to apply the draft tree. Must
+            be in the form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         filter (str):
             Filter which entities to apply. Leaving this
@@ -1482,8 +1486,10 @@ class ListMappingRulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the conversion workspace resource whose
-            mapping rules are listed in the form of:
+            Required. Name of the conversion workspace
+            resource whose mapping rules are listed in the
+            form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         page_size (int):
             The maximum number of rules to return. The
@@ -1576,8 +1582,10 @@ class SeedConversionWorkspaceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Name of the conversion workspace resource to seed with new
-            database structure, in the form of:
+            Name of the conversion workspace resource to
+            seed with new database structure, in the form
+            of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         auto_commit (bool):
             Should the conversion workspace be committed
@@ -1619,8 +1627,8 @@ class ConvertConversionWorkspaceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Name of the conversion workspace resource to convert in the
-            form of:
+            Name of the conversion workspace resource to
+            convert in the form of:
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         auto_commit (bool):
             Optional. Specifies whether the conversion
@@ -1662,8 +1670,9 @@ class ImportMappingRulesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the conversion workspace resource to
-            import the rules to in the form of:
+            Required. Name of the conversion workspace
+            resource to import the rules to in the form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         rules_format (google.cloud.clouddms_v1.types.ImportRulesFileFormat):
             Required. The format of the rules content
@@ -1725,8 +1734,10 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
 
     Attributes:
         conversion_workspace (str):
-            Required. Name of the conversion workspace resource whose
-            database entities are described. Must be in the form of:
+            Required. Name of the conversion workspace
+            resource whose database entities are described.
+            Must be in the form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         page_size (int):
             Optional. The maximum number of entities to
@@ -1746,9 +1757,10 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
         tree (google.cloud.clouddms_v1.types.DescribeDatabaseEntitiesRequest.DBTreeType):
             Required. The tree to fetch.
         uncommitted (bool):
-            Optional. Whether to retrieve the latest committed version
-            of the entities or the latest version. This field is ignored
-            if a specific commit_id is specified.
+            Optional. Whether to retrieve the latest
+            committed version of the entities or the latest
+            version. This field is ignored if a specific
+            commit_id is specified.
         commit_id (str):
             Optional. Request a specific commit ID. If
             not specified, the entities from the latest
@@ -1849,8 +1861,9 @@ class SearchBackgroundJobsRequest(proto.Message):
 
     Attributes:
         conversion_workspace (str):
-            Required. Name of the conversion workspace resource whose
-            jobs are listed, in the form of:
+            Required. Name of the conversion workspace
+            resource whose jobs are listed, in the form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         return_most_recent_per_job_type (bool):
             Optional. Whether or not to return just the
@@ -1910,8 +1923,10 @@ class DescribeConversionWorkspaceRevisionsRequest(proto.Message):
 
     Attributes:
         conversion_workspace (str):
-            Required. Name of the conversion workspace resource whose
-            revisions are listed. Must be in the form of:
+            Required. Name of the conversion workspace
+            resource whose revisions are listed. Must be in
+            the form of:
+
             projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}.
         commit_id (str):
             Optional. Optional filter to request a

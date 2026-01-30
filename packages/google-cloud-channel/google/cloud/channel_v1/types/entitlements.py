@@ -44,7 +44,8 @@ class Entitlement(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of an entitlement in the form:
+            Output only. Resource name of an entitlement in
+            the form:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
@@ -53,8 +54,8 @@ class Entitlement(proto.Message):
             Output only. The time at which the
             entitlement is updated.
         offer (str):
-            Required. The offer resource name for which the entitlement
-            is to be created. Takes the form:
+            Required. The offer resource name for which the
+            entitlement is to be created. Takes the form:
             accounts/{account_id}/offers/{offer_id}.
         commitment_settings (google.cloud.channel_v1.types.CommitmentSettings):
             Commitment settings for a commitment-based
@@ -239,10 +240,11 @@ class Parameter(proto.Message):
         value (google.cloud.channel_v1.types.Value):
             Value of the parameter.
         editable (bool):
-            Output only. Specifies whether this parameter is allowed to
-            be changed. For example, for a Google Workspace Business
-            Starter entitlement in commitment plan, num_units is
-            editable when entitlement is active.
+            Output only. Specifies whether this parameter is
+            allowed to be changed. For example, for a Google
+            Workspace Business Starter entitlement in
+            commitment plan, num_units is editable when
+            entitlement is active.
     """
 
     name: str = proto.Field(
@@ -346,9 +348,9 @@ class RenewalSettings(proto.Message):
             If false, the plan will be completed at the
             end date.
         resize_unit_count (bool):
-            If true and enable_renewal = true, the unit (for example
-            seats or licenses) will be set to the number of active units
-            at renewal time.
+            If true and enable_renewal = true, the unit (for
+            example seats or licenses) will be set to the
+            number of active units at renewal time.
         payment_plan (google.cloud.channel_v1.types.PaymentPlan):
             Describes how a reseller will be billed.
         payment_cycle (google.cloud.channel_v1.types.Period):
@@ -386,9 +388,10 @@ class TrialSettings(proto.Message):
             - ``true`` - The entitlement is in trial.
             - ``false`` - The entitlement is not in trial.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Date when the trial ends. The value is in milliseconds using
-            the UNIX Epoch format. See an example `Epoch
-            converter <https://www.epochconverter.com>`__.
+            Date when the trial ends. The value is in
+            milliseconds using the UNIX Epoch format. See an
+            example [Epoch
+            converter](https://www.epochconverter.com).
     """
 
     trial: bool = proto.Field(

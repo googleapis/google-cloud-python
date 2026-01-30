@@ -39,9 +39,11 @@ class NotificationConfig(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of this notification config. See:
+            The relative resource name of this notification
+            config. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
+
             "organizations/{organization_id}/notificationConfigs/notify_public_bucket",
             "folders/{folder_id}/notificationConfigs/notify_public_bucket",
             or
@@ -50,7 +52,8 @@ class NotificationConfig(proto.Message):
             The description of the notification config
             (max of 1024 characters).
         pubsub_topic (str):
-            The Pub/Sub topic to send notifications to. Its format is
+            The Pub/Sub topic to send notifications to. Its
+            format is
             "projects/[project_id]/topics/[topic]".
         service_account (str):
             Output only. The service account that needs

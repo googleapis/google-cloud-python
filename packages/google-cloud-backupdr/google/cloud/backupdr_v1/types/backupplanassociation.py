@@ -557,15 +557,17 @@ class UpdateBackupPlanAssociationRequest(proto.Message):
         backup_plan_association (google.cloud.backupdr_v1.types.BackupPlanAssociation):
             Required. The resource being updated
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update. Field mask is used
-            to specify the fields to be overwritten in the
-            BackupPlanAssociation resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then the
-            request will fail. Currently
-            backup_plan_association.backup_plan is the only supported
-            field.
+            Required. The list of fields to update.
+            Field mask is used to specify the fields to be
+            overwritten in the BackupPlanAssociation
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then the request will
+            fail. Currently
+            backup_plan_association.backup_plan is the only
+            supported field.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -613,8 +615,8 @@ class TriggerBackupRequest(proto.Message):
             the format
             ``projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}``
         rule_id (str):
-            Required. backup rule_id for which a backup needs to be
-            triggered.
+            Required. backup rule_id for which a backup
+            needs to be triggered.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

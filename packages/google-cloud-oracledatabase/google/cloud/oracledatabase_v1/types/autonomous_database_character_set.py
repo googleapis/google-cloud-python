@@ -33,8 +33,9 @@ class AutonomousDatabaseCharacterSet(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Autonomous Database Character
-            Set resource in the following format:
+            Identifier. The name of the Autonomous Database
+            Character Set resource in the following format:
+
             projects/{project}/locations/{region}/autonomousDatabaseCharacterSets/{autonomous_database_character_set}
         character_set_type (google.cloud.oracledatabase_v1.types.AutonomousDatabaseCharacterSet.CharacterSetType):
             Output only. The character set type for the

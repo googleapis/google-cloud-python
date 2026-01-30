@@ -35,14 +35,14 @@ class CompleteQueryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of tenant the completion is
-            performed within.
+            Required. Resource name of tenant the completion
+            is performed within.
+            The format is
+            "projects/{project_id}/tenants/{tenant_id}", for
+            example, "projects/foo/tenant/bar".
 
-            The format is "projects/{project_id}/tenants/{tenant_id}",
-            for example, "projects/foo/tenant/bar".
-
-            If tenant id is unspecified, the default tenant is used, for
-            example, "projects/foo".
+            If tenant id is unspecified, the default tenant
+            is used, for example, "projects/foo".
         query (str):
             Required. The query used to generate
             suggestions.
@@ -59,14 +59,15 @@ class CompleteQueryRequest(proto.Message):
 
             The maximum allowed page size is 10.
         company (str):
-            If provided, restricts completion to specified company.
-
+            If provided, restricts completion to specified
+            company.
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-            for example, "projects/foo/tenants/bar/companies/baz".
+            for example,
+            "projects/foo/tenants/bar/companies/baz".
 
-            If tenant id is unspecified, the default tenant is used, for
-            example, "projects/foo".
+            If tenant id is unspecified, the default tenant
+            is used, for example, "projects/foo".
         scope (google.cloud.talent_v4beta1.types.CompleteQueryRequest.CompletionScope):
             The scope of the completion. The defaults is
             [CompletionScope.PUBLIC][google.cloud.talent.v4beta1.CompleteQueryRequest.CompletionScope.PUBLIC].

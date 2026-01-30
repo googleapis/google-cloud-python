@@ -582,11 +582,13 @@ class IDSAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             endpoint_id (:class:`str`):
-                Required. The endpoint identifier. This will be part of
-                the endpoint's resource name. This value must start with
-                a lowercase letter followed by up to 62 lowercase
-                letters, numbers, or hyphens, and cannot end with a
-                hyphen. Values that do not match this pattern will
+                Required. The endpoint identifier. This
+                will be part of the endpoint's resource
+                name. This value must start with a
+                lowercase letter followed by up to 62
+                lowercase letters, numbers, or hyphens,
+                and cannot end with a hyphen. Values
+                that do not match this pattern will
                 trigger an INVALID_ARGUMENT error.
 
                 This corresponds to the ``endpoint_id`` field

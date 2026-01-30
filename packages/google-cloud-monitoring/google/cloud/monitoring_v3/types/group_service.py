@@ -72,15 +72,14 @@ class ListGroupsRequest(proto.Message):
         ancestors_of_group (str):
             A group name. The format is:
 
-            ::
+            projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
-
-            Returns groups that are ancestors of the specified group.
-            The groups are returned in order, starting with the
-            immediate parent and ending with the most distant ancestor.
-            If the specified group has no immediate parent, the results
-            are empty.
+            Returns groups that are ancestors of the
+            specified group. The groups are returned in
+            order, starting with the immediate parent and
+            ending with the most distant ancestor. If the
+            specified group has no immediate parent, the
+            results are empty.
 
             This field is a member of `oneof`_ ``filter``.
         descendants_of_group (str):
@@ -170,9 +169,7 @@ class GetGroupRequest(proto.Message):
         name (str):
             Required. The group to retrieve. The format is:
 
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+            projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     """
 
     name: str = proto.Field(
@@ -248,9 +245,7 @@ class DeleteGroupRequest(proto.Message):
         name (str):
             Required. The group to delete. The format is:
 
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+            projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
         recursive (bool):
             If this field is true, then the request means
             to delete a group with all its descendants.
@@ -274,11 +269,9 @@ class ListGroupMembersRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The group whose members are listed. The format is:
-
-            ::
-
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+            Required. The group whose members are listed.
+            The format is:
+            projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
         page_size (int):
             A positive number that is the maximum number
             of results to return.

@@ -93,7 +93,8 @@ class Collector(proto.Message):
             Output only. Reference to MC Source Guest Os
             Scan.
         vsphere_scan (google.cloud.rapidmigrationassessment_v1.types.VSphereScan):
-            Output only. Reference to MC Source vsphere_scan.
+            Output only. Reference to MC Source
+            vsphere_scan.
         collection_days (int):
             How many days to collect data.
         eula_uri (str):
@@ -102,10 +103,12 @@ class Collector(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""-- Using suggestion from API Linter Analyzer for nesting enum -- --
-        https://linter.aip.dev/216/nesting -- State of a Collector
-        (server_side). States are used for internal purposes and named to
-        keep convention of legacy product:
+        r"""-- Using suggestion from API Linter Analyzer for nesting enum --
+        -- https://linter.aip.dev/216/nesting --
+        State of a Collector (server_side).
+        States are used for internal purposes and named to keep
+        convention of legacy product:
+
         https://cloud.google.com/migrate/stratozone/docs/about-stratoprobe.
 
         Values:

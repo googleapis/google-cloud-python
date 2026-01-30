@@ -58,8 +58,9 @@ class ServiceLbPolicy(proto.Message):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
         load_balancing_algorithm (google.cloud.network_services_v1.types.ServiceLbPolicy.LoadBalancingAlgorithm):
-            Optional. The type of load balancing algorithm to be used.
-            The default behavior is WATERFALL_BY_REGION.
+            Optional. The type of load balancing algorithm
+            to be used. The default behavior is
+            WATERFALL_BY_REGION.
         auto_capacity_drain (google.cloud.network_services_v1.types.ServiceLbPolicy.AutoCapacityDrain):
             Optional. Configuration to automatically move
             traffic away for unhealthy IG/NEG for the
@@ -376,12 +377,14 @@ class UpdateServiceLbPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the fields to be
-            overwritten in the ServiceLbPolicy resource by the update.
-            The fields specified in the update_mask are relative to the
-            resource, not the full request. A field will be overwritten
-            if it is in the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the
+            fields to be overwritten in the ServiceLbPolicy
+            resource by the update. The fields specified in
+            the update_mask are relative to the resource,
+            not the full request. A field will be
+            overwritten if it is in the mask. If the user
+            does not provide a mask then all fields will be
+            overwritten.
         service_lb_policy (google.cloud.network_services_v1.types.ServiceLbPolicy):
             Required. Updated ServiceLbPolicy resource.
     """

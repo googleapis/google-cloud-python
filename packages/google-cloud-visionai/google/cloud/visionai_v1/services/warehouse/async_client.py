@@ -622,7 +622,9 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1.types.GetAssetRequest, dict]]):
                 The request object. Request message for GetAsset.
             name (:class:`str`):
-                Required. The name of the asset to retrieve. Format:
+                Required. The name of the asset to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``name`` field
@@ -1263,8 +1265,8 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Index one asset for search. Supported corpus type:
-        Corpus.Type.VIDEO_ON_DEMAND
+        r"""Index one asset for search.
+        Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
 
         .. code-block:: python
 
@@ -1364,8 +1366,8 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Remove one asset's index data for search. Supported corpus type:
-        Corpus.Type.VIDEO_ON_DEMAND
+        r"""Remove one asset's index data for search.
+        Supported corpus type: Corpus.Type.VIDEO_ON_DEMAND
 
         .. code-block:: python
 
@@ -1747,9 +1749,9 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates an Index under the corpus. Users can perform a
-        metadata-only update or trigger a full index rebuild with
-        different update_mask values.
+        r"""Updates an Index under the corpus.
+        Users can perform a metadata-only update or trigger a
+        full index rebuild with different update_mask values.
 
         .. code-block:: python
 
@@ -4234,11 +4236,12 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> warehouse.ClipAssetResponse:
-        r"""Supported by STREAM_VIDEO corpus type. Generates clips for
-        downloading. The api takes in a time range, and generates a clip
-        of the first content available after start_time and before
-        end_time, which may overflow beyond these bounds. Returned clips
-        are truncated if the total size of the clips are larger than
+        r"""Supported by STREAM_VIDEO corpus type.
+        Generates clips for downloading. The api takes in a time
+        range, and generates a clip of the first content
+        available after start_time and before end_time, which
+        may overflow beyond these bounds. Returned clips are
+        truncated if the total size of the clips are larger than
         100MB.
 
         .. code-block:: python
@@ -5219,10 +5222,13 @@ class WarehouseAsyncClient:
         Returns:
             google.cloud.visionai_v1.types.SearchHypernym:
                 Search resource: SearchHypernym.
-                   For example, { hypernym: "vehicle" hyponyms:
-                   ["sedan", "truck"] } This means in SMART_SEARCH mode,
-                   searching for "vehicle" will also return results with
-                   "sedan" or "truck" as annotations.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
+                annotations.
 
         """
         # Create or coerce a protobuf request object.
@@ -5347,10 +5353,13 @@ class WarehouseAsyncClient:
         Returns:
             google.cloud.visionai_v1.types.SearchHypernym:
                 Search resource: SearchHypernym.
-                   For example, { hypernym: "vehicle" hyponyms:
-                   ["sedan", "truck"] } This means in SMART_SEARCH mode,
-                   searching for "vehicle" will also return results with
-                   "sedan" or "truck" as annotations.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
+                annotations.
 
         """
         # Create or coerce a protobuf request object.
@@ -5466,10 +5475,13 @@ class WarehouseAsyncClient:
         Returns:
             google.cloud.visionai_v1.types.SearchHypernym:
                 Search resource: SearchHypernym.
-                   For example, { hypernym: "vehicle" hyponyms:
-                   ["sedan", "truck"] } This means in SMART_SEARCH mode,
-                   searching for "vehicle" will also return results with
-                   "sedan" or "truck" as annotations.
+                For example,
+                { hypernym: "vehicle"
+                hyponyms: ["sedan", "truck"] }
+                This means in SMART_SEARCH mode,
+                searching for "vehicle" will also return
+                results with "sedan" or "truck" as
+                annotations.
 
         """
         # Create or coerce a protobuf request object.

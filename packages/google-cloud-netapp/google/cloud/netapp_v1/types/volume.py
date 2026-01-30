@@ -296,12 +296,13 @@ class UpdateVolumeRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Volume resource by the update. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Volume resource
+            by the update. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         volume (google.cloud.netapp_v1.types.Volume):
             Required. The volume being updated
     """
@@ -348,12 +349,14 @@ class RevertVolumeRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the volume, in the format of
+            Required. The resource name of the volume, in
+            the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}.
         snapshot_id (str):
-            Required. The snapshot resource ID, in the format
-            'my-snapshot', where the specified ID is the {snapshot_id}
-            of the fully qualified name like
+            Required. The snapshot resource ID, in the
+            format 'my-snapshot', where the specified ID is
+            the {snapshot_id} of the fully qualified name
+            like
             projects/{project_id}/locations/{location_id}/volumes/{volume_id}/snapshots/{snapshot_id}
     """
 
@@ -415,12 +418,14 @@ class Volume(proto.Message):
         snapshot_policy (google.cloud.netapp_v1.types.SnapshotPolicy):
             Optional. SnapshotPolicy for a volume.
         snap_reserve (float):
-            Optional. Snap_reserve specifies percentage of volume
-            storage reserved for snapshot storage. Default is 0 percent.
+            Optional. Snap_reserve specifies percentage of
+            volume storage reserved for snapshot storage.
+            Default is 0 percent.
         snapshot_directory (bool):
-            Optional. Snapshot_directory if enabled (true) the volume
-            will contain a read-only .snapshot directory which provides
-            access to each of the volume's snapshots.
+            Optional. Snapshot_directory if enabled (true)
+            the volume will contain a read-only .snapshot
+            directory which provides access to each of the
+            volume's snapshots.
         used_gib (int):
             Output only. Used capacity in GIB of the
             volume. This is computed periodically and it
@@ -461,10 +466,11 @@ class Volume(proto.Message):
             Optional. Flag indicating if the volume will
             be a large capacity volume or a regular volume.
         multiple_endpoints (bool):
-            Optional. Flag indicating if the volume will have an IP
-            address per node for volumes supporting multiple IP
-            endpoints. Only the volume with large_capacity will be
-            allowed to have multiple endpoints.
+            Optional. Flag indicating if the volume will
+            have an IP address per node for volumes
+            supporting multiple IP endpoints. Only the
+            volume with large_capacity will be allowed to
+            have multiple endpoints.
         tiering_policy (google.cloud.netapp_v1.types.TieringPolicy):
             Tiering policy for the volume.
 
@@ -1224,7 +1230,9 @@ class RestoreParameters(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         source_backup (str):
-            Full name of the backup resource. Format:
+            Full name of the backup resource.
+            Format:
+
             projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
 
             This field is a member of `oneof`_ ``source``.
@@ -1253,7 +1261,9 @@ class BackupConfig(proto.Message):
             will be created based on the policy
             configuration.
         backup_vault (str):
-            Optional. Name of backup vault. Format:
+            Optional. Name of backup vault.
+            Format:
+
             projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
         scheduled_backup_enabled (bool):
             Optional. When set to true, scheduled backup

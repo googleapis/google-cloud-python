@@ -1214,10 +1214,13 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             service_connection_map_id (str):
-                Optional. Resource ID (i.e. 'foo' in
+                Optional. Resource ID
+                (i.e. 'foo' in
                 '[...]/projects/p/locations/l/serviceConnectionMaps/foo')
-                See https://google.aip.dev/122#resource-id-segments
-                Unique per location. If one is not provided, one will be
+                See
+                https://google.aip.dev/122#resource-id-segments
+                Unique per location.
+                If one is not provided, one will be
                 generated.
 
                 This corresponds to the ``service_connection_map_id`` field
@@ -1362,12 +1365,15 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ServiceConnectionMap resource by the
-                update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ServiceConnectionMap resource by the
+                update. The fields specified in the
+                update_mask are relative to the
+                resource, not the full request. A field
+                will be overwritten if it is in the
+                mask. If the user does not provide a
+                mask then all fields will be
                 overwritten.
 
                 This corresponds to the ``update_mask`` field
@@ -1906,9 +1912,11 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             service_connection_policy_id (str):
-                Optional. Resource ID (i.e. 'foo' in
+                Optional. Resource ID
+                (i.e. 'foo' in
                 '[...]/projects/p/locations/l/serviceConnectionPolicies/foo')
-                See https://google.aip.dev/122#resource-id-segments
+                See
+                https://google.aip.dev/122#resource-id-segments
                 Unique per location.
 
                 This corresponds to the ``service_connection_policy_id`` field
@@ -2057,12 +2065,15 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ServiceConnectionPolicy resource by
-                the update. The fields specified in the update_mask are
-                relative to the resource, not the full request. A field
-                will be overwritten if it is in the mask. If the user
-                does not provide a mask then all fields will be
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ServiceConnectionPolicy resource by the
+                update. The fields specified in the
+                update_mask are relative to the
+                resource, not the full request. A field
+                will be overwritten if it is in the
+                mask. If the user does not provide a
+                mask then all fields will be
                 overwritten.
 
                 This corresponds to the ``update_mask`` field
@@ -2577,12 +2588,15 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the fields to be
-                overwritten in the ServiceClass resource by the update.
-                The fields specified in the update_mask are relative to
-                the resource, not the full request. A field will be
-                overwritten if it is in the mask. If the user does not
-                provide a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify
+                the fields to be overwritten in the
+                ServiceClass resource by the update. The
+                fields specified in the update_mask are
+                relative to the resource, not the full
+                request. A field will be overwritten if
+                it is in the mask. If the user does not
+                provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3105,10 +3119,13 @@ class CrossNetworkAutomationServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             service_connection_token_id (str):
-                Optional. Resource ID (i.e. 'foo' in
+                Optional. Resource ID
+                (i.e. 'foo' in
                 '[...]/projects/p/locations/l/ServiceConnectionTokens/foo')
-                See https://google.aip.dev/122#resource-id-segments
-                Unique per location. If one is not provided, one will be
+                See
+                https://google.aip.dev/122#resource-id-segments
+                Unique per location.
+                If one is not provided, one will be
                 generated.
 
                 This corresponds to the ``service_connection_token_id`` field

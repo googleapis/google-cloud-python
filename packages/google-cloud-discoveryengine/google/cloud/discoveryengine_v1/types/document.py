@@ -85,17 +85,19 @@ class Document(proto.Message):
             `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
             with a length limit of 63 characters.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
-            Output only. This field is OUTPUT_ONLY. It contains derived
-            data that are not in the original input document.
+            Output only. This field is OUTPUT_ONLY.
+            It contains derived data that are not in the
+            original input document.
         acl_info (google.cloud.discoveryengine_v1.types.Document.AclInfo):
             Access control information for the document.
         index_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last time the document was indexed. If this
-            field is set, the document could be returned in search
-            results.
+            Output only. The last time the document was
+            indexed. If this field is set, the document
+            could be returned in search results.
 
-            This field is OUTPUT_ONLY. If this field is not populated,
-            it means the document has never been indexed.
+            This field is OUTPUT_ONLY. If this field is not
+            populated, it means the document has never been
+            indexed.
         index_status (google.cloud.discoveryengine_v1.types.Document.IndexStatus):
             Output only. The index status of the document.
 
@@ -198,16 +200,59 @@ class Document(proto.Message):
 
             Document Hierarchy - Space_S --> Page_P.
 
-            Readers: Space_S: group_1, user_1 Page_P: group_2, group_3, user_2
+            Readers:
 
-            Space_S ACL Restriction - { "acl_info": { "readers": [ {
-            "principals": [ { "group_id": "group_1" }, { "user_id": "user_1" } ]
-            } ] } }
+            Space_S: group_1, user_1
+            Page_P: group_2, group_3, user_2
 
-            Page_P ACL Restriction. { "acl_info": { "readers": [ { "principals":
-            [ { "group_id": "group_2" }, { "group_id": "group_3" }, { "user_id":
-            "user_2" } ], }, { "principals": [ { "group_id": "group_1" }, {
-            "user_id": "user_1" } ], } ] } }
+            Space_S ACL Restriction -
+            {
+            "acl_info": {
+            "readers": [
+            {
+            "principals": [
+            {
+            "group_id": "group_1"
+            },
+            {
+            "user_id": "user_1"
+            }
+            ]
+            }
+            ]
+            }
+            }
+
+            Page_P ACL Restriction.
+            {
+            "acl_info": {
+            "readers": [
+            {
+            "principals": [
+            {
+            "group_id": "group_2"
+            },
+            {
+            "group_id": "group_3"
+            },
+            {
+            "user_id": "user_2"
+            }
+            ],
+            },
+            {
+            "principals": [
+            {
+            "group_id": "group_1"
+            },
+            {
+            "user_id": "user_1"
+            }
+            ],
+            }
+            ]
+            }
+            }
 
             Attributes:
                 principals (MutableSequence[google.cloud.discoveryengine_v1.types.Principal]):

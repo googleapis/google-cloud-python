@@ -121,13 +121,13 @@ class SearchSolutionUseCase(proto.Enum):
 
 
 class Condition(proto.Message):
-    r"""Metadata that is used to define a condition that triggers an action.
-    A valid condition must specify at least one of 'query_terms' or
-    'products_filter'. If multiple fields are specified, the condition
-    is met if all the fields are satisfied e.g. if a set of query terms
-    and product_filter are set, then only items matching the
-    product_filter for requests with a query matching the query terms
-    wil get boosted.
+    r"""Metadata that is used to define a condition that triggers an
+    action. A valid condition must specify at least one of
+    'query_terms' or 'products_filter'. If multiple fields are
+    specified, the condition is met if all the fields are satisfied
+    e.g. if a set of query terms and product_filter are set, then
+    only items matching the product_filter for requests with a query
+    matching the query terms wil get boosted.
 
     Attributes:
         query_terms (MutableSequence[google.cloud.retail_v2beta.types.Condition.QueryTerm]):
@@ -291,24 +291,28 @@ class Rule(proto.Message):
 
         Attributes:
             boost (float):
-                Strength of the condition boost, which must be in [-1, 1].
-                Negative boost means demotion. Default is 0.0.
+                Strength of the condition boost, which must be
+                in [-1, 1]. Negative boost means demotion.
+                Default is 0.0.
 
-                Setting to 1.0 gives the item a big promotion. However, it
-                does not necessarily mean that the boosted item will be the
-                top result at all times, nor that other items will be
-                excluded. Results could still be shown even when none of
+                Setting to 1.0 gives the item a big promotion.
+                However, it does not necessarily mean that the
+                boosted item will be the top result at all
+                times, nor that other items will be excluded.
+                Results could still be shown even when none of
                 them matches the condition. And results that are
-                significantly more relevant to the search query can still
-                trump your heavily favored but irrelevant items.
+                significantly more relevant to the search query
+                can still trump your heavily favored but
+                irrelevant items.
 
-                Setting to -1.0 gives the item a big demotion. However,
-                results that are deeply relevant might still be shown. The
-                item will have an upstream battle to get a fairly high
-                ranking, but it is not blocked out completely.
+                Setting to -1.0 gives the item a big demotion.
+                However, results that are deeply relevant might
+                still be shown. The item will have an upstream
+                battle to get a fairly high ranking, but it is
+                not blocked out completely.
 
-                Setting to 0.0 means no boost applied. The boosting
-                condition is ignored.
+                Setting to 0.0 means no boost applied. The
+                boosting condition is ignored.
             products_filter (str):
                 The filter can have a max size of 5000 characters. An
                 expression which specifies which products to apply an action
@@ -453,9 +457,10 @@ class Rule(proto.Message):
 
         Attributes:
             query_terms (MutableSequence[str]):
-                Terms from the search query. Will not consider
-                do_not_associate_terms for search if in search query. Can
-                specify up to 100 terms.
+                Terms from the search query.
+                Will not consider do_not_associate_terms for
+                search if in search query. Can specify up to 100
+                terms.
             do_not_associate_terms (MutableSequence[str]):
                 Cannot contain duplicates or the query term.
                 Can specify up to 100 terms.
@@ -1297,19 +1302,20 @@ class UserInfo(proto.Message):
 
     Attributes:
         user_id (str):
-            Highly recommended for logged-in users. Unique identifier
-            for logged-in user, such as a user name. Don't set for
-            anonymous users.
+            Highly recommended for logged-in users. Unique
+            identifier for logged-in user, such as a user
+            name. Don't set for anonymous users.
 
             Always use a hashed value for this ID.
 
-            Don't set the field to the same fixed ID for different
-            users. This mixes the event history of those users together,
-            which results in degraded model quality.
+            Don't set the field to the same fixed ID for
+            different users. This mixes the event history of
+            those users together, which results in degraded
+            model quality.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         ip_address (str):
             The end user's IP address. This field is used to extract
             location information for personalization.

@@ -139,8 +139,8 @@ class ServiceManagerClientMeta(type):
 
 
 class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
-    """`Google Service Management
-    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
+    """[Google Service Management
+    API](https://cloud.google.com/service-infrastructure/docs/overview)
     """
 
     @staticmethod
@@ -2447,18 +2447,19 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
-        r"""Generates and returns a report (errors, warnings and changes
-        from existing configurations) associated with
+        r"""Generates and returns a report (errors, warnings and
+        changes from existing configurations) associated with
         GenerateConfigReportRequest.new_value
 
         If GenerateConfigReportRequest.old_value is specified,
-        GenerateConfigReportRequest will contain a single ChangeReport
-        based on the comparison between
+        GenerateConfigReportRequest will contain a single
+        ChangeReport based on the comparison between
         GenerateConfigReportRequest.new_value and
-        GenerateConfigReportRequest.old_value. If
-        GenerateConfigReportRequest.old_value is not specified, this
-        method will compare GenerateConfigReportRequest.new_value with
-        the last pushed service configuration.
+        GenerateConfigReportRequest.old_value.
+        If GenerateConfigReportRequest.old_value is not
+        specified, this method will compare
+        GenerateConfigReportRequest.new_value with the last
+        pushed service configuration.
 
         .. code-block:: python
 

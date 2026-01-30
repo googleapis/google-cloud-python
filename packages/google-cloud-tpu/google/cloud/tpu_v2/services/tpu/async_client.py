@@ -1047,8 +1047,8 @@ class TpuAsyncClient:
                 The request object. Request for
                 [UpdateNode][google.cloud.tpu.v2.Tpu.UpdateNode].
             node (:class:`google.cloud.tpu_v2.types.Node`):
-                Required. The node. Only fields specified in update_mask
-                are updated.
+                Required. The node. Only fields
+                specified in update_mask are updated.
 
                 This corresponds to the ``node`` field
                 on the ``request`` instance; if ``request`` is provided, this

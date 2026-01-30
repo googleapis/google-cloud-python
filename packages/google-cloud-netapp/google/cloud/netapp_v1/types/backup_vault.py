@@ -52,8 +52,8 @@ class BackupVault(proto.Message):
             Resource labels to represent user provided
             metadata.
         backup_vault_type (google.cloud.netapp_v1.types.BackupVault.BackupVaultType):
-            Optional. Type of backup vault to be created. Default is
-            IN_REGION.
+            Optional. Type of backup vault to be created.
+            Default is IN_REGION.
         source_region (str):
             Output only. Region in which the backup vault is created.
             Format: ``projects/{project_id}/locations/{location}``
@@ -153,24 +153,28 @@ class BackupVault(proto.Message):
                 Required. Minimum retention duration in days
                 for backups in the backup vault.
             daily_backup_immutable (bool):
-                Optional. Indicates if the daily backups are immutable. At
-                least one of daily_backup_immutable,
-                weekly_backup_immutable, monthly_backup_immutable and
+                Optional. Indicates if the daily backups are
+                immutable. At least one of
+                daily_backup_immutable, weekly_backup_immutable,
+                monthly_backup_immutable and
                 manual_backup_immutable must be true.
             weekly_backup_immutable (bool):
-                Optional. Indicates if the weekly backups are immutable. At
-                least one of daily_backup_immutable,
-                weekly_backup_immutable, monthly_backup_immutable and
+                Optional. Indicates if the weekly backups are
+                immutable. At least one of
+                daily_backup_immutable, weekly_backup_immutable,
+                monthly_backup_immutable and
                 manual_backup_immutable must be true.
             monthly_backup_immutable (bool):
-                Optional. Indicates if the monthly backups are immutable. At
-                least one of daily_backup_immutable,
-                weekly_backup_immutable, monthly_backup_immutable and
+                Optional. Indicates if the monthly backups are
+                immutable. At least one of
+                daily_backup_immutable, weekly_backup_immutable,
+                monthly_backup_immutable and
                 manual_backup_immutable must be true.
             manual_backup_immutable (bool):
-                Optional. Indicates if the manual backups are immutable. At
-                least one of daily_backup_immutable,
-                weekly_backup_immutable, monthly_backup_immutable and
+                Optional. Indicates if the manual backups are
+                immutable. At least one of
+                daily_backup_immutable, weekly_backup_immutable,
+                monthly_backup_immutable and
                 manual_backup_immutable must be true.
         """
 
@@ -285,8 +289,9 @@ class ListBackupVaultsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            The next_page_token value to use if there are
+            additional results to retrieve for this list
+            request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -405,12 +410,13 @@ class UpdateBackupVaultRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the fields to be
-            overwritten in the Backup resource to be updated. The fields
-            specified in the update_mask are relative to the resource,
-            not the full request. A field will be overwritten if it is
-            in the mask. If the user does not provide a mask then all
-            fields will be overwritten.
+            Required. Field mask is used to specify the
+            fields to be overwritten in the Backup resource
+            to be updated. The fields specified in the
+            update_mask are relative to the resource, not
+            the full request. A field will be overwritten if
+            it is in the mask. If the user does not provide
+            a mask then all fields will be overwritten.
         backup_vault (google.cloud.netapp_v1.types.BackupVault):
             Required. The backupVault being updated
     """

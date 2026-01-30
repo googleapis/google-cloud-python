@@ -286,15 +286,17 @@ class Runnable(proto.Message):
             background runnable, these automatic kills are not treated
             as task failures.
         always_run (bool):
-            By default, after a Runnable fails, no further Runnable are
-            executed. This flag indicates that this Runnable must be run
-            even if the Task has already failed. This is useful for
-            Runnables that copy output files off of the VM or for
+            By default, after a Runnable fails, no further
+            Runnable are executed. This flag indicates that
+            this Runnable must be run even if the Task has
+            already failed. This is useful for Runnables
+            that copy output files off of the VM or for
             debugging.
 
-            The always_run flag does not override the Task's overall
-            max_run_duration. If the max_run_duration has expired then
-            no further Runnables will execute, not even always_run
+            The always_run flag does not override the Task's
+            overall max_run_duration. If the
+            max_run_duration has expired then no further
+            Runnables will execute, not even always_run
             Runnables.
         environment (google.cloud.batch_v1.types.Environment):
             Environment variables for this Runnable
@@ -599,17 +601,20 @@ class TaskSpec(proto.Message):
             limited to the maximum run time for a job listed at
             https://cloud.google.com/batch/quotas#max-job-duration.
         max_retry_count (int):
-            Maximum number of retries on failures. The default, 0, which
-            means never retry. The valid value range is [0, 10].
+            Maximum number of retries on failures.
+            The default, 0, which means never retry.
+            The valid value range is [0, 10].
         lifecycle_policies (MutableSequence[google.cloud.batch_v1.types.LifecyclePolicy]):
-            Lifecycle management schema when any task in a task group is
-            failed. Currently we only support one lifecycle policy. When
-            the lifecycle policy condition is met, the action in the
-            policy will execute. If task execution result does not meet
-            with the defined lifecycle policy, we consider it as the
-            default policy. Default policy means if the exit code is 0,
-            exit task. If task ends with non-zero exit code, retry the
-            task with max_retry_count.
+            Lifecycle management schema when any task in a
+            task group is failed. Currently we only support
+            one lifecycle policy. When the lifecycle policy
+            condition is met,
+            the action in the policy will execute.
+            If task execution result does not meet with the
+            defined lifecycle policy, we consider it as the
+            default policy. Default policy means if the exit
+            code is 0, exit task. If task ends with non-zero
+            exit code, retry the task with max_retry_count.
         environments (MutableMapping[str, str]):
             Deprecated: please use
             environment(non-plural) instead.
@@ -668,12 +673,13 @@ class LifecyclePolicy(proto.Message):
 
     Attributes:
         action (google.cloud.batch_v1.types.LifecyclePolicy.Action):
-            Action to execute when ActionCondition is true. When
-            RETRY_TASK is specified, we will retry failed tasks if we
-            notice any exit code match and fail tasks if no match is
-            found. Likewise, when FAIL_TASK is specified, we will fail
-            tasks if we notice any exit code match and retry tasks if no
-            match is found.
+            Action to execute when ActionCondition is true.
+            When RETRY_TASK is specified, we will retry
+            failed tasks if we notice any exit code match
+            and fail tasks if no match is found. Likewise,
+            when FAIL_TASK is specified, we will fail tasks
+            if we notice any exit code match and retry tasks
+            if no match is found.
         action_condition (google.cloud.batch_v1.types.LifecyclePolicy.ActionCondition):
             Conditions that decide why a task failure is
             dealt with a specific action.

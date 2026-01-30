@@ -37,9 +37,10 @@ class Tag(proto.Message):
     resources. Tags conform with the specification of their tag
     template.
 
-    See `Data Catalog
-    IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
-    information on the permissions needed to create or view tags.
+    See [Data Catalog
+    IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
+    for information on the permissions needed to create or view
+    tags.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

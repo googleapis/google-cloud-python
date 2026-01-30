@@ -171,9 +171,10 @@ class Instance(proto.Message):
             network <https://cloud.google.com/vpc/docs/vpc>`__ to which
             the instance is connected.
         reserved_ip_range (str):
-            Optional. Immutable. The ID of the IP address range being
-            used by the instance's VPC network. See `Configure a VPC
-            network <https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc>`__.
+            Optional. Immutable. The ID of the IP address
+            range being used by the instance's VPC network.
+            See [Configure a VPC
+            network](https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc).
             If no ID is provided, all ranges are considered.
         effective_reserved_ip_range (str):
             Output only. Immutable. The ID of the IP
@@ -542,11 +543,12 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update. Field mask is used to
-            specify the fields to be overwritten in the Instance
-            resource by the update. At least one path must be supplied
-            in this field. The fields specified in the update_mask are
-            relative to the resource, not the full request.
+            Required. Mask of fields to update. Field mask
+            is used to specify the fields to be overwritten
+            in the Instance resource by the update. At least
+            one path must be supplied in this field. The
+            fields specified in the update_mask are relative
+            to the resource, not the full request.
         instance (google.cloud.parallelstore_v1.types.Instance):
             Required. The instance to update.
         request_id (str):

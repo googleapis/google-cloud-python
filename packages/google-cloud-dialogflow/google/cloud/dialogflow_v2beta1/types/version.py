@@ -139,8 +139,8 @@ class ListVersionsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -163,9 +163,9 @@ class ListVersionsResponse(proto.Message):
 
     Attributes:
         versions (MutableSequence[google.cloud.dialogflow_v2beta1.types.Version]):
-            The list of agent versions. There will be a maximum number
-            of items returned based on the page_size field in the
-            request.
+            The list of agent versions. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

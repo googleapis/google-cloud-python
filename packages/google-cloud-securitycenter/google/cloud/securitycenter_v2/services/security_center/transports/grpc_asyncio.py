@@ -1465,8 +1465,9 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     ]:
         r"""Return a callable for the update notification config method over gRPC.
 
-        Updates a notification config. The following update fields are
-        allowed: description, pubsub_topic, streaming_config.filter
+        Updates a notification config. The following update
+        fields are allowed: description, pubsub_topic,
+        streaming_config.filter
 
         Returns:
             Callable[[~.UpdateNotificationConfigRequest],

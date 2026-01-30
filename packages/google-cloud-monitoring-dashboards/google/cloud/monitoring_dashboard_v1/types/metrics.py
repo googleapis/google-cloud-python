@@ -148,10 +148,10 @@ class TimeSeriesFilter(proto.Message):
 
     Attributes:
         filter (str):
-            Required. The `monitoring
-            filter <https://cloud.google.com/monitoring/api/v3/filters>`__
-            that identifies the metric types, resources, and projects to
-            query.
+            Required. The [monitoring
+            filter](https://cloud.google.com/monitoring/api/v3/filters)
+            that identifies the metric types, resources, and
+            projects to query.
         aggregation (google.cloud.monitoring_dashboard_v1.types.Aggregation):
             By default, the raw time series data is
             returned. Use this field to combine multiple
@@ -237,10 +237,10 @@ class TimeSeriesFilterRatio(proto.Message):
 
         Attributes:
             filter (str):
-                Required. The `monitoring
-                filter <https://cloud.google.com/monitoring/api/v3/filters>`__
-                that identifies the metric types, resources, and projects to
-                query.
+                Required. The [monitoring
+                filter](https://cloud.google.com/monitoring/api/v3/filters)
+                that identifies the metric types, resources, and
+                projects to query.
             aggregation (google.cloud.monitoring_dashboard_v1.types.Aggregation):
                 By default, the raw time series data is
                 returned. Use this field to combine multiple

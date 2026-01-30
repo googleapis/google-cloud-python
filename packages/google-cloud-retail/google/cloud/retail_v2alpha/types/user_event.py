@@ -53,24 +53,26 @@ class UserEvent(proto.Message):
             - ``search``: Product search.
             - ``shopping-cart-page-view``: User viewing a shopping cart.
         visitor_id (str):
-            Required. A unique identifier for tracking visitors.
+            Required. A unique identifier for tracking
+            visitors.
+            For example, this could be implemented with an
+            HTTP cookie, which should be able to uniquely
+            identify a visitor on a single device. This
+            unique identifier should not change if the
+            visitor log in/out of the website.
 
-            For example, this could be implemented with an HTTP cookie,
-            which should be able to uniquely identify a visitor on a
-            single device. This unique identifier should not change if
-            the visitor log in/out of the website.
+            Don't set the field to the same fixed ID for
+            different users. This mixes the event history of
+            those users together, which results in degraded
+            model quality.
 
-            Don't set the field to the same fixed ID for different
-            users. This mixes the event history of those users together,
-            which results in degraded model quality.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an INVALID_ARGUMENT error is
-            returned.
-
-            The field should not contain PII or user-data. We recommend
-            to use Google Analytics `Client
-            ID <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
+            The field should not contain PII or user-data.
+            We recommend to use Google Analytics [Client
+            ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId)
             for this field.
         session_id (str):
             A unique identifier for tracking a visitor session with a

@@ -3413,8 +3413,9 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             Args:
                 request (~.cloudbuild.ReceiveTriggerWebhookRequest):
-                    The request object. ReceiveTriggerWebhookRequest [Experimental] is the
-                request object accepted by the ReceiveTriggerWebhook
+                    The request object. ReceiveTriggerWebhookRequest
+                [Experimental] is the request object
+                accepted by the ReceiveTriggerWebhook
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3426,8 +3427,9 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             Returns:
                 ~.cloudbuild.ReceiveTriggerWebhookResponse:
-                    ReceiveTriggerWebhookResponse [Experimental] is the
-                response object for the ReceiveTriggerWebhook method.
+                    ReceiveTriggerWebhookResponse
+                [Experimental] is the response object
+                for the ReceiveTriggerWebhook method.
 
             """
 

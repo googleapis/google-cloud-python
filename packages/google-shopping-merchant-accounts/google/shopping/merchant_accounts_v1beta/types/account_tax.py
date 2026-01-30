@@ -40,7 +40,9 @@ class AccountTax(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the tax setting. Format:
+            Identifier. The name of the tax setting.
+            Format:
+
             "{account_tax.name=accounts/{account}}".
         account (int):
             Output only. The ID of the account to which

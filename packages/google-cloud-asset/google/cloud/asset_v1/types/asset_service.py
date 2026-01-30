@@ -253,12 +253,14 @@ class ExportAssetsResponse(proto.Message):
             Output configuration indicating where the
             results were output to.
         output_result (google.cloud.asset_v1.types.OutputResult):
-            Output result indicating where the assets were exported to.
-            For example, a set of actual Cloud Storage object URIs where
-            the assets are exported to. The URIs can be different from
-            what [output_config] has specified, as the service will
-            split the output object into multiple ones once it exceeds a
-            single Cloud Storage object limit.
+            Output result indicating where the assets were
+            exported to. For example, a set of actual Cloud
+            Storage object URIs where the assets are
+            exported to. The URIs can be different from what
+            [output_config] has specified, as the service
+            will split the output object into multiple ones
+            once it exceeds a single Cloud Storage object
+            limit.
     """
 
     read_time: timestamp_pb2.Timestamp = proto.Field(
@@ -283,13 +285,14 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization, folder, or project the
-            assets belong to. Format:
+            Required. Name of the organization, folder, or
+            project the assets belong to. Format:
             "organizations/[organization-number]" (such as
-            "organizations/123"), "projects/[project-id]" (such as
-            "projects/my-project-id"), "projects/[project-number]" (such
-            as "projects/12345"), or "folders/[folder-number]" (such as
-            "folders/12345").
+            "organizations/123"), "projects/[project-id]"
+            (such as "projects/my-project-id"),
+            "projects/[project-number]" (such as
+            "projects/12345"), or "folders/[folder-number]"
+            (such as "folders/12345").
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
             only be set to a timestamp between the current
@@ -444,13 +447,15 @@ class BatchGetAssetsHistoryRequest(proto.Message):
         content_type (google.cloud.asset_v1.types.ContentType):
             Optional. The content type.
         read_time_window (google.cloud.asset_v1.types.TimeWindow):
-            Optional. The time window for the asset history. Both
-            start_time and end_time are optional and if set, it must be
-            after the current time minus 35 days. If end_time is not
-            set, it is default to current timestamp. If start_time is
-            not set, the snapshot of the assets at end_time will be
-            returned. The returned results contain all temporal assets
-            whose time window overlap with read_time_window.
+            Optional. The time window for the asset history.
+            Both start_time and end_time are optional and if
+            set, it must be after the current time minus 35
+            days. If end_time is not set, it is default to
+            current timestamp. If start_time is not set, the
+            snapshot of the assets at end_time will be
+            returned. The returned results contain all
+            temporal assets whose time window overlap with
+            read_time_window.
         relationship_types (MutableSequence[str]):
             Optional. A list of relationship types to output, for
             example: ``INSTANCE_TO_INSTANCEGROUP``. This field should
@@ -554,8 +559,9 @@ class GetFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Feed and it must be in the format
-            of: projects/project_number/feeds/feed_id
+            Required. The name of the Feed and it must be in
+            the format of:
+            projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -633,8 +639,9 @@ class DeleteFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the feed and it must be in the format
-            of: projects/project_number/feeds/feed_id
+            Required. The name of the feed and it must be in
+            the format of:
+            projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -707,8 +714,8 @@ class GcsOutputResult(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            List of URIs of the Cloud Storage objects. Example:
-            "gs://bucket_name/object_name".
+            List of URIs of the Cloud Storage objects.
+            Example: "gs://bucket_name/object_name".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -742,15 +749,23 @@ class GcsDestination(proto.Message):
 
             This field is a member of `oneof`_ ``object_uri``.
         uri_prefix (str):
-            The URI prefix of all generated Cloud Storage objects.
-            Example: "gs://bucket_name/object_name_prefix". Each object
-            URI is in format: "gs://bucket_name/object_name_prefix// and
-            only contains assets for that type. starts from 0. Example:
+            The URI prefix of all generated Cloud Storage
+            objects. Example:
+            "gs://bucket_name/object_name_prefix". Each
+            object URI is in format:
+
+            "gs://bucket_name/object_name_prefix/<asset
+            type>/<shard number> and only contains assets
+            for that type. <shard number> starts from 0.
+            Example:
+
             "gs://bucket_name/object_name_prefix/compute.googleapis.com/Disk/0"
-            is the first shard of output objects containing all
-            compute.googleapis.com/Disk assets. An INVALID_ARGUMENT
-            error will be returned if file with the same name
-            "gs://bucket_name/object_name_prefix" already exists.
+            is the first shard of output objects containing
+            all compute.googleapis.com/Disk assets. An
+            INVALID_ARGUMENT error will be returned if file
+            with the same name
+            "gs://bucket_name/object_name_prefix" already
+            exists.
 
             This field is a member of `oneof`_ ``object_uri``.
     """
@@ -886,9 +901,9 @@ class PartitionSpec(proto.Message):
 
     class PartitionKey(proto.Enum):
         r"""This enum is used to determine the partition key column when
-        exporting assets to BigQuery partitioned table(s). Note that, if the
-        partition key is a timestamp column, the actual partition is based
-        on its date value (expressed in UTC. see details in
+        exporting assets to BigQuery partitioned table(s). Note that, if
+        the partition key is a timestamp column, the actual partition is
+        based on its date value (expressed in UTC. see details in
         https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
 
         Values:
@@ -896,12 +911,14 @@ class PartitionSpec(proto.Message):
                 Unspecified partition key. If used, it means
                 using non-partitioned table.
             READ_TIME (1):
-                The time when the snapshot is taken. If specified as
-                partition key, the result table(s) is partitioned by the
-                additional timestamp column, readTime. If [read_time] in
-                ExportAssetsRequest is specified, the readTime column's
-                value will be the same as it. Otherwise, its value will be
-                the current time that is used to take the snapshot.
+                The time when the snapshot is taken. If
+                specified as partition key, the result table(s)
+                is partitioned by the additional timestamp
+                column, readTime. If [read_time] in
+                ExportAssetsRequest is specified, the readTime
+                column's value will be the same as it.
+                Otherwise, its value will be the current time
+                that is used to take the snapshot.
             REQUEST_TIME (2):
                 The time when the request is received and
                 started to be processed. If specified as
@@ -973,8 +990,9 @@ class Feed(proto.Message):
             or
             organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
 
-            The client-assigned feed identifier must be unique within
-            the parent project/folder/organization.
+            The client-assigned feed identifier must be
+            unique within the parent
+            project/folder/organization.
         asset_names (MutableSequence[str]):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
@@ -1502,21 +1520,22 @@ class IamPolicyAnalysisQuery(proto.Message):
 
     Attributes:
         scope (str):
-            Required. The relative name of the root asset. Only
-            resources and IAM policies within the scope will be
-            analyzed.
+            Required. The relative name of the root asset.
+            Only resources and IAM policies within the scope
+            will be analyzed.
 
             This can only be an organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
 
-            To know how to get organization ID, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
+            To know how to get organization ID, visit [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
             To know how to get folder or project ID, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
+            [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         resource_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ResourceSelector):
             Optional. Specifies a resource for analysis.
         identity_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.IdentitySelector):
@@ -1740,10 +1759,10 @@ class IamPolicyAnalysisQuery(proto.Message):
 
         Attributes:
             access_time (google.protobuf.timestamp_pb2.Timestamp):
-                The hypothetical access timestamp to evaluate IAM
-                conditions. Note that this value must not be earlier than
-                the current time; otherwise, an INVALID_ARGUMENT error will
-                be returned.
+                The hypothetical access timestamp to evaluate
+                IAM conditions. Note that this value must not be
+                earlier than the current time; otherwise, an
+                INVALID_ARGUMENT error will be returned.
 
                 This field is a member of `oneof`_ ``TimeContext``.
         """
@@ -1976,10 +1995,10 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
         Attributes:
             dataset (str):
                 Required. The BigQuery dataset in format
-                "projects/projectId/datasets/datasetId", to which the
-                analysis results should be exported. If this dataset does
-                not exist, the export call will return an INVALID_ARGUMENT
-                error.
+                "projects/projectId/datasets/datasetId", to
+                which the analysis results should be exported.
+                If this dataset does not exist, the export call
+                will return an INVALID_ARGUMENT error.
             table_prefix (str):
                 Required. The prefix of the BigQuery tables to which the
                 analysis results will be written. Tables will be created
@@ -2221,12 +2240,14 @@ class CreateSavedQueryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project/folder/organization where
-            this saved_query should be created in. It can only be an
-            organization number (such as "organizations/123"), a folder
-            number (such as "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            Required. The name of the
+            project/folder/organization where this
+            saved_query should be created in. It can only be
+            an organization number (such as
+            "organizations/123"), a folder number (such as
+            "folders/123"), a project ID (such as
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
         saved_query (google.cloud.asset_v1.types.SavedQuery):
             Required. The saved_query details. The ``name`` field must
             be empty as it will be generated based on the parent and
@@ -2651,8 +2672,9 @@ class QueryAssetsRequest(proto.Message):
 
             Only assets belonging to the ``parent`` will be returned.
         statement (str):
-            Optional. A SQL statement that's compatible with `BigQuery
-            SQL <https://cloud.google.com/bigquery/docs/introduction-sql>`__.
+            Optional. A SQL statement that's compatible with
+            [BigQuery
+            SQL](https://cloud.google.com/bigquery/docs/introduction-sql).
 
             This field is a member of `oneof`_ ``query``.
         job_reference (str):
@@ -2661,14 +2683,16 @@ class QueryAssetsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``query``.
         page_size (int):
-            Optional. The maximum number of rows to return in the
-            results. Responses are limited to 10 MB and 1000 rows.
+            Optional. The maximum number of rows to return
+            in the results. Responses are limited to 10 MB
+            and 1000 rows.
 
-            By default, the maximum row count is 1000. When the byte or
-            row count limit is reached, the rest of the query results
-            will be paginated.
+            By default, the maximum row count is 1000. When
+            the byte or row count limit is reached, the rest
+            of the query results will be paginated.
 
-            The field will be ignored when [output_config] is specified.
+            The field will be ignored when [output_config]
+            is specified.
         page_token (str):
             Optional. A page token received from previous
             ``QueryAssets``.
@@ -2690,10 +2714,10 @@ class QueryAssetsRequest(proto.Message):
 
             The field will be ignored when [output_config] is specified.
         read_time_window (google.cloud.asset_v1.types.TimeWindow):
-            Optional. [start_time] is required. [start_time] must be
-            less than [end_time] Defaults [end_time] to now if
-            [start_time] is set and [end_time] isn't. Maximum permitted
-            time range is 7 days.
+            Optional. [start_time] is required. [start_time]
+            must be less than [end_time] Defaults [end_time]
+            to now if [start_time] is set and [end_time]
+            isn't. Maximum permitted time range is 7 days.
 
             This field is a member of `oneof`_ ``time``.
         read_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -2702,15 +2726,17 @@ class QueryAssetsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``time``.
         output_config (google.cloud.asset_v1.types.QueryAssetsOutputConfig):
-            Optional. Destination where the query results will be saved.
-
-            When this field is specified, the query results won't be
-            saved in the [QueryAssetsResponse.query_result]. Instead
+            Optional. Destination where the query results
+            will be saved.
+            When this field is specified, the query results
+            won't be saved in the
+            [QueryAssetsResponse.query_result]. Instead
             [QueryAssetsResponse.output_config] will be set.
 
-            Meanwhile, [QueryAssetsResponse.job_reference] will be set
-            and can be used to check the status of the query job when
-            passed to a following [QueryAssets] API call.
+            Meanwhile, [QueryAssetsResponse.job_reference]
+            will be set and can be used to check the status
+            of the query job when passed to a following
+            [QueryAssets] API call.
     """
 
     parent: str = proto.Field(
@@ -2830,9 +2856,10 @@ class QueryAssetsResponse(proto.Message):
 class QueryResult(proto.Message):
     r"""Execution results of the query.
 
-    The result is formatted as rows represented by BigQuery compatible
-    [schema]. When pagination is necessary, it will contains the page
-    token to retrieve the results of following pages.
+    The result is formatted as rows represented by BigQuery
+    compatible [schema]. When pagination is necessary, it will
+    contains the page token to retrieve the results of following
+    pages.
 
     Attributes:
         rows (MutableSequence[google.protobuf.struct_pb2.Struct]):
@@ -2945,20 +2972,20 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
 
     Attributes:
         scope (str):
-            Required. Only IAM policies on or below the scope will be
-            returned.
-
+            Required. Only IAM policies on or below the
+            scope will be returned.
             This can only be an organization number (such as
             "organizations/123"), a folder number (such as
             "folders/123"), a project ID (such as
-            "projects/my-project-id"), or a project number (such as
-            "projects/12345").
+            "projects/my-project-id"), or a project number
+            (such as "projects/12345").
 
-            To know how to get organization ID, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
+            To know how to get organization ID, visit [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id).
 
             To know how to get folder or project ID, visit
-            `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
+            [here
+            ](https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects).
         names (MutableSequence[str]):
             Required. The names refer to the [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
@@ -3428,10 +3455,11 @@ class AnalyzerOrgPolicyConstraint(proto.Message):
         """
 
         class MethodType(proto.Enum):
-            r"""The operation in which this constraint will be applied. For example:
-            If the constraint applies only when create VMs, the method_types
-            will be "CREATE" only. If the constraint applied when create or
-            delete VMs, the method_types will be "CREATE" and "DELETE".
+            r"""The operation in which this constraint will be applied. For
+            example: If the constraint applies only when create VMs, the
+            method_types will be "CREATE" only. If the constraint applied
+            when create or delete VMs, the method_types will be "CREATE" and
+            "DELETE".
 
             Values:
                 METHOD_TYPE_UNSPECIFIED (0):
@@ -3629,19 +3657,24 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
                 If the constraint is defined with default policy, it will
                 also appear in the list.
             project (str):
-                The project that this consolidated policy belongs to, in the
-                format of projects/{PROJECT_NUMBER}. This field is available
-                when the consolidated policy belongs to a project.
+                The project that this consolidated policy
+                belongs to, in the format of
+                projects/{PROJECT_NUMBER}. This field is
+                available when the consolidated policy belongs
+                to a project.
             folders (MutableSequence[str]):
-                The folder(s) that this consolidated policy belongs to, in
-                the format of folders/{FOLDER_NUMBER}. This field is
-                available when the consolidated policy belongs (directly or
-                cascadingly) to one or more folders.
+                The folder(s) that this consolidated policy
+                belongs to, in the format of
+                folders/{FOLDER_NUMBER}. This field is available
+                when the consolidated policy belongs (directly
+                or cascadingly) to one or more folders.
             organization (str):
-                The organization that this consolidated policy belongs to,
-                in the format of organizations/{ORGANIZATION_NUMBER}. This
-                field is available when the consolidated policy belongs
-                (directly or cascadingly) to an organization.
+                The organization that this consolidated policy
+                belongs to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the consolidated policy
+                belongs (directly or cascadingly) to an
+                organization.
         """
 
         consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
@@ -3802,19 +3835,22 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
                 If the constraint is defined with default policy, it will
                 also appear in the list.
             project (str):
-                The project that this resource belongs to, in the format of
-                projects/{PROJECT_NUMBER}. This field is available when the
-                resource belongs to a project.
+                The project that this resource belongs to, in
+                the format of projects/{PROJECT_NUMBER}. This
+                field is available when the resource belongs to
+                a project.
             folders (MutableSequence[str]):
-                The folder(s) that this resource belongs to, in the format
-                of folders/{FOLDER_NUMBER}. This field is available when the
-                resource belongs (directly or cascadingly) to one or more
+                The folder(s) that this resource belongs to, in
+                the format of folders/{FOLDER_NUMBER}. This
+                field is available when the resource belongs
+                (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this resource belongs to, in the
-                format of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the resource belongs (directly or
-                cascadingly) to an organization.
+                The organization that this resource belongs to,
+                in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the resource belongs (directly
+                or cascadingly) to an organization.
             effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
                 The effective tags on this resource.
         """
@@ -3997,19 +4033,22 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 of the parent of
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name].
             project (str):
-                The project that this resource belongs to, in the format of
-                projects/{PROJECT_NUMBER}. This field is available when the
-                resource belongs to a project.
+                The project that this resource belongs to, in
+                the format of projects/{PROJECT_NUMBER}. This
+                field is available when the resource belongs to
+                a project.
             folders (MutableSequence[str]):
-                The folder(s) that this resource belongs to, in the format
-                of folders/{FOLDER_NUMBER}. This field is available when the
-                resource belongs (directly or cascadingly) to one or more
+                The folder(s) that this resource belongs to, in
+                the format of folders/{FOLDER_NUMBER}. This
+                field is available when the resource belongs
+                (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this resource belongs to, in the
-                format of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the resource belongs (directly or
-                cascadingly) to an organization.
+                The organization that this resource belongs to,
+                in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the resource belongs (directly
+                or cascadingly) to an organization.
             asset_type (str):
                 The asset type of the
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name]
@@ -4069,19 +4108,22 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 The IAM policy directly set on the given
                 resource.
             project (str):
-                The project that this IAM policy belongs to, in the format
-                of projects/{PROJECT_NUMBER}. This field is available when
-                the IAM policy belongs to a project.
+                The project that this IAM policy belongs to, in
+                the format of projects/{PROJECT_NUMBER}. This
+                field is available when the IAM policy belongs
+                to a project.
             folders (MutableSequence[str]):
-                The folder(s) that this IAM policy belongs to, in the format
-                of folders/{FOLDER_NUMBER}. This field is available when the
-                IAM policy belongs (directly or cascadingly) to one or more
+                The folder(s) that this IAM policy belongs to,
+                in the format of folders/{FOLDER_NUMBER}. This
+                field is available when the IAM policy belongs
+                (directly or cascadingly) to one or more
                 folders.
             organization (str):
-                The organization that this IAM policy belongs to, in the
-                format of organizations/{ORGANIZATION_NUMBER}. This field is
-                available when the IAM policy belongs (directly or
-                cascadingly) to an organization.
+                The organization that this IAM policy belongs
+                to, in the format of
+                organizations/{ORGANIZATION_NUMBER}. This field
+                is available when the IAM policy belongs
+                (directly or cascadingly) to an organization.
             asset_type (str):
                 The asset type of the
                 [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource].

@@ -318,19 +318,21 @@ class ApprovalRequest(proto.Message):
     Attributes:
         name (str):
             The resource name of the request. Format is
-            "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
+            "{projects\|folders\|organizations}/{id}/approvalRequests/{approval_request}".
         requested_resource_name (str):
-            The resource for which approval is being requested. The
-            format of the resource name is defined at
-            https://cloud.google.com/apis/design/resource_names. The
-            resource name here may either be a "full" resource name
-            (e.g. "//library.googleapis.com/shelves/shelf1/books/book2")
+            The resource for which approval is being
+            requested. The format of the resource name is
+            defined at
+            https://cloud.google.com/apis/design/resource_names.
+            The resource name here may either be a "full"
+            resource name (e.g.
+            "//library.googleapis.com/shelves/shelf1/books/book2")
             or a "relative" resource name (e.g.
-            "shelves/shelf1/books/book2") as described in the resource
-            name specification.
+            "shelves/shelf1/books/book2") as described in
+            the resource name specification.
         requested_resource_properties (google.cloud.accessapproval_v1.types.ResourceProperties):
-            Properties related to the resource represented by
-            requested_resource_name.
+            Properties related to the resource represented
+            by requested_resource_name.
         requested_reason (google.cloud.accessapproval_v1.types.AccessReason):
             The justification for which approval is being
             requested.
@@ -503,19 +505,22 @@ class AccessApprovalSettings(proto.Message):
             settings of ancestor resources of that resource.
             A maximum of 50 email addresses are allowed.
         enrolled_services (MutableSequence[google.cloud.accessapproval_v1.types.EnrolledService]):
-            A list of Google Cloud Services for which the given resource
-            has Access Approval enrolled. Access requests for the
-            resource given by name against any of these services
-            contained here will be required to have explicit approval.
-            If name refers to an organization, enrollment can be done
-            for individual services. If name refers to a folder or
-            project, enrollment can only be done on an all or nothing
-            basis.
+            A list of Google Cloud Services for which the
+            given resource has Access Approval enrolled.
+            Access requests for the resource given by name
+            against any of these services contained here
+            will be required to have explicit approval. If
+            name refers to an organization, enrollment can
+            be done for individual services. If name refers
+            to a folder or project, enrollment can only be
+            done on an all or nothing basis.
 
-            If a cloud_product is repeated in this list, the first entry
-            will be honored and all following entries will be discarded.
-            A maximum of 10 enrolled services will be enforced, to be
-            expanded as the set of supported services is expanded.
+            If a cloud_product is repeated in this list, the
+            first entry will be honored and all following
+            entries will be discarded. A maximum of 10
+            enrolled services will be enforced, to be
+            expanded as the set of supported services is
+            expanded.
         enrolled_ancestor (bool):
             Output only. This field is read only (not
             settable via UpdateAccessApprovalSettings
@@ -526,27 +531,32 @@ class AccessApprovalSettings(proto.Message):
             the organization since organizations do not have
             ancestors).
         active_key_version (str):
-            The asymmetric crypto key version to use for signing
-            approval requests. Empty active_key_version indicates that a
-            Google-managed key should be used for signing. This property
-            will be ignored if set by an ancestor of this resource, and
-            new non-empty values may not be set.
+            The asymmetric crypto key version to use for
+            signing approval requests. Empty
+            active_key_version indicates that a
+            Google-managed key should be used for signing.
+            This property will be ignored if set by an
+            ancestor of this resource, and new non-empty
+            values may not be set.
         ancestor_has_active_key_version (bool):
-            Output only. This field is read only (not settable via
-            UpdateAccessApprovalSettings method). If the field is true,
-            that indicates that an ancestor of this Project or Folder
-            has set active_key_version (this field will always be unset
-            for the organization since organizations do not have
-            ancestors).
+            Output only. This field is read only (not
+            settable via UpdateAccessApprovalSettings
+            method). If the field is true, that indicates
+            that an ancestor of this Project or Folder has
+            set active_key_version (this field will always
+            be unset for the organization since
+            organizations do not have ancestors).
         invalid_key_version (bool):
-            Output only. This field is read only (not settable via
-            UpdateAccessApprovalSettings method). If the field is true,
-            that indicates that there is some configuration issue with
-            the active_key_version configured at this level in the
-            resource hierarchy (e.g. it doesn't exist or the Access
-            Approval service account doesn't have the correct
-            permissions on it, etc.) This key version is not necessarily
-            the effective key version at this level, as key versions are
+            Output only. This field is read only (not
+            settable via UpdateAccessApprovalSettings
+            method). If the field is true, that indicates
+            that there is some configuration issue with the
+            active_key_version configured at this level in
+            the resource hierarchy (e.g. it doesn't exist or
+            the Access Approval service account doesn't have
+            the correct permissions on it, etc.) This key
+            version is not necessarily the effective key
+            version at this level, as key versions are
             inherited top-down.
     """
 
@@ -685,8 +695,10 @@ class GetApprovalRequestMessage(proto.Message):
 
     Attributes:
         name (str):
-            The name of the approval request to retrieve. Format:
-            "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}".
+            The name of the approval request to retrieve.
+            Format:
+
+            "{projects\|folders\|organizations}/{id}/approvalRequests/{approval_request}".
     """
 
     name: str = proto.Field(
@@ -749,8 +761,9 @@ class GetAccessApprovalSettingsMessage(proto.Message):
 
     Attributes:
         name (str):
-            The name of the AccessApprovalSettings to retrieve. Format:
-            "{projects|folders|organizations}/{id}/accessApprovalSettings".
+            The name of the AccessApprovalSettings to
+            retrieve. Format:
+            "{projects\|folders\|organizations}/{id}/accessApprovalSettings".
     """
 
     name: str = proto.Field(

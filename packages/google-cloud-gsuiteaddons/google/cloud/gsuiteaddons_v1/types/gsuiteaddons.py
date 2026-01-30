@@ -336,8 +336,8 @@ class Deployment(proto.Message):
 
     Attributes:
         name (str):
-            The deployment resource name. Example:
-            projects/123/deployments/my_deployment.
+            The deployment resource name.
+            Example: projects/123/deployments/my_deployment.
         oauth_scopes (MutableSequence[str]):
             The list of Google OAuth scopes for which to
             request consent from the end user before

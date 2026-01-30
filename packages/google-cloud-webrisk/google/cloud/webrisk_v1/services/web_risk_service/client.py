@@ -1096,15 +1096,15 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> webrisk.Submission:
-        r"""Creates a Submission of a URI suspected of containing phishing
-        content to be reviewed. If the result verifies the existence of
-        malicious phishing content, the site will be added to the
-        `Google's Social Engineering
-        lists <https://support.google.com/webmasters/answer/6350487/>`__
-        in order to protect users that could get exposed to this threat
-        in the future. Only allowlisted projects can use this method
-        during Early Access. Please reach out to Sales or your customer
-        engineer to obtain access.
+        r"""Creates a Submission of a URI suspected of containing
+        phishing content to be reviewed. If the result verifies
+        the existence of malicious phishing content, the site
+        will be added to the [Google's Social Engineering
+        lists](https://support.google.com/webmasters/answer/6350487/)
+        in order to protect users that could get exposed to this
+        threat in the future. Only allowlisted projects can use
+        this method during Early Access. Please reach out to
+        Sales or your customer engineer to obtain access.
 
         .. code-block:: python
 
@@ -1141,8 +1141,9 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 The request object. Request to send a potentially phishy
                 URI to WebRisk.
             parent (str):
-                Required. The name of the project that is making the
-                submission. This string is in the format
+                Required. The name of the project that
+                is making the submission. This string is
+                in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field
@@ -1280,8 +1281,9 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 The request object. Request to send a potentially
                 malicious URI to WebRisk.
             parent (str):
-                Required. The name of the project that is making the
-                submission. This string is in the format
+                Required. The name of the project that
+                is making the submission. This string is
+                in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field

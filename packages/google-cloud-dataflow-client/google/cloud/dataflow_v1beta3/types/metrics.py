@@ -86,13 +86,15 @@ class MetricStructuredName(proto.Message):
         name (str):
             Worker-defined metric name.
         context (MutableMapping[str, str]):
-            Zero or more labeled fields which identify the part of the
-            job this metric is associated with, such as the name of a
-            step or collection.
+            Zero or more labeled fields which identify the
+            part of the job this metric is associated with,
+            such as the name of a step or collection.
 
-            For example, built-in counters associated with steps will
-            have context['step'] = . Counters associated with
-            PCollections in the SDK will have context['pcollection'] = .
+            For example, built-in counters associated with
+            steps will have context['step'] = <step-name>.
+            Counters associated with PCollections in the SDK
+            will have context['pcollection'] =
+            <pcollection-name>.
     """
 
     origin: str = proto.Field(
@@ -139,16 +141,19 @@ class MetricUpdate(proto.Message):
             and "Or".  The possible value types are Long,
             Double, and Boolean.
         mean_sum (google.protobuf.struct_pb2.Value):
-            Worker-computed aggregate value for the "Mean" aggregation
-            kind. This holds the sum of the aggregated values and is
-            used in combination with mean_count below to obtain the
-            actual mean aggregate value. The only possible value types
+            Worker-computed aggregate value for the "Mean"
+            aggregation kind. This holds the sum of the
+            aggregated values and is used in combination
+            with mean_count below to obtain the actual mean
+            aggregate value. The only possible value types
             are Long and Double.
         mean_count (google.protobuf.struct_pb2.Value):
-            Worker-computed aggregate value for the "Mean" aggregation
-            kind. This holds the count of the aggregated values and is
-            used in combination with mean_sum above to obtain the actual
-            mean aggregate value. The only possible value type is Long.
+            Worker-computed aggregate value for the "Mean"
+            aggregation kind. This holds the count of the
+            aggregated values and is used in combination
+            with mean_sum above to obtain the actual mean
+            aggregate value. The only possible value type is
+            Long.
         set_ (google.protobuf.struct_pb2.Value):
             Worker-computed aggregate value for the "Set"
             aggregation kind.  The only possible value type
@@ -325,9 +330,10 @@ class GetJobExecutionDetailsRequest(proto.Message):
             may return an arbitrarily large number of
             results.
         page_token (str):
-            If supplied, this should be the value of next_page_token
-            returned by an earlier call. This will cause the next page
-            of results to be returned.
+            If supplied, this should be the value of
+            next_page_token returned by an earlier call.
+            This will cause the next page of results to be
+            returned.
     """
 
     project_id: str = proto.Field(
@@ -358,7 +364,8 @@ class ProgressTimeseries(proto.Message):
 
     Attributes:
         current_progress (float):
-            The current progress of the component, in the range [0,1].
+            The current progress of the component, in the
+            range [0,1].
         data_points (MutableSequence[google.cloud.dataflow_v1beta3.types.ProgressTimeseries.Point]):
             History of progress for the component.
 
@@ -547,9 +554,11 @@ class HotKeyDebuggingInfo(proto.Message):
                 The age of the hot key measured from when it
                 was first detected.
             key (str):
-                A detected hot key that is causing limited parallelism. This
-                field will be populated only if the following flag is set to
-                true: "--enable_hot_key_logging".
+                A detected hot key that is causing limited
+                parallelism. This field will be populated only
+                if the following flag is set to true:
+
+                "--enable_hot_key_logging".
             key_truncated (bool):
                 If true, then the above key is truncated and
                 cannot be deserialized. This occurs if the key
@@ -676,9 +685,10 @@ class JobExecutionDetails(proto.Message):
         stages (MutableSequence[google.cloud.dataflow_v1beta3.types.StageSummary]):
             The stages of the job execution.
         next_page_token (str):
-            If present, this response does not contain all requested
-            tasks. To obtain the next page of results, repeat the
-            request with page_token set to this value.
+            If present, this response does not contain all
+            requested tasks. To obtain the next page of
+            results, repeat the request with page_token set
+            to this value.
     """
 
     @property
@@ -718,9 +728,10 @@ class GetStageExecutionDetailsRequest(proto.Message):
             may return an arbitrarily large number of
             results.
         page_token (str):
-            If supplied, this should be the value of next_page_token
-            returned by an earlier call. This will cause the next page
-            of results to be returned.
+            If supplied, this should be the value of
+            next_page_token returned by an earlier call.
+            This will cause the next page of results to be
+            returned.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Lower time bound of work items to include, by
             start time.
@@ -861,9 +872,10 @@ class StageExecutionDetails(proto.Message):
         workers (MutableSequence[google.cloud.dataflow_v1beta3.types.WorkerDetails]):
             Workers that have done work on the stage.
         next_page_token (str):
-            If present, this response does not contain all requested
-            tasks. To obtain the next page of results, repeat the
-            request with page_token set to this value.
+            If present, this response does not contain all
+            requested tasks. To obtain the next page of
+            results, repeat the request with page_token set
+            to this value.
     """
 
     @property

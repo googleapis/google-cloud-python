@@ -450,12 +450,12 @@ class BatchRemoveCatalogAttributesResponse(proto.Message):
 
     Attributes:
         deleted_catalog_attributes (MutableSequence[str]):
-            Catalog attributes that were deleted. Only pre-loaded
-            [catalog
+            Catalog attributes that were deleted. Only
+            pre-loaded [catalog
             attributes][google.cloud.retail.v2beta.CatalogAttribute]
             that are neither [in
-            use][google.cloud.retail.v2beta.CatalogAttribute.in_use] by
-            products nor predefined can be deleted.
+            use][google.cloud.retail.v2beta.CatalogAttribute.in_use]
+            by products nor predefined can be deleted.
         reset_catalog_attributes (MutableSequence[str]):
             Catalog attributes that were reset. [Catalog
             attributes][google.cloud.retail.v2beta.CatalogAttribute]

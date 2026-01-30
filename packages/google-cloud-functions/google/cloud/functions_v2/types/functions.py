@@ -297,9 +297,9 @@ class StorageSource(proto.Message):
 
     Attributes:
         bucket (str):
-            Google Cloud Storage bucket containing the source (see
-            `Bucket Name
-            Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
+            Google Cloud Storage bucket containing the
+            source (see [Bucket Name
+            Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
         object_ (str):
             Google Cloud Storage object containing the source.
 
@@ -696,18 +696,19 @@ class ServiceConfig(proto.Message):
             Environment variables that shall be available
             during function execution.
         max_instance_count (int):
-            The limit on the maximum number of function instances that
-            may coexist at a given time.
+            The limit on the maximum number of function
+            instances that may coexist at a given time.
 
-            In some cases, such as rapid traffic surges, Cloud Functions
-            may, for a short period of time, create more instances than
-            the specified max instances limit. If your function cannot
-            tolerate this temporary behavior, you may want to factor in
-            a safety margin and set a lower max instances value than
-            your function can tolerate.
+            In some cases, such as rapid traffic surges,
+            Cloud Functions may, for a short period of time,
+            create more instances than the specified max
+            instances limit. If your function cannot
+            tolerate this temporary behavior, you may want
+            to factor in a safety margin and set a lower max
+            instances value than your function can tolerate.
 
-            See the `Max
-            Instances <https://cloud.google.com/functions/docs/max-instances>`__
+            See the [Max
+            Instances](https://cloud.google.com/functions/docs/max-instances)
             Guide for more details.
         min_instance_count (int):
             The limit on the minimum number of function
@@ -1228,10 +1229,11 @@ class ListFunctionsRequest(proto.Message):
             reachable locations along with the names of any unreachable
             locations.
         page_size (int):
-            Maximum number of functions to return per call. The largest
-            allowed page_size is 1,000, if the page_size is omitted or
-            specified as greater than 1,000 then it will be replaced as
-            1,000. The size of the list response can be less than
+            Maximum number of functions to return per call.
+            The largest allowed page_size is 1,000, if the
+            page_size is omitted or specified as greater
+            than 1,000 then it will be replaced as 1,000.
+            The size of the list response can be less than
             specified when used with filters.
         page_token (str):
             The value returned by the last ``ListFunctionsResponse``;

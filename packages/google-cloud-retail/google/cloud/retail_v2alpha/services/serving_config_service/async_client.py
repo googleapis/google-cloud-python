@@ -948,13 +948,15 @@ class ServingConfigServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcr_serving_config.ServingConfig:
-        r"""Enables a Control on the specified ServingConfig. The control is
-        added in the last position of the list of controls it belongs to
-        (e.g. if it's a facet spec control it will be applied in the
-        last position of servingConfig.facetSpecIds) Returns a
-        ALREADY_EXISTS error if the control has already been applied.
-        Returns a FAILED_PRECONDITION error if the addition could exceed
-        maximum number of control allowed for that type of control.
+        r"""Enables a Control on the specified ServingConfig.
+        The control is added in the last position of the list of
+        controls it belongs to (e.g. if it's a facet spec
+        control it will be applied in the last position of
+        servingConfig.facetSpecIds) Returns a ALREADY_EXISTS
+        error if the control has already been applied. Returns a
+        FAILED_PRECONDITION error if the addition could exceed
+        maximum number of control allowed for that type of
+        control.
 
         .. code-block:: python
 
@@ -1072,9 +1074,10 @@ class ServingConfigServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcr_serving_config.ServingConfig:
-        r"""Disables a Control on the specified ServingConfig. The control
-        is removed from the ServingConfig. Returns a NOT_FOUND error if
-        the Control is not enabled for the ServingConfig.
+        r"""Disables a Control on the specified ServingConfig.
+        The control is removed from the ServingConfig.
+        Returns a NOT_FOUND error if the Control is not enabled
+        for the ServingConfig.
 
         .. code-block:: python
 

@@ -383,12 +383,13 @@ class DimensionExpression(proto.Message):
             delimiter (str):
                 The delimiter placed between dimension names.
 
-                Delimiters are often single characters such as "\|" or ","
-                but can be longer strings. If a dimension value contains the
-                delimiter, both will be present in response with no
-                distinction. For example if dimension 1 value = "US,FR",
-                dimension 2 value = "JP", and delimiter = ",", then the
-                response will contain "US,FR,JP".
+                Delimiters are often single characters such as
+                "\|" or "," but can be longer strings. If a
+                dimension value contains the delimiter, both
+                will be present in response with no distinction.
+                For example if dimension 1 value = "US,FR",
+                dimension 2 value = "JP", and delimiter = ",",
+                then the response will contain "US,FR,JP".
         """
 
         dimension_names: MutableSequence[str] = proto.RepeatedField(
@@ -537,11 +538,13 @@ class FilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.data_v1beta.types.FilterExpressionList):
-            The FilterExpressions in and_group have an AND relationship.
+            The FilterExpressions in and_group have an AND
+            relationship.
 
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1beta.types.FilterExpressionList):
-            The FilterExpressions in or_group have an OR relationship.
+            The FilterExpressions in or_group have an OR
+            relationship.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1beta.types.FilterExpression):
@@ -928,24 +931,23 @@ class OrderBy(proto.Message):
         """
 
         class PivotSelection(proto.Message):
-            r"""A pair of dimension names and values. Rows with this dimension pivot
-            pair are ordered by the metric's value.
+            r"""A pair of dimension names and values. Rows with this dimension
+            pivot pair are ordered by the metric's value.
 
-            For example if pivots = {{"browser", "Chrome"}} and metric_name =
-            "Sessions", then the rows will be sorted based on Sessions in
-            Chrome.
+            For example if pivots = {{"browser", "Chrome"}} and metric_name
+            = "Sessions",
+            then the rows will be sorted based on Sessions in Chrome.
 
-            ::
-
-                ---------|----------|----------------|----------|----------------
-                         |  Chrome  |    Chrome      |  Safari  |     Safari
-                ---------|----------|----------------|----------|----------------
-                 Country | Sessions | Pages/Sessions | Sessions | Pages/Sessions
-                ---------|----------|----------------|----------|----------------
-                    US   |    2     |       2        |     3    |        1
-                ---------|----------|----------------|----------|----------------
-                  Canada |    3     |       1        |     4    |        1
-                ---------|----------|----------------|----------|----------------
+            ---------\|----------\|----------------\|----------\|----------------
+            \| Chrome \| Chrome \| Safari \| Safari
+            ---------\|----------\|----------------\|----------\|----------------
+            Country \| Sessions \| Pages/Sessions \| Sessions \|
+            Pages/Sessions
+            ---------\|----------\|----------------\|----------\|----------------
+            US \| 2 \| 2 \| 3 \| 1
+            ---------\|----------\|----------------\|----------\|----------------
+            Canada \| 3 \| 1 \| 4 \| 1
+            ---------\|----------\|----------------\|----------\|----------------
 
             Attributes:
                 dimension_name (str):
@@ -1013,11 +1015,12 @@ class Pivot(proto.Message):
             column will indicate the corresponding date
             range from the request.
         order_bys (MutableSequence[google.analytics.data_v1beta.types.OrderBy]):
-            Specifies how dimensions are ordered in the pivot. In the
-            first Pivot, the OrderBys determine Row and
-            PivotDimensionHeader ordering; in subsequent Pivots, the
-            OrderBys determine only PivotDimensionHeader ordering.
-            Dimensions specified in these OrderBys must be a subset of
+            Specifies how dimensions are ordered in the
+            pivot. In the first Pivot, the OrderBys
+            determine Row and PivotDimensionHeader ordering;
+            in subsequent Pivots, the OrderBys determine
+            only PivotDimensionHeader ordering. Dimensions
+            specified in these OrderBys must be a subset of
             Pivot.field_names.
         offset (int):
             The row count of the start row. The first row
@@ -1032,8 +1035,8 @@ class Pivot(proto.Message):
             example, a two pivot request with ``limit: 1000`` in each
             pivot will fail because the product is ``1,000,000``.
         metric_aggregations (MutableSequence[google.analytics.data_v1beta.types.MetricAggregation]):
-            Aggregate the metrics by dimensions in this pivot using the
-            specified metric_aggregations.
+            Aggregate the metrics by dimensions in this
+            pivot using the specified metric_aggregations.
     """
 
     field_names: MutableSequence[str] = proto.RepeatedField(
@@ -1279,28 +1282,31 @@ class ResponseMetaData(proto.Message):
 
     Attributes:
         data_loss_from_other_row (bool):
-            If true, indicates some buckets of dimension combinations
-            are rolled into "(other)" row. This can happen for high
-            cardinality reports.
+            If true, indicates some buckets of dimension
+            combinations are rolled into "(other)" row. This
+            can happen for high cardinality reports.
 
-            The metadata parameter dataLossFromOtherRow is populated
-            based on the aggregated data table used in the report. The
-            parameter will be accurately populated regardless of the
-            filters and limits in the report.
+            The metadata parameter dataLossFromOtherRow is
+            populated based on the aggregated data table
+            used in the report. The parameter will be
+            accurately populated regardless of the filters
+            and limits in the report.
 
-            For example, the (other) row could be dropped from the
-            report because the request contains a filter on
-            sessionSource = google. This parameter will still be
-            populated if data loss from other row was present in the
-            input aggregate data used to generate this report.
+            For example, the (other) row could be dropped
+            from the report because the request contains a
+            filter on sessionSource = google. This parameter
+            will still be populated if data loss from other
+            row was present in the input aggregate data used
+            to generate this report.
 
-            To learn more, see `About the (other) row and data
-            sampling <https://support.google.com/analytics/answer/13208658#reports>`__.
+            To learn more, see [About the (other) row and
+            data
+            sampling](https://support.google.com/analytics/answer/13208658#reports).
         schema_restriction_response (google.analytics.data_v1beta.types.ResponseMetaData.SchemaRestrictionResponse):
-            Describes the schema restrictions actively enforced in
-            creating this report. To learn more, see `Access and
-            data-restriction
-            management <https://support.google.com/analytics/answer/10851388>`__.
+            Describes the schema restrictions actively
+            enforced in creating this report. To learn more,
+            see [Access and data-restriction
+            management](https://support.google.com/analytics/answer/10851388).
 
             This field is a member of `oneof`_ ``_schema_restriction_response``.
         currency_code (str):
@@ -1354,9 +1360,9 @@ class ResponseMetaData(proto.Message):
     """
 
     class SchemaRestrictionResponse(proto.Message):
-        r"""The schema restrictions actively enforced in creating this report.
-        To learn more, see `Access and data-restriction
-        management <https://support.google.com/analytics/answer/10851388>`__.
+        r"""The schema restrictions actively enforced in creating this
+        report. To learn more, see [Access and data-restriction
+        management](https://support.google.com/analytics/answer/10851388).
 
         Attributes:
             active_metric_restrictions (MutableSequence[google.analytics.data_v1beta.types.ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction]):
@@ -1598,9 +1604,9 @@ class Row(proto.Message):
 
     Attributes:
         dimension_values (MutableSequence[google.analytics.data_v1beta.types.DimensionValue]):
-            List of requested dimension values. In a PivotReport,
-            dimension_values are only listed for dimensions included in
-            a pivot.
+            List of requested dimension values. In a
+            PivotReport, dimension_values are only listed
+            for dimensions included in a pivot.
         metric_values (MutableSequence[google.analytics.data_v1beta.types.MetricValue]):
             List of requested visible metric values.
     """
@@ -1887,15 +1893,16 @@ class MetricMetadata(proto.Message):
             True if the metric is a custom metric for
             this property.
         blocked_reasons (MutableSequence[google.analytics.data_v1beta.types.MetricMetadata.BlockedReason]):
-            If reasons are specified, your access is blocked to this
-            metric for this property. API requests from you to this
-            property for this metric will succeed; however, the report
-            will contain only zeros for this metric. API requests with
-            metric filters on blocked metrics will fail. If reasons are
-            empty, you have access to this metric.
+            If reasons are specified, your access is blocked
+            to this metric for this property. API requests
+            from you to this property for this metric will
+            succeed; however, the report will contain only
+            zeros for this metric. API requests with metric
+            filters on blocked metrics will fail. If reasons
+            are empty, you have access to this metric.
 
-            To learn more, see `Access and data-restriction
-            management <https://support.google.com/analytics/answer/10851388>`__.
+            To learn more, see [Access and data-restriction
+            management](https://support.google.com/analytics/answer/10851388).
         category (str):
             The display name of the category that this
             metrics belongs to. Similar dimensions and

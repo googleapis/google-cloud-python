@@ -95,8 +95,8 @@ class GetBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the batch to retrieve
-            in the format
+            Required. The fully qualified name of the batch
+            to retrieve in the format
             "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
@@ -214,8 +214,8 @@ class DeleteBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the batch to retrieve
-            in the format
+            Required. The fully qualified name of the batch
+            to retrieve in the format
             "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
@@ -442,8 +442,9 @@ class Batch(proto.Message):
 
 
 class PySparkBatch(proto.Message):
-    r"""A configuration for running an `Apache
-    PySpark <https://spark.apache.org/docs/latest/api/python/getting_started/quickstart.html>`__
+    r"""A configuration for running an
+    [Apache
+    PySpark](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart.html)
     batch workload.
 
     Attributes:

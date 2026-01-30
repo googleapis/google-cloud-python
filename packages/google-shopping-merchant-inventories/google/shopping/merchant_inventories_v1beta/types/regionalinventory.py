@@ -69,9 +69,10 @@ class RegionalInventory(proto.Message):
         sale_price_effective_date (google.type.interval_pb2.Interval):
             The ``TimePeriod`` of the sale price in this region.
         availability (str):
-            Availability of the product in this region. For accepted
-            attribute values, see the `regional product inventory data
-            specification <https://support.google.com/merchants/answer/3061342>`__
+            Availability of the product in this region.
+            For accepted attribute values, see the [regional
+            product inventory data
+            specification](https://support.google.com/merchants/answer/3061342)
 
             This field is a member of `oneof`_ ``_availability``.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):

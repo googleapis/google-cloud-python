@@ -1015,8 +1015,9 @@ class MirroringClient(metaclass=MirroringClientMeta):
                 The request object. Request message for
                 GetMirroringEndpointGroup.
             name (str):
-                Required. The name of the endpoint group to retrieve.
-                Format:
+                Required. The name of the endpoint group
+                to retrieve. Format:
+
                 projects/{project}/locations/{location}/mirroringEndpointGroups/{mirroring_endpoint_group}
 
                 This corresponds to the ``name`` field
@@ -1716,8 +1717,9 @@ class MirroringClient(metaclass=MirroringClientMeta):
                 The request object. Request message for
                 GetMirroringEndpointGroupAssociation.
             name (str):
-                Required. The name of the association to retrieve.
-                Format:
+                Required. The name of the association to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroring_endpoint_group_association}
 
                 This corresponds to the ``name`` field
@@ -2433,8 +2435,9 @@ class MirroringClient(metaclass=MirroringClientMeta):
                 The request object. Request message for
                 GetMirroringDeploymentGroup.
             name (str):
-                Required. The name of the deployment group to retrieve.
-                Format:
+                Required. The name of the deployment
+                group to retrieve. Format:
+
                 projects/{project}/locations/{location}/mirroringDeploymentGroups/{mirroring_deployment_group}
 
                 This corresponds to the ``name`` field
@@ -3125,8 +3128,9 @@ class MirroringClient(metaclass=MirroringClientMeta):
                 The request object. Request message for
                 GetMirroringDeployment.
             name (str):
-                Required. The name of the deployment to retrieve.
-                Format:
+                Required. The name of the deployment to
+                retrieve. Format:
+
                 projects/{project}/locations/{location}/mirroringDeployments/{mirroring_deployment}
 
                 This corresponds to the ``name`` field

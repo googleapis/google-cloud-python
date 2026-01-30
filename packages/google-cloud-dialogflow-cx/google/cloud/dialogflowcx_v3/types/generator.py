@@ -99,10 +99,11 @@ class Generator(proto.Message):
 
         Attributes:
             temperature (float):
-                The temperature used for sampling. Temperature sampling
-                occurs after both topP and topK have been applied. Valid
-                range: [0.0, 1.0] Low temperature = less random. High
-                temperature = more random.
+                The temperature used for sampling. Temperature
+                sampling occurs after both topP and topK have
+                been applied. Valid range: [0.0, 1.0]
+                Low temperature = less random. High temperature
+                = more random.
 
                 This field is a member of `oneof`_ ``_temperature``.
             max_decode_steps (int):
@@ -110,17 +111,20 @@ class Generator(proto.Message):
 
                 This field is a member of `oneof`_ ``_max_decode_steps``.
             top_p (float):
-                If set, only the tokens comprising the top top_p probability
-                mass are considered. If both top_p and top_k are set, top_p
-                will be used for further refining candidates selected with
-                top_k. Valid range: (0.0, 1.0]. Small topP = less random.
-                Large topP = more random.
+                If set, only the tokens comprising the top top_p
+                probability mass are considered. If both top_p
+                and top_k are set, top_p will be used for
+                further refining candidates selected with top_k.
+                Valid range: (0.0, 1.0].
+                Small topP = less random. Large topP = more
+                random.
 
                 This field is a member of `oneof`_ ``_top_p``.
             top_k (int):
-                If set, the sampling process in each step is limited to the
-                top_k tokens with highest probabilities. Valid range: [1,
-                40] or 1000+. Small topK = less random. Large topK = more
+                If set, the sampling process in each step is
+                limited to the top_k tokens with highest
+                probabilities. Valid range: [1, 40] or 1000+.
+                Small topK = less random. Large topK = more
                 random.
 
                 This field is a member of `oneof`_ ``_top_k``.
@@ -206,8 +210,8 @@ class ListGeneratorsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -234,8 +238,9 @@ class ListGeneratorsResponse(proto.Message):
 
     Attributes:
         generators (MutableSequence[google.cloud.dialogflowcx_v3.types.Generator]):
-            The list of generators. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of generators. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

@@ -88,7 +88,8 @@ class Text(proto.Message):
 
             Values:
                 HORIZONTAL_ALIGNMENT_UNSPECIFIED (0):
-                    No horizontal alignment specified, will default to H_LEFT
+                    No horizontal alignment specified, will default
+                    to H_LEFT
                 H_LEFT (1):
                     Left-align
                 H_CENTER (2):
@@ -107,7 +108,8 @@ class Text(proto.Message):
 
             Values:
                 VERTICAL_ALIGNMENT_UNSPECIFIED (0):
-                    No vertical alignment specified, will default to V_TOP
+                    No vertical alignment specified, will default to
+                    V_TOP
                 V_TOP (1):
                     Top-align
                 V_CENTER (2):
@@ -125,7 +127,8 @@ class Text(proto.Message):
 
             Values:
                 PADDING_SIZE_UNSPECIFIED (0):
-                    No padding size specified, will default to P_EXTRA_SMALL
+                    No padding size specified, will default to
+                    P_EXTRA_SMALL
                 P_EXTRA_SMALL (1):
                     Extra small padding
                 P_SMALL (2):

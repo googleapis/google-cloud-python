@@ -40,8 +40,9 @@ class CloudExadataInfrastructure(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Exadata Infrastructure resource
-            with the format:
+            Identifier. The name of the Exadata
+            Infrastructure resource with the format:
+
             projects/{project}/locations/{region}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}
         display_name (str):
             Optional. User friendly name for this

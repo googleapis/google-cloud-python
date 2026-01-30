@@ -366,7 +366,8 @@ class LabelSegment(proto.Message):
         segment (google.cloud.videointelligence_v1p2beta1.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     segment: "VideoSegment" = proto.Field(
@@ -389,7 +390,8 @@ class LabelFrame(proto.Message):
             video, corresponding to the video frame for this
             location.
         confidence (float):
-            Confidence that the label is accurate. Range: [0, 1].
+            Confidence that the label is accurate. Range:
+            [0, 1].
     """
 
     time_offset: duration_pb2.Duration = proto.Field(
@@ -408,9 +410,9 @@ class Entity(proto.Message):
 
     Attributes:
         entity_id (str):
-            Opaque entity ID. Some IDs may be available in `Google
-            Knowledge Graph Search
-            API <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in
+            [Google Knowledge Graph Search
+            API](https://developers.google.com/knowledge-graph/).
         description (str):
             Textual description, e.g. ``Fixed-gear bicycle``.
         language_code (str):
@@ -514,8 +516,9 @@ class ExplicitContentAnnotation(proto.Message):
 
 
 class NormalizedBoundingBox(proto.Message):
-    r"""Normalized bounding box. The normalized vertex coordinates are
-    relative to the original image. Range: [0, 1].
+    r"""Normalized bounding box.
+    The normalized vertex coordinates are relative to the original
+    image. Range: [0, 1].
 
     Attributes:
         left (float):
@@ -729,17 +732,26 @@ class NormalizedVertex(proto.Message):
 
 
 class NormalizedBoundingPoly(proto.Message):
-    r"""Normalized bounding polygon for text (that might not be aligned with
-    axis). Contains list of the corner points in clockwise order
-    starting from top-left corner. For example, for a rectangular
-    bounding box: When the text is horizontal it might look like: 0----1
-    \| \| 3----2
+    r"""Normalized bounding polygon for text (that might not be aligned
+    with axis). Contains list of the corner points in clockwise
+    order starting from top-left corner. For example, for a
+    rectangular bounding box:
 
-    When it's clockwise rotated 180 degrees around the top-left corner
-    it becomes: 2----3 \| \| 1----0
+    When the text is horizontal it might look like:
 
-    and the vertex order will still be (0, 1, 2, 3). Note that values
-    can be less than 0, or greater than 1 due to trignometric
+    0----1
+    \| \|
+    3----2
+
+    When it's clockwise rotated 180 degrees around the top-left
+    corner it becomes:
+
+    2----3
+    \| \|
+    1----0
+
+    and the vertex order will still be (0, 1, 2, 3). Note that
+    values can be less than 0, or greater than 1 due to trignometric
     calculations for location of the box.
 
     Attributes:
@@ -878,12 +890,15 @@ class ObjectTrackingAnnotation(proto.Message):
 
             This field is a member of `oneof`_ ``track_info``.
         track_id (int):
-            Streaming mode ONLY. In streaming mode, we do not know the
-            end time of a tracked object before it is completed. Hence,
-            there is no VideoSegment info returned. Instead, we provide
-            a unique identifiable integer track_id so that the customers
-            can correlate the results of the ongoing
-            ObjectTrackAnnotation of the same track_id over time.
+            Streaming mode ONLY.
+            In streaming mode, we do not know the end time
+            of a tracked object before it is completed.
+            Hence, there is no VideoSegment info returned.
+            Instead, we provide a unique identifiable
+            integer track_id so that the customers can
+            correlate the results of the ongoing
+            ObjectTrackAnnotation of the same track_id over
+            time.
 
             This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1p2beta1.types.Entity):

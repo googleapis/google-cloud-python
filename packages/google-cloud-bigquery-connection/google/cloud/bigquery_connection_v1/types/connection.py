@@ -528,9 +528,10 @@ class AwsCrossAccountRole(proto.Message):
             Output only. Google-owned AWS IAM User for a
             Connection.
         external_id (str):
-            Output only. A Google-generated id for representing
-            Connection’s identity in AWS. External Id is also used for
-            preventing the Confused Deputy Problem. See
+            Output only. A Google-generated id for
+            representing Connection’s identity in AWS.
+            External Id is also used for preventing the
+            Confused Deputy Problem. See
             https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user_externalid.html
     """
 

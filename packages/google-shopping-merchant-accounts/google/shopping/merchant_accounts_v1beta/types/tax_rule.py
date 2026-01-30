@@ -52,8 +52,8 @@ class TaxRule(proto.Message):
 
     Attributes:
         location_id (int):
-            The admin_id or criteria_id of the region in which this rule
-            is applicable.
+            The admin_id or criteria_id of the region in
+            which this rule is applicable.
 
             This field is a member of `oneof`_ ``location``.
         post_code_range (google.shopping.merchant_accounts_v1beta.types.TaxRule.TaxPostalCodeRange):
@@ -69,8 +69,8 @@ class TaxRule(proto.Message):
 
             This field is a member of `oneof`_ ``rate_calculation``.
         self_specified_rate_micros (int):
-            A fixed rate specified in micros, where 100% = 1_000_000.
-            Suitable for origin-based states.
+            A fixed rate specified in micros, where 100% =
+            1_000_000. Suitable for origin-based states.
 
             This field is a member of `oneof`_ ``rate_calculation``.
         region_code (str):
@@ -81,9 +81,10 @@ class TaxRule(proto.Message):
             area. Can only be set on US states without
             category.
         effective_time_period (google.type.interval_pb2.Interval):
-            Required. Time period when this rule is effective. If the
-            duration is missing from effective_time listed, then it is
-            open ended to the future. The start of this time period is
+            Required. Time period when this rule is
+            effective. If the duration is missing from
+            effective_time listed, then it is open ended to
+            the future. The start of this time period is
             inclusive, and the end is exclusive.
     """
 

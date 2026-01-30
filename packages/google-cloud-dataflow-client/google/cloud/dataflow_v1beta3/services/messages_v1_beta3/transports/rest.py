@@ -265,10 +265,12 @@ class MessagesV1Beta3RestTransport(_BaseMessagesV1Beta3RestTransport):
 
             Args:
                 request (~.messages.ListJobMessagesRequest):
-                    The request object. Request to list job messages. Up to max_results messages
-                will be returned in the time range specified starting
-                with the oldest messages first. If no time range is
-                specified the results with start with the oldest
+                    The request object. Request to list job messages.
+                Up to max_results messages will be
+                returned in the time range specified
+                starting with the oldest messages first.
+                If no time range is specified the
+                results with start with the oldest
                 message.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

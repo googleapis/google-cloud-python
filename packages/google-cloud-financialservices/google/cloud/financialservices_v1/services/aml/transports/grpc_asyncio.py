@@ -511,10 +511,11 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
     ]:
         r"""Return a callable for the import registered parties method over gRPC.
 
-        Imports the list of registered parties. See `Create and manage
-        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties>`__
-        for information on the input schema and response for this
-        method.
+        Imports the list of registered parties. See
+        [Create and manage
+        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties)
+        for information on the input schema and response for
+        this method.
 
         Returns:
             Callable[[~.ImportRegisteredPartiesRequest],
@@ -542,8 +543,9 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
     ]:
         r"""Return a callable for the export registered parties method over gRPC.
 
-        Exports the list of registered parties. See `Create and manage
-        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties>`__
+        Exports the list of registered parties. See
+        [Create and manage
+        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties)
         for information on the output schema for this method.
 
         Returns:
@@ -811,8 +813,9 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
         r"""Return a callable for the export model metadata method over gRPC.
 
         Export governance information for a Model resource. For
-        information on the exported fields, see `AML output data
-        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model>`__.
+        information on the exported fields, see
+        [AML output data
+        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model).
 
         Returns:
             Callable[[~.ExportModelMetadataRequest],
@@ -982,9 +985,10 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
     ]:
         r"""Return a callable for the export engine config metadata method over gRPC.
 
-        Export governance information for an EngineConfig resource. For
-        information on the exported fields, see `AML output data
-        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config>`__.
+        Export governance information for an EngineConfig
+        resource. For information on the exported fields, see
+        [AML output data
+        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config).
 
         Returns:
             Callable[[~.ExportEngineConfigMetadataRequest],
@@ -1218,9 +1222,10 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
         r"""Return a callable for the export prediction result
         metadata method over gRPC.
 
-        Export governance information for a PredictionResult resource.
-        For information on the exported fields, see `AML output data
-        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results>`__.
+        Export governance information for a PredictionResult
+        resource. For information on the exported fields, see
+        [AML output data
+        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results).
 
         Returns:
             Callable[[~.ExportPredictionResultMetadataRequest],
@@ -1397,9 +1402,10 @@ class AMLGrpcAsyncIOTransport(AMLTransport):
         r"""Return a callable for the export backtest result
         metadata method over gRPC.
 
-        Export governance information for a BacktestResult resource. For
-        information on the exported fields, see `AML output data
-        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results>`__.
+        Export governance information for a BacktestResult
+        resource. For information on the exported fields, see
+        [AML output data
+        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results).
 
         Returns:
             Callable[[~.ExportBacktestResultMetadataRequest],

@@ -51,10 +51,10 @@ class GmailAddOnManifest(proto.Message):
             Defines the set of conditions that trigger
             the add-on.
         universal_actions (MutableSequence[google.apps.script.type.gmail.types.UniversalAction]):
-            Defines set of `universal
-            actions </gmail/add-ons/how-tos/universal-actions>`__ for
-            the add-on. The user triggers universal actions from the
-            add-on toolbar menu.
+            Defines set of [universal
+            actions](/gmail/add-ons/how-tos/universal-actions)
+            for the add-on. The user triggers universal
+            actions from the add-on toolbar menu.
         compose_trigger (google.apps.script.type.gmail.types.ComposeTrigger):
             Defines the compose time trigger for a
             compose time add-on. This is the trigger that
@@ -121,10 +121,10 @@ class UniversalAction(proto.Message):
 
             This field is a member of `oneof`_ ``action_type``.
         run_function (str):
-            An endpoint that is called when the user triggers the
-            action. See the `universal actions
-            guide </gmail/add-ons/how-tos/universal-actions>`__ for
-            details.
+            An endpoint that is called when the user
+            triggers the action. See the [universal actions
+            guide](/gmail/add-ons/how-tos/universal-actions)
+            for details.
 
             This field is a member of `oneof`_ ``action_type``.
     """

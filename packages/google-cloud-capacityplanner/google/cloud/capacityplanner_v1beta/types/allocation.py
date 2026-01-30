@@ -111,9 +111,10 @@ class Allocation(proto.Message):
 
             Attributes:
                 machine_type (str):
-                    Specifies type of machine (name only) which has fixed number
-                    of vCPUs and fixed amount of memory. This also includes
-                    specifying custom machine type following
+                    Specifies type of machine (name only) which has
+                    fixed number of vCPUs and fixed amount of
+                    memory. This also includes specifying custom
+                    machine type following
                     custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY pattern.
                 guest_accelerator (MutableSequence[google.cloud.capacityplanner_v1beta.types.Allocation.SpecificSKUAllocation.AllocatedInstanceProperties.AcceleratorConfig]):
                     Specifies accelerator type and count.
@@ -240,9 +241,10 @@ class Allocation(proto.Message):
             share_type (google.cloud.capacityplanner_v1beta.types.Allocation.ShareSettings.ShareType):
                 Type of sharing for this shared-reservation
             projects (MutableSequence[str]):
-                A List of Project names to specify consumer projects for
-                this shared-reservation. This is only valid when
-                share_type's value is SPECIFIC_PROJECTS.
+                A List of Project names to specify consumer
+                projects for this shared-reservation. This is
+                only valid when share_type's value is
+                SPECIFIC_PROJECTS.
         """
 
         class ShareType(proto.Enum):

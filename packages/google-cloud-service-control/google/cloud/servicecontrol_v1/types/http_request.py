@@ -63,9 +63,9 @@ class HttpRequest(proto.Message):
             The IP address (IPv4 or IPv6) of the origin
             server that the request was sent to.
         referer (str):
-            The referer URL of the request, as defined in `HTTP/1.1
-            Header Field
-            Definitions <http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>`__.
+            The referer URL of the request, as defined in
+            [HTTP/1.1 Header Field
+            Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
         latency (google.protobuf.duration_pb2.Duration):
             The request processing latency on the server,
             from the time the request was received until the

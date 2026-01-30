@@ -890,10 +890,11 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> assuredworkloads.Workload:
-        r"""Updates an existing workload. Currently allows updating of
-        workload display_name and labels. For force updates don't set
-        etag field in the Workload. Only one update operation per
-        workload can be in progress.
+        r"""Updates an existing workload.
+        Currently allows updating of workload display_name and
+        labels. For force updates don't set etag field in the
+        Workload. Only one update operation per workload can be
+        in progress.
 
         .. code-block:: python
 
@@ -1107,12 +1108,13 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the workload. Make sure that workload's direct children
-        are already in a deleted state, otherwise the request will fail
-        with a FAILED_PRECONDITION error. In addition to
-        assuredworkloads.workload.delete permission, the user should
-        also have orgpolicy.policy.set permission on the deleted folder
-        to remove Assured Workloads OrgPolicies.
+        r"""Deletes the workload. Make sure that workload's direct
+        children are already in a deleted state, otherwise the
+        request will fail with a FAILED_PRECONDITION error.
+        In addition to assuredworkloads.workload.delete
+        permission, the user should also have
+        orgpolicy.policy.set permission on the deleted folder to
+        remove Assured Workloads OrgPolicies.
 
         .. code-block:: python
 
@@ -1240,8 +1242,9 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             request (Union[google.cloud.assuredworkloads_v1beta1.types.GetWorkloadRequest, dict]):
                 The request object. Request for fetching a workload.
             name (str):
-                Required. The resource name of the Workload to fetch.
-                This is the workloads's relative path in the API,
+                Required. The resource name of the
+                Workload to fetch. This is the
+                workloads's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,
@@ -1354,24 +1357,33 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 project-based workload to a target
                 (destination) folder-based workload.
             project (str):
-                The source type is a project. Specify the project's
-                relative resource name, formatted as either a project
-                number or a project ID: "projects/{PROJECT_NUMBER}" or
+                The source type is a project. Specify
+                the project's relative resource name,
+                formatted as either a project number or
+                a project ID:
+
+                "projects/{PROJECT_NUMBER}" or
                 "projects/{PROJECT_ID}" For example:
-                "projects/951040570662" when specifying a project
-                number, or "projects/my-project-123" when specifying a
-                project ID.
+
+                "projects/951040570662" when specifying
+                a project number, or
+                "projects/my-project-123" when
+                specifying a project ID.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target (str):
-                Required. The resource ID of the folder-based
-                destination workload. This workload is where the source
-                project will hypothetically be moved to. Specify the
-                workload's relative resource name, formatted as:
+                Required. The resource ID of the
+                folder-based destination workload. This
+                workload is where the source project
+                will hypothetically be moved to. Specify
+                the workload's relative resource name,
+                formatted as:
+
                 "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
                 For example:
+
                 "organizations/123/locations/us-east1/workloads/assured-workload-2"
 
                 This corresponds to the ``target`` field

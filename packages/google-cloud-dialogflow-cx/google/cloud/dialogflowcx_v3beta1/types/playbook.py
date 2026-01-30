@@ -110,8 +110,8 @@ class ListPlaybooksRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a previous list
-            request.
+            The next_page_token value returned from a
+            previous list request.
     """
 
     parent: str = proto.Field(
@@ -134,8 +134,9 @@ class ListPlaybooksResponse(proto.Message):
 
     Attributes:
         playbooks (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Playbook]):
-            The list of playbooks. There will be a maximum number of
-            items returned based on the page_size field in the request.
+            The list of playbooks. There will be a maximum
+            number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -561,8 +562,8 @@ class ListPlaybookVersionsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
+            Optional. The next_page_token value returned
+            from a previous list request.
     """
 
     parent: str = proto.Field(
@@ -585,9 +586,9 @@ class ListPlaybookVersionsResponse(proto.Message):
 
     Attributes:
         playbook_versions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion]):
-            The list of playbook version. There will be a maximum number
-            of items returned based on the page_size field in the
-            request.
+            The list of playbook version. There will be a
+            maximum number of items returned based on the
+            page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -697,7 +698,8 @@ class ImportPlaybookRequest(proto.Message):
             Required. The agent to import the playbook into. Format:
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>``.
         playbook_uri (str):
-            [Dialogflow access control]
+            [Dialogflow access
+            control]
             (https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
 
             This field is a member of `oneof`_ ``playbook``.
@@ -738,20 +740,22 @@ class PlaybookImportStrategy(proto.Message):
 
     Attributes:
         main_playbook_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
-            Optional. Specifies the import strategy used when resolving
-            conflicts with the main playbook. If not specified,
-            'CREATE_NEW' is assumed.
+            Optional. Specifies the import strategy used
+            when resolving conflicts with the main playbook.
+            If not specified, 'CREATE_NEW' is assumed.
         nested_resource_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
-            Optional. Specifies the import strategy used when resolving
-            referenced playbook/flow conflicts. If not specified,
-            'CREATE_NEW' is assumed.
+            Optional. Specifies the import strategy used
+            when resolving referenced playbook/flow
+            conflicts. If not specified, 'CREATE_NEW' is
+            assumed.
         tool_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
-            Optional. Specifies the import strategy used when resolving
-            tool conflicts. If not specified, 'CREATE_NEW' is assumed.
-            This will be applied after the main playbook and nested
-            resource import strategies, meaning if the playbook that
-            references the tool is skipped, the tool will also be
-            skipped.
+            Optional. Specifies the import strategy used
+            when resolving tool conflicts. If not specified,
+            'CREATE_NEW' is assumed. This will be applied
+            after the main playbook and nested resource
+            import strategies, meaning if the playbook that
+            references the tool is skipped, the tool will
+            also be skipped.
     """
 
     main_playbook_import_strategy: gcdc_import_strategy.ImportStrategy = proto.Field(

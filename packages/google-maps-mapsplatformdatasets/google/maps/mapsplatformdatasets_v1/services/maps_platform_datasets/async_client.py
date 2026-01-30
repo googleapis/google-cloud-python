@@ -465,8 +465,9 @@ class MapsPlatformDatasetsAsyncClient:
                 The request object. Request to update the metadata fields
                 of the dataset.
             dataset (:class:`google.maps.mapsplatformdatasets_v1.types.Dataset`):
-                Required. Resource name of the dataset to update.
-                Format: projects/{project}/datasets/{dataset_id}
+                Required. Resource name of the dataset
+                to update. Format:
+                projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -587,16 +588,18 @@ class MapsPlatformDatasetsAsyncClient:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1.types.GetDatasetRequest, dict]]):
                 The request object. Request to get the specified dataset.
             name (:class:`str`):
-                Required. Resource name. Format:
+                Required. Resource name.
+                Format:
                 projects/{project}/datasets/{dataset_id}
 
-                Can also fetch some special versions by appending "@"
-                and a tag. Format:
+                Can also fetch some special versions by
+                appending "@" and a tag. Format:
                 projects/{project}/datasets/{dataset_id}@{tag}
 
-                Tag "active": The info of the latest completed version
-                will be included, and NOT_FOUND if the dataset does not
-                have one.
+                Tag "active": The info of the latest
+                completed version will be included, and
+                NOT_FOUND if the dataset does not have
+                one.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -709,8 +712,9 @@ class MapsPlatformDatasetsAsyncClient:
                 The request object. Request to list detailed errors
                 belonging to a dataset.
             dataset (:class:`str`):
-                Required. The name of the dataset to list all the errors
-                for. Format: projects/{project}/datasets/{dataset_id}
+                Required. The name of the dataset to
+                list all the errors for. Format:
+                projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -961,7 +965,8 @@ class MapsPlatformDatasetsAsyncClient:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1.types.DeleteDatasetRequest, dict]]):
                 The request object. Request to delete a dataset.
             name (:class:`str`):
-                Required. The name of the dataset to delete. Format:
+                Required. The name of the dataset to
+                delete. Format:
                 projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``name`` field

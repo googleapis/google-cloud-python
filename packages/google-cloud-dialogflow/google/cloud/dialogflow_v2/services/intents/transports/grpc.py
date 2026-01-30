@@ -401,9 +401,9 @@ class IntentsGrpcTransport(IntentsTransport):
 
         Creates an intent in the specified agent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.CreateIntentRequest],
@@ -431,9 +431,9 @@ class IntentsGrpcTransport(IntentsTransport):
 
         Updates the specified intent.
 
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.UpdateIntentRequest],
@@ -457,12 +457,11 @@ class IntentsGrpcTransport(IntentsTransport):
     def delete_intent(self) -> Callable[[intent.DeleteIntentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete intent method over gRPC.
 
-        Deletes the specified intent and its direct or indirect followup
-        intents.
-
-        Note: You should always train an agent prior to sending it
-        queries. See the `training
-        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+        Deletes the specified intent and its direct or indirect
+        followup intents.
+        Note: You should always train an agent prior to sending
+        it queries. See the [training
+        documentation](https://cloud.google.com/dialogflow/es/docs/training).
 
         Returns:
             Callable[[~.DeleteIntentRequest],

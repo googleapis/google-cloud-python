@@ -803,9 +803,9 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source (:class:`google.cloud.securitycenter_v1.types.Source`):
-                Required. The Source being created, only the
-                display_name and description will be used. All other
-                fields will be ignored.
+                Required. The Source being created, only
+                the display_name and description will be
+                used. All other fields will be ignored.
 
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -945,9 +945,10 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             finding (:class:`google.cloud.securitycenter_v1.types.Finding`):
-                Required. The Finding being created. The name and
-                security_marks will be ignored as they are both output
-                only fields on this resource.
+                Required. The Finding being created. The
+                name and security_marks will be ignored
+                as they are both output only fields on
+                this resource.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3689,10 +3690,12 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for listing
                 notification configs.
             parent (:class:`str`):
-                Required. The name of the parent in which to list the
-                notification configurations. Its format is
+                Required. The name of the parent in
+                which to list the notification
+                configurations. Its format is
                 "organizations/[organization_id]",
-                "folders/[folder_id]", or "projects/[project_id]".
+                "folders/[folder_id]", or
+                "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4210,9 +4213,9 @@ class SecurityCenterAsyncClient:
         r"""Runs asset discovery. The discovery is tracked with a
         long-running operation.
 
-        This API can only be called with limited frequency for an
-        organization. If it is called too frequently the caller will
-        receive a TOO_MANY_REQUESTS error.
+        This API can only be called with limited frequency for
+        an organization. If it is called too frequently the
+        caller will receive a TOO_MANY_REQUESTS error.
 
         .. code-block:: python
 
@@ -5199,13 +5202,15 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for updating or
                 creating a finding.
             finding (:class:`google.cloud.securitycenter_v1.types.Finding`):
-                Required. The finding resource to update or create if it
-                does not already exist. parent, security_marks, and
-                update_time will be ignored.
+                Required. The finding resource to update
+                or create if it does not already exist.
+                parent, security_marks, and update_time
+                will be ignored.
 
-                In the case of creation, the finding id portion of the
-                name must be alphanumeric and less than or equal to 32
-                characters and greater than 0 characters in length.
+                In the case of creation, the finding id
+                portion of the name must be alphanumeric
+                and less than or equal to 32 characters
+                and greater than 0 characters in length.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5427,8 +5432,9 @@ class SecurityCenterAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcs_notification_config.NotificationConfig:
-        r"""Updates a notification config. The following update fields are
-        allowed: description, pubsub_topic, streaming_config.filter
+        r"""Updates a notification config. The following update
+        fields are allowed: description, pubsub_topic,
+        streaming_config.filter
 
         .. code-block:: python
 
@@ -6638,8 +6644,8 @@ class SecurityCenterAsyncClient:
                 should not be set.
             event_threat_detection_custom_module (:class:`google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule`):
                 Required. The module to create. The
-                event_threat_detection_custom_module.name will be
-                ignored and server generated.
+                event_threat_detection_custom_module.name
+                will be ignored and server generated.
 
                 This corresponds to the ``event_threat_detection_custom_module`` field
                 on the ``request`` instance; if ``request`` is provided, this

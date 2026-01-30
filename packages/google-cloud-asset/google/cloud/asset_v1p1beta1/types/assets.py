@@ -61,15 +61,16 @@ class StandardResourceMetadata(proto.Message):
             Location can be "global", regional like
             "us-east1", or zonal like "us-west1-b".
         labels (MutableMapping[str, str]):
-            Labels associated with this resource. See `Labelling and
-            grouping Google Cloud
-            resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
+            Labels associated with this resource. See
+            [Labelling and grouping Google Cloud
+            resources](https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
             for more information.
         network_tags (MutableSequence[str]):
-            Network tags associated with this resource. Like labels,
-            network tags are a type of annotations used to group Google
-            Cloud resources. See `Labelling Google Cloud
-            resources <lhttps://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
+            Network tags associated with this resource. Like
+            labels, network tags are a type of annotations
+            used to group Google Cloud resources. See
+            [Labelling Google Cloud
+            resources](lhttps://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
             for more information.
     """
 
@@ -117,8 +118,9 @@ class IamPolicySearchResult(proto.Message):
 
     Attributes:
         resource (str):
-            The `full resource
-            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
+            The
+            [full resource
+            name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
             of the resource associated with this IAM policy.
         project (str):
             The project that the associated Google Cloud resource

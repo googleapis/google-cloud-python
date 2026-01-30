@@ -678,10 +678,11 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
     ]:
         r"""Return a callable for the get api spec contents method over gRPC.
 
-        Returns the contents of a specified spec. If specs are stored
-        with GZip compression, the default behavior is to return the
-        spec uncompressed (the mime_type response field indicates the
-        exact format returned).
+        Returns the contents of a specified spec.
+        If specs are stored with GZip compression, the default
+        behavior is to return the spec uncompressed (the
+        mime_type response field indicates the exact format
+        returned).
 
         Returns:
             Callable[[~.GetApiSpecContentsRequest],
@@ -1239,10 +1240,11 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
     ]:
         r"""Return a callable for the get artifact contents method over gRPC.
 
-        Returns the contents of a specified artifact. If artifacts are
-        stored with GZip compression, the default behavior is to return
-        the artifact uncompressed (the mime_type response field
-        indicates the exact format returned).
+        Returns the contents of a specified artifact.
+        If artifacts are stored with GZip compression, the
+        default behavior is to return the artifact uncompressed
+        (the mime_type response field indicates the exact format
+        returned).
 
         Returns:
             Callable[[~.GetArtifactContentsRequest],

@@ -482,8 +482,9 @@ class DocumentProcessorServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""LRO endpoint to batch process many documents. The output is
-        written to Cloud Storage as JSON in the [Document] format.
+        r"""LRO endpoint to batch process many documents. The output
+        is written to Cloud Storage as JSON in the [Document]
+        format.
 
         .. code-block:: python
 

@@ -1216,14 +1216,13 @@ class ServiceMonitoringServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListServiceLevelObjectivesRequest, dict]]):
                 The request object. The ``ListServiceLevelObjectives`` request.
             parent (:class:`str`):
-                Required. Resource name of the parent containing the
-                listed SLOs, either a project or a Monitoring Metrics
-                Scope. The formats are:
+                Required. Resource name of the parent
+                containing the listed SLOs, either a
+                project or a Monitoring Metrics Scope.
+                The formats are:
 
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
-                    workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
+                projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+                workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

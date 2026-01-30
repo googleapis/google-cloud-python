@@ -486,12 +486,9 @@ class UptimeCheckServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetUptimeCheckConfigRequest, dict]]):
                 The request object. The protocol for the ``GetUptimeCheckConfig`` request.
             name (:class:`str`):
-                Required. The Uptime check configuration to retrieve.
-                The format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+                Required. The Uptime check configuration
+                to retrieve. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -863,12 +860,9 @@ class UptimeCheckServiceAsyncClient:
                 The request object. The protocol for the ``DeleteUptimeCheckConfig``
                 request.
             name (:class:`str`):
-                Required. The Uptime check configuration to delete. The
-                format is:
-
-                ::
-
-                    projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
+                Required. The Uptime check configuration
+                to delete. The format is:
+                projects/[PROJECT_ID_OR_NUMBER]/uptimeCheckConfigs/[UPTIME_CHECK_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

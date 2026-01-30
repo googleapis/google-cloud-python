@@ -831,7 +831,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.CreateDocument.
             parent (str):
-                Required. The parent name. Format:
+                Required. The parent name.
+                Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -915,8 +916,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcc_document.Document:
-        r"""Gets a document. Returns NOT_FOUND if the document does not
-        exist.
+        r"""Gets a document. Returns NOT_FOUND if the document does
+        not exist.
 
         .. code-block:: python
 
@@ -949,7 +950,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.GetDocument.
             name (str):
-                Required. The name of the document to retrieve. Format:
+                Required. The name of the document to
+                retrieve. Format:
+
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1029,8 +1032,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.UpdateDocumentResponse:
-        r"""Updates a document. Returns INVALID_ARGUMENT if the name of the
-        document is non-empty and does not equal the existing name.
+        r"""Updates a document. Returns INVALID_ARGUMENT if the name
+        of the document is non-empty and does not equal the
+        existing name.
 
         .. code-block:: python
 
@@ -1069,7 +1073,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.UpdateDocument.
             name (str):
-                Required. The name of the document to update. Format:
+                Required. The name of the document to
+                update. Format:
+
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1155,8 +1161,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a document. Returns NOT_FOUND if the document does not
-        exist.
+        r"""Deletes a document. Returns NOT_FOUND if the document
+        does not exist.
 
         .. code-block:: python
 
@@ -1186,7 +1192,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.DeleteDocument.
             name (str):
-                Required. The name of the document to delete. Format:
+                Required. The name of the document to
+                delete. Format:
+
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1293,8 +1301,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.SearchDocuments.
             parent (str):
-                Required. The parent, which owns this collection of
-                documents. Format:
+                Required. The parent, which owns this
+                collection of documents. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -1419,7 +1427,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.LockDocument.
             name (str):
-                Required. The name of the document to lock. Format:
+                Required. The name of the document to
+                lock. Format:
+
                 projects/{project_number}/locations/{location}/documents/{document}.
 
                 This corresponds to the ``name`` field
@@ -1494,9 +1504,10 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.FetchAclResponse:
-        r"""Gets the access control policy for a resource. Returns NOT_FOUND
-        error if the resource does not exist. Returns an empty policy if
-        the resource exists but does not have a policy set.
+        r"""Gets the access control policy for a resource. Returns
+        NOT_FOUND error if the resource does not exist. Returns
+        an empty policy if the resource exists but does not have
+        a policy set.
 
         .. code-block:: python
 
@@ -1529,12 +1540,16 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.FetchAcl
             resource (str):
-                Required. REQUIRED: The resource for which the policy is
-                being requested. Format for document:
+                Required. REQUIRED: The resource for
+                which the policy is being requested.
+                Format for document:
+
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
+
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project: projects/{project_number}.
+                Format for project:
+                projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1643,12 +1658,16 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.SetAcl.
             resource (str):
-                Required. REQUIRED: The resource for which the policy is
-                being requested. Format for document:
+                Required. REQUIRED: The resource for
+                which the policy is being requested.
+                Format for document:
+
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
+
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project: projects/{project_number}.
+                Format for project:
+                projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this

@@ -664,7 +664,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteDataTaxonomyRequest, dict]]):
                 The request object. Delete DataTaxonomy request.
             name (:class:`str`):
-                Required. The resource name of the DataTaxonomy:
+                Required. The resource name of the
+                DataTaxonomy:
                 projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
 
                 This corresponds to the ``name`` field
@@ -1060,7 +1061,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.CreateDataAttributeBindingRequest, dict]]):
                 The request object. Create DataAttributeBinding request.
             parent (:class:`str`):
-                Required. The resource name of the parent data taxonomy
+                Required. The resource name of the
+                parent data taxonomy
                 projects/{project_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -1362,7 +1364,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteDataAttributeBindingRequest, dict]]):
                 The request object. Delete DataAttributeBinding request.
             name (:class:`str`):
-                Required. The resource name of the DataAttributeBinding:
+                Required. The resource name of the
+                DataAttributeBinding:
                 projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
 
                 This corresponds to the ``name`` field
@@ -1499,7 +1502,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.ListDataAttributeBindingsRequest, dict]]):
                 The request object. List DataAttributeBindings request.
             parent (:class:`str`):
-                Required. The resource name of the Location:
+                Required. The resource name of the
+                Location:
                 projects/{project_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -1630,7 +1634,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetDataAttributeBindingRequest, dict]]):
                 The request object. Get DataAttributeBinding request.
             name (:class:`str`):
-                Required. The resource name of the DataAttributeBinding:
+                Required. The resource name of the
+                DataAttributeBinding:
                 projects/{project_number}/locations/{location_id}/dataAttributeBindings/{data_attribute_binding_id}
 
                 This corresponds to the ``name`` field
@@ -1754,7 +1759,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.CreateDataAttributeRequest, dict]]):
                 The request object. Create DataAttribute request.
             parent (:class:`str`):
-                Required. The resource name of the parent data taxonomy
+                Required. The resource name of the
+                parent data taxonomy
                 projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
 
                 This corresponds to the ``parent`` field
@@ -2051,7 +2057,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteDataAttributeRequest, dict]]):
                 The request object. Delete DataAttribute request.
             name (:class:`str`):
-                Required. The resource name of the DataAttribute:
+                Required. The resource name of the
+                DataAttribute:
                 projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
 
                 This corresponds to the ``name`` field
@@ -2185,7 +2192,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.ListDataAttributesRequest, dict]]):
                 The request object. List DataAttributes request.
             parent (:class:`str`):
-                Required. The resource name of the DataTaxonomy:
+                Required. The resource name of the
+                DataTaxonomy:
                 projects/{project_number}/locations/{location_id}/dataTaxonomies/{data_taxonomy_id}
 
                 This corresponds to the ``parent`` field
@@ -2314,7 +2322,8 @@ class DataTaxonomyServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetDataAttributeRequest, dict]]):
                 The request object. Get DataAttribute request.
             name (:class:`str`):
-                Required. The resource name of the dataAttribute:
+                Required. The resource name of the
+                dataAttribute:
                 projects/{project_number}/locations/{location_id}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}
 
                 This corresponds to the ``name`` field

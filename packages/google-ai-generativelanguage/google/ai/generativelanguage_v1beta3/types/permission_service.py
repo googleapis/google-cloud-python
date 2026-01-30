@@ -81,8 +81,8 @@ class ListPermissionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource of the permissions. Format:
-            tunedModels/{tuned_model}
+            Required. The parent resource of the
+            permissions. Format: tunedModels/{tuned_model}
         page_size (int):
             Optional. The maximum number of ``Permission``\ s to return
             (per page). The service may return fewer permissions.

@@ -879,15 +879,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
     ) -> operation.Operation:
         r"""Create an OS policy assignment.
 
-        This method also creates the first revision of the OS policy
-        assignment.
+        This method also creates the first revision of the OS
+        policy assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel).
 
         .. code-block:: python
 
@@ -1064,14 +1065,16 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
     ) -> operation.Operation:
         r"""Update an existing OS policy assignment.
 
-        This method creates a new revision of the OS policy assignment.
+        This method creates a new revision of the OS policy
+        assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel).
 
         .. code-block:: python
 
@@ -1284,18 +1287,22 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
         Returns:
             google.cloud.osconfig_v1.types.OSPolicyAssignment:
-                OS policy assignment is an API resource that is used to
-                   apply a set of OS policies to a dynamically targeted
-                   group of Compute Engine VM instances.
+                OS policy assignment is an API resource
+                that is used to apply a set of OS
+                policies to a dynamically targeted group
+                of Compute Engine VM instances.
 
-                   An OS policy is used to define the desired state
-                   configuration for a Compute Engine VM instance
-                   through a set of configuration resources that provide
-                   capabilities such as installing or removing software
-                   packages, or executing a script.
+                An OS policy is used to define the
+                desired state configuration for a
+                Compute Engine VM instance through a set
+                of configuration resources that provide
+                capabilities such as installing or
+                removing software packages, or executing
+                a script.
 
-                   For more information, see [OS policy and OS policy
-                   assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+                For more information, see [OS policy and
+                OS policy
+                assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
 
         """
         # Create or coerce a protobuf request object.
@@ -1619,17 +1626,19 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
     ) -> operation.Operation:
         r"""Delete the OS policy assignment.
 
-        This method creates a new revision of the OS policy assignment.
+        This method creates a new revision of the OS policy
+        assignment.
 
-        This method returns a long running operation (LRO) that contains
-        the rollout details. The rollout can be cancelled by cancelling
-        the LRO.
+        This method returns a long running operation (LRO) that
+        contains the rollout details. The rollout can be
+        cancelled by cancelling the LRO.
 
         If the LRO completes and is not cancelled, all revisions
         associated with the OS policy assignment are deleted.
 
-        For more information, see `Method:
-        projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
+        For more information, see [Method:
+
+        projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel).
 
         .. code-block:: python
 
@@ -2107,16 +2116,17 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
         Returns:
             google.cloud.osconfig_v1.types.Inventory:
-                This API resource represents the available inventory data for a
-                   Compute Engine virtual machine (VM) instance at a
-                   given point in time.
+                This API resource represents the
+                available inventory data for a Compute
+                Engine virtual machine (VM) instance at
+                a given point in time.
 
-                   You can use this API resource to determine the
-                   inventory data of your VM.
+                You can use this API resource to
+                determine the inventory data of your VM.
 
-                   For more information, see [Information provided by OS
-                   inventory
-                   management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
+                For more information, see [Information
+                provided by OS inventory
+                management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
 
         """
         # Create or coerce a protobuf request object.
@@ -2367,12 +2377,13 @@ class OsConfigZonalServiceClient(metaclass=OsConfigZonalServiceClientMeta):
 
         Returns:
             google.cloud.osconfig_v1.types.VulnerabilityReport:
-                This API resource represents the vulnerability report for a specified
-                   Compute Engine virtual machine (VM) instance at a
-                   given point in time.
+                This API resource represents the
+                vulnerability report for a specified
+                Compute Engine virtual machine (VM)
+                instance at a given point in time.
 
-                   For more information, see [Vulnerability
-                   reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
+                For more information, see [Vulnerability
+                reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
 
         """
         # Create or coerce a protobuf request object.

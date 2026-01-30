@@ -110,12 +110,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ServiceControllerGrpcTransport(ServiceControllerTransport):
     """gRPC backend transport for ServiceController.
 
-    `Service Control API
-    v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
+    [Service Control API
+    v2](https://cloud.google.com/service-infrastructure/docs/service-control/access-control)
 
     This API provides admission control and telemetry reporting for
-    services that are integrated with `Service
-    Infrastructure <https://cloud.google.com/service-infrastructure>`__.
+    services that are integrated with [Service
+    Infrastructure](https://cloud.google.com/service-infrastructure).
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

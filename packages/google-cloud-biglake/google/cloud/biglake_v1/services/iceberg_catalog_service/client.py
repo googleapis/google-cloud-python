@@ -911,8 +911,9 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
             request (Union[google.cloud.biglake_v1.types.ListIcebergCatalogsRequest, dict]):
                 The request object. The request message for the ``ListIcebergCatalogs`` API.
             parent (str):
-                Required. The parent resource where this catalog will be
-                created. Format: projects/{project_id}
+                Required. The parent resource where this
+                catalog will be created. Format:
+                projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1169,8 +1170,9 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
                 The request object. The request message for the ``CreateIcebergCatalog``
                 API.
             parent (str):
-                Required. The parent resource where this catalog will be
-                created. Format: projects/{project_id}
+                Required. The parent resource where this
+                catalog will be created. Format:
+                projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1298,7 +1300,8 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
                 The request object. Request message for
                 FailoverIcebergCatalog.
             name (str):
-                Required. The name of the catalog in the form
+                Required. The name of the catalog in the
+                form
                 "projects/{project_id}/catalogs/{catalog_id}"
 
                 This corresponds to the ``name`` field

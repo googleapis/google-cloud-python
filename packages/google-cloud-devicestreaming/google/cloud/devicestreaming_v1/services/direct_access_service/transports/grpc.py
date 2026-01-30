@@ -452,8 +452,8 @@ class DirectAccessServiceGrpcTransport(DirectAccessServiceTransport):
     ) -> Callable[[service.UpdateDeviceSessionRequest], service.DeviceSession]:
         r"""Return a callable for the update device session method over gRPC.
 
-        Updates the current DeviceSession to the fields described by the
-        update_mask.
+        Updates the current DeviceSession to the fields
+        described by the update_mask.
 
         Returns:
             Callable[[~.UpdateDeviceSessionRequest],
