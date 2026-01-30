@@ -17,13 +17,15 @@
 
 from __future__ import absolute_import
 
+from typing import List
+
 from google.api_core.protobuf_helpers import get_messages
 
 from google.cloud.orgpolicy.v1 import orgpolicy_pb2
 
 _modules = [orgpolicy_pb2]
 
-names = []
+names: List[str] = []
 
 for module in _modules:
     for name, message in get_messages(module).items():
