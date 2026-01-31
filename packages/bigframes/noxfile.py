@@ -67,14 +67,10 @@ E2E_TEST_PYTHON_VERSION = "3.12"
 UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
-    "asyncmock",
     PYTEST_VERSION,
-    "pytest-asyncio",
     "pytest-cov",
-    "pytest-mock",
     "pytest-timeout",
 ]
-UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_DEPENDENCIES: List[str] = []
 UNIT_TEST_EXTRAS: List[str] = ["tests"]
 UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
@@ -106,8 +102,6 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES = [
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES = [
     "google-cloud-bigquery",
 ]
-SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
-SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = ["tests"]
 SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
     # Make sure we leave some versions without "extras" so we know those
@@ -206,20 +200,20 @@ def lint_setup_py(session):
 
 
 def install_unittest_dependencies(session, install_test_extra, *constraints):
-    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
-    session.install(*standard_deps, *constraints)
-
-    if UNIT_TEST_LOCAL_DEPENDENCIES:
-        session.install(*UNIT_TEST_LOCAL_DEPENDENCIES, *constraints)
-
+    extras = []
     if install_test_extra:
         if session.python in UNIT_TEST_EXTRAS_BY_PYTHON:
             extras = UNIT_TEST_EXTRAS_BY_PYTHON[session.python]
         else:
             extras = UNIT_TEST_EXTRAS
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
-    else:
-        session.install("-e", ".", *constraints)
+
+    session.install(
+        *UNIT_TEST_STANDARD_DEPENDENCIES,
+        *UNIT_TEST_DEPENDENCIES,
+        "-e",
+        f".[{','.join(extras)}]" if extras else ".",
+        *constraints,
+    )
 
 
 def run_unit(session, install_test_extra):
@@ -308,22 +302,6 @@ def mypy(session):
 
 
 def install_systemtest_dependencies(session, install_test_extra, *constraints):
-    # Use pre-release gRPC for system tests.
-    # Exclude version 1.49.0rc1 which has a known issue.
-    # See https://github.com/grpc/grpc/pull/30642
-    session.install("--pre", "grpcio!=1.49.0rc1")
-
-    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_EXTERNAL_DEPENDENCIES:
-        session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_LOCAL_DEPENDENCIES:
-        session.install("-e", *SYSTEM_TEST_LOCAL_DEPENDENCIES, *constraints)
-
-    if SYSTEM_TEST_DEPENDENCIES:
-        session.install("-e", *SYSTEM_TEST_DEPENDENCIES, *constraints)
-
     if install_test_extra and SYSTEM_TEST_EXTRAS_BY_PYTHON:
         extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
     elif install_test_extra and SYSTEM_TEST_EXTRAS:
@@ -331,10 +309,19 @@ def install_systemtest_dependencies(session, install_test_extra, *constraints):
     else:
         extras = []
 
-    if extras:
-        session.install("-e", f".[{','.join(extras)}]", *constraints)
-    else:
-        session.install("-e", ".", *constraints)
+    # Use pre-release gRPC for system tests.
+    # Exclude version 1.49.0rc1 which has a known issue.
+    # See https://github.com/grpc/grpc/pull/30642
+
+    session.install(
+        "--pre",
+        "grpcio!=1.49.0rc1",
+        *SYSTEM_TEST_STANDARD_DEPENDENCIES,
+        *SYSTEM_TEST_EXTERNAL_DEPENDENCIES,
+        "-e",
+        f".[{','.join(extras)}]" if extras else ".",
+        *constraints,
+    )
 
 
 def run_system(
