@@ -33,7 +33,7 @@ import proto  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
 from google.longrunning import operations_pb2 # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 
 try:

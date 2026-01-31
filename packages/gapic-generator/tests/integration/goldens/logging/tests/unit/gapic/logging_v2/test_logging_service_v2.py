@@ -36,7 +36,6 @@ try:
 except ImportError: # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,15 +51,16 @@ from google.cloud.logging_v2.services.logging_service_v2 import pagers
 from google.cloud.logging_v2.services.logging_service_v2 import transports
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
-from google.logging.type import http_request_pb2  # type: ignore
-from google.logging.type import log_severity_pb2  # type: ignore
 from google.longrunning import operations_pb2 # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import google.auth
+import google.logging.type.http_request_pb2 as http_request_pb2  # type: ignore
+import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 

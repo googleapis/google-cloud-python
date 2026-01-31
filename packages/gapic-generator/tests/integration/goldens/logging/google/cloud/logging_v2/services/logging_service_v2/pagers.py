@@ -24,9 +24,9 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 
 
 class ListLogEntriesPager:

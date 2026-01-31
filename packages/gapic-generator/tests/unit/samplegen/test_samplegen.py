@@ -397,8 +397,8 @@ def test_get_sample_imports_with_request_from_another_package(
     imports = samplegen._get_sample_imports(sample, rpc)
 
     assert imports == [
-        "from a.b import c_pb2  # type: ignore",
         "from mollusc.cephalopod import teuthida_v1",
+        "import a.b.c_pb2 as c_pb2  # type: ignore",
     ]
 
 

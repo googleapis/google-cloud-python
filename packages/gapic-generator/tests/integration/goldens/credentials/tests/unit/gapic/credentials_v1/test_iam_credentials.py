@@ -56,9 +56,9 @@ from google.iam.credentials_v1.services.iam_credentials import IAMCredentialsCli
 from google.iam.credentials_v1.services.iam_credentials import transports
 from google.iam.credentials_v1.types import common
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 

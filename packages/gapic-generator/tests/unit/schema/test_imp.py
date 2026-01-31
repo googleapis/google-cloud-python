@@ -32,12 +32,12 @@ def test_str_alias():
 
 def test_str_untyped_pb2():
     i = imp.Import(package=("foo", "bar"), module="baz_pb2", alias="bacon")
-    assert str(i) == "from foo.bar import baz_pb2 as bacon  # type: ignore"
+    assert str(i) == "import foo.bar.baz_pb2 as bacon  # type: ignore"
 
 
 def test_str_untyped_api_core():
     i = imp.Import(package=("foo", "api_core"), module="baz", alias="bacon")
-    assert str(i) == "from foo.api_core import baz as bacon  # type: ignore"
+    assert str(i) == "import foo.api_core.baz as bacon  # type: ignore"
 
 
 def test_str_eq():

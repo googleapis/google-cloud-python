@@ -19,15 +19,15 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
-from google.cloud.osconfig.v1 import inventory_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import service_perimeter_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.cloud.orgpolicy.v1.orgpolicy_pb2 as orgpolicy_pb2  # type: ignore
+import google.cloud.osconfig.v1.inventory_pb2 as inventory_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_level_pb2 as access_level_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_policy_pb2 as access_policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.service_perimeter_pb2 as service_perimeter_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(

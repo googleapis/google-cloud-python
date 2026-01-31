@@ -19,9 +19,9 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.api import distribution_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.distribution_pb2 as distribution_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(

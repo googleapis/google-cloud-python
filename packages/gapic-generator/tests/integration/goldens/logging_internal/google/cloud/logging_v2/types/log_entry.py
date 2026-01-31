@@ -19,12 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
-from google.logging.type import http_request_pb2  # type: ignore
-from google.logging.type import log_severity_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.logging.type.http_request_pb2 as http_request_pb2  # type: ignore
+import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
