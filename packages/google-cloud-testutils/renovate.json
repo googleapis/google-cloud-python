@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges",
+    ":disableDependencyDashboard"
+  ],
+  "ignorePaths": [
+    ".pre-commit-config.yaml",
+    "tests/unit/resources",
+    ".kokoro/requirements.txt"
+  ],
+  "pip_requirements": {
+    "fileMatch": [
+      "requirements-test.txt",
+      "samples/[\\S/]*constraints.txt",
+      "samples/[\\S/]*constraints-test.txt"
+    ]
+  }
+}
