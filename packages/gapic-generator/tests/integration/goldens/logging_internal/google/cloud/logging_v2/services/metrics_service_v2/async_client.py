@@ -90,7 +90,8 @@ class BaseMetricsServiceV2AsyncClient:
         Returns:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
-        return BaseMetricsServiceV2Client.from_service_account_info.__func__(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BaseMetricsServiceV2Client.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BaseMetricsServiceV2AsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -106,7 +107,8 @@ class BaseMetricsServiceV2AsyncClient:
         Returns:
             BaseMetricsServiceV2AsyncClient: The constructed client.
         """
-        return BaseMetricsServiceV2Client.from_service_account_file.__func__(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BaseMetricsServiceV2Client.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BaseMetricsServiceV2AsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

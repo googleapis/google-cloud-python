@@ -97,7 +97,8 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
-        return IAMCredentialsClient.from_service_account_info.__func__(IAMCredentialsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = IAMCredentialsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(IAMCredentialsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -113,7 +114,8 @@ class IAMCredentialsAsyncClient:
         Returns:
             IAMCredentialsAsyncClient: The constructed client.
         """
-        return IAMCredentialsClient.from_service_account_file.__func__(IAMCredentialsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = IAMCredentialsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(IAMCredentialsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

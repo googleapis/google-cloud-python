@@ -106,7 +106,8 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
-        return AssetServiceClient.from_service_account_info.__func__(AssetServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -122,7 +123,8 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
-        return AssetServiceClient.from_service_account_file.__func__(AssetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AssetServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AssetServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

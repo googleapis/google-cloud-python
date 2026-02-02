@@ -124,7 +124,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_info.__func__(EventarcAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = EventarcClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(EventarcAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -140,7 +141,8 @@ class EventarcAsyncClient:
         Returns:
             EventarcAsyncClient: The constructed client.
         """
-        return EventarcClient.from_service_account_file.__func__(EventarcAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = EventarcClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(EventarcAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
