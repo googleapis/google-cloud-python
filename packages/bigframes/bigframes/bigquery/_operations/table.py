@@ -16,7 +16,6 @@ from __future__ import annotations
 
 from typing import Mapping, Optional, Union
 
-import bigframes_vendored.constants
 import google.cloud.bigquery
 import pandas as pd
 
@@ -94,9 +93,6 @@ def create_external_table(
     if session is None:
         bpd.read_gbq_query(sql)
         session = bpd.get_global_session()
-        assert (
-            session is not None
-        ), f"Missing connection to BigQuery. Please report how you encountered this error at {bigframes_vendored.constants.FEEDBACK_LINK}."
     else:
         session.read_gbq_query(sql)
 
