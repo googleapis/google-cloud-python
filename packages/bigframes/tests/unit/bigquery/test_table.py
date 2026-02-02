@@ -16,7 +16,7 @@ from unittest import mock
 
 import pytest
 
-import bigframes.bigquery.table
+import bigframes.bigquery
 import bigframes.core.sql.table
 import bigframes.session
 
@@ -80,9 +80,9 @@ def test_create_external_table_ddl_connection():
     assert sql == expected
 
 
-@mock.patch("bigframes.bigquery.table._get_table_metadata")
+@mock.patch("bigframes.bigquery._operations.table._get_table_metadata")
 def test_create_external_table(get_table_metadata_mock, mock_session):
-    bigframes.bigquery.table.create_external_table(
+    bigframes.bigquery.create_external_table(
         "my-project.my_dataset.my_table",
         columns={"col1": "INT64", "col2": "STRING"},
         options={"format": "CSV", "uris": ["gs://bucket/path*"]},

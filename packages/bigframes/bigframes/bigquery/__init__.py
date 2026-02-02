@@ -60,7 +60,7 @@ from bigframes.bigquery._operations.json import (
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
 from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
-from bigframes.bigquery.table import create_external_table
+from bigframes.bigquery._operations.table import create_external_table
 from bigframes.core.logging import log_adapter
 
 _functions = [
