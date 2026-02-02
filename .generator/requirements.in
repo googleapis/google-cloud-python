@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.5 # Fix mypy issue https://github.com/googleapis/gapic-generator-python/pull/2536
+gapic-generator==1.30.6 # Fix incorrect REST serialization https://github.com/googleapis/gapic-generator-python/pull/2549
 nox
 starlark-pyo3>=2025.1
 build
