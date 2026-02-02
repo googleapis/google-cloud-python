@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.financialservices_v1.types import bigquery_destination
 from google.cloud.financialservices_v1.types import (
     line_of_business as gcf_line_of_business,
 )
-from google.cloud.financialservices_v1.types import bigquery_destination
 
 __protobuf__ = proto.module(
     package="google.cloud.financialservices.v1",
@@ -106,6 +106,7 @@ class EngineConfig(proto.Message):
                 The resource is in the process of being
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -126,6 +127,7 @@ class EngineConfig(proto.Message):
                 The hyperparameters are inherited from
                 another EngineConfig.
         """
+
         HYPERPARAMETER_SOURCE_TYPE_UNSPECIFIED = 0
         TUNING = 1
         INHERITED = 2
@@ -142,11 +144,10 @@ class EngineConfig(proto.Message):
                 documentation. Format:
                 ``/projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}``
             end_time (google.protobuf.timestamp_pb2.Timestamp):
-                Required. End_time specifies the latest time
-                from which labels are used and from which data
-                is used to generate features for tuning.
-                End_time should be no later than the end of the
-                date_range of the dataset.
+                Required. End_time specifies the latest time from which
+                labels are used and from which data is used to generate
+                features for tuning. End_time should be no later than the
+                end of the date_range of the dataset.
         """
 
         primary_dataset: str = proto.Field(
@@ -269,18 +270,16 @@ class ListEngineConfigsRequest(proto.Message):
             Required. The parent of the EngineConfig is
             the Instance.
         page_size (int):
-            The number of resources to be included in the
-            response. The response contains a
-            next_page_token, which can be used to retrieve
-            the next page of resources.
+            The number of resources to be included in the response. The
+            response contains a next_page_token, which can be used to
+            retrieve the next page of resources.
         page_token (str):
-            In case of paginated results, this is the token
-            that was returned in the previous
-            ListEngineConfigsResponse. It should be copied
-            here to retrieve the next page of resources.
-            Empty will give the first page of
-            ListEngineConfigsRequest, and the last page will
-            return an empty page_token.
+            In case of paginated results, this is the token that was
+            returned in the previous ListEngineConfigsResponse. It
+            should be copied here to retrieve the next page of
+            resources. Empty will give the first page of
+            ListEngineConfigsRequest, and the last page will return an
+            empty page_token.
         filter (str):
             Specify a filter to narrow search results.
         order_by (str):
@@ -416,18 +415,15 @@ class UpdateEngineConfigRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the EngineConfig
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the EngineConfig resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         engine_config (google.cloud.financialservices_v1.types.EngineConfig):
-            Required. The new value of the EngineConfig
-            fields that will be updated according to the
-            update_mask.
+            Required. The new value of the EngineConfig fields that will
+            be updated according to the update_mask.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

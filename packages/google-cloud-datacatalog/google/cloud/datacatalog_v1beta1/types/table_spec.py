@@ -44,6 +44,7 @@ class TableSourceType(proto.Enum):
         BIGQUERY_MATERIALIZED_VIEW (7):
             BigQuery materialized view.
     """
+
     TABLE_SOURCE_TYPE_UNSPECIFIED = 0
     BIGQUERY_VIEW = 2
     BIGQUERY_TABLE = 5

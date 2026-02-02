@@ -17,19 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import error_details_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.error_details_pb2 as error_details_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_migration_v2.types import (
     migration_error_details,
     migration_metrics,
     translation_config,
+    translation_usability,
 )
 from google.cloud.bigquery_migration_v2.types import (
     translation_details as gcbm_translation_details,
 )
-from google.cloud.bigquery_migration_v2.types import translation_usability
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2",
@@ -92,6 +92,7 @@ class MigrationWorkflow(proto.Message):
                 (e.g. forced termination), they will not be
                 scheduled.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -155,15 +156,12 @@ class MigrationTask(proto.Message):
             for the migration task. The ID is
             server-generated.
         type_ (str):
-            The type of the task. This must be one of the
-            supported task types: Translation_Teradata2BQ,
-            Translation_Redshift2BQ, Translation_Bteq2BQ,
-            Translation_Oracle2BQ, Translation_HiveQL2BQ,
-            Translation_SparkSQL2BQ,
-            Translation_Snowflake2BQ,
-            Translation_Netezza2BQ,
-            Translation_AzureSynapse2BQ,
-            Translation_Vertica2BQ,
+            The type of the task. This must be one of the supported task
+            types: Translation_Teradata2BQ, Translation_Redshift2BQ,
+            Translation_Bteq2BQ, Translation_Oracle2BQ,
+            Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
+            Translation_Snowflake2BQ, Translation_Netezza2BQ,
+            Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
             Translation_SQLServer2BQ, Translation_Presto2BQ,
             Translation_MySQL2BQ, Translation_Postgresql2BQ,
             Translation_SQLite2BQ, Translation_Greenplum2BQ.
@@ -220,6 +218,7 @@ class MigrationTask(proto.Message):
             FAILED (6):
                 The task finished unsuccessfully.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ORCHESTRATING = 2
@@ -374,6 +373,7 @@ class MigrationSubtask(proto.Message):
                 The subtask is pending a dependency. It will
                 be scheduled once its dependencies are done.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RUNNING = 2
@@ -463,19 +463,19 @@ class TranslationTaskResult(proto.Message):
             a migration workflow.
     """
 
-    translated_literals: MutableSequence[
-        gcbm_translation_details.Literal
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcbm_translation_details.Literal,
+    translated_literals: MutableSequence[gcbm_translation_details.Literal] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcbm_translation_details.Literal,
+        )
     )
-    report_log_messages: MutableSequence[
-        translation_usability.GcsReportLogMessage
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=translation_usability.GcsReportLogMessage,
+    report_log_messages: MutableSequence[translation_usability.GcsReportLogMessage] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=translation_usability.GcsReportLogMessage,
+        )
     )
 
 

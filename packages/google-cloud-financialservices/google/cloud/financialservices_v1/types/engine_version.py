@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.financialservices_v1.types import (
@@ -79,6 +79,7 @@ class EngineVersion(proto.Message):
                 Version is deprecated, listed for
                 informational purposes only.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         LIMITED = 2
@@ -119,17 +120,15 @@ class ListEngineVersionsRequest(proto.Message):
             Required. The parent of the EngineVersion is
             the Instance.
         page_size (int):
-            Optional. The number of resources to be included
-            in the response. The response contains a
-            next_page_token, which can be used to retrieve
-            the next page of resources.
+            Optional. The number of resources to be included in the
+            response. The response contains a next_page_token, which can
+            be used to retrieve the next page of resources.
         page_token (str):
-            Optional. In case of paginated results, this is
-            the token that was returned in the previous
-            ListEngineVersionsResponse. It should be copied
-            here to retrieve the next page of resources.
-            Empty will give the first page of
-            ListEngineVersionsRequest, and the last page
+            Optional. In case of paginated results, this is the token
+            that was returned in the previous
+            ListEngineVersionsResponse. It should be copied here to
+            retrieve the next page of resources. Empty will give the
+            first page of ListEngineVersionsRequest, and the last page
             will return an empty page_token.
         filter (str):
             Optional. Specify a filter to narrow search results. If

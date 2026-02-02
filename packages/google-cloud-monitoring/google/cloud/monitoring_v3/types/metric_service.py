@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import common
@@ -177,11 +177,10 @@ class ListMetricDescriptorsRequest(proto.Message):
 
                 metric.type = starts_with("custom.googleapis.com/")
         page_size (int):
-            Optional. A positive number that is the maximum
-            number of results to return. The default and
-            maximum value is 10,000. If a page_size <= 0 or
-            > 10,000 is submitted, will instead return a
-            maximum of 10,000 results.
+            Optional. A positive number that is the maximum number of
+            results to return. The default and maximum value is 10,000.
+            If a page_size <= 0 or > 10,000 is submitted, will instead
+            return a maximum of 10,000 results.
         page_token (str):
             Optional. If this field is not empty then it must contain
             the ``nextPageToken`` value returned by a previous call to
@@ -248,12 +247,12 @@ class ListMetricDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metric_descriptors: MutableSequence[
-        metric_pb2.MetricDescriptor
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=metric_pb2.MetricDescriptor,
+    metric_descriptors: MutableSequence[metric_pb2.MetricDescriptor] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=metric_pb2.MetricDescriptor,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -293,8 +292,8 @@ class CreateMetricDescriptorRequest(proto.Message):
             on which to execute the request. The format is: 4
             projects/[PROJECT_ID_OR_NUMBER]
         metric_descriptor (google.api.metric_pb2.MetricDescriptor):
-            Required. The new [custom
-            metric](https://cloud.google.com/monitoring/custom-metrics)
+            Required. The new `custom
+            metric <https://cloud.google.com/monitoring/custom-metrics>`__
             descriptor.
     """
 
@@ -347,17 +346,17 @@ class ListTimeSeriesRequest(proto.Message):
                 organizations/[ORGANIZATION_ID]
                 folders/[FOLDER_ID]
         filter (str):
-            Required. A [monitoring
-            filter](https://cloud.google.com/monitoring/api/v3/filters)
-            that specifies which time series should be
-            returned. The filter must specify a single
-            metric type, and can additionally specify metric
-            labels and other information. For example:
+            Required. A `monitoring
+            filter <https://cloud.google.com/monitoring/api/v3/filters>`__
+            that specifies which time series should be returned. The
+            filter must specify a single metric type, and can
+            additionally specify metric labels and other information.
+            For example:
 
-            metric.type =
-            "compute.googleapis.com/instance/cpu/usage_time"
-            AND metric.labels.instance_name =
-            "my-instance-name".
+            ::
+
+                metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
+                    metric.labels.instance_name = "my-instance-name".
         interval (google.cloud.monitoring_v3.types.TimeInterval):
             Required. The time interval for which results
             should be returned. Only time series that
@@ -406,6 +405,7 @@ class ListTimeSeriesRequest(proto.Message):
                 time series resource, but not the time series
                 data.
         """
+
         FULL = 0
         HEADERS = 1
 
@@ -624,8 +624,8 @@ class QueryTimeSeriesRequest(proto.Message):
 
                 projects/[PROJECT_ID_OR_NUMBER]
         query (str):
-            Required. The query in the [Monitoring Query
-            Language](https://cloud.google.com/monitoring/mql/reference)
+            Required. The query in the `Monitoring Query
+            Language <https://cloud.google.com/monitoring/mql/reference>`__
             format. The default time zone is in UTC.
         page_size (int):
             A positive number that is the maximum number of
@@ -703,8 +703,8 @@ class QueryTimeSeriesResponse(proto.Message):
 
 
 class QueryErrorList(proto.Message):
-    r"""This is an error detail intended to be used with
-    INVALID_ARGUMENT errors.
+    r"""This is an error detail intended to be used with INVALID_ARGUMENT
+    errors.
 
     Attributes:
         errors (MutableSequence[google.cloud.monitoring_v3.types.QueryError]):

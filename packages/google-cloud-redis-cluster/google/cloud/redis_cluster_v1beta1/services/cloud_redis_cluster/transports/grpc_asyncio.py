@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.redis_cluster_v1beta1.types import cloud_redis_cluster
 
@@ -556,12 +556,12 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_cluster_certificate_authority" not in self._stubs:
-            self._stubs[
-                "get_cluster_certificate_authority"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetClusterCertificateAuthority",
-                request_serializer=cloud_redis_cluster.GetClusterCertificateAuthorityRequest.serialize,
-                response_deserializer=cloud_redis_cluster.CertificateAuthority.deserialize,
+            self._stubs["get_cluster_certificate_authority"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/GetClusterCertificateAuthority",
+                    request_serializer=cloud_redis_cluster.GetClusterCertificateAuthorityRequest.serialize,
+                    response_deserializer=cloud_redis_cluster.CertificateAuthority.deserialize,
+                )
             )
         return self._stubs["get_cluster_certificate_authority"]
 
@@ -587,12 +587,12 @@ class CloudRedisClusterGrpcAsyncIOTransport(CloudRedisClusterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reschedule_cluster_maintenance" not in self._stubs:
-            self._stubs[
-                "reschedule_cluster_maintenance"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/RescheduleClusterMaintenance",
-                request_serializer=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["reschedule_cluster_maintenance"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.redis.cluster.v1beta1.CloudRedisCluster/RescheduleClusterMaintenance",
+                    request_serializer=cloud_redis_cluster.RescheduleClusterMaintenanceRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["reschedule_cluster_maintenance"]
 

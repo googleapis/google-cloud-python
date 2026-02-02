@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vision_v1p3beta1.types import geometry
@@ -86,17 +86,16 @@ class Product(proto.Message):
             "apparel", and "toys" are still supported, but
             these should not be used for new products.
         product_labels (MutableSequence[google.cloud.vision_v1p3beta1.types.Product.KeyValue]):
-            Key-value pairs that can be attached to a
-            product. At query time, constraints can be
-            specified based on the product_labels.
+            Key-value pairs that can be attached to a product. At query
+            time, constraints can be specified based on the
+            product_labels.
 
-            Note that integer values can be provided as
-            strings, e.g. "1199". Only strings with integer
-            values can match a range-based restriction which
-            is to be supported soon.
+            Note that integer values can be provided as strings, e.g.
+            "1199". Only strings with integer values can match a
+            range-based restriction which is to be supported soon.
 
-            Multiple values can be assigned to the same key.
-            One product may have up to 100 product_labels.
+            Multiple values can be assigned to the same key. One product
+            may have up to 100 product_labels.
     """
 
     class KeyValue(proto.Message):
@@ -293,8 +292,8 @@ class ListProductsRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous
-            List request, if any.
+            The next_page_token returned from a previous List request,
+            if any.
     """
 
     parent: str = proto.Field(
@@ -446,8 +445,8 @@ class ListProductSetsRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous
-            List request, if any.
+            The next_page_token returned from a previous List request,
+            if any.
     """
 
     parent: str = proto.Field(
@@ -632,8 +631,8 @@ class ListReferenceImagesResponse(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         next_page_token (str):
-            The next_page_token returned from a previous
-            List request, if any.
+            The next_page_token returned from a previous List request,
+            if any.
     """
 
     @property
@@ -760,8 +759,8 @@ class ListProductsInProductSetRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous
-            List request, if any.
+            The next_page_token returned from a previous List request,
+            if any.
     """
 
     name: str = proto.Field(
@@ -937,16 +936,15 @@ class ImportProductSetsResponse(proto.Message):
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p3beta1.types.ReferenceImage]):
-            The list of reference_images that are imported
-            successfully.
+            The list of reference_images that are imported successfully.
         statuses (MutableSequence[google.rpc.status_pb2.Status]):
-            The rpc status for each ImportProductSet
-            request, including both successes and errors.
+            The rpc status for each ImportProductSet request, including
+            both successes and errors.
 
-            The number of statuses here matches the number
-            of lines in the csv file, and statuses[i] stores
-            the success or failure status of processing the
-            i-th line of the csv, starting from line 0.
+            The number of statuses here matches the number of lines in
+            the csv file, and statuses[i] stores the success or failure
+            status of processing the i-th line of the csv, starting from
+            line 0.
     """
 
     reference_images: MutableSequence["ReferenceImage"] = proto.RepeatedField(
@@ -1002,6 +1000,7 @@ class BatchOperationMetadata(proto.Message):
                 processed before the cancel command are output
                 as specified in the request.
         """
+
         STATE_UNSPECIFIED = 0
         PROCESSING = 1
         SUCCESSFUL = 2

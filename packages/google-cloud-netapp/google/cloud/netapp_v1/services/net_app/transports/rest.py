@@ -16,40 +16,42 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.netapp_v1.types import (
+    active_directory,
+    backup,
+    backup_policy,
+    backup_vault,
+    host_group,
+    kms,
+    quota_rule,
+    replication,
+    snapshot,
+    storage_pool,
+    volume,
+)
 from google.cloud.netapp_v1.types import active_directory as gcn_active_directory
-from google.cloud.netapp_v1.types import active_directory
-from google.cloud.netapp_v1.types import backup
 from google.cloud.netapp_v1.types import backup as gcn_backup
-from google.cloud.netapp_v1.types import backup_policy
 from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
-from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
-from google.cloud.netapp_v1.types import host_group
 from google.cloud.netapp_v1.types import host_group as gcn_host_group
-from google.cloud.netapp_v1.types import kms
-from google.cloud.netapp_v1.types import quota_rule
 from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
-from google.cloud.netapp_v1.types import replication
 from google.cloud.netapp_v1.types import replication as gcn_replication
-from google.cloud.netapp_v1.types import snapshot
 from google.cloud.netapp_v1.types import snapshot as gcn_snapshot
-from google.cloud.netapp_v1.types import storage_pool
 from google.cloud.netapp_v1.types import storage_pool as gcn_storage_pool
-from google.cloud.netapp_v1.types import volume
 from google.cloud.netapp_v1.types import volume as gcn_volume
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -4145,7 +4147,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4298,7 +4300,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4456,7 +4458,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4616,7 +4618,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4774,7 +4776,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4932,7 +4934,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5090,7 +5092,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5250,7 +5252,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5404,7 +5406,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5564,7 +5566,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5717,7 +5719,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5866,7 +5868,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6013,7 +6015,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6163,7 +6165,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6315,7 +6317,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6467,7 +6469,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6619,7 +6621,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6771,7 +6773,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6923,7 +6925,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7071,7 +7073,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7223,7 +7225,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7370,7 +7372,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7523,7 +7525,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7684,7 +7686,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11157,7 +11159,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11317,7 +11319,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11446,9 +11448,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_http_options()
 
             request, metadata = self._interceptor.pre_reverse_replication_direction(
                 request, metadata
@@ -11474,7 +11474,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11515,11 +11515,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_reverse_replication_direction(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_reverse_replication_direction_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_reverse_replication_direction_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -11631,7 +11630,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11789,7 +11788,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11917,9 +11916,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_http_options()
 
             request, metadata = self._interceptor.pre_switch_active_replica_zone(
                 request, metadata
@@ -11945,7 +11942,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12103,7 +12100,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12257,7 +12254,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12411,7 +12408,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12569,7 +12566,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12730,7 +12727,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12888,7 +12885,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13046,7 +13043,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13204,7 +13201,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13365,7 +13362,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13520,7 +13517,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13680,7 +13677,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13833,7 +13830,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -13961,9 +13958,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseValidateDirectoryService._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_http_options()
 
             request, metadata = self._interceptor.pre_validate_directory_service(
                 request, metadata
@@ -13989,7 +13984,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -14630,7 +14625,9 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ReverseReplicationDirection(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ReverseReplicationDirection(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def revert_volume(
@@ -14656,7 +14653,9 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SwitchActiveReplicaZone(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SwitchActiveReplicaZone(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def sync_replication(
@@ -14770,7 +14769,9 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ValidateDirectoryService(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ValidateDirectoryService(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def verify_kms_config(

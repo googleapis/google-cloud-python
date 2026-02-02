@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gkerecommender_v1.types import gkerecommender
 
@@ -421,12 +421,12 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_model_server_versions" not in self._stubs:
-            self._stubs[
-                "fetch_model_server_versions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/FetchModelServerVersions",
-                request_serializer=gkerecommender.FetchModelServerVersionsRequest.serialize,
-                response_deserializer=gkerecommender.FetchModelServerVersionsResponse.deserialize,
+            self._stubs["fetch_model_server_versions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/FetchModelServerVersions",
+                    request_serializer=gkerecommender.FetchModelServerVersionsRequest.serialize,
+                    response_deserializer=gkerecommender.FetchModelServerVersionsResponse.deserialize,
+                )
             )
         return self._stubs["fetch_model_server_versions"]
 
@@ -439,18 +439,16 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
     ]:
         r"""Return a callable for the fetch profiles method over gRPC.
 
-        Fetches available profiles. A profile contains
-        performance metrics and cost information for a specific
-        model server setup. Profiles can be filtered by
-        parameters. If no filters are provided, all profiles are
-        returned.
+        Fetches available profiles. A profile contains performance
+        metrics and cost information for a specific model server setup.
+        Profiles can be filtered by parameters. If no filters are
+        provided, all profiles are returned.
 
-        Profiles display a single value per performance metric
-        based on the provided performance requirements. If no
-        requirements are given, the metrics represent the
-        inflection point. See [Run best practice inference with
-        GKE Inference Quickstart
-        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how)
+        Profiles display a single value per performance metric based on
+        the provided performance requirements. If no requirements are
+        given, the metrics represent the inflection point. See `Run best
+        practice inference with GKE Inference Quickstart
+        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how>`__
         for details.
 
         Returns:
@@ -480,12 +478,11 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
     ]:
         r"""Return a callable for the generate optimized manifest method over gRPC.
 
-        Generates an optimized deployment manifest for a given
-        model and model server, based on the specified
-        accelerator, performance targets, and configurations.
-        See [Run best practice inference with GKE Inference
-        Quickstart
-        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart)
+        Generates an optimized deployment manifest for a given model and
+        model server, based on the specified accelerator, performance
+        targets, and configurations. See `Run best practice inference
+        with GKE Inference Quickstart
+        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart>`__
         for deployment details.
 
         Returns:
@@ -499,12 +496,12 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_optimized_manifest" not in self._stubs:
-            self._stubs[
-                "generate_optimized_manifest"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/GenerateOptimizedManifest",
-                request_serializer=gkerecommender.GenerateOptimizedManifestRequest.serialize,
-                response_deserializer=gkerecommender.GenerateOptimizedManifestResponse.deserialize,
+            self._stubs["generate_optimized_manifest"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/GenerateOptimizedManifest",
+                    request_serializer=gkerecommender.GenerateOptimizedManifestRequest.serialize,
+                    response_deserializer=gkerecommender.GenerateOptimizedManifestResponse.deserialize,
+                )
             )
         return self._stubs["generate_optimized_manifest"]
 

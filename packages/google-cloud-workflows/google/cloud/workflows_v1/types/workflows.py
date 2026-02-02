@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -51,6 +51,7 @@ class ExecutionHistoryLevel(proto.Enum):
         EXECUTION_HISTORY_DETAILED (2):
             Enable execution history detailed feature.
     """
+
     EXECUTION_HISTORY_LEVEL_UNSPECIFIED = 0
     EXECUTION_HISTORY_BASIC = 1
     EXECUTION_HISTORY_DETAILED = 2
@@ -198,6 +199,7 @@ class Workflow(proto.Message):
             UNAVAILABLE (2):
                 Workflow data is unavailable. See the ``state_error`` field.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         UNAVAILABLE = 2
@@ -218,6 +220,7 @@ class Workflow(proto.Message):
             LOG_NONE (3):
                 Explicitly log nothing.
         """
+
         CALL_LOG_LEVEL_UNSPECIFIED = 0
         LOG_ALL_CALLS = 1
         LOG_ERRORS_ONLY = 2
@@ -243,6 +246,7 @@ class Workflow(proto.Message):
                 KMS_ERROR (1):
                     Caused by an issue with KMS.
             """
+
             TYPE_UNSPECIFIED = 0
             KMS_ERROR = 1
 
@@ -458,13 +462,11 @@ class GetWorkflowRequest(proto.Message):
             information should be retrieved. Format:
             projects/{project}/locations/{location}/workflows/{workflow}
         revision_id (str):
-            Optional. The revision of the workflow to
-            retrieve. If the revision_id is empty, the
-            latest revision is retrieved. The format is
-            "000001-a4d", where the first six characters
-            define the zero-padded decimal revision number.
-            They are followed by a hyphen and three
-            hexadecimal characters.
+            Optional. The revision of the workflow to retrieve. If the
+            revision_id is empty, the latest revision is retrieved. The
+            format is "000001-a4d", where the first six characters
+            define the zero-padded decimal revision number. They are
+            followed by a hyphen and three hexadecimal characters.
     """
 
     name: str = proto.Field(

@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .deny import DenyRule
+from .deny import (
+    DenyRule,
+)
 from .policy import (
     CreatePolicyRequest,
     DeletePolicyRequest,

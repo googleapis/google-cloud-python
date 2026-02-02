@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.support_v2beta.types import case as gcs_case
@@ -404,12 +404,12 @@ class SearchCaseClassificationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    case_classifications: MutableSequence[
-        gcs_case.CaseClassification
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcs_case.CaseClassification,
+    case_classifications: MutableSequence[gcs_case.CaseClassification] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcs_case.CaseClassification,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

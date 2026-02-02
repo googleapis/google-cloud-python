@@ -49,11 +49,12 @@ class Control(proto.Message):
             Immutable. Fully qualified name
             ``projects/*/locations/global/catalogs/*/controls/*``
         display_name (str):
-            Required. The human readable control display
-            name. Used in Retail UI.
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is thrown.
+            Required. The human readable control display name. Used in
+            Retail UI.
+
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is thrown.
         associated_serving_config_ids (MutableSequence[str]):
             Output only. List of [serving
             config][google.cloud.retail.v2.ServingConfig] ids that are
@@ -104,12 +105,12 @@ class Control(proto.Message):
         number=6,
         enum=common.SolutionType,
     )
-    search_solution_use_case: MutableSequence[
-        common.SearchSolutionUseCase
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=7,
-        enum=common.SearchSolutionUseCase,
+    search_solution_use_case: MutableSequence[common.SearchSolutionUseCase] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=7,
+            enum=common.SearchSolutionUseCase,
+        )
     )
 
 

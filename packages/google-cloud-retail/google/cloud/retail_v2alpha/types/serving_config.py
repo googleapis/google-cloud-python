@@ -38,12 +38,12 @@ class ServingConfig(proto.Message):
             Immutable. Fully qualified name
             ``projects/*/locations/global/catalogs/*/servingConfig/*``
         display_name (str):
-            Required. The human readable serving config
-            display name. Used in Retail UI.
+            Required. The human readable serving config display name.
+            Used in Retail UI.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         model_id (str):
             The id of the model in the same
             [Catalog][google.cloud.retail.v2alpha.Catalog] to use at
@@ -272,6 +272,7 @@ class ServingConfig(proto.Message):
             DATA_DRIVEN_DIVERSITY (3):
                 Data driven diversity.
         """
+
         DIVERSITY_TYPE_UNSPECIFIED = 0
         RULE_BASED_DIVERSITY = 2
         DATA_DRIVEN_DIVERSITY = 3

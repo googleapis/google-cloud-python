@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -57,6 +57,7 @@ class PscConnectionStatus(proto.Enum):
         NOT_FOUND (2):
             Connection not found
     """
+
     PSC_CONNECTION_STATUS_UNSPECIFIED = 0
     ACTIVE = 1
     NOT_FOUND = 2
@@ -78,6 +79,7 @@ class ConnectionType(proto.Enum):
             Connection that will be used as reader
             endpoint to access replicas.
     """
+
     CONNECTION_TYPE_UNSPECIFIED = 0
     CONNECTION_TYPE_DISCOVERY = 1
     CONNECTION_TYPE_PRIMARY = 2
@@ -176,6 +178,7 @@ class Instance(proto.Message):
             DELETING (4):
                 Instance is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -193,6 +196,7 @@ class Instance(proto.Message):
             IAM_AUTH (2):
                 IAM basic authorization.
         """
+
         AUTHORIZATION_MODE_UNSPECIFIED = 0
         AUTH_DISABLED = 1
         IAM_AUTH = 2
@@ -209,6 +213,7 @@ class Instance(proto.Message):
                 Server-managed encryption is used for
                 in-transit encryption.
         """
+
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         TRANSIT_ENCRYPTION_DISABLED = 1
         SERVER_AUTHENTICATION = 2
@@ -230,6 +235,7 @@ class Instance(proto.Message):
             STANDARD_SMALL (4):
                 Standard small.
         """
+
         NODE_TYPE_UNSPECIFIED = 0
         SHARED_CORE_NANO = 1
         HIGHMEM_MEDIUM = 2
@@ -250,6 +256,7 @@ class Instance(proto.Message):
             CLUSTER_DISABLED (4):
                 Cluster mode is disabled for the instance.
         """
+
         MODE_UNSPECIFIED = 0
         STANDALONE = 1
         CLUSTER = 2
@@ -487,18 +494,16 @@ class PscAutoConnection(proto.Message):
             Output only. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Output only. The URI of the consumer side
-            forwarding rule. Format:
-
+            Output only. The URI of the consumer side forwarding rule.
+            Format:
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Required. The consumer project_id where PSC
-            connections are established. This should be the
-            same project_id that the instance is being
-            created in.
+            Required. The consumer project_id where PSC connections are
+            established. This should be the same project_id that the
+            instance is being created in.
         network (str):
-            Required. The network where the PSC endpoints
-            are created, in the form of
+            Required. The network where the PSC endpoints are created,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Output only. The service attachment which is
@@ -568,16 +573,15 @@ class PscConnection(proto.Message):
             Required. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Required. The URI of the consumer side
-            forwarding rule. Format:
-
+            Required. The URI of the consumer side forwarding rule.
+            Format:
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Output only. The consumer project_id where the
-            forwarding rule is created from.
+            Output only. The consumer project_id where the forwarding
+            rule is created from.
         network (str):
-            Required. The consumer network where the IP
-            address resides, in the form of
+            Required. The consumer network where the IP address resides,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Required. The service attachment which is the
@@ -642,9 +646,8 @@ class DiscoveryEndpoint(proto.Message):
             Output only. The port number of the exposed
             endpoint.
         network (str):
-            Output only. The network where the IP address of
-            the discovery endpoint will be reserved, in the
-            form of
+            Output only. The network where the IP address of the
+            discovery endpoint will be reserved, in the form of
             projects/{network_project}/global/networks/{network_id}.
     """
 
@@ -690,6 +693,7 @@ class PersistenceConfig(proto.Message):
             AOF (3):
                 AOF based persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -723,6 +727,7 @@ class PersistenceConfig(proto.Message):
                 TWENTY_FOUR_HOURS (4):
                     Twenty four hours.
             """
+
             SNAPSHOT_PERIOD_UNSPECIFIED = 0
             ONE_HOUR = 1
             SIX_HOURS = 2
@@ -766,6 +771,7 @@ class PersistenceConfig(proto.Message):
                     appended to the AOF. The best data loss
                     protection at the cost of performance.
             """
+
             APPEND_FSYNC_UNSPECIFIED = 0
             NEVER = 1
             EVERY_SEC = 2
@@ -814,12 +820,11 @@ class ZoneDistributionConfig(proto.Message):
 
     Attributes:
         zone (str):
-            Optional. Defines zone where all resources will
-            be allocated with SINGLE_ZONE mode. Ignored for
-            MULTI_ZONE mode.
+            Optional. Defines zone where all resources will be allocated
+            with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
         mode (google.cloud.memorystore_v1beta.types.ZoneDistributionConfig.ZoneDistributionMode):
-            Optional. Current zone distribution mode.
-            Defaults to MULTI_ZONE.
+            Optional. Current zone distribution mode. Defaults to
+            MULTI_ZONE.
     """
 
     class ZoneDistributionMode(proto.Enum):
@@ -835,6 +840,7 @@ class ZoneDistributionConfig(proto.Message):
                 Provision resources in a single zone. Zone
                 field must be specified.
         """
+
         ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
         MULTI_ZONE = 1
         SINGLE_ZONE = 2
@@ -868,8 +874,8 @@ class ListInstancesRequest(proto.Message):
         filter (str):
             Optional. Expression for filtering results.
         order_by (str):
-            Optional. Sort results by a defined order.
-            Supported values: "name", "create_time".
+            Optional. Sort results by a defined order. Supported values:
+            "name", "create_time".
     """
 
     parent: str = proto.Field(

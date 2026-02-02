@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -75,6 +75,7 @@ class Cluster(proto.Message):
                 The ERROR state indicates the cluster is
                 unusable. It will be automatically deleted.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2

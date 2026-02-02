@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 
 class BusinessIdentity(proto.Message):
-    r"""Collection of information related to the [identity of a
-    business](https://support.google.com/merchants/answer/12564247).
+    r"""Collection of information related to the `identity of a
+    business <https://support.google.com/merchants/answer/12564247>`__.
 
     Attributes:
         name (str):
@@ -89,6 +89,7 @@ class BusinessIdentity(proto.Message):
                 having their business identity used for
                 promotions.
         """
+
         PROMOTIONS_CONSENT_UNSPECIFIED = 0
         PROMOTIONS_CONSENT_GIVEN = 1
         PROMOTIONS_CONSENT_DENIED = 2
@@ -117,6 +118,7 @@ class BusinessIdentity(proto.Message):
                     Indicates that the account does not identify
                     with the attribute.
             """
+
             IDENTITY_DECLARATION_UNSPECIFIED = 0
             SELF_IDENTIFIES_AS = 1
             DOES_NOT_SELF_IDENTIFY_AS = 2

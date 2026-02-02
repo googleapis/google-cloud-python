@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 class DeployPolicyEvaluationEvent(proto.Message):
     r"""Payload proto for
-    "clouddeploy.googleapis.com/deploypolicy_evaluation" Platform
-    Log event that describes the deploy policy evaluation event.
+    "clouddeploy.googleapis.com/deploypolicy_evaluation" Platform Log
+    event that describes the deploy policy evaluation event.
 
     Attributes:
         message (str):
@@ -90,13 +90,14 @@ class DeployPolicyEvaluationEvent(proto.Message):
             DENIED_BY_POLICY (2):
                 Denied by policy.
         """
+
         POLICY_VERDICT_UNSPECIFIED = 0
         ALLOWED_BY_POLICY = 1
         DENIED_BY_POLICY = 2
 
     class PolicyVerdictOverride(proto.Enum):
-        r"""Things that could have overridden the policy verdict. When
-        overrides are used, the request will be allowed even if it is
+        r"""Things that could have overridden the policy verdict. When overrides
+        are used, the request will be allowed even if it is
         DENIED_BY_POLICY.
 
         Values:
@@ -107,6 +108,7 @@ class DeployPolicyEvaluationEvent(proto.Message):
             POLICY_SUSPENDED (2):
                 The policy was suspended.
         """
+
         POLICY_VERDICT_OVERRIDE_UNSPECIFIED = 0
         POLICY_OVERRIDDEN = 1
         POLICY_SUSPENDED = 2

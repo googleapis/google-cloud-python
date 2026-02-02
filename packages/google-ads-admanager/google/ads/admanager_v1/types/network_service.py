@@ -36,8 +36,8 @@ class GetNetworkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name of Network.
-            Format: networks/{network_code}
+            Required. Resource name of Network. Format:
+            networks/{network_code}
     """
 
     name: str = proto.Field(

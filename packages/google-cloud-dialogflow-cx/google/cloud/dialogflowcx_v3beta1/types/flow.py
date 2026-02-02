@@ -17,18 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 from google.cloud.dialogflowcx_v3beta1.types import (
     import_strategy,
     page,
     parameter_definition,
     validation_message,
-)
-from google.cloud.dialogflowcx_v3beta1.types import (
-    advanced_settings as gcdc_advanced_settings,
 )
 
 __protobuf__ = proto.module(
@@ -88,6 +88,7 @@ class NluSettings(proto.Message):
             MODEL_TYPE_ADVANCED (3):
                 Use advanced NLU model.
         """
+
         MODEL_TYPE_UNSPECIFIED = 0
         MODEL_TYPE_STANDARD = 1
         MODEL_TYPE_ADVANCED = 3
@@ -108,6 +109,7 @@ class NluSettings(proto.Message):
                 training. Best for large flows whose models take
                 long time to train.
         """
+
         MODEL_TRAINING_MODE_UNSPECIFIED = 0
         MODEL_TRAINING_MODE_AUTOMATIC = 1
         MODEL_TRAINING_MODE_MANUAL = 2
@@ -235,11 +237,9 @@ class Flow(proto.Message):
 
         Attributes:
             enable_multi_language_detection (bool):
-                Optional. Enable multi-language detection for
-                this flow. This can be set only if [agent level
-                multi language
-                setting][Agent.enable_multi_language_training]
-                is enabled.
+                Optional. Enable multi-language detection for this flow.
+                This can be set only if [agent level multi language
+                setting][Agent.enable_multi_language_training] is enabled.
             supported_response_language_codes (MutableSequence[str]):
                 Optional. Agent will respond in the detected language if the
                 detected language code is in the supported resolved
@@ -410,8 +410,8 @@ class ListFlowsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
         language_code (str):
             The language to list flows for. The following fields are
             language dependent:
@@ -452,9 +452,8 @@ class ListFlowsResponse(proto.Message):
 
     Attributes:
         flows (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Flow]):
-            The list of flows. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of flows. There will be a maximum number of items
+            returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -632,12 +631,12 @@ class FlowValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    validation_messages: MutableSequence[
-        validation_message.ValidationMessage
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=validation_message.ValidationMessage,
+    validation_messages: MutableSequence[validation_message.ValidationMessage] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=validation_message.ValidationMessage,
+        )
     )
     update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -702,6 +701,7 @@ class ImportFlowRequest(proto.Message):
                 E.g. Standard NLU will be used if custom NLU is
                 not available.
         """
+
         IMPORT_OPTION_UNSPECIFIED = 0
         KEEP = 1
         FALLBACK = 2
@@ -739,13 +739,11 @@ class FlowImportStrategy(proto.Message):
 
     Attributes:
         global_import_strategy (google.cloud.dialogflowcx_v3beta1.types.ImportStrategy):
-            Optional. Global flow import strategy for
-            resource conflict resolution. The import Import
-            strategy for resource conflict resolution,
-            applied globally throughout the flow. It will be
-            applied for all display name conflicts in the
-            imported content. If not specified, 'CREATE_NEW'
-            is assumed.
+            Optional. Global flow import strategy for resource conflict
+            resolution. The import Import strategy for resource conflict
+            resolution, applied globally throughout the flow. It will be
+            applied for all display name conflicts in the imported
+            content. If not specified, 'CREATE_NEW' is assumed.
     """
 
     global_import_strategy: import_strategy.ImportStrategy = proto.Field(

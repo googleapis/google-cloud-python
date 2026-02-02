@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_datasources_v1beta.types import (
@@ -54,26 +54,26 @@ class DataSource(proto.Message):
 
     Attributes:
         primary_product_data_source (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource):
-            The [primary data
-            source](https://support.google.com/merchants/answer/7439058)
+            The `primary data
+            source <https://support.google.com/merchants/answer/7439058>`__
             for local and online products.
 
             This field is a member of `oneof`_ ``Type``.
         supplemental_product_data_source (google.shopping.merchant_datasources_v1beta.types.SupplementalProductDataSource):
-            The [supplemental data
-            source](https://support.google.com/merchants/answer/7439058)
+            The `supplemental data
+            source <https://support.google.com/merchants/answer/7439058>`__
             for local and online products.
 
             This field is a member of `oneof`_ ``Type``.
         local_inventory_data_source (google.shopping.merchant_datasources_v1beta.types.LocalInventoryDataSource):
-            The [local
-            inventory](https://support.google.com/merchants/answer/7023001)
+            The `local
+            inventory <https://support.google.com/merchants/answer/7023001>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
         regional_inventory_data_source (google.shopping.merchant_datasources_v1beta.types.RegionalInventoryDataSource):
-            The [regional
-            inventory](https://support.google.com/merchants/answer/7439058)
+            The `regional
+            inventory <https://support.google.com/merchants/answer/7439058>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
@@ -84,14 +84,14 @@ class DataSource(proto.Message):
 
             This field is a member of `oneof`_ ``Type``.
         product_review_data_source (google.shopping.merchant_datasources_v1beta.types.ProductReviewDataSource):
-            The [product
-            review](https://support.google.com/merchants/answer/7045996)
+            The `product
+            review <https://support.google.com/merchants/answer/7045996>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
         merchant_review_data_source (google.shopping.merchant_datasources_v1beta.types.MerchantReviewDataSource):
-            The [merchant
-            review](https://support.google.com/merchants/answer/7045996)
+            The `merchant
+            review <https://support.google.com/merchants/answer/7045996>`__
             data source.
 
             This field is a member of `oneof`_ ``Type``.
@@ -142,6 +142,7 @@ class DataSource(proto.Message):
                 data source can be enabled or disabled through the Accounts
                 bundle.
         """
+
         INPUT_UNSPECIFIED = 0
         API = 1
         FILE = 2

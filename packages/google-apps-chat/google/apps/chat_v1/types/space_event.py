@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.chat_v1.types import event_payload
@@ -35,8 +35,8 @@ __protobuf__ = proto.module(
 
 class SpaceEvent(proto.Message):
     r"""An event that represents a change or activity in a Google Chat
-    space. To learn more, see [Work with events from Google
-    Chat](https://developers.google.com/workspace/chat/events-overview).
+    space. To learn more, see `Work with events from Google
+    Chat <https://developers.google.com/workspace/chat/events-overview>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.

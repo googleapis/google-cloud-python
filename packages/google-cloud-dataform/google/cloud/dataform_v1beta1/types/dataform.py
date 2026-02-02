@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -255,6 +255,7 @@ class Repository(proto.Message):
                     The token was used successfully to
                     authenticate against the Git remote.
             """
+
             TOKEN_STATUS_UNSPECIFIED = 0
             NOT_FOUND = 1
             INVALID = 2
@@ -963,6 +964,7 @@ class ComputeRepositoryAccessTokenStatusResponse(proto.Message):
                 The token was used successfully to
                 authenticate against the Git remote.
         """
+
         TOKEN_STATUS_UNSPECIFIED = 0
         NOT_FOUND = 1
         INVALID = 2
@@ -1325,6 +1327,7 @@ class FetchFileGitStatusesResponse(proto.Message):
                 HAS_CONFLICTS (4):
                     The file contains merge conflicts.
             """
+
             STATE_UNSPECIFIED = 0
             ADDED = 1
             DELETED = 2
@@ -1341,12 +1344,12 @@ class FetchFileGitStatusesResponse(proto.Message):
             enum="FetchFileGitStatusesResponse.UncommittedFileChange.State",
         )
 
-    uncommitted_file_changes: MutableSequence[
-        UncommittedFileChange
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=UncommittedFileChange,
+    uncommitted_file_changes: MutableSequence[UncommittedFileChange] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=UncommittedFileChange,
+        )
     )
 
 
@@ -1998,9 +2001,9 @@ class ReleaseConfig(proto.Message):
             Optional. Optional schedule (in cron format)
             for automatic creation of compilation results.
         time_zone (str):
-            Optional. Specifies the time zone to be used
-            when interpreting cron_schedule. Must be a time
-            zone name from the time zone database
+            Optional. Specifies the time zone to be used when
+            interpreting cron_schedule. Must be a time zone name from
+            the time zone database
             (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
             If left unspecified, the default is UTC.
         recent_scheduled_release_records (MutableSequence[google.cloud.dataform_v1beta1.types.ReleaseConfig.ScheduledReleaseRecord]):
@@ -2096,12 +2099,12 @@ class ReleaseConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_release_records: MutableSequence[
-        ScheduledReleaseRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=ScheduledReleaseRecord,
+    recent_scheduled_release_records: MutableSequence[ScheduledReleaseRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=ScheduledReleaseRecord,
+        )
     )
     release_compilation_result: str = proto.Field(
         proto.STRING,
@@ -2870,6 +2873,7 @@ class CompilationResultAction(proto.Message):
                 MATERIALIZED_VIEW (4):
                     The relation is a materialized view.
             """
+
             RELATION_TYPE_UNSPECIFIED = 0
             TABLE = 1
             VIEW = 2
@@ -3447,12 +3451,12 @@ class QueryCompilationResultActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_result_actions: MutableSequence[
-        "CompilationResultAction"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CompilationResultAction",
+    compilation_result_actions: MutableSequence["CompilationResultAction"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CompilationResultAction",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -3480,9 +3484,9 @@ class WorkflowConfig(proto.Message):
             Optional. Optional schedule (in cron format)
             for automatic execution of this workflow config.
         time_zone (str):
-            Optional. Specifies the time zone to be used
-            when interpreting cron_schedule. Must be a time
-            zone name from the time zone database
+            Optional. Specifies the time zone to be used when
+            interpreting cron_schedule. Must be a time zone name from
+            the time zone database
             (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
             If left unspecified, the default is UTC.
         recent_scheduled_execution_records (MutableSequence[google.cloud.dataform_v1beta1.types.WorkflowConfig.ScheduledExecutionRecord]):
@@ -3575,12 +3579,12 @@ class WorkflowConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_execution_records: MutableSequence[
-        ScheduledExecutionRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=ScheduledExecutionRecord,
+    recent_scheduled_execution_records: MutableSequence[ScheduledExecutionRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=ScheduledExecutionRecord,
+        )
     )
     disabled: bool = proto.Field(
         proto.BOOL,
@@ -3881,6 +3885,7 @@ class WorkflowInvocation(proto.Message):
                 The workflow invocation is being cancelled,
                 but some actions are still running.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -4169,6 +4174,7 @@ class WorkflowInvocationAction(proto.Message):
             FAILED (6):
                 The action failed. A terminal state.
         """
+
         PENDING = 0
         RUNNING = 1
         SKIPPED = 2
@@ -4185,9 +4191,8 @@ class WorkflowInvocationAction(proto.Message):
                 Output only. The generated BigQuery SQL
                 script that will be executed.
             job_id (str):
-                Output only. The ID of the BigQuery job that
-                executed the SQL in sql_script. Only set once
-                the job has started to run.
+                Output only. The ID of the BigQuery job that executed the
+                SQL in sql_script. Only set once the job has started to run.
         """
 
         sql_script: str = proto.Field(
@@ -4253,9 +4258,8 @@ class WorkflowInvocationAction(proto.Message):
                 script that will be executed. For reference
                 only.
             job_id (str):
-                Output only. The ID of the BigQuery job that
-                executed the SQL in sql_script. Only set once
-                the job has started to run.
+                Output only. The ID of the BigQuery job that executed the
+                SQL in sql_script. Only set once the job has started to run.
         """
 
         class ActionSqlDefinition(proto.Message):
@@ -4503,12 +4507,12 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocation_actions: MutableSequence[
-        "WorkflowInvocationAction"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="WorkflowInvocationAction",
+    workflow_invocation_actions: MutableSequence["WorkflowInvocationAction"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="WorkflowInvocationAction",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

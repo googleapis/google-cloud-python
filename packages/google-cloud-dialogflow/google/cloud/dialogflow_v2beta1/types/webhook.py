@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import context, intent
+from google.cloud.dialogflow_v2beta1.types import context, intent, session_entity_type
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
-from google.cloud.dialogflow_v2beta1.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -75,12 +74,12 @@ class WebhookRequest(proto.Message):
         number=2,
         message=gcd_session.QueryResult,
     )
-    alternative_query_results: MutableSequence[
-        gcd_session.QueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=gcd_session.QueryResult,
+    alternative_query_results: MutableSequence[gcd_session.QueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gcd_session.QueryResult,
+        )
     )
     original_detect_intent_request: "OriginalDetectIntentRequest" = proto.Field(
         proto.MESSAGE,
@@ -149,11 +148,10 @@ class WebhookResponse(proto.Message):
             set, Dialogflow ignores the ``fulfillment_text``,
             ``fulfillment_messages``, and ``payload`` fields.
         live_agent_handoff (bool):
-            Indicates that a live agent should be brought in
-            to handle the interaction with the user. In most
-            cases, when you set this flag to true, you would
-            also want to set end_interaction to true as
-            well. Default is false.
+            Indicates that a live agent should be brought in to handle
+            the interaction with the user. In most cases, when you set
+            this flag to true, you would also want to set
+            end_interaction to true as well. Default is false.
         end_interaction (bool):
             Optional. Indicates that this intent ends an
             interaction. Some integrations (e.g., Actions on
@@ -207,12 +205,12 @@ class WebhookResponse(proto.Message):
         proto.BOOL,
         number=8,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=session_entity_type.SessionEntityType,
+        )
     )
 
 

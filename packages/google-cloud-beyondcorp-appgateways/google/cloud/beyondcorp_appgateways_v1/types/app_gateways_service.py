@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,15 +50,14 @@ class ListAppGatewaysRequest(proto.Message):
             [next_page_token][BeyondCorp.ListAppGatewaysResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous ListAppGatewaysRequest, if any.
+            Optional. The next_page_token value returned from a previous
+            ListAppGatewaysRequest, if any.
         filter (str):
             Optional. A filter specifying constraints of
             a list operation.
         order_by (str):
-            Optional. Specifies the ordering of results. See
-            [Sorting
-            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
+            Optional. Specifies the ordering of results. See `Sorting
+            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
             for more information.
     """
 
@@ -302,6 +301,7 @@ class AppGateway(proto.Message):
                 TCP Proxy based BeyondCorp Connection. API
                 will default to this if unset.
         """
+
         TYPE_UNSPECIFIED = 0
         TCP_PROXY = 1
 
@@ -324,6 +324,7 @@ class AppGateway(proto.Message):
                 future. This happens when CCFE sends
                 ProjectState = OFF.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -342,6 +343,7 @@ class AppGateway(proto.Message):
                 AppGateway hosted in a GCP regional managed
                 instance group.
         """
+
         HOST_TYPE_UNSPECIFIED = 0
         GCP_REGIONAL_MIG = 1
 

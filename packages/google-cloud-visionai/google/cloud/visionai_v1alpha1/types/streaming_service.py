@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.visionai_v1alpha1.types import streaming_resources
@@ -60,6 +60,7 @@ class LeaseType(proto.Enum):
         LEASE_TYPE_WRITER (2):
             Lease for stream writer.
     """
+
     LEASE_TYPE_UNSPECIFIED = 0
     LEASE_TYPE_READER = 1
     LEASE_TYPE_WRITER = 2

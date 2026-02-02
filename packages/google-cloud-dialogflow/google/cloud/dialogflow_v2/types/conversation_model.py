@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -129,6 +129,7 @@ class ConversationModel(proto.Message):
                 until there is enough capacity to start
                 training.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UNDEPLOYED = 2
@@ -150,6 +151,7 @@ class ConversationModel(proto.Message):
             SMART_REPLY_BERT_MODEL (6):
                 ModelType smart reply bert model.
         """
+
         MODEL_TYPE_UNSPECIFIED = 0
         SMART_REPLY_DUAL_ENCODER_MODEL = 2
         SMART_REPLY_BERT_MODEL = 6
@@ -309,11 +311,10 @@ class EvaluationConfig(proto.Message):
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
                 Only used for smart reply model.
             max_result_count (int):
-                Required. The model to be evaluated can return
-                multiple results with confidence score on each
-                query. These results will be sorted by the
-                descending order of the scores and we only keep
-                the first max_result_count results as the final
+                Required. The model to be evaluated can return multiple
+                results with confidence score on each query. These results
+                will be sorted by the descending order of the scores and we
+                only keep the first max_result_count results as the final
                 results to evaluate.
         """
 
@@ -335,11 +336,10 @@ class EvaluationConfig(proto.Message):
                 ``projects/<Project ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
                 Only used for smart compose model.
             max_result_count (int):
-                Required. The model to be evaluated can return
-                multiple results with confidence score on each
-                query. These results will be sorted by the
-                descending order of the scores and we only keep
-                the first max_result_count results as the final
+                Required. The model to be evaluated can return multiple
+                results with confidence score on each query. These results
+                will be sorted by the descending order of the scores and we
+                only keep the first max_result_count results as the final
                 results to evaluate.
         """
 
@@ -392,8 +392,8 @@ class ArticleSuggestionModelMetadata(proto.Message):
 
     Attributes:
         training_model_type (google.cloud.dialogflow_v2.types.ConversationModel.ModelType):
-            Optional. Type of the article suggestion model.
-            If not provided, model_type is used.
+            Optional. Type of the article suggestion model. If not
+            provided, model_type is used.
     """
 
     training_model_type: "ConversationModel.ModelType" = proto.Field(
@@ -408,8 +408,8 @@ class SmartReplyModelMetadata(proto.Message):
 
     Attributes:
         training_model_type (google.cloud.dialogflow_v2.types.ConversationModel.ModelType):
-            Optional. Type of the smart reply model. If not
-            provided, model_type is used.
+            Optional. Type of the smart reply model. If not provided,
+            model_type is used.
     """
 
     training_model_type: "ConversationModel.ModelType" = proto.Field(
@@ -424,10 +424,9 @@ class SmartReplyMetrics(proto.Message):
 
     Attributes:
         allowlist_coverage (float):
-            Percentage of target participant messages in the
-            evaluation dataset for which similar messages
-            have appeared at least once in the allowlist.
-            Should be [0, 1].
+            Percentage of target participant messages in the evaluation
+            dataset for which similar messages have appeared at least
+            once in the allowlist. Should be [0, 1].
         top_n_metrics (MutableSequence[google.cloud.dialogflow_v2.types.SmartReplyMetrics.TopNMetrics]):
             Metrics of top n smart replies, sorted by [TopNMetric.n][].
         conversation_count (int):
@@ -528,8 +527,8 @@ class ListConversationModelsRequest(proto.Message):
             models to return in a single page. By default
             100 and at most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -652,8 +651,8 @@ class ListConversationModelEvaluationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -687,12 +686,12 @@ class ListConversationModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_model_evaluations: MutableSequence[
-        "ConversationModelEvaluation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ConversationModelEvaluation",
+    conversation_model_evaluations: MutableSequence["ConversationModelEvaluation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ConversationModelEvaluation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -765,6 +764,7 @@ class CreateConversationModelOperationMetadata(proto.Message):
             TRAINING (6):
                 Custom model is training.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SUCCEEDED = 2
@@ -930,6 +930,7 @@ class CreateConversationModelEvaluationOperationMetadata(proto.Message):
             FAILED (5):
                 The operation has failed.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         RUNNING = 2

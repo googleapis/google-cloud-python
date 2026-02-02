@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -85,6 +85,7 @@ class PscConnectionStatus(proto.Enum):
         PSC_CONNECTION_STATUS_NOT_FOUND (2):
             Connection not found
     """
+
     PSC_CONNECTION_STATUS_UNSPECIFIED = 0
     PSC_CONNECTION_STATUS_ACTIVE = 1
     PSC_CONNECTION_STATUS_NOT_FOUND = 2
@@ -101,6 +102,7 @@ class AuthorizationMode(proto.Enum):
         AUTH_MODE_DISABLED (2):
             Authorization disabled mode
     """
+
     AUTH_MODE_UNSPECIFIED = 0
     AUTH_MODE_IAM_AUTH = 1
     AUTH_MODE_DISABLED = 2
@@ -121,6 +123,7 @@ class NodeType(proto.Enum):
         REDIS_STANDARD_SMALL (4):
             Redis standard small node_type.
     """
+
     NODE_TYPE_UNSPECIFIED = 0
     REDIS_SHARED_CORE_NANO = 1
     REDIS_HIGHMEM_MEDIUM = 2
@@ -140,6 +143,7 @@ class TransitEncryptionMode(proto.Enum):
             Use server managed encryption for in-transit
             encryption.
     """
+
     TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
     TRANSIT_ENCRYPTION_MODE_DISABLED = 1
     TRANSIT_ENCRYPTION_MODE_SERVER_AUTHENTICATION = 2
@@ -161,6 +165,7 @@ class ConnectionType(proto.Enum):
             Cluster endpoint that will be used as reader
             endpoint to access replicas.
     """
+
     CONNECTION_TYPE_UNSPECIFIED = 0
     CONNECTION_TYPE_DISCOVERY = 1
     CONNECTION_TYPE_PRIMARY = 2
@@ -302,9 +307,8 @@ class UpdateClusterRequest(proto.Message):
             - ``size_gb``
             - ``replica_count``
         cluster (google.cloud.redis_cluster_v1.types.Cluster):
-            Required. Update description.
-            Only fields specified in update_mask are
-            updated.
+            Required. Update description. Only fields specified in
+            update_mask are updated.
         request_id (str):
             Idempotent request UUID.
     """
@@ -804,6 +808,7 @@ class Cluster(proto.Message):
             DELETING (4):
                 Redis cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -882,10 +887,9 @@ class Cluster(proto.Message):
         Attributes:
             backup (str):
                 Optional. Example:
-
                 //redis.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
-                A shorter version (without the prefix) of the
-                backup name is also supported, like
+                A shorter version (without the prefix) of the backup name is
+                also supported, like
                 projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
                 In this case, it assumes the backup is under
                 redis.googleapis.com.
@@ -1018,12 +1022,12 @@ class Cluster(proto.Message):
         optional=True,
         message="ClusterMaintenanceSchedule",
     )
-    psc_service_attachments: MutableSequence[
-        "PscServiceAttachment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=30,
-        message="PscServiceAttachment",
+    psc_service_attachments: MutableSequence["PscServiceAttachment"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=30,
+            message="PscServiceAttachment",
+        )
     )
     cluster_endpoints: MutableSequence["ClusterEndpoint"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1088,6 +1092,7 @@ class AutomatedBackupConfig(proto.Message):
             ENABLED (2):
                 Automated backup config enabled.
         """
+
         AUTOMATED_BACKUP_MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -1239,6 +1244,7 @@ class Backup(proto.Message):
             AUTOMATED (2):
                 Automated backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         ON_DEMAND = 1
         AUTOMATED = 2
@@ -1260,6 +1266,7 @@ class Backup(proto.Message):
                 reasons like project deletion, billing account
                 closure, etc.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1448,6 +1455,7 @@ class CrossClusterReplicationConfig(proto.Message):
                 A cluster that allows only reads and
                 replicates data from a primary cluster.
         """
+
         CLUSTER_ROLE_UNSPECIFIED = 0
         NONE = 1
         PRIMARY = 2
@@ -1543,10 +1551,10 @@ class ClusterMaintenancePolicy(proto.Message):
             updated i.e. Maintenance Window or Deny Period
             was updated.
         weekly_maintenance_window (MutableSequence[google.cloud.redis_cluster_v1.types.ClusterWeeklyMaintenanceWindow]):
-            Optional. Maintenance window that is applied to
-            resources covered by this policy. Minimum 1. For
-            the current version, the maximum number of
-            weekly_maintenance_window is expected to be one.
+            Optional. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_maintenance_window is expected
+            to be one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1559,12 +1567,12 @@ class ClusterMaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "ClusterWeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="ClusterWeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["ClusterWeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ClusterWeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -1620,9 +1628,8 @@ class PscConfig(proto.Message):
 
     Attributes:
         network (str):
-            Required. The network where the IP address of
-            the discovery endpoint will be reserved, in the
-            form of
+            Required. The network where the IP address of the discovery
+            endpoint will be reserved, in the form of
             projects/{network_project}/global/networks/{network_id}.
     """
 
@@ -1685,8 +1692,8 @@ class PscConnection(proto.Message):
             Optional. Project ID of the consumer project
             where the forwarding rule is created in.
         network (str):
-            Required. The consumer network where the IP
-            address resides, in the form of
+            Required. The consumer network where the IP address resides,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Required. The service attachment which is the
@@ -1814,11 +1821,11 @@ class PscAutoConnection(proto.Message):
 
             projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}.
         project_id (str):
-            Required. The consumer project_id where the
-            forwarding rule is created from.
+            Required. The consumer project_id where the forwarding rule
+            is created from.
         network (str):
-            Required. The consumer network where the IP
-            address resides, in the form of
+            Required. The consumer network where the IP address resides,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Output only. The service attachment which is
@@ -2017,6 +2024,7 @@ class ClusterPersistenceConfig(proto.Message):
             AOF (3):
                 AOF based persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -2050,6 +2058,7 @@ class ClusterPersistenceConfig(proto.Message):
                 TWENTY_FOUR_HOURS (4):
                     Twenty four hours.
             """
+
             SNAPSHOT_PERIOD_UNSPECIFIED = 0
             ONE_HOUR = 1
             SIX_HOURS = 2
@@ -2095,6 +2104,7 @@ class ClusterPersistenceConfig(proto.Message):
                     appended to the AOF. It has the best data loss
                     protection at the cost of performance
             """
+
             APPEND_FSYNC_UNSPECIFIED = 0
             NO = 1
             EVERYSEC = 2
@@ -2128,13 +2138,12 @@ class ZoneDistributionConfig(proto.Message):
 
     Attributes:
         mode (google.cloud.redis_cluster_v1.types.ZoneDistributionConfig.ZoneDistributionMode):
-            Optional. The mode of zone distribution.
-            Defaults to MULTI_ZONE, when not specified.
+            Optional. The mode of zone distribution. Defaults to
+            MULTI_ZONE, when not specified.
         zone (str):
-            Optional. When SINGLE ZONE distribution is
-            selected, zone field would be used to allocate
-            all resources in that zone. This is not
-            applicable to MULTI_ZONE, and would be ignored
+            Optional. When SINGLE ZONE distribution is selected, zone
+            field would be used to allocate all resources in that zone.
+            This is not applicable to MULTI_ZONE, and would be ignored
             for MULTI_ZONE clusters.
     """
 
@@ -2152,6 +2161,7 @@ class ZoneDistributionConfig(proto.Message):
                 The zone field must be specified, when this mode
                 is selected.
         """
+
         ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
         MULTI_ZONE = 1
         SINGLE_ZONE = 2
@@ -2177,8 +2187,8 @@ class RescheduleClusterMaintenanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/clusters/{cluster_id}``
             where ``location_id`` refers to a GCP region.
         reschedule_type (google.cloud.redis_cluster_v1.types.RescheduleClusterMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME,
-            must set up schedule_time as well.
+            Required. If reschedule type is SPECIFIC_TIME, must set up
+            schedule_time as well.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Timestamp when the maintenance shall be
             rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
@@ -2198,6 +2208,7 @@ class RescheduleClusterMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         SPECIFIC_TIME = 3
@@ -2253,6 +2264,7 @@ class EncryptionInfo(proto.Message):
                 is managed by the customer. KMS key versions
                 will be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -2282,6 +2294,7 @@ class EncryptionInfo(proto.Message):
             UNKNOWN_FAILURE (8):
                 All other unknown failures.
         """
+
         KMS_KEY_STATE_UNSPECIFIED = 0
         ENABLED = 1
         PERMISSION_DENIED = 2

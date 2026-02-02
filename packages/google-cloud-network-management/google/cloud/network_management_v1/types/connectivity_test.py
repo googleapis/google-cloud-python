@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_management_v1.types import trace
@@ -225,16 +225,14 @@ class Endpoint(proto.Message):
 
             This field is a member of `oneof`_ ``_load_balancer_type``.
         gke_master_cluster (str):
-            A cluster URI for [Google Kubernetes Engine
-            cluster control
-            plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+            A cluster URI for `Google Kubernetes Engine cluster control
+            plane <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
         fqdn (str):
-            DNS endpoint of [Google Kubernetes Engine
-            cluster control
-            plane](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
-            Requires gke_master_cluster to be set, can't be
-            used simultaneoulsly with ip_address or network.
-            Applicable only to destination endpoint.
+            DNS endpoint of `Google Kubernetes Engine cluster control
+            plane <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>`__.
+            Requires gke_master_cluster to be set, can't be used
+            simultaneoulsly with ip_address or network. Applicable only
+            to destination endpoint.
         cloud_sql_instance (str):
             A `Cloud SQL <https://cloud.google.com/sql>`__ instance URI.
         redis_instance (str):
@@ -311,6 +309,7 @@ class Endpoint(proto.Message):
                 internet-routable external IP addresses or IP
                 addresses for global Google APIs and services.
         """
+
         NETWORK_TYPE_UNSPECIFIED = 0
         GCP_NETWORK = 1
         NON_GCP_NETWORK = 2
@@ -335,6 +334,7 @@ class Endpoint(proto.Message):
                 Forwarding Rule is a Private Service Connect
                 endpoint.
         """
+
         FORWARDING_RULE_TARGET_UNSPECIFIED = 0
         INSTANCE = 1
         LOAD_BALANCER = 2
@@ -544,6 +544,7 @@ class ReachabilityDetails(proto.Message):
                 - The analyzer received an invalid or unsupported argument
                   or was unable to identify a known endpoint.
         """
+
         RESULT_UNSPECIFIED = 0
         REACHABLE = 1
         UNREACHABLE = 2
@@ -674,6 +675,7 @@ class ProbingDetails(proto.Message):
                   request.
                 - An internal error occurred.
         """
+
         PROBING_RESULT_UNSPECIFIED = 0
         REACHABLE = 1
         UNREACHABLE = 2
@@ -693,6 +695,7 @@ class ProbingDetails(proto.Message):
                 No valid source endpoint could be derived
                 from the request.
         """
+
         PROBING_ABORT_CAUSE_UNSPECIFIED = 0
         PERMISSION_DENIED = 1
         NO_SOURCE_LOCATION = 2

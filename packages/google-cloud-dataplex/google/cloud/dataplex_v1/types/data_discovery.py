@@ -82,11 +82,10 @@ class DataDiscoverySpec(proto.Message):
                 For supported values, refer to
                 https://cloud.google.com/bigquery/docs/locations#supported_locations.
             project (str):
-                Optional. The project of the BigQuery dataset to
-                publish BigLake external or non-BigLake external
-                tables to. If not specified, the project of the
-                Cloud Storage bucket will be used. The format is
-                "projects/{project_id_or_number}".
+                Optional. The project of the BigQuery dataset to publish
+                BigLake external or non-BigLake external tables to. If not
+                specified, the project of the Cloud Storage bucket will be
+                used. The format is "projects/{project_id_or_number}".
         """
 
         class TableType(proto.Enum):
@@ -106,6 +105,7 @@ class DataDiscoverySpec(proto.Message):
                     credentials of the associated BigQuery
                     connection.
             """
+
             TABLE_TYPE_UNSPECIFIED = 0
             EXTERNAL = 1
             BIGLAKE = 2

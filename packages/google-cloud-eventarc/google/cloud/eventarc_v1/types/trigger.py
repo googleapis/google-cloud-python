@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import network_config as gce_network_config
@@ -211,14 +211,12 @@ class EventFilter(proto.Message):
 
     Attributes:
         attribute (str):
-            Required. The name of a CloudEvents attribute.
-            Currently, only a subset of attributes are
-            supported for filtering. You can [retrieve a
-            specific provider's supported event
-            types](/eventarc/docs/list-providers#describe-provider).
+            Required. The name of a CloudEvents attribute. Currently,
+            only a subset of attributes are supported for filtering. You
+            can `retrieve a specific provider's supported event
+            types </eventarc/docs/list-providers#describe-provider>`__.
 
-            All triggers MUST provide a filter for the
-            'type' attribute.
+            All triggers MUST provide a filter for the 'type' attribute.
         value (str):
             Required. The value for the attribute.
         operator (str):

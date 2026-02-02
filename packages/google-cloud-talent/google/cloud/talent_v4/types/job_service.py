@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import common, filters, histogram
@@ -86,6 +86,7 @@ class JobView(proto.Enum):
             All available attributes are included in the
             search results.
     """
+
     JOB_VIEW_UNSPECIFIED = 0
     JOB_VIEW_ID_ONLY = 1
     JOB_VIEW_MINIMAL = 2
@@ -98,11 +99,11 @@ class CreateJobRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under
-            which the job is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}". For
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant under which the
+            job is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}".
+            For example, "projects/foo/tenants/bar".
         job (google.cloud.talent_v4.types.Job):
             Required. The Job to be created.
     """
@@ -123,12 +124,11 @@ class GetJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the job to
-            retrieve.
+            Required. The resource name of the job to retrieve.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-            For example,
-            "projects/foo/tenants/bar/jobs/baz".
+            For example, "projects/foo/tenants/bar/jobs/baz".
     """
 
     name: str = proto.Field(
@@ -174,12 +174,11 @@ class DeleteJobRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the job to be
-            deleted.
+            Required. The resource name of the job to be deleted.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-            For example,
-            "projects/foo/tenants/bar/jobs/baz".
+            For example, "projects/foo/tenants/bar/jobs/baz".
     """
 
     name: str = proto.Field(
@@ -193,11 +192,11 @@ class ListJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under
-            which the job is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}". For
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant under which the
+            job is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}".
+            For example, "projects/foo/tenants/bar".
         filter (str):
             Required. The filter string specifies the jobs to be
             enumerated.
@@ -308,11 +307,10 @@ class SearchJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant to
-            search within.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}". For
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant to search within.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}".
+            For example, "projects/foo/tenants/bar".
         search_mode (google.cloud.talent_v4.types.SearchJobsRequest.SearchMode):
             Mode of a search.
 
@@ -617,9 +615,8 @@ class SearchJobsRequest(proto.Message):
 
         Values:
             SEARCH_MODE_UNSPECIFIED (0):
-                The mode of the search method isn't specified.
-                The default search behavior is identical to
-                JOB_SEARCH search behavior.
+                The mode of the search method isn't specified. The default
+                search behavior is identical to JOB_SEARCH search behavior.
             JOB_SEARCH (1):
                 The job search matches against all jobs, and
                 featured jobs (jobs with promotionValue > 0) are
@@ -634,6 +631,7 @@ class SearchJobsRequest(proto.Message):
                 the search results), with relevance being used
                 as a tiebreaker.
         """
+
         SEARCH_MODE_UNSPECIFIED = 0
         JOB_SEARCH = 1
         FEATURED_JOB_SEARCH = 2
@@ -672,16 +670,14 @@ class SearchJobsRequest(proto.Message):
                 pushed to the end of the last page of search
                 result.
             TWO_PER_COMPANY (4):
-                Similar to ONE_PER_COMPANY, but it allows at
-                most two jobs in the same company to be shown at
-                once, the other jobs under same company are
-                pushed to the end of the last page of search
-                result.
+                Similar to ONE_PER_COMPANY, but it allows at most two jobs
+                in the same company to be shown at once, the other jobs
+                under same company are pushed to the end of the last page of
+                search result.
             MAX_THREE_PER_COMPANY (6):
-                Similar to ONE_PER_COMPANY, but it allows at
-                most three jobs in the same company to be shown
-                at once, the other jobs under same company are
-                dropped.
+                Similar to ONE_PER_COMPANY, but it allows at most three jobs
+                in the same company to be shown at once, the other jobs
+                under same company are dropped.
             DIVERSIFY_BY_LOOSER_SIMILARITY (5):
                 The result list is ordered such that somewhat
                 similar results are pushed to the end of the
@@ -689,6 +685,7 @@ class SearchJobsRequest(proto.Message):
                 recommended if SIMPLE diversification does not
                 diversify enough.
         """
+
         DIVERSIFICATION_LEVEL_UNSPECIFIED = 0
         DISABLED = 1
         SIMPLE = 2
@@ -737,6 +734,7 @@ class SearchJobsRequest(proto.Message):
                 Only enable keyword matching over
                 [Job.title][google.cloud.talent.v4.Job.title].
         """
+
         KEYWORD_MATCH_MODE_UNSPECIFIED = 0
         KEYWORD_MATCH_DISABLED = 1
         KEYWORD_MATCH_ALL = 2
@@ -760,6 +758,7 @@ class SearchJobsRequest(proto.Message):
             HIGH (4):
                 High relevance threshold.
         """
+
         RELEVANCE_THRESHOLD_UNSPECIFIED = 0
         LOWEST = 1
         LOW = 2
@@ -844,6 +843,7 @@ class SearchJobsRequest(proto.Message):
                     position with existing relevance score
                     (determined by API algorithm) ignored.
             """
+
             IMPORTANCE_LEVEL_UNSPECIFIED = 0
             NONE = 1
             LOW = 2
@@ -1070,12 +1070,12 @@ class SearchJobsResponse(proto.Message):
         number=1,
         message=MatchingJob,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=histogram.HistogramQueryResult,
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=histogram.HistogramQueryResult,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1111,11 +1111,11 @@ class BatchCreateJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under
-            which the job is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}". For
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant under which the
+            job is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}".
+            For example, "projects/foo/tenants/bar".
         jobs (MutableSequence[google.cloud.talent_v4.types.Job]):
             Required. The jobs to be created.
             A maximum of 200 jobs can be created in a batch.
@@ -1137,11 +1137,11 @@ class BatchUpdateJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the tenant under
-            which the job is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}". For
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant under which the
+            job is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}".
+            For example, "projects/foo/tenants/bar".
         jobs (MutableSequence[google.cloud.talent_v4.types.Job]):
             Required. The jobs to be updated.
             A maximum of 200 jobs can be updated in a batch.
@@ -1203,8 +1203,7 @@ class BatchDeleteJobsRequest(proto.Message):
 
             The format is
             "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-            For example,
-            "projects/foo/tenants/bar/jobs/baz".
+            For example, "projects/foo/tenants/bar/jobs/baz".
 
             A maximum of 200 jobs can be deleted in a batch.
     """

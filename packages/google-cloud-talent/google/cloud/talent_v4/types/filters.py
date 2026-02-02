@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import common
@@ -56,18 +56,18 @@ class JobQuery(proto.Message):
             "sr-Latn". For more information, see `Tags for Identifying
             Languages <https://tools.ietf.org/html/bcp47>`__.
         companies (MutableSequence[str]):
-            This filter specifies the company entities to
-            search against.
-            If a value isn't specified, jobs are searched
-            for against all companies.
+            This filter specifies the company entities to search
+            against.
 
-            If multiple values are specified, jobs are
-            searched against the companies specified.
+            If a value isn't specified, jobs are searched for against
+            all companies.
+
+            If multiple values are specified, jobs are searched against
+            the companies specified.
 
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}".
-            For example,
-            "projects/foo/tenants/bar/companies/baz".
+            For example, "projects/foo/tenants/bar/companies/baz".
 
             At most 20 company filters are allowed.
         location_filters (MutableSequence[google.cloud.talent_v4.types.LocationFilter]):
@@ -283,22 +283,21 @@ class LocationFilter(proto.Message):
             The address name, such as "Mountain View" or
             "Bay Area".
         region_code (str):
-            CLDR region code of the country/region. This
-            field may be used in two ways:
-            1) If telecommute preference is not set, this
-            field is used address ambiguity of the
-            user-input address. For example, "Liverpool" may
-            refer to "Liverpool, NY, US" or "Liverpool, UK".
-            This region code biases the address resolution
-            toward a specific country or territory. If this
-            field is not set, address resolution is biased
-            toward the United States by default.
+            CLDR region code of the country/region. This field may be
+            used in two ways:
 
-            2) If telecommute preference is set to
-            TELECOMMUTE_ALLOWED, the telecommute location
-            filter will be limited to the region specified
-            in this field. If this field is not set, the
-            telecommute job locations will not be
+            1) If telecommute preference is not set, this field is used
+               address ambiguity of the user-input address. For example,
+               "Liverpool" may refer to "Liverpool, NY, US" or
+               "Liverpool, UK". This region code biases the address
+               resolution toward a specific country or territory. If
+               this field is not set, address resolution is biased
+               toward the United States by default.
+
+            2) If telecommute preference is set to TELECOMMUTE_ALLOWED,
+               the telecommute location filter will be limited to the
+               region specified in this field. If this field is not set,
+               the telecommute job locations will not be
 
             See
             https://unicode-org.github.io/cldr-staging/charts/latest/supplemental/territory_information.html
@@ -308,10 +307,9 @@ class LocationFilter(proto.Message):
             search from. This field is ignored if ``address`` is
             provided.
         distance_in_miles (float):
-            The distance_in_miles is applied when the
-            location being searched for is identified as a
-            city or smaller. This field is ignored if the
-            location being searched for is a state or
+            The distance_in_miles is applied when the location being
+            searched for is identified as a city or smaller. This field
+            is ignored if the location being searched for is a state or
             larger.
         telecommute_preference (google.cloud.talent_v4.types.LocationFilter.TelecommutePreference):
             Allows the client to return jobs without a set location,
@@ -354,14 +352,15 @@ class LocationFilter(proto.Message):
                 Default value if the telecommute preference
                 isn't specified.
             TELECOMMUTE_EXCLUDED (1):
-                Deprecated: Ignore telecommute status of jobs.
-                Use TELECOMMUTE_JOBS_EXCLUDED if want to exclude
-                telecommute jobs.
+                Deprecated: Ignore telecommute status of jobs. Use
+                TELECOMMUTE_JOBS_EXCLUDED if want to exclude telecommute
+                jobs.
             TELECOMMUTE_ALLOWED (2):
                 Allow telecommute jobs.
             TELECOMMUTE_JOBS_EXCLUDED (3):
                 Exclude telecommute jobs.
         """
+
         TELECOMMUTE_PREFERENCE_UNSPECIFIED = 0
         TELECOMMUTE_EXCLUDED = 1
         TELECOMMUTE_ALLOWED = 2
@@ -456,6 +455,7 @@ class CompensationFilter(proto.Message):
                 zero or more
                 [units][google.cloud.talent.v4.CompensationFilter.units].
         """
+
         FILTER_TYPE_UNSPECIFIED = 0
         UNIT_ONLY = 1
         UNIT_AND_AMOUNT = 2
@@ -467,12 +467,12 @@ class CompensationFilter(proto.Message):
         number=1,
         enum=FilterType,
     )
-    units: MutableSequence[
-        common.CompensationInfo.CompensationUnit
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=2,
-        enum=common.CompensationInfo.CompensationUnit,
+    units: MutableSequence[common.CompensationInfo.CompensationUnit] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=common.CompensationInfo.CompensationUnit,
+        )
     )
     range_: common.CompensationInfo.CompensationRange = proto.Field(
         proto.MESSAGE,
@@ -542,6 +542,7 @@ class CommuteFilter(proto.Message):
                 Commute time calculation takes in account the
                 peak traffic impact.
         """
+
         ROAD_TRAFFIC_UNSPECIFIED = 0
         TRAFFIC_FREE = 1
         BUSY_HOUR = 2

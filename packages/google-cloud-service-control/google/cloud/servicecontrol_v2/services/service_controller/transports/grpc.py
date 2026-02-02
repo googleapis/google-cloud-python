@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.servicecontrol_v2.types import service_controller
 
@@ -110,12 +110,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ServiceControllerGrpcTransport(ServiceControllerTransport):
     """gRPC backend transport for ServiceController.
 
-    [Service Control API
-    v2](https://cloud.google.com/service-infrastructure/docs/service-control/access-control)
+    `Service Control API
+    v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
 
     This API provides admission control and telemetry reporting for
-    services that are integrated with [Service
-    Infrastructure](https://cloud.google.com/service-infrastructure).
+    services that are integrated with `Service
+    Infrastructure <https://cloud.google.com/service-infrastructure>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

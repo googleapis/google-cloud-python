@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import safety
@@ -45,8 +45,8 @@ class Answer(proto.Message):
         answer_text (str):
             The textual answer.
         grounding_score (float):
-            A score in the range of [0, 1] describing how
-            grounded the answer is by the reference chunks.
+            A score in the range of [0, 1] describing how grounded the
+            answer is by the reference chunks.
 
             This field is a member of `oneof`_ ``_grounding_score``.
         citations (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Citation]):
@@ -88,6 +88,7 @@ class Answer(proto.Message):
             STREAMING (4):
                 Answer generation is currently in progress.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
@@ -161,6 +162,7 @@ class Answer(proto.Message):
                 is not answerable, the answer is not relevant to
                 the query, or the answer is not well-formatted.
         """
+
         ANSWER_SKIPPED_REASON_UNSPECIFIED = 0
         ADVERSARIAL_QUERY_IGNORED = 1
         NON_ANSWER_SEEKING_QUERY_IGNORED = 2
@@ -233,10 +235,9 @@ class Answer(proto.Message):
             end_index (int):
                 Required. End of the claim, exclusive.
             grounding_score (float):
-                A score in the range of [0, 1] describing how
-                grounded is a specific claim by the references.
-                Higher value means that the claim is better
-                supported by the reference chunks.
+                A score in the range of [0, 1] describing how grounded is a
+                specific claim by the references. Higher value means that
+                the claim is better supported by the reference chunks.
 
                 This field is a member of `oneof`_ ``_grounding_score``.
             grounding_check_required (bool):
@@ -545,6 +546,7 @@ class Answer(proto.Message):
                 SUCCEEDED (3):
                     Step has succeeded.
             """
+
             STATE_UNSPECIFIED = 0
             IN_PROGRESS = 1
             FAILED = 2
@@ -598,11 +600,11 @@ class Answer(proto.Message):
                         title (str):
                             Title.
                         snippet_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.SnippetInfo]):
-                            If citation_type is DOCUMENT_LEVEL_CITATION,
-                            populate document level snippets.
+                            If citation_type is DOCUMENT_LEVEL_CITATION, populate
+                            document level snippets.
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
-                            If citation_type is CHUNK_LEVEL_CITATION and
-                            chunk mode is on, populate chunk info.
+                            If citation_type is CHUNK_LEVEL_CITATION and chunk mode is
+                            on, populate chunk info.
                         struct_data (google.protobuf.struct_pb2.Struct):
                             Data representation.
                             The structured JSON data for the document.
@@ -773,6 +775,7 @@ class Answer(proto.Message):
                     USER_DEFINED_CLASSIFICATION_QUERY (5):
                         User defined query classification type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

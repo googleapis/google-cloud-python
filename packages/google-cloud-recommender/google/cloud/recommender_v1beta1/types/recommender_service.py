@@ -17,17 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.recommender_v1beta1.types import insight, recommendation
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
 from google.cloud.recommender_v1beta1.types import (
     recommender_config as gcr_recommender_config,
 )
-from google.cloud.recommender_v1beta1.types import insight
-from google.cloud.recommender_v1beta1.types import recommendation
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1beta1",
@@ -177,9 +176,8 @@ class MarkInsightAcceptedRequest(proto.Message):
         name (str):
             Required. Name of the insight.
         state_metadata (MutableMapping[str, str]):
-            Optional. State properties user wish to include
-            with this state. Full replace of the current
-            state_metadata.
+            Optional. State properties user wish to include with this
+            state. Full replace of the current state_metadata.
         etag (str):
             Required. Fingerprint of the Insight.
             Provides optimistic locking.
@@ -291,12 +289,12 @@ class ListRecommendationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recommendations: MutableSequence[
-        recommendation.Recommendation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=recommendation.Recommendation,
+    recommendations: MutableSequence[recommendation.Recommendation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=recommendation.Recommendation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

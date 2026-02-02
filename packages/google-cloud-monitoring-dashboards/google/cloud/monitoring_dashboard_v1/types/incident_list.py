@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -45,12 +45,12 @@ class IncidentList(proto.Message):
             policy name. For example, use ``alertPolicies/utilization``.
     """
 
-    monitored_resources: MutableSequence[
-        monitored_resource_pb2.MonitoredResource
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=monitored_resource_pb2.MonitoredResource,
+    monitored_resources: MutableSequence[monitored_resource_pb2.MonitoredResource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=monitored_resource_pb2.MonitoredResource,
+        )
     )
     policy_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,

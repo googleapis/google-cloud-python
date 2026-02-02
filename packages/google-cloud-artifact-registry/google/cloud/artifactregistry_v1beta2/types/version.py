@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.artifactregistry_v1beta2.types import tag
@@ -50,6 +50,7 @@ class VersionView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     VERSION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -127,8 +128,8 @@ class ListVersionsRequest(proto.Message):
             The maximum number of versions to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
         view (google.cloud.artifactregistry_v1beta2.types.VersionView):
             The view that should be returned in the
             response.

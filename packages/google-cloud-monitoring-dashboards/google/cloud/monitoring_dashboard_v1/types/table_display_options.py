@@ -32,8 +32,8 @@ class TableDisplayOptions(proto.Message):
 
     Attributes:
         shown_columns (MutableSequence[str]):
-            Optional. This field is unused and has been
-            replaced by TimeSeriesTable.column_settings
+            Optional. This field is unused and has been replaced by
+            TimeSeriesTable.column_settings
     """
 
     shown_columns: MutableSequence[str] = proto.RepeatedField(

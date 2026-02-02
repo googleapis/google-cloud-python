@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import chunk as gcd_chunk
@@ -153,20 +153,18 @@ class SearchRequest(proto.Message):
             [UserInfo.user_agent][google.cloud.discoveryengine.v1alpha.UserInfo.user_agent]
             is used to deduce ``device_type`` for analytics.
         language_code (str):
-            The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see [Standard
-            fields](https://cloud.google.com/apis/design/standard_fields).
-            This field helps to better interpret the query.
-            If a value isn't specified, the query language
-            code is automatically detected, which may not be
-            accurate.
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see `Standard
+            fields <https://cloud.google.com/apis/design/standard_fields>`__.
+            This field helps to better interpret the query. If a value
+            isn't specified, the query language code is automatically
+            detected, which may not be accurate.
         region_code (str):
-            The Unicode country/region code (CLDR) of a
-            location, such as "US" and "419". For more
-            information, see [Standard
-            fields](https://cloud.google.com/apis/design/standard_fields).
-            If set, then results will be boosted based on
-            the region_code provided.
+            The Unicode country/region code (CLDR) of a location, such
+            as "US" and "419". For more information, see `Standard
+            fields <https://cloud.google.com/apis/design/standard_fields>`__.
+            If set, then results will be boosted based on the
+            region_code provided.
         facet_specs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.FacetSpec]):
             Facet specifications for faceted search. If empty, no facets
             are returned.
@@ -439,6 +437,7 @@ class SearchRequest(proto.Message):
             HIGH (4):
                 High relevance threshold.
         """
+
         RELEVANCE_THRESHOLD_UNSPECIFIED = 0
         LOWEST = 1
         LOW = 2
@@ -458,6 +457,7 @@ class SearchRequest(proto.Message):
             RANK_BY_FORMULA (4):
                 Ranking by custom formula.
         """
+
         RANKING_EXPRESSION_BACKEND_UNSPECIFIED = 0
         RANK_BY_EMBEDDING = 3
         RANK_BY_FORMULA = 4
@@ -597,12 +597,11 @@ class SearchRequest(proto.Message):
                     values. Must not be set for facet with text
                     values. Maximum number of intervals is 30.
                 restricted_values (MutableSequence[str]):
-                    Only get facet for the given restricted values.
-                    Only supported on textual fields. For example,
-                    suppose "category" has three values "Action >
-                    2022", "Action > 2021" and "Sci-Fi > 2022". If
-                    set "restricted_values" to "Action > 2022", the
-                    "category" facet only contains "Action > 2022".
+                    Only get facet for the given restricted values. Only
+                    supported on textual fields. For example, suppose "category"
+                    has three values "Action > 2022", "Action > 2021" and
+                    "Sci-Fi > 2022". If set "restricted_values" to "Action >
+                    2022", the "category" facet only contains "Action > 2022".
                     Only supported on textual fields. Maximum is 10.
                 prefixes (MutableSequence[str]):
                     Only get facet values that start with the
@@ -722,32 +721,27 @@ class SearchRequest(proto.Message):
                       and color "Red" or "Blue":
                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
-                    Strength of the condition boost, which should be
-                    in [-1, 1]. Negative boost means demotion.
-                    Default is 0.0.
+                    Strength of the condition boost, which should be in [-1, 1].
+                    Negative boost means demotion. Default is 0.0.
 
-                    Setting to 1.0 gives the document a big
-                    promotion. However, it does not necessarily mean
-                    that the boosted document will be the top result
-                    at all times, nor that other documents will be
-                    excluded. Results could still be shown even when
-                    none of them matches the condition. And results
-                    that are significantly more relevant to the
-                    search query can still trump your heavily
-                    favored but irrelevant documents.
+                    Setting to 1.0 gives the document a big promotion. However,
+                    it does not necessarily mean that the boosted document will
+                    be the top result at all times, nor that other documents
+                    will be excluded. Results could still be shown even when
+                    none of them matches the condition. And results that are
+                    significantly more relevant to the search query can still
+                    trump your heavily favored but irrelevant documents.
 
-                    Setting to -1.0 gives the document a big
-                    demotion. However, results that are deeply
-                    relevant might still be shown. The document will
-                    have an upstream battle to get a fairly high
+                    Setting to -1.0 gives the document a big demotion. However,
+                    results that are deeply relevant might still be shown. The
+                    document will have an upstream battle to get a fairly high
                     ranking, but it is not blocked out completely.
 
-                    Setting to 0.0 means no boost applied. The
-                    boosting condition is ignored. Only one of the
-                    (condition, boost) combination or the
-                    boost_control_spec below are set. If both are
-                    set then the global boost is ignored and the
-                    more fine-grained boost_control_spec is applied.
+                    Setting to 0.0 means no boost applied. The boosting
+                    condition is ignored. Only one of the (condition, boost)
+                    combination or the boost_control_spec below are set. If both
+                    are set then the global boost is ignored and the more
+                    fine-grained boost_control_spec is applied.
                 boost_control_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec):
                     Complex specification for custom ranking
                     based on customer defined attribute value.
@@ -763,22 +757,19 @@ class SearchRequest(proto.Message):
                         The name of the field whose value will be
                         used to determine the boost amount.
                     attribute_type (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
-                        The attribute type to be used to determine the
-                        boost amount. The attribute value can be derived
-                        from the field value of the specified
-                        field_name. In the case of numerical it is
+                        The attribute type to be used to determine the boost amount.
+                        The attribute value can be derived from the field value of
+                        the specified field_name. In the case of numerical it is
                         straightforward i.e. attribute_value =
-                        numerical_field_value. In the case of freshness
-                        however, attribute_value = (time.now() -
-                        datetime_field_value).
+                        numerical_field_value. In the case of freshness however,
+                        attribute_value = (time.now() - datetime_field_value).
                     interpolation_type (google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
                         The interpolation type to be applied to
                         connect the control points listed below.
                     control_points (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
-                        The control points used to define the curve. The
-                        monotonic function (defined through the
-                        interpolation_type above) passes through the
-                        control points listed here.
+                        The control points used to define the curve. The monotonic
+                        function (defined through the interpolation_type above)
+                        passes through the control points listed here.
                 """
 
                 class AttributeType(proto.Enum):
@@ -789,11 +780,10 @@ class SearchRequest(proto.Message):
                         ATTRIBUTE_TYPE_UNSPECIFIED (0):
                             Unspecified AttributeType.
                         NUMERICAL (1):
-                            The value of the numerical field will be used to
-                            dynamically update the boost amount. In this
-                            case, the attribute_value (the x value) of the
-                            control point will be the actual value of the
-                            numerical field for which the boost_amount is
+                            The value of the numerical field will be used to dynamically
+                            update the boost amount. In this case, the attribute_value
+                            (the x value) of the control point will be the actual value
+                            of the numerical field for which the boost_amount is
                             specified.
                         FRESHNESS (2):
                             For the freshness use case the attribute value will be the
@@ -804,6 +794,7 @@ class SearchRequest(proto.Message):
                             ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                             ``T24H``.
                     """
+
                     ATTRIBUTE_TYPE_UNSPECIFIED = 0
                     NUMERICAL = 1
                     FRESHNESS = 2
@@ -820,6 +811,7 @@ class SearchRequest(proto.Message):
                             Piecewise linear interpolation will be
                             applied.
                     """
+
                     INTERPOLATION_TYPE_UNSPECIFIED = 0
                     LINEAR = 1
 
@@ -838,9 +830,8 @@ class SearchRequest(proto.Message):
                                restricted subset of an ISO 8601 duration value). The
                                pattern for this is: ``[nD][T[nH][nM][nS]]``.
                         boost_amount (float):
-                            The value between -1 to 1 by which to boost the
-                            score if the attribute_value evaluates to the
-                            value specified above.
+                            The value between -1 to 1 by which to boost the score if the
+                            attribute_value evaluates to the value specified above.
                     """
 
                     attribute_value: str = proto.Field(
@@ -930,6 +921,7 @@ class SearchRequest(proto.Message):
                     Automatic query expansion built by the Search
                     API.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             AUTO = 2
@@ -973,6 +965,7 @@ class SearchRequest(proto.Message):
                     Search API. Search will be based on the
                     corrected query if found.
             """
+
             MODE_UNSPECIFIED = 0
             SUGGESTION_ONLY = 1
             AUTO = 2
@@ -995,9 +988,8 @@ class SearchRequest(proto.Message):
                 If ``summarySpec`` is not specified, summaries are not
                 included in the search response.
             extractive_content_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
-                If there is no extractive_content_spec provided,
-                there will be no extractive answer in the search
-                response.
+                If there is no extractive_content_spec provided, there will
+                be no extractive answer in the search response.
             search_result_mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SearchResultMode):
                 Specifies the search result mode. If unspecified, the search
                 result mode defaults to ``DOCUMENTS``.
@@ -1023,6 +1015,7 @@ class SearchRequest(proto.Message):
                     [DataStore.DocumentProcessingConfig.chunking_config][] is
                     specified.
             """
+
             SEARCH_RESULT_MODE_UNSPECIFIED = 0
             DOCUMENTS = 1
             CHUNKS = 2
@@ -1038,8 +1031,8 @@ class SearchRequest(proto.Message):
                     compatibility, we will return snippet if max_snippet_count >
                     0.
                 reference_only (bool):
-                    [DEPRECATED] This field is deprecated and will
-                    have no affect on the snippet.
+                    [DEPRECATED] This field is deprecated and will have no
+                    affect on the snippet.
                 return_snippet (bool):
                     If ``true``, then return snippet. If no snippet can be
                     generated, we return "No snippet is available for this
@@ -1433,6 +1426,7 @@ class SearchRequest(proto.Message):
                 ENABLED (2):
                     Enables NL filter extraction.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -1442,11 +1436,11 @@ class SearchRequest(proto.Message):
             number=1,
             enum="SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition",
         )
-        geo_search_query_detection_field_names: MutableSequence[
-            str
-        ] = proto.RepeatedField(
-            proto.STRING,
-            number=2,
+        geo_search_query_detection_field_names: MutableSequence[str] = (
+            proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
         )
 
     class SearchAsYouTypeSpec(proto.Message):
@@ -1472,6 +1466,7 @@ class SearchRequest(proto.Message):
                 ENABLED (2):
                     Enables Search As You Type.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -1495,35 +1490,27 @@ class SearchRequest(proto.Message):
 
         Attributes:
             query_id (str):
-                If set, the search result gets stored to the
-                "turn" specified by this query ID.
+                If set, the search result gets stored to the "turn"
+                specified by this query ID.
 
-                Example: Let's say the session looks like this:
+                Example: Let's say the session looks like this: session {
+                name: ".../sessions/xxx" turns { query { text: "What is
+                foo?" query_id: ".../questions/yyy" } answer: "Foo is ..." }
+                turns { query { text: "How about bar then?" query_id:
+                ".../questions/zzz" } } }
 
-                session {
-                name: ".../sessions/xxx"
-                turns {
-                query { text: "What is foo?" query_id:
-                ".../questions/yyy" } answer: "Foo is ..."
-                }
-                turns {
-                query { text: "How about bar then?" query_id:
-                ".../questions/zzz" } }
-                }
+                The user can call /search API with a request like this:
 
-                The user can call /search API with a request
-                like this:
+                ::
 
-                session: ".../sessions/xxx"
-                session_spec { query_id: ".../questions/zzz" }
+                   session: ".../sessions/xxx"
+                   session_spec { query_id: ".../questions/zzz" }
 
-                Then, the API stores the search result,
-                associated with the last turn. The stored search
-                result can be used by a subsequent /answer API
-                call (with the session ID and the query ID
-                specified). Also, it is possible to call /search
-                and /answer in parallel with the same session ID
-                & query ID.
+                Then, the API stores the search result, associated with the
+                last turn. The stored search result can be used by a
+                subsequent /answer API call (with the session ID and the
+                query ID specified). Also, it is possible to call /search
+                and /answer in parallel with the same session ID & query ID.
             search_result_persistence_count (int):
                 The number of top search results to persist. The persisted
                 search results can be used for the subsequent /answer api
@@ -1738,10 +1725,10 @@ class SearchResponse(proto.Message):
             to retrieve the next page. If this field is omitted, there
             are no subsequent pages.
         corrected_query (str):
-            Contains the spell corrected query, if found. If
-            the spell correction type is AUTOMATIC, then the
-            search results are based on corrected_query.
-            Otherwise the original query is used for search.
+            Contains the spell corrected query, if found. If the spell
+            correction type is AUTOMATIC, then the search results are
+            based on corrected_query. Otherwise the original query is
+            used for search.
         summary (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary):
             A summary as part of the search results. This field is only
             returned if
@@ -1986,12 +1973,12 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="SearchResponse.Facet.FacetValue",
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Facet.FacetValue",
+            )
         )
         dynamic_facet: bool = proto.Field(
             proto.BOOL,
@@ -2124,6 +2111,7 @@ class SearchResponse(proto.Message):
                     [SearchRequest.ContentSearchSpec.SummarySpec.ignore_non_answer_seeking_query]
                     is set to ``true``.
             """
+
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
             NON_SUMMARY_SEEKING_QUERY_IGNORED = 2
@@ -2167,12 +2155,12 @@ class SearchResponse(proto.Message):
                     Citations for segments.
             """
 
-            citations: MutableSequence[
-                "SearchResponse.Summary.Citation"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="SearchResponse.Summary.Citation",
+            citations: MutableSequence["SearchResponse.Summary.Citation"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="SearchResponse.Summary.Citation",
+                )
             )
 
         class Citation(proto.Message):
@@ -2196,12 +2184,12 @@ class SearchResponse(proto.Message):
                 proto.INT64,
                 number=2,
             )
-            sources: MutableSequence[
-                "SearchResponse.Summary.CitationSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="SearchResponse.Summary.CitationSource",
+            sources: MutableSequence["SearchResponse.Summary.CitationSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="SearchResponse.Summary.CitationSource",
+                )
             )
 
         class CitationSource(proto.Message):
@@ -2210,9 +2198,9 @@ class SearchResponse(proto.Message):
             Attributes:
                 reference_index (int):
                     Document reference index from
-                    SummaryWithMetadata.references. It is 0-indexed
-                    and the value will be zero if the
-                    reference_index is not set explicitly.
+                    SummaryWithMetadata.references. It is 0-indexed and the
+                    value will be zero if the reference_index is not set
+                    explicitly.
             """
 
             reference_index: int = proto.Field(
@@ -2299,12 +2287,12 @@ class SearchResponse(proto.Message):
                 number=2,
                 message="SearchResponse.Summary.CitationMetadata",
             )
-            references: MutableSequence[
-                "SearchResponse.Summary.Reference"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="SearchResponse.Summary.Reference",
+            references: MutableSequence["SearchResponse.Summary.Reference"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="SearchResponse.Summary.Reference",
+                )
             )
 
         summary_text: str = proto.Field(
@@ -2473,6 +2461,7 @@ class SearchResponse(proto.Message):
                         GREATER_THAN (5):
                             Denotes greater than ``>`` operator.
                     """
+
                     COMPARISON_UNSPECIFIED = 0
                     EQUALS = 1
                     LESS_THAN_EQUALS = 2
@@ -2716,6 +2705,7 @@ class SearchResponse(proto.Message):
                 SLACK (3):
                     One Box result contains slack results.
             """
+
             ONE_BOX_TYPE_UNSPECIFIED = 0
             PEOPLE = 1
             ORGANIZATION = 2
@@ -2726,12 +2716,12 @@ class SearchResponse(proto.Message):
             number=1,
             enum="SearchResponse.OneBoxResult.OneBoxType",
         )
-        search_results: MutableSequence[
-            "SearchResponse.SearchResult"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="SearchResponse.SearchResult",
+        search_results: MutableSequence["SearchResponse.SearchResult"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.SearchResult",
+            )
         )
 
     @property

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
@@ -93,8 +93,7 @@ class ExportDataOperationResponse(proto.Message):
             Output only. Statistic infos of labels in the
             exported dataset.
         output_config (google.cloud.datalabeling_v1beta1.types.OutputConfig):
-            Output only. output_config in the ExportData
-            request.
+            Output only. output_config in the ExportData request.
     """
 
     dataset: str = proto.Field(
@@ -258,8 +257,7 @@ class LabelOperationMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``details``.
         progress_percent (int):
-            Output only. Progress of label operation. Range:
-            [0, 100].
+            Output only. Progress of label operation. Range: [0, 100].
         partial_failures (MutableSequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.

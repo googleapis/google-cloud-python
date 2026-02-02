@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -98,6 +98,7 @@ class Repository(proto.Message):
             PYTHON (8):
                 Python package format.
         """
+
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
         MAVEN = 2
@@ -125,10 +126,9 @@ class Repository(proto.Message):
 
             Values:
                 VERSION_POLICY_UNSPECIFIED (0):
-                    VERSION_POLICY_UNSPECIFIED - the version policy
-                    is not defined. When the version policy is not
-                    defined, no validation is performed for the
-                    versions.
+                    VERSION_POLICY_UNSPECIFIED - the version policy is not
+                    defined. When the version policy is not defined, no
+                    validation is performed for the versions.
                 RELEASE (1):
                     RELEASE - repository will accept only Release
                     versions.
@@ -136,6 +136,7 @@ class Repository(proto.Message):
                     SNAPSHOT - repository will accept only
                     Snapshot versions.
             """
+
             VERSION_POLICY_UNSPECIFIED = 0
             RELEASE = 1
             SNAPSHOT = 2
@@ -201,8 +202,8 @@ class ListRepositoriesRequest(proto.Message):
             The maximum number of repositories to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(

@@ -25,12 +25,12 @@ except ImportError:  # pragma: NO COVER
 import json
 import math
 
-from google.api_core import api_core_version
 import grpc
+import pytest
+from google.api_core import api_core_version
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -39,19 +39,24 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.container_v1beta1.services.cluster_manager import (
     ClusterManagerAsyncClient,
@@ -931,10 +936,9 @@ def test_cluster_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -979,10 +983,9 @@ def test_cluster_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1018,10 +1021,9 @@ def test_cluster_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1262,13 +1264,13 @@ def test_cluster_manager_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3037,9 +3039,9 @@ def test_update_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.update_node_pool(request)
 
@@ -3639,9 +3641,9 @@ def test_set_logging_service_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_logging_service
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_logging_service] = (
+            mock_rpc
+        )
         request = {}
         client.set_logging_service(request)
 
@@ -4060,9 +4062,9 @@ def test_set_monitoring_service_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_monitoring_service
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_monitoring_service] = (
+            mock_rpc
+        )
         request = {}
         client.set_monitoring_service(request)
 
@@ -4476,9 +4478,9 @@ def test_set_addons_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_addons_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_addons_config] = (
+            mock_rpc
+        )
         request = {}
         client.set_addons_config(request)
 
@@ -7078,9 +7080,9 @@ def test_cancel_operation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.cancel_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.cancel_operation] = (
+            mock_rpc
+        )
         request = {}
         client.cancel_operation(request)
 
@@ -7430,9 +7432,9 @@ def test_get_server_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_server_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_server_config] = (
+            mock_rpc
+        )
         request = {}
         client.get_server_config(request)
 
@@ -7784,9 +7786,9 @@ def test_get_json_web_keys_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_json_web_keys
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_json_web_keys] = (
+            mock_rpc
+        )
         request = {}
         client.get_json_web_keys(request)
 
@@ -8796,9 +8798,9 @@ def test_create_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.create_node_pool(request)
 
@@ -9199,9 +9201,9 @@ def test_delete_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.delete_node_pool(request)
 
@@ -11511,9 +11513,9 @@ def test_start_ip_rotation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.start_ip_rotation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.start_ip_rotation] = (
+            mock_rpc
+        )
         request = {}
         client.start_ip_rotation(request)
 
@@ -11918,9 +11920,9 @@ def test_complete_ip_rotation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.complete_ip_rotation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.complete_ip_rotation] = (
+            mock_rpc
+        )
         request = {}
         client.complete_ip_rotation(request)
 
@@ -12328,9 +12330,9 @@ def test_set_node_pool_size_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_node_pool_size
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_node_pool_size] = (
+            mock_rpc
+        )
         request = {}
         client.set_node_pool_size(request)
 
@@ -12629,9 +12631,9 @@ def test_set_network_policy_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_network_policy
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_network_policy] = (
+            mock_rpc
+        )
         request = {}
         client.set_network_policy(request)
 
@@ -13060,9 +13062,9 @@ def test_set_maintenance_policy_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_maintenance_policy
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_maintenance_policy] = (
+            mock_rpc
+        )
         request = {}
         client.set_maintenance_policy(request)
 
@@ -18015,11 +18017,14 @@ def test_cluster_manager_base_transport():
 
 def test_cluster_manager_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.container_v1beta1.services.cluster_manager.transports.ClusterManagerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.container_v1beta1.services.cluster_manager.transports.ClusterManagerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ClusterManagerTransport(
@@ -18036,9 +18041,12 @@ def test_cluster_manager_base_transport_with_credentials_file():
 
 def test_cluster_manager_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.container_v1beta1.services.cluster_manager.transports.ClusterManagerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.container_v1beta1.services.cluster_manager.transports.ClusterManagerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ClusterManagerTransport()
@@ -18109,11 +18117,12 @@ def test_cluster_manager_transport_auth_gdch_credentials(transport_class):
 def test_cluster_manager_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

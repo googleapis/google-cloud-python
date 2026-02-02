@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.batch_v1.types import task
@@ -49,12 +49,10 @@ class Job(proto.Message):
             Output only. A system generated unique ID for
             the Job.
         priority (int):
-            Priority of the Job.
-            The valid value range is [0, 100). Default value
-            is 0. Higher value indicates higher priority.
-            A job with higher priority value is more likely
-            to run earlier if all other requirements are
-            satisfied.
+            Priority of the Job. The valid value range is [0, 100).
+            Default value is 0. Higher value indicates higher priority.
+            A job with higher priority value is more likely to run
+            earlier if all other requirements are satisfied.
         task_groups (MutableSequence[google.cloud.batch_v1.types.TaskGroup]):
             Required. TaskGroups in the Job. Only one
             TaskGroup is supported now.
@@ -182,6 +180,7 @@ class LogsPolicy(proto.Message):
                 Logs are saved to the file path specified in the
                 ``logsPath`` field.
         """
+
         DESTINATION_UNSPECIFIED = 0
         CLOUD_LOGGING = 1
         PATH = 2
@@ -274,6 +273,7 @@ class JobStatus(proto.Message):
                 executions were stopped and the resources were
                 cleaned up.
         """
+
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCHEDULED = 2
@@ -399,19 +399,18 @@ class JobNotification(proto.Message):
             TASK_STATE_CHANGED (2):
                 Notify users that the task state has changed.
         """
+
         TYPE_UNSPECIFIED = 0
         JOB_STATE_CHANGED = 1
         TASK_STATE_CHANGED = 2
 
     class Message(proto.Message):
-        r"""Message details.
-        Describe the conditions under which messages will be sent. If no
-        attribute is defined, no message will be sent by default. One
-        message should specify either the job or the task level
-        attributes, but not both. For example,
-        job level: JOB_STATE_CHANGED and/or a specified new_job_state;
-        task level: TASK_STATE_CHANGED and/or a specified
-        new_task_state.
+        r"""Message details. Describe the conditions under which messages will
+        be sent. If no attribute is defined, no message will be sent by
+        default. One message should specify either the job or the task level
+        attributes, but not both. For example, job level: JOB_STATE_CHANGED
+        and/or a specified new_job_state; task level: TASK_STATE_CHANGED
+        and/or a specified new_task_state.
 
         Attributes:
             type_ (google.cloud.batch_v1.types.JobNotification.Type):
@@ -459,8 +458,7 @@ class AllocationPolicy(proto.Message):
             allocated for the Job.
         instances (MutableSequence[google.cloud.batch_v1.types.AllocationPolicy.InstancePolicyOrTemplate]):
             Describe instances that can be created by this
-            AllocationPolicy. Only instances[0] is supported
-            now.
+            AllocationPolicy. Only instances[0] is supported now.
         service_account (google.cloud.batch_v1.types.ServiceAccount):
             Defines the service account for Batch-created VMs. If
             omitted, the `default Compute Engine service
@@ -531,6 +529,7 @@ class AllocationPolicy(proto.Message):
                 Instance is provisioned with DWS Flex Start
                 and has limited max run duration.
         """
+
         PROVISIONING_MODEL_UNSPECIFIED = 0
         STANDARD = 1
         SPOT = 2
@@ -543,24 +542,20 @@ class AllocationPolicy(proto.Message):
 
         Attributes:
             allowed_locations (MutableSequence[str]):
-                A list of allowed location names represented by
-                internal URLs.
-                Each location can be a region or a zone.
-                Only one region or multiple zones in one region
-                is supported now. For example,
-                ["regions/us-central1"] allow VMs in any zones
-                in region us-central1. ["zones/us-central1-a",
-                "zones/us-central1-c"] only allow VMs in zones
-                us-central1-a and us-central1-c.
+                A list of allowed location names represented by internal
+                URLs.
 
-                Mixing locations from different regions would
-                cause errors. For example,
-                ["regions/us-central1", "zones/us-central1-a",
-                "zones/us-central1-b", "zones/us-west1-a"]
-                contains locations from two distinct regions:
+                Each location can be a region or a zone. Only one region or
+                multiple zones in one region is supported now. For example,
+                ["regions/us-central1"] allow VMs in any zones in region
+                us-central1. ["zones/us-central1-a", "zones/us-central1-c"]
+                only allow VMs in zones us-central1-a and us-central1-c.
 
-                us-central1 and us-west1. This combination will
-                trigger an error.
+                Mixing locations from different regions would cause errors.
+                For example, ["regions/us-central1", "zones/us-central1-a",
+                "zones/us-central1-b", "zones/us-west1-a"] contains
+                locations from two distinct regions: us-central1 and
+                us-west1. This combination will trigger an error.
         """
 
         allowed_locations: MutableSequence[str] = proto.RepeatedField(
@@ -633,11 +628,10 @@ class AllocationPolicy(proto.Message):
                 disk size 30 GB, you can only use this field to make the
                 disk larger or equal to 30 GB.
             disk_interface (str):
-                Local SSDs are available through both "SCSI" and
-                "NVMe" interfaces. If not indicated, "NVMe" will
-                be the default one for local ssds. This field is
-                ignored for persistent disks as the interface is
-                chosen automatically. See
+                Local SSDs are available through both "SCSI" and "NVMe"
+                interfaces. If not indicated, "NVMe" will be the default one
+                for local ssds. This field is ignored for persistent disks
+                as the interface is chosen automatically. See
                 https://cloud.google.com/compute/docs/disks/persistent-disks#choose_an_interface.
         """
 
@@ -684,11 +678,10 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``attached``.
             device_name (str):
-                Device name that the guest operating system will
-                see. It is used by Runnable.volumes field to
-                mount disks. So please specify the device_name
-                if you want Batch to help mount the disk, and it
-                should match the device_name field in volumes.
+                Device name that the guest operating system will see. It is
+                used by Runnable.volumes field to mount disks. So please
+                specify the device_name if you want Batch to help mount the
+                disk, and it should match the device_name field in volumes.
         """
 
         new_disk: "AllocationPolicy.Disk" = proto.Field(
@@ -718,8 +711,8 @@ class AllocationPolicy(proto.Message):
             count (int):
                 The number of accelerators of this type.
             install_gpu_drivers (bool):
-                Deprecated: please use
-                instances[0].install_gpu_drivers instead.
+                Deprecated: please use instances[0].install_gpu_drivers
+                instead.
             driver_version (str):
                 Optional. The NVIDIA GPU driver version that
                 should be installed for this type.
@@ -778,12 +771,10 @@ class AllocationPolicy(proto.Message):
                 file system or a raw storage drive that is not
                 ready for data storage and accessing.
             reservation (str):
-                Optional. If not specified (default), VMs will
-                consume any applicable reservation. If
-                "NO_RESERVATION" is specified, VMs will not
-                consume any reservation. Otherwise, if
-                specified, VMs will consume only the specified
-                reservation.
+                Optional. If not specified (default), VMs will consume any
+                applicable reservation. If "NO_RESERVATION" is specified,
+                VMs will not consume any reservation. Otherwise, if
+                specified, VMs will consume only the specified reservation.
         """
 
         machine_type: str = proto.Field(
@@ -799,12 +790,12 @@ class AllocationPolicy(proto.Message):
             number=4,
             enum="AllocationPolicy.ProvisioningModel",
         )
-        accelerators: MutableSequence[
-            "AllocationPolicy.Accelerator"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="AllocationPolicy.Accelerator",
+        accelerators: MutableSequence["AllocationPolicy.Accelerator"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="AllocationPolicy.Accelerator",
+            )
         )
         boot_disk: "AllocationPolicy.Disk" = proto.Field(
             proto.MESSAGE,
@@ -841,14 +832,13 @@ class AllocationPolicy(proto.Message):
 
                 This field is a member of `oneof`_ ``policy_template``.
             instance_template (str):
-                Name of an instance template used to create VMs.
-                Named the field as 'instance_template' instead
-                of 'template' to avoid C++ keyword conflict.
+                Name of an instance template used to create VMs. Named the
+                field as 'instance_template' instead of 'template' to avoid
+                C++ keyword conflict.
 
-                Batch only supports global instance templates
-                from the same project as the job.
-                You can specify the global instance template as
-                a full or partial URL.
+                Batch only supports global instance templates from the same
+                project as the job. You can specify the global instance
+                template as a full or partial URL.
 
                 This field is a member of `oneof`_ ``policy_template``.
             install_gpu_drivers (bool):
@@ -968,12 +958,12 @@ class AllocationPolicy(proto.Message):
                 Network configurations.
         """
 
-        network_interfaces: MutableSequence[
-            "AllocationPolicy.NetworkInterface"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="AllocationPolicy.NetworkInterface",
+        network_interfaces: MutableSequence["AllocationPolicy.NetworkInterface"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AllocationPolicy.NetworkInterface",
+            )
         )
 
     class PlacementPolicy(proto.Message):
@@ -989,13 +979,12 @@ class AllocationPolicy(proto.Message):
                 policy will be generated when collocation is
                 UNSPECIFIED.
             max_distance (int):
-                When specified, causes the job to fail if more
-                than max_distance logical switches are required
-                between VMs. Batch uses the most compact
-                possible placement of VMs even when max_distance
-                is not specified. An explicit max_distance makes
-                that level of compactness a strict requirement.
-                Not yet implemented
+                When specified, causes the job to fail if more than
+                max_distance logical switches are required between VMs.
+                Batch uses the most compact possible placement of VMs even
+                when max_distance is not specified. An explicit max_distance
+                makes that level of compactness a strict requirement. Not
+                yet implemented
         """
 
         collocation: str = proto.Field(
@@ -1067,46 +1056,42 @@ class TaskGroup(proto.Message):
             Field parallelism must be 1 if the scheduling_policy is
             IN_ORDER.
         scheduling_policy (google.cloud.batch_v1.types.TaskGroup.SchedulingPolicy):
-            Scheduling policy for Tasks in the TaskGroup.
-            The default value is AS_SOON_AS_POSSIBLE.
+            Scheduling policy for Tasks in the TaskGroup. The default
+            value is AS_SOON_AS_POSSIBLE.
         task_environments (MutableSequence[google.cloud.batch_v1.types.Environment]):
-            An array of environment variable mappings, which
-            are passed to Tasks with matching indices. If
-            task_environments is used then task_count should
-            not be specified in the request (and will be
-            ignored). Task count will be the length of
+            An array of environment variable mappings, which are passed
+            to Tasks with matching indices. If task_environments is used
+            then task_count should not be specified in the request (and
+            will be ignored). Task count will be the length of
             task_environments.
 
-            Tasks get a BATCH_TASK_INDEX and
-            BATCH_TASK_COUNT environment variable, in
-            addition to any environment variables set in
-            task_environments, specifying the number of
-            Tasks in the Task's parent TaskGroup, and the
-            specific Task's index in the TaskGroup (0
-            through BATCH_TASK_COUNT - 1).
+            Tasks get a BATCH_TASK_INDEX and BATCH_TASK_COUNT
+            environment variable, in addition to any environment
+            variables set in task_environments, specifying the number of
+            Tasks in the Task's parent TaskGroup, and the specific
+            Task's index in the TaskGroup (0 through BATCH_TASK_COUNT -
+            1).
         task_count_per_node (int):
             Max number of tasks that can be run on a VM
             at the same time. If not specified, the system
             will decide a value based on available compute
             resources on a VM and task requirements.
         require_hosts_file (bool):
-            When true, Batch will populate a file with a
-            list of all VMs assigned to the TaskGroup and
-            set the BATCH_HOSTS_FILE environment variable to
-            the path of that file. Defaults to false. The
-            host file supports up to 1000 VMs.
+            When true, Batch will populate a file with a list of all VMs
+            assigned to the TaskGroup and set the BATCH_HOSTS_FILE
+            environment variable to the path of that file. Defaults to
+            false. The host file supports up to 1000 VMs.
         permissive_ssh (bool):
             When true, Batch will configure SSH to allow
             passwordless login between VMs running the Batch
             tasks in the same TaskGroup.
         run_as_non_root (bool):
-            Optional. If not set or set to false, Batch uses
-            the root user to execute runnables. If set to
-            true, Batch runs the runnables using a non-root
-            user. Currently, the non-root user Batch used is
-            generated by OS Login. For more information, see
-            [About OS
-            Login](https://cloud.google.com/compute/docs/oslogin).
+            Optional. If not set or set to false, Batch uses the root
+            user to execute runnables. If set to true, Batch runs the
+            runnables using a non-root user. Currently, the non-root
+            user Batch used is generated by OS Login. For more
+            information, see `About OS
+            Login <https://cloud.google.com/compute/docs/oslogin>`__.
     """
 
     class SchedulingPolicy(proto.Enum):
@@ -1119,12 +1104,13 @@ class TaskGroup(proto.Message):
             AS_SOON_AS_POSSIBLE (1):
                 Run Tasks as soon as resources are available.
 
-                Tasks might be executed in parallel depending on
-                parallelism and task_count values.
+                Tasks might be executed in parallel depending on parallelism
+                and task_count values.
             IN_ORDER (2):
                 Run Tasks sequentially with increased task
                 index.
         """
+
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
         IN_ORDER = 2

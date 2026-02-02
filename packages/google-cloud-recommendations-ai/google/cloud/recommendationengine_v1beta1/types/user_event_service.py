@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
@@ -275,9 +275,8 @@ class ListUserEventsResponse(proto.Message):
         user_events (MutableSequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             The user events.
         next_page_token (str):
-            If empty, the list is complete. If nonempty, the
-            token to pass to the next request's
-            ListUserEvents.page_token.
+            If empty, the list is complete. If nonempty, the token to
+            pass to the next request's ListUserEvents.page_token.
     """
 
     @property

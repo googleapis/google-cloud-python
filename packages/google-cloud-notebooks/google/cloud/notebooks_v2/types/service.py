@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v2.types import diagnostic_config as gcn_diagnostic_config
@@ -164,10 +164,9 @@ class ListInstancesResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (MutableSequence[str]):
-            Locations that could not be reached. For
-            example, ['us-west1-a', 'us-central1-b'].
-            A ListInstancesResponse will only contain either
-            instances or unreachables,
+            Locations that could not be reached. For example,
+            ['us-west1-a', 'us-central1-b']. A ListInstancesResponse
+            will only contain either instances or unreachables,
     """
 
     @property

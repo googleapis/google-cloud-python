@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_link_service import pagers
 from google.cloud.contentwarehouse_v1.types import document, document_link_service
@@ -123,7 +123,8 @@ class DocumentLinkServiceAsyncClient:
         Returns:
             DocumentLinkServiceAsyncClient: The constructed client.
         """
-        return DocumentLinkServiceClient.from_service_account_info.__func__(DocumentLinkServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DocumentLinkServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DocumentLinkServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -139,7 +140,8 @@ class DocumentLinkServiceAsyncClient:
         Returns:
             DocumentLinkServiceAsyncClient: The constructed client.
         """
-        return DocumentLinkServiceClient.from_service_account_file.__func__(DocumentLinkServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DocumentLinkServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DocumentLinkServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -177,7 +179,9 @@ class DocumentLinkServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DocumentLinkServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return DocumentLinkServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> DocumentLinkServiceTransport:
@@ -345,10 +349,8 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.ListLinkedTargets.
             parent (:class:`str`):
-                Required. The name of the document, for
-                which all target links are returned.
-                Format:
-
+                Required. The name of the document, for which all target
+                links are returned. Format:
                 projects/{project_number}/locations/{location}/documents/{target_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -462,10 +464,8 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Response message for
                 DocumentLinkService.ListLinkedSources.
             parent (:class:`str`):
-                Required. The name of the document, for
-                which all source links are returned.
-                Format:
-
+                Required. The name of the document, for which all source
+                links are returned. Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -594,19 +594,16 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.CreateDocumentLink.
             parent (:class:`str`):
-                Required. Parent of the document-link to
-                be created. parent of document-link
-                should be a document. Format:
-
+                Required. Parent of the document-link to be created.
+                parent of document-link should be a document. Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             document_link (:class:`google.cloud.contentwarehouse_v1.types.DocumentLink`):
-                Required. Document links associated with
-                the source documents
-                (source_document_id).
+                Required. Document links associated with the source
+                documents (source_document_id).
 
                 This corresponds to the ``document_link`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -718,9 +715,8 @@ class DocumentLinkServiceAsyncClient:
                 The request object. Request message for
                 DocumentLinkService.DeleteDocumentLink.
             name (:class:`str`):
-                Required. The name of the document-link
-                to be deleted. Format:
-
+                Required. The name of the document-link to be deleted.
+                Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
 
                 This corresponds to the ``name`` field

@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.documentai_v1.types import document as gcd_document
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
+from google.cloud.documentai_v1.types import document as gcd_document
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -66,6 +66,7 @@ class RawDocumentFileType(proto.Enum):
         RAW_DOCUMENT_FILE_TYPE_TIFF (6):
             TIFF or TIF image file format
     """
+
     RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED = 0
     RAW_DOCUMENT_FILE_TYPE_PDF = 1
     RAW_DOCUMENT_FILE_TYPE_DOCX = 2
@@ -89,6 +90,7 @@ class ContentCategory(proto.Enum):
         CONTENT_CATEGORY_VIDEO (3):
             Content is of video type.
     """
+
     CONTENT_CATEGORY_UNSPECIFIED = 0
     CONTENT_CATEGORY_IMAGE = 1
     CONTENT_CATEGORY_AUDIO = 2
@@ -107,9 +109,7 @@ class Document(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the document.
-            Format:
-
+            The resource name of the document. Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
 
             The name is ignored when creating a document.
@@ -131,9 +131,7 @@ class Document(proto.Message):
             Uri to display the document, for example, in
             the UI.
         document_schema_name (str):
-            The Document schema name.
-            Format:
-
+            The Document schema name. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
         plain_text (str):
             Other document format, such as PPTX, XLXS
@@ -164,12 +162,11 @@ class Document(proto.Message):
             Output only. The time when the document is
             created.
         raw_document_file_type (google.cloud.contentwarehouse_v1.types.RawDocumentFileType):
-            This is used when DocAI was not used to load the
-            document and parsing/ extracting is needed for
-            the inline_raw_document. For example, if
-            inline_raw_document is the byte representation
-            of a PDF file, then this should be set to:
-            RAW_DOCUMENT_FILE_TYPE_PDF.
+            This is used when DocAI was not used to load the document
+            and parsing/ extracting is needed for the
+            inline_raw_document. For example, if inline_raw_document is
+            the byte representation of a PDF file, then this should be
+            set to: RAW_DOCUMENT_FILE_TYPE_PDF.
         async_enabled (bool):
             If true, makes the document visible to
             asynchronous policies and rules.
@@ -306,10 +303,9 @@ class DocumentReference(proto.Message):
         document_name (str):
             Required. Name of the referenced document.
         display_name (str):
-            display_name of the referenced document; this
-            name does not need to be consistent to the
-            display_name in the Document proto, depending on
-            the ACL constraint.
+            display_name of the referenced document; this name does not
+            need to be consistent to the display_name in the Document
+            proto, depending on the ACL constraint.
         snippet (str):
             Stores the subset of the referenced
             document's content. This is useful to allow user
@@ -583,9 +579,8 @@ class TimestampValue(proto.Message):
 
             This field is a member of `oneof`_ ``value``.
         text_value (str):
-            The string must represent a valid instant in UTC
-            and is parsed using
-            java.time.format.DateTimeFormatter.ISO_INSTANT.
+            The string must represent a valid instant in UTC and is
+            parsed using java.time.format.DateTimeFormatter.ISO_INSTANT.
             e.g. "2013-09-29T18:46:19Z".
 
             This field is a member of `oneof`_ ``value``.

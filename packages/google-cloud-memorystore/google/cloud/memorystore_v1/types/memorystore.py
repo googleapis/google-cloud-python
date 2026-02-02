@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -80,6 +80,7 @@ class PscConnectionStatus(proto.Enum):
         NOT_FOUND (2):
             Connection not found
     """
+
     PSC_CONNECTION_STATUS_UNSPECIFIED = 0
     ACTIVE = 1
     NOT_FOUND = 2
@@ -101,6 +102,7 @@ class ConnectionType(proto.Enum):
             Connection that will be used as reader
             endpoint to access replicas.
     """
+
     CONNECTION_TYPE_UNSPECIFIED = 0
     CONNECTION_TYPE_DISCOVERY = 1
     CONNECTION_TYPE_PRIMARY = 2
@@ -166,14 +168,13 @@ class Instance(proto.Message):
         shard_count (int):
             Optional. Number of shards for the instance.
         discovery_endpoints (MutableSequence[google.cloud.memorystore_v1.types.DiscoveryEndpoint]):
-            Output only. Deprecated: The discovery_endpoints
-            parameter is deprecated. As a result, it will
-            not be populated if the connections are created
-            using endpoints parameter. Instead of this
-            parameter, for discovery, use
+            Output only. Deprecated: The discovery_endpoints parameter
+            is deprecated. As a result, it will not be populated if the
+            connections are created using endpoints parameter. Instead
+            of this parameter, for discovery, use
             endpoints.connections.pscConnection and
-            endpoints.connections.pscAutoConnection
-            with connectionType CONNECTION_TYPE_DISCOVERY.
+            endpoints.connections.pscAutoConnection with connectionType
+            CONNECTION_TYPE_DISCOVERY.
         node_type (google.cloud.memorystore_v1.types.Instance.NodeType):
             Optional. Machine type for individual nodes
             of the instance.
@@ -199,8 +200,7 @@ class Instance(proto.Message):
             This field is a member of `oneof`_ ``_deletion_protection_enabled``.
         psc_auto_connections (MutableSequence[google.cloud.memorystore_v1.types.PscAutoConnection]):
             Optional. Immutable. Deprecated: Use the
-            endpoints.connections.psc_auto_connection value
-            instead.
+            endpoints.connections.psc_auto_connection value instead.
         psc_attachment_details (MutableSequence[google.cloud.memorystore_v1.types.PscAttachmentDetail]):
             Output only. Service attachment details to
             configure PSC connections.
@@ -265,10 +265,9 @@ class Instance(proto.Message):
             Optional. The automated backup config for the
             instance.
         maintenance_version (str):
-            Optional. This field can be used to trigger self
-            service update to indicate the desired
-            maintenance version. The input to this field can
-            be determined by the
+            Optional. This field can be used to trigger self service
+            update to indicate the desired maintenance version. The
+            input to this field can be determined by the
             available_maintenance_versions field.
 
             This field is a member of `oneof`_ ``_maintenance_version``.
@@ -300,6 +299,7 @@ class Instance(proto.Message):
             DELETING (4):
                 Instance is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -317,6 +317,7 @@ class Instance(proto.Message):
             IAM_AUTH (2):
                 IAM basic authorization.
         """
+
         AUTHORIZATION_MODE_UNSPECIFIED = 0
         AUTH_DISABLED = 1
         IAM_AUTH = 2
@@ -333,6 +334,7 @@ class Instance(proto.Message):
                 Server-managed encryption is used for
                 in-transit encryption.
         """
+
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         TRANSIT_ENCRYPTION_DISABLED = 1
         SERVER_AUTHENTICATION = 2
@@ -354,6 +356,7 @@ class Instance(proto.Message):
             STANDARD_SMALL (4):
                 Standard small.
         """
+
         NODE_TYPE_UNSPECIFIED = 0
         SHARED_CORE_NANO = 1
         HIGHMEM_MEDIUM = 2
@@ -374,6 +377,7 @@ class Instance(proto.Message):
             CLUSTER_DISABLED (4):
                 Cluster mode is disabled for the instance.
         """
+
         MODE_UNSPECIFIED = 0
         STANDALONE = 1
         CLUSTER = 2
@@ -471,10 +475,9 @@ class Instance(proto.Message):
         Attributes:
             backup (str):
                 Optional. Example:
-
                 //memorystore.googleapis.com/projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup}
-                A shorter version (without the prefix) of the
-                backup name is also supported, like
+                A shorter version (without the prefix) of the backup name is
+                also supported, like
                 projects/{project}/locations/{location}/backupCollections/{collection}/backups/{backup_id}
                 In this case, it assumes the backup is under
                 memorystore.googleapis.com.
@@ -649,12 +652,12 @@ class Instance(proto.Message):
         number=20,
         message="PscAutoConnection",
     )
-    psc_attachment_details: MutableSequence[
-        "PscAttachmentDetail"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=21,
-        message="PscAttachmentDetail",
+    psc_attachment_details: MutableSequence["PscAttachmentDetail"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=21,
+            message="PscAttachmentDetail",
+        )
     )
     endpoints: MutableSequence[InstanceEndpoint] = proto.RepeatedField(
         proto.MESSAGE,
@@ -780,6 +783,7 @@ class AutomatedBackupConfig(proto.Message):
             ENABLED (2):
                 Automated backup config enabled.
         """
+
         AUTOMATED_BACKUP_MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -955,6 +959,7 @@ class Backup(proto.Message):
             AUTOMATED (2):
                 Automated backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         ON_DEMAND = 1
         AUTOMATED = 2
@@ -976,6 +981,7 @@ class Backup(proto.Message):
                 reasons like project deletion, billing account
                 closure, etc.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1140,6 +1146,7 @@ class CrossInstanceReplicationConfig(proto.Message):
                 A instance that allows only reads and
                 replicates data from a primary instance.
         """
+
         INSTANCE_ROLE_UNSPECIFIED = 0
         NONE = 1
         PRIMARY = 2
@@ -1233,10 +1240,9 @@ class MaintenancePolicy(proto.Message):
             Output only. The time when the policy was
             updated.
         weekly_maintenance_window (MutableSequence[google.cloud.memorystore_v1.types.WeeklyMaintenanceWindow]):
-            Optional. Maintenance window that is applied to
-            resources covered by this policy. Minimum 1. For
-            the current version, the maximum number of
-            weekly_window is expected to be one.
+            Optional. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_window is expected to be one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1249,12 +1255,12 @@ class MaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="WeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -1348,18 +1354,16 @@ class PscAutoConnection(proto.Message):
             Output only. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Output only. The URI of the consumer side
-            forwarding rule. Format:
-
+            Output only. The URI of the consumer side forwarding rule.
+            Format:
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Required. The consumer project_id where PSC
-            connections are established. This should be the
-            same project_id that the instance is being
-            created in.
+            Required. The consumer project_id where PSC connections are
+            established. This should be the same project_id that the
+            instance is being created in.
         network (str):
-            Required. The network where the PSC endpoints
-            are created, in the form of
+            Required. The network where the PSC endpoints are created,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Output only. The service attachment which is
@@ -1436,16 +1440,15 @@ class PscConnection(proto.Message):
             Required. The IP allocated on the consumer
             network for the PSC forwarding rule.
         forwarding_rule (str):
-            Required. The URI of the consumer side
-            forwarding rule. Format:
-
+            Required. The URI of the consumer side forwarding rule.
+            Format:
             projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}
         project_id (str):
-            Output only. The consumer project_id where the
-            forwarding rule is created from.
+            Output only. The consumer project_id where the forwarding
+            rule is created from.
         network (str):
-            Required. The consumer network where the IP
-            address resides, in the form of
+            Required. The consumer network where the IP address resides,
+            in the form of
             projects/{project_id}/global/networks/{network_id}.
         service_attachment (str):
             Required. The service attachment which is the
@@ -1515,9 +1518,8 @@ class DiscoveryEndpoint(proto.Message):
             Output only. The port number of the exposed
             endpoint.
         network (str):
-            Output only. The network where the IP address of
-            the discovery endpoint will be reserved, in the
-            form of
+            Output only. The network where the IP address of the
+            discovery endpoint will be reserved, in the form of
             projects/{network_project}/global/networks/{network_id}.
     """
 
@@ -1563,6 +1565,7 @@ class PersistenceConfig(proto.Message):
             AOF (3):
                 AOF based persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -1596,6 +1599,7 @@ class PersistenceConfig(proto.Message):
                 TWENTY_FOUR_HOURS (4):
                     Twenty four hours.
             """
+
             SNAPSHOT_PERIOD_UNSPECIFIED = 0
             ONE_HOUR = 1
             SIX_HOURS = 2
@@ -1639,6 +1643,7 @@ class PersistenceConfig(proto.Message):
                     appended to the AOF. The best data loss
                     protection at the cost of performance.
             """
+
             APPEND_FSYNC_UNSPECIFIED = 0
             NEVER = 1
             EVERY_SEC = 2
@@ -1687,12 +1692,11 @@ class ZoneDistributionConfig(proto.Message):
 
     Attributes:
         zone (str):
-            Optional. Defines zone where all resources will
-            be allocated with SINGLE_ZONE mode. Ignored for
-            MULTI_ZONE mode.
+            Optional. Defines zone where all resources will be allocated
+            with SINGLE_ZONE mode. Ignored for MULTI_ZONE mode.
         mode (google.cloud.memorystore_v1.types.ZoneDistributionConfig.ZoneDistributionMode):
-            Optional. Current zone distribution mode.
-            Defaults to MULTI_ZONE.
+            Optional. Current zone distribution mode. Defaults to
+            MULTI_ZONE.
     """
 
     class ZoneDistributionMode(proto.Enum):
@@ -1708,6 +1712,7 @@ class ZoneDistributionConfig(proto.Message):
                 Provision resources in a single zone. Zone
                 field must be specified.
         """
+
         ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
         MULTI_ZONE = 1
         SINGLE_ZONE = 2
@@ -1732,8 +1737,8 @@ class RescheduleMaintenanceRequest(proto.Message):
             for:
             ``projects/{project}/locations/{location_id}/instances/{instance}``
         reschedule_type (google.cloud.memorystore_v1.types.RescheduleMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME,
-            schedule_time must be set.
+            Required. If reschedule type is SPECIFIC_TIME, schedule_time
+            must be set.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Timestamp when the maintenance shall be
             rescheduled to if reschedule_type=SPECIFIC_TIME, in RFC 3339
@@ -1753,6 +1758,7 @@ class RescheduleMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         SPECIFIC_TIME = 3
@@ -1791,8 +1797,8 @@ class ListInstancesRequest(proto.Message):
         filter (str):
             Optional. Expression for filtering results.
         order_by (str):
-            Optional. Sort results by a defined order.
-            Supported values: "name", "create_time".
+            Optional. Sort results by a defined order. Supported values:
+            "name", "create_time".
     """
 
     parent: str = proto.Field(
@@ -2461,6 +2467,7 @@ class EncryptionInfo(proto.Message):
                 is managed by the customer. KMS key versions
                 will be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -2490,6 +2497,7 @@ class EncryptionInfo(proto.Message):
             UNKNOWN_FAILURE (8):
                 All other unknown failures.
         """
+
         KMS_KEY_STATE_UNSPECIFIED = 0
         ENABLED = 1
         PERMISSION_DENIED = 2

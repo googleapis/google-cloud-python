@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.security.publicca_v1 import gapic_version as package_version
 
@@ -66,8 +66,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class PublicCertificateAuthorityServiceAsyncClient:
-    """Manages the resources required for ACME [external account
-    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4) for
+    """Manages the resources required for ACME `external account
+    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__ for
     the public certificate authority service.
     """
 
@@ -134,7 +134,12 @@ class PublicCertificateAuthorityServiceAsyncClient:
         Returns:
             PublicCertificateAuthorityServiceAsyncClient: The constructed client.
         """
-        return PublicCertificateAuthorityServiceClient.from_service_account_info.__func__(PublicCertificateAuthorityServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            PublicCertificateAuthorityServiceClient.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            PublicCertificateAuthorityServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -150,7 +155,12 @@ class PublicCertificateAuthorityServiceAsyncClient:
         Returns:
             PublicCertificateAuthorityServiceAsyncClient: The constructed client.
         """
-        return PublicCertificateAuthorityServiceClient.from_service_account_file.__func__(PublicCertificateAuthorityServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            PublicCertificateAuthorityServiceClient.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            PublicCertificateAuthorityServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -188,7 +198,11 @@ class PublicCertificateAuthorityServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return PublicCertificateAuthorityServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return (
+            PublicCertificateAuthorityServiceClient.get_mtls_endpoint_and_cert_source(
+                client_options
+            )
+        )  # type: ignore
 
     @property
     def transport(self) -> PublicCertificateAuthorityServiceTransport:
@@ -359,11 +373,9 @@ class PublicCertificateAuthorityServiceAsyncClient:
                 in a given project.
             parent (:class:`str`):
                 Required. The parent resource where this
-                external_account_key will be created.
-                Format:
-                projects/[project_id]/locations/[location].
-                At present only the "global" location is
-                supported.
+                external_account_key will be created. Format:
+                projects/[project_id]/locations/[location]. At present
+                only the "global" location is supported.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -391,11 +403,9 @@ class PublicCertificateAuthorityServiceAsyncClient:
 
         Returns:
             google.cloud.security.publicca_v1.types.ExternalAccountKey:
-                A representation of an
-                ExternalAccountKey used for [external
-                account
-                binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
-                within ACME.
+                A representation of an ExternalAccountKey used for [external account
+                   binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
+                   within ACME.
 
         """
         # Create or coerce a protobuf request object.

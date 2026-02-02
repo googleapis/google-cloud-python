@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.phishingprotection_v1beta1.types import phishingprotection
 
@@ -340,16 +340,15 @@ class PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the report phishing method over gRPC.
 
-        Reports a URI suspected of containing phishing content
-        to be reviewed. Once the report review is complete, its
-        result can be found in the Cloud Security Command Center
-        findings dashboard for Phishing Protection. If the
-        result verifies the existence of malicious phishing
-        content, the site will be added the to [Google's Social
-        Engineering
-        lists](https://support.google.com/webmasters/answer/6350487/)
-        in order to protect users that could get exposed to this
-        threat in the future.
+        Reports a URI suspected of containing phishing content to be
+        reviewed. Once the report review is complete, its result can be
+        found in the Cloud Security Command Center findings dashboard
+        for Phishing Protection. If the result verifies the existence of
+        malicious phishing content, the site will be added the to
+        `Google's Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__
+        in order to protect users that could get exposed to this threat
+        in the future.
 
         Returns:
             Callable[[~.ReportPhishingRequest],

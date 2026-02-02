@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import analyze
@@ -100,7 +100,6 @@ class DeleteContentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the content:
-
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     """
 
@@ -130,17 +129,14 @@ class ListContentRequest(proto.Message):
             provided to ``ListContent`` must match the call that
             provided the page token.
         filter (str):
-            Optional. Filter request. Filters are
-            case-sensitive. The following formats are
-            supported:
+            Optional. Filter request. Filters are case-sensitive. The
+            following formats are supported:
 
-            labels.key1 = "value1"
-            labels:key1
-            type = "NOTEBOOK"
-            type = "SQL_SCRIPT"
+            labels.key1 = "value1" labels:key1 type = "NOTEBOOK" type =
+            "SQL_SCRIPT"
 
-            These restrictions can be coinjoined with AND,
-            OR and NOT conjunctions.
+            These restrictions can be coinjoined with AND, OR and NOT
+            conjunctions.
     """
 
     parent: str = proto.Field(
@@ -194,7 +190,6 @@ class GetContentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the content:
-
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
         view (google.cloud.dataplex_v1.types.GetContentRequest.ContentView):
             Optional. Specify content view to make a
@@ -214,6 +209,7 @@ class GetContentRequest(proto.Message):
             FULL (2):
                 Returns the complete proto.
         """
+
         CONTENT_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

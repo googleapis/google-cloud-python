@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,14 +33,12 @@ __protobuf__ = proto.module(
 
 
 class Tag(proto.Message):
-    r"""Tags are used to attach custom metadata to Data Catalog
-    resources. Tags conform to the specifications within their tag
-    template.
+    r"""Tags are used to attach custom metadata to Data Catalog resources.
+    Tags conform to the specifications within their tag template.
 
-    See [Data Catalog
-    IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-    for information on the permissions needed to create or view
-    tags.
+    See `Data Catalog
+    IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
+    information on the permissions needed to create or view tags.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -211,12 +209,12 @@ class TagField(proto.Message):
 
 class TagTemplate(proto.Message):
     r"""A tag template defines a tag, which can have one or more typed
-    fields. The template is used to create and attach the tag to
-    Google Cloud resources. [Tag template
-    roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
-    provide permissions to create, edit, and use the template. See,
-    for example, the [TagTemplate
-    User](https://cloud.google.com/data-catalog/docs/how-to/template-user)
+    fields. The template is used to create and attach the tag to Google
+    Cloud resources. `Tag template
+    roles <https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>`__
+    provide permissions to create, edit, and use the template. See, for
+    example, the `TagTemplate
+    User <https://cloud.google.com/data-catalog/docs/how-to/template-user>`__
     role, which includes permission to use the tag template to tag
     resources.
 
@@ -264,6 +262,7 @@ class TagTemplate(proto.Message):
                 deprecated in favor of organization or project
                 wide TagTemplate migration opt-in.
         """
+
         DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
         MIGRATED = 1
 
@@ -385,6 +384,7 @@ class FieldType(proto.Message):
             TIMESTAMP (4):
                 A timestamp.
         """
+
         PRIMITIVE_TYPE_UNSPECIFIED = 0
         DOUBLE = 1
         STRING = 2
@@ -413,12 +413,12 @@ class FieldType(proto.Message):
                 number=1,
             )
 
-        allowed_values: MutableSequence[
-            "FieldType.EnumType.EnumValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="FieldType.EnumType.EnumValue",
+        allowed_values: MutableSequence["FieldType.EnumType.EnumValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="FieldType.EnumType.EnumValue",
+            )
         )
 
     primitive_type: PrimitiveType = proto.Field(

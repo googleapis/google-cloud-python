@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1.types import citation
+from google.ai.generativelanguage_v1.types import citation, safety
 from google.ai.generativelanguage_v1.types import content as gag_content
-from google.ai.generativelanguage_v1.types import safety
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1",
@@ -84,6 +83,7 @@ class TaskType(proto.Enum):
             Specifies that the given text will be used
             for code retrieval.
     """
+
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
     RETRIEVAL_DOCUMENT = 2
@@ -402,8 +402,7 @@ class GenerateContentResponse(proto.Message):
             Output only. The model version used to
             generate the response.
         response_id (str):
-            Output only. response_id is used to identify
-            each response.
+            Output only. response_id is used to identify each response.
     """
 
     class PromptFeedback(proto.Message):
@@ -440,6 +439,7 @@ class GenerateContentResponse(proto.Message):
                     Candidates blocked due to unsafe image
                     generation content.
             """
+
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
@@ -514,26 +514,26 @@ class GenerateContentResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        prompt_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=gag_content.ModalityTokenCount,
+        prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=gag_content.ModalityTokenCount,
+            )
         )
-        cache_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message=gag_content.ModalityTokenCount,
+        cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message=gag_content.ModalityTokenCount,
+            )
         )
-        candidates_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=7,
-            message=gag_content.ModalityTokenCount,
+        candidates_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=7,
+                message=gag_content.ModalityTokenCount,
+            )
         )
         tool_use_prompt_tokens_details: MutableSequence[
             gag_content.ModalityTokenCount
@@ -679,6 +679,7 @@ class Candidate(proto.Message):
                 Model called too many tools consecutively,
                 thus the system exited execution.
         """
+
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
         MAX_TOKENS = 2
@@ -795,6 +796,7 @@ class UrlMetadata(proto.Message):
                 Url retrieval is failed because the content
                 is unsafe.
         """
+
         URL_RETRIEVAL_STATUS_UNSPECIFIED = 0
         URL_RETRIEVAL_STATUS_SUCCESS = 1
         URL_RETRIEVAL_STATUS_ERROR = 2
@@ -825,9 +827,8 @@ class LogprobsResult(proto.Message):
         top_candidates (MutableSequence[google.ai.generativelanguage_v1.types.LogprobsResult.TopCandidates]):
             Length = total number of decoding steps.
         chosen_candidates (MutableSequence[google.ai.generativelanguage_v1.types.LogprobsResult.Candidate]):
-            Length = total number of decoding steps.
-            The chosen candidates may or may not be in
-            top_candidates.
+            Length = total number of decoding steps. The chosen
+            candidates may or may not be in top_candidates.
     """
 
     class Candidate(proto.Message):
@@ -903,14 +904,13 @@ class RetrievalMetadata(proto.Message):
 
     Attributes:
         google_search_dynamic_retrieval_score (float):
-            Optional. Score indicating how likely
-            information from google search could help answer
-            the prompt. The score is in the range [0, 1],
-            where 0 is the least likely and 1 is the most
-            likely. This score is only populated when google
-            search grounding and dynamic retrieval is
-            enabled. It will be compared to the threshold to
-            determine whether to trigger google search.
+            Optional. Score indicating how likely information from
+            google search could help answer the prompt. The score is in
+            the range [0, 1], where 0 is the least likely and 1 is the
+            most likely. This score is only populated when google search
+            grounding and dynamic retrieval is enabled. It will be
+            compared to the threshold to determine whether to trigger
+            google search.
     """
 
     google_search_dynamic_retrieval_score: float = proto.Field(
@@ -1105,17 +1105,15 @@ class GroundingSupport(proto.Message):
 
             This field is a member of `oneof`_ ``_segment``.
         grounding_chunk_indices (MutableSequence[int]):
-            A list of indices (into 'grounding_chunk')
-            specifying the citations associated with the
-            claim. For instance [1,3,4] means that
-            grounding_chunk[1], grounding_chunk[3],
-            grounding_chunk[4] are the retrieved content
-            attributed to the claim.
+            A list of indices (into 'grounding_chunk') specifying the
+            citations associated with the claim. For instance [1,3,4]
+            means that grounding_chunk[1], grounding_chunk[3],
+            grounding_chunk[4] are the retrieved content attributed to
+            the claim.
         confidence_scores (MutableSequence[float]):
-            Confidence score of the support references.
-            Ranges from 0 to 1. 1 is the most confident.
-            This list must have the same size as the
-            grounding_chunk_indices.
+            Confidence score of the support references. Ranges from 0 to
+            1. 1 is the most confident. This list must have the same
+            size as the grounding_chunk_indices.
     """
 
     segment: "Segment" = proto.Field(
@@ -1347,19 +1345,19 @@ class CountTokensResponse(proto.Message):
         proto.INT32,
         number=1,
     )
-    prompt_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=gag_content.ModalityTokenCount,
+    prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=gag_content.ModalityTokenCount,
+        )
     )
-    cache_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gag_content.ModalityTokenCount,
+    cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gag_content.ModalityTokenCount,
+        )
     )
 
 

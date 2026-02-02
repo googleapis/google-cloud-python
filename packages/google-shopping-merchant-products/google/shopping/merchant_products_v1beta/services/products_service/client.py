@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_products_v1beta import gapic_version as package_version
 
@@ -80,9 +80,7 @@ class ProductsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ProductsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ProductsServiceTransport]]
     _transport_registry["grpc"] = ProductsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ProductsServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ProductsServiceRestTransport
@@ -619,11 +617,9 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ProductsServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ProductsServiceClient._read_environment_variables()
+        )
         self._client_cert_source = ProductsServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -658,8 +654,7 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ProductsServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -793,27 +788,22 @@ class ProductsServiceClient(metaclass=ProductsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_products_v1beta.types.Product:
-                The processed product, built from
-                multiple [product
-                inputs][google.shopping.merchant.products.v1main.ProductInput]
-                after applying rules and supplemental
-                data sources. This processed product
-                matches what is shown in your Merchant
-                Center account. Each product is built
-                from exactly one primary data source
-                product input, and multiple supplemental
-                data source inputs. After inserting,
-                updating, or deleting a product input,
-                it may take several minutes before the
-                updated processed product can be
-                retrieved.
+                The processed product, built from multiple [product
+                   inputs][google.shopping.merchant.products.v1main.ProductInput]
+                   after applying rules and supplemental data sources.
+                   This processed product matches what is shown in your
+                   Merchant Center account. Each product is built from
+                   exactly one primary data source product input, and
+                   multiple supplemental data source inputs. After
+                   inserting, updating, or deleting a product input, it
+                   may take several minutes before the updated processed
+                   product can be retrieved.
 
-                All fields in the processed product and
-                its sub-messages match the name of their
-                corresponding attribute in the [Product
-                data
-                specification](https://support.google.com/merchants/answer/7052112)
-                with some exceptions.
+                   All fields in the processed product and its
+                   sub-messages match the name of their corresponding
+                   attribute in the [Product data
+                   specification](https://support.google.com/merchants/answer/7052112)
+                   with some exceptions.
 
         """
         # Create or coerce a protobuf request object.

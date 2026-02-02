@@ -28,9 +28,8 @@ __protobuf__ = proto.module(
 
 
 class TravelMode(proto.Enum):
-    r"""Travel mode options.
-    These options map to what [Routes API
-    offers](https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteTravelMode).
+    r"""Travel mode options. These options map to what `Routes API
+    offers <https://developers.google.com/maps/documentation/routes/reference/rest/v2/RouteTravelMode>`__.
 
     Values:
         TRAVEL_MODE_UNSPECIFIED (0):
@@ -53,6 +52,7 @@ class TravelMode(proto.Enum):
             two-wheeled
             vehicles <https://developers.google.com/maps/documentation/routes/coverage-two-wheeled>`__.
     """
+
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1
     BICYCLE = 2

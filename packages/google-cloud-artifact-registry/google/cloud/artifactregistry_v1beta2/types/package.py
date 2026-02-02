@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -81,8 +81,8 @@ class ListPackagesRequest(proto.Message):
             The maximum number of packages to return.
             Maximum page size is 10,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(

@@ -28,9 +28,8 @@ __protobuf__ = proto.module(
 
 
 class ExternalAccountKey(proto.Message):
-    r"""A representation of an ExternalAccountKey used for [external
-    account
-    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
+    r"""A representation of an ExternalAccountKey used for `external account
+    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__
     within ACME.
 
     Attributes:

@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .accessright import AccessRight
+from .accessright import (
+    AccessRight,
+)
 from .accountissue import (
     AccountIssue,
     ListAccountIssuesRequest,
@@ -84,7 +86,9 @@ from .checkoutsettings import (
     UpdateCheckoutSettingsRequest,
     UriSettings,
 )
-from .customerservice import CustomerService
+from .customerservice import (
+    CustomerService,
+)
 from .developerregistration import (
     DeveloperRegistration,
     GetAccountForGcpRegistrationResponse,
@@ -143,7 +147,9 @@ from .online_return_policy import (
     ListOnlineReturnPoliciesResponse,
     OnlineReturnPolicy,
 )
-from .phoneverificationstate import PhoneVerificationState
+from .phoneverificationstate import (
+    PhoneVerificationState,
+)
 from .programs import (
     DisableProgramRequest,
     EnableProgramRequest,
@@ -203,7 +209,9 @@ from .termsofserviceagreementstate import (
     RetrieveForApplicationTermsOfServiceAgreementStateRequest,
     TermsOfServiceAgreementState,
 )
-from .termsofservicekind import TermsOfServiceKind
+from .termsofservicekind import (
+    TermsOfServiceKind,
+)
 from .user import (
     CreateUserRequest,
     DeleteUserRequest,
@@ -214,7 +222,9 @@ from .user import (
     User,
     VerifySelfRequest,
 )
-from .verificationmailsettings import VerificationMailSettings
+from .verificationmailsettings import (
+    VerificationMailSettings,
+)
 
 __all__ = (
     "AccessRight",

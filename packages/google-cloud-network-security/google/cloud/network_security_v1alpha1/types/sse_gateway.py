@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -52,13 +52,13 @@ class PartnerSSEGateway(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs
         sse_vpc_subnet_range (str):
-            Output only. Subnet range of the subnet where
-            partner traffic is routed. This field is
-            deprecated. Use sse_subnet_range instead.
+            Output only. Subnet range of the subnet where partner
+            traffic is routed. This field is deprecated. Use
+            sse_subnet_range instead.
         sse_vpc_target_ip (str):
-            Output only. This is the IP where the partner
-            traffic should be routed to. This field is
-            deprecated. Use sse_target_ip instead.
+            Output only. This is the IP where the partner traffic should
+            be routed to. This field is deprecated. Use sse_target_ip
+            instead.
         sse_gateway_reference_id (str):
             Required. ID of the SSEGatewayReference that
             pairs with this PartnerSSEGateway
@@ -67,9 +67,8 @@ class PartnerSSEGateway(proto.Message):
         sse_bgp_asn (int):
             Output only. ASN of SSE BGP
         partner_vpc_subnet_range (str):
-            Optional. Subnet range of the partner_vpc
-            This field is deprecated. Use
-            partner_subnet_range instead.
+            Optional. Subnet range of the partner_vpc This field is
+            deprecated. Use partner_subnet_range instead.
         partner_sse_realm (str):
             Output only. name of PartnerSSERealm owning
             the PartnerSSEGateway
@@ -79,9 +78,9 @@ class PartnerSSEGateway(proto.Message):
             "100.88.255.0/24". The CIDR suffix should be
             less than or equal to 25.
         sse_target_ip (str):
-            Output only. Target IP that belongs to
-            sse_subnet_range where partner should send the
-            traffic to reach the customer networks.
+            Output only. Target IP that belongs to sse_subnet_range
+            where partner should send the traffic to reach the customer
+            networks.
         partner_subnet_range (str):
             Optional. Subnet range of the partner-owned
             subnet.
@@ -92,16 +91,14 @@ class PartnerSSEGateway(proto.Message):
         symantec_options (google.cloud.network_security_v1alpha1.types.PartnerSSEGateway.PartnerSSEGatewaySymantecOptions):
             Optional. Required iff Partner is Symantec.
         sse_project (str):
-            Output only. The project owning
-            partner_facing_network. Only filled for
-            PartnerSSEGateways associated with Symantec
+            Output only. The project owning partner_facing_network. Only
+            filled for PartnerSSEGateways associated with Symantec
             today.
         sse_network (str):
-            Output only. The ID of the network in
-            sse_project containing sse_subnet_range. This is
-            also known as the partnerFacingNetwork. Only
-            filled for PartnerSSEGateways associated with
-            Symantec today.
+            Output only. The ID of the network in sse_project containing
+            sse_subnet_range. This is also known as the
+            partnerFacingNetwork. Only filled for PartnerSSEGateways
+            associated with Symantec today.
         partner_sse_environment (str):
             Output only. Full URI of the partner
             environment this PartnerSSEGateway is connected
@@ -143,6 +140,7 @@ class PartnerSSEGateway(proto.Message):
                 No longer attached to a customer. This state
                 arises when the customer attachment is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CUSTOMER_ATTACHED = 1
         CUSTOMER_DETACHED = 2
@@ -377,10 +375,9 @@ class CreatePartnerSSEGatewayRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         partner_sse_gateway_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and partner_sse_gateway_id from the
-            method_signature of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and partner_sse_gateway_id
+            from the method_signature of Create RPC
         partner_sse_gateway (google.cloud.network_security_v1alpha1.types.PartnerSSEGateway):
             Required. The resource being created
         request_id (str):
@@ -617,12 +614,12 @@ class ListSSEGatewayReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sse_gateway_references: MutableSequence[
-        "SSEGatewayReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SSEGatewayReference",
+    sse_gateway_references: MutableSequence["SSEGatewayReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SSEGatewayReference",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

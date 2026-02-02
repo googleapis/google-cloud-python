@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.biglake_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.biglake_v1.services.iceberg_catalog_service import pagers
 from google.cloud.biglake_v1.types import iceberg_rest_catalog
@@ -146,7 +146,8 @@ class IcebergCatalogServiceAsyncClient:
         Returns:
             IcebergCatalogServiceAsyncClient: The constructed client.
         """
-        return IcebergCatalogServiceClient.from_service_account_info.__func__(IcebergCatalogServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = IcebergCatalogServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(IcebergCatalogServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -162,7 +163,8 @@ class IcebergCatalogServiceAsyncClient:
         Returns:
             IcebergCatalogServiceAsyncClient: The constructed client.
         """
-        return IcebergCatalogServiceClient.from_service_account_file.__func__(IcebergCatalogServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = IcebergCatalogServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(IcebergCatalogServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -200,7 +202,9 @@ class IcebergCatalogServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return IcebergCatalogServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return IcebergCatalogServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> IcebergCatalogServiceTransport:
@@ -477,9 +481,8 @@ class IcebergCatalogServiceAsyncClient:
             request (Optional[Union[google.cloud.biglake_v1.types.ListIcebergCatalogsRequest, dict]]):
                 The request object. The request message for the ``ListIcebergCatalogs`` API.
             parent (:class:`str`):
-                Required. The parent resource where this
-                catalog will be created. Format:
-                projects/{project_id}
+                Required. The parent resource where this catalog will be
+                created. Format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -742,9 +745,8 @@ class IcebergCatalogServiceAsyncClient:
                 The request object. The request message for the ``CreateIcebergCatalog``
                 API.
             parent (:class:`str`):
-                Required. The parent resource where this
-                catalog will be created. Format:
-                projects/{project_id}
+                Required. The parent resource where this catalog will be
+                created. Format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -875,8 +877,7 @@ class IcebergCatalogServiceAsyncClient:
                 The request object. Request message for
                 FailoverIcebergCatalog.
             name (:class:`str`):
-                Required. The name of the catalog in the
-                form
+                Required. The name of the catalog in the form
                 "projects/{project_id}/catalogs/{catalog_id}"
 
                 This corresponds to the ``name`` field

@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
@@ -180,6 +180,7 @@ class Participant(proto.Message):
                 Participant is an end user that has called or
                 chatted with Dialogflow services.
         """
+
         ROLE_UNSPECIFIED = 0
         HUMAN_AGENT = 1
         AUTOMATED_AGENT = 2
@@ -205,6 +206,7 @@ class Participant(proto.Message):
                 either not currently released or setting this
                 field to the applicable desktop.
         """
+
         AGENT_DESKTOP_SOURCE_UNSPECIFIED = 0
         LIVE_PERSON = 1
         GENESYS_CLOUD = 2
@@ -373,8 +375,8 @@ class ListParticipantsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -397,9 +399,8 @@ class ListParticipantsResponse(proto.Message):
 
     Attributes:
         participants (MutableSequence[google.cloud.dialogflow_v2beta1.types.Participant]):
-            The list of participants. There is a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of participants. There is a maximum number of items
+            returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results or
             empty if there are no more results in the list.
@@ -573,6 +574,7 @@ class AutomatedAgentReply(proto.Message):
             FINAL (2):
                 Final reply.
         """
+
         AUTOMATED_AGENT_REPLY_TYPE_UNSPECIFIED = 0
         PARTIAL = 1
         FINAL = 2
@@ -680,6 +682,7 @@ class SuggestionInput(proto.Message):
                 This action is intended for tool calls that may
                 write data.
         """
+
         ACTION_UNSPECIFIED = 0
         CANCEL = 1
         REVISE = 2
@@ -727,11 +730,10 @@ class IntentInput(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
         language_code (str):
-            Required. The language of this conversational
-            query. See [Language
-            Support](https://cloud.google.com/dialogflow/docs/reference/language)
-            for a list of the currently supported language
-            codes.
+            Required. The language of this conversational query. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes.
     """
 
     intent: str = proto.Field(
@@ -781,6 +783,7 @@ class SuggestionFeature(proto.Message):
                 Run knowledge assist with automatic query
                 generation.
         """
+
         TYPE_UNSPECIFIED = 0
         ARTICLE_SUGGESTION = 1
         FAQ = 2
@@ -1089,19 +1092,19 @@ class AnalyzeContentResponse(proto.Message):
         number=5,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message="SuggestionResult",
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="SuggestionResult",
+        )
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="SuggestionResult",
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="SuggestionResult",
+        )
     )
     dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
@@ -1115,11 +1118,10 @@ class InputTextConfig(proto.Message):
 
     Attributes:
         language_code (str):
-            Required. The language of this conversational
-            query. See [Language
-            Support](https://cloud.google.com/dialogflow/docs/reference/language)
-            for a list of the currently supported language
-            codes.
+            Required. The language of this conversational query. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes.
     """
 
     language_code: str = proto.Field(
@@ -1481,19 +1483,19 @@ class StreamingAnalyzeContentResponse(proto.Message):
         number=6,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="SuggestionResult",
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="SuggestionResult",
+        )
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="SuggestionResult",
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="SuggestionResult",
+        )
     )
     dtmf_parameters: "DtmfParameters" = proto.Field(
         proto.MESSAGE,
@@ -1521,11 +1523,10 @@ class AnnotatedMessagePart(proto.Message):
             Required. A part of a message possibly
             annotated with an entity.
         entity_type (str):
-            Optional. The [Dialogflow system entity
-            type](https://cloud.google.com/dialogflow/docs/reference/system-entities)
-            of this message part. If this is empty,
-            Dialogflow could not annotate the phrase part
-            with a system entity.
+            Optional. The `Dialogflow system entity
+            type <https://cloud.google.com/dialogflow/docs/reference/system-entities>`__
+            of this message part. If this is empty, Dialogflow could not
+            annotate the phrase part with a system entity.
         formatted_value (google.protobuf.struct_pb2.Value):
             Optional. The `Dialogflow system entity formatted
             value <https://cloud.google.com/dialogflow/docs/reference/system-entities>`__
@@ -1562,10 +1563,10 @@ class MessageAnnotation(proto.Message):
 
     Attributes:
         parts (MutableSequence[google.cloud.dialogflow_v2beta1.types.AnnotatedMessagePart]):
-            Optional. The collection of annotated message
-            parts ordered by their position in the message.
-            You can recover the annotated message by
-            concatenating [AnnotatedMessagePart.text].
+            Optional. The collection of annotated message parts ordered
+            by their position in the message. You can recover the
+            annotated message by concatenating
+            [AnnotatedMessagePart.text].
         contain_entities (bool):
             Required. Indicates whether the text message
             contains entities.
@@ -1822,23 +1823,21 @@ class SuggestionResult(proto.Message):
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_faq_answers_response (google.cloud.dialogflow_v2beta1.types.SuggestFaqAnswersResponse):
-            SuggestFaqAnswersResponse if request is for
-            FAQ_ANSWER.
+            SuggestFaqAnswersResponse if request is for FAQ_ANSWER.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_smart_replies_response (google.cloud.dialogflow_v2beta1.types.SuggestSmartRepliesResponse):
-            SuggestSmartRepliesResponse if request is for
-            SMART_REPLY.
+            SuggestSmartRepliesResponse if request is for SMART_REPLY.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_dialogflow_assists_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
-            SuggestDialogflowAssistsResponse if request is
-            for DIALOGFLOW_ASSIST.
+            SuggestDialogflowAssistsResponse if request is for
+            DIALOGFLOW_ASSIST.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         suggest_entity_extraction_response (google.cloud.dialogflow_v2beta1.types.SuggestDialogflowAssistsResponse):
-            SuggestDialogflowAssistsResponse if request is
-            for ENTITY_EXTRACTION.
+            SuggestDialogflowAssistsResponse if request is for
+            ENTITY_EXTRACTION.
 
             This field is a member of `oneof`_ ``suggestion_response``.
         generate_suggestions_response (google.cloud.dialogflow_v2beta1.types.GenerateSuggestionsResponse):
@@ -2002,10 +2001,9 @@ class SuggestFaqAnswersRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and
-            including [latest_message] to use as context
-            when compiling the suggestion. By default 20 and
-            at most 50.
+            Optional. Max number of messages prior to and including
+            [latest_message] to use as context when compiling the
+            suggestion. By default 20 and at most 50.
         assist_query_params (google.cloud.dialogflow_v2beta1.types.AssistQueryParameters):
             Optional. Parameters for a human assist
             query.
@@ -2091,10 +2089,9 @@ class SuggestSmartRepliesRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and
-            including [latest_message] to use as context
-            when compiling the suggestion. By default 20 and
-            at most 50.
+            Optional. Max number of messages prior to and including
+            [latest_message] to use as context when compiling the
+            suggestion. By default 20 and at most 50.
     """
 
     parent: str = proto.Field(
@@ -2203,12 +2200,12 @@ class GenerateSuggestionsResponse(proto.Message):
             number=3,
         )
 
-    generator_suggestion_answers: MutableSequence[
-        GeneratorSuggestionAnswer
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=GeneratorSuggestionAnswer,
+    generator_suggestion_answers: MutableSequence[GeneratorSuggestionAnswer] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=GeneratorSuggestionAnswer,
+        )
     )
     latest_message: str = proto.Field(
         proto.STRING,
@@ -2240,12 +2237,12 @@ class SuggestDialogflowAssistsResponse(proto.Message):
             the conversation.
     """
 
-    dialogflow_assist_answers: MutableSequence[
-        "DialogflowAssistAnswer"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DialogflowAssistAnswer",
+    dialogflow_assist_answers: MutableSequence["DialogflowAssistAnswer"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DialogflowAssistAnswer",
+        )
     )
     latest_message: str = proto.Field(
         proto.STRING,
@@ -2419,8 +2416,8 @@ class ListSuggestionsRequest(proto.Message):
             return in a single page. The default value is
             100; the maximum value is 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
         filter (str):
             Optional. Filter on suggestions fields. Currently predicates
             on ``create_time`` and ``create_time_epoch_microseconds``
@@ -2499,10 +2496,9 @@ class CompileSuggestionRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/messages/<Message ID>``.
         context_size (int):
-            Optional. Max number of messages prior to and
-            including [latest_message] to use as context
-            when compiling the suggestion. If zero or less
-            than zero, 20 is used.
+            Optional. Max number of messages prior to and including
+            [latest_message] to use as context when compiling the
+            suggestion. If zero or less than zero, 20 is used.
     """
 
     parent: str = proto.Field(
@@ -2701,12 +2697,12 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ResponseMessage.MixedAudio.Segment",
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ResponseMessage.MixedAudio.Segment",
+            )
         )
 
     class TelephonyTransferCall(proto.Message):

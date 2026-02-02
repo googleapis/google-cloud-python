@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -59,6 +59,7 @@ class MemcacheVersion(proto.Enum):
         MEMCACHE_1_5 (1):
             Memcached 1.5 version.
     """
+
     MEMCACHE_VERSION_UNSPECIFIED = 0
     MEMCACHE_1_5 = 1
 
@@ -171,6 +172,7 @@ class Instance(proto.Message):
                 Memcached instance is going through
                 maintenance, e.g. data plane rollout.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -242,6 +244,7 @@ class Instance(proto.Message):
                 UPDATING (4):
                     Node is being updated.
             """
+
             STATE_UNSPECIFIED = 0
             CREATING = 1
             READY = 2
@@ -300,6 +303,7 @@ class Instance(proto.Message):
                 ZONE_DISTRIBUTION_UNBALANCED (1):
                     Memcached nodes are distributed unevenly.
             """
+
             CODE_UNSPECIFIED = 0
             ZONE_DISTRIBUTION_UNBALANCED = 1
 
@@ -413,15 +417,14 @@ class MaintenancePolicy(proto.Message):
             Output only. The time when the policy was
             updated.
         description (str):
-            Description of what this policy is for.
-            Create/Update methods return INVALID_ARGUMENT if
-            the length is greater than 512.
+            Description of what this policy is for. Create/Update
+            methods return INVALID_ARGUMENT if the length is greater
+            than 512.
         weekly_maintenance_window (MutableSequence[google.cloud.memcache_v1beta2.types.WeeklyMaintenanceWindow]):
-            Required. Maintenance window that is applied to
-            resources covered by this policy. Minimum 1. For
-            the current version, the maximum number of
-            weekly_maintenance_windows is expected to be
-            one.
+            Required. Maintenance window that is applied to resources
+            covered by this policy. Minimum 1. For the current version,
+            the maximum number of weekly_maintenance_windows is expected
+            to be one.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -438,12 +441,12 @@ class MaintenancePolicy(proto.Message):
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="WeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -668,9 +671,8 @@ class UpdateInstanceRequest(proto.Message):
 
             - ``displayName``
         resource (google.cloud.memcache_v1beta2.types.Instance):
-            Required. A Memcached [Instance] resource.
-            Only fields specified in update_mask are
-            updated.
+            Required. A Memcached [Instance] resource. Only fields
+            specified in update_mask are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -712,8 +714,8 @@ class RescheduleMaintenanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
             where ``location_id`` refers to a GCP region.
         reschedule_type (google.cloud.memcache_v1beta2.types.RescheduleMaintenanceRequest.RescheduleType):
-            Required. If reschedule type is SPECIFIC_TIME,
-            must set up schedule_time as well.
+            Required. If reschedule type is SPECIFIC_TIME, must set up
+            schedule_time as well.
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp when the maintenance shall be rescheduled to if
             reschedule_type=SPECIFIC_TIME, in RFC 3339 format, for
@@ -737,6 +739,7 @@ class RescheduleMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         NEXT_AVAILABLE_WINDOW = 2

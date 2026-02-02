@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -104,6 +104,7 @@ class Instance(proto.Message):
             UPDATING (7):
                 The instance is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -326,13 +327,12 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Specifies the fields to be overwritten
-            in the instance resource by the update.
+            Optional. Specifies the fields to be overwritten in the
+            instance resource by the update.
 
-            The fields specified in the update_mask are
-            relative to the resource, not the full request.
-            A field will be overwritten if it is in the
-            mask. If no mask is provided then all fields
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If no mask is provided then all fields
             present in the request are overwritten.
         instance (google.cloud.lustre_v1.types.Instance):
             Required. The resource name of the instance to update, in

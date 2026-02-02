@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.maps.fleetengine_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.maps.fleetengine_v1.services.vehicle_service import pagers
 from google.maps.fleetengine_v1.types import fleetengine, vehicle_api, vehicles
@@ -116,7 +116,8 @@ class VehicleServiceAsyncClient:
         Returns:
             VehicleServiceAsyncClient: The constructed client.
         """
-        return VehicleServiceClient.from_service_account_info.__func__(VehicleServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = VehicleServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(VehicleServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -132,7 +133,8 @@ class VehicleServiceAsyncClient:
         Returns:
             VehicleServiceAsyncClient: The constructed client.
         """
-        return VehicleServiceClient.from_service_account_file.__func__(VehicleServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = VehicleServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(VehicleServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -510,8 +512,8 @@ class VehicleServiceAsyncClient:
     ) -> None:
         r"""Deletes a Vehicle from the Fleet Engine.
 
-        Returns FAILED_PRECONDITION if the Vehicle has active
-        Trips. assigned to it.
+        Returns FAILED_PRECONDITION if the Vehicle has active Trips.
+        assigned to it.
 
         .. code-block:: python
 

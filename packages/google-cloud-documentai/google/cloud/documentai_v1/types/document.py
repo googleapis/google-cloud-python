@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.documentai_v1.types import barcode as gcd_barcode
@@ -70,8 +70,8 @@ class Document(proto.Message):
             Optional. An internal identifier for
             document. Should be loggable (no PII).
         mime_type (str):
-            An IANA published [media type (MIME
-            type)](https://www.iana.org/assignments/media-types/media-types.xhtml).
+            An IANA published `media type (MIME
+            type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__.
         text (str):
             Optional. UTF-8 encoded text in reading order
             from the document.
@@ -179,10 +179,9 @@ class Document(proto.Message):
                 style <https://www.w3schools.com/cssref/pr_font_font-style.asp>`__.
                 Possible values are ``normal``, ``italic``, and ``oblique``.
             text_decoration (str):
-                [Text
-                decoration](https://www.w3schools.com/cssref/pr_text_text-decoration.asp).
-                Follows CSS standard. <text-decoration-line>
-                <text-decoration-color> <text-decoration-style>
+                `Text
+                decoration <https://www.w3schools.com/cssref/pr_text_text-decoration.asp>`__.
+                Follows CSS standard.
             font_size (google.cloud.documentai_v1.types.Document.Style.FontSize):
                 Font size.
             font_family (str):
@@ -343,8 +342,8 @@ class Document(proto.Message):
                 content (bytes):
                     Raw byte content of the image.
                 mime_type (str):
-                    Encoding [media type (MIME
-                    type)](https://www.iana.org/assignments/media-types/media-types.xhtml)
+                    Encoding `media type (MIME
+                    type) <https://www.iana.org/assignments/media-types/media-types.xhtml>`__
                     for the image.
                 width (int):
                     Width of the image in pixels.
@@ -379,11 +378,11 @@ class Document(proto.Message):
                 cols (int):
                     Number of columns in the matrix.
                 type_ (int):
-                    This encodes information about what data type
-                    the matrix uses. For example, 0 (CV_8U) is an
-                    unsigned 8-bit image. For the full list of
-                    OpenCV primitive data types, please refer to
-                    https://docs.opencv.org/4.3.0/d1/d1b/group__core__hal__interface.html
+                    This encodes information about what data type the matrix
+                    uses. For example, 0 (CV_8U) is an unsigned 8-bit image. For
+                    the full list of OpenCV primitive data types, please refer
+                    to
+                    https://docs.opencv.org/4.3.0/d1/d1b/group\__core\__hal\__interface.html
                 data (bytes):
                     The matrix data.
             """
@@ -446,6 +445,7 @@ class Document(proto.Message):
                         Turn the head 90 degrees counterclockwise from
                         upright to read.
                 """
+
                 ORIENTATION_UNSPECIFIED = 0
                 PAGE_UP = 1
                 PAGE_RIGHT = 2
@@ -492,12 +492,12 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
             provenance: "Document.Provenance" = proto.Field(
                 proto.MESSAGE,
@@ -526,12 +526,12 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
             provenance: "Document.Provenance" = proto.Field(
                 proto.MESSAGE,
@@ -560,12 +560,12 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
             provenance: "Document.Provenance" = proto.Field(
                 proto.MESSAGE,
@@ -615,6 +615,7 @@ class Document(proto.Message):
                             A hyphen that indicates that a token has been
                             split across lines.
                     """
+
                     TYPE_UNSPECIFIED = 0
                     SPACE = 1
                     WIDE_SPACE = 2
@@ -745,12 +746,12 @@ class Document(proto.Message):
                 number=2,
                 message="Document.Page.Token.DetectedBreak",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
             provenance: "Document.Provenance" = proto.Field(
                 proto.MESSAGE,
@@ -781,12 +782,12 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
 
         class VisualElement(proto.Message):
@@ -815,12 +816,12 @@ class Document(proto.Message):
                 proto.STRING,
                 number=2,
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
 
         class Table(proto.Message):
@@ -849,12 +850,12 @@ class Document(proto.Message):
                         Cells that make up this row.
                 """
 
-                cells: MutableSequence[
-                    "Document.Page.Table.TableCell"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=1,
-                    message="Document.Page.Table.TableCell",
+                cells: MutableSequence["Document.Page.Table.TableCell"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=1,
+                        message="Document.Page.Table.TableCell",
+                    )
                 )
 
             class TableCell(proto.Message):
@@ -900,26 +901,26 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            header_rows: MutableSequence[
-                "Document.Page.Table.TableRow"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Document.Page.Table.TableRow",
+            header_rows: MutableSequence["Document.Page.Table.TableRow"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Document.Page.Table.TableRow",
+                )
             )
-            body_rows: MutableSequence[
-                "Document.Page.Table.TableRow"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="Document.Page.Table.TableRow",
+            body_rows: MutableSequence["Document.Page.Table.TableRow"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="Document.Page.Table.TableRow",
+                )
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="Document.Page.DetectedLanguage",
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Document.Page.DetectedLanguage",
+                )
             )
             provenance: "Document.Provenance" = proto.Field(
                 proto.MESSAGE,
@@ -1132,12 +1133,12 @@ class Document(proto.Message):
             number=3,
             message="Document.Page.Layout",
         )
-        detected_languages: MutableSequence[
-            "Document.Page.DetectedLanguage"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="Document.Page.DetectedLanguage",
+        detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="Document.Page.DetectedLanguage",
+            )
         )
         blocks: MutableSequence["Document.Page.Block"] = proto.RepeatedField(
             proto.MESSAGE,
@@ -1159,12 +1160,12 @@ class Document(proto.Message):
             number=8,
             message="Document.Page.Token",
         )
-        visual_elements: MutableSequence[
-            "Document.Page.VisualElement"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message="Document.Page.VisualElement",
+        visual_elements: MutableSequence["Document.Page.VisualElement"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message="Document.Page.VisualElement",
+            )
         )
         tables: MutableSequence["Document.Page.Table"] = proto.RepeatedField(
             proto.MESSAGE,
@@ -1181,12 +1182,12 @@ class Document(proto.Message):
             number=12,
             message="Document.Page.Symbol",
         )
-        detected_barcodes: MutableSequence[
-            "Document.Page.DetectedBarcode"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=15,
-            message="Document.Page.DetectedBarcode",
+        detected_barcodes: MutableSequence["Document.Page.DetectedBarcode"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=15,
+                message="Document.Page.DetectedBarcode",
+            )
         )
         image_quality_scores: "Document.Page.ImageQualityScores" = proto.Field(
             proto.MESSAGE,
@@ -1261,6 +1262,7 @@ class Document(proto.Message):
                     inference and is not necessarily an exact text
                     extraction from the document.
             """
+
             METHOD_UNSPECIFIED = 0
             EXTRACT = 1
             DERIVE = 2
@@ -1296,7 +1298,6 @@ class Document(proto.Message):
                     This field is a member of `oneof`_ ``structured_value``.
                 address_value (google.type.postal_address_pb2.PostalAddress):
                     Postal address. See also:
-
                     https://github.com/googleapis/googleapis/blob/master/google/type/postal_address.proto
 
                     This field is a member of `oneof`_ ``structured_value``.
@@ -1472,10 +1473,9 @@ class Document(proto.Message):
                 The text segments from the
                 [Document.text][google.cloud.documentai.v1.Document.text].
             content (str):
-                Contains the content of the text span so that
-                users do not have to look it up in the
-                text_segments. It is always populated for
-                formFields.
+                Contains the content of the text span so that users do not
+                have to look it up in the text_segments. It is always
+                populated for formFields.
         """
 
         class TextSegment(proto.Message):
@@ -1505,12 +1505,12 @@ class Document(proto.Message):
                 number=2,
             )
 
-        text_segments: MutableSequence[
-            "Document.TextAnchor.TextSegment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Document.TextAnchor.TextSegment",
+        text_segments: MutableSequence["Document.TextAnchor.TextSegment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Document.TextAnchor.TextSegment",
+            )
         )
         content: str = proto.Field(
             proto.STRING,
@@ -1594,6 +1594,7 @@ class Document(proto.Message):
                         [Page.form_fields][google.cloud.documentai.v1.Document.Page.form_fields]
                         element.
                 """
+
                 LAYOUT_TYPE_UNSPECIFIED = 0
                 BLOCK = 1
                 PARAGRAPH = 2
@@ -1683,6 +1684,7 @@ class Document(proto.Message):
                     Deprecated. Element is skipped in the
                     validation process.
             """
+
             OPERATION_TYPE_UNSPECIFIED = 0
             ADD = 1
             REMOVE = 2
@@ -1698,8 +1700,8 @@ class Document(proto.Message):
 
             Attributes:
                 revision (int):
-                    The index of the index into current revision's
-                    parent_ids list.
+                    The index of the index into current revision's parent_ids
+                    list.
                 index (int):
                     The index of the parent item in the
                     corresponding item list (eg. list of entities,
@@ -2114,12 +2116,12 @@ class Document(proto.Message):
                 message=geometry.BoundingPoly,
             )
 
-        blocks: MutableSequence[
-            "Document.DocumentLayout.DocumentLayoutBlock"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Document.DocumentLayout.DocumentLayoutBlock",
+        blocks: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Document.DocumentLayout.DocumentLayoutBlock",
+            )
         )
 
     class ChunkedDocument(proto.Message):
@@ -2288,6 +2290,7 @@ class Document(proto.Message):
                     VALIDATION_RESULT_TYPE_NOT_APPLICABLE (4):
                         The validation is not applicable.
                 """
+
                 VALIDATION_RESULT_TYPE_UNSPECIFIED = 0
                 VALIDATION_RESULT_TYPE_VALID = 1
                 VALIDATION_RESULT_TYPE_INVALID = 2

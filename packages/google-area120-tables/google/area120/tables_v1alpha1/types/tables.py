@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,6 +63,7 @@ class View(proto.Enum):
             Uses internally generated column id to
             identify values.
     """
+
     VIEW_UNSPECIFIED = 0
     COLUMN_ID_VIEW = 1
 
@@ -531,15 +532,13 @@ class ColumnDescription(proto.Message):
         name (str):
             column name
         data_type (str):
-            Data type of the column
-            Supported types are auto_id, boolean,
-            boolean_list, creator, create_timestamp, date,
-            dropdown, location, integer, integer_list,
-            number, number_list, person, person_list, tags,
-            check_list, text, text_list, update_timestamp,
-            updater, relationship, file_attachment_list.
-            These types directly map to the column types
-            supported on Tables website.
+            Data type of the column Supported types are auto_id,
+            boolean, boolean_list, creator, create_timestamp, date,
+            dropdown, location, integer, integer_list, number,
+            number_list, person, person_list, tags, check_list, text,
+            text_list, update_timestamp, updater, relationship,
+            file_attachment_list. These types directly map to the column
+            types supported on Tables website.
         id (str):
             Internal id for a column.
         labels (MutableSequence[google.area120.tables_v1alpha1.types.LabeledItem]):
@@ -549,9 +548,8 @@ class ColumnDescription(proto.Message):
             return the range of values in such cases to help
             clients implement better user data validation.
         relationship_details (google.area120.tables_v1alpha1.types.RelationshipDetails):
-            Optional. Additional details about a
-            relationship column. Specified when data_type is
-            relationship.
+            Optional. Additional details about a relationship column.
+            Specified when data_type is relationship.
         lookup_details (google.area120.tables_v1alpha1.types.LookupDetails):
             Optional. Indicates that this is a lookup
             column whose value is derived from the

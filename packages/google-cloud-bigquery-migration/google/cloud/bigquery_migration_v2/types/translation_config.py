@@ -351,6 +351,7 @@ class TeradataDialect(proto.Message):
             BTEQ (2):
                 BTEQ mode (which includes SQL).
         """
+
         MODE_UNSPECIFIED = 0
         SQL = 1
         BTEQ = 2
@@ -499,6 +500,7 @@ class NameMappingKey(proto.Message):
             FUNCTION (7):
                 The object being mapped is a function.
         """
+
         TYPE_UNSPECIFIED = 0
         DATABASE = 1
         SCHEMA = 2
@@ -581,15 +583,13 @@ class SourceEnv(proto.Message):
             missing schema name, translation engine will
             search through this list to find the value.
         metadata_store_dataset (str):
-            Optional. Expects a valid BigQuery dataset ID
-            that exists, e.g.,
-            project-123.metadata_store_123. If specified,
-            translation will search and read the required
-            schema information from a metadata store in this
-            dataset. If metadata store doesn't exist,
-            translation will parse the metadata file and
-            upload the schema info to a temp table in the
-            dataset to speed up future translation jobs.
+            Optional. Expects a valid BigQuery dataset ID that exists,
+            e.g., project-123.metadata_store_123. If specified,
+            translation will search and read the required schema
+            information from a metadata store in this dataset. If
+            metadata store doesn't exist, translation will parse the
+            metadata file and upload the schema info to a temp table in
+            the dataset to speed up future translation jobs.
     """
 
     default_database: str = proto.Field(

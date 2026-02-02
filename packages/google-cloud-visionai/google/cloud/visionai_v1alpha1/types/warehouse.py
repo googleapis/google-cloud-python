@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -117,6 +117,7 @@ class FacetBucketType(proto.Enum):
         FACET_BUCKET_TYPE_CUSTOM_RANGE (4):
             Custom Range type.
     """
+
     FACET_BUCKET_TYPE_UNSPECIFIED = 0
     FACET_BUCKET_TYPE_VALUE = 1
     FACET_BUCKET_TYPE_DATETIME = 2
@@ -168,9 +169,7 @@ class GetAssetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the asset to retrieve.
-            Format:
-
+            Required. The name of the asset to retrieve. Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
     """
 
@@ -185,9 +184,8 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of assets. Format:
-
+            Required. The parent, which owns this collection of assets.
+            Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}
         page_size (int):
             The maximum number of assets to return. The
@@ -276,9 +274,7 @@ class DeleteAssetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the asset to delete.
-            Format:
-
+            Required. The name of the asset to delete. Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
     """
 
@@ -430,13 +426,12 @@ class ListCorporaRequest(proto.Message):
             Required. The resource name of the project
             from which to list corpora.
         page_size (int):
-            Requested page size. API may return fewer
-            results than requested. If negative,
-            INVALID_ARGUMENT error will be returned. If
-            unspecified or 0, API will pick a default size,
-            which is 10. If the requested page size is
-            larger than the maximum size, API will pick use
-            the maximum size, which is 20.
+            Requested page size. API may return fewer results than
+            requested. If negative, INVALID_ARGUMENT error will be
+            returned. If unspecified or 0, API will pick a default size,
+            which is 10. If the requested page size is larger than the
+            maximum size, API will pick use the maximum size, which is
+            20.
         page_token (str):
             A token identifying a page of results for the server to
             return. Typically obtained via
@@ -640,6 +635,7 @@ class DataSchemaDetails(proto.Message):
                 - DataSchema.SearchStrategy.NO_SEARCH,
                 - DataSchema.SearchStrategy.EXACT_SEARCH.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         INTEGER = 1
         FLOAT = 2
@@ -662,6 +658,7 @@ class DataSchemaDetails(proto.Message):
                 Partition-level granularity (annotations must
                 contain partition info).
         """
+
         GRANULARITY_UNSPECIFIED = 0
         GRANULARITY_ASSET_LEVEL = 1
         GRANULARITY_PARTITION_LEVEL = 2
@@ -707,6 +704,7 @@ class DataSchemaDetails(proto.Message):
                     When searching with ``key``, Warehouse will perform broad
                     search based on semantic of the annotation value.
             """
+
             NO_SEARCH = 0
             EXACT_SEARCH = 1
             SMART_SEARCH = 2
@@ -770,9 +768,7 @@ class GetDataSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the data schema to
-            retrieve. Format:
-
+            Required. The name of the data schema to retrieve. Format:
             projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
     """
 
@@ -787,9 +783,7 @@ class DeleteDataSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the data schema to delete.
-            Format:
-
+            Required. The name of the data schema to delete. Format:
             projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
     """
 
@@ -804,9 +798,8 @@ class ListDataSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of data schemas. Format:
-
+            Required. The parent, which owns this collection of data
+            schemas. Format:
             projects/{project_number}/locations/{location_id}/corpora/{corpus_id}
         page_size (int):
             The maximum number of data schemas to return.
@@ -1075,9 +1068,8 @@ class ListAnnotationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            The parent, which owns this collection of
-            annotations. Format:
-
+            The parent, which owns this collection of annotations.
+            Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
         page_size (int):
             The maximum number of annotations to return.
@@ -1156,9 +1148,7 @@ class GetAnnotationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the annotation to
-            retrieve. Format:
-
+            Required. The name of the annotation to retrieve. Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
     """
 
@@ -1198,9 +1188,7 @@ class DeleteAnnotationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the annotation to delete.
-            Format:
-
+            Required. The name of the annotation to delete. Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
     """
 
@@ -1276,9 +1264,8 @@ class GetSearchConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the search configuration
-            to retrieve. Format:
-
+            Required. The name of the search configuration to retrieve.
+            Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
     """
 
@@ -1293,9 +1280,8 @@ class DeleteSearchConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the search configuration
-            to delete. Format:
-
+            Required. The name of the search configuration to delete.
+            Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
     """
 
@@ -1310,9 +1296,8 @@ class ListSearchConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of search configurations. Format:
-
+            Required. The parent, which owns this collection of search
+            configurations. Format:
             projects/{project_number}/locations/{location}/corpora/{corpus}
         page_size (int):
             The maximum number of search configurations
@@ -1450,26 +1435,23 @@ class FacetProperty(proto.Message):
             Display name of the facet. To be used by UI
             for facet rendering.
         result_size (int):
-            Maximum number of unique bucket to return for
-            one facet. Bucket number can be large for
-            high-cardinality facet such as "player". We only
-            return top-n most related ones to user. If it's
-            <= 0, the server will decide the appropriate
+            Maximum number of unique bucket to return for one facet.
+            Bucket number can be large for high-cardinality facet such
+            as "player". We only return top-n most related ones to user.
+            If it's <= 0, the server will decide the appropriate
             result_size.
         bucket_type (google.cloud.visionai_v1alpha1.types.FacetBucketType):
             Facet bucket type e.g. value, range.
     """
 
     class FixedRangeBucketSpec(proto.Message):
-        r"""If bucket type is FIXED_RANGE, specify how values are
-        bucketized. Use FixedRangeBucketSpec when you want to create
-        multiple buckets with equal granularities. Using integer bucket
-        value as an example, when bucket_start = 0, bucket_granularity =
-        10, bucket_count = 5, this facet will be aggregated via the
-        following buckets:
-
-        [-inf, 0), [0, 10), [10, 20), [20, 30), [30, inf).
-        Notably, bucket_count <= 1 is an invalid spec.
+        r"""If bucket type is FIXED_RANGE, specify how values are bucketized.
+        Use FixedRangeBucketSpec when you want to create multiple buckets
+        with equal granularities. Using integer bucket value as an example,
+        when bucket_start = 0, bucket_granularity = 10, bucket_count = 5,
+        this facet will be aggregated via the following buckets: [-inf, 0),
+        [0, 10), [10, 20), [20, 30), [30, inf). Notably, bucket_count <= 1
+        is an invalid spec.
 
         Attributes:
             bucket_start (google.cloud.visionai_v1alpha1.types.FacetValue):
@@ -1541,6 +1523,7 @@ class FacetProperty(proto.Message):
                 DAY (3):
                     Granularity is day.
             """
+
             GRANULARITY_UNSPECIFIED = 0
             YEAR = 1
             MONTH = 2
@@ -1594,33 +1577,19 @@ class SearchCriteriaProperty(proto.Message):
 
     Attributes:
         mapped_fields (MutableSequence[str]):
-            Each mapped_field corresponds to a UGA key. To
-            understand how this property works, take the
-            following example. In the SearchConfig table,
-            the user adds this entry:
+            Each mapped_field corresponds to a UGA key. To understand
+            how this property works, take the following example. In the
+            SearchConfig table, the user adds this entry: search_config
+            { name: "person" search_criteria_property { mapped_fields:
+            "player" mapped_fields: "coach" } }
 
-            search_config {
-            name: "person"
-            search_criteria_property {
-            mapped_fields: "player"
-            mapped_fields: "coach"
-            }
-            }
+            Now, when a user issues a query like: criteria { field:
+            "person" text_array { txt_values: "Tom Brady" txt_values:
+            "Bill Belichick" } }
 
-            Now, when a user issues a query like:
-
-            criteria {
-            field: "person"
-            text_array {
-            txt_values: "Tom Brady"
-            txt_values: "Bill Belichick"
-            }
-            }
-
-            MWH search will return search documents where
-            (player=Tom Brady \|\| coach=Tom Brady \|\|
-            player=Bill Belichick \|\| coach=Bill
-            Belichick).
+            MWH search will return search documents where (player=Tom
+            Brady \|\| coach=Tom Brady \|\| player=Bill Belichick \|\|
+            coach=Bill Belichick).
     """
 
     mapped_fields: MutableSequence[str] = proto.RepeatedField(
@@ -1844,6 +1813,7 @@ class IngestAssetRequest(proto.Message):
                     CONTAINER_FORMAT_MP4 (1):
                         Mp4 container format.
                 """
+
                 CONTAINER_FORMAT_UNSPECIFIED = 0
                 CONTAINER_FORMAT_MP4 = 1
 
@@ -1922,9 +1892,8 @@ class ClipAssetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the asset to
-            request clips for. Form:
-
+            Required. The resource name of the asset to request clips
+            for. Form:
             'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
         temporal_partition (google.cloud.visionai_v1alpha1.types.Partition.TemporalPartition):
             Required. The time range to request clips
@@ -1984,9 +1953,8 @@ class GenerateHlsUriRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the asset to
-            request clips for. Form:
-
+            Required. The resource name of the asset to request clips
+            for. Form:
             'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
         temporal_partitions (MutableSequence[google.cloud.visionai_v1alpha1.types.Partition.TemporalPartition]):
             Required. The time range to request clips
@@ -1997,12 +1965,12 @@ class GenerateHlsUriRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
 
 
@@ -2022,12 +1990,12 @@ class GenerateHlsUriResponse(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
 
 
@@ -2039,22 +2007,19 @@ class SearchAssetsRequest(proto.Message):
             Required. The parent corpus to search. Form:
             \`projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
         page_size (int):
-            The number of results to be returned in this
-            page. If it's 0, the server will decide the
-            appropriate page_size.
+            The number of results to be returned in this page. If it's
+            0, the server will decide the appropriate page_size.
         page_token (str):
             The continuation token to fetch the next
             page. If empty, it means it is fetching the
             first page.
         content_time_ranges (google.cloud.visionai_v1alpha1.types.DateTimeRangeArray):
-            Time ranges that matching video content must
-            fall within. If no ranges are provided, there
-            will be no time restriction. This field is
-            treated just like the criteria below, but
-            defined separately for convenience as it is used
-            frequently. Note that if the end_time is in the
-            future, it will be clamped to the time the
-            request was received.
+            Time ranges that matching video content must fall within. If
+            no ranges are provided, there will be no time restriction.
+            This field is treated just like the criteria below, but
+            defined separately for convenience as it is used frequently.
+            Note that if the end_time is in the future, it will be
+            clamped to the time the request was received.
         criteria (MutableSequence[google.cloud.visionai_v1alpha1.types.Criteria]):
             Criteria applied to search results.
         facet_selections (MutableSequence[google.cloud.visionai_v1alpha1.types.FacetGroup]):
@@ -2064,10 +2029,9 @@ class SearchAssetsRequest(proto.Message):
             selected or unselected. Only selected facet
             buckets will be used as search criteria.
         result_annotation_keys (MutableSequence[str]):
-            A list of annotation keys to specify the
-            annotations to be retrieved and returned with
-            each search result. Annotation granularity must
-            be GRANULARITY_ASSET_LEVEL and its search
+            A list of annotation keys to specify the annotations to be
+            retrieved and returned with each search result. Annotation
+            granularity must be GRANULARITY_ASSET_LEVEL and its search
             strategy must not be NO_SEARCH.
     """
 
@@ -2124,9 +2088,8 @@ class AnnotationMatchingResult(proto.Message):
             Matched annotations for the criteria.
         status (google.rpc.status_pb2.Status):
             Status of the match result. Possible values:
-
-            FAILED_PRECONDITION - the criteria is not
-            eligible for match. OK - matching is performed.
+            FAILED_PRECONDITION - the criteria is not eligible for
+            match. OK - matching is performed.
     """
 
     criteria: "Criteria" = proto.Field(
@@ -2152,9 +2115,7 @@ class SearchResultItem(proto.Message):
 
     Attributes:
         asset (str):
-            The resource name of the asset.
-            Form:
-
+            The resource name of the asset. Form:
             'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
         segments (MutableSequence[google.cloud.visionai_v1alpha1.types.Partition.TemporalPartition]):
             The matched asset segments. Deprecated: please use singular
@@ -2165,10 +2126,9 @@ class SearchResultItem(proto.Message):
             Search result annotations specified by
             result_annotation_keys in search request.
         annotation_matching_results (MutableSequence[google.cloud.visionai_v1alpha1.types.AnnotationMatchingResult]):
-            Criteria or facet-selection based annotation
-            matching results associated to this search
-            result item. Only contains results for criteria
-            or facet_selections with
+            Criteria or facet-selection based annotation matching
+            results associated to this search result item. Only contains
+            results for criteria or facet_selections with
             fetch_matched_annotations=true.
     """
 
@@ -2191,12 +2151,12 @@ class SearchResultItem(proto.Message):
         number=3,
         message="Annotation",
     )
-    annotation_matching_results: MutableSequence[
-        "AnnotationMatchingResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AnnotationMatchingResult",
+    annotation_matching_results: MutableSequence["AnnotationMatchingResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AnnotationMatchingResult",
+        )
     )
 
 
@@ -2376,11 +2336,9 @@ class CircleArea(proto.Message):
 
     Attributes:
         latitude (float):
-            Latitude of circle area's center. Degrees [-90
-            .. 90]
+            Latitude of circle area's center. Degrees [-90 .. 90]
         longitude (float):
-            Longitude of circle area's center. Degrees [-180
-            .. 180]
+            Longitude of circle area's center. Degrees [-180 .. 180]
         radius_meter (float):
             Radius of the circle area in meters.
     """

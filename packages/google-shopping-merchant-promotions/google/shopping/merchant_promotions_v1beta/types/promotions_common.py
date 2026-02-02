@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.promotions.v1beta",
@@ -49,6 +49,7 @@ class ProductApplicability(proto.Enum):
             Applicable to only a single product or list
             of products.
     """
+
     PRODUCT_APPLICABILITY_UNSPECIFIED = 0
     ALL_PRODUCTS = 1
     SPECIFIC_PRODUCTS = 2
@@ -68,6 +69,7 @@ class StoreApplicability(proto.Enum):
             Promotion applies to only the specified
             stores.
     """
+
     STORE_APPLICABILITY_UNSPECIFIED = 0
     ALL_STORES = 1
     SPECIFIC_STORES = 2
@@ -85,6 +87,7 @@ class OfferType(proto.Enum):
             Offer type with a code. Generic redemption code for the
             promotion is required when ``offerType`` = ``GENERIC_CODE``.
     """
+
     OFFER_TYPE_UNSPECIFIED = 0
     NO_CODE = 1
     GENERIC_CODE = 2
@@ -102,14 +105,15 @@ class RedemptionChannel(proto.Enum):
         ONLINE (2):
             Indicates that the channel is online.
     """
+
     REDEMPTION_CHANNEL_UNSPECIFIED = 0
     IN_STORE = 1
     ONLINE = 2
 
 
 class CouponValueType(proto.Enum):
-    r"""[Coupon value
-    type](https://support.google.com/merchants/answer/13861986?ref_topic=13773355&sjid=17642868584668136159-NC)
+    r"""`Coupon value
+    type <https://support.google.com/merchants/answer/13861986?ref_topic=13773355&sjid=17642868584668136159-NC>`__
     of a promotion.
 
     Values:
@@ -149,6 +153,7 @@ class CouponValueType(proto.Enum):
         FREE_SHIPPING_TWO_DAY (12):
             Two day free shipping coupon value type.
     """
+
     COUPON_VALUE_TYPE_UNSPECIFIED = 0
     MONEY_OFF = 1
     PERCENT_OFF = 2
@@ -169,9 +174,9 @@ class Attributes(proto.Message):
 
     Attributes:
         product_applicability (google.shopping.merchant_promotions_v1beta.types.ProductApplicability):
-            Required. Applicability of the promotion to
-            either all products or [only specific
-            products](https://support.google.com/merchants/answer/6396257?ref_topic=6396150&sjid=17642868584668136159-NC).
+            Required. Applicability of the promotion to either all
+            products or `only specific
+            products <https://support.google.com/merchants/answer/6396257?ref_topic=6396150&sjid=17642868584668136159-NC>`__.
         offer_type (google.shopping.merchant_promotions_v1beta.types.OfferType):
             Required.
             `Type <https://support.google.com/merchants/answer/13837405?ref_topic=13773355&sjid=17642868584668136159-NC>`__
@@ -182,8 +187,8 @@ class Attributes(proto.Message):
             used with the ``offerType`` field and must meet the `minimum
             requirements <https://support.google.com/merchants/answer/13837405?ref_topic=13773355&sjid=17642868584668136159-NC>`__.
         long_title (str):
-            Required. [Long
-            title](https://support.google.com/merchants/answer/13838102?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Required. `Long
+            title <https://support.google.com/merchants/answer/13838102?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         coupon_value_type (google.shopping.merchant_promotions_v1beta.types.CouponValueType):
             Required. The [coupon value type]
@@ -259,44 +264,44 @@ class Attributes(proto.Message):
             applicability ``product_applicability`` attribute is set to
             `specific_products <https://support.google.com/merchants/answer/13837299?ref_topic=13773355&sjid=17642868584668136159-NC>`__.
         minimum_purchase_amount (google.shopping.type.types.Price):
-            Optional. [Minimum purchase
-            amount](https://support.google.com/merchants/answer/13837705?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Minimum purchase
+            amount <https://support.google.com/merchants/answer/13837705?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         minimum_purchase_quantity (int):
-            Optional. [Minimum purchase
-            quantity](https://support.google.com/merchants/answer/13838182?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Minimum purchase
+            quantity <https://support.google.com/merchants/answer/13838182?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         limit_quantity (int):
-            Optional. [Maximum purchase
-            quantity](https://support.google.com/merchants/answer/13861564?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Maximum purchase
+            quantity <https://support.google.com/merchants/answer/13861564?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         limit_value (google.shopping.type.types.Price):
-            Optional. [Maximum product
-            price](https://support.google.com/merchants/answer/2906014)
+            Optional. `Maximum product
+            price <https://support.google.com/merchants/answer/2906014>`__
             for promotion.
         percent_off (int):
-            Optional. The [percentage
-            discount](https://support.google.com/merchants/answer/13837404?sjid=17642868584668136159-NC)
+            Optional. The `percentage
+            discount <https://support.google.com/merchants/answer/13837404?sjid=17642868584668136159-NC>`__
             offered in the promotion.
         money_off_amount (google.shopping.type.types.Price):
-            Optional. The [money off
-            amount](https://support.google.com/merchants/answer/13838101?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. The `money off
+            amount <https://support.google.com/merchants/answer/13838101?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             offered in the promotion.
         get_this_quantity_discounted (int):
             Optional. The number of items discounted in the promotion.
             The attribute is set when ``couponValueType`` is equal to
             ``buy_m_get_n_money_off`` or ``buy_m_get_n_percent_off``.
         free_gift_value (google.shopping.type.types.Price):
-            Optional. [Free gift
-            value](https://support.google.com/merchants/answer/13844477?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Free gift
+            value <https://support.google.com/merchants/answer/13844477?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         free_gift_description (str):
-            Optional. [Free gift
-            description](https://support.google.com/merchants/answer/13847245?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Free gift
+            description <https://support.google.com/merchants/answer/13847245?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         free_gift_item_id (str):
-            Optional. [Free gift item
-            ID](https://support.google.com/merchants/answer/13857152?ref_topic=13773355&sjid=17642868584668136159-NC)
+            Optional. `Free gift item
+            ID <https://support.google.com/merchants/answer/13857152?ref_topic=13773355&sjid=17642868584668136159-NC>`__
             for the promotion.
         promotion_effective_time_period (google.type.interval_pb2.Interval):
             Required. ``TimePeriod`` representation of the promotion's
@@ -369,12 +374,12 @@ class Attributes(proto.Message):
         number=5,
         enum="CouponValueType",
     )
-    promotion_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=types.Destination.DestinationEnum,
+    promotion_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=types.Destination.DestinationEnum,
+        )
     )
     item_id_inclusion: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -537,6 +542,7 @@ class PromotionStatus(proto.Message):
                     are approved, but the active date is in the
                     future.
             """
+
             STATE_UNSPECIFIED = 0
             IN_REVIEW = 1
             REJECTED = 2
@@ -604,6 +610,7 @@ class PromotionStatus(proto.Message):
                 DISAPPROVED (3):
                     Issue disapproves the promotion.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DEMOTED = 2

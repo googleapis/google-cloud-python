@@ -41,10 +41,9 @@ class ReleaseRenderEvent(proto.Message):
         pipeline_uid (str):
             Unique identifier of the ``DeliveryPipeline``.
         release (str):
-            The name of the release.
-            release_uid is not in this log message because
-            we write some of these log messages at release
-            creation time, before we've generated the uid.
+            The name of the release. release_uid is not in this log
+            message because we write some of these log messages at
+            release creation time, before we've generated the uid.
         type_ (google.cloud.deploy_v1.types.Type):
             Type of this notification, e.g. for a release
             render state change event.

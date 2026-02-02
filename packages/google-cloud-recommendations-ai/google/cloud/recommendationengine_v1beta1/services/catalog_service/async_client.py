@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
@@ -44,9 +44,9 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.services.catalog_service import pagers
 from google.cloud.recommendationengine_v1beta1.types import (
@@ -128,7 +128,8 @@ class CatalogServiceAsyncClient:
         Returns:
             CatalogServiceAsyncClient: The constructed client.
         """
-        return CatalogServiceClient.from_service_account_info.__func__(CatalogServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = CatalogServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(CatalogServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -144,7 +145,8 @@ class CatalogServiceAsyncClient:
         Returns:
             CatalogServiceAsyncClient: The constructed client.
         """
-        return CatalogServiceClient.from_service_account_file.__func__(CatalogServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = CatalogServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(CatalogServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -732,9 +734,8 @@ class CatalogServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             catalog_item (:class:`google.cloud.recommendationengine_v1beta1.types.CatalogItem`):
-                Required. The catalog item to
-                update/create. The 'catalog_item_id'
-                field has to match that in the 'name'.
+                Required. The catalog item to update/create. The
+                'catalog_item_id' field has to match that in the 'name'.
 
                 This corresponds to the ``catalog_item`` field
                 on the ``request`` instance; if ``request`` is provided, this

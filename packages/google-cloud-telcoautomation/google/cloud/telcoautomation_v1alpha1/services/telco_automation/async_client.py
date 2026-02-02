@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.telcoautomation_v1alpha1 import gapic_version as package_version
 
@@ -44,13 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.telcoautomation_v1alpha1.services.telco_automation import pagers
 from google.cloud.telcoautomation_v1alpha1.types import telcoautomation
@@ -146,7 +146,8 @@ class TelcoAutomationAsyncClient:
         Returns:
             TelcoAutomationAsyncClient: The constructed client.
         """
-        return TelcoAutomationClient.from_service_account_info.__func__(TelcoAutomationAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = TelcoAutomationClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(TelcoAutomationAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -162,7 +163,8 @@ class TelcoAutomationAsyncClient:
         Returns:
             TelcoAutomationAsyncClient: The constructed client.
         """
-        return TelcoAutomationClient.from_service_account_file.__func__(TelcoAutomationAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = TelcoAutomationClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(TelcoAutomationAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -625,11 +627,10 @@ class TelcoAutomationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             orchestration_cluster_id (:class:`str`):
-                Required. Id of the requesting object
-                If auto-generating Id server-side,
-                remove this field and
-                orchestration_cluster_id from the
-                method_signature of Create RPC
+                Required. Id of the requesting object If auto-generating
+                Id server-side, remove this field and
+                orchestration_cluster_id from the method_signature of
+                Create RPC
 
                 This corresponds to the ``orchestration_cluster_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1140,9 +1141,8 @@ class TelcoAutomationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             edge_slm_id (:class:`str`):
-                Required. Id of the requesting object
-                If auto-generating Id server-side,
-                remove this field and edge_slm_id from
+                Required. Id of the requesting object If auto-generating
+                Id server-side, remove this field and edge_slm_id from
                 the method_signature of Create RPC
 
                 This corresponds to the ``edge_slm_id`` field
@@ -1403,8 +1403,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.CreateBlueprintRequest, dict]]):
                 The request object. Request object for ``CreateBlueprint``.
             parent (:class:`str`):
-                Required. The name of parent resource.
-                Format should be -
+                Required. The name of parent resource. Format should be
+                -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field
@@ -1672,14 +1672,12 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.GetBlueprintRequest, dict]]):
                 The request object. Request object for ``GetBlueprint``.
             name (:class:`str`):
-                Required. The name of the blueprint.
-                Case 1: If the name provided in the
-                request is {blueprint_id}@{revision_id},
-                then the revision with revision_id will
-                be returned. Case 2: If the name
-                provided in the request is {blueprint},
-                then the current state of the blueprint
-                is returned.
+                Required. The name of the blueprint. Case 1: If the name
+                provided in the request is {blueprint_id}@{revision_id},
+                then the revision with revision_id will be returned.
+                Case 2: If the name provided in the request is
+                {blueprint}, then the current state of the blueprint is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1795,11 +1793,10 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.DeleteBlueprintRequest, dict]]):
                 The request object. Request object for ``DeleteBlueprint``.
             name (:class:`str`):
-                Required. The name of blueprint to
-                delete. Blueprint name should be in the
-                format {blueprint_id}, if
-                {blueprint_id}@{revision_id} is passed
-                then the API throws invalid argument.
+                Required. The name of blueprint to delete. Blueprint
+                name should be in the format {blueprint_id}, if
+                {blueprint_id}@{revision_id} is passed then the API
+                throws invalid argument.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1900,9 +1897,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.ListBlueprintsRequest, dict]]):
                 The request object. Request object for ``ListBlueprints``.
             parent (:class:`str`):
-                Required. The name of parent
-                orchestration cluster resource. Format
-                should be -
+                Required. The name of parent orchestration cluster
+                resource. Format should be -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field
@@ -2519,9 +2515,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.SearchBlueprintRevisionsRequest, dict]]):
                 The request object. Request object for ``SearchBlueprintRevisions``.
             parent (:class:`str`):
-                Required. The name of parent
-                orchestration cluster resource. Format
-                should be -
+                Required. The name of parent orchestration cluster
+                resource. Format should be -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field
@@ -2669,9 +2664,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.SearchDeploymentRevisionsRequest, dict]]):
                 The request object. Request object for ``SearchDeploymentRevisions``.
             parent (:class:`str`):
-                Required. The name of parent
-                orchestration cluster resource. Format
-                should be -
+                Required. The name of parent orchestration cluster
+                resource. Format should be -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field
@@ -2931,8 +2925,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.ListPublicBlueprintsRequest, dict]]):
                 The request object. Request object for ``ListPublicBlueprints``.
             parent (:class:`str`):
-                Required. Parent value of public
-                blueprint. Format should be -
+                Required. Parent value of public blueprint. Format
+                should be -
                 "projects/{project_id}/locations/{location_name}".
 
                 This corresponds to the ``parent`` field
@@ -3180,8 +3174,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.CreateDeploymentRequest, dict]]):
                 The request object. Request object for ``CreateDeployment``.
             parent (:class:`str`):
-                Required. The name of parent resource.
-                Format should be -
+                Required. The name of parent resource. Format should be
+                -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field
@@ -3435,16 +3429,12 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.GetDeploymentRequest, dict]]):
                 The request object. Request object for ``GetDeployment``.
             name (:class:`str`):
-                Required. The name of the deployment.
-                Case 1: If the name provided in the
-                request is
-                {deployment_id}@{revision_id}, then the
-                revision with revision_id will be
-                returned.
-                Case 2: If the name provided in the
-                request is {deployment}, then the
-                current state of the deployment is
-                returned.
+                Required. The name of the deployment. Case 1: If the
+                name provided in the request is
+                {deployment_id}@{revision_id}, then the revision with
+                revision_id will be returned. Case 2: If the name
+                provided in the request is {deployment}, then the
+                current state of the deployment is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3656,9 +3646,8 @@ class TelcoAutomationAsyncClient:
             request (Optional[Union[google.cloud.telcoautomation_v1alpha1.types.ListDeploymentsRequest, dict]]):
                 The request object. Request object for ``ListDeployments``.
             parent (:class:`str`):
-                Required. The name of parent
-                orchestration cluster resource. Format
-                should be -
+                Required. The name of parent orchestration cluster
+                resource. Format should be -
                 "projects/{project_id}/locations/{location_name}/orchestrationClusters/{orchestration_cluster}".
 
                 This corresponds to the ``parent`` field

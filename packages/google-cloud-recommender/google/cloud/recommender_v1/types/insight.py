@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -56,10 +56,9 @@ class Insight(proto.Message):
             Timestamp of the latest data used to generate
             the insight.
         observation_period (google.protobuf.duration_pb2.Duration):
-            Observation period that led to the insight. The
-            source data used to generate the insight ends at
-            last_refresh_time and begins at
-            (last_refresh_time - observation_period).
+            Observation period that led to the insight. The source data
+            used to generate the insight ends at last_refresh_time and
+            begins at (last_refresh_time - observation_period).
         state_info (google.cloud.recommender_v1.types.InsightStateInfo):
             Information state and metadata.
         category (google.cloud.recommender_v1.types.Insight.Category):
@@ -92,6 +91,7 @@ class Insight(proto.Message):
             RELIABILITY (6):
                 This insight is related to reliability.
         """
+
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -115,6 +115,7 @@ class Insight(proto.Message):
             CRITICAL (4):
                 Insight has critical severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         LOW = 1
         MEDIUM = 2
@@ -185,12 +186,12 @@ class Insight(proto.Message):
         proto.STRING,
         number=11,
     )
-    associated_recommendations: MutableSequence[
-        RecommendationReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message=RecommendationReference,
+    associated_recommendations: MutableSequence[RecommendationReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message=RecommendationReference,
+        )
     )
 
 
@@ -229,6 +230,7 @@ class InsightStateInfo(proto.Message):
                 insights can be updated by Google. DISMISSED
                 insights can be marked as ACTIVE.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ACCEPTED = 2

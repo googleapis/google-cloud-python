@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.phishingprotection_v1beta1 import gapic_version as package_version
 
@@ -123,7 +123,12 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         Returns:
             PhishingProtectionServiceV1Beta1AsyncClient: The constructed client.
         """
-        return PhishingProtectionServiceV1Beta1Client.from_service_account_info.__func__(PhishingProtectionServiceV1Beta1AsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            PhishingProtectionServiceV1Beta1Client.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            PhishingProtectionServiceV1Beta1AsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -139,7 +144,12 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         Returns:
             PhishingProtectionServiceV1Beta1AsyncClient: The constructed client.
         """
-        return PhishingProtectionServiceV1Beta1Client.from_service_account_file.__func__(PhishingProtectionServiceV1Beta1AsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            PhishingProtectionServiceV1Beta1Client.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            PhishingProtectionServiceV1Beta1AsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -177,7 +187,9 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return PhishingProtectionServiceV1Beta1Client.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return PhishingProtectionServiceV1Beta1Client.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> PhishingProtectionServiceV1Beta1Transport:
@@ -311,16 +323,15 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> phishingprotection.ReportPhishingResponse:
-        r"""Reports a URI suspected of containing phishing content
-        to be reviewed. Once the report review is complete, its
-        result can be found in the Cloud Security Command Center
-        findings dashboard for Phishing Protection. If the
-        result verifies the existence of malicious phishing
-        content, the site will be added the to [Google's Social
-        Engineering
-        lists](https://support.google.com/webmasters/answer/6350487/)
-        in order to protect users that could get exposed to this
-        threat in the future.
+        r"""Reports a URI suspected of containing phishing content to be
+        reviewed. Once the report review is complete, its result can be
+        found in the Cloud Security Command Center findings dashboard
+        for Phishing Protection. If the result verifies the existence of
+        malicious phishing content, the site will be added the to
+        `Google's Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__
+        in order to protect users that could get exposed to this threat
+        in the future.
 
         .. code-block:: python
 
@@ -353,9 +364,9 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
             request (Optional[Union[google.cloud.phishingprotection_v1beta1.types.ReportPhishingRequest, dict]]):
                 The request object. The ReportPhishing request message.
             parent (:class:`str`):
-                Required. The name of the project for
-                which the report will be created, in the
-                format "projects/{project_number}".
+                Required. The name of the project for which the report
+                will be created, in the format
+                "projects/{project_number}".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

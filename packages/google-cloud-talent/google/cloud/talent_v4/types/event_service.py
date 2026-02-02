@@ -34,11 +34,11 @@ class CreateClientEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the tenant under
-            which the event is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenants/bar".
+            Required. Resource name of the tenant under which the event
+            is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenants/bar".
         client_event (google.cloud.talent_v4.types.ClientEvent):
             Required. Events issued when end user
             interacts with customer's application that uses

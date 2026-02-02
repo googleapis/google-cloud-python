@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.asset_v1p2beta1.types import assets as gca_assets
@@ -55,6 +55,7 @@ class ContentType(proto.Enum):
         IAM_POLICY (2):
             The actual IAM policy set on a resource.
     """
+
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2
@@ -147,9 +148,8 @@ class GetFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Feed and it must be in
-            the format of:
-            projects/project_number/feeds/feed_id
+            Required. The name of the Feed and it must be in the format
+            of: projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -227,9 +227,8 @@ class DeleteFeedRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the feed and it must be in
-            the format of:
-            projects/project_number/feeds/feed_id
+            Required. The name of the feed and it must be in the format
+            of: projects/project_number/feeds/feed_id
             folders/folder_number/feeds/feed_id
             organizations/organization_number/feeds/feed_id
     """
@@ -267,11 +266,11 @@ class GcsDestination(proto.Message):
 
     Attributes:
         uri (str):
-            The URI of the Cloud Storage object. It's the
-            same URI that is used by gsutil. For example:
-            "gs://bucket_name/object_name". See [Viewing and
-            Editing Object
-            Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
+            The URI of the Cloud Storage object. It's the same URI that
+            is used by gsutil. For example:
+            "gs://bucket_name/object_name". See `Viewing and Editing
+            Object
+            Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
             for more information.
 
             This field is a member of `oneof`_ ``object_uri``.
@@ -336,9 +335,8 @@ class Feed(proto.Message):
             or
             organizations/{organization_number}/feeds/{client-assigned_feed_identifier}
 
-            The client-assigned feed identifier must be
-            unique within the parent
-            project/folder/organization.
+            The client-assigned feed identifier must be unique within
+            the parent project/folder/organization.
         asset_names (MutableSequence[str]):
             A list of the full names of the assets to receive updates.
             You must specify either or both of asset_names and
@@ -350,15 +348,13 @@ class Feed(proto.Message):
             Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             for more info.
         asset_types (MutableSequence[str]):
-            A list of types of the assets to receive
-            updates. You must specify either or both of
-            asset_names and asset_types. Only asset updates
-            matching specified asset_names or asset_types
+            A list of types of the assets to receive updates. You must
+            specify either or both of asset_names and asset_types. Only
+            asset updates matching specified asset_names or asset_types
             are exported to the feed. For example:
-
-            "compute.googleapis.com/Disk" See [Introduction
-            to Cloud Asset
-            Inventory](https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview)
+            "compute.googleapis.com/Disk" See `Introduction to Cloud
+            Asset
+            Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
             for all supported asset types.
         content_type (google.cloud.asset_v1p2beta1.types.ContentType):
             Asset content type. If not specified, no

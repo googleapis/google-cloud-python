@@ -17,17 +17,16 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2.types import context
+from google.cloud.dialogflow_v2.types import context, session_entity_type
 from google.cloud.dialogflow_v2.types import intent as gcd_intent
-from google.cloud.dialogflow_v2.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -272,12 +271,12 @@ class QueryParameters(proto.Message):
         proto.BOOL,
         number=4,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=session_entity_type.SessionEntityType,
+        )
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
@@ -372,11 +371,10 @@ class QueryResult(proto.Message):
             - If automatic spell correction is enabled, ``query_text``
               will contain the corrected user input.
         language_code (str):
-            The language that was triggered during intent
-            detection. See [Language
-            Support](https://cloud.google.com/dialogflow/docs/reference/language)
-            for a list of the currently supported language
-            codes.
+            The language that was triggered during intent detection. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes.
         speech_recognition_confidence (float):
             The Speech recognition confidence between 0.0 and 1.0. A
             higher number indicates an estimated greater likelihood that
@@ -417,10 +415,10 @@ class QueryResult(proto.Message):
               collected, or if the matched intent doesn't contain any
               required parameters.
         cancels_slot_filling (bool):
-            Indicates whether the conversational query
-            triggers a cancellation for slot filling. For
-            more information, see the [cancel slot filling
-            documentation](https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel).
+            Indicates whether the conversational query triggers a
+            cancellation for slot filling. For more information, see the
+            `cancel slot filling
+            documentation <https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel>`__.
         fulfillment_text (str):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,
@@ -506,12 +504,12 @@ class QueryResult(proto.Message):
         proto.STRING,
         number=6,
     )
-    fulfillment_messages: MutableSequence[
-        gcd_intent.Intent.Message
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_intent.Intent.Message,
+    fulfillment_messages: MutableSequence[gcd_intent.Intent.Message] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_intent.Intent.Message,
+        )
     )
     webhook_source: str = proto.Field(
         proto.STRING,
@@ -716,9 +714,8 @@ class CloudConversationDebuggingInfo(proto.Message):
             Time offsets of the speech partial results
             relative to the beginning of the stream.
         speech_final_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
-            Time offsets of the speech final results
-            (is_final=true) relative to the beginning of the
-            stream.
+            Time offsets of the speech final results (is_final=true)
+            relative to the beginning of the stream.
         partial_responses (int):
             Total number of partial responses.
         speaker_id_passive_latency_ms_offset (int):
@@ -774,19 +771,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=duration_pb2.Duration,
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=duration_pb2.Duration,
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
     )
     partial_responses: int = proto.Field(
         proto.INT32,
@@ -804,19 +801,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=duration_pb2.Duration,
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=duration_pb2.Duration,
+        )
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=duration_pb2.Duration,
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=duration_pb2.Duration,
+        )
     )
     single_utterance_end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -1032,6 +1029,7 @@ class StreamingRecognitionResult(proto.Message):
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
@@ -1053,12 +1051,12 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=4,
     )
-    speech_word_info: MutableSequence[
-        gcd_audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_audio_config.SpeechWordInfo,
+    speech_word_info: MutableSequence[gcd_audio_config.SpeechWordInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_audio_config.SpeechWordInfo,
+        )
     )
     speech_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -1083,13 +1081,12 @@ class TextInput(proto.Message):
             exceed 256 characters for virtual agent
             interactions.
         language_code (str):
-            Required. The language of this conversational
-            query. See [Language
-            Support](https://cloud.google.com/dialogflow/docs/reference/language)
-            for a list of the currently supported language
-            codes. Note that queries in the same session do
-            not necessarily need to specify the same
-            language.
+            Required. The language of this conversational query. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            for a list of the currently supported language codes. Note
+            that queries in the same session do not necessarily need to
+            specify the same language.
     """
 
     text: str = proto.Field(
@@ -1202,9 +1199,8 @@ class SentimentAnalysisResult(proto.Message):
 
 
 class Sentiment(proto.Message):
-    r"""The sentiment, such as positive/negative feeling or association,
-    for a unit of analysis, such as the query text. See:
-
+    r"""The sentiment, such as positive/negative feeling or association, for
+    a unit of analysis, such as the query text. See:
     https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values
     for how to interpret the result.
 
@@ -1213,10 +1209,9 @@ class Sentiment(proto.Message):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive sentiment).
         magnitude (float):
-            A non-negative number in the [0, +inf) range,
-            which represents the absolute magnitude of
-            sentiment, regardless of score (positive or
-            negative).
+            A non-negative number in the [0, +inf) range, which
+            represents the absolute magnitude of sentiment, regardless
+            of score (positive or negative).
     """
 
     score: float = proto.Field(

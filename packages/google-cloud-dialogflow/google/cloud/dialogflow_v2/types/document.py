@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import gcs
@@ -90,9 +90,8 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         raw_content (bytes):
-            The raw content of the document. This field is
-            only permitted for EXTRACTIVE_QA and FAQ
-            knowledge types.
+            The raw content of the document. This field is only
+            permitted for EXTRACTIVE_QA and FAQ knowledge types.
 
             This field is a member of `oneof`_ ``source``.
         enable_auto_reload (bool):
@@ -157,6 +156,7 @@ class Document(proto.Message):
                 The document contains agent-facing Smart
                 Reply entries.
         """
+
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
@@ -180,6 +180,7 @@ class Document(proto.Message):
             DELETING (5):
                 The document deletion is in progress.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -289,8 +290,8 @@ class ListDocumentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 10 and at most 100.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
         filter (str):
             The filter expression used to filter documents returned by
             the list method. The expression has the following syntax:
@@ -674,6 +675,7 @@ class KnowledgeOperationMetadata(proto.Message):
                 The operation is done, either cancelled or
                 completed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

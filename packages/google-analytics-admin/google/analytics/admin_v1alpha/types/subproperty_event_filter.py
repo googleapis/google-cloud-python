@@ -93,6 +93,7 @@ class SubpropertyEventFilterCondition(proto.Message):
                     Partial regular expression matches with the
                     string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -146,9 +147,8 @@ class SubpropertyEventFilterExpression(proto.Message):
 
     Attributes:
         or_group (google.analytics.admin_v1alpha.types.SubpropertyEventFilterExpressionList):
-            A list of expressions to OR’ed together. Must
-            only contain not_expression or filter_condition
-            expressions.
+            A list of expressions to OR’ed together. Must only contain
+            not_expression or filter_condition expressions.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.SubpropertyEventFilterExpression):
@@ -195,12 +195,12 @@ class SubpropertyEventFilterExpressionList(proto.Message):
             Subproperty event filter expressions
     """
 
-    filter_expressions: MutableSequence[
-        "SubpropertyEventFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SubpropertyEventFilterExpression",
+    filter_expressions: MutableSequence["SubpropertyEventFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SubpropertyEventFilterExpression",
+        )
     )
 
 
@@ -232,6 +232,7 @@ class SubpropertyEventFilterClause(proto.Message):
                 Events will be excluded from the Sub property
                 if the filter clause is met.
         """
+
         FILTER_CLAUSE_TYPE_UNSPECIFIED = 0
         INCLUDE = 1
         EXCLUDE = 2
@@ -258,10 +259,8 @@ class SubpropertyEventFilter(proto.Message):
     Attributes:
         name (str):
             Output only. Format:
-
             properties/{ordinary_property_id}/subpropertyEventFilters/{sub_property_event_filter}
-            Example:
-            properties/1234/subpropertyEventFilters/5678
+            Example: properties/1234/subpropertyEventFilters/5678
         apply_to_property (str):
             Immutable. Resource name of the Subproperty
             that uses this filter.
@@ -283,12 +282,12 @@ class SubpropertyEventFilter(proto.Message):
         number=2,
         optional=True,
     )
-    filter_clauses: MutableSequence[
-        "SubpropertyEventFilterClause"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="SubpropertyEventFilterClause",
+    filter_clauses: MutableSequence["SubpropertyEventFilterClause"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="SubpropertyEventFilterClause",
+        )
     )
 
 

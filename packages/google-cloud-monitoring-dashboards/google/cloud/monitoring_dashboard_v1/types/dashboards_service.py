@@ -76,9 +76,12 @@ class ListDashboardsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The scope of the dashboards to list.
-            The format is:
-            projects/[PROJECT_ID_OR_NUMBER]
+            Required. The scope of the dashboards to list. The format
+            is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]
         page_size (int):
             A positive number that is the maximum number
             of results to return. If unspecified, a default
@@ -156,9 +159,11 @@ class DeleteDashboardRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Dashboard.
-            The format is:
-            projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
+            Required. The resource name of the Dashboard. The format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
     """
 
     name: str = proto.Field(

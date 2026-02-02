@@ -33,14 +33,13 @@ class FirewallRule(proto.Message):
 
     Attributes:
         priority (int):
-            A positive integer between [1, Int32.MaxValue-1]
-            that defines the order of rule evaluation. Rules
-            with the lowest priority are evaluated first.
+            A positive integer between [1, Int32.MaxValue-1] that
+            defines the order of rule evaluation. Rules with the lowest
+            priority are evaluated first.
 
-            A default rule at priority Int32.MaxValue
-            matches all IPv4 and IPv6 traffic when no
-            previous rule matches. Only the action of this
-            rule can be modified by the user.
+            A default rule at priority Int32.MaxValue matches all IPv4
+            and IPv6 traffic when no previous rule matches. Only the
+            action of this rule can be modified by the user.
         action (google.cloud.appengine_admin_v1.types.FirewallRule.Action):
             The action to take on matched requests.
         source_range (str):
@@ -74,6 +73,7 @@ class FirewallRule(proto.Message):
             DENY (2):
                 Matching requests are denied.
         """
+
         UNSPECIFIED_ACTION = 0
         ALLOW = 1
         DENY = 2

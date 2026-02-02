@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4beta1 import gapic_version as package_version
 
@@ -64,10 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.services.company_service import pagers
-from google.cloud.talent_v4beta1.types import common
-from google.cloud.talent_v4beta1.types import company
+from google.cloud.talent_v4beta1.types import common, company, company_service
 from google.cloud.talent_v4beta1.types import company as gct_company
-from google.cloud.talent_v4beta1.types import company_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, CompanyServiceTransport
 from .transports.grpc import CompanyServiceGrpcTransport
@@ -83,9 +81,7 @@ class CompanyServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[CompanyServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CompanyServiceTransport]]
     _transport_registry["grpc"] = CompanyServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CompanyServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = CompanyServiceRestTransport
@@ -627,11 +623,9 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CompanyServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CompanyServiceClient._read_environment_variables()
+        )
         self._client_cert_source = CompanyServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -666,8 +660,7 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CompanyServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -783,13 +776,13 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. The Request of the CreateCompany
                 method.
             parent (str):
-                Required. Resource name of the tenant
-                under which the company is created.
+                Required. Resource name of the tenant under which the
+                company is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}",
-                for example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created, for example,
+                "projects/{project_id}/tenants/{tenant_id}", for
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created, for example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -908,16 +901,16 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. Request for getting a company by
                 name.
             name (str):
-                Required. The resource name of the
-                company to be retrieved.
+                Required. The resource name of the company to be
+                retrieved.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
                 for example,
                 "projects/api-test-project/tenants/foo/companies/bar".
 
-                If tenant id is unspecified, the default
-                tenant is used, for example,
-                "projects/api-test-project/companies/bar".
+                If tenant id is unspecified, the default tenant is used,
+                for example, "projects/api-test-project/companies/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1145,16 +1138,15 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.DeleteCompanyRequest, dict]):
                 The request object. Request to delete a company.
             name (str):
-                Required. The resource name of the
-                company to be deleted.
+                Required. The resource name of the company to be
+                deleted.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-                for example,
-                "projects/foo/tenants/bar/companies/baz".
+                for example, "projects/foo/tenants/bar/companies/baz".
 
-                If tenant id is unspecified, the default
-                tenant is used, for example,
-                "projects/foo/companies/bar".
+                If tenant id is unspecified, the default tenant is used,
+                for example, "projects/foo/companies/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1253,15 +1245,15 @@ class CompanyServiceClient(metaclass=CompanyServiceClientMeta):
                 The request object. List companies for which the client
                 has ACL visibility.
             parent (str):
-                Required. Resource name of the tenant
-                under which the company is created.
-                The format is
-                "projects/{project_id}/tenants/{tenant_id}",
-                for example, "projects/foo/tenant/bar".
+                Required. Resource name of the tenant under which the
+                company is created.
 
-                If tenant id is unspecified, the default
-                tenant will be used, for example,
-                "projects/foo".
+                The format is
+                "projects/{project_id}/tenants/{tenant_id}", for
+                example, "projects/foo/tenant/bar".
+
+                If tenant id is unspecified, the default tenant will be
+                used, for example, "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

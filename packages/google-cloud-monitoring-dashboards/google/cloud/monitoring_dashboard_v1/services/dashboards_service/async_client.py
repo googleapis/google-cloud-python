@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
 
@@ -46,12 +46,12 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service import pagers
 from google.cloud.monitoring_dashboard_v1.types import (
+    dashboard,
     dashboard_filter,
     dashboards_service,
     layouts,
 )
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard
 
 from .client import DashboardsServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
@@ -125,7 +125,8 @@ class DashboardsServiceAsyncClient:
         Returns:
             DashboardsServiceAsyncClient: The constructed client.
         """
-        return DashboardsServiceClient.from_service_account_info.__func__(DashboardsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DashboardsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DashboardsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -141,7 +142,8 @@ class DashboardsServiceAsyncClient:
         Returns:
             DashboardsServiceAsyncClient: The constructed client.
         """
-        return DashboardsServiceClient.from_service_account_file.__func__(DashboardsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DashboardsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DashboardsServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -491,9 +493,12 @@ class DashboardsServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]]):
                 The request object. The ``ListDashboards`` request.
             parent (:class:`str`):
-                Required. The scope of the dashboards to
-                list. The format is:
-                projects/[PROJECT_ID_OR_NUMBER]
+                Required. The scope of the dashboards to list. The
+                format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -740,9 +745,12 @@ class DashboardsServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]]):
                 The request object. The ``DeleteDashboard`` request.
             name (:class:`str`):
-                Required. The resource name of the
-                Dashboard. The format is:
-                projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
+                Required. The resource name of the Dashboard. The format
+                is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

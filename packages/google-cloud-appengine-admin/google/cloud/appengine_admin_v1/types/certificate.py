@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -72,6 +72,7 @@ class ManagementStatus(proto.Enum):
             domain. The last successfully provisioned
             certificate may still be serving.
     """
+
     MANAGEMENT_STATUS_UNSPECIFIED = 0
     OK = 1
     PENDING = 2
@@ -199,27 +200,31 @@ class CertificateRawData(proto.Message):
 
     Attributes:
         public_certificate (str):
-            PEM encoded x.509 public key certificate. This
-            field is set once on certificate creation. Must
-            include the header and footer. Example:
+            PEM encoded x.509 public key certificate. This field is set
+            once on certificate creation. Must include the header and
+            footer. Example:
 
-            <pre>
-            -----BEGIN CERTIFICATE-----
-            <certificate_value>
-            -----END CERTIFICATE-----
-            </pre>
+            .. raw:: html
+
+                <pre>
+                -----BEGIN CERTIFICATE-----
+                <certificate_value>
+                -----END CERTIFICATE-----
+                </pre>
         private_key (str):
-            Unencrypted PEM encoded RSA private key. This
-            field is set once on certificate creation and
-            then encrypted. The key size must be 2048 bits
-            or fewer. Must include the header and footer.
-            Example:
+            Unencrypted PEM encoded RSA private key. This field is set
+            once on certificate creation and then encrypted. The key
+            size must be 2048 bits or fewer. Must include the header and
+            footer. Example:
 
-            <pre>
-            -----BEGIN RSA PRIVATE KEY-----
-            <unencrypted_key_value>
-            -----END RSA PRIVATE KEY-----
-            </pre>
+            .. raw:: html
+
+                <pre>
+                -----BEGIN RSA PRIVATE KEY-----
+                <unencrypted_key_value>
+                -----END RSA PRIVATE KEY-----
+                </pre>
+
             @InputOnly
     """
 

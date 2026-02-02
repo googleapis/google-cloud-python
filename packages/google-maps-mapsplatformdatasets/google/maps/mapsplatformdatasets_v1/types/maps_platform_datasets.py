@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.mapsplatformdatasets_v1.types import dataset as gmm_dataset
@@ -65,8 +65,7 @@ class UpdateDatasetMetadataRequest(proto.Message):
 
     Attributes:
         dataset (google.maps.mapsplatformdatasets_v1.types.Dataset):
-            Required. Resource name of the dataset to
-            update. Format:
+            Required. Resource name of the dataset to update. Format:
             projects/{project}/datasets/{dataset_id}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
@@ -91,16 +90,14 @@ class GetDatasetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Resource name.
-            Format: projects/{project}/datasets/{dataset_id}
+            Required. Resource name. Format:
+            projects/{project}/datasets/{dataset_id}
 
-            Can also fetch some special versions by
-            appending "@" and a tag. Format:
-            projects/{project}/datasets/{dataset_id}@{tag}
+            Can also fetch some special versions by appending "@" and a
+            tag. Format: projects/{project}/datasets/{dataset_id}@{tag}
 
-            Tag "active": The info of the latest completed
-            version will be included, and NOT_FOUND if the
-            dataset does not have one.
+            Tag "active": The info of the latest completed version will
+            be included, and NOT_FOUND if the dataset does not have one.
     """
 
     name: str = proto.Field(
@@ -191,9 +188,8 @@ class FetchDatasetErrorsRequest(proto.Message):
 
     Attributes:
         dataset (str):
-            Required. The name of the dataset to list all
-            the errors for. Format:
-            projects/{project}/datasets/{dataset_id}
+            Required. The name of the dataset to list all the errors
+            for. Format: projects/{project}/datasets/{dataset_id}
         page_size (int):
             The maximum number of errors to return per
             page.
@@ -255,8 +251,8 @@ class DeleteDatasetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the dataset to delete.
-            Format: projects/{project}/datasets/{dataset_id}
+            Required. The name of the dataset to delete. Format:
+            projects/{project}/datasets/{dataset_id}
     """
 
     name: str = proto.Field(

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.apps.meet_v2beta import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.apps.meet_v2beta.services.spaces_service import pagers
 from google.apps.meet_v2beta.types import resource, service
@@ -121,7 +121,8 @@ class SpacesServiceAsyncClient:
         Returns:
             SpacesServiceAsyncClient: The constructed client.
         """
-        return SpacesServiceClient.from_service_account_info.__func__(SpacesServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SpacesServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SpacesServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -137,7 +138,8 @@ class SpacesServiceAsyncClient:
         Returns:
             SpacesServiceAsyncClient: The constructed client.
         """
-        return SpacesServiceClient.from_service_account_file.__func__(SpacesServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SpacesServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SpacesServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -412,8 +414,8 @@ class SpacesServiceAsyncClient:
     ) -> resource.Space:
         r"""Gets details about a meeting space.
 
-        For an example, see [Get a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
+        For an example, see `Get a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
 
         .. code-block:: python
 
@@ -548,8 +550,8 @@ class SpacesServiceAsyncClient:
     ) -> resource.Space:
         r"""Updates details about a meeting space.
 
-        For an example, see [Update a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
+        For an example, see `Update a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
 
         .. code-block:: python
 
@@ -735,15 +737,15 @@ class SpacesServiceAsyncClient:
 
         Returns:
             google.apps.meet_v2beta.types.ConnectActiveConferenceResponse:
-                Response of ConnectActiveConference
-                method.
-                A success response does not indicate the
-                meeting is fully joined; further
-                communication must occur across WebRTC.
+                Response of ConnectActiveConference method.
 
-                See [Meet Media API
-                overview](https://developers.google.com/meet/media-api/guides/overview)
-                for more details about this connection.
+                   A success response does not indicate the meeting is
+                   fully joined; further communication must occur across
+                   WebRTC.
+
+                   See [Meet Media API
+                   overview](https://developers.google.com/meet/media-api/guides/overview)
+                   for more details about this connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -806,8 +808,8 @@ class SpacesServiceAsyncClient:
     ) -> None:
         r"""Ends an active conference (if there's one).
 
-        For an example, see [End active
-        conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
+        For an example, see `End active
+        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
 
         .. code-block:: python
 

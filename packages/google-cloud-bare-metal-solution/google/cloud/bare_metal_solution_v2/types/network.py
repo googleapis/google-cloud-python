@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -101,6 +101,7 @@ class Network(proto.Message):
                 Private network, a network local to the Bare
                 Metal Solution environment.
         """
+
         TYPE_UNSPECIFIED = 0
         CLIENT = 1
         PRIVATE = 2
@@ -120,6 +121,7 @@ class Network(proto.Message):
             UPDATING (4):
                 The Network is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         PROVISIONED = 2
@@ -207,12 +209,10 @@ class NetworkAddressReservation(proto.Message):
             Must be specified as a single IPv4 address, e.g.
             10.1.2.2.
         end_address (str):
-            The last address of this reservation block,
-            inclusive. I.e., for cases when reservations are
-            only single addresses, end_address and
-            start_address will be the same.
-            Must be specified as a single IPv4 address, e.g.
-            10.1.2.2.
+            The last address of this reservation block, inclusive. I.e.,
+            for cases when reservations are only single addresses,
+            end_address and start_address will be the same. Must be
+            specified as a single IPv4 address, e.g. 10.1.2.2.
         note (str):
             A note about this reservation, intended for
             human consumption.
@@ -262,6 +262,7 @@ class VRF(proto.Message):
             PROVISIONED (2):
                 The vrf is provisioned.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         PROVISIONED = 2
@@ -300,8 +301,8 @@ class VRF(proto.Message):
                 Immutable. The identifier of the attachment
                 within vrf.
             interconnect_attachment (str):
-                Optional. The name of the vlan attachment within
-                vrf. This is of the form
+                Optional. The name of the vlan attachment within vrf. This
+                is of the form
                 projects/{project_number}/regions/{region}/interconnectAttachments/{interconnect_attachment}
         """
 
@@ -368,9 +369,8 @@ class LogicalInterface(proto.Message):
             List of logical network interfaces within a
             logical interface.
         name (str):
-            Interface name. This is of syntax
-            <bond><bond_mode> or <nic> and forms part of the
-            network template name.
+            Interface name. This is of syntax <bond_mode> or and forms
+            part of the network template name.
         interface_index (int):
             The index of the logical interface mapping to
             the index of the hardware bond or nic on the
@@ -419,12 +419,12 @@ class LogicalInterface(proto.Message):
             number=5,
         )
 
-    logical_network_interfaces: MutableSequence[
-        LogicalNetworkInterface
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=LogicalNetworkInterface,
+    logical_network_interfaces: MutableSequence[LogicalNetworkInterface] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=LogicalNetworkInterface,
+        )
     )
     name: str = proto.Field(
         proto.STRING,

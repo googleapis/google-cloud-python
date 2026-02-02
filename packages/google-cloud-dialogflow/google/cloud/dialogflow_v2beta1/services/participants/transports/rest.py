@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,12 +27,11 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 from google.cloud.dialogflow_v2beta1.types import participant
+from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseParticipantsRestTransport
@@ -1161,9 +1161,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
 
             request, metadata = self._interceptor.pre_compile_suggestion(
                 request, metadata
@@ -1318,9 +1316,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_participant(
                 request, metadata
@@ -2098,9 +2094,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
 
             request, metadata = self._interceptor.pre_suggest_faq_answers(
                 request, metadata
@@ -2255,9 +2249,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
 
             request, metadata = self._interceptor.pre_suggest_knowledge_assist(
                 request, metadata
@@ -2412,9 +2404,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
 
             request, metadata = self._interceptor.pre_suggest_smart_replies(
                 request, metadata
@@ -2569,9 +2559,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
 
             request, metadata = self._interceptor.pre_update_participant(
                 request, metadata
@@ -2685,7 +2673,9 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BidiStreamingAnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BidiStreamingAnalyzeContent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def compile_suggestion(
@@ -2744,7 +2734,9 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StreamingAnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StreamingAnalyzeContent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def suggest_articles(
@@ -2775,7 +2767,9 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SuggestKnowledgeAssist(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SuggestKnowledgeAssist(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def suggest_smart_replies(

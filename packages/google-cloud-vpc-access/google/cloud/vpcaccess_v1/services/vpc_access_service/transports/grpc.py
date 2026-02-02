@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.vpcaccess_v1.types import vpc_access
 
@@ -375,8 +375,8 @@ class VpcAccessServiceGrpcTransport(VpcAccessServiceTransport):
     ) -> Callable[[vpc_access.GetConnectorRequest], vpc_access.Connector]:
         r"""Return a callable for the get connector method over gRPC.
 
-        Gets a Serverless VPC Access connector. Returns
-        NOT_FOUND if the resource does not exist.
+        Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
+        resource does not exist.
 
         Returns:
             Callable[[~.GetConnectorRequest],
@@ -430,8 +430,8 @@ class VpcAccessServiceGrpcTransport(VpcAccessServiceTransport):
     ) -> Callable[[vpc_access.DeleteConnectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete connector method over gRPC.
 
-        Deletes a Serverless VPC Access connector. Returns
-        NOT_FOUND if the resource does not exist.
+        Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
+        the resource does not exist.
 
         Returns:
             Callable[[~.DeleteConnectorRequest],

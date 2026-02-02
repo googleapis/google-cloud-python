@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.analytics.admin_v1beta import gapic_version as package_version
 
@@ -61,9 +61,9 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.analytics.admin_v1beta.services.analytics_admin_service import pagers
 from google.analytics.admin_v1beta.types import (
@@ -86,9 +86,7 @@ class AnalyticsAdminServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[AnalyticsAdminServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[AnalyticsAdminServiceTransport]]
     _transport_registry["grpc"] = AnalyticsAdminServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AnalyticsAdminServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AnalyticsAdminServiceRestTransport
@@ -860,11 +858,9 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = AnalyticsAdminServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            AnalyticsAdminServiceClient._read_environment_variables()
+        )
         self._client_cert_source = AnalyticsAdminServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -899,8 +895,7 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(AnalyticsAdminServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1623,9 +1618,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             request (Union[google.analytics.admin_v1beta.types.GetPropertyRequest, dict]):
                 The request object. Request message for GetProperty RPC.
             name (str):
-                Required. The name of the property to
-                lookup. Format: properties/{property_id}
-                Example: "properties/1000"
+                Required. The name of the property to lookup. Format:
+                properties/{property_id} Example: "properties/1000"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1950,9 +1944,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for DeleteProperty
                 RPC.
             name (str):
-                Required. The name of the Property to
-                soft-delete. Format:
-                properties/{property_id} Example:
+                Required. The name of the Property to soft-delete.
+                Format: properties/{property_id} Example:
                 "properties/1000"
 
                 This corresponds to the ``name`` field
@@ -4199,11 +4192,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for
                 GetConversionEvent RPC
             name (str):
-                Required. The resource name of the
-                conversion event to retrieve. Format:
+                Required. The resource name of the conversion event to
+                retrieve. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example:
-                "properties/123/conversionEvents/456"
+                Example: "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4315,11 +4307,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for
                 DeleteConversionEvent RPC
             name (str):
-                Required. The resource name of the
-                conversion event to delete. Format:
+                Required. The resource name of the conversion event to
+                delete. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example:
-                "properties/123/conversionEvents/456"
+                Example: "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4802,10 +4793,10 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
             request (Union[google.analytics.admin_v1beta.types.GetKeyEventRequest, dict]):
                 The request object. Request message for GetKeyEvent RPC
             name (str):
-                Required. The resource name of the Key
-                Event to retrieve. Format:
-                properties/{property}/keyEvents/{key_event}
-                Example: "properties/123/keyEvents/456"
+                Required. The resource name of the Key Event to
+                retrieve. Format:
+                properties/{property}/keyEvents/{key_event} Example:
+                "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4909,9 +4900,8 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
                 The request object. Request message for DeleteKeyEvent
                 RPC
             name (str):
-                Required. The resource name of the Key
-                Event to delete. Format:
-                properties/{property}/keyEvents/{key_event}
+                Required. The resource name of the Key Event to delete.
+                Format: properties/{property}/keyEvents/{key_event}
                 Example: "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field

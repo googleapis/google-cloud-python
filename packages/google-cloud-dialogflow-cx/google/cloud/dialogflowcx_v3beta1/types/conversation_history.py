@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import environment as gcdc_environment
@@ -91,8 +91,8 @@ class ListConversationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -213,6 +213,7 @@ class Conversation(proto.Message):
                 none of the requests contain text or audio input
                 (eg. event or intent input).
         """
+
         TYPE_UNSPECIFIED = 0
         AUDIO = 1
         TEXT = 2
@@ -417,10 +418,9 @@ class Conversation(proto.Message):
             response (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse):
                 The final response of the interaction.
             partial_responses (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse]):
-                The partial responses of the interaction. Empty
-                if there is no partial response in the
-                interaction. See the
-                [partial response
+                The partial responses of the interaction. Empty if there is
+                no partial response in the interaction. See the [partial
+                response
                 documentation][https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#queue].
             request_utterances (str):
                 The input text or the transcript of the input
@@ -497,12 +497,12 @@ class Conversation(proto.Message):
             number=2,
             message=session.DetectIntentResponse,
         )
-        partial_responses: MutableSequence[
-            session.DetectIntentResponse
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=session.DetectIntentResponse,
+        partial_responses: MutableSequence[session.DetectIntentResponse] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=session.DetectIntentResponse,
+            )
         )
         request_utterances: str = proto.Field(
             proto.STRING,
@@ -527,12 +527,12 @@ class Conversation(proto.Message):
             number=8,
             message="Conversation.Interaction.MissingTransition",
         )
-        step_metrics: MutableSequence[
-            "Conversation.Interaction.StepMetrics"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message="Conversation.Interaction.StepMetrics",
+        step_metrics: MutableSequence["Conversation.Interaction.StepMetrics"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message="Conversation.Interaction.StepMetrics",
+            )
         )
 
     name: str = proto.Field(

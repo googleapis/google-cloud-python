@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.alloydb_v1beta.types import data_model, resources
@@ -324,13 +324,12 @@ class UpdateClusterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Cluster resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Cluster resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         cluster (google.cloud.alloydb_v1beta.types.Cluster):
             Required. The resource being updated
         request_id (str):
@@ -501,9 +500,9 @@ class ExportClusterRequest(proto.Message):
 
                 This field is a member of `oneof`_ ``_clean_target_objects``.
             if_exist_target_objects (bool):
-                Optional. If true, use DROP ... IF EXISTS
-                commands to check for the object's existence
-                before dropping it in clean_target_objects mode.
+                Optional. If true, use DROP ... IF EXISTS commands to check
+                for the object's existence before dropping it in
+                clean_target_objects mode.
 
                 This field is a member of `oneof`_ ``_if_exist_target_objects``.
         """
@@ -816,6 +815,7 @@ class UpgradeClusterResponse(proto.Message):
             CANCELLED (7):
                 Cancellation complete.
         """
+
         STATUS_UNSPECIFIED = 0
         NOT_STARTED = 4
         IN_PROGRESS = 5
@@ -832,8 +832,7 @@ class UpgradeClusterResponse(proto.Message):
             STAGE_UNSPECIFIED (0):
                 Unspecified stage.
             ALLOYDB_PRECHECK (1):
-                Pre-upgrade custom checks, not covered by
-                pg_upgrade.
+                Pre-upgrade custom checks, not covered by pg_upgrade.
             PG_UPGRADE_CHECK (2):
                 Pre-upgrade pg_upgrade checks.
             PREPARE_FOR_UPGRADE (5):
@@ -847,6 +846,7 @@ class UpgradeClusterResponse(proto.Message):
             CLEANUP (7):
                 Cleanup.
         """
+
         STAGE_UNSPECIFIED = 0
         ALLOYDB_PRECHECK = 1
         PG_UPGRADE_CHECK = 2
@@ -866,10 +866,10 @@ class UpgradeClusterResponse(proto.Message):
             status (google.cloud.alloydb_v1beta.types.UpgradeClusterResponse.Status):
                 Status of the stage.
             logs_url (str):
-                logs_url is the URL for the logs associated with
-                a stage if that stage has logs. Right now, only
-                three stages have logs: ALLOYDB_PRECHECK,
-                PG_UPGRADE_CHECK, PRIMARY_INSTANCE_UPGRADE.
+                logs_url is the URL for the logs associated with a stage if
+                that stage has logs. Right now, only three stages have logs:
+                ALLOYDB_PRECHECK, PG_UPGRADE_CHECK,
+                PRIMARY_INSTANCE_UPGRADE.
         """
 
         stage: "UpgradeClusterResponse.Stage" = proto.Field(
@@ -960,12 +960,12 @@ class UpgradeClusterResponse(proto.Message):
             number=4,
             enum=resources.DatabaseVersion,
         )
-        stage_info: MutableSequence[
-            "UpgradeClusterResponse.StageInfo"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="UpgradeClusterResponse.StageInfo",
+        stage_info: MutableSequence["UpgradeClusterResponse.StageInfo"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="UpgradeClusterResponse.StageInfo",
+            )
         )
         instance_upgrade_details: MutableSequence[
             "UpgradeClusterResponse.InstanceUpgradeDetails"
@@ -984,12 +984,12 @@ class UpgradeClusterResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    cluster_upgrade_details: MutableSequence[
-        ClusterUpgradeDetails
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ClusterUpgradeDetails,
+    cluster_upgrade_details: MutableSequence[ClusterUpgradeDetails] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ClusterUpgradeDetails,
+        )
     )
 
 
@@ -1166,9 +1166,8 @@ class PromoteClusterRequest(proto.Message):
 
 
 class RestoreClusterRequest(proto.Message):
-    r"""Message for restoring a Cluster from a backup or another cluster
-    at a given point in time.
-    NEXT_ID: 11
+    r"""Message for restoring a Cluster from a backup or another cluster at
+    a given point in time. NEXT_ID: 11
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1494,12 +1493,12 @@ class CreateInstanceRequests(proto.Message):
             to be created. This list should not be empty.
     """
 
-    create_instance_requests: MutableSequence[
-        "CreateInstanceRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CreateInstanceRequest",
+    create_instance_requests: MutableSequence["CreateInstanceRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CreateInstanceRequest",
+        )
     )
 
 
@@ -1565,8 +1564,8 @@ class BatchCreateInstancesResponse(proto.Message):
 
 
 class BatchCreateInstancesMetadata(proto.Message):
-    r"""Message for metadata that is specific to BatchCreateInstances
-    API. NEXT_ID: 3
+    r"""Message for metadata that is specific to BatchCreateInstances API.
+    NEXT_ID: 3
 
     Attributes:
         instance_targets (MutableSequence[str]):
@@ -1576,13 +1575,11 @@ class BatchCreateInstancesMetadata(proto.Message):
             request and for the format of each string, see
             the comment on the Instance.name field.
         instance_statuses (MutableMapping[str, google.cloud.alloydb_v1beta.types.BatchCreateInstanceStatus]):
-            A map representing state of the instances
-            involved in the BatchCreateInstances operation
-            during the operation execution. The instance
-            state will be in STATE_UNSPECIFIED state if the
-            instance has not yet been picked up for
-            processing.
-            The key of the map is the name of the instance
+            A map representing state of the instances involved in the
+            BatchCreateInstances operation during the operation
+            execution. The instance state will be in STATE_UNSPECIFIED
+            state if the instance has not yet been picked up for
+            processing. The key of the map is the name of the instance
             resource. For the format, see the comment on the
             Instance.name field.
     """
@@ -1591,13 +1588,13 @@ class BatchCreateInstancesMetadata(proto.Message):
         proto.STRING,
         number=1,
     )
-    instance_statuses: MutableMapping[
-        str, "BatchCreateInstanceStatus"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=2,
-        message="BatchCreateInstanceStatus",
+    instance_statuses: MutableMapping[str, "BatchCreateInstanceStatus"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message="BatchCreateInstanceStatus",
+        )
     )
 
 
@@ -1671,6 +1668,7 @@ class BatchCreateInstanceStatus(proto.Message):
                 was rolled back and deleted due to some other
                 failure during BatchCreateInstances operation.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_CREATE = 1
         READY = 2
@@ -1705,14 +1703,12 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Instance
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Instance resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         instance (google.cloud.alloydb_v1beta.types.Instance):
             Required. The resource being updated
         request_id (str):
@@ -1925,6 +1921,7 @@ class InjectFaultRequest(proto.Message):
             STOP_VM (1):
                 Stop the VM
         """
+
         FAULT_TYPE_UNSPECIFIED = 0
         STOP_VM = 1
 
@@ -1981,9 +1978,9 @@ class RestartInstanceRequest(proto.Message):
             any other type of validation, but does not
             actually execute the create request.
         node_ids (MutableSequence[str]):
-            Optional. Full name of the nodes as obtained
-            from INSTANCE_VIEW_FULL to restart upon.
-            Applicable only to read instances.
+            Optional. Full name of the nodes as obtained from
+            INSTANCE_VIEW_FULL to restart upon. Applicable only to read
+            instances.
     """
 
     name: str = proto.Field(
@@ -2139,6 +2136,7 @@ class ExecuteSqlMetadata(proto.Message):
                 https://google.aip.dev/193 but will be returned
                 as part of this message.
         """
+
         STATUS_UNSPECIFIED = 0
         OK = 1
         PARTIAL = 2
@@ -2314,13 +2312,12 @@ class UpdateBackupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Backup resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Backup resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         backup (google.cloud.alloydb_v1beta.types.Backup):
             Required. The resource being updated
         request_id (str):
@@ -2494,12 +2491,12 @@ class ListSupportedDatabaseFlagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    supported_database_flags: MutableSequence[
-        resources.SupportedDatabaseFlag
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.SupportedDatabaseFlag,
+    supported_database_flags: MutableSequence[resources.SupportedDatabaseFlag] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.SupportedDatabaseFlag,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2538,9 +2535,8 @@ class GenerateClientCertificateRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         pem_csr (str):
-            Optional. A pem-encoded X.509 certificate
-            signing request (CSR). It is recommended to use
-            public_key instead.
+            Optional. A pem-encoded X.509 certificate signing request
+            (CSR). It is recommended to use public_key instead.
         cert_duration (google.protobuf.duration_pb2.Duration):
             Optional. An optional hint to the endpoint to
             generate the client certificate with the
@@ -2795,6 +2791,7 @@ class PromoteClusterStatus(proto.Message):
                 The promote operation is completed and the
                 database is available for write.
         """
+
         STATE_UNSPECIFIED = 0
         PROMOTE_CLUSTER_AVAILABLE_FOR_READ = 1
         PROMOTE_CLUSTER_AVAILABLE_FOR_WRITE = 2
@@ -3132,13 +3129,12 @@ class UpdateUserRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the User resource by
-            the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the User resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         user (google.cloud.alloydb_v1beta.types.User):
             Required. The resource being updated
         request_id (str):
@@ -3248,11 +3244,10 @@ class ListDatabasesRequest(proto.Message):
             Required. Parent value for
             ListDatabasesRequest.
         page_size (int):
-            Optional. The maximum number of databases to
-            return. The service may return fewer than this
-            value. If unspecified, 2000 is the default
-            page_size. The max value of page_size will be
-            4000, values above max will be coerced to max.
+            Optional. The maximum number of databases to return. The
+            service may return fewer than this value. If unspecified,
+            2000 is the default page_size. The max value of page_size
+            will be 4000, values above max will be coerced to max.
         page_token (str):
             Optional. A page token, received from a previous
             ``ListDatabases`` call. This should be provided to retrieve

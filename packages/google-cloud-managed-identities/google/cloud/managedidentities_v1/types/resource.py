@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -47,11 +47,10 @@ class Domain(proto.Message):
             listed in ``authorized_networks``. If CIDR subnets overlap
             between networks, domain creation will fail.
         reserved_ip_range (str):
-            Required. The CIDR range of internal addresses
-            that are reserved for this domain. Reserved
-            networks must be /24 or larger. Ranges must be
-            unique and non-overlapping with existing subnets
-            in [Domain].[authorized_networks].
+            Required. The CIDR range of internal addresses that are
+            reserved for this domain. Reserved networks must be /24 or
+            larger. Ranges must be unique and non-overlapping with
+            existing subnets in [Domain].[authorized_networks].
         locations (MutableSequence[str]):
             Required. Locations where domain needs to be provisioned.
             [regions][compute/docs/regions-zones/] e.g. us-west1 or
@@ -106,6 +105,7 @@ class Domain(proto.Message):
             UNAVAILABLE (7):
                 The domain is not serving requests.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -232,6 +232,7 @@ class Trust(proto.Message):
             DISCONNECTED (5):
                 The domain trust is disconnected.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -250,6 +251,7 @@ class Trust(proto.Message):
             EXTERNAL (2):
                 The external domain trust.
         """
+
         TRUST_TYPE_UNSPECIFIED = 0
         FOREST = 1
         EXTERNAL = 2
@@ -272,6 +274,7 @@ class Trust(proto.Message):
                 The bidirectional direction represents the
                 trusted / trusting side.
         """
+
         TRUST_DIRECTION_UNSPECIFIED = 0
         INBOUND = 1
         OUTBOUND = 2

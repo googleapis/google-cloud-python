@@ -22,10 +22,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.dialogflow_v2.types import conversation_dataset
 from google.cloud.dialogflow_v2.types import (
     conversation_dataset as gcd_conversation_dataset,
 )
-from google.cloud.dialogflow_v2.types import conversation_dataset
 
 from .base import DEFAULT_CLIENT_INFO, ConversationDatasetsTransport
 

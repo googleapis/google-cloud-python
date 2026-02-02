@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,22 +43,27 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
 
 from google.cloud.secretmanager_v1beta2.services.secret_manager_service import (
     SecretManagerServiceAsyncClient,
@@ -1000,10 +1005,9 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1048,10 +1052,9 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1087,10 +1090,9 @@ def test_secret_manager_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1346,13 +1348,13 @@ def test_secret_manager_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -2341,9 +2343,9 @@ def test_add_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.add_secret_version(request)
 
@@ -3667,9 +3669,9 @@ def test_list_secret_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_secret_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_secret_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_secret_versions(request)
 
@@ -4218,9 +4220,9 @@ def test_get_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.get_secret_version(request)
 
@@ -4566,9 +4568,9 @@ def test_access_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.access_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.access_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.access_secret_version(request)
 
@@ -4916,9 +4918,9 @@ def test_disable_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.disable_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.disable_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.disable_secret_version(request)
 
@@ -5272,9 +5274,9 @@ def test_enable_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.enable_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.enable_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.enable_secret_version(request)
 
@@ -5628,9 +5630,9 @@ def test_destroy_secret_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.destroy_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.destroy_secret_version] = (
+            mock_rpc
+        )
         request = {}
         client.destroy_secret_version(request)
 
@@ -6496,9 +6498,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -7158,9 +7160,9 @@ def test_add_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.add_secret_version(request)
@@ -7879,9 +7881,9 @@ def test_list_secret_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_secret_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_secret_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_secret_versions(request)
@@ -8141,9 +8143,9 @@ def test_get_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_secret_version(request)
@@ -8324,9 +8326,9 @@ def test_access_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.access_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.access_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.access_secret_version(request)
@@ -8507,9 +8509,9 @@ def test_disable_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.disable_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.disable_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.disable_secret_version(request)
@@ -8691,9 +8693,9 @@ def test_enable_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.enable_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.enable_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.enable_secret_version(request)
@@ -8875,9 +8877,9 @@ def test_destroy_secret_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.destroy_secret_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.destroy_secret_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.destroy_secret_version(request)
@@ -9305,9 +9307,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -10323,8 +10325,9 @@ def test_list_secrets_rest_bad_request(request_type=service.ListSecretsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10389,18 +10392,20 @@ def test_list_secrets_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_list_secrets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_list_secrets"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_list_secrets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_list_secrets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10451,8 +10456,9 @@ def test_create_secret_rest_bad_request(request_type=service.CreateSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10608,18 +10614,20 @@ def test_create_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_create_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_create_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_create_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_create_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_create_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10670,8 +10678,9 @@ def test_add_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10740,18 +10749,20 @@ def test_add_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_add_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_add_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_add_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_add_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10802,8 +10813,9 @@ def test_get_secret_rest_bad_request(request_type=service.GetSecretRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10868,17 +10880,20 @@ def test_get_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10927,8 +10942,9 @@ def test_update_secret_rest_bad_request(request_type=service.UpdateSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11084,18 +11100,20 @@ def test_update_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_update_secret"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_update_secret_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_update_secret"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_update_secret_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_update_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11144,8 +11162,9 @@ def test_delete_secret_rest_bad_request(request_type=service.DeleteSecretRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11202,13 +11221,13 @@ def test_delete_secret_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_delete_secret"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteSecretRequest.pb(service.DeleteSecretRequest())
         transcode.return_value = {
@@ -11251,8 +11270,9 @@ def test_list_secret_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11317,18 +11337,20 @@ def test_list_secret_versions_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_list_secret_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_list_secret_versions"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_list_secret_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_list_secret_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11383,8 +11405,9 @@ def test_get_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11453,18 +11476,20 @@ def test_get_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_get_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11517,8 +11542,9 @@ def test_access_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11581,18 +11607,20 @@ def test_access_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_access_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_access_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_access_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_access_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11650,8 +11678,9 @@ def test_disable_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11720,18 +11749,21 @@ def test_disable_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_disable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_disable_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_disable_secret_version",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_disable_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_disable_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11784,8 +11816,9 @@ def test_enable_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11854,18 +11887,20 @@ def test_enable_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_enable_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_enable_secret_version"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_enable_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_enable_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11918,8 +11953,9 @@ def test_destroy_secret_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11988,18 +12024,21 @@ def test_destroy_secret_version_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_destroy_secret_version"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_destroy_secret_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_destroy_secret_version",
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_destroy_secret_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_destroy_secret_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12052,8 +12091,9 @@ def test_set_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12115,18 +12155,20 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_set_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_set_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_set_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_set_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12177,8 +12219,9 @@ def test_get_iam_policy_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12240,18 +12283,20 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_get_iam_policy_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_get_iam_policy"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_get_iam_policy_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_get_iam_policy"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12302,8 +12347,9 @@ def test_test_iam_permissions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12363,18 +12409,20 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = SecretManagerServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor,
-        "post_test_iam_permissions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "post_test_iam_permissions"
+        ) as post,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor,
+            "post_test_iam_permissions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SecretManagerServiceRestInterceptor, "pre_test_iam_permissions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12430,8 +12478,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12490,8 +12539,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12931,11 +12981,14 @@ def test_secret_manager_service_base_transport():
 
 def test_secret_manager_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.secretmanager_v1beta2.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.secretmanager_v1beta2.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecretManagerServiceTransport(
@@ -12952,9 +13005,12 @@ def test_secret_manager_service_base_transport_with_credentials_file():
 
 def test_secret_manager_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.secretmanager_v1beta2.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.secretmanager_v1beta2.services.secret_manager_service.transports.SecretManagerServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecretManagerServiceTransport()
@@ -13026,11 +13082,12 @@ def test_secret_manager_service_transport_auth_gdch_credentials(transport_class)
 def test_secret_manager_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

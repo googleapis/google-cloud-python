@@ -23,17 +23,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -44,7 +44,17 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -53,23 +63,13 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
 
 from google.cloud.redis_cluster_v1.services.cloud_redis_cluster import (
     CloudRedisClusterAsyncClient,
@@ -997,10 +997,9 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1045,10 +1044,9 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1084,10 +1082,9 @@ def test_cloud_redis_cluster_client_get_mtls_endpoint_and_cert_source(client_cla
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1335,13 +1332,13 @@ def test_cloud_redis_cluster_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3961,9 +3958,7 @@ def test_reschedule_cluster_maintenance_flattened():
         mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].reschedule_type
-        mock_val = (
-            cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
-        )
+        mock_val = cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
         assert arg == mock_val
         assert TimestampRule().to_proto(
             args[0].schedule_time
@@ -4018,9 +4013,7 @@ async def test_reschedule_cluster_maintenance_flattened_async():
         mock_val = "name_value"
         assert arg == mock_val
         arg = args[0].reschedule_type
-        mock_val = (
-            cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
-        )
+        mock_val = cloud_redis_cluster.RescheduleClusterMaintenanceRequest.RescheduleType.IMMEDIATE
         assert arg == mock_val
         assert TimestampRule().to_proto(
             args[0].schedule_time
@@ -4697,9 +4690,9 @@ def test_get_backup_collection_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_backup_collection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_backup_collection] = (
+            mock_rpc
+        )
         request = {}
         client.get_backup_collection(request)
 
@@ -8460,9 +8453,9 @@ def test_get_backup_collection_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_backup_collection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_backup_collection] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_backup_collection(request)
@@ -10383,8 +10376,9 @@ def test_list_clusters_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10449,17 +10443,20 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_list_clusters"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_list_clusters_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_list_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_list_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_clusters_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_list_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10517,8 +10514,9 @@ def test_get_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10611,17 +10609,20 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_get_cluster"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_get_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_get_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_get_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10678,8 +10679,9 @@ def test_update_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -10905,19 +10907,21 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_update_cluster"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_update_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_update_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_update_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_update_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_update_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -10970,8 +10974,9 @@ def test_delete_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11028,19 +11033,21 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_delete_cluster"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_delete_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_delete_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_delete_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_delete_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_delete_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11093,8 +11100,9 @@ def test_create_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11318,19 +11326,21 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_create_cluster"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_create_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_create_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_create_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_create_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_create_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11385,8 +11395,9 @@ def test_get_cluster_certificate_authority_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11451,20 +11462,22 @@ def test_get_cluster_certificate_authority_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_get_cluster_certificate_authority",
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_get_cluster_certificate_authority_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "pre_get_cluster_certificate_authority",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_cluster_certificate_authority",
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_cluster_certificate_authority_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "pre_get_cluster_certificate_authority",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11522,8 +11535,9 @@ def test_reschedule_cluster_maintenance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11580,22 +11594,23 @@ def test_reschedule_cluster_maintenance_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_reschedule_cluster_maintenance",
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_reschedule_cluster_maintenance_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "pre_reschedule_cluster_maintenance",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_reschedule_cluster_maintenance",
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_reschedule_cluster_maintenance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "pre_reschedule_cluster_maintenance",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11648,8 +11663,9 @@ def test_list_backup_collections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11716,18 +11732,20 @@ def test_list_backup_collections_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_list_backup_collections"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_list_backup_collections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_list_backup_collections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_list_backup_collections"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_backup_collections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_list_backup_collections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11787,8 +11805,9 @@ def test_get_backup_collection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -11861,18 +11880,20 @@ def test_get_backup_collection_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_get_backup_collection"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor,
-        "post_get_backup_collection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_get_backup_collection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_backup_collection"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_get_backup_collection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_get_backup_collection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -11932,8 +11953,9 @@ def test_list_backups_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12000,17 +12022,20 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_list_backups_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12068,8 +12093,9 @@ def test_get_backup_rest_bad_request(request_type=cloud_redis_cluster.GetBackupR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12154,17 +12180,19 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_get_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12219,8 +12247,9 @@ def test_delete_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12279,19 +12308,21 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_delete_backup"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_delete_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_delete_backup"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_delete_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12346,8 +12377,9 @@ def test_export_backup_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12406,19 +12438,21 @@ def test_export_backup_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_export_backup"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_export_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_export_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_export_backup"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_export_backup_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_export_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12471,8 +12505,9 @@ def test_backup_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -12529,19 +12564,21 @@ def test_backup_cluster_rest_interceptors(null_interceptor):
     )
     client = CloudRedisClusterClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_backup_cluster"
-    ) as post, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "post_backup_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.CloudRedisClusterRestInterceptor, "pre_backup_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "post_backup_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor,
+            "post_backup_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.CloudRedisClusterRestInterceptor, "pre_backup_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -12594,8 +12631,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12654,8 +12692,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12716,8 +12755,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12778,8 +12818,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12840,8 +12881,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -12902,8 +12944,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -13340,11 +13383,14 @@ def test_cloud_redis_cluster_base_transport():
 
 def test_cloud_redis_cluster_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.redis_cluster_v1.services.cloud_redis_cluster.transports.CloudRedisClusterTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.redis_cluster_v1.services.cloud_redis_cluster.transports.CloudRedisClusterTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudRedisClusterTransport(
@@ -13361,9 +13407,12 @@ def test_cloud_redis_cluster_base_transport_with_credentials_file():
 
 def test_cloud_redis_cluster_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.redis_cluster_v1.services.cloud_redis_cluster.transports.CloudRedisClusterTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.redis_cluster_v1.services.cloud_redis_cluster.transports.CloudRedisClusterTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CloudRedisClusterTransport()
@@ -13435,11 +13484,12 @@ def test_cloud_redis_cluster_transport_auth_gdch_credentials(transport_class):
 def test_cloud_redis_cluster_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

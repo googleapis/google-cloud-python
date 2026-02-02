@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -71,6 +71,7 @@ class DeliveryVehicleLocationSensor(proto.Enum):
             The location provider on Apple operating
             systems.
     """
+
     UNKNOWN_SENSOR = 0
     GPS = 1
     NETWORK = 2
@@ -99,6 +100,7 @@ class DeliveryVehicleNavigationStatus(proto.Enum):
             The vehicle is within approximately 50m of
             the destination.
     """
+
     UNKNOWN_NAVIGATION_STATUS = 0
     NO_GUIDANCE = 1
     ENROUTE_TO_DESTINATION = 2
@@ -185,8 +187,8 @@ class DeliveryVehicleLocation(proto.Message):
         latlng_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``location`` in meters as a radius.
         heading (google.protobuf.wrappers_pb2.Int32Value):
-            Direction the vehicle is moving in degrees. 0
-            represents North. The valid range is [0,360).
+            Direction the vehicle is moving in degrees. 0 represents
+            North. The valid range is [0,360).
         bearing_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
             Deprecated: Use ``heading_accuracy`` instead.
         heading_accuracy (google.protobuf.wrappers_pb2.DoubleValue):
@@ -243,9 +245,9 @@ class DeliveryVehicleLocation(proto.Message):
         flp_latlng_accuracy_meters (google.protobuf.wrappers_pb2.DoubleValue):
             Accuracy of ``flp_location`` in meters as a radius.
         flp_heading_degrees (google.protobuf.wrappers_pb2.Int32Value):
-            Direction the vehicle is moving in degrees, as
-            determined by the Fused Location Provider. 0
-            represents North. The valid range is [0,360).
+            Direction the vehicle is moving in degrees, as determined by
+            the Fused Location Provider. 0 represents North. The valid
+            range is [0,360).
         supplemental_location (google.type.latlng_pb2.LatLng):
             Supplemental location provided by the
             integrating app.

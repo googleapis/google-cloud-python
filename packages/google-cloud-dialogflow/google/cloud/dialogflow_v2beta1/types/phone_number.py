@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -80,6 +80,7 @@ class PhoneNumber(proto.Message):
                 Number is pending deletion, and cannot
                 receive calls.
         """
+
         LIFECYCLE_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2
@@ -155,8 +156,8 @@ class ListPhoneNumbersRequest(proto.Message):
             return in a single page. The default value is
             100. The maximum value is 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
         show_deleted (bool):
             Optional. Controls whether ``PhoneNumber`` resources in the
             [DELETE_REQUESTED][google.cloud.dialogflow.v2beta1.PhoneNumber.LifecycleState.DELETE_REQUESTED]

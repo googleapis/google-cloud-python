@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.analytics.data_v1beta import gapic_version as package_version
 
@@ -44,10 +44,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.analytics.data_v1beta.services.beta_analytics_data import pagers
 from google.analytics.data_v1beta.types import analytics_data_api, data
@@ -122,7 +122,8 @@ class BetaAnalyticsDataAsyncClient:
         Returns:
             BetaAnalyticsDataAsyncClient: The constructed client.
         """
-        return BetaAnalyticsDataClient.from_service_account_info.__func__(BetaAnalyticsDataAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BetaAnalyticsDataClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BetaAnalyticsDataAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -138,7 +139,8 @@ class BetaAnalyticsDataAsyncClient:
         Returns:
             BetaAnalyticsDataAsyncClient: The constructed client.
         """
-        return BetaAnalyticsDataClient.from_service_account_file.__func__(BetaAnalyticsDataAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BetaAnalyticsDataClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BetaAnalyticsDataAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -308,19 +310,18 @@ class BetaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RunReportResponse:
-        r"""Returns a customized report of your Google Analytics
-        event data. Reports contain statistics derived from data
-        collected by the Google Analytics tracking code. The
-        data returned from the API is as a table with columns
-        for the requested dimensions and metrics. Metrics are
-        individual measurements of user activity on your
-        property, such as active users or event count.
-        Dimensions break down metrics across some common
-        criteria, such as country or event name.
+        r"""Returns a customized report of your Google Analytics event data.
+        Reports contain statistics derived from data collected by the
+        Google Analytics tracking code. The data returned from the API
+        is as a table with columns for the requested dimensions and
+        metrics. Metrics are individual measurements of user activity on
+        your property, such as active users or event count. Dimensions
+        break down metrics across some common criteria, such as country
+        or event name.
 
-        For a guide to constructing requests & understanding
-        responses, see [Creating a
-        Report](https://developers.google.com/analytics/devguides/reporting/data/v1/basics).
+        For a guide to constructing requests & understanding responses,
+        see `Creating a
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/basics>`__.
 
         .. code-block:: python
 
@@ -714,20 +715,18 @@ class BetaAnalyticsDataAsyncClient:
                 The request object. Request for a property's dimension
                 and metric metadata.
             name (:class:`str`):
-                Required. The resource name of the
-                metadata to retrieve. This name field is
-                specified in the URL path and not URL
-                parameters. Property is a numeric Google
-                Analytics property identifier. To learn
-                more, see [where to find your Property
-                ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+                Required. The resource name of the metadata to retrieve.
+                This name field is specified in the URL path and not URL
+                parameters. Property is a numeric Google Analytics
+                property identifier. To learn more, see `where to find
+                your Property
+                ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
                 Example: properties/1234/metadata
 
-                Set the Property ID to 0 for dimensions
-                and metrics common to all properties. In
-                this special mode, this method will not
-                return custom dimensions and metrics.
+                Set the Property ID to 0 for dimensions and metrics
+                common to all properties. In this special mode, this
+                method will not return custom dimensions and metrics.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -806,17 +805,16 @@ class BetaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RunRealtimeReportResponse:
-        r"""Returns a customized report of realtime event data for
-        your property. Events appear in realtime reports seconds
-        after they have been sent to the Google Analytics.
-        Realtime reports show events and usage data for the
-        periods of time ranging from the present moment to 30
-        minutes ago (up to 60 minutes for Google Analytics 360
-        properties).
+        r"""Returns a customized report of realtime event data for your
+        property. Events appear in realtime reports seconds after they
+        have been sent to the Google Analytics. Realtime reports show
+        events and usage data for the periods of time ranging from the
+        present moment to 30 minutes ago (up to 60 minutes for Google
+        Analytics 360 properties).
 
-        For a guide to constructing realtime requests &
-        understanding responses, see [Creating a Realtime
-        Report](https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics).
+        For a guide to constructing realtime requests & understanding
+        responses, see `Creating a Realtime
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics>`__.
 
         .. code-block:: python
 
@@ -1309,20 +1307,20 @@ class BetaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.AudienceExport:
-        r"""Gets configuration metadata about a specific audience
-        export. This method can be used to understand an
-        audience export after it has been created.
+        r"""Gets configuration metadata about a specific audience export.
+        This method can be used to understand an audience export after
+        it has been created.
 
-        See [Creating an Audience
-        Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Exports with examples.
 
-        Audience Export APIs have some methods at alpha and
-        other methods at beta stability. The intention is to
-        advance methods to beta stability after some feedback
-        and adoption. To give your feedback on this API,
-        complete the [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
 
         .. code-block:: python
 
@@ -1439,23 +1437,22 @@ class BetaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListAudienceExportsAsyncPager:
-        r"""Lists all audience exports for a property. This method
-        can be used for you to find and reuse existing audience
-        exports rather than creating unnecessary new audience
-        exports. The same audience can have multiple audience
-        exports that represent the export of users that were in
-        an audience on different days.
+        r"""Lists all audience exports for a property. This method can be
+        used for you to find and reuse existing audience exports rather
+        than creating unnecessary new audience exports. The same
+        audience can have multiple audience exports that represent the
+        export of users that were in an audience on different days.
 
-        See [Creating an Audience
-        Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Exports with examples.
 
-        Audience Export APIs have some methods at alpha and
-        other methods at beta stability. The intention is to
-        advance methods to beta stability after some feedback
-        and adoption. To give your feedback on this API,
-        complete the [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
 
         .. code-block:: python
 

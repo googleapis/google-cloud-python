@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1 import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1.types import developerregistration
 
@@ -126,7 +126,12 @@ class DeveloperRegistrationServiceAsyncClient:
         Returns:
             DeveloperRegistrationServiceAsyncClient: The constructed client.
         """
-        return DeveloperRegistrationServiceClient.from_service_account_info.__func__(DeveloperRegistrationServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            DeveloperRegistrationServiceClient.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            DeveloperRegistrationServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -142,7 +147,12 @@ class DeveloperRegistrationServiceAsyncClient:
         Returns:
             DeveloperRegistrationServiceAsyncClient: The constructed client.
         """
-        return DeveloperRegistrationServiceClient.from_service_account_file.__func__(DeveloperRegistrationServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            DeveloperRegistrationServiceClient.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            DeveloperRegistrationServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -180,7 +190,9 @@ class DeveloperRegistrationServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DeveloperRegistrationServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return DeveloperRegistrationServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> DeveloperRegistrationServiceTransport:
@@ -312,10 +324,10 @@ class DeveloperRegistrationServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> developerregistration.DeveloperRegistration:
-        r"""Registers the GCP used for the API call to the shopping
-        account passed in the request. Will create a user with
-        an "API developer" and add the "developer_email" as a
-        contact with "API notifications" email preference on.
+        r"""Registers the GCP used for the API call to the shopping account
+        passed in the request. Will create a user with an "API
+        developer" and add the "developer_email" as a contact with "API
+        notifications" email preference on.
 
         .. code-block:: python
 
@@ -607,8 +619,8 @@ class DeveloperRegistrationServiceAsyncClient:
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.protobuf import empty_pb2  # type: ignore
             from google.shopping import merchant_accounts_v1
+            import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
             async def sample_get_account_for_gcp_registration():
                 # Create a client

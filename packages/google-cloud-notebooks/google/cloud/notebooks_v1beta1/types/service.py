@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1beta1.types import environment as gcn_environment
@@ -289,8 +289,8 @@ class SetInstanceMachineTypeRequest(proto.Message):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         machine_type (str):
-            Required. The [Compute Engine machine
-            type](https://cloud.google.com/compute/docs/machine-types).
+            Required. The `Compute Engine machine
+            type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
     name: str = proto.Field(

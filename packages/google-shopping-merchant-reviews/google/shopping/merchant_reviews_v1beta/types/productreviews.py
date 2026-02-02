@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 from google.shopping.merchant_reviews_v1beta.types import productreviews_common
 
@@ -160,9 +160,9 @@ class ListProductReviewsResponse(proto.Message):
 
 
 class ProductReview(proto.Message):
-    r"""A review for a product. For more information, see
-    [Introduction to Product Review
-    Feeds](https://developers.google.com/product-review-feeds)
+    r"""A review for a product. For more information, see `Introduction to
+    Product Review
+    Feeds <https://developers.google.com/product-review-feeds>`__
 
     Attributes:
         name (str):

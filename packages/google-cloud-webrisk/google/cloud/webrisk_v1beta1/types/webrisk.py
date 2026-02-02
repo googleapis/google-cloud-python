@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -54,6 +54,7 @@ class ThreatType(proto.Enum):
         UNWANTED_SOFTWARE (3):
             Unwanted software targeting any platform.
     """
+
     THREAT_TYPE_UNSPECIFIED = 0
     MALWARE = 1
     SOCIAL_ENGINEERING = 2
@@ -71,6 +72,7 @@ class CompressionType(proto.Enum):
         RICE (2):
             Rice-Golomb encoded data.
     """
+
     COMPRESSION_TYPE_UNSPECIFIED = 0
     RAW = 1
     RICE = 2
@@ -118,12 +120,12 @@ class ComputeThreatListDiffRequest(proto.Message):
             proto.INT32,
             number=2,
         )
-        supported_compressions: MutableSequence[
-            "CompressionType"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=3,
-            enum="CompressionType",
+        supported_compressions: MutableSequence["CompressionType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="CompressionType",
+            )
         )
 
     threat_type: "ThreatType" = proto.Field(
@@ -189,6 +191,7 @@ class ComputeThreatListDiffResponse(proto.Message):
                 no state, was seriously out-of-date, or the
                 client is believed to be corrupt.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         DIFF = 1
         RESET = 2
@@ -391,11 +394,10 @@ class ThreatEntryAdditions(proto.Message):
             Repeated to allow returning sets of hashes with
             different prefix sizes.
         rice_hashes (google.cloud.webrisk_v1beta1.types.RiceDeltaEncoding):
-            The encoded 4-byte prefixes of SHA256-formatted
-            entries, using a Golomb-Rice encoding. The
-            hashes are converted to uint32, sorted in
-            ascending order, then delta encoded and stored
-            as encoded_data.
+            The encoded 4-byte prefixes of SHA256-formatted entries,
+            using a Golomb-Rice encoding. The hashes are converted to
+            uint32, sorted in ascending order, then delta encoded and
+            stored as encoded_data.
     """
 
     raw_hashes: MutableSequence["RawHashes"] = proto.RepeatedField(
@@ -417,11 +419,11 @@ class ThreatEntryRemovals(proto.Message):
         raw_indices (google.cloud.webrisk_v1beta1.types.RawIndices):
             The raw removal indices for a local list.
         rice_indices (google.cloud.webrisk_v1beta1.types.RiceDeltaEncoding):
-            The encoded local, lexicographically-sorted list
-            indices, using a Golomb-Rice encoding. Used for
-            sending compressed removal indices. The removal
-            indices (uint32) are sorted in ascending order,
-            then delta encoded and stored as encoded_data.
+            The encoded local, lexicographically-sorted list indices,
+            using a Golomb-Rice encoding. Used for sending compressed
+            removal indices. The removal indices (uint32) are sorted in
+            ascending order, then delta encoded and stored as
+            encoded_data.
     """
 
     raw_indices: "RawIndices" = proto.Field(

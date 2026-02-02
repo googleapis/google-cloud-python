@@ -16,24 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.retail_v2.types import serving_config
+from google.cloud.retail_v2.types import serving_config, serving_config_service
 from google.cloud.retail_v2.types import serving_config as gcr_serving_config
-from google.cloud.retail_v2.types import serving_config_service
 
 from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
 
@@ -486,15 +485,13 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     ]:
         r"""Return a callable for the add control method over gRPC.
 
-        Enables a Control on the specified ServingConfig.
-        The control is added in the last position of the list of
-        controls it belongs to (e.g. if it's a facet spec
-        control it will be applied in the last position of
-        servingConfig.facetSpecIds) Returns a ALREADY_EXISTS
-        error if the control has already been applied. Returns a
-        FAILED_PRECONDITION error if the addition could exceed
-        maximum number of control allowed for that type of
-        control.
+        Enables a Control on the specified ServingConfig. The control is
+        added in the last position of the list of controls it belongs to
+        (e.g. if it's a facet spec control it will be applied in the
+        last position of servingConfig.facetSpecIds) Returns a
+        ALREADY_EXISTS error if the control has already been applied.
+        Returns a FAILED_PRECONDITION error if the addition could exceed
+        maximum number of control allowed for that type of control.
 
         Returns:
             Callable[[~.AddControlRequest],
@@ -522,10 +519,9 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
     ]:
         r"""Return a callable for the remove control method over gRPC.
 
-        Disables a Control on the specified ServingConfig.
-        The control is removed from the ServingConfig.
-        Returns a NOT_FOUND error if the Control is not enabled
-        for the ServingConfig.
+        Disables a Control on the specified ServingConfig. The control
+        is removed from the ServingConfig. Returns a NOT_FOUND error if
+        the Control is not enabled for the ServingConfig.
 
         Returns:
             Callable[[~.RemoveControlRequest],

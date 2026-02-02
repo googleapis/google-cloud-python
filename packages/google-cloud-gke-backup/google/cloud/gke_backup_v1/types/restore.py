@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
@@ -158,6 +158,7 @@ class Restore(proto.Message):
                 The Kubernetes resources created by this
                 Restore are being validated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         IN_PROGRESS = 2
@@ -298,10 +299,9 @@ class RestoreConfig(proto.Message):
 
     Attributes:
         volume_data_restore_policy (google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicy):
-            Optional. Specifies the mechanism to be used to
-            restore volume data. Default:
-            VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be
-            treated as NO_VOLUME_DATA_RESTORATION).
+            Optional. Specifies the mechanism to be used to restore
+            volume data. Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED
+            (will be treated as NO_VOLUME_DATA_RESTORATION).
         cluster_resource_conflict_policy (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceConflictPolicy):
             Optional. Defines the behavior for handling the situation
             where cluster-scoped resources being restored already exist
@@ -310,11 +310,10 @@ class RestoreConfig(proto.Message):
             [cluster_resource_restore_scope][google.cloud.gkebackup.v1.RestoreConfig.cluster_resource_restore_scope]
             is not empty.
         namespaced_resource_restore_mode (google.cloud.gke_backup_v1.types.RestoreConfig.NamespacedResourceRestoreMode):
-            Optional. Defines the behavior for handling the
-            situation where sets of namespaced resources
-            being restored already exist in the target
-            cluster. This MUST be set to a value other than
-            NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
+            Optional. Defines the behavior for handling the situation
+            where sets of namespaced resources being restored already
+            exist in the target cluster. This MUST be set to a value
+            other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED.
         cluster_resource_restore_scope (google.cloud.gke_backup_v1.types.RestoreConfig.ClusterResourceRestoreScope):
             Optional. Identifies the cluster-scoped
             resources to restore from the Backup. Not
@@ -368,11 +367,10 @@ class RestoreConfig(proto.Message):
             the filtering logic of subsequent rules. An
             empty list means no transformation will occur.
         volume_data_restore_policy_bindings (MutableSequence[google.cloud.gke_backup_v1.types.RestoreConfig.VolumeDataRestorePolicyBinding]):
-            Optional. A table that binds volumes by their
-            scope to a restore policy. Bindings must have a
-            unique scope. Any volumes not scoped in the
-            bindings are subject to the policy defined in
-            volume_data_restore_policy.
+            Optional. A table that binds volumes by their scope to a
+            restore policy. Bindings must have a unique scope. Any
+            volumes not scoped in the bindings are subject to the policy
+            defined in volume_data_restore_policy.
         restore_order (google.cloud.gke_backup_v1.types.RestoreConfig.RestoreOrder):
             Optional. RestoreOrder contains custom
             ordering to use on a Restore.
@@ -402,6 +400,7 @@ class RestoreConfig(proto.Message):
                 result in either dynamically provisioning blank
                 PVs or binding to statically provisioned PVs.
         """
+
         VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED = 0
         RESTORE_VOLUME_DATA_FROM_BACKUP = 1
         REUSE_VOLUME_HANDLE_FROM_BACKUP = 2
@@ -427,6 +426,7 @@ class RestoreConfig(proto.Message):
                 deleting a CRD will cause Kubernetes to delete
                 all CRs of that type.
         """
+
         CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED = 0
         USE_EXISTING_VERSION = 1
         USE_BACKUP_VERSION = 2
@@ -499,6 +499,7 @@ class RestoreConfig(proto.Message):
                 cluster, and the original PV can be retained or
                 deleted depending on its reclaim policy.
         """
+
         NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED = 0
         DELETE_AND_RESTORE = 1
         FAIL_ON_CONFLICT = 2
@@ -583,19 +584,19 @@ class RestoreConfig(proto.Message):
                 message.
         """
 
-        selected_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="RestoreConfig.GroupKind",
+        selected_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="RestoreConfig.GroupKind",
+            )
         )
-        excluded_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="RestoreConfig.GroupKind",
+        excluded_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="RestoreConfig.GroupKind",
+            )
         )
         all_group_kinds: bool = proto.Field(
             proto.BOOL,
@@ -666,12 +667,12 @@ class RestoreConfig(proto.Message):
             proto.STRING,
             number=1,
         )
-        target_group_kinds: MutableSequence[
-            "RestoreConfig.GroupKind"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="RestoreConfig.GroupKind",
+        target_group_kinds: MutableSequence["RestoreConfig.GroupKind"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="RestoreConfig.GroupKind",
+            )
         )
         target_json_path: str = proto.Field(
             proto.STRING,
@@ -751,6 +752,7 @@ class RestoreConfig(proto.Message):
                     operation object MUST contain a "value" member
                     whose content specifies the replacement value.
             """
+
             OP_UNSPECIFIED = 0
             REMOVE = 1
             MOVE = 2
@@ -850,12 +852,12 @@ class RestoreConfig(proto.Message):
                 string description of the transformation rule.
         """
 
-        field_actions: MutableSequence[
-            "RestoreConfig.TransformationRuleAction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="RestoreConfig.TransformationRuleAction",
+        field_actions: MutableSequence["RestoreConfig.TransformationRuleAction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="RestoreConfig.TransformationRuleAction",
+            )
         )
         resource_filter: "RestoreConfig.ResourceFilter" = proto.Field(
             proto.MESSAGE,

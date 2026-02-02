@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.talent_v4beta1.types import common
@@ -41,13 +41,13 @@ class CreateCompanyRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the tenant under
-            which the company is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenant/bar". If tenant id
-            is unspecified, a default tenant is created, for
-            example, "projects/foo".
+            Required. Resource name of the tenant under which the
+            company is created.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenant/bar". If tenant id is
+            unspecified, a default tenant is created, for example,
+            "projects/foo".
         company (google.cloud.talent_v4beta1.types.Company):
             Required. The company to be created.
     """
@@ -68,16 +68,15 @@ class GetCompanyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the company to be
-            retrieved.
+            Required. The resource name of the company to be retrieved.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
             for example,
             "projects/api-test-project/tenants/foo/companies/bar".
 
-            If tenant id is unspecified, the default tenant
-            is used, for example,
-            "projects/api-test-project/companies/bar".
+            If tenant id is unspecified, the default tenant is used, for
+            example, "projects/api-test-project/companies/bar".
     """
 
     name: str = proto.Field(
@@ -125,16 +124,14 @@ class DeleteCompanyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the company to be
-            deleted.
+            Required. The resource name of the company to be deleted.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-            for example,
-            "projects/foo/tenants/bar/companies/baz".
+            for example, "projects/foo/tenants/bar/companies/baz".
 
-            If tenant id is unspecified, the default tenant
-            is used, for example,
-            "projects/foo/companies/bar".
+            If tenant id is unspecified, the default tenant is used, for
+            example, "projects/foo/companies/bar".
     """
 
     name: str = proto.Field(
@@ -148,14 +145,14 @@ class ListCompaniesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the tenant under
-            which the company is created.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenant/bar".
+            Required. Resource name of the tenant under which the
+            company is created.
 
-            If tenant id is unspecified, the default tenant
-            will be used, for example, "projects/foo".
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenant/bar".
+
+            If tenant id is unspecified, the default tenant will be
+            used, for example, "projects/foo".
         page_token (str):
             The starting indicator from which to return
             results.

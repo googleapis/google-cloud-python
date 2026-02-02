@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.logging.type import log_severity_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicecontrol_v1.types import http_request as gas_http_request
@@ -66,9 +66,9 @@ class LogEntry(proto.Message):
             ``//tracing.googleapis.com``. Example:
             ``projects/my-projectid/traces/06796866738c859f2f19b7cfb3214824``
         insert_id (str):
-            A unique ID for the log entry used for
-            deduplication. If omitted, the implementation
-            will generate one based on operation_id.
+            A unique ID for the log entry used for deduplication. If
+            omitted, the implementation will generate one based on
+            operation_id.
         labels (MutableMapping[str, str]):
             A set of user-defined (key, value) data that
             provides additional information about the log

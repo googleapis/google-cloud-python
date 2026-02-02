@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -118,6 +118,7 @@ class UserCriteriaScoping(proto.Enum):
             If the criteria is satisfied by any events
             for the user, the user matches the criteria.
     """
+
     USER_CRITERIA_SCOPING_UNSPECIFIED = 0
     USER_CRITERIA_WITHIN_SAME_EVENT = 1
     USER_CRITERIA_WITHIN_SAME_SESSION = 2
@@ -139,6 +140,7 @@ class UserExclusionDuration(proto.Enum):
             Permanently exclude users from the segment if the user ever
             meets the ``userExclusionCriteria`` condition.
     """
+
     USER_EXCLUSION_DURATION_UNSPECIFIED = 0
     USER_EXCLUSION_TEMPORARY = 1
     USER_EXCLUSION_PERMANENT = 2
@@ -158,6 +160,7 @@ class SessionCriteriaScoping(proto.Enum):
             If the criteria is satisfied within one
             session, the session matches the criteria.
     """
+
     SESSION_CRITERIA_SCOPING_UNSPECIFIED = 0
     SESSION_CRITERIA_WITHIN_SAME_EVENT = 1
     SESSION_CRITERIA_WITHIN_SAME_SESSION = 2
@@ -179,6 +182,7 @@ class SessionExclusionDuration(proto.Enum):
             Permanently exclude sessions from the segment if the session
             ever meets the ``sessionExclusionCriteria`` condition.
     """
+
     SESSION_EXCLUSION_DURATION_UNSPECIFIED = 0
     SESSION_EXCLUSION_TEMPORARY = 1
     SESSION_EXCLUSION_PERMANENT = 2
@@ -195,6 +199,7 @@ class EventCriteriaScoping(proto.Enum):
             If the criteria is satisfied within one
             event, the event matches the criteria.
     """
+
     EVENT_CRITERIA_SCOPING_UNSPECIFIED = 0
     EVENT_CRITERIA_WITHIN_SAME_EVENT = 1
 
@@ -211,6 +216,7 @@ class EventExclusionDuration(proto.Enum):
             Permanently exclude events from the segment if the event
             ever meets the ``eventExclusionCriteria`` condition.
     """
+
     EVENT_EXCLUSION_DURATION_UNSPECIFIED = 0
     EVENT_EXCLUSION_PERMANENT = 1
 
@@ -230,6 +236,7 @@ class MetricAggregation(proto.Enum):
         COUNT (4):
             Count operator.
     """
+
     METRIC_AGGREGATION_UNSPECIFIED = 0
     TOTAL = 1
     MINIMUM = 5
@@ -278,6 +285,7 @@ class MetricType(proto.Enum):
             A length in kilometers; a special floating
             point type.
     """
+
     METRIC_TYPE_UNSPECIFIED = 0
     TYPE_INTEGER = 1
     TYPE_FLOAT = 2
@@ -305,6 +313,7 @@ class RestrictedMetricType(proto.Enum):
         REVENUE_DATA (2):
             Revenue metrics such as ``purchaseRevenue``.
     """
+
     RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
     COST_DATA = 1
     REVENUE_DATA = 2
@@ -330,6 +339,7 @@ class SamplingLevel(proto.Enum):
             explorations. To learn more, see
             https://support.google.com/analytics/answer/10896953.
     """
+
     SAMPLING_LEVEL_UNSPECIFIED = 0
     LOW = 1
     MEDIUM = 2
@@ -481,13 +491,12 @@ class DimensionExpression(proto.Message):
             delimiter (str):
                 The delimiter placed between dimension names.
 
-                Delimiters are often single characters such as
-                "\|" or "," but can be longer strings. If a
-                dimension value contains the delimiter, both
-                will be present in response with no distinction.
-                For example if dimension 1 value = "US,FR",
-                dimension 2 value = "JP", and delimiter = ",",
-                then the response will contain "US,FR,JP".
+                Delimiters are often single characters such as "\|" or ","
+                but can be longer strings. If a dimension value contains the
+                delimiter, both will be present in response with no
+                distinction. For example if dimension 1 value = "US,FR",
+                dimension 2 value = "JP", and delimiter = ",", then the
+                response will contain "US,FR,JP".
         """
 
         dimension_names: MutableSequence[str] = proto.RepeatedField(
@@ -586,13 +595,11 @@ class FilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.data_v1alpha.types.FilterExpressionList):
-            The FilterExpressions in and_group have an AND
-            relationship.
+            The FilterExpressions in and_group have an AND relationship.
 
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.data_v1alpha.types.FilterExpressionList):
-            The FilterExpressions in or_group have an OR
-            relationship.
+            The FilterExpressions in or_group have an OR relationship.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.data_v1alpha.types.FilterExpression):
@@ -755,6 +762,7 @@ class StringFilter(proto.Message):
                 Partial match for the regular expression with
                 the string value.
         """
+
         MATCH_TYPE_UNSPECIFIED = 0
         EXACT = 1
         BEGINS_WITH = 2
@@ -826,6 +834,7 @@ class NumericFilter(proto.Message):
             GREATER_THAN_OR_EQUAL (5):
                 Greater than or equal
         """
+
         OPERATION_UNSPECIFIED = 0
         EQUAL = 1
         LESS_THAN = 2
@@ -915,6 +924,7 @@ class OrderBy(proto.Message):
                     values all have equal ordering value below all numeric
                     values.
             """
+
             ORDER_TYPE_UNSPECIFIED = 0
             ALPHANUMERIC = 1
             CASE_INSENSITIVE_ALPHANUMERIC = 2
@@ -1183,6 +1193,7 @@ class CohortsRange(proto.Message):
                 ``dateRange`` is a month in duration and the request
                 contains ``cohortNthMonth``.
         """
+
         GRANULARITY_UNSPECIFIED = 0
         DAILY = 1
         WEEKLY = 2
@@ -1227,31 +1238,28 @@ class ResponseMetaData(proto.Message):
 
     Attributes:
         data_loss_from_other_row (bool):
-            If true, indicates some buckets of dimension
-            combinations are rolled into "(other)" row. This
-            can happen for high cardinality reports.
+            If true, indicates some buckets of dimension combinations
+            are rolled into "(other)" row. This can happen for high
+            cardinality reports.
 
-            The metadata parameter dataLossFromOtherRow is
-            populated based on the aggregated data table
-            used in the report. The parameter will be
-            accurately populated regardless of the filters
-            and limits in the report.
+            The metadata parameter dataLossFromOtherRow is populated
+            based on the aggregated data table used in the report. The
+            parameter will be accurately populated regardless of the
+            filters and limits in the report.
 
-            For example, the (other) row could be dropped
-            from the report because the request contains a
-            filter on sessionSource = google. This parameter
-            will still be populated if data loss from other
-            row was present in the input aggregate data used
-            to generate this report.
+            For example, the (other) row could be dropped from the
+            report because the request contains a filter on
+            sessionSource = google. This parameter will still be
+            populated if data loss from other row was present in the
+            input aggregate data used to generate this report.
 
-            To learn more, see [About the (other) row and
-            data
-            sampling](https://support.google.com/analytics/answer/13208658#reports).
+            To learn more, see `About the (other) row and data
+            sampling <https://support.google.com/analytics/answer/13208658#reports>`__.
         schema_restriction_response (google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse):
-            Describes the schema restrictions actively
-            enforced in creating this report. To learn more,
-            see [Access and data-restriction
-            management](https://support.google.com/analytics/answer/10851388).
+            Describes the schema restrictions actively enforced in
+            creating this report. To learn more, see `Access and
+            data-restriction
+            management <https://support.google.com/analytics/answer/10851388>`__.
 
             This field is a member of `oneof`_ ``_schema_restriction_response``.
         currency_code (str):
@@ -1307,9 +1315,9 @@ class ResponseMetaData(proto.Message):
     """
 
     class SchemaRestrictionResponse(proto.Message):
-        r"""The schema restrictions actively enforced in creating this
-        report. To learn more, see [Access and data-restriction
-        management](https://support.google.com/analytics/answer/10851388).
+        r"""The schema restrictions actively enforced in creating this report.
+        To learn more, see `Access and data-restriction
+        management <https://support.google.com/analytics/answer/10851388>`__.
 
         Attributes:
             active_metric_restrictions (MutableSequence[google.analytics.data_v1alpha.types.ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction]):
@@ -1339,12 +1347,12 @@ class ResponseMetaData(proto.Message):
                 number=1,
                 optional=True,
             )
-            restricted_metric_types: MutableSequence[
-                "RestrictedMetricType"
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=2,
-                enum="RestrictedMetricType",
+            restricted_metric_types: MutableSequence["RestrictedMetricType"] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=2,
+                    enum="RestrictedMetricType",
+                )
             )
 
         active_metric_restrictions: MutableSequence[
@@ -1475,9 +1483,9 @@ class Row(proto.Message):
 
     Attributes:
         dimension_values (MutableSequence[google.analytics.data_v1alpha.types.DimensionValue]):
-            List of requested dimension values. In a
-            PivotReport, dimension_values are only listed
-            for dimensions included in a pivot.
+            List of requested dimension values. In a PivotReport,
+            dimension_values are only listed for dimensions included in
+            a pivot.
         metric_values (MutableSequence[google.analytics.data_v1alpha.types.MetricValue]):
             List of requested visible metric values.
     """
@@ -1892,19 +1900,19 @@ class UserSegmentCriteria(proto.Message):
             if ``andConditionGroups`` are specified.
     """
 
-    and_condition_groups: MutableSequence[
-        "UserSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="UserSegmentConditionGroup",
+    and_condition_groups: MutableSequence["UserSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="UserSegmentConditionGroup",
+        )
     )
-    and_sequence_groups: MutableSequence[
-        "UserSegmentSequenceGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UserSegmentSequenceGroup",
+    and_sequence_groups: MutableSequence["UserSegmentSequenceGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UserSegmentSequenceGroup",
+        )
     )
 
 
@@ -2106,12 +2114,12 @@ class SessionSegmentCriteria(proto.Message):
             of these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "SessionSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SessionSegmentConditionGroup",
+    and_condition_groups: MutableSequence["SessionSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SessionSegmentConditionGroup",
+        )
     )
 
 
@@ -2186,9 +2194,9 @@ class SessionSegmentExclusion(proto.Message):
 
 class EventSegment(proto.Message):
     r"""Event segments are subsets of events that were triggered on your
-    site or app. for example, all purchase events made in a
-    particular location; app_exception events that occurred on a
-    specific operating system.
+    site or app. for example, all purchase events made in a particular
+    location; app_exception events that occurred on a specific operating
+    system.
 
     Attributes:
         event_inclusion_criteria (google.analytics.data_v1alpha.types.EventSegmentCriteria):
@@ -2221,12 +2229,12 @@ class EventSegmentCriteria(proto.Message):
             these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "EventSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="EventSegmentConditionGroup",
+    and_condition_groups: MutableSequence["EventSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="EventSegmentConditionGroup",
+        )
     )
 
 
@@ -2289,14 +2297,14 @@ class EventSegmentExclusion(proto.Message):
 
 
 class Segment(proto.Message):
-    r"""A segment is a subset of your Analytics data. For example, of
-    your entire set of users, one segment might be users from a
-    particular country or city. Another segment might be users who
-    purchase a particular line of products or who visit a specific
-    part of your site or trigger certain events in your app.
+    r"""A segment is a subset of your Analytics data. For example, of your
+    entire set of users, one segment might be users from a particular
+    country or city. Another segment might be users who purchase a
+    particular line of products or who visit a specific part of your
+    site or trigger certain events in your app.
 
-    To learn more, see [Segment
-    Builder](https://support.google.com/analytics/answer/9304353).
+    To learn more, see `Segment
+    Builder <https://support.google.com/analytics/answer/9304353>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -2652,12 +2660,12 @@ class SegmentParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "SegmentParameterFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SegmentParameterFilterExpression",
+    expressions: MutableSequence["SegmentParameterFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SegmentParameterFilterExpression",
+        )
     )
 
 
@@ -2673,17 +2681,15 @@ class SegmentParameterFilter(proto.Message):
 
     Attributes:
         event_parameter_name (str):
-            This filter will be evaluated on the specified
-            event parameter. Event parameters are logged as
-            parameters of the event. Event parameters
-            include fields like "firebase_screen" &
-            "currency".
+            This filter will be evaluated on the specified event
+            parameter. Event parameters are logged as parameters of the
+            event. Event parameters include fields like
+            "firebase_screen" & "currency".
 
-            Event parameters can only be used in segments &
-            funnels and can only be used in a descendent
-            filter from an EventFilter. In a descendent
-            filter from an EventFilter either event or item
-            parameters should be used.
+            Event parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
 
             This field is a member of `oneof`_ ``one_parameter``.
         item_parameter_name (str):
@@ -3069,12 +3075,12 @@ class FunnelParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "FunnelParameterFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FunnelParameterFilterExpression",
+    expressions: MutableSequence["FunnelParameterFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FunnelParameterFilterExpression",
+        )
     )
 
 
@@ -3090,17 +3096,15 @@ class FunnelParameterFilter(proto.Message):
 
     Attributes:
         event_parameter_name (str):
-            This filter will be evaluated on the specified
-            event parameter. Event parameters are logged as
-            parameters of the event. Event parameters
-            include fields like "firebase_screen" &
-            "currency".
+            This filter will be evaluated on the specified event
+            parameter. Event parameters are logged as parameters of the
+            event. Event parameters include fields like
+            "firebase_screen" & "currency".
 
-            Event parameters can only be used in segments &
-            funnels and can only be used in a descendent
-            filter from an EventFilter. In a descendent
-            filter from an EventFilter either event or item
-            parameters should be used.
+            Event parameters can only be used in segments & funnels and
+            can only be used in a descendent filter from an EventFilter.
+            In a descendent filter from an EventFilter either event or
+            item parameters should be used.
 
             This field is a member of `oneof`_ ``one_parameter``.
         item_parameter_name (str):

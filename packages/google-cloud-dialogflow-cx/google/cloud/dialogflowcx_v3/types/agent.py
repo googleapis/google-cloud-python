@@ -17,17 +17,17 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
+from google.cloud.dialogflowcx_v3.types import audio_config, flow
 from google.cloud.dialogflowcx_v3.types import (
     generative_settings as gcdc_generative_settings,
 )
-from google.cloud.dialogflowcx_v3.types import audio_config, flow
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -112,19 +112,17 @@ class Agent(proto.Message):
             The list of all languages supported by the agent (except for
             the ``default_language_code``).
         time_zone (str):
-            Required. The time zone of the agent from the
-            [time zone
-            database](https://www.iana.org/time-zones),
-            e.g., America/New_York, Europe/Paris.
+            Required. The time zone of the agent from the `time zone
+            database <https://www.iana.org/time-zones>`__, e.g.,
+            America/New_York, Europe/Paris.
         description (str):
             The description of the agent. The maximum
             length is 500 characters. If exceeded, the
             request is rejected.
         avatar_uri (str):
-            The URI of the agent's avatar. Avatars are used
-            throughout the Dialogflow console and in the
-            self-hosted [Web
-            Demo](https://cloud.google.com/dialogflow/docs/integrations/web-demo)
+            The URI of the agent's avatar. Avatars are used throughout
+            the Dialogflow console and in the self-hosted `Web
+            Demo <https://cloud.google.com/dialogflow/docs/integrations/web-demo>`__
             integration.
         speech_to_text_settings (google.cloud.dialogflowcx_v3.types.SpeechToTextSettings):
             Speech recognition related settings.
@@ -476,8 +474,8 @@ class ListAgentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -500,9 +498,8 @@ class ListAgentsResponse(proto.Message):
 
     Attributes:
         agents (MutableSequence[google.cloud.dialogflowcx_v3.types.Agent]):
-            The list of agents. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of agents. There will be a maximum number of items
+            returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -651,6 +648,7 @@ class ExportAgentRequest(proto.Message):
                 Agent content will be exported in JSON
                 Package format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON_PACKAGE = 4
@@ -807,6 +805,7 @@ class RestoreAgentRequest(proto.Message):
                 Fallback to default settings if some settings
                 are not supported in the target agent.
         """
+
         RESTORE_OPTION_UNSPECIFIED = 0
         KEEP = 1
         FALLBACK = 2
@@ -914,12 +913,12 @@ class AgentValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    flow_validation_results: MutableSequence[
-        flow.FlowValidationResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=flow.FlowValidationResult,
+    flow_validation_results: MutableSequence[flow.FlowValidationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=flow.FlowValidationResult,
+        )
     )
 
 

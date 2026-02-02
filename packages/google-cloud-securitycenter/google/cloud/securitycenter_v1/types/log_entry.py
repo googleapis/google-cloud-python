@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -51,8 +51,8 @@ class LogEntry(proto.Message):
 
 
 class CloudLoggingEntry(proto.Message):
-    r"""Metadata taken from a [Cloud Logging
-    LogEntry](https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry)
+    r"""Metadata taken from a `Cloud Logging
+    LogEntry <https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry>`__
 
     Attributes:
         insert_id (str):

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -126,9 +126,9 @@ class BasicAutoscalingAlgorithm(proto.Message):
 
             This field is a member of `oneof`_ ``config``.
         cooldown_period (google.protobuf.duration_pb2.Duration):
-            Optional. Duration between scaling events. A
-            scaling period starts after the update operation
-            from the previous event has completed.
+            Optional. Duration between scaling events. A scaling period
+            starts after the update operation from the previous event
+            has completed.
 
             Bounds: [2m, 1d]. Default: 2m.
     """
@@ -151,62 +151,53 @@ class BasicYarnAutoscalingConfig(proto.Message):
 
     Attributes:
         graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
-            Required. Timeout for YARN graceful
-            decommissioning of Node Managers. Specifies the
-            duration to wait for jobs to complete before
-            forcefully removing workers (and potentially
-            interrupting jobs). Only applicable to
-            downscaling operations.
+            Required. Timeout for YARN graceful decommissioning of Node
+            Managers. Specifies the duration to wait for jobs to
+            complete before forcefully removing workers (and potentially
+            interrupting jobs). Only applicable to downscaling
+            operations.
 
             Bounds: [0s, 1d].
         scale_up_factor (float):
-            Required. Fraction of average YARN pending
-            memory in the last cooldown period for which to
-            add workers. A scale-up factor of 1.0 will
-            result in scaling up so that there is no pending
-            memory remaining after the update (more
-            aggressive scaling). A scale-up factor closer to
-            0 will result in a smaller magnitude of scaling
-            up (less aggressive scaling). See [How
-            autoscaling
-            works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+            Required. Fraction of average YARN pending memory in the
+            last cooldown period for which to add workers. A scale-up
+            factor of 1.0 will result in scaling up so that there is no
+            pending memory remaining after the update (more aggressive
+            scaling). A scale-up factor closer to 0 will result in a
+            smaller magnitude of scaling up (less aggressive scaling).
+            See `How autoscaling
+            works <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works>`__
             for more information.
 
             Bounds: [0.0, 1.0].
         scale_down_factor (float):
-            Required. Fraction of average YARN pending
-            memory in the last cooldown period for which to
-            remove workers. A scale-down factor of 1 will
-            result in scaling down so that there is no
-            available memory remaining after the update
-            (more aggressive scaling). A scale-down factor
-            of 0 disables removing workers, which can be
-            beneficial for autoscaling a single job. See
-            [How autoscaling
-            works](https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works)
+            Required. Fraction of average YARN pending memory in the
+            last cooldown period for which to remove workers. A
+            scale-down factor of 1 will result in scaling down so that
+            there is no available memory remaining after the update
+            (more aggressive scaling). A scale-down factor of 0 disables
+            removing workers, which can be beneficial for autoscaling a
+            single job. See `How autoscaling
+            works <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/autoscaling#how_autoscaling_works>`__
             for more information.
 
             Bounds: [0.0, 1.0].
         scale_up_min_worker_fraction (float):
-            Optional. Minimum scale-up threshold as a
-            fraction of total cluster size before scaling
-            occurs. For example, in a 20-worker cluster, a
-            threshold of 0.1 means the autoscaler must
-            recommend at least a 2-worker scale-up for the
-            cluster to scale. A threshold of 0 means the
-            autoscaler will scale up on any recommended
-            change.
+            Optional. Minimum scale-up threshold as a fraction of total
+            cluster size before scaling occurs. For example, in a
+            20-worker cluster, a threshold of 0.1 means the autoscaler
+            must recommend at least a 2-worker scale-up for the cluster
+            to scale. A threshold of 0 means the autoscaler will scale
+            up on any recommended change.
 
             Bounds: [0.0, 1.0]. Default: 0.0.
         scale_down_min_worker_fraction (float):
-            Optional. Minimum scale-down threshold as a
-            fraction of total cluster size before scaling
-            occurs. For example, in a 20-worker cluster, a
-            threshold of 0.1 means the autoscaler must
-            recommend at least a 2 worker scale-down for the
-            cluster to scale. A threshold of 0 means the
-            autoscaler will scale down on any recommended
-            change.
+            Optional. Minimum scale-down threshold as a fraction of
+            total cluster size before scaling occurs. For example, in a
+            20-worker cluster, a threshold of 0.1 means the autoscaler
+            must recommend at least a 2 worker scale-down for the
+            cluster to scale. A threshold of 0 means the autoscaler will
+            scale down on any recommended change.
 
             Bounds: [0.0, 1.0]. Default: 0.0.
     """
@@ -240,21 +231,18 @@ class InstanceGroupAutoscalingPolicyConfig(proto.Message):
 
     Attributes:
         min_instances (int):
-            Optional. Minimum number of instances for this
-            group.
-            Primary workers - Bounds: [2, max_instances].
-            Default: 2. Secondary workers - Bounds: [0,
-            max_instances]. Default: 0.
-        max_instances (int):
-            Required. Maximum number of instances for this
-            group. Required for primary workers. Note that
-            by default, clusters will not use secondary
-            workers. Required for secondary workers if the
-            minimum secondary instances is set.
+            Optional. Minimum number of instances for this group.
 
-            Primary workers - Bounds: [min_instances, ).
-            Secondary workers - Bounds: [min_instances, ).
-            Default: 0.
+            Primary workers - Bounds: [2, max_instances]. Default: 2.
+            Secondary workers - Bounds: [0, max_instances]. Default: 0.
+        max_instances (int):
+            Required. Maximum number of instances for this group.
+            Required for primary workers. Note that by default, clusters
+            will not use secondary workers. Required for secondary
+            workers if the minimum secondary instances is set.
+
+            Primary workers - Bounds: [min_instances, ). Secondary
+            workers - Bounds: [min_instances, ). Default: 0.
         weight (int):
             Optional. Weight for the instance group, which is used to
             determine the fraction of total workers in the cluster from

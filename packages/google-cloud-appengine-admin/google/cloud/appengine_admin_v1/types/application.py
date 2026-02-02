@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -120,6 +120,7 @@ class Application(proto.Message):
             SYSTEM_DISABLED (3):
                 Application has been disabled by the system.
         """
+
         UNSPECIFIED = 0
         SERVING = 1
         USER_DISABLED = 2
@@ -138,6 +139,7 @@ class Application(proto.Message):
             CLOUD_DATASTORE_COMPATIBILITY (3):
                 Cloud Firestore in Datastore Mode
         """
+
         DATABASE_TYPE_UNSPECIFIED = 0
         CLOUD_DATASTORE = 1
         CLOUD_FIRESTORE = 2
@@ -193,15 +195,12 @@ class Application(proto.Message):
 
         Attributes:
             split_health_checks (bool):
-                Boolean value indicating if split health checks
-                should be used instead of the legacy health
-                checks. At an app.yaml level, this means
-                defaulting to 'readiness_check' and
-                'liveness_check' values instead of
-                'health_check' ones. Once the legacy
-                'health_check' behavior is deprecated, and this
-                value is always true, this setting can be
-                removed.
+                Boolean value indicating if split health checks should be
+                used instead of the legacy health checks. At an app.yaml
+                level, this means defaulting to 'readiness_check' and
+                'liveness_check' values instead of 'health_check' ones. Once
+                the legacy 'health_check' behavior is deprecated, and this
+                value is always true, this setting can be removed.
             use_container_optimized_os (bool):
                 If true, use `Container-Optimized
                 OS <https://cloud.google.com/container-optimized-os/>`__

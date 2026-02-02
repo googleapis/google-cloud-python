@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.edgecontainer_v1.types import resources, service
 
@@ -546,12 +546,12 @@ class EdgeContainerGrpcTransport(EdgeContainerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_offline_credential" not in self._stubs:
-            self._stubs[
-                "generate_offline_credential"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
-                request_serializer=service.GenerateOfflineCredentialRequest.serialize,
-                response_deserializer=service.GenerateOfflineCredentialResponse.deserialize,
+            self._stubs["generate_offline_credential"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
+                    request_serializer=service.GenerateOfflineCredentialRequest.serialize,
+                    response_deserializer=service.GenerateOfflineCredentialResponse.deserialize,
+                )
             )
         return self._stubs["generate_offline_credential"]
 

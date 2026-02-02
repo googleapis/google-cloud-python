@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,18 +43,23 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments import (
     SaasDeploymentsAsyncClient,
@@ -977,10 +982,9 @@ def test_saas_deployments_client_get_mtls_endpoint_and_cert_source(client_class)
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1025,10 +1029,9 @@ def test_saas_deployments_client_get_mtls_endpoint_and_cert_source(client_class)
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1064,10 +1067,9 @@ def test_saas_deployments_client_get_mtls_endpoint_and_cert_source(client_class)
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1310,13 +1312,13 @@ def test_saas_deployments_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -6061,9 +6063,9 @@ def test_create_unit_kind_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_unit_kind] = (
+            mock_rpc
+        )
         request = {}
         client.create_unit_kind(request)
 
@@ -6423,9 +6425,9 @@ def test_update_unit_kind_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_unit_kind] = (
+            mock_rpc
+        )
         request = {}
         client.update_unit_kind(request)
 
@@ -6768,9 +6770,9 @@ def test_delete_unit_kind_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_unit_kind] = (
+            mock_rpc
+        )
         request = {}
         client.delete_unit_kind(request)
 
@@ -9126,9 +9128,9 @@ def test_list_unit_operations_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_unit_operations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_unit_operations] = (
+            mock_rpc
+        )
         request = {}
         client.list_unit_operations(request)
 
@@ -9695,9 +9697,9 @@ def test_get_unit_operation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_unit_operation] = (
+            mock_rpc
+        )
         request = {}
         client.get_unit_operation(request)
 
@@ -10084,9 +10086,9 @@ def test_create_unit_operation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_unit_operation] = (
+            mock_rpc
+        )
         request = {}
         client.create_unit_operation(request)
 
@@ -10501,9 +10503,9 @@ def test_update_unit_operation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_unit_operation] = (
+            mock_rpc
+        )
         request = {}
         client.update_unit_operation(request)
 
@@ -10888,9 +10890,9 @@ def test_delete_unit_operation_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_unit_operation] = (
+            mock_rpc
+        )
         request = {}
         client.delete_unit_operation(request)
 
@@ -15554,9 +15556,9 @@ def test_create_unit_kind_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_unit_kind] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_unit_kind(request)
@@ -15775,9 +15777,9 @@ def test_update_unit_kind_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_unit_kind] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_unit_kind(request)
@@ -15974,9 +15976,9 @@ def test_delete_unit_kind_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_unit_kind
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_unit_kind] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_unit_kind(request)
@@ -17206,9 +17208,9 @@ def test_list_unit_operations_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_unit_operations
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_unit_operations] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_unit_operations(request)
@@ -17472,9 +17474,9 @@ def test_get_unit_operation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_unit_operation] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_unit_operation(request)
@@ -17657,9 +17659,9 @@ def test_create_unit_operation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_unit_operation] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_unit_operation(request)
@@ -17885,9 +17887,9 @@ def test_update_unit_operation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_unit_operation] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_unit_operation(request)
@@ -18091,9 +18093,9 @@ def test_delete_unit_operation_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_unit_operation
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_unit_operation] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_unit_operation(request)
@@ -20983,8 +20985,9 @@ def test_list_saas_rest_bad_request(request_type=deployments_service.ListSaasReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21049,17 +21052,19 @@ def test_list_saas_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_saas"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_saas_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_saas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_saas"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_saas_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_saas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21115,8 +21120,9 @@ def test_get_saas_rest_bad_request(request_type=deployments_service.GetSaasReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21183,17 +21189,19 @@ def test_get_saas_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_saas"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_saas_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_saas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_saas"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_saas_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_saas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21246,8 +21254,9 @@ def test_create_saas_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21391,17 +21400,19 @@ def test_create_saas_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_saas"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_saas_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_saas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_saas"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_saas_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_saas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21454,8 +21465,9 @@ def test_update_saas_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21599,17 +21611,19 @@ def test_update_saas_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_saas"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_saas_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_saas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_saas"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_saas_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_saas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21662,8 +21676,9 @@ def test_delete_saas_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21720,13 +21735,13 @@ def test_delete_saas_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_saas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_saas"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteSaasRequest.pb(
             deployments_service.DeleteSaasRequest()
@@ -21771,8 +21786,9 @@ def test_list_tenants_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21837,17 +21853,19 @@ def test_list_tenants_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_tenants"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_tenants_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_tenants"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_tenants"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_tenants_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_tenants"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -21903,8 +21921,9 @@ def test_get_tenant_rest_bad_request(request_type=deployments_service.GetTenantR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -21975,17 +21994,19 @@ def test_get_tenant_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_tenant"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_tenant_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_tenant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_tenant"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_tenant_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_tenant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22040,8 +22061,9 @@ def test_create_tenant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22190,17 +22212,20 @@ def test_create_tenant_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_tenant"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_tenant_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_tenant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_tenant"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_create_tenant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_tenant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22257,8 +22282,9 @@ def test_update_tenant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22409,17 +22435,20 @@ def test_update_tenant_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_tenant"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_tenant_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_tenant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_tenant"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_update_tenant_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_tenant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22474,8 +22503,9 @@ def test_delete_tenant_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22532,13 +22562,13 @@ def test_delete_tenant_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_tenant"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_tenant"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteTenantRequest.pb(
             deployments_service.DeleteTenantRequest()
@@ -22583,8 +22613,9 @@ def test_list_unit_kinds_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22649,17 +22680,20 @@ def test_list_unit_kinds_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_unit_kinds"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_unit_kinds_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_unit_kinds"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_unit_kinds"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_list_unit_kinds_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_unit_kinds"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22717,8 +22751,9 @@ def test_get_unit_kind_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22789,17 +22824,20 @@ def test_get_unit_kind_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_unit_kind"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_unit_kind_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_unit_kind"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_unit_kind"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_get_unit_kind_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_unit_kind"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22854,8 +22892,9 @@ def test_create_unit_kind_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23020,17 +23059,20 @@ def test_create_unit_kind_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_unit_kind"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_unit_kind_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_unit_kind"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_unit_kind"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_create_unit_kind_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_unit_kind"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23087,8 +23129,9 @@ def test_update_unit_kind_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23255,17 +23298,20 @@ def test_update_unit_kind_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_unit_kind"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_unit_kind_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_unit_kind"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_unit_kind"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_update_unit_kind_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_unit_kind"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23320,8 +23366,9 @@ def test_delete_unit_kind_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23378,13 +23425,13 @@ def test_delete_unit_kind_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_unit_kind"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_unit_kind"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteUnitKindRequest.pb(
             deployments_service.DeleteUnitKindRequest()
@@ -23427,8 +23474,9 @@ def test_list_units_rest_bad_request(request_type=deployments_service.ListUnitsR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23493,17 +23541,19 @@ def test_list_units_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_units"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_units_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_units"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_units"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_units_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_units"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23559,8 +23609,9 @@ def test_get_unit_rest_bad_request(request_type=deployments_service.GetUnitReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23654,17 +23705,19 @@ def test_get_unit_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_unit"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_unit_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_unit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_unit"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_unit_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_unit"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23717,8 +23770,9 @@ def test_create_unit_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23923,17 +23977,19 @@ def test_create_unit_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_unit"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_unit_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_unit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_unit"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_unit_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_unit"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23988,8 +24044,9 @@ def test_update_unit_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24196,17 +24253,19 @@ def test_update_unit_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_unit"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_unit_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_unit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_unit"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_unit_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_unit"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24259,8 +24318,9 @@ def test_delete_unit_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24317,13 +24377,13 @@ def test_delete_unit_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_unit"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_unit"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteUnitRequest.pb(
             deployments_service.DeleteUnitRequest()
@@ -24368,8 +24428,9 @@ def test_list_unit_operations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24434,18 +24495,20 @@ def test_list_unit_operations_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_unit_operations"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor,
-        "post_list_unit_operations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_unit_operations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_unit_operations"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_list_unit_operations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_unit_operations"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24503,8 +24566,9 @@ def test_get_unit_operation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24588,18 +24652,20 @@ def test_get_unit_operation_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_unit_operation"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor,
-        "post_get_unit_operation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_unit_operation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_unit_operation"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_get_unit_operation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_unit_operation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24657,8 +24723,9 @@ def test_create_unit_operation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24845,18 +24912,20 @@ def test_create_unit_operation_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_unit_operation"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor,
-        "post_create_unit_operation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_unit_operation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_unit_operation"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_create_unit_operation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_unit_operation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24918,8 +24987,9 @@ def test_update_unit_operation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25110,18 +25180,20 @@ def test_update_unit_operation_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_unit_operation"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor,
-        "post_update_unit_operation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_unit_operation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_unit_operation"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_update_unit_operation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_unit_operation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25179,8 +25251,9 @@ def test_delete_unit_operation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25237,13 +25310,13 @@ def test_delete_unit_operation_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_unit_operation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_unit_operation"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteUnitOperationRequest.pb(
             deployments_service.DeleteUnitOperationRequest()
@@ -25288,8 +25361,9 @@ def test_list_releases_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25354,17 +25428,20 @@ def test_list_releases_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_releases"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_list_releases_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_list_releases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_list_releases"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_list_releases_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_list_releases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25422,8 +25499,9 @@ def test_get_release_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25492,17 +25570,19 @@ def test_get_release_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_release"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_get_release_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_get_release"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_release"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_get_release_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_get_release"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25557,8 +25637,9 @@ def test_create_release_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25720,17 +25801,20 @@ def test_create_release_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_release"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_create_release_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_create_release"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_create_release"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_create_release_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_create_release"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25787,8 +25871,9 @@ def test_update_release_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25952,17 +26037,20 @@ def test_update_release_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_release"
-    ) as post, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "post_update_release_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_update_release"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "post_update_release"
+        ) as post,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor,
+            "post_update_release_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_update_release"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26017,8 +26105,9 @@ def test_delete_release_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26075,13 +26164,13 @@ def test_delete_release_rest_interceptors(null_interceptor):
     )
     client = SaasDeploymentsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.SaasDeploymentsRestInterceptor, "pre_delete_release"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.SaasDeploymentsRestInterceptor, "pre_delete_release"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = deployments_service.DeleteReleaseRequest.pb(
             deployments_service.DeleteReleaseRequest()
@@ -26126,8 +26215,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -26186,8 +26276,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -26936,11 +27027,14 @@ def test_saas_deployments_base_transport():
 
 def test_saas_deployments_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.transports.SaasDeploymentsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.transports.SaasDeploymentsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SaasDeploymentsTransport(
@@ -26957,9 +27051,12 @@ def test_saas_deployments_base_transport_with_credentials_file():
 
 def test_saas_deployments_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.transports.SaasDeploymentsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.transports.SaasDeploymentsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SaasDeploymentsTransport()
@@ -27031,11 +27128,12 @@ def test_saas_deployments_transport_auth_gdch_credentials(transport_class):
 def test_saas_deployments_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

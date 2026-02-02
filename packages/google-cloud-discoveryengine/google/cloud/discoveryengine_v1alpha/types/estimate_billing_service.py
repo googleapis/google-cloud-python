@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import import_config
@@ -64,9 +64,9 @@ class EstimateDataSizeRequest(proto.Message):
 
         Attributes:
             estimator_uri_patterns (MutableSequence[google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern]):
-                Required. The URI patterns to estimate the data
-                sizes. At most 10 patterns are allowed,
-                otherwise an INVALID_ARGUMENT error is thrown.
+                Required. The URI patterns to estimate the data sizes. At
+                most 10 patterns are allowed, otherwise an INVALID_ARGUMENT
+                error is thrown.
         """
 
         class EstimatorUriPattern(proto.Message):

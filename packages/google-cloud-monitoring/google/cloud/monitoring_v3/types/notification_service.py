@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import notification
@@ -105,12 +105,12 @@ class ListNotificationChannelDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_descriptors: MutableSequence[
-        notification.NotificationChannelDescriptor
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=notification.NotificationChannelDescriptor,
+    channel_descriptors: MutableSequence[notification.NotificationChannelDescriptor] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=notification.NotificationChannelDescriptor,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -123,9 +123,12 @@ class GetNotificationChannelDescriptorRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel type for which to execute
-            the request. The format is:
-            projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
+            Required. The channel type for which to execute the request.
+            The format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannelDescriptors/[CHANNEL_TYPE]
     """
 
     name: str = proto.Field(
@@ -188,12 +191,12 @@ class ListNotificationChannelsRequest(proto.Message):
             [``GetNotificationChannel``][google.monitoring.v3.NotificationChannelService.GetNotificationChannel]
             operation.
         filter (str):
-            Optional. If provided, this field specifies the
-            criteria that must be met by notification
-            channels to be included in the response.
+            Optional. If provided, this field specifies the criteria
+            that must be met by notification channels to be included in
+            the response.
 
-            For more details, see [sorting and
-            filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
+            For more details, see `sorting and
+            filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         order_by (str):
             Optional. A comma-separated list of fields by which to sort
             the result. Supports the same set of fields as in
@@ -258,12 +261,12 @@ class ListNotificationChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_channels: MutableSequence[
-        notification.NotificationChannel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=notification.NotificationChannel,
+    notification_channels: MutableSequence[notification.NotificationChannel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=notification.NotificationChannel,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -280,9 +283,12 @@ class GetNotificationChannelRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel for which to execute the
-            request. The format is:
-            projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+            Required. The channel for which to execute the request. The
+            format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
     """
 
     name: str = proto.Field(
@@ -321,9 +327,12 @@ class DeleteNotificationChannelRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The channel for which to execute the
-            request. The format is:
-            projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
+            Required. The channel for which to execute the request. The
+            format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/notificationChannels/[CHANNEL_ID]
         force (bool):
             If true, the notification channel will be
             deleted regardless of its use in alert policies

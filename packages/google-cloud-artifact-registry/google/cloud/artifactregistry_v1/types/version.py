@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.artifactregistry_v1.types import file, tag
@@ -54,6 +54,7 @@ class VersionView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     VERSION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -91,10 +92,9 @@ class Version(proto.Message):
         annotations (MutableMapping[str, str]):
             Optional. Client specified annotations.
         fingerprints (MutableSequence[google.cloud.artifactregistry_v1.types.Hash]):
-            Output only. Immutable reference for the
-            version, calculated based on the version's
-            content. Currently we only support dirsum_sha256
-            hash algorithm. Additional hash algorithms may
+            Output only. Immutable reference for the version, calculated
+            based on the version's content. Currently we only support
+            dirsum_sha256 hash algorithm. Additional hash algorithms may
             be added in the future.
     """
 
@@ -149,8 +149,8 @@ class ListVersionsRequest(proto.Message):
             The maximum number of versions to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
         view (google.cloud.artifactregistry_v1.types.VersionView):
             The view that should be returned in the
             response.

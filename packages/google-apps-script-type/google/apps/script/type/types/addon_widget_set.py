@@ -59,6 +59,7 @@ class AddOnWidgetSet(proto.Message):
                 A Gmail add-on action that applies to the
                 addon compose UI.
         """
+
         WIDGET_TYPE_UNSPECIFIED = 0
         DATE_PICKER = 1
         STYLED_BUTTONS = 2

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.batch_v1 import gapic_version as package_version
 
@@ -61,18 +61,16 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.batch_v1.services.batch_service import pagers
-from google.cloud.batch_v1.types import batch
-from google.cloud.batch_v1.types import job
+from google.cloud.batch_v1.types import batch, job, task
 from google.cloud.batch_v1.types import job as gcb_job
-from google.cloud.batch_v1.types import task
 
 from .transports.base import DEFAULT_CLIENT_INFO, BatchServiceTransport
 from .transports.grpc import BatchServiceGrpcTransport
@@ -681,11 +679,9 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = BatchServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            BatchServiceClient._read_environment_variables()
+        )
         self._client_cert_source = BatchServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -720,8 +716,7 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(BatchServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -842,19 +837,15 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             job_id (str):
-                ID used to uniquely identify the Job
-                within its parent scope. This field
-                should contain at most 63 characters and
-                must start with lowercase characters.
-                Only lowercase characters, numbers and
-                '-' are accepted. The '-' character
-                cannot be the first or the last one. A
-                system generated ID will be used if the
-                field is not set.
+                ID used to uniquely identify the Job within its parent
+                scope. This field should contain at most 63 characters
+                and must start with lowercase characters. Only lowercase
+                characters, numbers and '-' are accepted. The '-'
+                character cannot be the first or the last one. A system
+                generated ID will be used if the field is not set.
 
-                The job.name field in the request will
-                be ignored and the created resource name
-                of the Job will be
+                The job.name field in the request will be ignored and
+                the created resource name of the Job will be
                 "{parent}/jobs/{job_id}".
 
                 This corresponds to the ``job_id`` field
@@ -1535,9 +1526,8 @@ class BatchServiceClient(metaclass=BatchServiceClientMeta):
             request (Union[google.cloud.batch_v1.types.ListTasksRequest, dict]):
                 The request object. ListTasks Request.
             parent (str):
-                Required. Name of a TaskGroup from which
-                Tasks are being requested. Pattern:
-
+                Required. Name of a TaskGroup from which Tasks are being
+                requested. Pattern:
                 "projects/{project}/locations/{location}/jobs/{job}/taskGroups/{task_group}"
 
                 This corresponds to the ``parent`` field

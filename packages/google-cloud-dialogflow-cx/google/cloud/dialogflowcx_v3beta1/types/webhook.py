@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import response_message
@@ -73,8 +73,8 @@ class Webhook(proto.Message):
 
             This field is a member of `oneof`_ ``webhook``.
         service_directory (google.cloud.dialogflowcx_v3beta1.types.Webhook.ServiceDirectoryConfig):
-            Configuration for a [Service
-            Directory](https://cloud.google.com/service-directory)
+            Configuration for a `Service
+            Directory <https://cloud.google.com/service-directory>`__
             service.
 
             This field is a member of `oneof`_ ``webhook``.
@@ -138,11 +138,10 @@ class Webhook(proto.Message):
                 access token from the 3rd party platform and put
                 it in the auth header.
             service_agent_auth (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAgentAuth):
-                Optional. Indicate the auth token type generated
-                from the [Diglogflow service
-                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
-                The generated token is sent in the Authorization
-                header.
+                Optional. Indicate the auth token type generated from the
+                `Diglogflow service
+                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                The generated token is sent in the Authorization header.
             service_account_auth_config (google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.ServiceAccountAuthConfig):
                 Optional. Configuration for service account
                 authentication.
@@ -164,14 +163,12 @@ class Webhook(proto.Message):
         """
 
         class ServiceAgentAuth(proto.Enum):
-            r"""Indicate the auth token type generated from the [Diglogflow
-            service
-            agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+            r"""Indicate the auth token type generated from the `Diglogflow service
+            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
 
             Values:
                 SERVICE_AGENT_AUTH_UNSPECIFIED (0):
-                    Service agent auth type unspecified. Default to
-                    ID_TOKEN.
+                    Service agent auth type unspecified. Default to ID_TOKEN.
                 NONE (1):
                     No token used.
                 ID_TOKEN (2):
@@ -187,6 +184,7 @@ class Webhook(proto.Message):
                     other Google Cloud APIs after you grant required roles to
                     ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
             """
+
             SERVICE_AGENT_AUTH_UNSPECIFIED = 0
             NONE = 1
             ID_TOKEN = 2
@@ -203,6 +201,7 @@ class Webhook(proto.Message):
                 FLEXIBLE (2):
                     Represents a flexible webhook.
             """
+
             WEBHOOK_TYPE_UNSPECIFIED = 0
             STANDARD = 1
             FLEXIBLE = 2
@@ -228,6 +227,7 @@ class Webhook(proto.Message):
                 OPTIONS (7):
                     HTTP OPTIONS Method.
             """
+
             HTTP_METHOD_UNSPECIFIED = 0
             POST = 1
             GET = 2
@@ -388,8 +388,8 @@ class Webhook(proto.Message):
         )
 
     class ServiceDirectoryConfig(proto.Message):
-        r"""Represents configuration for a [Service
-        Directory](https://cloud.google.com/service-directory) service.
+        r"""Represents configuration for a `Service
+        Directory <https://cloud.google.com/service-directory>`__ service.
 
         Attributes:
             service (str):
@@ -457,8 +457,8 @@ class ListWebhooksRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -481,9 +481,8 @@ class ListWebhooksResponse(proto.Message):
 
     Attributes:
         webhooks (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Webhook]):
-            The list of webhooks. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of webhooks. There will be a maximum number of
+            items returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -639,9 +638,9 @@ class WebhookRequest(proto.Message):
             This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput]
-            was provided as input, this field will contain
-            the transcript for the audio.
+            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
+            provided as input, this field will contain the transcript
+            for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
@@ -778,10 +777,9 @@ class WebhookRequest(proto.Message):
                 Sentiment score between -1.0 (negative
                 sentiment) and 1.0 (positive  sentiment).
             magnitude (float):
-                A non-negative number in the [0, +inf) range,
-                which represents the absolute magnitude of
-                sentiment, regardless of score (positive or
-                negative).
+                A non-negative number in the [0, +inf) range, which
+                represents the absolute magnitude of sentiment, regardless
+                of score (positive or negative).
         """
 
         score: float = proto.Field(
@@ -931,16 +929,17 @@ class WebhookResponse(proto.Message):
                     ``messages`` will replace the list of messages waiting to be
                     sent to the user.
             """
+
             MERGE_BEHAVIOR_UNSPECIFIED = 0
             APPEND = 1
             REPLACE = 2
 
-        messages: MutableSequence[
-            response_message.ResponseMessage
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=response_message.ResponseMessage,
+        messages: MutableSequence[response_message.ResponseMessage] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=response_message.ResponseMessage,
+            )
         )
         merge_behavior: "WebhookResponse.FulfillmentResponse.MergeBehavior" = (
             proto.Field(
@@ -1084,6 +1083,7 @@ class PageInfo(proto.Message):
                     FILLED (3):
                         Indicates that the parameter has a value.
                 """
+
                 PARAMETER_STATE_UNSPECIFIED = 0
                 EMPTY = 1
                 INVALID = 2
@@ -1112,12 +1112,12 @@ class PageInfo(proto.Message):
                 number=5,
             )
 
-        parameter_info: MutableSequence[
-            "PageInfo.FormInfo.ParameterInfo"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="PageInfo.FormInfo.ParameterInfo",
+        parameter_info: MutableSequence["PageInfo.FormInfo.ParameterInfo"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="PageInfo.FormInfo.ParameterInfo",
+            )
         )
 
     current_page: str = proto.Field(

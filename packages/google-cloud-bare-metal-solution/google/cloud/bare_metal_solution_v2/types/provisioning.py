@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.types import common, network
@@ -118,6 +118,7 @@ class ProvisioningConfig(proto.Message):
                 The request is submitted for provisioning,
                 with error return.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         SUBMITTED = 2
@@ -289,6 +290,7 @@ class ProvisioningQuota(proto.Message):
             ASSET_TYPE_NETWORK (3):
                 The network asset type.
         """
+
         ASSET_TYPE_UNSPECIFIED = 0
         ASSET_TYPE_SERVER = 1
         ASSET_TYPE_STORAGE = 2
@@ -346,12 +348,11 @@ class ListProvisioningQuotasRequest(proto.Message):
             Required. Parent value for
             ListProvisioningQuotasRequest.
         page_size (int):
-            Requested page size. The server might return
-            fewer items than requested. If unspecified,
-            server will pick an appropriate default. Notice
-            that page_size field is not supported and won't
-            be respected in the API request for now, will be
-            updated when pagination is supported.
+            Requested page size. The server might return fewer items
+            than requested. If unspecified, server will pick an
+            appropriate default. Notice that page_size field is not
+            supported and won't be respected in the API request for now,
+            will be updated when pagination is supported.
         page_token (str):
             A token identifying a page of results from
             the server.
@@ -409,16 +410,14 @@ class InstanceConfig(proto.Message):
             A transient unique identifier to idenfity an
             instance within an ProvisioningConfig request.
         instance_type (str):
-            Instance type.
-            [Available
-            types](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
+            Instance type. `Available
+            types <https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations>`__
         hyperthreading (bool):
             Whether the instance should be provisioned
             with Hyperthreading enabled.
         os_image (str):
-            OS image to initialize the instance.
-            [Available
-            images](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
+            OS image to initialize the instance. `Available
+            images <https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations>`__
         client_network (google.cloud.bare_metal_solution_v2.types.InstanceConfig.NetworkAddress):
             Client network address. Filled if
             InstanceConfig.multivlan_config is false.
@@ -439,10 +438,9 @@ class InstanceConfig(proto.Message):
             Server network template name. Filled if
             InstanceConfig.multivlan_config is true.
         logical_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface]):
-            List of logical interfaces for the instance. The
-            number of logical interfaces will be the same as
-            number of hardware bond/nic on the chosen
-            network template. Filled if
+            List of logical interfaces for the instance. The number of
+            logical interfaces will be the same as number of hardware
+            bond/nic on the chosen network template. Filled if
             InstanceConfig.multivlan_config is true.
         ssh_key_names (MutableSequence[str]):
             List of names of ssh keys used to provision
@@ -462,6 +460,7 @@ class InstanceConfig(proto.Message):
                 Instance part of multiple (or single) client
                 networks and private networks.
         """
+
         NETWORKCONFIG_UNSPECIFIED = 0
         SINGLE_VLAN = 1
         MULTI_VLAN = 2
@@ -568,21 +567,20 @@ class VolumeConfig(proto.Message):
         size_gb (int):
             The requested size of this volume, in GB.
         lun_ranges (MutableSequence[google.cloud.bare_metal_solution_v2.types.VolumeConfig.LunRange]):
-            LUN ranges to be configured. Set only when
-            protocol is PROTOCOL_FC.
+            LUN ranges to be configured. Set only when protocol is
+            PROTOCOL_FC.
         machine_ids (MutableSequence[str]):
-            Machine ids connected to this volume. Set only
-            when protocol is PROTOCOL_FC.
+            Machine ids connected to this volume. Set only when protocol
+            is PROTOCOL_FC.
         nfs_exports (MutableSequence[google.cloud.bare_metal_solution_v2.types.VolumeConfig.NfsExport]):
-            NFS exports. Set only when protocol is
-            PROTOCOL_NFS.
+            NFS exports. Set only when protocol is PROTOCOL_NFS.
         user_note (str):
             User note field, it can be used by customers
             to add additional information for the BMS Ops
             team .
         gcp_service (str):
-            The GCP service of the storage volume. Available
-            gcp_service are in
+            The GCP service of the storage volume. Available gcp_service
+            are in
             https://cloud.google.com/bare-metal/docs/bms-planning.
         performance_tier (google.cloud.bare_metal_solution_v2.types.VolumePerformanceTier):
             Performance tier of the Volume.
@@ -600,6 +598,7 @@ class VolumeConfig(proto.Message):
             DISK (2):
                 This Volume is on disk.
         """
+
         TYPE_UNSPECIFIED = 0
         FLASH = 1
         DISK = 2
@@ -615,6 +614,7 @@ class VolumeConfig(proto.Message):
             PROTOCOL_NFS (2):
                 Network file system.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         PROTOCOL_FC = 1
         PROTOCOL_NFS = 2
@@ -685,6 +685,7 @@ class VolumeConfig(proto.Message):
                 READ_WRITE (2):
                     Read-write permission.
             """
+
             PERMISSIONS_UNSPECIFIED = 0
             READ_ONLY = 1
             READ_WRITE = 2
@@ -804,8 +805,7 @@ class NetworkConfig(proto.Message):
             to add additional information for the BMS Ops
             team .
         gcp_service (str):
-            The GCP service of the network. Available
-            gcp_service are in
+            The GCP service of the network. Available gcp_service are in
             https://cloud.google.com/bare-metal/docs/bms-planning.
         vlan_same_project (bool):
             Whether the VLAN attachment pair is located
@@ -828,6 +828,7 @@ class NetworkConfig(proto.Message):
                 Private network, that is a network local to
                 the BMS POD.
         """
+
         TYPE_UNSPECIFIED = 0
         CLIENT = 1
         PRIVATE = 2
@@ -847,6 +848,7 @@ class NetworkConfig(proto.Message):
             BW_10_GBPS (4):
                 10 Gbps.
         """
+
         BANDWIDTH_UNSPECIFIED = 0
         BW_1_GBPS = 1
         BW_2_GBPS = 2
@@ -871,6 +873,7 @@ class NetworkConfig(proto.Message):
                 Use the highest /28 block of the network to
                 host services.
         """
+
         SERVICE_CIDR_UNSPECIFIED = 0
         DISABLED = 1
         HIGH_26 = 2
@@ -953,15 +956,14 @@ class InstanceQuota(proto.Message):
         name (str):
             Output only. The name of the instance quota.
         instance_type (str):
-            Instance type.
-            Deprecated: use gcp_service.
+            Instance type. Deprecated: use gcp_service.
         gcp_service (str):
             The gcp service of the provisioning quota.
         location (str):
             Location where the quota applies.
         available_machine_count (int):
-            Number of machines than can be created for the
-            given location and instance_type.
+            Number of machines than can be created for the given
+            location and instance_type.
     """
 
     name: str = proto.Field(

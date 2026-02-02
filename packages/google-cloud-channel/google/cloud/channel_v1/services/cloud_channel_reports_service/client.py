@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.channel_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.channel_v1.services.cloud_channel_reports_service import pagers
@@ -81,9 +81,7 @@ class CloudChannelReportsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[CloudChannelReportsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudChannelReportsServiceTransport]]
     _transport_registry["grpc"] = CloudChannelReportsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudChannelReportsServiceGrpcAsyncIOTransport
 
@@ -111,13 +109,13 @@ class CloudChannelReportsServiceClientMeta(type):
 
 class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClientMeta):
     """CloudChannelReportsService lets Google Cloud resellers and
-    distributors retrieve and combine a variety of data in Cloud
-    Channel for multiple products (Google Cloud, Google Voice, and
-    Google Workspace.)
+    distributors retrieve and combine a variety of data in Cloud Channel
+    for multiple products (Google Cloud, Google Voice, and Google
+    Workspace.)
 
-    Deprecated: This service is being deprecated. Please use [Export
+    Deprecated: This service is being deprecated. Please use `Export
     Channel Services data to
-    BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+    BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
     instead.
     """
 
@@ -651,11 +649,9 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CloudChannelReportsServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CloudChannelReportsServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             CloudChannelReportsServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -692,8 +688,7 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CloudChannelReportsServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1044,12 +1039,12 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListReportsPager:
-        r"""Lists the reports that RunReportJob can run. These
-        reports include an ID, a description, and the list of
-        columns that will be in the result.
+        r"""Lists the reports that RunReportJob can run. These reports
+        include an ID, a description, and the list of columns that will
+        be in the result.
 
-        Deprecated: Please use [Export Channel Services data to
-        BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+        Deprecated: Please use `Export Channel Services data to
+        BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
         instead.
 
         .. code-block:: python
@@ -1084,9 +1079,8 @@ class CloudChannelReportsServiceClient(metaclass=CloudChannelReportsServiceClien
                 The request object. Request message for
                 [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
             parent (str):
-                Required. The resource name of the
-                partner account to list available
-                reports for. Parent uses the format:
+                Required. The resource name of the partner account to
+                list available reports for. Parent uses the format:
                 accounts/{account_id}
 
                 This corresponds to the ``parent`` field

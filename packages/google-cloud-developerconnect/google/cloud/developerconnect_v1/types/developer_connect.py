@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -95,8 +95,7 @@ class SystemProvider(proto.Enum):
             Scopes can be found at
             https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/scopes-for-oauth-apps#available-scopes
         GITLAB (2):
-            GitLab provider.
-            Scopes can be found at
+            GitLab provider. Scopes can be found at
             https://docs.gitlab.com/user/profile/personal_access_tokens/#personal-access-token-scopes
         GOOGLE (3):
             Google provider.
@@ -120,6 +119,7 @@ class SystemProvider(proto.Enum):
         DYNATRACE (8):
             Dynatrace provider.
     """
+
     SYSTEM_PROVIDER_UNSPECIFIED = 0
     GITHUB = 1
     GITLAB = 2
@@ -461,6 +461,7 @@ class InstallationState(proto.Message):
             COMPLETE (10):
                 Installation process has been completed.
         """
+
         STAGE_UNSPECIFIED = 0
         PENDING_CREATE_APP = 1
         PENDING_USER_OAUTH = 2
@@ -517,6 +518,7 @@ class GitHubConfig(proto.Message):
             FIREBASE (2):
                 The Firebase GitHub Application.
         """
+
         GIT_HUB_APP_UNSPECIFIED = 0
         DEVELOPER_CONNECT = 1
         FIREBASE = 2
@@ -580,8 +582,8 @@ class GitHubEnterpriseConfig(proto.Message):
             the GitHub Enterprise server will be made over
             the public internet.
         server_version (str):
-            Output only. GitHub Enterprise version installed
-            at the host_uri.
+            Output only. GitHub Enterprise version installed at the
+            host_uri.
         ssl_ca_certificate (str):
             Optional. SSL certificate to use for requests
             to GitHub Enterprise.
@@ -1022,9 +1024,8 @@ class CreateConnectionRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         connection_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and connection_id from the
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and connection_id from the
             method_signature of Create RPC
         connection (google.cloud.developerconnect_v1.types.Connection):
             Required. The resource being created
@@ -1081,14 +1082,12 @@ class UpdateConnectionRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Connection
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Connection resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         connection (google.cloud.developerconnect_v1.types.Connection):
             Required. The resource being updated
         request_id (str):
@@ -1295,8 +1294,8 @@ class CreateAccountConnectorRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Location resource name as the
-            account_connector’s parent.
+            Required. Location resource name as the account_connector’s
+            parent.
         account_connector_id (str):
             Required. The ID to use for the
             AccountConnector, which will become the final
@@ -1690,8 +1689,8 @@ class ExchangeError(proto.Message):
             https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
             - error
         description (str):
-            https://datatracker.ietf.org/doc/html/rfc6749#section-5.2
-            - error_description
+            https://datatracker.ietf.org/doc/html/rfc6749#section-5.2 -
+            error_description
     """
 
     code: str = proto.Field(
@@ -2048,10 +2047,9 @@ class FetchReadTokenResponse(proto.Message):
             Expiration timestamp. Can be empty if unknown
             or non-expiring.
         git_username (str):
-            The git_username to specify when making a git
-            clone with the token. For example, for GitHub
-            GitRepositoryLinks, this would be
-            "x-access-token".
+            The git_username to specify when making a git clone with the
+            token. For example, for GitHub GitRepositoryLinks, this
+            would be "x-access-token".
     """
 
     token: str = proto.Field(
@@ -2079,10 +2077,9 @@ class FetchReadWriteTokenResponse(proto.Message):
             Expiration timestamp. Can be empty if unknown
             or non-expiring.
         git_username (str):
-            The git_username to specify when making a git
-            clone with the token. For example, for GitHub
-            GitRepositoryLinks, this would be
-            "x-access-token".
+            The git_username to specify when making a git clone with the
+            token. For example, for GitHub GitRepositoryLinks, this
+            would be "x-access-token".
     """
 
     token: str = proto.Field(
@@ -2144,12 +2141,12 @@ class FetchLinkableGitRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    linkable_git_repositories: MutableSequence[
-        "LinkableGitRepository"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="LinkableGitRepository",
+    linkable_git_repositories: MutableSequence["LinkableGitRepository"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="LinkableGitRepository",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2258,6 +2255,7 @@ class FetchGitRefsRequest(proto.Message):
             BRANCH (2):
                 To fetch branches.
         """
+
         REF_TYPE_UNSPECIFIED = 0
         TAG = 1
         BRANCH = 2

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import serving_config as gcr_serving_config
@@ -177,12 +177,12 @@ class ListServingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    serving_configs: MutableSequence[
-        gcr_serving_config.ServingConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcr_serving_config.ServingConfig,
+    serving_configs: MutableSequence[gcr_serving_config.ServingConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcr_serving_config.ServingConfig,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -198,10 +198,9 @@ class AddControlRequest(proto.Message):
             Required. The source ServingConfig resource name . Format:
             ``projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}``
         control_id (str):
-            Required. The id of the control to apply.
-            Assumed to be in the same catalog as the serving
-            config - if id is not found a NOT_FOUND error is
-            returned.
+            Required. The id of the control to apply. Assumed to be in
+            the same catalog as the serving config - if id is not found
+            a NOT_FOUND error is returned.
     """
 
     serving_config: str = proto.Field(

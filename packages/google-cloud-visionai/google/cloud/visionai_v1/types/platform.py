@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.visionai_v1.types import annotations as gcv_annotations
@@ -138,6 +138,7 @@ class ModelType(proto.Enum):
         SYNTH_ID (15):
             Model Type SynthID.
     """
+
     MODEL_TYPE_UNSPECIFIED = 0
     IMAGE_CLASSIFICATION = 1
     OBJECT_DETECTION = 2
@@ -176,6 +177,7 @@ class AcceleratorType(proto.Enum):
         TPU_V3 (7):
             TPU v3.
     """
+
     ACCELERATOR_TYPE_UNSPECIFIED = 0
     NVIDIA_TESLA_K80 = 1
     NVIDIA_TESLA_P100 = 2
@@ -206,6 +208,7 @@ class DataType(proto.Enum):
             instantiated and replaced by a concrete underlying
             ``DataType`` during instance deployment.
     """
+
     DATA_TYPE_UNSPECIFIED = 0
     VIDEO = 1
     IMAGE = 3
@@ -487,14 +490,12 @@ class UpdateApplicationRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Application
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Application resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         application (google.cloud.visionai_v1.types.Application):
             Required. The resource being updated.
         request_id (str):
@@ -733,12 +734,12 @@ class AddApplicationStreamInputRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_stream_inputs: MutableSequence[
-        "ApplicationStreamInput"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ApplicationStreamInput",
+    application_stream_inputs: MutableSequence["ApplicationStreamInput"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ApplicationStreamInput",
+        )
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -790,12 +791,12 @@ class UpdateApplicationStreamInputRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_stream_inputs: MutableSequence[
-        "ApplicationStreamInput"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ApplicationStreamInput",
+    application_stream_inputs: MutableSequence["ApplicationStreamInput"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ApplicationStreamInput",
+        )
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1099,13 +1100,12 @@ class UpdateDraftRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Draft resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Draft resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         draft (google.cloud.visionai_v1.types.Draft):
             Required. The resource being updated.
         request_id (str):
@@ -1129,9 +1129,9 @@ class UpdateDraftRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         allow_missing (bool):
-            If true, UpdateDraftRequest will create one
-            resource if the target resource doesn't exist,
-            this time, the field_mask will be ignored.
+            If true, UpdateDraftRequest will create one resource if the
+            target resource doesn't exist, this time, the field_mask
+            will be ignored.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1186,9 +1186,9 @@ class UpdateApplicationInstancesRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         allow_missing (bool):
-            If true, Update Request will create one resource
-            if the target resource doesn't exist, this time,
-            the field_mask will be ignored.
+            If true, Update Request will create one resource if the
+            target resource doesn't exist, this time, the field_mask
+            will be ignored.
     """
 
     class UpdateApplicationInstance(proto.Message):
@@ -1196,13 +1196,12 @@ class UpdateApplicationInstancesRequest(proto.Message):
 
         Attributes:
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify the
-                fields to be overwritten in the Draft resource
-                by the update. The fields specified in the
-                update_mask are relative to the resource, not
-                the full request. A field will be overwritten if
-                it is in the mask. If the user does not provide
-                a mask then all fields will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Draft resource by the update. The fields
+                specified in the update_mask are relative to the resource,
+                not the full request. A field will be overwritten if it is
+                in the mask. If the user does not provide a mask then all
+                fields will be overwritten.
             instance (google.cloud.visionai_v1.types.Instance):
                 Required. The resource being updated.
             instance_id (str):
@@ -1228,12 +1227,12 @@ class UpdateApplicationInstancesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_instances: MutableSequence[
-        UpdateApplicationInstance
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=UpdateApplicationInstance,
+    application_instances: MutableSequence[UpdateApplicationInstance] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=UpdateApplicationInstance,
+        )
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1456,14 +1455,12 @@ class UpdateProcessorRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Processor
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Processor resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         processor (google.cloud.visionai_v1.types.Processor):
             Required. The resource being updated.
         request_id (str):
@@ -1599,6 +1596,7 @@ class Application(proto.Message):
             FIXING (10):
                 State Fixing.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         DEPLOYING = 2
@@ -1622,6 +1620,7 @@ class Application(proto.Message):
             MONTHLY (2):
                 Monthly billing mode.
         """
+
         BILLING_MODE_UNSPECIFIED = 0
         PAYG = 1
         MONTHLY = 2
@@ -1648,11 +1647,8 @@ class Application(proto.Message):
                     The full resource name of the outputted
                     resources.
                 producer_node (str):
-                    The name of graph node who produces the output
-                    resource name. For example:
-
-                    output_resource:
-
+                    The name of graph node who produces the output resource
+                    name. For example: output_resource:
                     /projects/123/locations/us-central1/corpora/my-corpus/dataSchemas/my-schema
                     producer_node: occupancy-count
                 key (str):
@@ -1775,17 +1771,14 @@ class ApplicationConfigs(proto.Message):
 
         Attributes:
             channel (str):
-                The delivery channel for the event notification,
-                only pub/sub topic is supported now.
-                Example channel:
-
+                The delivery channel for the event notification, only
+                pub/sub topic is supported now. Example channel:
                 [//pubsub.googleapis.com/projects/visionai-testing-stable/topics/test-topic]
             minimal_delivery_interval (google.protobuf.duration_pb2.Duration):
-                The expected delivery interval for the same
-                event. The same event won't be notified multiple
-                times during this internal event that it is
-                happening multiple times during the period of
-                time.The same event is identified by <event_id,
+                The expected delivery interval for the same event. The same
+                event won't be notified multiple times during this internal
+                event that it is happening multiple times during the period
+                of time.The same event is identified by <event_id,
                 app_platform_metadata>.
         """
 
@@ -1991,11 +1984,8 @@ class Instance(proto.Message):
         instance_type (google.cloud.visionai_v1.types.Instance.InstanceType):
             The instance type for the current instance.
         input_resources (MutableSequence[google.cloud.visionai_v1.types.Instance.InputResource]):
-            The input resources for the current application
-            instance. For example:
-
-            input_resources:
-
+            The input resources for the current application instance.
+            For example: input_resources:
             visionai.googleapis.com/v1/projects/123/locations/us-central1/clusters/456/streams/stream-a
         output_resources (MutableSequence[google.cloud.visionai_v1.types.Instance.OutputResource]):
             All the output resources associated to one
@@ -2009,9 +1999,8 @@ class Instance(proto.Message):
 
         Values:
             INSTANCE_TYPE_UNSPECIFIED (0):
-                Unspecified instance type.
-                If the instance type is not specified, the
-                default one is STREAMING_PREDICTION.
+                Unspecified instance type. If the instance type is not
+                specified, the default one is STREAMING_PREDICTION.
             STREAMING_PREDICTION (1):
                 Instance type for streaming prediction.
             BATCH_PREDICTION (2):
@@ -2019,6 +2008,7 @@ class Instance(proto.Message):
             ONLINE_PREDICTION (3):
                 Instance type for online prediction.
         """
+
         INSTANCE_TYPE_UNSPECIFIED = 0
         STREAMING_PREDICTION = 1
         BATCH_PREDICTION = 2
@@ -2054,6 +2044,7 @@ class Instance(proto.Message):
             FINISHED (11):
                 State Finished.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -2079,29 +2070,24 @@ class Instance(proto.Message):
 
         Attributes:
             input_resource (str):
-                The direct input resource name.
-                If the instance type is STREAMING_PREDICTION,
-                the input resource is in format of
+                The direct input resource name. If the instance type is
+                STREAMING_PREDICTION, the input resource is in format of
                 "projects/123/locations/us-central1/clusters/456/streams/stream-a".
-                If the instance type is BATCH_PREDICTION from
-                Cloud Storage input container, the input
-                resource is in format of "gs://bucket-a".
+                If the instance type is BATCH_PREDICTION from Cloud Storage
+                input container, the input resource is in format of
+                "gs://bucket-a".
 
                 This field is a member of `oneof`_ ``input_resource_information``.
             annotated_stream (google.cloud.visionai_v1.types.StreamWithAnnotation):
-                If the input resource is VisionAI Stream, the
-                associated annotations can be specified using
-                annotated_stream instead.
+                If the input resource is VisionAI Stream, the associated
+                annotations can be specified using annotated_stream instead.
 
                 This field is a member of `oneof`_ ``input_resource_information``.
             data_type (google.cloud.visionai_v1.types.DataType):
                 Data type for the current input resource.
             consumer_node (str):
-                The name of graph node who receives the input
-                resource. For example:
-
-                input_resource:
-
+                The name of graph node who receives the input resource. For
+                example: input_resource:
                 visionai.googleapis.com/v1/projects/123/locations/us-central1/clusters/456/streams/input-stream-a
                 consumer_node: stream-input
             input_resource_binding (str):
@@ -2150,11 +2136,8 @@ class Instance(proto.Message):
                 The output resource name for the current
                 application instance.
             producer_node (str):
-                The name of graph node who produces the output
-                resource name. For example:
-
-                output_resource:
-
+                The name of graph node who produces the output resource
+                name. For example: output_resource:
                 /projects/123/locations/us-central1/clusters/456/streams/output-application-789-stream-a-occupancy-counting
                 producer_node: occupancy-counting
             output_resource_binding (str):
@@ -2291,10 +2274,9 @@ class Processor(proto.Message):
         state (google.cloud.visionai_v1.types.Processor.ProcessorState):
             Output only. State of the Processor.
         processor_io_spec (google.cloud.visionai_v1.types.ProcessorIOSpec):
-            Output only. [Output only] The input / output
-            specifications of a processor, each type of
-            processor has fixed input / output specs which
-            cannot be altered by customer.
+            Output only. [Output only] The input / output specifications
+            of a processor, each type of processor has fixed input /
+            output specs which cannot be altered by customer.
         configuration_typeurl (str):
             Output only. The corresponding configuration
             can be used in the Application to customize the
@@ -2305,8 +2287,8 @@ class Processor(proto.Message):
             Indicates if the processor supports post
             processing.
         supported_instance_types (MutableSequence[google.cloud.visionai_v1.types.Instance.InstanceType]):
-            Which instance types this processor supports; if
-            empty, this default to STREAMING_PREDICTION.
+            Which instance types this processor supports; if empty, this
+            default to STREAMING_PREDICTION.
     """
 
     class ProcessorType(proto.Enum):
@@ -2337,6 +2319,7 @@ class Processor(proto.Message):
                 data to other processors or receive data from
                 other processors.
         """
+
         PROCESSOR_TYPE_UNSPECIFIED = 0
         PRETRAINED = 1
         CUSTOM = 2
@@ -2359,6 +2342,7 @@ class Processor(proto.Message):
             FAILED (4):
                 Processor deleted or creation failed .
         """
+
         PROCESSOR_STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -2432,12 +2416,12 @@ class Processor(proto.Message):
         proto.BOOL,
         number=17,
     )
-    supported_instance_types: MutableSequence[
-        "Instance.InstanceType"
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=18,
-        enum="Instance.InstanceType",
+    supported_instance_types: MutableSequence["Instance.InstanceType"] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=18,
+            enum="Instance.InstanceType",
+        )
     )
 
 
@@ -2447,9 +2431,8 @@ class ProcessorIOSpec(proto.Message):
 
     Attributes:
         graph_input_channel_specs (MutableSequence[google.cloud.visionai_v1.types.ProcessorIOSpec.GraphInputChannelSpec]):
-            For processors with input_channel_specs, the
-            processor must be explicitly connected to
-            another processor.
+            For processors with input_channel_specs, the processor must
+            be explicitly connected to another processor.
         graph_output_channel_specs (MutableSequence[google.cloud.visionai_v1.types.ProcessorIOSpec.GraphOutputChannelSpec]):
             The output artifact specifications for the
             current processor.
@@ -2620,19 +2603,19 @@ class ProcessorIOSpec(proto.Message):
             number=3,
         )
 
-    graph_input_channel_specs: MutableSequence[
-        GraphInputChannelSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=GraphInputChannelSpec,
+    graph_input_channel_specs: MutableSequence[GraphInputChannelSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=GraphInputChannelSpec,
+        )
     )
-    graph_output_channel_specs: MutableSequence[
-        GraphOutputChannelSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=GraphOutputChannelSpec,
+    graph_output_channel_specs: MutableSequence[GraphOutputChannelSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=GraphOutputChannelSpec,
+        )
     )
     instance_resource_input_binding_specs: MutableSequence[
         InstanceResourceInputBindingSpec
@@ -2678,13 +2661,11 @@ class CustomProcessorSourceInfo(proto.Message):
             imported custom processor. Data is filled in by
             app platform during the processor creation.
         model_schema (google.cloud.visionai_v1.types.CustomProcessorSourceInfo.ModelSchema):
-            Model schema files which specifies the signature
-            of the model. For VERTEX_CUSTOM models,
-            instances schema is required. If instances
-            schema is not specified during the processor
-            creation, VisionAI Platform will try to get it
-            from Vertex, if it doesn't exist, the creation
-            will fail.
+            Model schema files which specifies the signature of the
+            model. For VERTEX_CUSTOM models, instances schema is
+            required. If instances schema is not specified during the
+            processor creation, VisionAI Platform will try to get it
+            from Vertex, if it doesn't exist, the creation will fail.
     """
 
     class SourceType(proto.Enum):
@@ -2702,6 +2683,7 @@ class CustomProcessorSourceInfo(proto.Message):
             PRODUCT_RECOGNIZER (3):
                 Source for Product Recognizer.
         """
+
         SOURCE_TYPE_UNSPECIFIED = 0
         VERTEX_AUTOML = 1
         VERTEX_CUSTOM = 2
@@ -2730,8 +2712,8 @@ class CustomProcessorSourceInfo(proto.Message):
         )
 
     class ModelSchema(proto.Message):
-        r"""The schema is defined as an OpenAPI 3.0.2 [Schema
-        Object](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject).
+        r"""The schema is defined as an OpenAPI 3.0.2 `Schema
+        Object <https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md#schemaObject>`__.
 
         Attributes:
             instances_schema (google.cloud.visionai_v1.types.GcsSource):
@@ -2859,8 +2841,7 @@ class ProcessorConfig(proto.Message):
 
             This field is a member of `oneof`_ ``processor_config``.
         personal_protective_equipment_detection_config (google.cloud.visionai_v1.types.PersonalProtectiveEquipmentDetectionConfig):
-            Configs of
-            personal_protective_equipment_detection_config
+            Configs of personal_protective_equipment_detection_config
 
             This field is a member of `oneof`_ ``processor_config``.
         tag_recognizer_config (google.cloud.visionai_v1.types.TagRecognizerConfig):
@@ -3019,24 +3000,24 @@ class StreamWithAnnotation(proto.Message):
             proto.STRING,
             number=1,
         )
-        annotations: MutableSequence[
-            gcv_annotations.StreamAnnotation
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=gcv_annotations.StreamAnnotation,
+        annotations: MutableSequence[gcv_annotations.StreamAnnotation] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=gcv_annotations.StreamAnnotation,
+            )
         )
 
     stream: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    application_annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=gcv_annotations.StreamAnnotation,
+    application_annotations: MutableSequence[gcv_annotations.StreamAnnotation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=gcv_annotations.StreamAnnotation,
+        )
     )
     node_annotations: MutableSequence[NodeAnnotation] = proto.RepeatedField(
         proto.MESSAGE,
@@ -3061,12 +3042,12 @@ class ApplicationNodeAnnotation(proto.Message):
         proto.STRING,
         number=1,
     )
-    annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=gcv_annotations.StreamAnnotation,
+    annotations: MutableSequence[gcv_annotations.StreamAnnotation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=gcv_annotations.StreamAnnotation,
+        )
     )
 
 
@@ -3091,19 +3072,19 @@ class ResourceAnnotations(proto.Message):
             processor will have two active zones defined.
     """
 
-    application_annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcv_annotations.StreamAnnotation,
+    application_annotations: MutableSequence[gcv_annotations.StreamAnnotation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcv_annotations.StreamAnnotation,
+        )
     )
-    node_annotations: MutableSequence[
-        "ApplicationNodeAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ApplicationNodeAnnotation",
+    node_annotations: MutableSequence["ApplicationNodeAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ApplicationNodeAnnotation",
+        )
     )
 
 
@@ -3124,12 +3105,12 @@ class VideoStreamInputConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    streams_with_annotation: MutableSequence[
-        "StreamWithAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="StreamWithAnnotation",
+    streams_with_annotation: MutableSequence["StreamWithAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="StreamWithAnnotation",
+        )
     )
 
 
@@ -3142,9 +3123,7 @@ class MediaWarehouseConfig(proto.Message):
 
     Attributes:
         corpus (str):
-            Resource name of the Media Warehouse corpus.
-            Format:
-
+            Resource name of the Media Warehouse corpus. Format:
             projects/${project_id}/locations/${location_id}/corpora/${corpus_id}
         region (str):
             Deprecated.
@@ -3191,6 +3170,7 @@ class PersonBlurConfig(proto.Message):
             BLUR_FILTER (2):
                 FaceBlur Type blur filter.
         """
+
         PERSON_BLUR_TYPE_UNSPECIFIED = 0
         FULL_OCCULUSION = 1
         BLUR_FILTER = 2
@@ -3242,9 +3222,9 @@ class PersonVehicleDetectionConfig(proto.Message):
     Attributes:
         enable_people_counting (bool):
             At least one of enable_people_counting and
-            enable_vehicle_counting fields must be set to
-            true. Whether to count the appearances of
-            people, output counts have 'people' as the key.
+            enable_vehicle_counting fields must be set to true. Whether
+            to count the appearances of people, output counts have
+            'people' as the key.
         enable_vehicle_counting (bool):
             Whether to count the appearances of vehicles,
             output counts will have 'vehicle' as the key.
@@ -3690,12 +3670,12 @@ class DedicatedResources(proto.Message):
         proto.INT32,
         number=3,
     )
-    autoscaling_metric_specs: MutableSequence[
-        "AutoscalingMetricSpec"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AutoscalingMetricSpec",
+    autoscaling_metric_specs: MutableSequence["AutoscalingMetricSpec"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AutoscalingMetricSpec",
+        )
     )
 
 
@@ -3782,6 +3762,7 @@ class TagParsingConfig(proto.Message):
                     Matches the line with the maximum overlap
                     area with entity bounding box.
             """
+
             ENTITY_MATCHING_STRATEGY_UNSPECIFIED = 0
             MULTI_LINE_MATCHING = 1
             MAX_OVERLAP_AREA = 2

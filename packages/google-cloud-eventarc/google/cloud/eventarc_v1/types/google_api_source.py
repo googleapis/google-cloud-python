@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import logging_config as gce_logging_config
@@ -67,11 +67,9 @@ class GoogleApiSource(proto.Message):
         display_name (str):
             Optional. Resource display name.
         destination (str):
-            Required. Destination is the message bus that
-            the GoogleApiSource is delivering to. It must be
-            point to the full resource name of a MessageBus.
-            Format:
-
+            Required. Destination is the message bus that the
+            GoogleApiSource is delivering to. It must be point to the
+            full resource name of a MessageBus. Format:
             "projects/{PROJECT_ID}/locations/{region}/messagesBuses/{MESSAGE_BUS_ID)
         crypto_key_name (str):
             Optional. Resource name of a KMS crypto key (managed by the

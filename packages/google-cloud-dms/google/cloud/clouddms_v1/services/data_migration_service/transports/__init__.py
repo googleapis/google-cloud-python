@@ -21,9 +21,7 @@ from .grpc import DataMigrationServiceGrpcTransport
 from .grpc_asyncio import DataMigrationServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataMigrationServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataMigrationServiceTransport]]
 _transport_registry["grpc"] = DataMigrationServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = DataMigrationServiceGrpcAsyncIOTransport
 

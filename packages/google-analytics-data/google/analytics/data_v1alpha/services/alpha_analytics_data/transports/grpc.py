@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.analytics.data_v1alpha.types import analytics_data_api
 
@@ -348,27 +348,24 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the run funnel report method over gRPC.
 
-        Returns a customized funnel report of your Google
-        Analytics event data. The data returned from the API is
-        as a table with columns for the requested dimensions and
-        metrics.
+        Returns a customized funnel report of your Google Analytics
+        event data. The data returned from the API is as a table with
+        columns for the requested dimensions and metrics.
 
-        Funnel exploration lets you visualize the steps your
-        users take to complete a task and quickly see how well
-        they are succeeding or failing at each step. For
-        example, how do prospects become shoppers and then
-        become buyers? How do one time buyers become repeat
-        buyers? With this information, you can improve
-        inefficient or abandoned customer journeys. To learn
-        more, see [GA4 Funnel
-        Explorations](https://support.google.com/analytics/answer/9327974).
+        Funnel exploration lets you visualize the steps your users take
+        to complete a task and quickly see how well they are succeeding
+        or failing at each step. For example, how do prospects become
+        shoppers and then become buyers? How do one time buyers become
+        repeat buyers? With this information, you can improve
+        inefficient or abandoned customer journeys. To learn more, see
+        `GA4 Funnel
+        Explorations <https://support.google.com/analytics/answer/9327974>`__.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the [Google Analytics Data API
-        Funnel Reporting
-        Feedback](https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform).
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Data API Funnel Reporting
+        Feedback <https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform>`__.
 
         Returns:
             Callable[[~.RunFunnelReportRequest],
@@ -529,12 +526,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "sheet_export_audience_list" not in self._stubs:
-            self._stubs[
-                "sheet_export_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
-                request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
+            self._stubs["sheet_export_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/SheetExportAudienceList",
+                    request_serializer=analytics_data_api.SheetExportAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.SheetExportAudienceListResponse.deserialize,
+                )
             )
         return self._stubs["sheet_export_audience_list"]
 
@@ -630,29 +627,25 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the create recurring audience list method over gRPC.
 
-        Creates a recurring audience list. Recurring audience
-        lists produces new audience lists each day. Audience
-        lists are users in an audience at the time of the list's
-        creation.
+        Creates a recurring audience list. Recurring audience lists
+        produces new audience lists each day. Audience lists are users
+        in an audience at the time of the list's creation.
 
-        A recurring audience list ensures that you have audience
-        list based on the most recent data available for use
-        each day. If you manually create audience list, you
-        don't know when an audience list based on an additional
-        day's data is available. This recurring audience list
-        automates the creation of an audience list when an
-        additional day's data is available. You will consume
-        fewer quota tokens by using recurring audience list
-        versus manually creating audience list at various times
-        of day trying to guess when an additional day's data is
-        ready.
+        A recurring audience list ensures that you have audience list
+        based on the most recent data available for use each day. If you
+        manually create audience list, you don't know when an audience
+        list based on an additional day's data is available. This
+        recurring audience list automates the creation of an audience
+        list when an additional day's data is available. You will
+        consume fewer quota tokens by using recurring audience list
+        versus manually creating audience list at various times of day
+        trying to guess when an additional day's data is ready.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the
-        [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.CreateRecurringAudienceListRequest],
@@ -665,12 +658,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "create_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
-                request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            self._stubs["create_recurring_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/CreateRecurringAudienceList",
+                    request_serializer=analytics_data_api.CreateRecurringAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+                )
             )
         return self._stubs["create_recurring_audience_list"]
 
@@ -683,20 +676,18 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the get recurring audience list method over gRPC.
 
-        Gets configuration metadata about a specific recurring
-        audience list. This method can be used to understand a
-        recurring audience list's state after it has been
-        created. For example, a recurring audience list resource
-        will generate audience list instances for each day, and
-        this method can be used to get the resource name of the
-        most recent audience list instance.
+        Gets configuration metadata about a specific recurring audience
+        list. This method can be used to understand a recurring audience
+        list's state after it has been created. For example, a recurring
+        audience list resource will generate audience list instances for
+        each day, and this method can be used to get the resource name
+        of the most recent audience list instance.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the
-        [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         Returns:
             Callable[[~.GetRecurringAudienceListRequest],
@@ -709,12 +700,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_recurring_audience_list" not in self._stubs:
-            self._stubs[
-                "get_recurring_audience_list"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
-                request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
-                response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+            self._stubs["get_recurring_audience_list"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetRecurringAudienceList",
+                    request_serializer=analytics_data_api.GetRecurringAudienceListRequest.serialize,
+                    response_deserializer=analytics_data_api.RecurringAudienceList.deserialize,
+                )
             )
         return self._stubs["get_recurring_audience_list"]
 
@@ -752,12 +743,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_recurring_audience_lists" not in self._stubs:
-            self._stubs[
-                "list_recurring_audience_lists"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
-                request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
-                response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
+            self._stubs["list_recurring_audience_lists"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/ListRecurringAudienceLists",
+                    request_serializer=analytics_data_api.ListRecurringAudienceListsRequest.serialize,
+                    response_deserializer=analytics_data_api.ListRecurringAudienceListsResponse.deserialize,
+                )
             )
         return self._stubs["list_recurring_audience_lists"]
 
@@ -785,12 +776,12 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_property_quotas_snapshot" not in self._stubs:
-            self._stubs[
-                "get_property_quotas_snapshot"
-            ] = self._logged_channel.unary_unary(
-                "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
-                request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
-                response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
+            self._stubs["get_property_quotas_snapshot"] = (
+                self._logged_channel.unary_unary(
+                    "/google.analytics.data.v1alpha.AlphaAnalyticsData/GetPropertyQuotasSnapshot",
+                    request_serializer=analytics_data_api.GetPropertyQuotasSnapshotRequest.serialize,
+                    response_deserializer=analytics_data_api.PropertyQuotasSnapshot.deserialize,
+                )
             )
         return self._stubs["get_property_quotas_snapshot"]
 

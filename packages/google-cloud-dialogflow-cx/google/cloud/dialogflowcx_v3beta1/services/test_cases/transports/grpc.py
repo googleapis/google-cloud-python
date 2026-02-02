@@ -16,20 +16,20 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import test_case
 from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
@@ -115,8 +115,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     """gRPC backend transport for TestCases.
 
     Service for managing [Test
-    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test
-    Case
+    Cases][google.cloud.dialogflow.cx.v3beta1.TestCase] and [Test Case
     Results][google.cloud.dialogflow.cx.v3beta1.TestCaseResult].
 
     This class defines the same methods as the primary client, so the

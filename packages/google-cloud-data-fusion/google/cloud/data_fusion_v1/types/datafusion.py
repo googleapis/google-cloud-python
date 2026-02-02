@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -111,6 +111,7 @@ class Version(proto.Message):
             TYPE_GENERAL_AVAILABILITY (2):
                 Version is available for public use
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_PREVIEW = 1
         TYPE_GENERAL_AVAILABILITY = 2
@@ -164,6 +165,7 @@ class Accelerator(proto.Message):
                 export pipelines custom built to streamline CCAI
                 Insights processing.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         CDC = 1
         HEALTHCARE = 2
@@ -186,6 +188,7 @@ class Accelerator(proto.Message):
                 unknown. Requests for enable, disable could be
                 retried while in this state
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -278,8 +281,8 @@ class Instance(proto.Message):
             Current version of the Data Fusion. Only
             specifiable in Update.
         service_account (str):
-            Output only. Deprecated. Use tenant_project_id
-            instead to extract the tenant project ID.
+            Output only. Deprecated. Use tenant_project_id instead to
+            extract the tenant project ID.
         display_name (str):
             Display name for an instance.
         available_version (MutableSequence[google.cloud.data_fusion_v1.types.Version]):
@@ -347,6 +350,7 @@ class Instance(proto.Message):
                 help enterprises design and develop their data
                 ingestion and integration pipelines at low cost.
         """
+
         TYPE_UNSPECIFIED = 0
         BASIC = 1
         ENTERPRISE = 2
@@ -381,6 +385,7 @@ class Instance(proto.Message):
             DISABLED (10):
                 Instance is disabled
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -404,6 +409,7 @@ class Instance(proto.Message):
                 The KMS key used by the instance is either
                 revoked or denied access to
         """
+
         DISABLED_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
 
@@ -546,9 +552,8 @@ class ListInstancesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are
-            additional results to retrieve for this list
-            request.
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
         filter (str):
             List filter.
         order_by (str):
@@ -621,15 +626,13 @@ class ListAvailableVersionsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are
-            additional results to retrieve for this list
-            request.
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
         latest_patch_only (bool):
-            Whether or not to return the latest patch of
-            every available minor version. If true, only the
-            latest patch will be returned. Ex. if allowed
-            versions is [6.1.1, 6.1.2, 6.2.0] then response
-            will be [6.1.2, 6.2.0]
+            Whether or not to return the latest patch of every available
+            minor version. If true, only the latest patch will be
+            returned. Ex. if allowed versions is [6.1.1, 6.1.2, 6.2.0]
+            then response will be [6.1.2, 6.2.0]
     """
 
     parent: str = proto.Field(
@@ -752,14 +755,12 @@ class UpdateInstanceRequest(proto.Message):
             and stack driver settings. All other fields will
             be ignored.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields that
-            the update will overwrite in an instance
-            resource. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask, all the supported fields (labels,
-            options, and version currently) will be
+            Field mask is used to specify the fields that the update
+            will overwrite in an instance resource. The fields specified
+            in the update_mask are relative to the resource, not the
+            full request. A field will be overwritten if it is in the
+            mask. If the user does not provide a mask, all the supported
+            fields (labels, options, and version currently) will be
             overwritten.
     """
 

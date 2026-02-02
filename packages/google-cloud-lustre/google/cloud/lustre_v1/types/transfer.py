@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -52,6 +52,7 @@ class TransferType(proto.Enum):
         EXPORT (2):
             Exports from Lustre.
     """
+
     TRANSFER_TYPE_UNSPECIFIED = 0
     IMPORT = 1
     EXPORT = 2

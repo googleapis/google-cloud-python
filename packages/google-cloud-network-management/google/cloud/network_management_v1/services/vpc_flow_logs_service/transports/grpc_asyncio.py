@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.network_management_v1.types import vpc_flow_logs, vpc_flow_logs_config
 
@@ -375,12 +377,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_vpc_flow_logs_configs" not in self._stubs:
-            self._stubs[
-                "list_vpc_flow_logs_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ListVpcFlowLogsConfigs",
-                request_serializer=vpc_flow_logs.ListVpcFlowLogsConfigsRequest.serialize,
-                response_deserializer=vpc_flow_logs.ListVpcFlowLogsConfigsResponse.deserialize,
+            self._stubs["list_vpc_flow_logs_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ListVpcFlowLogsConfigs",
+                    request_serializer=vpc_flow_logs.ListVpcFlowLogsConfigsRequest.serialize,
+                    response_deserializer=vpc_flow_logs.ListVpcFlowLogsConfigsResponse.deserialize,
+                )
             )
         return self._stubs["list_vpc_flow_logs_configs"]
 
@@ -449,12 +451,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_vpc_flow_logs_config" not in self._stubs:
-            self._stubs[
-                "create_vpc_flow_logs_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/CreateVpcFlowLogsConfig",
-                request_serializer=vpc_flow_logs.CreateVpcFlowLogsConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_vpc_flow_logs_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/CreateVpcFlowLogsConfig",
+                    request_serializer=vpc_flow_logs.CreateVpcFlowLogsConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_vpc_flow_logs_config"]
 
@@ -494,12 +496,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_vpc_flow_logs_config" not in self._stubs:
-            self._stubs[
-                "update_vpc_flow_logs_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/UpdateVpcFlowLogsConfig",
-                request_serializer=vpc_flow_logs.UpdateVpcFlowLogsConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_vpc_flow_logs_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/UpdateVpcFlowLogsConfig",
+                    request_serializer=vpc_flow_logs.UpdateVpcFlowLogsConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_vpc_flow_logs_config"]
 
@@ -525,12 +527,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_vpc_flow_logs_config" not in self._stubs:
-            self._stubs[
-                "delete_vpc_flow_logs_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/DeleteVpcFlowLogsConfig",
-                request_serializer=vpc_flow_logs.DeleteVpcFlowLogsConfigRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_vpc_flow_logs_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/DeleteVpcFlowLogsConfig",
+                    request_serializer=vpc_flow_logs.DeleteVpcFlowLogsConfigRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_vpc_flow_logs_config"]
 
@@ -559,12 +561,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_org_vpc_flow_logs_configs" not in self._stubs:
-            self._stubs[
-                "query_org_vpc_flow_logs_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/QueryOrgVpcFlowLogsConfigs",
-                request_serializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest.serialize,
-                response_deserializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.deserialize,
+            self._stubs["query_org_vpc_flow_logs_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/QueryOrgVpcFlowLogsConfigs",
+                    request_serializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest.serialize,
+                    response_deserializer=vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse.deserialize,
+                )
             )
         return self._stubs["query_org_vpc_flow_logs_configs"]
 
@@ -593,12 +595,12 @@ class VpcFlowLogsServiceGrpcAsyncIOTransport(VpcFlowLogsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "show_effective_flow_logs_configs" not in self._stubs:
-            self._stubs[
-                "show_effective_flow_logs_configs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ShowEffectiveFlowLogsConfigs",
-                request_serializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest.serialize,
-                response_deserializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.deserialize,
+            self._stubs["show_effective_flow_logs_configs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkmanagement.v1.VpcFlowLogsService/ShowEffectiveFlowLogsConfigs",
+                    request_serializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest.serialize,
+                    response_deserializer=vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse.deserialize,
+                )
             )
         return self._stubs["show_effective_flow_logs_configs"]
 

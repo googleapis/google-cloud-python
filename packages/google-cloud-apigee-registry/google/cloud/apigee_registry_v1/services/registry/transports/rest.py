@@ -16,21 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -3069,7 +3071,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3178,7 +3180,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3277,9 +3279,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api_deployment_revision(
                 request, metadata
@@ -3343,11 +3343,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             resp = self._interceptor.post_delete_api_deployment_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_api_deployment_revision_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_api_deployment_revision_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3448,7 +3447,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3551,9 +3550,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api_spec_revision(
                 request, metadata
@@ -3719,7 +3716,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3829,7 +3826,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4379,59 +4376,55 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
@@ -4459,7 +4452,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4887,59 +4880,55 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
@@ -4967,7 +4956,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5093,9 +5082,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_api_deployment_revisions(
                 request, metadata
@@ -5159,11 +5146,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             resp = self._interceptor.post_list_api_deployment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_api_deployment_revisions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_api_deployment_revisions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6324,9 +6310,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_rollback_api_deployment(
                 request, metadata
@@ -6659,9 +6643,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_tag_api_deployment_revision(
                 request, metadata
@@ -7634,7 +7616,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteApiDeploymentRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteApiDeploymentRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_api_spec(
@@ -7737,7 +7721,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListApiDeploymentRevisions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListApiDeploymentRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_api_deployments(
@@ -7837,7 +7823,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TagApiDeploymentRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TagApiDeploymentRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def tag_api_spec_revision(

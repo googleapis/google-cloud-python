@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import azure_resources
@@ -506,12 +506,12 @@ class ListAzureNodePoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    azure_node_pools: MutableSequence[
-        azure_resources.AzureNodePool
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=azure_resources.AzureNodePool,
+    azure_node_pools: MutableSequence[azure_resources.AzureNodePool] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=azure_resources.AzureNodePool,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -607,8 +607,8 @@ class GetAzureOpenIdConfigRequest(proto.Message):
 class GetAzureJsonWebKeysRequest(proto.Message):
     r"""GetAzureJsonWebKeysRequest gets the public component of the keys
     used by the cluster to sign token requests. This will be the
-    jwks_uri for the discover document returned by getOpenIDConfig.
-    See the OpenID Connect Discovery 1.0 specification for details.
+    jwks_uri for the discover document returned by getOpenIDConfig. See
+    the OpenID Connect Discovery 1.0 specification for details.
 
     Attributes:
         azure_cluster (str):

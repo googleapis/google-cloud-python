@@ -16,23 +16,22 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import project
+from google.cloud.discoveryengine_v1alpha.types import project, project_service
 from google.cloud.discoveryengine_v1alpha.types import project as gcd_project
-from google.cloud.discoveryengine_v1alpha.types import project_service
 
 from .base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
 
@@ -376,14 +375,13 @@ class ProjectServiceGrpcTransport(ProjectServiceTransport):
     ) -> Callable[[project_service.ProvisionProjectRequest], operations_pb2.Operation]:
         r"""Return a callable for the provision project method over gRPC.
 
-        Provisions the project resource. During the
-        process, related systems will get prepared and
-        initialized.
+        Provisions the project resource. During the process, related
+        systems will get prepared and initialized.
 
-        Caller must read the [Terms for data
-        use](https://cloud.google.com/retail/data-use-terms),
-        and optionally specify in request to provide consent to
-        that service terms.
+        Caller must read the `Terms for data
+        use <https://cloud.google.com/retail/data-use-terms>`__, and
+        optionally specify in request to provide consent to that service
+        terms.
 
         Returns:
             Callable[[~.ProvisionProjectRequest],

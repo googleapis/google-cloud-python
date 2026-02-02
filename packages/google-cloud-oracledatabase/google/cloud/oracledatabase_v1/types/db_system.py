@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import database as gco_database
@@ -46,8 +46,8 @@ class DbSystem(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the DbSystem resource in
-            the following format:
+            Identifier. The name of the DbSystem resource in the
+            following format:
             projects/{project}/locations/{region}/dbSystems/{db_system}
         properties (google.cloud.oracledatabase_v1.types.DbSystemProperties):
             Optional. The properties of the DbSystem.
@@ -60,15 +60,14 @@ class DbSystem(proto.Message):
             Optional. The labels or tags associated with
             the DbSystem.
         odb_network (str):
-            Optional. The name of the OdbNetwork associated
-            with the DbSystem. Format:
+            Optional. The name of the OdbNetwork associated with the
+            DbSystem. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
-            It is optional but if specified, this should
-            match the parent ODBNetwork of the OdbSubnet.
+            It is optional but if specified, this should match the
+            parent ODBNetwork of the OdbSubnet.
         odb_subnet (str):
-            Required. The name of the OdbSubnet associated
-            with the DbSystem for IP allocation. Format:
-
+            Required. The name of the OdbSubnet associated with the
+            DbSystem for IP allocation. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         entitlement_id (str):
             Output only. The ID of the subscription
@@ -201,6 +200,7 @@ class DbSystemProperties(proto.Message):
             ENTERPRISE_EDITION_HIGH_PERFORMANCE (3):
                 The database edition is Enterprise Edition.
         """
+
         DB_SYSTEM_DATABASE_EDITION_UNSPECIFIED = 0
         STANDARD_EDITION = 1
         ENTERPRISE_EDITION = 2
@@ -217,6 +217,7 @@ class DbSystemProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 The license model is bring your own license.
         """
+
         LICENSE_MODEL_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -256,6 +257,7 @@ class DbSystemProperties(proto.Message):
             UPGRADING (10):
                 Indicates that the resource is upgrading.
         """
+
         DB_SYSTEM_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -279,6 +281,7 @@ class DbSystemProperties(proto.Message):
             OCPU (2):
                 The compute model is physical.
         """
+
         COMPUTE_MODEL_UNSPECIFIED = 0
         ECPU = 1
         OCPU = 2
@@ -419,6 +422,7 @@ class DbSystemOptions(proto.Message):
             LVM (2):
                 Logical Volume management.
         """
+
         STORAGE_MANAGEMENT_UNSPECIFIED = 0
         ASM = 1
         LVM = 2
@@ -529,8 +533,7 @@ class DeleteDbSystemRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DbSystem in the
-            following format:
+            Required. The name of the DbSystem in the following format:
             projects/{project}/locations/{location}/dbSystems/{db_system}.
         request_id (str):
             Optional. An optional ID to identify the
@@ -562,8 +565,7 @@ class GetDbSystemRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DbSystem in the
-            following format:
+            Required. The name of the DbSystem in the following format:
             projects/{project}/locations/{location}/dbSystems/{db_system}.
     """
 

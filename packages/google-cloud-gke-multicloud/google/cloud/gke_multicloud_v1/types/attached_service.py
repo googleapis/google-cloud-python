@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import attached_resources
@@ -208,8 +208,9 @@ class ImportAttachedClusterRequest(proto.Message):
             region by calling
             [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
         distribution (str):
-            Required. The Kubernetes distribution of the
-            underlying attached cluster.
+            Required. The Kubernetes distribution of the underlying
+            attached cluster.
+
             Supported values: ["eks", "aks", "generic"].
         proxy_config (google.cloud.gke_multicloud_v1.types.AttachedProxyConfig):
             Optional. Proxy configuration for outbound
@@ -379,12 +380,12 @@ class ListAttachedClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    attached_clusters: MutableSequence[
-        attached_resources.AttachedCluster
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=attached_resources.AttachedCluster,
+    attached_clusters: MutableSequence[attached_resources.AttachedCluster] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=attached_resources.AttachedCluster,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

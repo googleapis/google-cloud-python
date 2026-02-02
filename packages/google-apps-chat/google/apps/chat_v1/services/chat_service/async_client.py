@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.apps.chat_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.apps.chat_v1.services.chat_service import pagers
 from google.apps.chat_v1.types import (
@@ -57,24 +57,26 @@ from google.apps.chat_v1.types import (
     group,
     history_state,
     matched_url,
+    membership,
+    message,
+    reaction,
+    slash_command,
+    space,
+    space_event,
+    space_notification_setting,
+    space_read_state,
+    space_setup,
+    thread_read_state,
+    user,
 )
+from google.apps.chat_v1.types import membership as gc_membership
+from google.apps.chat_v1.types import message as gc_message
+from google.apps.chat_v1.types import reaction as gc_reaction
+from google.apps.chat_v1.types import space as gc_space
 from google.apps.chat_v1.types import (
     space_notification_setting as gc_space_notification_setting,
 )
-from google.apps.chat_v1.types import membership
-from google.apps.chat_v1.types import membership as gc_membership
-from google.apps.chat_v1.types import message
-from google.apps.chat_v1.types import message as gc_message
-from google.apps.chat_v1.types import reaction
-from google.apps.chat_v1.types import reaction as gc_reaction
-from google.apps.chat_v1.types import slash_command
-from google.apps.chat_v1.types import space
-from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import space_event
-from google.apps.chat_v1.types import space_notification_setting
-from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
-from google.apps.chat_v1.types import space_setup, thread_read_state, user
 
 from .client import ChatServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ChatServiceTransport
@@ -174,7 +176,8 @@ class ChatServiceAsyncClient:
         Returns:
             ChatServiceAsyncClient: The constructed client.
         """
-        return ChatServiceClient.from_service_account_info.__func__(ChatServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ChatServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ChatServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -190,7 +193,8 @@ class ChatServiceAsyncClient:
         Returns:
             ChatServiceAsyncClient: The constructed client.
         """
-        return ChatServiceClient.from_service_account_file.__func__(ChatServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ChatServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ChatServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -4904,11 +4908,9 @@ class ChatServiceAsyncClient:
 
         Returns:
             google.apps.chat_v1.types.SpaceEvent:
-                An event that represents a change or
-                activity in a Google Chat space. To
-                learn more, see [Work with events from
-                Google
-                Chat](https://developers.google.com/workspace/chat/events-overview).
+                An event that represents a change or activity in a Google Chat space. To
+                   learn more, see [Work with events from Google
+                   Chat](https://developers.google.com/workspace/chat/events-overview).
 
         """
         # Create or coerce a protobuf request object.

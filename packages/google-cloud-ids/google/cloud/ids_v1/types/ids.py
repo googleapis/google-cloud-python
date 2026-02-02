@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -85,6 +85,7 @@ class Endpoint(proto.Message):
             CRITICAL (5):
                 Critical severity alerts.
         """
+
         SEVERITY_UNSPECIFIED = 0
         INFORMATIONAL = 1
         LOW = 2
@@ -105,6 +106,7 @@ class Endpoint(proto.Message):
             DELETING (3):
                 Being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -267,11 +269,10 @@ class CreateEndpointRequest(proto.Message):
         parent (str):
             Required. The endpoint's parent.
         endpoint_id (str):
-            Required. The endpoint identifier. This will be
-            part of the endpoint's resource name.
-            This value must start with a lowercase letter
-            followed by up to 62 lowercase letters, numbers,
-            or hyphens, and cannot end with a hyphen. Values
+            Required. The endpoint identifier. This will be part of the
+            endpoint's resource name. This value must start with a
+            lowercase letter followed by up to 62 lowercase letters,
+            numbers, or hyphens, and cannot end with a hyphen. Values
             that do not match this pattern will trigger an
             INVALID_ARGUMENT error.
         endpoint (google.cloud.ids_v1.types.Endpoint):

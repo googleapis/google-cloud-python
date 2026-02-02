@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gke_backup_v1 import gapic_version as package_version
 
@@ -44,31 +44,38 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_backup_v1.services.backup_for_gke import pagers
-from google.cloud.gke_backup_v1.types import backup_plan_binding, common, gkebackup
-from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
-from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
-from google.cloud.gke_backup_v1.types import backup
+from google.cloud.gke_backup_v1.types import (
+    backup,
+    backup_channel,
+    backup_plan,
+    backup_plan_binding,
+    common,
+    gkebackup,
+    restore,
+    restore_channel,
+    restore_plan,
+    restore_plan_binding,
+    volume,
+)
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
-from google.cloud.gke_backup_v1.types import backup_channel
-from google.cloud.gke_backup_v1.types import backup_plan
+from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import restore
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
-from google.cloud.gke_backup_v1.types import restore_channel
-from google.cloud.gke_backup_v1.types import restore_plan
+from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
-from google.cloud.gke_backup_v1.types import restore_plan_binding, volume
 
 from .client import BackupForGKEClient
 from .transports.base import DEFAULT_CLIENT_INFO, BackupForGKETransport
@@ -169,7 +176,8 @@ class BackupForGKEAsyncClient:
         Returns:
             BackupForGKEAsyncClient: The constructed client.
         """
-        return BackupForGKEClient.from_service_account_info.__func__(BackupForGKEAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BackupForGKEClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BackupForGKEAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -185,7 +193,8 @@ class BackupForGKEAsyncClient:
         Returns:
             BackupForGKEAsyncClient: The constructed client.
         """
-        return BackupForGKEClient.from_service_account_file.__func__(BackupForGKEAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BackupForGKEClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BackupForGKEAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -1369,13 +1378,10 @@ class BackupForGKEAsyncClient:
 
         Returns:
             google.cloud.gke_backup_v1.types.BackupChannel:
-                A BackupChannel imposes constraints on
-                where clusters can be backed up. The
-                BackupChannel should be in the same
-                project and region as the cluster being
-                backed up.
-                The backup can be created only in
-                destination_project.
+                A BackupChannel imposes constraints on where clusters can be backed up.
+                   The BackupChannel should be in the same project and
+                   region as the cluster being backed up. The backup can
+                   be created only in destination_project.
 
         """
         # Create or coerce a protobuf request object.
@@ -5453,9 +5459,7 @@ class BackupForGKEAsyncClient:
                 The request object. Request message for
                 GetBackupIndexDownloadUrl.
             backup (:class:`str`):
-                Required. Full name of Backup resource.
-                Format:
-
+                Required. Full name of Backup resource. Format:
                 projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
 
                 This corresponds to the ``backup`` field

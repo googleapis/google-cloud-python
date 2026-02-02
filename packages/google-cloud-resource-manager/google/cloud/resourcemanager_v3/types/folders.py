@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -100,6 +100,7 @@ class Folder(proto.Message):
                 The folder has been marked for deletion by
                 the user.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2
@@ -409,8 +410,8 @@ class MoveFolderRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Folder to
-            move. Must be of the form folders/{folder_id}
+            Required. The resource name of the Folder to move. Must be
+            of the form folders/{folder_id}
         destination_parent (str):
             Required. The resource name of the folder or organization
             which should be the folder's new parent. Must be of the form

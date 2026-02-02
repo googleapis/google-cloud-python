@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -86,8 +86,7 @@ class QuotaAdjusterSettings(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Name of the config would be of the
-            format:
+            Identifier. Name of the config would be of the format:
             projects/PROJECT_NUMBER/locations/global/quotaAdjusterSettings
             folders/FOLDER_NUMBER/locations/global/quotaAdjusterSettings
             organizations/ORGANIZATION_NUMBER/locations/global/quotaAdjusterSettings
@@ -109,15 +108,13 @@ class QuotaAdjusterSettings(proto.Message):
             Optional. Indicates whether the setting is
             inherited or explicitly specified.
         inherited_from (str):
-            Output only. The resource container from which
-            the setting is inherited. This refers to the
-            nearest ancestor with enablement set (either
-            ENABLED or DISABLED). The value can be an
-            organizations/{organization_id},
-            folders/{folder_id}, or can be 'default' if no
-            ancestor exists with enablement set. The value
-            will be empty when enablement is directly set on
-            this container.
+            Output only. The resource container from which the setting
+            is inherited. This refers to the nearest ancestor with
+            enablement set (either ENABLED or DISABLED). The value can
+            be an organizations/{organization_id}, folders/{folder_id},
+            or can be 'default' if no ancestor exists with enablement
+            set. The value will be empty when enablement is directly set
+            on this container.
     """
 
     class Enablement(proto.Enum):
@@ -131,6 +128,7 @@ class QuotaAdjusterSettings(proto.Message):
             DISABLED (3):
                 The quota adjuster is disabled.
         """
+
         ENABLEMENT_UNSPECIFIED = 0
         ENABLED = 2
         DISABLED = 3

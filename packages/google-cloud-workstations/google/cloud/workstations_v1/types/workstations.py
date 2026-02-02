@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -146,13 +146,12 @@ class WorkstationCluster(proto.Message):
                 internal IP address and a forwarding rule
                 mapping that address to the service attachment.
             service_attachment_uri (str):
-                Output only. Service attachment URI for the
-                workstation cluster. The service attachemnt is
-                created when private endpoint is enabled. To
-                access workstations in the workstation cluster,
-                configure access to the managed service using
-                [Private Service
-                Connect](https://cloud.google.com/vpc/docs/configure-private-service-connect-services).
+                Output only. Service attachment URI for the workstation
+                cluster. The service attachemnt is created when private
+                endpoint is enabled. To access workstations in the
+                workstation cluster, configure access to the managed service
+                using `Private Service
+                Connect <https://cloud.google.com/vpc/docs/configure-private-service-connect-services>`__.
             allowed_projects (MutableSequence[str]):
                 Optional. Additional projects that are
                 allowed to attach to the workstation cluster's
@@ -252,16 +251,16 @@ class WorkstationCluster(proto.Message):
 
 
 class WorkstationConfig(proto.Message):
-    r"""A workstation configuration resource in the Cloud Workstations
-    API.
-    Workstation configurations act as templates for workstations.
-    The workstation configuration defines details such as the
-    workstation virtual machine (VM) instance type, persistent
-    storage, container image defining environment, which IDE or Code
-    Editor to use, and more. Administrators and platform teams can
-    also use [Identity and Access Management
-    (IAM)](https://cloud.google.com/iam/docs/overview) rules to
-    grant access to teams or to individual developers.
+    r"""A workstation configuration resource in the Cloud Workstations API.
+
+    Workstation configurations act as templates for workstations. The
+    workstation configuration defines details such as the workstation
+    virtual machine (VM) instance type, persistent storage, container
+    image defining environment, which IDE or Code Editor to use, and
+    more. Administrators and platform teams can also use `Identity and
+    Access Management
+    (IAM) <https://cloud.google.com/iam/docs/overview>`__ rules to grant
+    access to teams or to individual developers.
 
     Attributes:
         name (str):
@@ -444,13 +443,12 @@ class WorkstationConfig(proto.Message):
                     configuration must have ``iam.serviceAccounts.actAs`` on the
                     service account.
                 tags (MutableSequence[str]):
-                    Optional. Network tags to add to the Compute
-                    Engine VMs backing the workstations. This option
-                    applies [network
-                    tags](https://cloud.google.com/vpc/docs/add-remove-network-tags)
-                    to VMs created with this configuration. These
-                    network tags enable the creation of [firewall
-                    rules](https://cloud.google.com/workstations/docs/configure-firewall-rules).
+                    Optional. Network tags to add to the Compute Engine VMs
+                    backing the workstations. This option applies `network
+                    tags <https://cloud.google.com/vpc/docs/add-remove-network-tags>`__
+                    to VMs created with this configuration. These network tags
+                    enable the creation of `firewall
+                    rules <https://cloud.google.com/workstations/docs/configure-firewall-rules>`__.
                 pool_size (int):
                     Optional. The number of VMs that the system should keep idle
                     so that new workstations can be started quickly for new
@@ -692,6 +690,7 @@ class WorkstationConfig(proto.Message):
                         workstation. An administrator must manually
                         delete the disk.
                 """
+
                 RECLAIM_POLICY_UNSPECIFIED = 0
                 DELETE = 1
                 RETAIN = 2
@@ -790,11 +789,11 @@ class WorkstationConfig(proto.Message):
 
     class CustomerEncryptionKey(proto.Message):
         r"""A customer-managed encryption key (CMEK) for the Compute Engine
-        resources of the associated workstation configuration. Specify
-        the name of your Cloud KMS encryption key and the default
-        service account. We recommend that you use a separate service
-        account and follow [Cloud KMS best
-        practices](https://cloud.google.com/kms/docs/separation-of-duties).
+        resources of the associated workstation configuration. Specify the
+        name of your Cloud KMS encryption key and the default service
+        account. We recommend that you use a separate service account and
+        follow `Cloud KMS best
+        practices <https://cloud.google.com/kms/docs/separation-of-duties>`__.
 
         Attributes:
             kms_key (str):
@@ -1011,6 +1010,7 @@ class Workstation(proto.Message):
                 The workstation is stopped and will not be
                 able to receive requests until it is started.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_STARTING = 1
         STATE_RUNNING = 2
@@ -1101,8 +1101,8 @@ class ListWorkstationClustersRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of items to return.
         page_token (str):
-            Optional. next_page_token value returned from a
-            previous List request, if any.
+            Optional. next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1202,10 +1202,9 @@ class UpdateWorkstationClusterRequest(proto.Message):
             preview the review, but do not actually apply
             it.
         allow_missing (bool):
-            Optional. If set, and the workstation cluster is
-            not found, a new workstation cluster will be
-            created. In this situation, update_mask is
-            ignored.
+            Optional. If set, and the workstation cluster is not found,
+            a new workstation cluster will be created. In this
+            situation, update_mask is ignored.
     """
 
     workstation_cluster: "WorkstationCluster" = proto.Field(
@@ -1292,8 +1291,8 @@ class ListWorkstationConfigsRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of items to return.
         page_token (str):
-            Optional. next_page_token value returned from a
-            previous List request, if any.
+            Optional. next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1352,8 +1351,8 @@ class ListUsableWorkstationConfigsRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of items to return.
         page_token (str):
-            Optional. next_page_token value returned from a
-            previous List request, if any.
+            Optional. next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1453,10 +1452,9 @@ class UpdateWorkstationConfigRequest(proto.Message):
             preview the review, but do not actually apply
             it.
         allow_missing (bool):
-            Optional. If set and the workstation
-            configuration is not found, a new workstation
-            configuration will be created. In this
-            situation, update_mask is ignored.
+            Optional. If set and the workstation configuration is not
+            found, a new workstation configuration will be created. In
+            this situation, update_mask is ignored.
     """
 
     workstation_config: "WorkstationConfig" = proto.Field(
@@ -1543,8 +1541,8 @@ class ListWorkstationsRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of items to return.
         page_token (str):
-            Optional. next_page_token value returned from a
-            previous List request, if any.
+            Optional. next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1603,8 +1601,8 @@ class ListUsableWorkstationsRequest(proto.Message):
         page_size (int):
             Optional. Maximum number of items to return.
         page_token (str):
-            Optional. next_page_token value returned from a
-            previous List request, if any.
+            Optional. next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1703,10 +1701,9 @@ class UpdateWorkstationRequest(proto.Message):
             preview the review, but do not actually apply
             it.
         allow_missing (bool):
-            Optional. If set and the workstation
-            configuration is not found, a new workstation
-            configuration is created. In this situation,
-            update_mask is ignored.
+            Optional. If set and the workstation configuration is not
+            found, a new workstation configuration is created. In this
+            situation, update_mask is ignored.
     """
 
     workstation: "Workstation" = proto.Field(

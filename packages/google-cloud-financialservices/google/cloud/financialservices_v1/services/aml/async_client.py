@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.financialservices_v1 import gapic_version as package_version
 
@@ -45,40 +45,42 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
 
 from google.cloud.financialservices_v1.services.aml import pagers
 from google.cloud.financialservices_v1.types import (
+    backtest_result,
+    bigquery_destination,
+    dataset,
+    engine_config,
+    engine_version,
+    instance,
+    line_of_business,
+    model,
+    prediction_result,
+    service,
+)
+from google.cloud.financialservices_v1.types import (
     backtest_result as gcf_backtest_result,
 )
+from google.cloud.financialservices_v1.types import dataset as gcf_dataset
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
+from google.cloud.financialservices_v1.types import instance as gcf_instance
 from google.cloud.financialservices_v1.types import (
     line_of_business as gcf_line_of_business,
 )
+from google.cloud.financialservices_v1.types import model as gcf_model
 from google.cloud.financialservices_v1.types import (
     prediction_result as gcf_prediction_result,
 )
-from google.cloud.financialservices_v1.types import backtest_result
-from google.cloud.financialservices_v1.types import bigquery_destination
-from google.cloud.financialservices_v1.types import dataset
-from google.cloud.financialservices_v1.types import dataset as gcf_dataset
-from google.cloud.financialservices_v1.types import engine_config
-from google.cloud.financialservices_v1.types import engine_version
-from google.cloud.financialservices_v1.types import instance
-from google.cloud.financialservices_v1.types import instance as gcf_instance
-from google.cloud.financialservices_v1.types import line_of_business
-from google.cloud.financialservices_v1.types import model
-from google.cloud.financialservices_v1.types import model as gcf_model
-from google.cloud.financialservices_v1.types import prediction_result
-from google.cloud.financialservices_v1.types import service
 
 from .client import AMLClient
 from .transports.base import DEFAULT_CLIENT_INFO, AMLTransport
@@ -150,7 +152,8 @@ class AMLAsyncClient:
         Returns:
             AMLAsyncClient: The constructed client.
         """
-        return AMLClient.from_service_account_info.__func__(AMLAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AMLClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AMLAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -166,7 +169,8 @@ class AMLAsyncClient:
         Returns:
             AMLAsyncClient: The constructed client.
         """
-        return AMLClient.from_service_account_file.__func__(AMLAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AMLClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AMLAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -773,23 +777,19 @@ class AMLAsyncClient:
             request (Optional[Union[google.cloud.financialservices_v1.types.UpdateInstanceRequest, dict]]):
                 The request object. Request for updating a Instance
             instance (:class:`google.cloud.financialservices_v1.types.Instance`):
-                Required. The new value of the instance
-                fields that will be updated according to
-                the update_mask
+                Required. The new value of the instance fields that will
+                be updated according to the update_mask
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                Instance resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Instance resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1019,11 +1019,10 @@ class AMLAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Imports the list of registered parties. See
-        [Create and manage
-        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties)
-        for information on the input schema and response for
-        this method.
+        r"""Imports the list of registered parties. See `Create and manage
+        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties>`__
+        for information on the input schema and response for this
+        method.
 
         .. code-block:: python
 
@@ -1187,9 +1186,8 @@ class AMLAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Exports the list of registered parties. See
-        [Create and manage
-        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties)
+        r"""Exports the list of registered parties. See `Create and manage
+        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties>`__
         for information on the output schema for this method.
 
         .. code-block:: python
@@ -1762,23 +1760,19 @@ class AMLAsyncClient:
             request (Optional[Union[google.cloud.financialservices_v1.types.UpdateDatasetRequest, dict]]):
                 The request object. Request for updating a Dataset
             dataset (:class:`google.cloud.financialservices_v1.types.Dataset`):
-                Required. The new value of the dataset
-                fields that will be updated according to
-                the update_mask.
+                Required. The new value of the dataset fields that will
+                be updated according to the update_mask.
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                Dataset resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Dataset resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2432,23 +2426,19 @@ class AMLAsyncClient:
             request (Optional[Union[google.cloud.financialservices_v1.types.UpdateModelRequest, dict]]):
                 The request object. Request for updating a Model
             model (:class:`google.cloud.financialservices_v1.types.Model`):
-                Required. The new value of the Model
-                fields that will be updated according to
-                the update_mask.
+                Required. The new value of the Model fields that will be
+                updated according to the update_mask.
 
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                Model resource by the update. The fields
-                specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the Model resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2544,9 +2534,8 @@ class AMLAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Export governance information for a Model resource. For
-        information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model).
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model>`__.
 
         .. code-block:: python
 
@@ -3250,23 +3239,19 @@ class AMLAsyncClient:
             request (Optional[Union[google.cloud.financialservices_v1.types.UpdateEngineConfigRequest, dict]]):
                 The request object. Request for updating an EngineConfig
             engine_config (:class:`google.cloud.financialservices_v1.types.EngineConfig`):
-                Required. The new value of the
-                EngineConfig fields that will be updated
-                according to the update_mask.
+                Required. The new value of the EngineConfig fields that
+                will be updated according to the update_mask.
 
                 This corresponds to the ``engine_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                EngineConfig resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the EngineConfig resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3364,10 +3349,9 @@ class AMLAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Export governance information for an EngineConfig
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config).
+        r"""Export governance information for an EngineConfig resource. For
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config>`__.
 
         .. code-block:: python
 
@@ -4322,23 +4306,20 @@ class AMLAsyncClient:
                 The request object. Request for updating a
                 PredictionResult
             prediction_result (:class:`google.cloud.financialservices_v1.types.PredictionResult`):
-                Required. The new value of the
-                PredictionResult fields that will be
-                updated according to the update_mask.
+                Required. The new value of the PredictionResult fields
+                that will be updated according to the update_mask.
 
                 This corresponds to the ``prediction_result`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                PredictionResult resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then all
-                fields will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the PredictionResult resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4436,10 +4417,9 @@ class AMLAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Export governance information for a PredictionResult
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results).
+        r"""Export governance information for a PredictionResult resource.
+        For information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results>`__.
 
         .. code-block:: python
 
@@ -5159,23 +5139,20 @@ class AMLAsyncClient:
             request (Optional[Union[google.cloud.financialservices_v1.types.UpdateBacktestResultRequest, dict]]):
                 The request object. Request for updating a BacktestResult
             backtest_result (:class:`google.cloud.financialservices_v1.types.BacktestResult`):
-                Required. The new value of the
-                BacktestResult fields that will be
-                updated according to the update_mask.
+                Required. The new value of the BacktestResult fields
+                that will be updated according to the update_mask.
 
                 This corresponds to the ``backtest_result`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                BacktestResult resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then all
-                fields will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the BacktestResult resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5273,10 +5250,9 @@ class AMLAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Export governance information for a BacktestResult
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results).
+        r"""Export governance information for a BacktestResult resource. For
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results>`__.
 
         .. code-block:: python
 

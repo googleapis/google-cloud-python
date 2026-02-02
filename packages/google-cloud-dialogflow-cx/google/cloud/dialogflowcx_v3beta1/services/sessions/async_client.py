@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
@@ -146,7 +146,8 @@ class SessionsAsyncClient:
         Returns:
             SessionsAsyncClient: The constructed client.
         """
-        return SessionsClient.from_service_account_info.__func__(SessionsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SessionsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SessionsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -162,7 +163,8 @@ class SessionsAsyncClient:
         Returns:
             SessionsAsyncClient: The constructed client.
         """
-        return SessionsClient.from_service_account_file.__func__(SessionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SessionsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SessionsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -328,15 +330,14 @@ class SessionsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> session.DetectIntentResponse:
-        r"""Processes a natural language query and returns
-        structured, actionable data as a result. This method is
-        not idempotent, because it may cause session entity
-        types to be updated, which in turn might affect results
-        of future queries.
+        r"""Processes a natural language query and returns structured,
+        actionable data as a result. This method is not idempotent,
+        because it may cause session entity types to be updated, which
+        in turn might affect results of future queries.
 
-        Note: Always use agent versions for production traffic.
-        See [Versions and
-        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         .. code-block:: python
 
@@ -426,11 +427,10 @@ class SessionsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[session.DetectIntentResponse]]:
-        r"""Processes a natural language query and returns
-        structured, actionable data as a result through
-        server-side streaming. Server-side streaming allows
-        Dialogflow to send [partial
-        responses](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response)
+        r"""Processes a natural language query and returns structured,
+        actionable data as a result through server-side streaming.
+        Server-side streaming allows Dialogflow to send `partial
+        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
         earlier in a single request.
 
         .. code-block:: python
@@ -523,13 +523,13 @@ class SessionsAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> Awaitable[AsyncIterable[session.StreamingDetectIntentResponse]]:
         r"""Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable
-        data as a result. This method is only available via the
-        gRPC API (not REST).
+        streaming fashion and returns structured, actionable data as a
+        result. This method is only available via the gRPC API (not
+        REST).
 
-        Note: Always use agent versions for production traffic.
-        See [Versions and
-        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         .. code-block:: python
 

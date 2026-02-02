@@ -72,6 +72,7 @@ class SsmlVoiceGender(proto.Enum):
             A gender-neutral voice. This voice is not yet
             supported.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     MALE = 1
     FEMALE = 2
@@ -118,6 +119,7 @@ class AudioEncoding(proto.Enum):
         M4A (8):
             M4A audio.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
     MP3 = 2
@@ -273,6 +275,7 @@ class SynthesizeSpeechRequest(proto.Message):
                 Timepoint information of ``<mark>`` tags in SSML input will
                 be returned.
         """
+
         TIMEPOINT_TYPE_UNSPECIFIED = 0
         SSML_MARK = 1
 
@@ -368,6 +371,7 @@ class CustomPronunciationParams(proto.Message):
                 tones are represented by 5, for example 孩子 "hai2
                 zi5".
         """
+
         PHONETIC_ENCODING_UNSPECIFIED = 0
         PHONETIC_ENCODING_IPA = 1
         PHONETIC_ENCODING_X_SAMPA = 2
@@ -481,12 +485,12 @@ class MultiSpeakerVoiceConfig(proto.Message):
             voice configurations must be provided.
     """
 
-    speaker_voice_configs: MutableSequence[
-        "MultispeakerPrebuiltVoice"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="MultispeakerPrebuiltVoice",
+    speaker_voice_configs: MutableSequence["MultispeakerPrebuiltVoice"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="MultispeakerPrebuiltVoice",
+        )
     )
 
 
@@ -605,29 +609,25 @@ class VoiceSelectionParams(proto.Message):
             e.g. using "nb" (Norwegian Bokmal) instead of "no"
             (Norwegian)".
         name (str):
-            The name of the voice. If both the name and the
-            gender are not set, the service will choose a
-            voice based on the other parameters such as
-            language_code.
+            The name of the voice. If both the name and the gender are
+            not set, the service will choose a voice based on the other
+            parameters such as language_code.
         ssml_gender (google.cloud.texttospeech_v1beta1.types.SsmlVoiceGender):
-            The preferred gender of the voice. If not set,
-            the service will choose a voice based on the
-            other parameters such as language_code and name.
-            Note that this is only a preference, not
-            requirement; if a voice of the appropriate
-            gender is not available, the synthesizer should
-            substitute a voice with a different gender
-            rather than failing the request.
+            The preferred gender of the voice. If not set, the service
+            will choose a voice based on the other parameters such as
+            language_code and name. Note that this is only a preference,
+            not requirement; if a voice of the appropriate gender is not
+            available, the synthesizer should substitute a voice with a
+            different gender rather than failing the request.
         custom_voice (google.cloud.texttospeech_v1beta1.types.CustomVoiceParams):
             The configuration for a custom voice. If
-            [CustomVoiceParams.model] is set, the service
-            will choose the custom voice matching the
-            specified configuration.
+            [CustomVoiceParams.model] is set, the service will choose
+            the custom voice matching the specified configuration.
         voice_clone (google.cloud.texttospeech_v1beta1.types.VoiceCloneParams):
-            Optional. The configuration for a voice clone.
-            If [VoiceCloneParams.voice_clone_key] is set,
-            the service chooses the voice clone matching the
-            specified configuration.
+            Optional. The configuration for a voice clone. If
+            [VoiceCloneParams.voice_clone_key] is set, the service
+            chooses the voice clone matching the specified
+            configuration.
         model_name (str):
             Optional. The name of the model. If set, the
             service will choose the model matching the
@@ -681,31 +681,27 @@ class AudioConfig(proto.Message):
             Required. The format of the audio byte
             stream.
         speaking_rate (float):
-            Optional. Input only. Speaking rate/speed, in
-            the range [0.25, 2.0]. 1.0 is the normal native
-            speed supported by the specific voice. 2.0 is
-            twice as fast, and 0.5 is half as fast. If
-            unset(0.0), defaults to the native 1.0 speed.
-            Any other values < 0.25 or > 2.0 will return an
-            error.
+            Optional. Input only. Speaking rate/speed, in the range
+            [0.25, 2.0]. 1.0 is the normal native speed supported by the
+            specific voice. 2.0 is twice as fast, and 0.5 is half as
+            fast. If unset(0.0), defaults to the native 1.0 speed. Any
+            other values < 0.25 or > 2.0 will return an error.
         pitch (float):
-            Optional. Input only. Speaking pitch, in the
-            range [-20.0, 20.0]. 20 means increase 20
-            semitones from the original pitch. -20 means
-            decrease 20 semitones from the original pitch.
+            Optional. Input only. Speaking pitch, in the range [-20.0,
+            20.0]. 20 means increase 20 semitones from the original
+            pitch. -20 means decrease 20 semitones from the original
+            pitch.
         volume_gain_db (float):
-            Optional. Input only. Volume gain (in dB) of the
-            normal native volume supported by the specific
-            voice, in the range [-96.0, 16.0]. If unset, or
-            set to a value of 0.0 (dB), will play at normal
-            native signal amplitude. A value of -6.0 (dB)
-            will play at approximately half the amplitude of
-            the normal native signal amplitude. A value of
-            +6.0 (dB) will play at approximately twice the
-            amplitude of the normal native signal amplitude.
-            Strongly recommend not to exceed +10 (dB) as
-            there's usually no effective increase in
-            loudness for any value greater than that.
+            Optional. Input only. Volume gain (in dB) of the normal
+            native volume supported by the specific voice, in the range
+            [-96.0, 16.0]. If unset, or set to a value of 0.0 (dB), will
+            play at normal native signal amplitude. A value of -6.0 (dB)
+            will play at approximately half the amplitude of the normal
+            native signal amplitude. A value of +6.0 (dB) will play at
+            approximately twice the amplitude of the normal native
+            signal amplitude. Strongly recommend not to exceed +10 (dB)
+            as there's usually no effective increase in loudness for any
+            value greater than that.
         sample_rate_hertz (int):
             Optional. The synthesis sample rate (in hertz) for this
             audio. When this is specified in SynthesizeSpeechRequest, if
@@ -717,12 +713,11 @@ class AudioConfig(proto.Message):
             request and return
             [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
         effects_profile_id (MutableSequence[str]):
-            Optional. Input only. An identifier which
-            selects 'audio effects' profiles that are
-            applied on (post synthesized) text to speech.
-            Effects are applied on top of each other in the
-            order they are given. See [audio
-            profiles](https://cloud.google.com/text-to-speech/docs/audio-profiles)
+            Optional. Input only. An identifier which selects 'audio
+            effects' profiles that are applied on (post synthesized)
+            text to speech. Effects are applied on top of each other in
+            the order they are given. See `audio
+            profiles <https://cloud.google.com/text-to-speech/docs/audio-profiles>`__
             for current supported profile ids.
     """
 
@@ -783,6 +778,7 @@ class CustomVoiceParams(proto.Message):
                 synthesized audio is downloaded, stored in
                 customer service system and played repeatedly.
         """
+
         REPORTED_USAGE_UNSPECIFIED = 0
         REALTIME = 1
         OFFLINE = 2
@@ -818,12 +814,11 @@ class SynthesizeSpeechResponse(proto.Message):
 
     Attributes:
         audio_content (bytes):
-            The audio data bytes encoded as specified in the
-            request, including the header for encodings that
-            are wrapped in containers (e.g. MP3, OGG_OPUS).
-            For LINEAR16 audio, we include the WAV header.
-            Note: as with all bytes fields, protobuffers use
-            a pure binary representation, whereas JSON
+            The audio data bytes encoded as specified in the request,
+            including the header for encodings that are wrapped in
+            containers (e.g. MP3, OGG_OPUS). For LINEAR16 audio, we
+            include the WAV header. Note: as with all bytes fields,
+            protobuffers use a pure binary representation, whereas JSON
             representations use base64.
         timepoints (MutableSequence[google.cloud.texttospeech_v1beta1.types.Timepoint]):
             A link between a position in the original request input and
@@ -877,20 +872,18 @@ class StreamingAudioConfig(proto.Message):
 
     Attributes:
         audio_encoding (google.cloud.texttospeech_v1beta1.types.AudioEncoding):
-            Required. The format of the audio byte stream.
-            Streaming supports PCM, ALAW, MULAW and
-            OGG_OPUS. All other encodings return an error.
+            Required. The format of the audio byte stream. Streaming
+            supports PCM, ALAW, MULAW and OGG_OPUS. All other encodings
+            return an error.
         sample_rate_hertz (int):
             Optional. The synthesis sample rate (in
             hertz) for this audio.
         speaking_rate (float):
-            Optional. Input only. Speaking rate/speed, in
-            the range [0.25, 2.0]. 1.0 is the normal native
-            speed supported by the specific voice. 2.0 is
-            twice as fast, and 0.5 is half as fast. If
-            unset(0.0), defaults to the native 1.0 speed.
-            Any other values < 0.25 or > 2.0 will return an
-            error.
+            Optional. Input only. Speaking rate/speed, in the range
+            [0.25, 2.0]. 1.0 is the normal native speed supported by the
+            specific voice. 2.0 is twice as fast, and 0.5 is half as
+            fast. If unset(0.0), defaults to the native 1.0 speed. Any
+            other values < 0.25 or > 2.0 will return an error.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(

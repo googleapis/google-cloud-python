@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.apps.events_subscriptions_v1 import gapic_version as package_version
 
@@ -44,13 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.apps.events_subscriptions_v1.services.subscriptions_service import pagers
 from google.apps.events_subscriptions_v1.types import (
@@ -132,7 +132,8 @@ class SubscriptionsServiceAsyncClient:
         Returns:
             SubscriptionsServiceAsyncClient: The constructed client.
         """
-        return SubscriptionsServiceClient.from_service_account_info.__func__(SubscriptionsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SubscriptionsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SubscriptionsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -148,7 +149,8 @@ class SubscriptionsServiceAsyncClient:
         Returns:
             SubscriptionsServiceAsyncClient: The constructed client.
         """
-        return SubscriptionsServiceClient.from_service_account_file.__func__(SubscriptionsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SubscriptionsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SubscriptionsServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -186,7 +188,9 @@ class SubscriptionsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return SubscriptionsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SubscriptionsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> SubscriptionsServiceTransport:
@@ -321,9 +325,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a Google Workspace subscription. To learn how to
-        use this method, see [Create a Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/create-subscription).
+        r"""Creates a Google Workspace subscription. To learn how to use
+        this method, see `Create a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/create-subscription>`__.
 
         .. code-block:: python
 
@@ -451,10 +455,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Deletes a Google Workspace subscription.
-        To learn how to use this method, see [Delete a Google
-        Workspace
-        subscription](https://developers.google.com/workspace/events/guides/delete-subscription).
+        r"""Deletes a Google Workspace subscription. To learn how to use
+        this method, see `Delete a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/delete-subscription>`__.
 
         .. code-block:: python
 
@@ -590,10 +593,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> subscription_resource.Subscription:
-        r"""Gets details about a Google Workspace subscription. To
-        learn how to use this method, see [Get details about a
-        Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/get-subscription).
+        r"""Gets details about a Google Workspace subscription. To learn how
+        to use this method, see `Get details about a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/get-subscription>`__.
 
         .. code-block:: python
 
@@ -643,11 +645,10 @@ class SubscriptionsServiceAsyncClient:
 
         Returns:
             google.apps.events_subscriptions_v1.types.Subscription:
-                A subscription to receive events about a
-                Google Workspace resource. To learn more
-                about subscriptions, see the [Google
-                Workspace Events API
-                overview](https://developers.google.com/workspace/events).
+                A subscription to receive events about a Google Workspace resource. To learn
+                   more about subscriptions, see the [Google Workspace
+                   Events API
+                   overview](https://developers.google.com/workspace/events).
 
         """
         # Create or coerce a protobuf request object.
@@ -710,9 +711,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSubscriptionsAsyncPager:
-        r"""Lists Google Workspace subscriptions. To learn how to
-        use this method, see [List Google Workspace
-        subscriptions](https://developers.google.com/workspace/events/guides/list-subscriptions).
+        r"""Lists Google Workspace subscriptions. To learn how to use this
+        method, see `List Google Workspace
+        subscriptions <https://developers.google.com/workspace/events/guides/list-subscriptions>`__.
 
         .. code-block:: python
 
@@ -863,10 +864,9 @@ class SubscriptionsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Updates or renews a Google Workspace subscription. To
-        learn how to use this method, see [Update or renew a
-        Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/update-subscription).
+        r"""Updates or renews a Google Workspace subscription. To learn how
+        to use this method, see `Update or renew a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/update-subscription>`__.
 
         .. code-block:: python
 

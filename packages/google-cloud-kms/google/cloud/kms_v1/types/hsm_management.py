@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -147,6 +147,7 @@ class SingleTenantHsmInstance(proto.Message):
                 [SingleTenantHsmInstance][google.cloud.kms.v1.SingleTenantHsmInstance]
                 has failed and can not be recovered or used.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         PENDING_TWO_FACTOR_AUTH_REGISTRATION = 2
@@ -418,6 +419,7 @@ class SingleTenantHsmInstanceProposal(proto.Message):
                 [SingleTenantHsmInstanceProposal][google.cloud.kms.v1.SingleTenantHsmInstanceProposal]
                 has been deleted and will be purged after the purge_time.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         PENDING = 2
@@ -808,16 +810,15 @@ class ListSingleTenantHsmInstancesRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListSingleTenantHsmInstancesResponse.next_page_token][google.cloud.kms.v1.ListSingleTenantHsmInstancesResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         show_deleted (bool):
             Optional. If set to true,
             [HsmManagement.ListSingleTenantHsmInstances][google.cloud.kms.v1.HsmManagement.ListSingleTenantHsmInstances]
@@ -878,12 +879,12 @@ class ListSingleTenantHsmInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    single_tenant_hsm_instances: MutableSequence[
-        "SingleTenantHsmInstance"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SingleTenantHsmInstance",
+    single_tenant_hsm_instances: MutableSequence["SingleTenantHsmInstance"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SingleTenantHsmInstance",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1092,19 +1093,19 @@ class ApproveSingleTenantHsmInstanceProposalRequest(proto.Message):
                 required_challenge_replies are provided.
         """
 
-        required_challenge_replies: MutableSequence[
-            "ChallengeReply"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ChallengeReply",
+        required_challenge_replies: MutableSequence["ChallengeReply"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ChallengeReply",
+            )
         )
-        quorum_challenge_replies: MutableSequence[
-            "ChallengeReply"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ChallengeReply",
+        quorum_challenge_replies: MutableSequence["ChallengeReply"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ChallengeReply",
+            )
         )
 
     name: str = proto.Field(
@@ -1190,16 +1191,15 @@ class ListSingleTenantHsmInstanceProposalsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListSingleTenantHsmInstanceProposalsResponse.next_page_token][google.cloud.kms.v1.ListSingleTenantHsmInstanceProposalsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         show_deleted (bool):
             Optional. If set to true,
             [HsmManagement.ListSingleTenantHsmInstanceProposals][google.cloud.kms.v1.HsmManagement.ListSingleTenantHsmInstanceProposals]

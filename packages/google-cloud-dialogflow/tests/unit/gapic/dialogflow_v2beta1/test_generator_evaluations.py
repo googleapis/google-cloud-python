@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,14 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,20 +59,13 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.generator_evaluations import (
     GeneratorEvaluationsAsyncClient,
@@ -73,12 +73,16 @@ from google.cloud.dialogflow_v2beta1.services.generator_evaluations import (
     pagers,
     transports,
 )
-from google.cloud.dialogflow_v2beta1.types import agent_coaching_instruction, generator
+from google.cloud.dialogflow_v2beta1.types import (
+    agent_coaching_instruction,
+    generator,
+    generator_evaluation,
+    operations,
+    tool_call,
+)
 from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
 )
-from google.cloud.dialogflow_v2beta1.types import generator_evaluation
-from google.cloud.dialogflow_v2beta1.types import operations, tool_call
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1012,10 +1016,9 @@ def test_generator_evaluations_client_get_mtls_endpoint_and_cert_source(client_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1060,10 +1063,9 @@ def test_generator_evaluations_client_get_mtls_endpoint_and_cert_source(client_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1099,10 +1101,9 @@ def test_generator_evaluations_client_get_mtls_endpoint_and_cert_source(client_c
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1358,13 +1359,13 @@ def test_generator_evaluations_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4172,8 +4173,9 @@ def test_create_generator_evaluation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4536,22 +4538,23 @@ def test_create_generator_evaluation_rest_interceptors(null_interceptor):
     )
     client = GeneratorEvaluationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "post_create_generator_evaluation",
-    ) as post, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "post_create_generator_evaluation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "pre_create_generator_evaluation",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_create_generator_evaluation",
+        ) as post,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_create_generator_evaluation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "pre_create_generator_evaluation",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4606,8 +4609,9 @@ def test_get_generator_evaluation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4678,18 +4682,22 @@ def test_get_generator_evaluation_rest_interceptors(null_interceptor):
     )
     client = GeneratorEvaluationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor, "post_get_generator_evaluation"
-    ) as post, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "post_get_generator_evaluation_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor, "pre_get_generator_evaluation"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_get_generator_evaluation",
+        ) as post,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_get_generator_evaluation_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "pre_get_generator_evaluation",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4747,8 +4755,9 @@ def test_list_generator_evaluations_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4813,19 +4822,22 @@ def test_list_generator_evaluations_rest_interceptors(null_interceptor):
     )
     client = GeneratorEvaluationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "post_list_generator_evaluations",
-    ) as post, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "post_list_generator_evaluations_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor, "pre_list_generator_evaluations"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_list_generator_evaluations",
+        ) as post,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "post_list_generator_evaluations_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "pre_list_generator_evaluations",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -4885,8 +4897,9 @@ def test_delete_generator_evaluation_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -4945,14 +4958,14 @@ def test_delete_generator_evaluation_rest_interceptors(null_interceptor):
     )
     client = GeneratorEvaluationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.GeneratorEvaluationsRestInterceptor,
-        "pre_delete_generator_evaluation",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.GeneratorEvaluationsRestInterceptor,
+            "pre_delete_generator_evaluation",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = generator_evaluation.DeleteGeneratorEvaluationRequest.pb(
             generator_evaluation.DeleteGeneratorEvaluationRequest()
@@ -4997,8 +5010,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5057,8 +5071,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5119,8 +5134,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5181,8 +5197,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5241,8 +5258,9 @@ def test_list_operations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -5468,11 +5486,14 @@ def test_generator_evaluations_base_transport():
 
 def test_generator_evaluations_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.generator_evaluations.transports.GeneratorEvaluationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.dialogflow_v2beta1.services.generator_evaluations.transports.GeneratorEvaluationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GeneratorEvaluationsTransport(
@@ -5492,9 +5513,12 @@ def test_generator_evaluations_base_transport_with_credentials_file():
 
 def test_generator_evaluations_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dialogflow_v2beta1.services.generator_evaluations.transports.GeneratorEvaluationsTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.dialogflow_v2beta1.services.generator_evaluations.transports.GeneratorEvaluationsTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.GeneratorEvaluationsTransport()
@@ -5572,11 +5596,12 @@ def test_generator_evaluations_transport_auth_gdch_credentials(transport_class):
 def test_generator_evaluations_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

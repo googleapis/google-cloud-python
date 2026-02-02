@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -61,18 +61,19 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.documentai_v1.types import document as gcd_document
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_service import pagers
 from google.cloud.contentwarehouse_v1.types import (
+    common,
     document_service,
     document_service_request,
     rule_engine,
 )
-from google.cloud.contentwarehouse_v1.types import common
 from google.cloud.contentwarehouse_v1.types import document as gcc_document
 
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentServiceTransport
@@ -89,9 +90,7 @@ class DocumentServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DocumentServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DocumentServiceTransport]]
     _transport_registry["grpc"] = DocumentServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = DocumentServiceRestTransport
@@ -672,11 +671,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DocumentServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DocumentServiceClient._read_environment_variables()
+        )
         self._client_cert_source = DocumentServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -711,8 +708,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DocumentServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -831,8 +827,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.CreateDocument.
             parent (str):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -916,8 +911,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcc_document.Document:
-        r"""Gets a document. Returns NOT_FOUND if the document does
-        not exist.
+        r"""Gets a document. Returns NOT_FOUND if the document does not
+        exist.
 
         .. code-block:: python
 
@@ -950,9 +945,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.GetDocument.
             name (str):
-                Required. The name of the document to
-                retrieve. Format:
-
+                Required. The name of the document to retrieve. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1032,9 +1025,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.UpdateDocumentResponse:
-        r"""Updates a document. Returns INVALID_ARGUMENT if the name
-        of the document is non-empty and does not equal the
-        existing name.
+        r"""Updates a document. Returns INVALID_ARGUMENT if the name of the
+        document is non-empty and does not equal the existing name.
 
         .. code-block:: python
 
@@ -1073,9 +1065,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.UpdateDocument.
             name (str):
-                Required. The name of the document to
-                update. Format:
-
+                Required. The name of the document to update. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1161,8 +1151,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a document. Returns NOT_FOUND if the document
-        does not exist.
+        r"""Deletes a document. Returns NOT_FOUND if the document does not
+        exist.
 
         .. code-block:: python
 
@@ -1192,9 +1182,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.DeleteDocument.
             name (str):
-                Required. The name of the document to
-                delete. Format:
-
+                Required. The name of the document to delete. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -1301,8 +1289,8 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.SearchDocuments.
             parent (str):
-                Required. The parent, which owns this
-                collection of documents. Format:
+                Required. The parent, which owns this collection of
+                documents. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -1427,9 +1415,7 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.LockDocument.
             name (str):
-                Required. The name of the document to
-                lock. Format:
-
+                Required. The name of the document to lock. Format:
                 projects/{project_number}/locations/{location}/documents/{document}.
 
                 This corresponds to the ``name`` field
@@ -1504,10 +1490,9 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.FetchAclResponse:
-        r"""Gets the access control policy for a resource. Returns
-        NOT_FOUND error if the resource does not exist. Returns
-        an empty policy if the resource exists but does not have
-        a policy set.
+        r"""Gets the access control policy for a resource. Returns NOT_FOUND
+        error if the resource does not exist. Returns an empty policy if
+        the resource exists but does not have a policy set.
 
         .. code-block:: python
 
@@ -1540,16 +1525,12 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.FetchAcl
             resource (str):
-                Required. REQUIRED: The resource for
-                which the policy is being requested.
-                Format for document:
-
+                Required. REQUIRED: The resource for which the policy is
+                being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
-
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project:
-                projects/{project_number}.
+                Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1658,16 +1639,12 @@ class DocumentServiceClient(metaclass=DocumentServiceClientMeta):
                 The request object. Request message for
                 DocumentService.SetAcl.
             resource (str):
-                Required. REQUIRED: The resource for
-                which the policy is being requested.
-                Format for document:
-
+                Required. REQUIRED: The resource for which the policy is
+                being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
-
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project:
-                projects/{project_number}.
+                Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this

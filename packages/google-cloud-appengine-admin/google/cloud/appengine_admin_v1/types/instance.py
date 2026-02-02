@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -104,6 +104,7 @@ class Instance(proto.Message):
             DYNAMIC (2):
                 No description available.
         """
+
         UNSPECIFIED = 0
         RESIDENT = 1
         DYNAMIC = 2
@@ -142,6 +143,7 @@ class Instance(proto.Message):
                     cannot be established, or the server does not
                     respond within the specified timeout.
             """
+
             LIVENESS_STATE_UNSPECIFIED = 0
             UNKNOWN = 1
             HEALTHY = 2

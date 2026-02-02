@@ -17,15 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.websecurityscanner_v1.types import crawled_url, finding, scan_run
 from google.cloud.websecurityscanner_v1.types import (
     finding_type_stats as gcw_finding_type_stats,
 )
 from google.cloud.websecurityscanner_v1.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1.types import crawled_url, finding
-from google.cloud.websecurityscanner_v1.types import scan_run
 
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1",
@@ -391,10 +390,8 @@ class ListFindingsRequest(proto.Message):
             should be a scan run resource name in the format
             'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
         filter (str):
-            The filter expression. The expression must be in
-            the format: <field> <operator> <value>.
-            Supported field: 'finding_type'.
-            Supported operator: '='.
+            The filter expression. The expression must be in the format:
+            . Supported field: 'finding_type'. Supported operator: '='.
         page_token (str):
             A token identifying a page of results to be returned. This
             should be a ``next_page_token`` value returned from a
@@ -476,12 +473,12 @@ class ListFindingTypeStatsResponse(proto.Message):
             The list of FindingTypeStats returned.
     """
 
-    finding_type_stats: MutableSequence[
-        gcw_finding_type_stats.FindingTypeStats
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcw_finding_type_stats.FindingTypeStats,
+    finding_type_stats: MutableSequence[gcw_finding_type_stats.FindingTypeStats] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcw_finding_type_stats.FindingTypeStats,
+        )
     )
 
 

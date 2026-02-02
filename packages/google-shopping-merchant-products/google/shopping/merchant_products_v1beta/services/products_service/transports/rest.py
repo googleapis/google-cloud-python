@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -324,26 +324,21 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             Returns:
                 ~.products.Product:
-                    The processed product, built from
-                multiple [product
+                    The processed product, built from multiple [product
                 inputs][google.shopping.merchant.products.v1main.ProductInput]
-                after applying rules and supplemental
-                data sources. This processed product
-                matches what is shown in your Merchant
-                Center account. Each product is built
-                from exactly one primary data source
-                product input, and multiple supplemental
-                data source inputs. After inserting,
-                updating, or deleting a product input,
-                it may take several minutes before the
-                updated processed product can be
-                retrieved.
+                after applying rules and supplemental data sources. This
+                processed product matches what is shown in your Merchant
+                Center account. Each product is built from exactly one
+                primary data source product input, and multiple
+                supplemental data source inputs. After inserting,
+                updating, or deleting a product input, it may take
+                several minutes before the updated processed product can
+                be retrieved.
 
-                All fields in the processed product and
-                its sub-messages match the name of their
-                corresponding attribute in the [Product
-                data
-                specification](https://support.google.com/merchants/answer/7052112)
+                All fields in the processed product and its sub-messages
+                match the name of their corresponding attribute in the
+                `Product data
+                specification <https://support.google.com/merchants/answer/7052112>`__
                 with some exceptions.
 
             """

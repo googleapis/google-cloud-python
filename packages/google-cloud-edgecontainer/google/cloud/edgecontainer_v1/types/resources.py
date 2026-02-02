@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -65,6 +65,7 @@ class KmsKeyState(proto.Enum):
             The key is unavailable for an unspecified
             reason. Dependent resources may be inaccessible.
     """
+
     KMS_KEY_STATE_UNSPECIFIED = 0
     KMS_KEY_STATE_KEY_AVAILABLE = 1
     KMS_KEY_STATE_KEY_UNAVAILABLE = 2
@@ -81,6 +82,7 @@ class ResourceState(proto.Enum):
         RESOURCE_STATE_LOCK_DOWN_PENDING (2):
             The resource is pending lock down.
     """
+
     RESOURCE_STATE_UNSPECIFIED = 0
     RESOURCE_STATE_LOCK_DOWN = 1
     RESOURCE_STATE_LOCK_DOWN_PENDING = 2
@@ -192,6 +194,7 @@ class Cluster(proto.Message):
                 The cluster is undergoing some work such as
                 version upgrades, etc.
         """
+
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -211,6 +214,7 @@ class Cluster(proto.Message):
             REGULAR (2):
                 Regular release channel.
         """
+
         RELEASE_CHANNEL_UNSPECIFIED = 0
         NONE = 1
         REGULAR = 2
@@ -260,6 +264,7 @@ class Cluster(proto.Message):
                     control plane nodes and can only be deployed on
                     worker nodes.
             """
+
             SHARED_DEPLOYMENT_POLICY_UNSPECIFIED = 0
             ALLOWED = 1
             DISALLOWED = 2
@@ -412,9 +417,9 @@ class Cluster(proto.Message):
                 not specified, a Google-managed key will be used
                 instead.
             kms_key_active_version (str):
-                Output only. The Cloud KMS CryptoKeyVersion
-                currently in use for protecting control plane
-                disks. Only applicable if kms_key is set.
+                Output only. The Cloud KMS CryptoKeyVersion currently in use
+                for protecting control plane disks. Only applicable if
+                kms_key is set.
             kms_key_state (google.cloud.edgecontainer_v1.types.KmsKeyState):
                 Output only. Availability of the Cloud KMS CryptoKey. If not
                 ``KEY_AVAILABLE``, then nodes may go offline as they cannot
@@ -491,11 +496,10 @@ class Cluster(proto.Message):
                 Output only. The time when the maintenance
                 event started.
             end_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. The time when the maintenance event
-                ended, either successfully or not. If the
-                maintenance event is split into multiple
-                maintenance windows, end_time is only updated
-                when the whole flow ends.
+                Output only. The time when the maintenance event ended,
+                either successfully or not. If the maintenance event is
+                split into multiple maintenance windows, end_time is only
+                updated when the whole flow ends.
             update_time (google.protobuf.timestamp_pb2.Timestamp):
                 Output only. The time when the maintenance
                 event message was updated.
@@ -512,6 +516,7 @@ class Cluster(proto.Message):
                 GOOGLE_DRIVEN_UPGRADE (2):
                     Upgrade driven by Google.
             """
+
             TYPE_UNSPECIFIED = 0
             USER_INITIATED_UPGRADE = 1
             GOOGLE_DRIVEN_UPGRADE = 2
@@ -525,6 +530,7 @@ class Cluster(proto.Message):
                 IMMEDIATELY (1):
                     Immediately after receiving the request.
             """
+
             SCHEDULE_UNSPECIFIED = 0
             IMMEDIATELY = 1
 
@@ -542,6 +548,7 @@ class Cluster(proto.Message):
                 FAILED (3):
                     The maintenance event failed.
             """
+
             STATE_UNSPECIFIED = 0
             RECONCILING = 1
             SUCCEEDED = 2
@@ -643,6 +650,7 @@ class Cluster(proto.Message):
                     Google, but may have recently reconnected after
                     a disconnection. It is still syncing back.
             """
+
             STATE_UNSPECIFIED = 0
             DISCONNECTED = 1
             CONNECTED = 2
@@ -732,11 +740,11 @@ class Cluster(proto.Message):
         number=16,
         message=SystemAddonsConfig,
     )
-    external_load_balancer_ipv4_address_pools: MutableSequence[
-        str
-    ] = proto.RepeatedField(
-        proto.STRING,
-        number=17,
+    external_load_balancer_ipv4_address_pools: MutableSequence[str] = (
+        proto.RepeatedField(
+            proto.STRING,
+            number=17,
+        )
     )
     control_plane_encryption: ControlPlaneEncryption = proto.Field(
         proto.MESSAGE,
@@ -767,11 +775,11 @@ class Cluster(proto.Message):
         number=24,
         message=SurvivabilityConfig,
     )
-    external_load_balancer_ipv6_address_pools: MutableSequence[
-        str
-    ] = proto.RepeatedField(
-        proto.STRING,
-        number=25,
+    external_load_balancer_ipv6_address_pools: MutableSequence[str] = (
+        proto.RepeatedField(
+            proto.STRING,
+            number=25,
+        )
     )
     connection_state: ConnectionState = proto.Field(
         proto.MESSAGE,
@@ -920,9 +928,9 @@ class NodePool(proto.Message):
                 specified, a Google-managed key will be used
                 instead.
             kms_key_active_version (str):
-                Output only. The Cloud KMS CryptoKeyVersion
-                currently in use for protecting node local
-                disks. Only applicable if kms_key is set.
+                Output only. The Cloud KMS CryptoKeyVersion currently in use
+                for protecting node local disks. Only applicable if kms_key
+                is set.
             kms_key_state (google.cloud.edgecontainer_v1.types.KmsKeyState):
                 Output only. Availability of the Cloud KMS CryptoKey. If not
                 ``KEY_AVAILABLE``, then nodes may go offline as they cannot
@@ -1052,15 +1060,14 @@ class Machine(proto.Message):
         labels (MutableMapping[str, str]):
             Labels associated with this resource.
         hosted_node (str):
-            Canonical resource name of the node that this
-            machine is responsible for hosting e.g.
+            Canonical resource name of the node that this machine is
+            responsible for hosting e.g.
             projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
-            Or empty if the machine is not assigned to
-            assume the role of a node.
+            Or empty if the machine is not assigned to assume the role
+            of a node.
 
-            For control plane nodes hosted on edge machines,
-            this will return the following format:
-
+            For control plane nodes hosted on edge machines, this will
+            return the following format:
             "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
         zone (str):
             The Google Distributed Cloud Edge zone of
@@ -1167,6 +1174,7 @@ class VpnConnection(proto.Message):
             GLOBAL (2):
                 Global mode.
         """
+
         BGP_ROUTING_MODE_UNSPECIFIED = 0
         REGIONAL = 1
         GLOBAL = 2
@@ -1221,6 +1229,7 @@ class VpnConnection(proto.Message):
                 STATE_ERROR (3):
                     Error occurred.
             """
+
             STATE_UNSPECIFIED = 0
             STATE_CONNECTED = 1
             STATE_CONNECTING = 2
@@ -1266,12 +1275,12 @@ class VpnConnection(proto.Message):
             number=3,
             message="VpnConnection.Details.CloudRouter",
         )
-        cloud_vpns: MutableSequence[
-            "VpnConnection.Details.CloudVpn"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="VpnConnection.Details.CloudVpn",
+        cloud_vpns: MutableSequence["VpnConnection.Details.CloudVpn"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="VpnConnection.Details.CloudVpn",
+            )
         )
 
     name: str = proto.Field(
@@ -1377,6 +1386,7 @@ class ZoneMetadata(proto.Message):
                 Expansion rack type, also known as standalone
                 racks, added by customers on demand.
         """
+
         RACK_TYPE_UNSPECIFIED = 0
         BASE = 1
         EXPANSION = 2
@@ -1468,12 +1478,12 @@ class MaintenancePolicy(proto.Message):
         number=1,
         message="MaintenanceWindow",
     )
-    maintenance_exclusions: MutableSequence[
-        "MaintenanceExclusionWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="MaintenanceExclusionWindow",
+    maintenance_exclusions: MutableSequence["MaintenanceExclusionWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="MaintenanceExclusionWindow",
+        )
     )
 
 
@@ -1571,8 +1581,7 @@ class ServerConfig(proto.Message):
             Output only. Mapping from release channel to
             channel config.
         versions (MutableSequence[google.cloud.edgecontainer_v1.types.Version]):
-            Output only. Supported versions, e.g.: ["1.4.0",
-            "1.5.0"].
+            Output only. Supported versions, e.g.: ["1.4.0", "1.5.0"].
         default_version (str):
             Output only. Default version, e.g.: "1.4.0".
     """

@@ -206,9 +206,8 @@ class StreamAssistRequest(proto.Message):
 
         Attributes:
             model_id (str):
-                Optional. The Vertex AI model_id used for the
-                generative model. If not set, the default
-                Assistant model will be used.
+                Optional. The Vertex AI model_id used for the generative
+                model. If not set, the default Assistant model will be used.
         """
 
         model_id: str = proto.Field(

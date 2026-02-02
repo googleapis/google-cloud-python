@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1243,9 +1243,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseGetHealth._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseGetHealth._get_http_options()
 
             request, metadata = self._interceptor.pre_get_health(request, metadata)
             transcoded_request = _BaseRegionBackendServicesRestTransport._BaseGetHealth._get_transcoded_request(
@@ -1471,9 +1469,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseRegionBackendServicesRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1947,9 +1943,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseListUsable._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseListUsable._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable(request, metadata)
             transcoded_request = _BaseRegionBackendServicesRestTransport._BaseListUsable._get_transcoded_request(
@@ -2352,9 +2346,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseRegionBackendServicesRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2533,9 +2525,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseSetSecurityPolicy._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseSetSecurityPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_security_policy(
                 request, metadata
@@ -2690,9 +2680,7 @@ class RegionBackendServicesRestTransport(_BaseRegionBackendServicesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionBackendServicesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionBackendServicesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

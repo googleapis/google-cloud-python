@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import launch_stage_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.run_v2.types import (
@@ -57,8 +57,8 @@ class CreateJobRequest(proto.Message):
         job (google.cloud.run_v2.types.Job):
             Required. The Job instance to create.
         job_id (str):
-            Required. The unique identifier for the Job. The
-            name of the job becomes {parent}/jobs/{job_id}.
+            Required. The unique identifier for the Job. The name of the
+            job becomes {parent}/jobs/{job_id}.
         validate_only (bool):
             Indicates that the request should be
             validated and default values populated, without
@@ -180,9 +180,8 @@ class ListJobsResponse(proto.Message):
         jobs (MutableSequence[google.cloud.run_v2.types.Job]):
             The resulting list of Jobs.
         next_page_token (str):
-            A token indicating there are more items than
-            page_size. Use it in the next ListJobs request
-            to continue.
+            A token indicating there are more items than page_size. Use
+            it in the next ListJobs request to continue.
     """
 
     @property
@@ -264,14 +263,12 @@ class RunJobRequest(proto.Message):
             container_overrides (MutableSequence[google.cloud.run_v2.types.RunJobRequest.Overrides.ContainerOverride]):
                 Per container override specification.
             task_count (int):
-                Optional. The desired number of tasks the
-                execution should run. Will replace existing
-                task_count value.
+                Optional. The desired number of tasks the execution should
+                run. Will replace existing task_count value.
             timeout (google.protobuf.duration_pb2.Duration):
-                Duration in seconds the task may be active
-                before the system will actively try to mark it
-                failed and kill associated containers. Will
-                replace existing timeout_seconds value.
+                Duration in seconds the task may be active before the system
+                will actively try to mark it failed and kill associated
+                containers. Will replace existing timeout_seconds value.
         """
 
         class ContainerOverride(proto.Message):
@@ -279,8 +276,7 @@ class RunJobRequest(proto.Message):
 
             Attributes:
                 name (str):
-                    The name of the container specified as a
-                    DNS_LABEL.
+                    The name of the container specified as a DNS_LABEL.
                 args (MutableSequence[str]):
                     Optional. Arguments to the entrypoint. Will
                     replace existing args for override.
@@ -674,6 +670,7 @@ class ExecutionReference(proto.Message):
             EXECUTION_CANCELLED (5):
                 Job execution has been cancelled by the user.
         """
+
         COMPLETION_STATUS_UNSPECIFIED = 0
         EXECUTION_SUCCEEDED = 1
         EXECUTION_FAILED = 2

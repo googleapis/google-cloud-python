@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import image, tables, text, translation, video
@@ -114,6 +114,7 @@ class Model(proto.Message):
             UNDEPLOYED (2):
                 Model is not deployed.
         """
+
         DEPLOYMENT_STATE_UNSPECIFIED = 0
         DEPLOYED = 1
         UNDEPLOYED = 2

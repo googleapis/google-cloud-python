@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicedirectory_v1.types import endpoint as gcs_endpoint
@@ -98,8 +98,8 @@ class ListNamespacesRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous List request, if any.
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
         filter (str):
             Optional. The filter to list results by.
 
@@ -301,8 +301,8 @@ class ListServicesRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous List request, if any.
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
         filter (str):
             Optional. The filter to list results by.
 
@@ -509,8 +509,8 @@ class ListEndpointsRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous List request, if any.
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
         filter (str):
             Optional. The filter to list results by.
 

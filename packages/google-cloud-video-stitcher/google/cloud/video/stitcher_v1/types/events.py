@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -98,6 +98,7 @@ class Event(proto.Message):
             ACCEPT_INVITATION (27):
                 Accept invitation event.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         CREATIVE_VIEW = 1
         START = 2

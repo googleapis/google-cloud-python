@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -205,10 +205,9 @@ class DataPolicy(proto.Message):
         data_policy_type (google.cloud.bigquery_datapolicies_v1beta1.types.DataPolicy.DataPolicyType):
             Type of data policy.
         data_policy_id (str):
-            User-assigned (human readable) ID of the data
-            policy that needs to be unique within a project.
-            Used as {data_policy_id} in part of the resource
-            name.
+            User-assigned (human readable) ID of the data policy that
+            needs to be unique within a project. Used as
+            {data_policy_id} in part of the resource name.
     """
 
     class DataPolicyType(proto.Enum):
@@ -225,6 +224,7 @@ class DataPolicy(proto.Message):
                 Used to create a data policy for data
                 masking.
         """
+
         DATA_POLICY_TYPE_UNSPECIFIED = 0
         COLUMN_LEVEL_SECURITY_POLICY = 3
         DATA_MASKING_POLICY = 2
@@ -271,7 +271,6 @@ class DataMaskingPolicy(proto.Message):
 
     class PredefinedExpression(proto.Enum):
         r"""The available masking rules. Learn more here:
-
         https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.
 
         Values:
@@ -306,6 +305,7 @@ class DataMaskingPolicy(proto.Message):
                 - STRUCT: NOT_APPLICABLE
                 - JSON: NULL
         """
+
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 3
         ALWAYS_NULL = 5

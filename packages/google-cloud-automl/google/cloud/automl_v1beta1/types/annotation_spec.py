@@ -32,8 +32,7 @@ class AnnotationSpec(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the annotation
-            spec. Form:
+            Output only. Resource name of the annotation spec. Form:
 
             'projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/annotationSpecs/{annotation_spec_id}'
         display_name (str):

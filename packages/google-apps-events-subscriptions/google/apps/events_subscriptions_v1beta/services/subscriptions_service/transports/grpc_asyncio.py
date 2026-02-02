@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,10 +30,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.apps.events_subscriptions_v1beta.types import (
     subscription_resource,
@@ -360,9 +360,9 @@ class SubscriptionsServiceGrpcAsyncIOTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the create subscription method over gRPC.
 
-        Creates a Google Workspace subscription. To learn how to
-        use this method, see [Create a Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/create-subscription).
+        Creates a Google Workspace subscription. To learn how to use
+        this method, see `Create a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/create-subscription>`__.
 
         Returns:
             Callable[[~.CreateSubscriptionRequest],
@@ -391,10 +391,9 @@ class SubscriptionsServiceGrpcAsyncIOTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the delete subscription method over gRPC.
 
-        Deletes a Google Workspace subscription.
-        To learn how to use this method, see [Delete a Google
-        Workspace
-        subscription](https://developers.google.com/workspace/events/guides/delete-subscription).
+        Deletes a Google Workspace subscription. To learn how to use
+        this method, see `Delete a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/delete-subscription>`__.
 
         Returns:
             Callable[[~.DeleteSubscriptionRequest],
@@ -423,10 +422,9 @@ class SubscriptionsServiceGrpcAsyncIOTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the get subscription method over gRPC.
 
-        Gets details about a Google Workspace subscription. To
-        learn how to use this method, see [Get details about a
-        Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/get-subscription).
+        Gets details about a Google Workspace subscription. To learn how
+        to use this method, see `Get details about a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/get-subscription>`__.
 
         Returns:
             Callable[[~.GetSubscriptionRequest],
@@ -455,9 +453,9 @@ class SubscriptionsServiceGrpcAsyncIOTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the list subscriptions method over gRPC.
 
-        Lists Google Workspace subscriptions. To learn how to
-        use this method, see [List Google Workspace
-        subscriptions](https://developers.google.com/workspace/events/guides/list-subscriptions).
+        Lists Google Workspace subscriptions. To learn how to use this
+        method, see `List Google Workspace
+        subscriptions <https://developers.google.com/workspace/events/guides/list-subscriptions>`__.
 
         Returns:
             Callable[[~.ListSubscriptionsRequest],
@@ -486,10 +484,9 @@ class SubscriptionsServiceGrpcAsyncIOTransport(SubscriptionsServiceTransport):
     ]:
         r"""Return a callable for the update subscription method over gRPC.
 
-        Updates or renews a Google Workspace subscription. To
-        learn how to use this method, see [Update or renew a
-        Google Workspace
-        subscription](https://developers.google.com/workspace/events/guides/update-subscription).
+        Updates or renews a Google Workspace subscription. To learn how
+        to use this method, see `Update or renew a Google Workspace
+        subscription <https://developers.google.com/workspace/events/guides/update-subscription>`__.
 
         Returns:
             Callable[[~.UpdateSubscriptionRequest],

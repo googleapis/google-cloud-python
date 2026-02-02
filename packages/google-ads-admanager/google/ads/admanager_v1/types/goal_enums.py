@@ -77,6 +77,7 @@ class GoalTypeEnum(proto.Message):
                 - [LineItemTypeEnum.LineItemType.ADMOB][]
                 - [LineItemTypeEnum.LineItemType.BUMPER][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.BUMPER]
         """
+
         GOAL_TYPE_UNSPECIFIED = 0
         NONE = 1
         LIFETIME = 2
@@ -122,11 +123,10 @@ class UnitTypeEnum(proto.Message):
                 supported as secondary goal and the [LineItem.cost_type][]
                 must be [CostTypeEnum.CostType.CPA}.
             TOTAL_CPA_CONVERSIONS (5):
-                The number of total Cost-Per-Action (CPA)
-                conversions from creatives associated with the
-                line item. This is only supported as secondary
-                goal and the [LineItem.cost_type} must be
-                [CostTypeEnum.CostType.CPA}.
+                The number of total Cost-Per-Action (CPA) conversions from
+                creatives associated with the line item. This is only
+                supported as secondary goal and the [LineItem.cost_type}
+                must be [CostTypeEnum.CostType.CPA}.
             VIEWABLE_IMPRESSIONS (6):
                 The number of viewable impressions reported by creatives
                 associated with the line item. The
@@ -140,6 +140,7 @@ class UnitTypeEnum(proto.Message):
                 must be
                 [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD].
         """
+
         UNIT_TYPE_UNSPECIFIED = 0
         IMPRESSIONS = 1
         CLICKS = 2

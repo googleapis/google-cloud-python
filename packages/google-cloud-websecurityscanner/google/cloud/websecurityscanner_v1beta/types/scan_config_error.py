@@ -38,11 +38,10 @@ class ScanConfigError(proto.Message):
             Indicates the reason code for a configuration
             failure.
         field_name (str):
-            Indicates the full name of the ScanConfig field
-            that triggers this error, for example
-            "scan_config.max_qps". This field is provided
-            for troubleshooting purposes only and its actual
-            value can change in the future.
+            Indicates the full name of the ScanConfig field that
+            triggers this error, for example "scan_config.max_qps". This
+            field is provided for troubleshooting purposes only and its
+            actual value can change in the future.
     """
 
     class Code(proto.Enum):
@@ -184,6 +183,7 @@ class ScanConfigError(proto.Message):
                 The URL scheme of one or more of the supplied
                 URLs is not supported.
         """
+
         _pb_options = {"allow_alias": True}
         CODE_UNSPECIFIED = 0
         OK = 0

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,6 +63,7 @@ class EmailPreferences(proto.Message):
                 but user has not yet confirmed the opt in
                 (applies only to certain countries).
         """
+
         OPT_IN_STATE_UNSPECIFIED = 0
         OPTED_OUT = 1
         OPTED_IN = 2

@@ -34,8 +34,8 @@ class DbServer(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the database server
-            resource with the format:
+            Identifier. The name of the database server resource with
+            the format:
             projects/{project}/locations/{location}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}/dbServers/{db_server}
         display_name (str):
             Optional. User friendly name for this
@@ -110,6 +110,7 @@ class DbServerProperties(proto.Message):
                 Indicates that the resource is in deleted
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         AVAILABLE = 2

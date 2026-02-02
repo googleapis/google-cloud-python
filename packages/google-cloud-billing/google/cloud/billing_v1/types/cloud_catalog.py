@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -191,15 +191,13 @@ class PricingInfo(proto.Message):
 
     Attributes:
         effective_time (google.protobuf.timestamp_pb2.Timestamp):
-            The timestamp from which this pricing was
-            effective within the requested time range. This
-            is guaranteed to be greater than or equal to the
-            start_time field in the request and less than
-            the end_time field in the request. If a time
-            range was not specified in the request this
-            field will be equivalent to a time within the
-            last 12 hours, indicating the latest pricing
-            info.
+            The timestamp from which this pricing was effective within
+            the requested time range. This is guaranteed to be greater
+            than or equal to the start_time field in the request and
+            less than the end_time field in the request. If a time range
+            was not specified in the request this field will be
+            equivalent to a time within the last 12 hours, indicating
+            the latest pricing info.
         summary (str):
             An optional human readable summary of the
             pricing information, has a maximum length of 256
@@ -257,9 +255,9 @@ class PricingExpression(proto.Message):
 
     Attributes:
         usage_unit (str):
-            The short hand for unit of usage this pricing is
-            specified in. Example: usage_unit of "GiBy"
-            means that usage is specified in "Gibi Byte".
+            The short hand for unit of usage this pricing is specified
+            in. Example: usage_unit of "GiBy" means that usage is
+            specified in "Gibi Byte".
         display_quantity (float):
             The recommended quantity of units for displaying pricing
             info. When displaying pricing info it is recommended to
@@ -270,10 +268,10 @@ class PricingExpression(proto.Message):
             and the display_quantity is "1000" then the recommended way
             of displaying the pricing info is "0.10 USD per 1000 GB".
         tiered_rates (MutableSequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
-            The list of tiered rates for this pricing. The
-            total cost is computed by applying each of the
-            tiered rates on usage. This repeated list is
-            sorted by ascending order of start_usage_amount.
+            The list of tiered rates for this pricing. The total cost is
+            computed by applying each of the tiered rates on usage. This
+            repeated list is sorted by ascending order of
+            start_usage_amount.
         usage_unit_description (str):
             The unit of usage in human readable form.
             Example: "gibi byte".
@@ -298,14 +296,13 @@ class PricingExpression(proto.Message):
 
         Attributes:
             start_usage_amount (float):
-                Usage is priced at this rate only after this
-                amount. Example: start_usage_amount of 10
-                indicates that the usage will be priced at the
-                unit_price after the first 10 usage_units.
+                Usage is priced at this rate only after this amount.
+                Example: start_usage_amount of 10 indicates that the usage
+                will be priced at the unit_price after the first 10
+                usage_units.
             unit_price (google.type.money_pb2.Money):
-                The price per unit of usage.
-                Example: unit_price of amount $10 indicates that
-                each unit will cost $10.
+                The price per unit of usage. Example: unit_price of amount
+                $10 indicates that each unit will cost $10.
         """
 
         start_usage_amount: float = proto.Field(
@@ -359,10 +356,9 @@ class AggregationInfo(proto.Message):
         aggregation_interval (google.cloud.billing_v1.types.AggregationInfo.AggregationInterval):
 
         aggregation_count (int):
-            The number of intervals to aggregate over.
-            Example: If aggregation_level is "DAILY" and
-            aggregation_count is 14, aggregation will be
-            over 14 days.
+            The number of intervals to aggregate over. Example: If
+            aggregation_level is "DAILY" and aggregation_count is 14,
+            aggregation will be over 14 days.
     """
 
     class AggregationLevel(proto.Enum):
@@ -379,6 +375,7 @@ class AggregationInfo(proto.Message):
             PROJECT (2):
                 No description available.
         """
+
         AGGREGATION_LEVEL_UNSPECIFIED = 0
         ACCOUNT = 1
         PROJECT = 2
@@ -396,6 +393,7 @@ class AggregationInfo(proto.Message):
             MONTHLY (2):
                 No description available.
         """
+
         AGGREGATION_INTERVAL_UNSPECIFIED = 0
         DAILY = 1
         MONTHLY = 2
@@ -446,6 +444,7 @@ class GeoTaxonomy(proto.Message):
                 The sku is associated with multiple regions,
                 e.g. "us-west2" and "us-east1".
         """
+
         TYPE_UNSPECIFIED = 0
         GLOBAL = 1
         REGIONAL = 2
@@ -521,28 +520,23 @@ class ListSkusRequest(proto.Message):
             Required. The name of the service.
             Example: "services/6F81-5844-456A".
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional inclusive start time of the time range
-            for which the pricing versions will be returned.
-            Timestamps in the future are not allowed. The
-            time range has to be within a single calendar
-            month in America/Los_Angeles timezone. Time
-            range as a whole is optional. If not specified,
-            the latest pricing will be returned (up to 12
-            hours old at most).
+            Optional inclusive start time of the time range for which
+            the pricing versions will be returned. Timestamps in the
+            future are not allowed. The time range has to be within a
+            single calendar month in America/Los_Angeles timezone. Time
+            range as a whole is optional. If not specified, the latest
+            pricing will be returned (up to 12 hours old at most).
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional exclusive end time of the time range
-            for which the pricing versions will be returned.
-            Timestamps in the future are not allowed. The
-            time range has to be within a single calendar
-            month in America/Los_Angeles timezone. Time
-            range as a whole is optional. If not specified,
-            the latest pricing will be returned (up to 12
-            hours old at most).
+            Optional exclusive end time of the time range for which the
+            pricing versions will be returned. Timestamps in the future
+            are not allowed. The time range has to be within a single
+            calendar month in America/Los_Angeles timezone. Time range
+            as a whole is optional. If not specified, the latest pricing
+            will be returned (up to 12 hours old at most).
         currency_code (str):
-            The ISO 4217 currency code for the pricing info
-            in the response proto. Will use the conversion
-            rate as of start_time. Optional. If not
-            specified USD will be used.
+            The ISO 4217 currency code for the pricing info in the
+            response proto. Will use the conversion rate as of
+            start_time. Optional. If not specified USD will be used.
         page_size (int):
             Requested page size. Defaults to 5000.
         page_token (str):

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4 import gapic_version as package_version
 
@@ -61,13 +61,12 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.talent_v4.services.tenant_service import pagers
-from google.cloud.talent_v4.types import tenant
+from google.cloud.talent_v4.types import tenant, tenant_service
 from google.cloud.talent_v4.types import tenant as gct_tenant
-from google.cloud.talent_v4.types import tenant_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, TenantServiceTransport
 from .transports.grpc import TenantServiceGrpcTransport
@@ -620,11 +619,9 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = TenantServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            TenantServiceClient._read_environment_variables()
+        )
         self._client_cert_source = TenantServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -659,8 +656,7 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(TenantServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -775,10 +771,11 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
                 The request object. The Request of the CreateTenant
                 method.
             parent (str):
-                Required. Resource name of the project
-                under which the tenant is created.
-                The format is "projects/{project_id}",
-                for example, "projects/foo".
+                Required. Resource name of the project under which the
+                tenant is created.
+
+                The format is "projects/{project_id}", for example,
+                "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,11 +893,12 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.GetTenantRequest, dict]):
                 The request object. Request for getting a tenant by name.
             name (str):
-                Required. The resource name of the
-                tenant to be retrieved.
+                Required. The resource name of the tenant to be
+                retrieved.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}",
-                for example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}", for
+                example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1146,11 +1144,11 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
             request (Union[google.cloud.talent_v4.types.DeleteTenantRequest, dict]):
                 The request object. Request to delete a tenant.
             name (str):
-                Required. The resource name of the
-                tenant to be deleted.
+                Required. The resource name of the tenant to be deleted.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}",
-                for example, "projects/foo/tenants/bar".
+                "projects/{project_id}/tenants/{tenant_id}", for
+                example, "projects/foo/tenants/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1249,10 +1247,11 @@ class TenantServiceClient(metaclass=TenantServiceClientMeta):
                 The request object. List tenants for which the client has
                 ACL visibility.
             parent (str):
-                Required. Resource name of the project
-                under which the tenant is created.
-                The format is "projects/{project_id}",
-                for example, "projects/foo".
+                Required. Resource name of the project under which the
+                tenant is created.
+
+                The format is "projects/{project_id}", for example,
+                "projects/foo".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

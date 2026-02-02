@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -82,6 +82,7 @@ class Allocation(proto.Message):
             UPDATING (5):
                 Reservation is currently being resized.
         """
+
         STATUS_UNSPECIFIED = 0
         INVALID = 1
         CREATING = 2
@@ -111,10 +112,9 @@ class Allocation(proto.Message):
 
             Attributes:
                 machine_type (str):
-                    Specifies type of machine (name only) which has
-                    fixed number of vCPUs and fixed amount of
-                    memory. This also includes specifying custom
-                    machine type following
+                    Specifies type of machine (name only) which has fixed number
+                    of vCPUs and fixed amount of memory. This also includes
+                    specifying custom machine type following
                     custom-NUMBER_OF_CPUS-AMOUNT_OF_MEMORY pattern.
                 guest_accelerator (MutableSequence[google.cloud.capacityplanner_v1beta.types.Allocation.SpecificSKUAllocation.AllocatedInstanceProperties.AcceleratorConfig]):
                     Specifies accelerator type and count.
@@ -177,6 +177,7 @@ class Allocation(proto.Message):
                         ISCSI (4):
                             ISCSI disk interface.
                     """
+
                     DISK_INTERFACE_UNSPECIFIED = 0
                     SCSI = 1
                     NVME = 2
@@ -241,10 +242,9 @@ class Allocation(proto.Message):
             share_type (google.cloud.capacityplanner_v1beta.types.Allocation.ShareSettings.ShareType):
                 Type of sharing for this shared-reservation
             projects (MutableSequence[str]):
-                A List of Project names to specify consumer
-                projects for this shared-reservation. This is
-                only valid when share_type's value is
-                SPECIFIC_PROJECTS.
+                A List of Project names to specify consumer projects for
+                this shared-reservation. This is only valid when
+                share_type's value is SPECIFIC_PROJECTS.
         """
 
         class ShareType(proto.Enum):
@@ -266,6 +266,7 @@ class Allocation(proto.Message):
                     Shared-reservation is open to direct child
                     projects of specific folders.
             """
+
             SHARE_TYPE_UNSPECIFIED = 0
             ORGANIZATION = 1
             SPECIFIC_PROJECTS = 2

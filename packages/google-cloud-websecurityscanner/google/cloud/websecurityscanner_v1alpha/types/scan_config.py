@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1alpha.types import scan_run
@@ -44,12 +44,10 @@ class ScanConfig(proto.Message):
             Required. The user provided display name of
             the ScanConfig.
         max_qps (int):
-            The maximum QPS during scanning. A valid value
-            ranges from 5 to 20 inclusively. If the field is
-            unspecified or its value is set 0, server will
-            default to 15. Other values outside of [5, 20]
-            range will be rejected with INVALID_ARGUMENT
-            error.
+            The maximum QPS during scanning. A valid value ranges from 5
+            to 20 inclusively. If the field is unspecified or its value
+            is set 0, server will default to 15. Other values outside of
+            [5, 20] range will be rejected with INVALID_ARGUMENT error.
         starting_urls (MutableSequence[str]):
             Required. The starting URLs from which the
             scanner finds site pages.
@@ -65,8 +63,8 @@ class ScanConfig(proto.Message):
         schedule (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Schedule):
             The schedule of the ScanConfig.
         target_platforms (MutableSequence[google.cloud.websecurityscanner_v1alpha.types.ScanConfig.TargetPlatform]):
-            Set of Cloud Platforms targeted by the scan. If
-            empty, APP_ENGINE will be used as a default.
+            Set of Cloud Platforms targeted by the scan. If empty,
+            APP_ENGINE will be used as a default.
         latest_run (google.cloud.websecurityscanner_v1alpha.types.ScanRun):
             Latest ScanRun if available.
     """
@@ -76,8 +74,8 @@ class ScanConfig(proto.Message):
 
         Values:
             USER_AGENT_UNSPECIFIED (0):
-                The user agent is unknown. Service will default
-                to CHROME_LINUX.
+                The user agent is unknown. Service will default to
+                CHROME_LINUX.
             CHROME_LINUX (1):
                 Chrome on Linux. This is the service default
                 if unspecified.
@@ -86,6 +84,7 @@ class ScanConfig(proto.Message):
             SAFARI_IPHONE (3):
                 Safari on IPhone.
         """
+
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
@@ -96,14 +95,14 @@ class ScanConfig(proto.Message):
 
         Values:
             TARGET_PLATFORM_UNSPECIFIED (0):
-                The target platform is unknown. Requests with
-                this enum value will be rejected with
-                INVALID_ARGUMENT error.
+                The target platform is unknown. Requests with this enum
+                value will be rejected with INVALID_ARGUMENT error.
             APP_ENGINE (1):
                 Google App Engine service.
             COMPUTE (2):
                 Google Compute Engine service.
         """
+
         TARGET_PLATFORM_UNSPECIFIED = 0
         APP_ENGINE = 1
         COMPUTE = 2

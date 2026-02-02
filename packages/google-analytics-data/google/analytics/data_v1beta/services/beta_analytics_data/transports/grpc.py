@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.analytics.data_v1beta.types import analytics_data_api
 
@@ -347,19 +347,18 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the run report method over gRPC.
 
-        Returns a customized report of your Google Analytics
-        event data. Reports contain statistics derived from data
-        collected by the Google Analytics tracking code. The
-        data returned from the API is as a table with columns
-        for the requested dimensions and metrics. Metrics are
-        individual measurements of user activity on your
-        property, such as active users or event count.
-        Dimensions break down metrics across some common
-        criteria, such as country or event name.
+        Returns a customized report of your Google Analytics event data.
+        Reports contain statistics derived from data collected by the
+        Google Analytics tracking code. The data returned from the API
+        is as a table with columns for the requested dimensions and
+        metrics. Metrics are individual measurements of user activity on
+        your property, such as active users or event count. Dimensions
+        break down metrics across some common criteria, such as country
+        or event name.
 
-        For a guide to constructing requests & understanding
-        responses, see [Creating a
-        Report](https://developers.google.com/analytics/devguides/reporting/data/v1/basics).
+        For a guide to constructing requests & understanding responses,
+        see `Creating a
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/basics>`__.
 
         Returns:
             Callable[[~.RunReportRequest],
@@ -518,17 +517,16 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the run realtime report method over gRPC.
 
-        Returns a customized report of realtime event data for
-        your property. Events appear in realtime reports seconds
-        after they have been sent to the Google Analytics.
-        Realtime reports show events and usage data for the
-        periods of time ranging from the present moment to 30
-        minutes ago (up to 60 minutes for Google Analytics 360
-        properties).
+        Returns a customized report of realtime event data for your
+        property. Events appear in realtime reports seconds after they
+        have been sent to the Google Analytics. Realtime reports show
+        events and usage data for the periods of time ranging from the
+        present moment to 30 minutes ago (up to 60 minutes for Google
+        Analytics 360 properties).
 
-        For a guide to constructing realtime requests &
-        understanding responses, see [Creating a Realtime
-        Report](https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics).
+        For a guide to constructing realtime requests & understanding
+        responses, see `Creating a Realtime
+        Report <https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics>`__.
 
         Returns:
             Callable[[~.RunRealtimeReportRequest],
@@ -700,20 +698,20 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the get audience export method over gRPC.
 
-        Gets configuration metadata about a specific audience
-        export. This method can be used to understand an
-        audience export after it has been created.
+        Gets configuration metadata about a specific audience export.
+        This method can be used to understand an audience export after
+        it has been created.
 
-        See [Creating an Audience
-        Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Exports with examples.
 
-        Audience Export APIs have some methods at alpha and
-        other methods at beta stability. The intention is to
-        advance methods to beta stability after some feedback
-        and adoption. To give your feedback on this API,
-        complete the [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
 
         Returns:
             Callable[[~.GetAudienceExportRequest],
@@ -742,23 +740,22 @@ class BetaAnalyticsDataGrpcTransport(BetaAnalyticsDataTransport):
     ]:
         r"""Return a callable for the list audience exports method over gRPC.
 
-        Lists all audience exports for a property. This method
-        can be used for you to find and reuse existing audience
-        exports rather than creating unnecessary new audience
-        exports. The same audience can have multiple audience
-        exports that represent the export of users that were in
-        an audience on different days.
+        Lists all audience exports for a property. This method can be
+        used for you to find and reuse existing audience exports rather
+        than creating unnecessary new audience exports. The same
+        audience can have multiple audience exports that represent the
+        export of users that were in an audience on different days.
 
-        See [Creating an Audience
-        Export](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics)
+        See `Creating an Audience
+        Export <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Exports with examples.
 
-        Audience Export APIs have some methods at alpha and
-        other methods at beta stability. The intention is to
-        advance methods to beta stability after some feedback
-        and adoption. To give your feedback on this API,
-        complete the [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        Audience Export APIs have some methods at alpha and other
+        methods at beta stability. The intention is to advance methods
+        to beta stability after some feedback and adoption. To give your
+        feedback on this API, complete the `Google Analytics Audience
+        Export API Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__
+        form.
 
         Returns:
             Callable[[~.ListAudienceExportsRequest],

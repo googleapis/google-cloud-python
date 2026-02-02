@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import resources
@@ -44,8 +44,8 @@ class Task(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the
-            task, of the form:
+            Output only. The relative resource name of the task, of the
+            form:
             projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
             tasks/{task_id}.
         uid (str):
@@ -115,14 +115,12 @@ class Task(proto.Message):
 
             Attributes:
                 executors_count (int):
-                    Optional. Total number of job executors.
-                    Executor Count should be between 2 and 100.
-                    [Default=2]
+                    Optional. Total number of job executors. Executor Count
+                    should be between 2 and 100. [Default=2]
                 max_executors_count (int):
-                    Optional. Max configurable executors.
-                    If max_executors_count > executors_count, then
-                    auto-scaling is enabled. Max Executor Count
-                    should be between 2 and 1000. [Default=1000]
+                    Optional. Max configurable executors. If max_executors_count
+                    > executors_count, then auto-scaling is enabled. Max
+                    Executor Count should be between 2 and 1000. [Default=1000]
             """
 
             executors_count: int = proto.Field(
@@ -249,10 +247,10 @@ class Task(proto.Message):
                 Required. Immutable. Trigger type of the
                 user-specified Task.
             start_time (google.protobuf.timestamp_pb2.Timestamp):
-                Optional. The first run of the task will be
-                after this time. If not specified, the task will
-                run shortly after being submitted if ON_DEMAND
-                and based on the schedule if RECURRING.
+                Optional. The first run of the task will be after this time.
+                If not specified, the task will run shortly after being
+                submitted if ON_DEMAND and based on the schedule if
+                RECURRING.
             disabled (bool):
                 Optional. Prevent the task from executing.
                 This does not cancel already running tasks. It
@@ -288,6 +286,7 @@ class Task(proto.Message):
                 RECURRING (2):
                     The task is scheduled to run periodically.
             """
+
             TYPE_UNSPECIFIED = 0
             ON_DEMAND = 1
             RECURRING = 2
@@ -647,6 +646,7 @@ class Job(proto.Message):
             DATAPROC (1):
                 Dataproc service is used to run this job.
         """
+
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
@@ -670,6 +670,7 @@ class Job(proto.Message):
                 The job was cancelled outside of Dataplex
                 Universal Catalog.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2
@@ -692,6 +693,7 @@ class Job(proto.Message):
                 The job was triggered by the explicit call of
                 Task API.
         """
+
         TRIGGER_UNSPECIFIED = 0
         TASK_CONFIG = 1
         RUN_REQUEST = 2

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import catalog as gcr_catalog
@@ -450,12 +450,12 @@ class BatchRemoveCatalogAttributesResponse(proto.Message):
 
     Attributes:
         deleted_catalog_attributes (MutableSequence[str]):
-            Catalog attributes that were deleted. Only
-            pre-loaded [catalog
+            Catalog attributes that were deleted. Only pre-loaded
+            [catalog
             attributes][google.cloud.retail.v2alpha.CatalogAttribute]
             that are neither [in
-            use][google.cloud.retail.v2alpha.CatalogAttribute.in_use]
-            by products nor predefined can be deleted.
+            use][google.cloud.retail.v2alpha.CatalogAttribute.in_use] by
+            products nor predefined can be deleted.
         reset_catalog_attributes (MutableSequence[str]):
             Catalog attributes that were reset. [Catalog
             attributes][google.cloud.retail.v2alpha.CatalogAttribute]

@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.eventarc import EventarcAsyncClient, EventarcClient
 from .types.channel import Channel
 from .types.channel_connection import ChannelConnection

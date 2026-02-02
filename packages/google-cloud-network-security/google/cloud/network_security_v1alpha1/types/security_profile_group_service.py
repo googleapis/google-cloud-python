@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_security_v1alpha1.types import (
@@ -132,11 +132,10 @@ class CreateSecurityProfileGroupRequest(proto.Message):
             Must be in the format
             ``projects|organizations/*/locations/{location}``.
         security_profile_group_id (str):
-            Required. Short name of the SecurityProfileGroup
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g.
+            Required. Short name of the SecurityProfileGroup resource to
+            be created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g.
             "security_profile_group1".
         security_profile_group (google.cloud.network_security_v1alpha1.types.SecurityProfileGroup):
             Required. SecurityProfileGroup resource to be
@@ -165,12 +164,11 @@ class UpdateSecurityProfileGroupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the
-            SecurityProfileGroup resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the SecurityProfileGroup resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask.
         security_profile_group (google.cloud.network_security_v1alpha1.types.SecurityProfileGroup):
             Required. Updated SecurityProfileGroup
             resource.
@@ -199,9 +197,8 @@ class DeleteSecurityProfileGroupRequest(proto.Message):
             be in the format
             ``projects|organizations/*/locations/{location}/securityProfileGroups/{security_profile_group}``.
         etag (str):
-            Optional. If client provided etag is out of
-            date, delete will return FAILED_PRECONDITION
-            error.
+            Optional. If client provided etag is out of date, delete
+            will return FAILED_PRECONDITION error.
     """
 
     name: str = proto.Field(
@@ -264,12 +261,12 @@ class ListSecurityProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_profiles: MutableSequence[
-        gcn_security_profile_group.SecurityProfile
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcn_security_profile_group.SecurityProfile,
+    security_profiles: MutableSequence[gcn_security_profile_group.SecurityProfile] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcn_security_profile_group.SecurityProfile,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -302,11 +299,10 @@ class CreateSecurityProfileRequest(proto.Message):
             be in the format
             ``projects|organizations/*/locations/{location}``.
         security_profile_id (str):
-            Required. Short name of the SecurityProfile
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g.
+            Required. Short name of the SecurityProfile resource to be
+            created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g.
             "security_profile1".
         security_profile (google.cloud.network_security_v1alpha1.types.SecurityProfile):
             Required. SecurityProfile resource to be
@@ -333,12 +329,11 @@ class UpdateSecurityProfileRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the SecurityProfile
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the SecurityProfile resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask.
         security_profile (google.cloud.network_security_v1alpha1.types.SecurityProfile):
             Required. Updated SecurityProfile resource.
     """
@@ -364,9 +359,8 @@ class DeleteSecurityProfileRequest(proto.Message):
             in the format
             ``projects|organizations/*/locations/{location}/securityProfiles/{security_profile_id}``.
         etag (str):
-            Optional. If client provided etag is out of
-            date, delete will return FAILED_PRECONDITION
-            error.
+            Optional. If client provided etag is out of date, delete
+            will return FAILED_PRECONDITION error.
     """
 
     name: str = proto.Field(

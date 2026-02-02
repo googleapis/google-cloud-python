@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
@@ -61,13 +61,13 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import encryption_spec as gcd_encryption_spec
 from google.cloud.dialogflow_v2beta1.types import encryption_spec
+from google.cloud.dialogflow_v2beta1.types import encryption_spec as gcd_encryption_spec
 
 from .transports.base import DEFAULT_CLIENT_INFO, EncryptionSpecServiceTransport
 from .transports.grpc import EncryptionSpecServiceGrpcTransport
@@ -83,9 +83,7 @@ class EncryptionSpecServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[EncryptionSpecServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[EncryptionSpecServiceTransport]]
     _transport_registry["grpc"] = EncryptionSpecServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = EncryptionSpecServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = EncryptionSpecServiceRestTransport
@@ -631,11 +629,9 @@ class EncryptionSpecServiceClient(metaclass=EncryptionSpecServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = EncryptionSpecServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            EncryptionSpecServiceClient._read_environment_variables()
+        )
         self._client_cert_source = EncryptionSpecServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -670,8 +666,7 @@ class EncryptionSpecServiceClient(metaclass=EncryptionSpecServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(EncryptionSpecServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -906,13 +901,11 @@ class EncryptionSpecServiceClient(metaclass=EncryptionSpecServiceClientMeta):
                 The request object. The request to initialize a
                 location-level encryption specification.
             encryption_spec (google.cloud.dialogflow_v2beta1.types.EncryptionSpec):
-                Required. The encryption spec used for
-                CMEK encryption. It is required that the
-                kms key is in the same region as the
-                endpoint. The same key will be used for
-                all provisioned resources, if encryption
-                is available. If the kms_key_name is
-                left empty, no encryption will be
+                Required. The encryption spec used for CMEK encryption.
+                It is required that the kms key is in the same region as
+                the endpoint. The same key will be used for all
+                provisioned resources, if encryption is available. If
+                the kms_key_name is left empty, no encryption will be
                 enforced.
 
                 This corresponds to the ``encryption_spec`` field

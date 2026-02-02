@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,6 +53,7 @@ class StringAggregationType(proto.Enum):
         NO_AGGREGATION (3):
             Preserve all answers by crowd compute.
     """
+
     STRING_AGGREGATION_TYPE_UNSPECIFIED = 0
     MAJORITY_VOTE = 1
     UNANIMOUS_VOTE = 2
@@ -154,9 +155,8 @@ class ImageClassificationConfig(proto.Message):
         annotation_spec_set (str):
             Required. Annotation spec set resource name.
         allow_multi_label (bool):
-            Optional. If allow_multi_label is true,
-            contributors are able to choose multiple labels
-            for one image.
+            Optional. If allow_multi_label is true, contributors are
+            able to choose multiple labels for one image.
         answer_aggregation_type (google.cloud.datalabeling_v1beta1.types.StringAggregationType):
             Optional. The type of how to aggregate
             answers.
@@ -225,8 +225,7 @@ class SegmentationConfig(proto.Message):
 
     Attributes:
         annotation_spec_set (str):
-            Required. Annotation spec set resource name.
-            format:
+            Required. Annotation spec set resource name. format:
             projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
         instruction_message (str):
             Instruction message showed on labelers UI.
@@ -273,9 +272,8 @@ class VideoClassificationConfig(proto.Message):
             annotation_spec_set (str):
                 Required. Annotation spec set resource name.
             allow_multi_label (bool):
-                Optional. If allow_multi_label is true,
-                contributors are able to choose multiple labels
-                from one annotation spec set.
+                Optional. If allow_multi_label is true, contributors are
+                able to choose multiple labels from one annotation spec set.
         """
 
         annotation_spec_set: str = proto.Field(
@@ -287,12 +285,12 @@ class VideoClassificationConfig(proto.Message):
             number=2,
         )
 
-    annotation_spec_set_configs: MutableSequence[
-        AnnotationSpecSetConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=AnnotationSpecSetConfig,
+    annotation_spec_set_configs: MutableSequence[AnnotationSpecSetConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=AnnotationSpecSetConfig,
+        )
     )
     apply_shot_detection: bool = proto.Field(
         proto.BOOL,
@@ -361,9 +359,8 @@ class TextClassificationConfig(proto.Message):
 
     Attributes:
         allow_multi_label (bool):
-            Optional. If allow_multi_label is true,
-            contributors are able to choose multiple labels
-            for one text segment.
+            Optional. If allow_multi_label is true, contributors are
+            able to choose multiple labels for one text segment.
         annotation_spec_set (str):
             Required. Annotation spec set resource name.
         sentiment_config (google.cloud.datalabeling_v1beta1.types.SentimentConfig):

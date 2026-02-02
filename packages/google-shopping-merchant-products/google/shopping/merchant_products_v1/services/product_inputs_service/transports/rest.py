@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -349,9 +349,7 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_product_input(
                 request, metadata
@@ -373,7 +371,7 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -500,9 +498,7 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_http_options()
 
             request, metadata = self._interceptor.pre_insert_product_input(
                 request, metadata
@@ -695,9 +691,7 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
 
             request, metadata = self._interceptor.pre_update_product_input(
                 request, metadata

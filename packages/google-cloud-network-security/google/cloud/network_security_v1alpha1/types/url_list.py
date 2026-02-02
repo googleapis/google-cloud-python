@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -172,11 +172,10 @@ class CreateUrlListRequest(proto.Message):
             Required. The parent resource of the UrlList. Must be in the
             format ``projects/*/locations/{location}``.
         url_list_id (str):
-            Required. Short name of the UrlList resource to
-            be created. This value should be 1-63 characters
-            long, containing only letters, numbers, hyphens,
-            and underscores, and should not start with a
-            number. E.g. "url_list".
+            Required. Short name of the UrlList resource to be created.
+            This value should be 1-63 characters long, containing only
+            letters, numbers, hyphens, and underscores, and should not
+            start with a number. E.g. "url_list".
         url_list (google.cloud.network_security_v1alpha1.types.UrlList):
             Required. UrlList resource to be created.
     """
@@ -201,13 +200,12 @@ class UpdateUrlListRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the UrlList resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the UrlList resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         url_list (google.cloud.network_security_v1alpha1.types.UrlList):
             Required. Updated UrlList resource.
     """

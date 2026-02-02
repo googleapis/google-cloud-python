@@ -28,9 +28,9 @@ __protobuf__ = proto.module(
 
 
 class MatchedUrl(proto.Message):
-    r"""A matched URL in a Chat message. Chat apps can preview matched
-    URLs. For more information, see [Preview
-    links](https://developers.google.com/chat/how-tos/preview-links).
+    r"""A matched URL in a Chat message. Chat apps can preview matched URLs.
+    For more information, see `Preview
+    links <https://developers.google.com/chat/how-tos/preview-links>`__.
 
     Attributes:
         url (str):

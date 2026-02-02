@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1beta import gapic_version as package_version
 
@@ -64,17 +64,15 @@ _LOGGER = std_logging.getLogger(__name__)
 class ProgramsServiceAsyncClient:
     """Service for program management.
 
-    Programs provide a mechanism for adding functionality to
-    merchant accounts. A typical example of this is the [Free
-    product
-    listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-    program, which enables products from a merchant's store to be
-    shown across Google for free.
+    Programs provide a mechanism for adding functionality to merchant
+    accounts. A typical example of this is the `Free product
+    listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+    program, which enables products from a merchant's store to be shown
+    across Google for free.
 
-    This service exposes methods to retrieve a merchant's
-    participation in all available programs, in addition to methods
-    for explicitly enabling or disabling participation in each
-    program.
+    This service exposes methods to retrieve a merchant's participation
+    in all available programs, in addition to methods for explicitly
+    enabling or disabling participation in each program.
     """
 
     _client: ProgramsServiceClient
@@ -126,7 +124,8 @@ class ProgramsServiceAsyncClient:
         Returns:
             ProgramsServiceAsyncClient: The constructed client.
         """
-        return ProgramsServiceClient.from_service_account_info.__func__(ProgramsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ProgramsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ProgramsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -142,7 +141,8 @@ class ProgramsServiceAsyncClient:
         Returns:
             ProgramsServiceAsyncClient: The constructed client.
         """
-        return ProgramsServiceClient.from_service_account_file.__func__(ProgramsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ProgramsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ProgramsServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -360,16 +360,15 @@ class ProgramsServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -607,16 +606,15 @@ class ProgramsServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -729,16 +727,15 @@ class ProgramsServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.

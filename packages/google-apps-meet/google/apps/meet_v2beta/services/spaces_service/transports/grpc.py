@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.apps.meet_v2beta.types import resource, service
 
@@ -352,8 +352,8 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
 
         Gets details about a meeting space.
 
-        For an example, see [Get a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
+        For an example, see `Get a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
 
         Returns:
             Callable[[~.GetSpaceRequest],
@@ -379,8 +379,8 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
 
         Updates details about a meeting space.
 
-        For an example, see [Update a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
+        For an example, see `Update a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
 
         Returns:
             Callable[[~.UpdateSpaceRequest],
@@ -448,8 +448,8 @@ class SpacesServiceGrpcTransport(SpacesServiceTransport):
 
         Ends an active conference (if there's one).
 
-        For an example, see [End active
-        conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
+        For an example, see `End active
+        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
 
         Returns:
             Callable[[~.EndActiveConferenceRequest],

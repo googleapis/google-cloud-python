@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -82,13 +82,11 @@ class FirewallEndpoint(proto.Message):
             appear in this list after traffic routing is
             fully configured.
         satisfies_pzs (bool):
-            Output only. [Output Only] Reserved for future
-            use.
+            Output only. [Output Only] Reserved for future use.
 
             This field is a member of `oneof`_ ``_satisfies_pzs``.
         satisfies_pzi (bool):
-            Output only. [Output Only] Reserved for future
-            use.
+            Output only. [Output Only] Reserved for future use.
 
             This field is a member of `oneof`_ ``_satisfies_pzi``.
         billing_project_id (str):
@@ -113,6 +111,7 @@ class FirewallEndpoint(proto.Message):
             INACTIVE (4):
                 Down or in an error state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -316,10 +315,9 @@ class CreateFirewallEndpointRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         firewall_endpoint_id (str):
-            Required. Id of the requesting object.
-            If auto-generating Id server-side, remove this
-            field and firewall_endpoint_id from the
-            method_signature of Create RPC.
+            Required. Id of the requesting object. If auto-generating Id
+            server-side, remove this field and firewall_endpoint_id from
+            the method_signature of Create RPC.
         firewall_endpoint (google.cloud.network_security_v1alpha1.types.FirewallEndpoint):
             Required. The resource being created
         request_id (str):
@@ -368,14 +366,12 @@ class UpdateFirewallEndpointRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Endpoint
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Endpoint resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         firewall_endpoint (google.cloud.network_security_v1alpha1.types.FirewallEndpoint):
             Required. The resource being updated
         request_id (str):
@@ -506,6 +502,7 @@ class FirewallEndpointAssociation(proto.Message):
                 The project that housed the association has
                 been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -619,12 +616,12 @@ class ListFirewallEndpointAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    firewall_endpoint_associations: MutableSequence[
-        "FirewallEndpointAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FirewallEndpointAssociation",
+    firewall_endpoint_associations: MutableSequence["FirewallEndpointAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FirewallEndpointAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -657,10 +654,10 @@ class CreateFirewallEndpointAssociationRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         firewall_endpoint_association_id (str):
-            Optional. Id of the requesting object.
-            If auto-generating Id server-side, remove this
-            field and firewall_endpoint_association_id from
-            the method_signature of Create RPC.
+            Optional. Id of the requesting object. If auto-generating Id
+            server-side, remove this field and
+            firewall_endpoint_association_id from the method_signature
+            of Create RPC.
         firewall_endpoint_association (google.cloud.network_security_v1alpha1.types.FirewallEndpointAssociation):
             Required. The resource being created
         request_id (str):
@@ -747,14 +744,12 @@ class UpdateFirewallEndpointAssociationRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Association
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Association resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         firewall_endpoint_association (google.cloud.network_security_v1alpha1.types.FirewallEndpointAssociation):
             Required. The resource being updated
         request_id (str):

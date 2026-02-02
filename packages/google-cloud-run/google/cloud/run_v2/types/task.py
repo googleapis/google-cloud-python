@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.run_v2.types import condition, k8s_min, vendor_settings
@@ -101,9 +101,8 @@ class ListTasksResponse(proto.Message):
         tasks (MutableSequence[google.cloud.run_v2.types.Task]):
             The resulting list of Tasks.
         next_page_token (str):
-            A token indicating there are more items than
-            page_size. Use it in the next ListTasks request
-            to continue.
+            A token indicating there are more items than page_size. Use
+            it in the next ListTasks request to continue.
     """
 
     @property
@@ -427,21 +426,18 @@ class TaskAttemptResult(proto.Message):
             If the status code is OK, then the attempt
             succeeded.
         exit_code (int):
-            Output only. The exit code of this attempt.
-            This may be unset if the container was unable to
-            exit cleanly with a code due to some other
-            failure.
-            See status field for possible failure details.
+            Output only. The exit code of this attempt. This may be
+            unset if the container was unable to exit cleanly with a
+            code due to some other failure. See status field for
+            possible failure details.
 
-            At most one of exit_code or term_signal will be
-            set.
+            At most one of exit_code or term_signal will be set.
         term_signal (int):
-            Output only. Termination signal of the
-            container. This is set to non-zero if the
-            container is terminated by the system.
+            Output only. Termination signal of the container. This is
+            set to non-zero if the container is terminated by the
+            system.
 
-            At most one of exit_code or term_signal will be
-            set.
+            At most one of exit_code or term_signal will be set.
     """
 
     status: status_pb2.Status = proto.Field(

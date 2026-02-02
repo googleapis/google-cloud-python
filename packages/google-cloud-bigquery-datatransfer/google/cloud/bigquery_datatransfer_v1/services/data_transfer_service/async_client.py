@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.bigquery_datatransfer_v1 import gapic_version as package_version
 
@@ -45,12 +45,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
@@ -131,7 +131,8 @@ class DataTransferServiceAsyncClient:
         Returns:
             DataTransferServiceAsyncClient: The constructed client.
         """
-        return DataTransferServiceClient.from_service_account_info.__func__(DataTransferServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DataTransferServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DataTransferServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -147,7 +148,8 @@ class DataTransferServiceAsyncClient:
         Returns:
             DataTransferServiceAsyncClient: The constructed client.
         """
-        return DataTransferServiceClient.from_service_account_file.__func__(DataTransferServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DataTransferServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DataTransferServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -185,7 +187,9 @@ class DataTransferServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DataTransferServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return DataTransferServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> DataTransferServiceTransport:
@@ -597,34 +601,27 @@ class DataTransferServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.CreateTransferConfigRequest, dict]]):
-                The request object. A request to create a data transfer
-                configuration. If new credentials are
-                needed for this transfer configuration,
-                authorization info must be provided. If
-                authorization info is provided, the
-                transfer configuration will be
-                associated with the user id
-                corresponding to the authorization info.
-                Otherwise, the transfer configuration
-                will be associated with the calling
-                user.
+                The request object. A request to create a data transfer configuration. If
+                new credentials are needed for this transfer
+                configuration, authorization info must be provided. If
+                authorization info is provided, the transfer
+                configuration will be associated with the user id
+                corresponding to the authorization info. Otherwise, the
+                transfer configuration will be associated with the
+                calling user.
 
-                When using a cross project service
-                account for creating a transfer config,
-                you must enable cross project service
-                account usage. For more information, see
-                [Disable attachment of service accounts
-                to resources in other
-                projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
+                When using a cross project service account for creating
+                a transfer config, you must enable cross project service
+                account usage. For more information, see `Disable
+                attachment of service accounts to resources in other
+                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
             parent (:class:`str`):
-                Required. The BigQuery project id where
-                the transfer configuration should be
-                created. Must be in the format
-                projects/{project_id}/locations/{location_id}
-                or projects/{project_id}. If specified
-                location and location of the destination
-                bigquery dataset do not match - the
-                request will fail.
+                Required. The BigQuery project id where the transfer
+                configuration should be created. Must be in the format
+                projects/{project_id}/locations/{location_id} or
+                projects/{project_id}. If specified location and
+                location of the destination bigquery dataset do not
+                match - the request will fail.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -751,18 +748,15 @@ class DataTransferServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.bigquery_datatransfer_v1.types.UpdateTransferConfigRequest, dict]]):
-                The request object. A request to update a transfer
-                configuration. To update the user id of
-                the transfer configuration,
-                authorization info needs to be provided.
+                The request object. A request to update a transfer configuration. To update
+                the user id of the transfer configuration, authorization
+                info needs to be provided.
 
-                When using a cross project service
-                account for updating a transfer config,
-                you must enable cross project service
-                account usage. For more information, see
-                [Disable attachment of service accounts
-                to resources in other
-                projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
+                When using a cross project service account for updating
+                a transfer config, you must enable cross project service
+                account usage. For more information, see `Disable
+                attachment of service accounts to resources in other
+                projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
             transfer_config (:class:`google.cloud.bigquery_datatransfer_v1.types.TransferConfig`):
                 Required. Data transfer configuration
                 to create.
@@ -1212,12 +1206,11 @@ class DataTransferServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datatransfer.ScheduleTransferRunsResponse:
-        r"""Creates transfer runs for a time range [start_time,
-        end_time]. For each date - or whatever granularity the
-        data source supports - in the range, one transfer run is
-        created.
-        Note that runs are created per UTC time in the time
-        range. DEPRECATED: use StartManualTransferRuns instead.
+        r"""Creates transfer runs for a time range [start_time, end_time].
+        For each date - or whatever granularity the data source supports
+        - in the range, one transfer run is created. Note that runs are
+        created per UTC time in the time range. DEPRECATED: use
+        StartManualTransferRuns instead.
 
         .. code-block:: python
 
@@ -1353,11 +1346,10 @@ class DataTransferServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> datatransfer.StartManualTransferRunsResponse:
-        r"""Start manual transfer runs to be executed now with
-        schedule_time equal to current time. The transfer runs
-        can be created for a time range where the run_time is
-        between start_time (inclusive) and end_time (exclusive),
-        or for a specific run_time.
+        r"""Start manual transfer runs to be executed now with schedule_time
+        equal to current time. The transfer runs can be created for a
+        time range where the run_time is between start_time (inclusive)
+        and end_time (exclusive), or for a specific run_time.
 
         .. code-block:: python
 
@@ -2121,14 +2113,13 @@ class DataTransferServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Unenroll data sources in a user project. This allows
-        users to remove transfer configurations for these data
-        sources. They will no longer appear in the
-        ListDataSources RPC and will also no longer appear in
-        the [BigQuery
-        UI](https://console.cloud.google.com/bigquery). Data
-        transfers configurations of unenrolled data sources will
-        not be scheduled.
+        r"""Unenroll data sources in a user project. This allows users to
+        remove transfer configurations for these data sources. They will
+        no longer appear in the ListDataSources RPC and will also no
+        longer appear in the `BigQuery
+        UI <https://console.cloud.google.com/bigquery>`__. Data
+        transfers configurations of unenrolled data sources will not be
+        scheduled.
 
         .. code-block:: python
 

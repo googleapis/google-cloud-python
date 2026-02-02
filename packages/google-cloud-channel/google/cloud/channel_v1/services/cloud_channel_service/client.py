@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.channel_v1 import gapic_version as package_version
 
@@ -61,12 +61,12 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
 
 from google.cloud.channel_v1.services.cloud_channel_service import pagers
 from google.cloud.channel_v1.types import (
@@ -95,9 +95,7 @@ class CloudChannelServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[CloudChannelServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudChannelServiceTransport]]
     _transport_registry["grpc"] = CloudChannelServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudChannelServiceGrpcAsyncIOTransport
 
@@ -847,11 +845,9 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CloudChannelServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CloudChannelServiceClient._read_environment_variables()
+        )
         self._client_cert_source = CloudChannelServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -886,8 +882,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CloudChannelServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1121,9 +1116,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 [CloudChannelService.GetCustomer][google.cloud.channel.v1.CloudChannelService.GetCustomer].
             name (str):
-                Required. The resource name of the
-                customer to retrieve. Name uses the
-                format:
+                Required. The resource name of the customer to retrieve.
+                Name uses the format:
                 accounts/{account_id}/customers/{customer_id}
 
                 This corresponds to the ``name`` field
@@ -4139,7 +4133,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
             name (str):
                 Required. The resource name of the
                 CustomerRepricingConfig. Format:
-
                 accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
 
                 This corresponds to the ``name`` field
@@ -4276,12 +4269,11 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
             parent (str):
-                Required. The resource name of the
-                customer. Parent uses the format:
-                accounts/{account_id}/customers/{customer_id}.
-                Supports
-                accounts/{account_id}/customers/- to
-                retrieve configs for all customers.
+                Required. The resource name of the customer. Parent uses
+                the format:
+                accounts/{account_id}/customers/{customer_id}. Supports
+                accounts/{account_id}/customers/- to retrieve configs
+                for all customers.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4457,11 +4449,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 [CloudChannelService.CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig].
             parent (str):
-                Required. The resource name of the
-                customer that will receive this
-                repricing config. Parent uses the
-                format:
-
+                Required. The resource name of the customer that will
+                receive this repricing config. Parent uses the format:
                 accounts/{account_id}/customers/{customer_id}
 
                 This corresponds to the ``parent`` field
@@ -4750,10 +4739,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 [CloudChannelService.DeleteCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig].
             name (str):
-                Required. The resource name of the
-                customer repricing config rule to
-                delete. Format:
-
+                Required. The resource name of the customer repricing
+                config rule to delete. Format:
                 accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
 
                 This corresponds to the ``name`` field
@@ -4873,7 +4860,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
             name (str):
                 Required. The resource name of the
                 ChannelPartnerRepricingConfig Format:
-
                 accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
 
                 This corresponds to the ``name`` field
@@ -5193,11 +5179,9 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 [CloudChannelService.CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig].
             parent (str):
-                Required. The resource name of the
-                ChannelPartner that will receive the
-                repricing config. Parent uses the
+                Required. The resource name of the ChannelPartner that
+                will receive the repricing config. Parent uses the
                 format:
-
                 accounts/{account_id}/channelPartnerLinks/{channel_partner_id}
 
                 This corresponds to the ``parent`` field
@@ -5761,8 +5745,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
                 The request object. Request message for
                 ListSkuGroupBillableSkus.
             parent (str):
-                Required. Resource name of the SKU
-                group. Format:
+                Required. Resource name of the SKU group. Format:
                 accounts/{account}/skuGroups/{sku_group}.
 
                 This corresponds to the ``parent`` field

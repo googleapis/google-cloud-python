@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow, avro
@@ -50,6 +50,7 @@ class DataFormat(proto.Enum):
             message format. See https://arrow.apache.org/
             for more details.
     """
+
     DATA_FORMAT_UNSPECIFIED = 0
     AVRO = 1
     ARROW = 2
@@ -73,6 +74,7 @@ class WriteStreamView(proto.Enum):
             CreateWriteStream returns the full projection of
             write stream metadata.
     """
+
     WRITE_STREAM_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -93,11 +95,10 @@ class ReadSession(proto.Message):
             Output only. Unique identifier for the session, in the form
             ``projects/{project_id}/locations/{location}/sessions/{session_id}``.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time at which the session becomes
-            invalid. After this time, subsequent requests to
-            read this Session will return errors. The
-            expire_time is automatically assigned and
-            currently cannot be specified or updated.
+            Output only. Time at which the session becomes invalid.
+            After this time, subsequent requests to read this Session
+            will return errors. The expire_time is automatically
+            assigned and currently cannot be specified or updated.
         data_format (google.cloud.bigquery_storage_v1.types.DataFormat):
             Immutable. Data format of the output data.
             DATA_FORMAT_UNSPECIFIED not supported.
@@ -185,70 +186,47 @@ class ReadSession(proto.Message):
 
         Attributes:
             selected_fields (MutableSequence[str]):
-                Optional. The names of the fields in the table
-                to be returned. If no field names are specified,
-                then all fields in the table are returned.
+                Optional. The names of the fields in the table to be
+                returned. If no field names are specified, then all fields
+                in the table are returned.
 
-                Nested fields -- the child elements of a STRUCT
-                field -- can be selected individually using
-                their fully-qualified names, and will be
-                returned as record fields containing only the
-                selected nested fields. If a STRUCT field is
-                specified in the selected fields list, all of
-                the child elements will be returned.
+                Nested fields -- the child elements of a STRUCT field -- can
+                be selected individually using their fully-qualified names,
+                and will be returned as record fields containing only the
+                selected nested fields. If a STRUCT field is specified in
+                the selected fields list, all of the child elements will be
+                returned.
 
-                As an example, consider a table with the
-                following schema:
+                As an example, consider a table with the following schema:
 
-                {
-                "name": "struct_field",
-                "type": "RECORD",
-                "mode": "NULLABLE",
-                "fields": [
-                {
-                "name": "string_field1",
-                "type": "STRING",
-                . "mode": "NULLABLE"
-                },
-                {
-                "name": "string_field2",
-                "type": "STRING",
-                "mode": "NULLABLE"
-                }
-                ]
-                }
+                { "name": "struct_field", "type": "RECORD", "mode":
+                "NULLABLE", "fields": [ { "name": "string_field1", "type":
+                "STRING", . "mode": "NULLABLE" }, { "name": "string_field2",
+                "type": "STRING", "mode": "NULLABLE" } ] }
 
-                Specifying "struct_field" in the selected fields
-                list will result in a read session schema with
-                the following logical structure:
-
-                struct_field {
-                string_field1
-                string_field2
-                }
-
-                Specifying "struct_field.string_field1" in the
-                selected fields list will result in a read
-                session schema with the following logical
+                Specifying "struct_field" in the selected fields list will
+                result in a read session schema with the following logical
                 structure:
 
-                struct_field {
-                string_field1
-                }
+                struct_field { string_field1 string_field2 }
 
-                The order of the fields in the read session
-                schema is derived from the table schema and does
-                not correspond to the order in which the fields
-                are specified in this list.
+                Specifying "struct_field.string_field1" in the selected
+                fields list will result in a read session schema with the
+                following logical structure:
+
+                struct_field { string_field1 }
+
+                The order of the fields in the read session schema is
+                derived from the table schema and does not correspond to the
+                order in which the fields are specified in this list.
             row_restriction (str):
-                SQL text filtering statement, similar to a WHERE
-                clause in a query. Aggregates are not supported.
+                SQL text filtering statement, similar to a WHERE clause in a
+                query. Aggregates are not supported.
 
-                Examples: "int_field > 5"
-                "date_field = CAST('2014-9-27' as DATE)"
-                "nullable_field is not NULL"
-                "st_equals(geo_field, st_geofromtext("POINT(2,
-                2)"))" "numeric_field BETWEEN 1.0 AND 5.0"
+                Examples: "int_field > 5" "date_field = CAST('2014-9-27' as
+                DATE)" "nullable_field is not NULL" "st_equals(geo_field,
+                st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
+                AND 5.0"
 
                 Restricted to a maximum length for 1 MB.
             arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
@@ -263,20 +241,18 @@ class ReadSession(proto.Message):
                 This field is a member of `oneof`_ ``output_format_serialization_options``.
             sample_percentage (float):
                 Optional. Specifies a table sampling percentage.
-                Specifically, the query planner will use
-                TABLESAMPLE SYSTEM (sample_percentage PERCENT).
-                The sampling percentage is applied at the data
-                block granularity. It will randomly choose for
-                each data block whether to read the rows in that
+                Specifically, the query planner will use TABLESAMPLE SYSTEM
+                (sample_percentage PERCENT). The sampling percentage is
+                applied at the data block granularity. It will randomly
+                choose for each data block whether to read the rows in that
                 data block. For more details, see
                 https://cloud.google.com/bigquery/docs/table-sampling)
 
                 This field is a member of `oneof`_ ``_sample_percentage``.
             response_compression_codec (google.cloud.bigquery_storage_v1.types.ReadSession.TableReadOptions.ResponseCompressionCodec):
-                Optional. Set response_compression_codec when
-                creating a read session to enable
-                application-level compression of ReadRows
-                responses.
+                Optional. Set response_compression_codec when creating a
+                read session to enable application-level compression of
+                ReadRows responses.
 
                 This field is a member of `oneof`_ ``_response_compression_codec``.
         """
@@ -297,6 +273,7 @@ class ReadSession(proto.Message):
                 RESPONSE_COMPRESSION_CODEC_LZ4 (2):
                     Use raw LZ4 compression.
             """
+
             RESPONSE_COMPRESSION_CODEC_UNSPECIFIED = 0
             RESPONSE_COMPRESSION_CODEC_LZ4 = 2
 
@@ -461,6 +438,7 @@ class WriteStream(proto.Message):
                 Data is only visible up to the offset to
                 which it was flushed.
         """
+
         TYPE_UNSPECIFIED = 0
         COMMITTED = 1
         PENDING = 2
@@ -477,6 +455,7 @@ class WriteStream(proto.Message):
                 It is the default value if customers do not
                 specify it.
         """
+
         WRITE_MODE_UNSPECIFIED = 0
         INSERT = 1
 

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
@@ -175,6 +175,7 @@ class AwsCluster(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -556,12 +557,11 @@ class AwsVolumeTemplate(proto.Message):
             Optional. The number of I/O operations per
             second (IOPS) to provision for GP3 volume.
         throughput (int):
-            Optional. The throughput that the volume
-            supports, in MiB/s. Only valid if volume_type is
-            GP3.
+            Optional. The throughput that the volume supports, in MiB/s.
+            Only valid if volume_type is GP3.
 
-            If the volume_type is GP3 and this is not
-            specified, it defaults to 125.
+            If the volume_type is GP3 and this is not specified, it
+            defaults to 125.
         kms_key_arn (str):
             Optional. The Amazon Resource Name (ARN) of
             the Customer Managed Key (CMK) used to encrypt
@@ -587,6 +587,7 @@ class AwsVolumeTemplate(proto.Message):
             GP3 (2):
                 GP3 (General Purpose SSD volume type).
         """
+
         VOLUME_TYPE_UNSPECIFIED = 0
         GP2 = 1
         GP3 = 2
@@ -769,6 +770,7 @@ class AwsNodePool(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -1090,13 +1092,13 @@ class AwsNodePoolAutoscaling(proto.Message):
 
     Attributes:
         min_node_count (int):
-            Required. Minimum number of nodes in the node
-            pool. Must be greater than or equal to 1 and
-            less than or equal to max_node_count.
+            Required. Minimum number of nodes in the node pool. Must be
+            greater than or equal to 1 and less than or equal to
+            max_node_count.
         max_node_count (int):
-            Required. Maximum number of nodes in the node
-            pool. Must be greater than or equal to
-            min_node_count and less than or equal to 50.
+            Required. Maximum number of nodes in the node pool. Must be
+            greater than or equal to min_node_count and less than or
+            equal to 50.
     """
 
     min_node_count: int = proto.Field(
@@ -1282,11 +1284,11 @@ class AwsProxyConfig(proto.Message):
 
     Attributes:
         secret_arn (str):
-            The ARN of the AWS Secret Manager secret that
-            contains the HTTP(S) proxy configuration.
+            The ARN of the AWS Secret Manager secret that contains the
+            HTTP(S) proxy configuration.
 
-            The secret must be a JSON encoded proxy
-            configuration as described in
+            The secret must be a JSON encoded proxy configuration as
+            described in
             https://cloud.google.com/kubernetes-engine/multi-cloud/docs/aws/how-to/use-a-proxy#create_a_proxy_configuration_file
         secret_version (str):
             The version string of the AWS Secret Manager
@@ -1345,6 +1347,7 @@ class AwsInstancePlacement(proto.Message):
             HOST (3):
                 Launch this instance to a dedicated host.
         """
+
         TENANCY_UNSPECIFIED = 0
         DEFAULT = 1
         DEDICATED = 2
@@ -1367,11 +1370,11 @@ class AwsAutoscalingGroupMetricsCollection(proto.Message):
             Scaling sends aggregated data to AWS CloudWatch.
             The only valid value is "1Minute".
         metrics (MutableSequence[str]):
-            Optional. The metrics to enable. For a list of
-            valid metrics, see
+            Optional. The metrics to enable. For a list of valid
+            metrics, see
             https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_EnableMetricsCollection.html.
-            If you specify Granularity and don't specify any
-            metrics, all metrics are enabled.
+            If you specify Granularity and don't specify any metrics,
+            all metrics are enabled.
     """
 
     granularity: str = proto.Field(

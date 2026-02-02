@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import generator, participant
@@ -262,6 +262,7 @@ class AnswerFeedback(proto.Message):
             FULLY_CORRECT (3):
                 Answer is fully correct.
         """
+
         CORRECTNESS_LEVEL_UNSPECIFIED = 0
         NOT_CORRECT = 1
         PARTIALLY_CORRECT = 2
@@ -352,6 +353,7 @@ class AgentAssistantFeedback(proto.Message):
             RELEVANT (2):
                 Answer is relevant to query.
         """
+
         ANSWER_RELEVANCE_UNSPECIFIED = 0
         IRRELEVANT = 1
         RELEVANT = 2
@@ -367,6 +369,7 @@ class AgentAssistantFeedback(proto.Message):
             CORRECT (2):
                 Information in document is correct.
         """
+
         DOCUMENT_CORRECTNESS_UNSPECIFIED = 0
         INCORRECT = 1
         CORRECT = 2
@@ -382,6 +385,7 @@ class AgentAssistantFeedback(proto.Message):
             EFFICIENT (2):
                 Document is efficient.
         """
+
         DOCUMENT_EFFICIENCY_UNSPECIFIED = 0
         INEFFICIENT = 1
         EFFICIENT = 2

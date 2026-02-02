@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.webrisk_v1 import gapic_version as package_version
 
@@ -44,10 +44,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.webrisk_v1.types import webrisk
 
@@ -117,7 +117,8 @@ class WebRiskServiceAsyncClient:
         Returns:
             WebRiskServiceAsyncClient: The constructed client.
         """
-        return WebRiskServiceClient.from_service_account_info.__func__(WebRiskServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = WebRiskServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(WebRiskServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -133,7 +134,8 @@ class WebRiskServiceAsyncClient:
         Returns:
             WebRiskServiceAsyncClient: The constructed client.
         """
-        return WebRiskServiceClient.from_service_account_file.__func__(WebRiskServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = WebRiskServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(WebRiskServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -684,15 +686,15 @@ class WebRiskServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> webrisk.Submission:
-        r"""Creates a Submission of a URI suspected of containing
-        phishing content to be reviewed. If the result verifies
-        the existence of malicious phishing content, the site
-        will be added to the [Google's Social Engineering
-        lists](https://support.google.com/webmasters/answer/6350487/)
-        in order to protect users that could get exposed to this
-        threat in the future. Only allowlisted projects can use
-        this method during Early Access. Please reach out to
-        Sales or your customer engineer to obtain access.
+        r"""Creates a Submission of a URI suspected of containing phishing
+        content to be reviewed. If the result verifies the existence of
+        malicious phishing content, the site will be added to the
+        `Google's Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__
+        in order to protect users that could get exposed to this threat
+        in the future. Only allowlisted projects can use this method
+        during Early Access. Please reach out to Sales or your customer
+        engineer to obtain access.
 
         .. code-block:: python
 
@@ -729,9 +731,8 @@ class WebRiskServiceAsyncClient:
                 The request object. Request to send a potentially phishy
                 URI to WebRisk.
             parent (:class:`str`):
-                Required. The name of the project that
-                is making the submission. This string is
-                in the format
+                Required. The name of the project that is making the
+                submission. This string is in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field
@@ -872,9 +873,8 @@ class WebRiskServiceAsyncClient:
                 The request object. Request to send a potentially
                 malicious URI to WebRisk.
             parent (:class:`str`):
-                Required. The name of the project that
-                is making the submission. This string is
-                in the format
+                Required. The name of the project that is making the
+                submission. This string is in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field

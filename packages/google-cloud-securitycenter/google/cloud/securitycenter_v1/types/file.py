@@ -38,14 +38,13 @@ class File(proto.Message):
         size (int):
             Size of the file in bytes.
         sha256 (str):
-            SHA256 hash of the first hashed_size bytes of
-            the file encoded as a hex string. If hashed_size
-            == size, sha256 represents the SHA256 hash of
-            the entire file.
+            SHA256 hash of the first hashed_size bytes of the file
+            encoded as a hex string. If hashed_size == size, sha256
+            represents the SHA256 hash of the entire file.
         hashed_size (int):
-            The length in bytes of the file prefix that was
-            hashed. If hashed_size == size, any hashes
-            reported represent the entire file.
+            The length in bytes of the file prefix that was hashed. If
+            hashed_size == size, any hashes reported represent the
+            entire file.
         partially_hashed (bool):
             True when the hash covers only a prefix of
             the file.
@@ -66,9 +65,8 @@ class File(proto.Message):
                 UUID of the partition (format
                 https://wiki.archlinux.org/title/persistent_block_device_naming#by-uuid)
             relative_path (str):
-                Relative path of the file in the partition as a
-                JSON encoded string. Example:
-                /home/user1/executable_file.sh
+                Relative path of the file in the partition as a JSON encoded
+                string. Example: /home/user1/executable_file.sh
         """
 
         partition_uuid: str = proto.Field(

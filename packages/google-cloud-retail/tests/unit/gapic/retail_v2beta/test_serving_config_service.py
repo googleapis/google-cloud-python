@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,17 +43,22 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.services.serving_config_service import (
     ServingConfigServiceAsyncClient,
@@ -61,10 +66,13 @@ from google.cloud.retail_v2beta.services.serving_config_service import (
     pagers,
     transports,
 )
+from google.cloud.retail_v2beta.types import (
+    common,
+    search_service,
+    serving_config,
+    serving_config_service,
+)
 from google.cloud.retail_v2beta.types import serving_config as gcr_serving_config
-from google.cloud.retail_v2beta.types import common, search_service
-from google.cloud.retail_v2beta.types import serving_config
-from google.cloud.retail_v2beta.types import serving_config_service
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -998,10 +1006,9 @@ def test_serving_config_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1046,10 +1053,9 @@ def test_serving_config_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1085,10 +1091,9 @@ def test_serving_config_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1344,13 +1349,13 @@ def test_serving_config_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1505,9 +1510,9 @@ def test_create_serving_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_serving_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_serving_config(request)
 
@@ -1904,9 +1909,9 @@ def test_delete_serving_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_serving_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_serving_config(request)
 
@@ -2273,9 +2278,9 @@ def test_update_serving_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_serving_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_serving_config(request)
 
@@ -2703,9 +2708,9 @@ def test_get_serving_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_serving_config] = (
+            mock_rpc
+        )
         request = {}
         client.get_serving_config(request)
 
@@ -3086,9 +3091,9 @@ def test_list_serving_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_serving_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_serving_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_serving_configs(request)
 
@@ -4371,9 +4376,9 @@ def test_create_serving_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_serving_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_serving_config(request)
@@ -4585,9 +4590,9 @@ def test_delete_serving_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_serving_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_serving_config(request)
@@ -4765,9 +4770,9 @@ def test_update_serving_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_serving_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_serving_config(request)
@@ -4951,9 +4956,9 @@ def test_get_serving_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_serving_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_serving_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_serving_config(request)
@@ -5135,9 +5140,9 @@ def test_list_serving_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_serving_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_serving_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_serving_configs(request)
@@ -6342,8 +6347,9 @@ def test_create_serving_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6557,18 +6563,20 @@ def test_create_serving_config_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_create_serving_config"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor,
-        "post_create_serving_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_create_serving_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_create_serving_config"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_create_serving_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_create_serving_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -6625,8 +6633,9 @@ def test_delete_serving_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6685,13 +6694,13 @@ def test_delete_serving_config_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_delete_serving_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_delete_serving_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = serving_config_service.DeleteServingConfigRequest.pb(
             serving_config_service.DeleteServingConfigRequest()
@@ -6740,8 +6749,9 @@ def test_update_serving_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -6959,18 +6969,20 @@ def test_update_serving_config_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_update_serving_config"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor,
-        "post_update_serving_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_update_serving_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_update_serving_config"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_update_serving_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_update_serving_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7027,8 +7039,9 @@ def test_get_serving_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7132,18 +7145,20 @@ def test_get_serving_config_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_get_serving_config"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor,
-        "post_get_serving_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_get_serving_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_get_serving_config"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_get_serving_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_get_serving_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7198,8 +7213,9 @@ def test_list_serving_configs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7264,18 +7280,20 @@ def test_list_serving_configs_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_list_serving_configs"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor,
-        "post_list_serving_configs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_list_serving_configs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_list_serving_configs"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_list_serving_configs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_list_serving_configs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7335,8 +7353,9 @@ def test_add_control_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7440,17 +7459,20 @@ def test_add_control_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_add_control"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_add_control_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_add_control"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_add_control"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_add_control_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_add_control"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7507,8 +7529,9 @@ def test_remove_control_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -7612,18 +7635,20 @@ def test_remove_control_rest_interceptors(null_interceptor):
     )
     client = ServingConfigServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "post_remove_control"
-    ) as post, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor,
-        "post_remove_control_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ServingConfigServiceRestInterceptor, "pre_remove_control"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "post_remove_control"
+        ) as post,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor,
+            "post_remove_control_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ServingConfigServiceRestInterceptor, "pre_remove_control"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -7683,8 +7708,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7747,8 +7773,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -8014,11 +8041,14 @@ def test_serving_config_service_base_transport():
 
 def test_serving_config_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.retail_v2beta.services.serving_config_service.transports.ServingConfigServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.retail_v2beta.services.serving_config_service.transports.ServingConfigServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ServingConfigServiceTransport(
@@ -8035,9 +8065,12 @@ def test_serving_config_service_base_transport_with_credentials_file():
 
 def test_serving_config_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2beta.services.serving_config_service.transports.ServingConfigServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.retail_v2beta.services.serving_config_service.transports.ServingConfigServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ServingConfigServiceTransport()
@@ -8109,11 +8142,12 @@ def test_serving_config_service_transport_auth_gdch_credentials(transport_class)
 def test_serving_config_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

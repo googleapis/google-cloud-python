@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -84,6 +84,7 @@ class AuthorizationPolicy(proto.Message):
                 Deny rules should be avoided unless they are
                 used to provide a default "deny all" fallback.
         """
+
         ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -93,12 +94,11 @@ class AuthorizationPolicy(proto.Message):
 
         Attributes:
             sources (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Source]):
-                Optional. List of attributes for the traffic
-                source. All of the sources must match. A source
-                is a match if both principals and ip_blocks
-                match. If not set, the action specified in the
-                'action' field will be applied without any rule
-                checks for the source.
+                Optional. List of attributes for the traffic source. All of
+                the sources must match. A source is a match if both
+                principals and ip_blocks match. If not set, the action
+                specified in the 'action' field will be applied without any
+                rule checks for the source.
             destinations (MutableSequence[google.cloud.network_security_v1.types.AuthorizationPolicy.Rule.Destination]):
                 Optional. List of attributes for the traffic
                 destination. All of the destinations must match.
@@ -222,19 +222,19 @@ class AuthorizationPolicy(proto.Message):
                 message="AuthorizationPolicy.Rule.Destination.HttpHeaderMatch",
             )
 
-        sources: MutableSequence[
-            "AuthorizationPolicy.Rule.Source"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="AuthorizationPolicy.Rule.Source",
+        sources: MutableSequence["AuthorizationPolicy.Rule.Source"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AuthorizationPolicy.Rule.Source",
+            )
         )
-        destinations: MutableSequence[
-            "AuthorizationPolicy.Rule.Destination"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="AuthorizationPolicy.Rule.Destination",
+        destinations: MutableSequence["AuthorizationPolicy.Rule.Destination"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="AuthorizationPolicy.Rule.Destination",
+            )
         )
 
     name: str = proto.Field(
@@ -322,12 +322,12 @@ class ListAuthorizationPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    authorization_policies: MutableSequence[
-        "AuthorizationPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AuthorizationPolicy",
+    authorization_policies: MutableSequence["AuthorizationPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AuthorizationPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -360,11 +360,10 @@ class CreateAuthorizationPolicyRequest(proto.Message):
             Must be in the format
             ``projects/{project}/locations/{location}``.
         authorization_policy_id (str):
-            Required. Short name of the AuthorizationPolicy
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g. "authz_policy".
+            Required. Short name of the AuthorizationPolicy resource to
+            be created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g. "authz_policy".
         authorization_policy (google.cloud.network_security_v1.types.AuthorizationPolicy):
             Required. AuthorizationPolicy resource to be
             created.
@@ -390,14 +389,12 @@ class UpdateAuthorizationPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            AuthorizationPolicy resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask. If the
-            user does not provide a mask then all fields
-            will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the AuthorizationPolicy resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         authorization_policy (google.cloud.network_security_v1.types.AuthorizationPolicy):
             Required. Updated AuthorizationPolicy
             resource.

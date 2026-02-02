@@ -73,9 +73,9 @@ class CollectUserEventRequest(proto.Message):
 
     Attributes:
         prebuilt_rule (str):
-            The prebuilt rule name that can convert a
-            specific type of raw_json. For example: "ga4_bq"
-            rule for the GA4 user event schema.
+            The prebuilt rule name that can convert a specific type of
+            raw_json. For example: "ga4_bq" rule for the GA4 user event
+            schema.
 
             This field is a member of `oneof`_ ``conversion_rule``.
         parent (str):
@@ -96,12 +96,10 @@ class CollectUserEventRequest(proto.Message):
             get requests. The name is abbreviated to reduce
             the payload bytes.
         raw_json (str):
-            An arbitrary serialized JSON string that
-            contains necessary information that can comprise
-            a user event. When this field is specified, the
-            user_event field will be ignored. Note:
-            line-delimited JSON is not supported, a single
-            JSON only.
+            An arbitrary serialized JSON string that contains necessary
+            information that can comprise a user event. When this field
+            is specified, the user_event field will be ignored. Note:
+            line-delimited JSON is not supported, a single JSON only.
     """
 
     prebuilt_rule: str = proto.Field(
@@ -167,6 +165,7 @@ class RejoinUserEventsRequest(proto.Message):
                 Only rejoin unjoined events with the latest
                 product catalog.
         """
+
         USER_EVENT_REJOIN_SCOPE_UNSPECIFIED = 0
         JOINED_EVENTS = 1
         UNJOINED_EVENTS = 2

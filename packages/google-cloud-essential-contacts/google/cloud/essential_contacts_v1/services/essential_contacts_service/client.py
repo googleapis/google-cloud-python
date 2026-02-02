@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.essential_contacts_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.essential_contacts_v1.services.essential_contacts_service import (
     pagers,
@@ -83,9 +83,7 @@ class EssentialContactsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[EssentialContactsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[EssentialContactsServiceTransport]]
     _transport_registry["grpc"] = EssentialContactsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = EssentialContactsServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = EssentialContactsServiceRestTransport
@@ -626,11 +624,9 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = EssentialContactsServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            EssentialContactsServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             EssentialContactsServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -667,8 +663,7 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(EssentialContactsServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -786,10 +781,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the CreateContact
                 method.
             parent (str):
-                Required. The resource to save this
-                contact for. Format:
-                organizations/{organization_id},
-                folders/{folder_id} or
+                Required. The resource to save this contact for. Format:
+                organizations/{organization_id}, folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -1037,9 +1030,8 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the ListContacts
                 method.
             parent (str):
-                Required. The parent resource name.
-                Format: organizations/{organization_id},
-                folders/{folder_id} or
+                Required. The parent resource name. Format:
+                organizations/{organization_id}, folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -1161,11 +1153,9 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the GetContact
                 method.
             name (str):
-                Required. The name of the contact to
-                retrieve. Format:
+                Required. The name of the contact to retrieve. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id}
-                or
+                folders/{folder_id}/contacts/{contact_id} or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field
@@ -1270,11 +1260,9 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
                 The request object. Request message for the DeleteContact
                 method.
             name (str):
-                Required. The name of the contact to
-                delete. Format:
+                Required. The name of the contact to delete. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id}
-                or
+                folders/{folder_id}/contacts/{contact_id} or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field

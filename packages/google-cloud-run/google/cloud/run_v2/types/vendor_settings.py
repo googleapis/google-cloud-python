@@ -53,6 +53,7 @@ class IngressTraffic(proto.Enum):
         INGRESS_TRAFFIC_NONE (4):
             No ingress traffic is allowed.
     """
+
     INGRESS_TRAFFIC_UNSPECIFIED = 0
     INGRESS_TRAFFIC_ALL = 1
     INGRESS_TRAFFIC_INTERNAL_ONLY = 2
@@ -71,6 +72,7 @@ class ExecutionEnvironment(proto.Enum):
         EXECUTION_ENVIRONMENT_GEN2 (2):
             Uses Second Generation environment.
     """
+
     EXECUTION_ENVIRONMENT_UNSPECIFIED = 0
     EXECUTION_ENVIRONMENT_GEN1 = 1
     EXECUTION_ENVIRONMENT_GEN2 = 2
@@ -89,6 +91,7 @@ class EncryptionKeyRevocationAction(proto.Enum):
             Shuts down existing instances, and prevents
             creation of new ones.
     """
+
     ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED = 0
     PREVENT_NEW = 1
     SHUTDOWN = 2
@@ -108,8 +111,8 @@ class VpcAccess(proto.Message):
             connector, visit
             https://cloud.google.com/run/docs/configuring/vpc-connectors.
         egress (google.cloud.run_v2.types.VpcAccess.VpcEgress):
-            Optional. Traffic VPC egress settings. If not
-            provided, it defaults to PRIVATE_RANGES_ONLY.
+            Optional. Traffic VPC egress settings. If not provided, it
+            defaults to PRIVATE_RANGES_ONLY.
         network_interfaces (MutableSequence[google.cloud.run_v2.types.VpcAccess.NetworkInterface]):
             Optional. Direct VPC egress settings.
             Currently only single network interface is
@@ -129,6 +132,7 @@ class VpcAccess(proto.Message):
                 Only private IP ranges are routed through the
                 VPC connector.
         """
+
         VPC_EGRESS_UNSPECIFIED = 0
         ALL_TRAFFIC = 1
         PRIVATE_RANGES_ONLY = 2
@@ -212,10 +216,9 @@ class BinaryAuthorization(proto.Message):
 
             This field is a member of `oneof`_ ``binauthz_method``.
         breakglass_justification (str):
-            Optional. If present, indicates to use
-            Breakglass using this justification. If
-            use_default is False, then it must be empty. For
-            more information on breakglass, see
+            Optional. If present, indicates to use Breakglass using this
+            justification. If use_default is False, then it must be
+            empty. For more information on breakglass, see
             https://cloud.google.com/binary-authorization/docs/using-breakglass
     """
 
@@ -322,6 +325,7 @@ class ServiceScaling(proto.Message):
                 Scale to exactly min instances and ignore max
                 instances.
         """
+
         SCALING_MODE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2

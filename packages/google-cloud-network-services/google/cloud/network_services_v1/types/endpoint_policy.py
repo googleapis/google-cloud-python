@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_services_v1.types import common
@@ -86,19 +86,16 @@ class EndpointPolicy(proto.Message):
             authentication is disabled(open) for this
             endpoint.
         client_tls_policy (str):
-            Optional. A URL referring to a ClientTlsPolicy
-            resource. ClientTlsPolicy can be set to specify
-            the authentication for traffic from the proxy to
-            the actual endpoints. More specifically, it is
-            applied to the outgoing traffic from the proxy
-            to the endpoint. This is typically used for
-            sidecar model where the proxy identifies itself
-            as endpoint to the control plane, with the
-            connection between sidecar and endpoint
-            requiring authentication. If this field is not
-            set, authentication is disabled(open).
-            Applicable only when EndpointPolicyType is
-            SIDECAR_PROXY.
+            Optional. A URL referring to a ClientTlsPolicy resource.
+            ClientTlsPolicy can be set to specify the authentication for
+            traffic from the proxy to the actual endpoints. More
+            specifically, it is applied to the outgoing traffic from the
+            proxy to the endpoint. This is typically used for sidecar
+            model where the proxy identifies itself as endpoint to the
+            control plane, with the connection between sidecar and
+            endpoint requiring authentication. If this field is not set,
+            authentication is disabled(open). Applicable only when
+            EndpointPolicyType is SIDECAR_PROXY.
     """
 
     class EndpointPolicyType(proto.Enum):
@@ -112,6 +109,7 @@ class EndpointPolicy(proto.Message):
             GRPC_SERVER (2):
                 Represents a proxyless gRPC backend.
         """
+
         ENDPOINT_POLICY_TYPE_UNSPECIFIED = 0
         SIDECAR_PROXY = 1
         GRPC_SERVER = 2
@@ -298,14 +296,12 @@ class UpdateEndpointPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the EndpointPolicy
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the EndpointPolicy resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         endpoint_policy (google.cloud.network_services_v1.types.EndpointPolicy):
             Required. Updated EndpointPolicy resource.
     """

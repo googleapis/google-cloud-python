@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gke_multicloud_v1 import gapic_version as package_version
 
@@ -45,12 +45,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_multicloud_v1.services.aws_clusters import pagers
 from google.cloud.gke_multicloud_v1.types import (
@@ -130,7 +130,8 @@ class AwsClustersAsyncClient:
         Returns:
             AwsClustersAsyncClient: The constructed client.
         """
-        return AwsClustersClient.from_service_account_info.__func__(AwsClustersAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AwsClustersClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AwsClustersAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -146,7 +147,8 @@ class AwsClustersAsyncClient:
         Returns:
             AwsClustersAsyncClient: The constructed client.
         """
-        return AwsClustersClient.from_service_account_file.__func__(AwsClustersAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AwsClustersClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AwsClustersAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -2239,10 +2241,9 @@ class AwsClustersAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> aws_resources.AwsOpenIdConfig:
-        r"""Gets the OIDC discovery document for the cluster.
-        See the
-        [OpenID Connect Discovery 1.0
-        specification](https://openid.net/specs/openid-connect-discovery-1_0.html)
+        r"""Gets the OIDC discovery document for the cluster. See the
+        `OpenID Connect Discovery 1.0
+        specification <https://openid.net/specs/openid-connect-discovery-1_0.html>`__
         for details.
 
         .. code-block:: python
@@ -2371,13 +2372,11 @@ class AwsClustersAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.gke_multicloud_v1.types.GetAwsJsonWebKeysRequest, dict]]):
-                The request object. GetAwsJsonWebKeysRequest gets the public
-                component of the keys used by the
-                cluster to sign token requests. This
-                will be the jwks_uri for the discover
-                document returned by getOpenIDConfig.
-                See the OpenID Connect Discovery 1.0
-                specification for details.
+                The request object. GetAwsJsonWebKeysRequest gets the public component of
+                the keys used by the cluster to sign token requests.
+                This will be the jwks_uri for the discover document
+                returned by getOpenIDConfig. See the OpenID Connect
+                Discovery 1.0 specification for details.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.

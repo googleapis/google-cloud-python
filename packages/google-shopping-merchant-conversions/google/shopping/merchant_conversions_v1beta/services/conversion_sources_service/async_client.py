@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_conversions_v1beta import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.shopping.merchant_conversions_v1beta.services.conversion_sources_service import (
     pagers,
@@ -130,7 +130,8 @@ class ConversionSourcesServiceAsyncClient:
         Returns:
             ConversionSourcesServiceAsyncClient: The constructed client.
         """
-        return ConversionSourcesServiceClient.from_service_account_info.__func__(ConversionSourcesServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ConversionSourcesServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ConversionSourcesServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -146,7 +147,10 @@ class ConversionSourcesServiceAsyncClient:
         Returns:
             ConversionSourcesServiceAsyncClient: The constructed client.
         """
-        return ConversionSourcesServiceClient.from_service_account_file.__func__(ConversionSourcesServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ConversionSourcesServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(
+            ConversionSourcesServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -184,7 +188,9 @@ class ConversionSourcesServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ConversionSourcesServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ConversionSourcesServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> ConversionSourcesServiceTransport:
@@ -490,8 +496,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 UpdateConversionSource method.
             conversion_source (:class:`google.shopping.merchant_conversions_v1beta.types.ConversionSource`):
-                Required. The new version of the
-                conversion source data. Format:
+                Required. The new version of the conversion source data.
+                Format:
                 accounts/{account}/conversionSources/{conversion_source}
 
                 This corresponds to the ``conversion_source`` field
@@ -618,8 +624,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 DeleteConversionSource method.
             name (:class:`str`):
-                Required. The name of the conversion
-                source to be deleted. Format:
+                Required. The name of the conversion source to be
+                deleted. Format:
                 accounts/{account}/conversionSources/{conversion_source}
 
                 This corresponds to the ``name`` field
@@ -815,8 +821,8 @@ class ConversionSourcesServiceAsyncClient:
                 The request object. Request message for the
                 GetConversionSource method.
             name (:class:`str`):
-                Required. The name of the conversion
-                source to be fetched. Format:
+                Required. The name of the conversion source to be
+                fetched. Format:
                 accounts/{account}/conversionsources/{conversion_source}
 
                 This corresponds to the ``name`` field

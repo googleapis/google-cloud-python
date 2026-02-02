@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import inline
@@ -129,6 +129,7 @@ class EntityType(proto.Message):
                 Regexp entity types allow to specify regular
                 expressions in entries values.
         """
+
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -147,6 +148,7 @@ class EntityType(proto.Message):
                 Allows an agent to recognize values that have
                 not been explicitly listed in the entity.
         """
+
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1
 
@@ -305,6 +307,7 @@ class ExportEntityTypesRequest(proto.Message):
                 EntityTypes will be exported in JSON Package
                 format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON_PACKAGE = 5
@@ -439,8 +442,8 @@ class ImportEntityTypesRequest(proto.Message):
 
         Values:
             MERGE_OPTION_UNSPECIFIED (0):
-                Unspecified. If used, system uses
-                REPORT_CONFLICT as default.
+                Unspecified. If used, system uses REPORT_CONFLICT as
+                default.
             REPLACE (1):
                 Replace the original entity type in the agent
                 with the new entity type when display name
@@ -461,6 +464,7 @@ class ImportEntityTypesRequest(proto.Message):
                 conflicting new entity type when display name
                 conflicts exist.
         """
+
         MERGE_OPTION_UNSPECIFIED = 0
         REPLACE = 1
         MERGE = 2
@@ -574,8 +578,8 @@ class ListEntityTypesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -602,9 +606,8 @@ class ListEntityTypesResponse(proto.Message):
 
     Attributes:
         entity_types (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.EntityType]):
-            The list of entity types. There will be a
-            maximum number of items returned based on the
-            page_size field in the request.
+            The list of entity types. There will be a maximum number of
+            items returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

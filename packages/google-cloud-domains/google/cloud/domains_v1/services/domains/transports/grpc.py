@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.domains_v1.types import domains
 
@@ -395,12 +395,12 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_register_parameters" not in self._stubs:
-            self._stubs[
-                "retrieve_register_parameters"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.domains.v1.Domains/RetrieveRegisterParameters",
-                request_serializer=domains.RetrieveRegisterParametersRequest.serialize,
-                response_deserializer=domains.RetrieveRegisterParametersResponse.deserialize,
+            self._stubs["retrieve_register_parameters"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.domains.v1.Domains/RetrieveRegisterParameters",
+                    request_serializer=domains.RetrieveRegisterParametersRequest.serialize,
+                    response_deserializer=domains.RetrieveRegisterParametersResponse.deserialize,
+                )
             )
         return self._stubs["retrieve_register_parameters"]
 
@@ -469,12 +469,12 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_transfer_parameters" not in self._stubs:
-            self._stubs[
-                "retrieve_transfer_parameters"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.domains.v1.Domains/RetrieveTransferParameters",
-                request_serializer=domains.RetrieveTransferParametersRequest.serialize,
-                response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
+            self._stubs["retrieve_transfer_parameters"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.domains.v1.Domains/RetrieveTransferParameters",
+                    request_serializer=domains.RetrieveTransferParametersRequest.serialize,
+                    response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
+                )
             )
         return self._stubs["retrieve_transfer_parameters"]
 
@@ -636,12 +636,12 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_management_settings" not in self._stubs:
-            self._stubs[
-                "configure_management_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.domains.v1.Domains/ConfigureManagementSettings",
-                request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["configure_management_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.domains.v1.Domains/ConfigureManagementSettings",
+                    request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["configure_management_settings"]
 
@@ -691,12 +691,12 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_contact_settings" not in self._stubs:
-            self._stubs[
-                "configure_contact_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.domains.v1.Domains/ConfigureContactSettings",
-                request_serializer=domains.ConfigureContactSettingsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["configure_contact_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.domains.v1.Domains/ConfigureContactSettings",
+                    request_serializer=domains.ConfigureContactSettingsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["configure_contact_settings"]
 
@@ -807,12 +807,12 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_authorization_code" not in self._stubs:
-            self._stubs[
-                "retrieve_authorization_code"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.domains.v1.Domains/RetrieveAuthorizationCode",
-                request_serializer=domains.RetrieveAuthorizationCodeRequest.serialize,
-                response_deserializer=domains.AuthorizationCode.deserialize,
+            self._stubs["retrieve_authorization_code"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.domains.v1.Domains/RetrieveAuthorizationCode",
+                    request_serializer=domains.RetrieveAuthorizationCodeRequest.serialize,
+                    response_deserializer=domains.AuthorizationCode.deserialize,
+                )
             )
         return self._stubs["retrieve_authorization_code"]
 

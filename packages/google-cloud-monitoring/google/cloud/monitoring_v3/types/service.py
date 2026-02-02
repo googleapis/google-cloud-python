@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.type import calendar_period_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.type.calendar_period_pb2 as calendar_period_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,9 +53,11 @@ class Service(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name for this Service. The
-            format is:
-            projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+            Identifier. Resource name for this Service. The format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
         display_name (str):
             Name used for UI elements listing this
             Service.
@@ -464,8 +466,8 @@ class Service(proto.Message):
 
         Attributes:
             resource_name (str):
-                The full name of the resource that defines this
-                service. Formatted as described in
+                The full name of the resource that defines this service.
+                Formatted as described in
                 https://cloud.google.com/apis/design/resource_names.
         """
 
@@ -639,6 +641,7 @@ class ServiceLevelObjective(proto.Message):
                 ``RequestBasedSli`` or ``WindowsBasedSli``, return the
                 ``ServiceLevelIndicator`` as it was provided.
         """
+
         VIEW_UNSPECIFIED = 0
         FULL = 2
         EXPLICIT = 1

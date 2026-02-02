@@ -32,8 +32,7 @@ class AppliedLabel(proto.Message):
 
     Attributes:
         label (str):
-            Required. The label to be applied.
-            Format:
+            Required. The label to be applied. Format:
             "networks/{network_code}/labels/{label_id}".
         negated (bool):
             Specifies whether or not to negate the

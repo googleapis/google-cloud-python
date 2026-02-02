@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.visionai_v1alpha1 import gapic_version as package_version
 
@@ -47,15 +47,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.visionai_v1alpha1.services.warehouse import pagers
 from google.cloud.visionai_v1alpha1.types import warehouse
@@ -128,7 +130,8 @@ class WarehouseAsyncClient:
         Returns:
             WarehouseAsyncClient: The constructed client.
         """
-        return WarehouseClient.from_service_account_info.__func__(WarehouseAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = WarehouseClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(WarehouseAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -144,7 +147,8 @@ class WarehouseAsyncClient:
         Returns:
             WarehouseAsyncClient: The constructed client.
         """
-        return WarehouseClient.from_service_account_file.__func__(WarehouseAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = WarehouseClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(WarehouseAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -610,9 +614,7 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.GetAssetRequest, dict]]):
                 The request object. Request message for GetAsset.
             name (:class:`str`):
-                Required. The name of the asset to
-                retrieve. Format:
-
+                Required. The name of the asset to retrieve. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``name`` field
@@ -728,9 +730,8 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.ListAssetsRequest, dict]]):
                 The request object. Request message for ListAssets.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of assets. Format:
-
+                Required. The parent, which owns this collection of
+                assets. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}
 
                 This corresponds to the ``parent`` field
@@ -858,9 +859,7 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.DeleteAssetRequest, dict]]):
                 The request object. Request message for DeleteAsset.
             name (:class:`str`):
-                Required. The name of the asset to
-                delete. Format:
-
+                Required. The name of the asset to delete. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``name`` field
@@ -1835,9 +1834,8 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.GetDataSchemaRequest, dict]]):
                 The request object. Request message for GetDataSchema.
             name (:class:`str`):
-                Required. The name of the data schema to
-                retrieve. Format:
-
+                Required. The name of the data schema to retrieve.
+                Format:
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
 
                 This corresponds to the ``name`` field
@@ -1945,9 +1943,7 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.DeleteDataSchemaRequest, dict]]):
                 The request object. Request message for DeleteDataSchema.
             name (:class:`str`):
-                Required. The name of the data schema to
-                delete. Format:
-
+                Required. The name of the data schema to delete. Format:
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
 
                 This corresponds to the ``name`` field
@@ -2049,9 +2045,8 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.ListDataSchemasRequest, dict]]):
                 The request object. Request message for ListDataSchemas.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of data schemas. Format:
-
+                Required. The parent, which owns this collection of data
+                schemas. Format:
                 projects/{project_number}/locations/{location_id}/corpora/{corpus_id}
 
                 This corresponds to the ``parent`` field
@@ -2312,9 +2307,8 @@ class WarehouseAsyncClient:
                 The request object. Request message for GetAnnotation
                 API.
             name (:class:`str`):
-                Required. The name of the annotation to
-                retrieve. Format:
-
+                Required. The name of the annotation to retrieve.
+                Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
 
                 This corresponds to the ``name`` field
@@ -2426,9 +2420,8 @@ class WarehouseAsyncClient:
                 The request object. Request message for GetAnnotation
                 API.
             parent (:class:`str`):
-                The parent, which owns this collection
-                of annotations. Format:
-
+                The parent, which owns this collection of annotations.
+                Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
 
                 This corresponds to the ``parent`` field
@@ -2673,9 +2666,7 @@ class WarehouseAsyncClient:
                 The request object. Request message for DeleteAnnotation
                 API.
             name (:class:`str`):
-                Required. The name of the annotation to
-                delete. Format:
-
+                Required. The name of the annotation to delete. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
 
                 This corresponds to the ``name`` field
@@ -2833,12 +2824,11 @@ class WarehouseAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> warehouse.ClipAssetResponse:
-        r"""Generates clips for downloading. The api takes in a time
-        range, and generates a clip of the first content
-        available after start_time and before end_time, which
-        may overflow beyond these bounds. Returned clips are
-        truncated if the total size of the clips are larger than
-        100MB.
+        r"""Generates clips for downloading. The api takes in a time range,
+        and generates a clip of the first content available after
+        start_time and before end_time, which may overflow beyond these
+        bounds. Returned clips are truncated if the total size of the
+        clips are larger than 100MB.
 
         .. code-block:: python
 
@@ -3336,9 +3326,8 @@ class WarehouseAsyncClient:
             request (Optional[Union[google.cloud.visionai_v1alpha1.types.GetSearchConfigRequest, dict]]):
                 The request object. Request message for GetSearchConfig.
             name (:class:`str`):
-                Required. The name of the search
-                configuration to retrieve. Format:
-
+                Required. The name of the search configuration to
+                retrieve. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
 
                 This corresponds to the ``name`` field
@@ -3450,9 +3439,8 @@ class WarehouseAsyncClient:
                 The request object. Request message for
                 DeleteSearchConfig.
             name (:class:`str`):
-                Required. The name of the search
-                configuration to delete. Format:
-
+                Required. The name of the search configuration to
+                delete. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
 
                 This corresponds to the ``name`` field
@@ -3555,10 +3543,8 @@ class WarehouseAsyncClient:
                 The request object. Request message for
                 ListSearchConfigs.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of search configurations.
-                Format:
-
+                Required. The parent, which owns this collection of
+                search configurations. Format:
                 projects/{project_number}/locations/{location}/corpora/{corpus}
 
                 This corresponds to the ``parent`` field

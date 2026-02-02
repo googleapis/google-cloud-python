@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,8 +61,8 @@ class ListChangelogsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -89,10 +89,9 @@ class ListChangelogsResponse(proto.Message):
 
     Attributes:
         changelogs (MutableSequence[google.cloud.dialogflowcx_v3.types.Changelog]):
-            The list of changelogs. There will be a maximum
-            number of items returned based on the page_size
-            field in the request. The changelogs will be
-            ordered by timestamp.
+            The list of changelogs. There will be a maximum number of
+            items returned based on the page_size field in the request.
+            The changelogs will be ordered by timestamp.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

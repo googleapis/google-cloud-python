@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.auto_ml import AutoMlAsyncClient, AutoMlClient
 from .services.prediction_service import (
     PredictionServiceAsyncClient,

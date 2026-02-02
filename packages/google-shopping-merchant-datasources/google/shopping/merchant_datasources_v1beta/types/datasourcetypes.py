@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.datasources.v1beta",
@@ -77,9 +77,9 @@ class PrimaryProductDataSource(proto.Message):
 
             This field is a member of `oneof`_ ``_content_language``.
         countries (MutableSequence[str]):
-            Optional. The countries where the items may be
-            displayed. Represented as a [CLDR territory
-            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml).
+            Optional. The countries where the items may be displayed.
+            Represented as a `CLDR territory
+            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
         default_rule (google.shopping.merchant_datasources_v1beta.types.PrimaryProductDataSource.DefaultRule):
             Optional. Default rule management of the data
             source. If set, the linked data sources will be
@@ -129,6 +129,7 @@ class PrimaryProductDataSource(proto.Message):
                 products. Note: Products management through the
                 API is not possible for this channel.
         """
+
         CHANNEL_UNSPECIFIED = 0
         ONLINE_PRODUCTS = 1
         LOCAL_PRODUCTS = 2
@@ -162,17 +163,17 @@ class PrimaryProductDataSource(proto.Message):
                 is not set in ``1001``.
         """
 
-        take_from_data_sources: MutableSequence[
-            "DataSourceReference"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="DataSourceReference",
+        take_from_data_sources: MutableSequence["DataSourceReference"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="DataSourceReference",
+            )
         )
 
     class Destination(proto.Message):
-        r"""Destinations also known as [Marketing
-        methods](https://support.google.com/merchants/answer/15130232)
+        r"""Destinations also known as `Marketing
+        methods <https://support.google.com/merchants/answer/15130232>`__
         selections.
 
         Attributes:
@@ -195,6 +196,7 @@ class PrimaryProductDataSource(proto.Message):
                 DISABLED (2):
                     Indicates that the destination is disabled.
             """
+
             STATE_UNSPECIFIED = 0
             ENABLED = 1
             DISABLED = 2
@@ -305,12 +307,12 @@ class SupplementalProductDataSource(proto.Message):
         number=5,
         optional=True,
     )
-    referencing_primary_data_sources: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="DataSourceReference",
+    referencing_primary_data_sources: MutableSequence["DataSourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="DataSourceReference",
+        )
     )
 
 
@@ -319,14 +321,14 @@ class LocalInventoryDataSource(proto.Message):
 
     Attributes:
         feed_label (str):
-            Required. Immutable. The feed label of the
-            offers to which the local inventory is provided.
+            Required. Immutable. The feed label of the offers to which
+            the local inventory is provided.
 
-            Must be less than or equal to 20 uppercase
-            letters (A-Z), numbers (0-9), and dashes (-).
+            Must be less than or equal to 20 uppercase letters (A-Z),
+            numbers (0-9), and dashes (-).
 
-            See also [migration to feed
-            labels](https://developers.google.com/shopping-content/guides/products/feed-labels).
+            See also `migration to feed
+            labels <https://developers.google.com/shopping-content/guides/products/feed-labels>`__.
         content_language (str):
             Required. Immutable. The two-letter ISO 639-1
             language of the items to which the local
@@ -348,15 +350,14 @@ class RegionalInventoryDataSource(proto.Message):
 
     Attributes:
         feed_label (str):
-            Required. Immutable. The feed label of the
-            offers to which the regional inventory is
-            provided.
+            Required. Immutable. The feed label of the offers to which
+            the regional inventory is provided.
 
-            Must be less than or equal to 20 uppercase
-            letters (A-Z), numbers (0-9), and dashes (-).
+            Must be less than or equal to 20 uppercase letters (A-Z),
+            numbers (0-9), and dashes (-).
 
-            See also [migration to feed
-            labels](https://developers.google.com/shopping-content/guides/products/feed-labels).
+            See also `migration to feed
+            labels <https://developers.google.com/shopping-content/guides/products/feed-labels>`__.
         content_language (str):
             Required. Immutable. The two-letter ISO 639-1
             language of the items to which the regional

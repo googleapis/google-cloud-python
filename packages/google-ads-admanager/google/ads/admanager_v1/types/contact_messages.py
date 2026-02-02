@@ -49,9 +49,8 @@ class Contact(proto.Message):
 
             This field is a member of `oneof`_ ``_display_name``.
         company (str):
-            Required. Immutable. The resource name of the
-            Company. Format:
-            "networks/{network_code}/companies/{company_id}".
+            Required. Immutable. The resource name of the Company.
+            Format: "networks/{network_code}/companies/{company_id}".
 
             This field is a member of `oneof`_ ``_company``.
         status (google.ads.admanager_v1.types.ContactStatusEnum.ContactStatus):

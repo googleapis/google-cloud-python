@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.apps.meet_v2beta import gapic_version as package_version
 
@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.apps.meet_v2beta.services.spaces_service import pagers
 from google.apps.meet_v2beta.types import resource, service
@@ -645,11 +645,9 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SpacesServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SpacesServiceClient._read_environment_variables()
+        )
         self._client_cert_source = SpacesServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -684,8 +682,7 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SpacesServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -867,8 +864,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> resource.Space:
         r"""Gets details about a meeting space.
 
-        For an example, see [Get a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space).
+        For an example, see `Get a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#get-meeting-space>`__.
 
         .. code-block:: python
 
@@ -1000,8 +997,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> resource.Space:
         r"""Updates details about a meeting space.
 
-        For an example, see [Update a meeting
-        space](https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space).
+        For an example, see `Update a meeting
+        space <https://developers.google.com/meet/api/guides/meeting-spaces#update-meeting-space>`__.
 
         .. code-block:: python
 
@@ -1184,15 +1181,15 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
 
         Returns:
             google.apps.meet_v2beta.types.ConnectActiveConferenceResponse:
-                Response of ConnectActiveConference
-                method.
-                A success response does not indicate the
-                meeting is fully joined; further
-                communication must occur across WebRTC.
+                Response of ConnectActiveConference method.
 
-                See [Meet Media API
-                overview](https://developers.google.com/meet/media-api/guides/overview)
-                for more details about this connection.
+                   A success response does not indicate the meeting is
+                   fully joined; further communication must occur across
+                   WebRTC.
+
+                   See [Meet Media API
+                   overview](https://developers.google.com/meet/media-api/guides/overview)
+                   for more details about this connection.
 
         """
         # Create or coerce a protobuf request object.
@@ -1254,8 +1251,8 @@ class SpacesServiceClient(metaclass=SpacesServiceClientMeta):
     ) -> None:
         r"""Ends an active conference (if there's one).
 
-        For an example, see [End active
-        conference](https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference).
+        For an example, see `End active
+        conference <https://developers.google.com/meet/api/guides/meeting-spaces#end-active-conference>`__.
 
         .. code-block:: python
 

@@ -17,25 +17,24 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.ai.generativelanguage_v1beta.types import model, model_service, tuned_model
 from google.ai.generativelanguage_v1beta.types import tuned_model as gag_tuned_model
-from google.ai.generativelanguage_v1beta.types import model, model_service
-from google.ai.generativelanguage_v1beta.types import tuned_model
 
 from .base import DEFAULT_CLIENT_INFO, ModelServiceTransport
 from .grpc import ModelServiceGrpcTransport
@@ -477,14 +476,11 @@ class ModelServiceGrpcAsyncIOTransport(ModelServiceTransport):
     ]:
         r"""Return a callable for the create tuned model method over gRPC.
 
-        Creates a tuned model.
-        Check intermediate tuning progress (if any) through the
-        [google.longrunning.Operations] service.
+        Creates a tuned model. Check intermediate tuning progress (if
+        any) through the [google.longrunning.Operations] service.
 
-        Access status and results through the Operations
-        service. Example:
-
-        GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
+        Access status and results through the Operations service.
+        Example: GET /v1/tunedModels/az2mb0bpw6i/operations/000-111-222
 
         Returns:
             Callable[[~.CreateTunedModelRequest],

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -188,6 +188,7 @@ class CloudSqlInstanceInitializationConfig(proto.Message):
             ENTERPRISE_PLUS (2):
                 Enterprise Plus edition.
         """
+
         EDITION_UNSPECIFIED = 0
         ENTERPRISE = 1
         ENTERPRISE_PLUS = 2

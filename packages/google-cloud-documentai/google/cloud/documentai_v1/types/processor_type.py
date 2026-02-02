@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import launch_stage_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,9 +63,8 @@ class ProcessorType(proto.Message):
 
         Attributes:
             location_id (str):
-                The location ID. For supported locations, refer
-                to [regional and multi-regional
-                support](/document-ai/docs/regions).
+                The location ID. For supported locations, refer to `regional
+                and multi-regional support </document-ai/docs/regions>`__.
         """
 
         location_id: str = proto.Field(

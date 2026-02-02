@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import datasource as gcg_datasource
@@ -120,6 +120,7 @@ class Context(proto.Message):
                     The source of the schema relationship is
                     BigQuery table constraints.
             """
+
             SOURCE_UNSPECIFIED = 0
             BIGQUERY_JOB_HISTORY = 1
             LLM_SUGGESTED = 2
@@ -130,9 +131,7 @@ class Context(proto.Message):
 
             Attributes:
                 table_fqn (str):
-                    The service-qualified full resource name of the
-                    table Ex:
-
+                    The service-qualified full resource name of the table Ex:
                     bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
                 paths (MutableSequence[str]):
                     The ordered list of paths within the table
@@ -158,12 +157,12 @@ class Context(proto.Message):
             number=2,
             message="Context.SchemaRelationship.SchemaPaths",
         )
-        sources: MutableSequence[
-            "Context.SchemaRelationship.Source"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=3,
-            enum="Context.SchemaRelationship.Source",
+        sources: MutableSequence["Context.SchemaRelationship.Source"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="Context.SchemaRelationship.Source",
+            )
         )
         confidence_score: float = proto.Field(
             proto.FLOAT,
@@ -266,9 +265,8 @@ class LookerGoldenQuery(proto.Message):
 
 
 class LookerQuery(proto.Message):
-    r"""Looker Query Object
-    [Looker API
-    documentation](https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query).
+    r"""Looker Query Object `Looker API
+    documentation <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -357,9 +355,9 @@ class GlossaryTerm(proto.Message):
             action", "An order that is waiting to be
             processed.".
         labels (MutableSequence[str]):
-            Optional. A list of general purpose labels
-            associated to this term. For example: ["click
-            rate", "clickthrough", "waiting"]
+            Optional. A list of general purpose labels associated to
+            this term. For example: ["click rate", "clickthrough",
+            "waiting"]
     """
 
     display_name: str = proto.Field(

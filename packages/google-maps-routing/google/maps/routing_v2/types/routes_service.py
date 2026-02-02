@@ -17,20 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import localized_text_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
-from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
-from google.maps.routing_v2.types import transit_preferences as gmr_transit_preferences
 from google.maps.routing_v2.types import fallback_info as gmr_fallback_info
-from google.maps.routing_v2.types import polyline, route
+from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
+from google.maps.routing_v2.types import polyline, route, route_travel_mode
 from google.maps.routing_v2.types import route_modifiers as gmr_route_modifiers
-from google.maps.routing_v2.types import route_travel_mode
+from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
 from google.maps.routing_v2.types import traffic_model as gmr_traffic_model
+from google.maps.routing_v2.types import transit_preferences as gmr_transit_preferences
 from google.maps.routing_v2.types import units as gmr_units
 from google.maps.routing_v2.types import waypoint as gmr_waypoint
 
@@ -62,6 +61,7 @@ class RouteMatrixElementCondition(proto.Enum):
             information, such as ``distance_meters`` or ``duration``,
             will not be filled out in the element.
     """
+
     ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED = 0
     ROUTE_EXISTS = 1
     ROUTE_NOT_FOUND = 2
@@ -120,21 +120,19 @@ class ComputeRoutesRequest(proto.Message):
             Optional. A set of conditions to satisfy that
             affect the way routes are calculated.
         language_code (str):
-            Optional. The BCP-47 language code, such as
-            "en-US" or "sr-Latn". For more information, see
-            [Unicode Locale
-            Identifier](http://www.unicode.org/reports/tr35/#Unicode_locale_identifier).
-            See [Language
-            Support](https://developers.google.com/maps/faq#languagesupport)
-            for the list of supported languages. When you
-            don't provide this value, the display language
-            is inferred from the location of the route
-            request.
+            Optional. The BCP-47 language code, such as "en-US" or
+            "sr-Latn". For more information, see `Unicode Locale
+            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
+            See `Language
+            Support <https://developers.google.com/maps/faq#languagesupport>`__
+            for the list of supported languages. When you don't provide
+            this value, the display language is inferred from the
+            location of the route request.
         region_code (str):
-            Optional. The region code, specified as a ccTLD
-            ("top-level domain") two-character value. For
-            more information see [Country code top-level
-            domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
+            Optional. The region code, specified as a ccTLD ("top-level
+            domain") two-character value. For more information see
+            `Country code top-level
+            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for the display
             fields. These fields include the ``instruction`` field in
@@ -223,6 +221,7 @@ class ComputeRoutesRequest(proto.Message):
                 such requests will fail. However, you can use it with any
                 ``routing_preference``.
         """
+
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
         SHORTER_DISTANCE = 2
@@ -260,6 +259,7 @@ class ComputeRoutesRequest(proto.Message):
                 feature is experimental, and the SKU/charge is subject to
                 change.
         """
+
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
         FUEL_CONSUMPTION = 2
@@ -447,21 +447,19 @@ class ComputeRouteMatrixRequest(proto.Message):
             is set to ``TRANSIT``. You can specify either
             ``departure_time`` or ``arrival_time``, but not both.
         language_code (str):
-            Optional. The BCP-47 language code, such as
-            "en-US" or "sr-Latn". For more information, see
-            [Unicode Locale
-            Identifier](http://www.unicode.org/reports/tr35/#Unicode_locale_identifier).
-            See [Language
-            Support](https://developers.google.com/maps/faq#languagesupport)
-            for the list of supported languages. When you
-            don't provide this value, the display language
-            is inferred from the location of the first
-            origin.
+            Optional. The BCP-47 language code, such as "en-US" or
+            "sr-Latn". For more information, see `Unicode Locale
+            Identifier <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier>`__.
+            See `Language
+            Support <https://developers.google.com/maps/faq#languagesupport>`__
+            for the list of supported languages. When you don't provide
+            this value, the display language is inferred from the
+            location of the first origin.
         region_code (str):
-            Optional. The region code, specified as a ccTLD
-            ("top-level domain") two-character value. For
-            more information see [Country code top-level
-            domains](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains).
+            Optional. The region code, specified as a ccTLD ("top-level
+            domain") two-character value. For more information see
+            `Country code top-level
+            domains <https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains#Country_code_top-level_domains>`__.
         units (google.maps.routing_v2.types.Units):
             Optional. Specifies the units of measure for
             the display fields.
@@ -502,6 +500,7 @@ class ComputeRouteMatrixRequest(proto.Message):
             TOLLS (1):
                 Toll information for the matrix element(s).
         """
+
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
 
@@ -667,10 +666,9 @@ class RouteMatrixElement(proto.Message):
             distance (google.type.localized_text_pb2.LocalizedText):
                 Travel distance represented in text form.
             duration (google.type.localized_text_pb2.LocalizedText):
-                Duration represented in text form taking traffic
-                conditions into consideration. Note: If traffic
-                information was not requested, this value is the
-                same value as static_duration.
+                Duration represented in text form taking traffic conditions
+                into consideration. Note: If traffic information was not
+                requested, this value is the same value as static_duration.
             static_duration (google.type.localized_text_pb2.LocalizedText):
                 Duration represented in text form without
                 taking traffic conditions into consideration.

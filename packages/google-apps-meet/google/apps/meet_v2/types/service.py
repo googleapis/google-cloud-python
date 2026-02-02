@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.meet_v2.types import resource
@@ -231,12 +231,12 @@ class ListConferenceRecordsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conference_records: MutableSequence[
-        resource.ConferenceRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ConferenceRecord,
+    conference_records: MutableSequence[resource.ConferenceRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ConferenceRecord,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -419,12 +419,12 @@ class ListParticipantSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    participant_sessions: MutableSequence[
-        resource.ParticipantSession
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ParticipantSession,
+    participant_sessions: MutableSequence[resource.ParticipantSession] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ParticipantSession,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

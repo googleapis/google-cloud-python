@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.osconfig_v1.types import os_policy, osconfig_common
@@ -42,17 +42,17 @@ __protobuf__ = proto.module(
 
 
 class OSPolicyAssignment(proto.Message):
-    r"""OS policy assignment is an API resource that is used to
-    apply a set of OS policies to a dynamically targeted group of
-    Compute Engine VM instances.
+    r"""OS policy assignment is an API resource that is used to apply a set
+    of OS policies to a dynamically targeted group of Compute Engine VM
+    instances.
 
-    An OS policy is used to define the desired state configuration
-    for a Compute Engine VM instance through a set of configuration
-    resources that provide capabilities such as installing or
-    removing software packages, or executing a script.
+    An OS policy is used to define the desired state configuration for a
+    Compute Engine VM instance through a set of configuration resources
+    that provide capabilities such as installing or removing software
+    packages, or executing a script.
 
-    For more information, see [OS policy and OS policy
-    assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+    For more information, see `OS policy and OS policy
+    assignment <https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies>`__.
 
     Attributes:
         name (str):
@@ -135,6 +135,7 @@ class OSPolicyAssignment(proto.Message):
             SUCCEEDED (4):
                 The rollout has completed successfully.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2
@@ -224,26 +225,26 @@ class OSPolicyAssignment(proto.Message):
             proto.BOOL,
             number=1,
         )
-        inclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="OSPolicyAssignment.LabelSet",
+        inclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="OSPolicyAssignment.LabelSet",
+            )
         )
-        exclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="OSPolicyAssignment.LabelSet",
+        exclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="OSPolicyAssignment.LabelSet",
+            )
         )
-        inventories: MutableSequence[
-            "OSPolicyAssignment.InstanceFilter.Inventory"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="OSPolicyAssignment.InstanceFilter.Inventory",
+        inventories: MutableSequence["OSPolicyAssignment.InstanceFilter.Inventory"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="OSPolicyAssignment.InstanceFilter.Inventory",
+            )
         )
 
     class Rollout(proto.Message):
@@ -365,6 +366,7 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
             DELETE (3):
                 Delete OS policy assignment API method
         """
+
         API_METHOD_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -385,6 +387,7 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
             SUCCEEDED (4):
                 The rollout has completed successfully.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import postal_address_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -138,10 +138,9 @@ class AddressComponent(proto.Message):
         component_name (google.maps.addressvalidation_v1.types.ComponentName):
             The name for this component.
         component_type (str):
-            The type of the address component. See
-            [Table 2: Additional types returned by the
-            Places
-            service](https://developers.google.com/places/web-service/supported_types#table2)
+            The type of the address component. See `Table 2: Additional
+            types returned by the Places
+            service <https://developers.google.com/places/web-service/supported_types#table2>`__
             for a list of possible types.
         confirmation_level (google.maps.addressvalidation_v1.types.AddressComponent.ConfirmationLevel):
             Indicates the level of certainty that we have
@@ -194,6 +193,7 @@ class AddressComponent(proto.Message):
                 likely to be wrong. For example, a neighborhood
                 that does not fit the rest of the address.
         """
+
         CONFIRMATION_LEVEL_UNSPECIFIED = 0
         CONFIRMED = 1
         UNCONFIRMED_BUT_PLAUSIBLE = 2

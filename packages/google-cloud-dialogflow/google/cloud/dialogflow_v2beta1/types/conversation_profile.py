@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import audio_config, generator, participant
@@ -272,8 +272,8 @@ class HumanAgentAssistantConfig(proto.Message):
                 Do not trigger if last utterance is small
                 talk.
             only_end_user (bool):
-                Only trigger suggestion if participant role of
-                last utterance is END_USER.
+                Only trigger suggestion if participant role of last
+                utterance is END_USER.
         """
 
         no_small_talk: bool = proto.Field(
@@ -292,45 +292,41 @@ class HumanAgentAssistantConfig(proto.Message):
             suggestion_feature (google.cloud.dialogflow_v2beta1.types.SuggestionFeature):
                 The suggestion feature.
             enable_event_based_suggestion (bool):
-                Automatically iterates all participants and
-                tries to compile suggestions.
+                Automatically iterates all participants and tries to compile
+                suggestions.
 
                 Supported features: ARTICLE_SUGGESTION, FAQ,
-                DIALOGFLOW_ASSIST, ENTITY_EXTRACTION,
-                KNOWLEDGE_ASSIST.
+                DIALOGFLOW_ASSIST, ENTITY_EXTRACTION, KNOWLEDGE_ASSIST.
             disable_agent_query_logging (bool):
-                Optional. Disable the logging of search queries
-                sent by human agents. It can prevent those
-                queries from being stored at answer records.
+                Optional. Disable the logging of search queries sent by
+                human agents. It can prevent those queries from being stored
+                at answer records.
 
                 Supported features: KNOWLEDGE_SEARCH.
             enable_query_suggestion_when_no_answer (bool):
-                Optional. Enable query suggestion even if we
-                can't find its answer. By default, queries are
-                suggested only if we find its answer. Supported
-                features: KNOWLEDGE_ASSIST
+                Optional. Enable query suggestion even if we can't find its
+                answer. By default, queries are suggested only if we find
+                its answer. Supported features: KNOWLEDGE_ASSIST
             enable_conversation_augmented_query (bool):
-                Optional. Enable including conversation context
-                during query answer generation. Supported
-                features: KNOWLEDGE_SEARCH.
+                Optional. Enable including conversation context during query
+                answer generation. Supported features: KNOWLEDGE_SEARCH.
             enable_query_suggestion_only (bool):
-                Optional. Enable query suggestion only.
-                Supported features: KNOWLEDGE_ASSIST
-            enable_response_debug_info (bool):
-                Optional. Enable returning detailed reasons for
-                suggestion results.
-                For example, with this field disabled, Knowledge
-                Search feature returns NotFound error when no
-                answer is found for the input query. Enabling
-                this field will change the behavior to return an
-                OK response with detailed information indicating
-                the lack of results.
-
-                Supported features: KNOWLEDGE_SEARCH,
+                Optional. Enable query suggestion only. Supported features:
                 KNOWLEDGE_ASSIST
+            enable_response_debug_info (bool):
+                Optional. Enable returning detailed reasons for suggestion
+                results.
+
+                For example, with this field disabled, Knowledge Search
+                feature returns NotFound error when no answer is found for
+                the input query. Enabling this field will change the
+                behavior to return an OK response with detailed information
+                indicating the lack of results.
+
+                Supported features: KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST
             rai_settings (google.cloud.dialogflow_v2beta1.types.RaiSettings):
-                Optional. Settings for Responsible AI checks.
-                Supported features: KNOWLEDGE_ASSIST
+                Optional. Settings for Responsible AI checks. Supported
+                features: KNOWLEDGE_ASSIST
             suggestion_trigger_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionTriggerSettings):
                 Settings of suggestion trigger.
 
@@ -423,18 +419,14 @@ class HumanAgentAssistantConfig(proto.Message):
                 Optional. List of various generator resource
                 names used in the conversation profile.
             disable_high_latency_features_sync_delivery (bool):
-                Optional. When
-                disable_high_latency_features_sync_delivery is
-                true and using the AnalyzeContent API, we will
-                not deliver the responses from high latency
-                features in the API response. The
-                human_agent_assistant_config.notification_config
-                must be configured and
-                enable_event_based_suggestion must be set to
-                true to receive the responses from high latency
-                features in Pub/Sub. High latency feature(s):
-
-                KNOWLEDGE_ASSIST
+                Optional. When disable_high_latency_features_sync_delivery
+                is true and using the AnalyzeContent API, we will not
+                deliver the responses from high latency features in the API
+                response. The
+                human_agent_assistant_config.notification_config must be
+                configured and enable_event_based_suggestion must be set to
+                true to receive the responses from high latency features in
+                Pub/Sub. High latency feature(s): KNOWLEDGE_ASSIST
             skip_empty_event_based_suggestion (bool):
                 Optional. Enable skipping event based
                 suggestion if the suggestion is empty.
@@ -445,11 +437,9 @@ class HumanAgentAssistantConfig(proto.Message):
                 will change the behavior to skip the Pub/Sub
                 message in this situation.
             use_unredacted_conversation_data (bool):
-                Optional. If true,
-                use unredacted transcript data (Supported
-                features: AI_COACH) and use unredacted ingested
-                context (Supported features: All Agent Assist
-                features)
+                Optional. If true, use unredacted transcript data (Supported
+                features: AI_COACH) and use unredacted ingested context
+                (Supported features: All Agent Assist features)
             enable_async_tool_call (bool):
                 Optional. If true, enable asynchronous
                 execution of tools.
@@ -499,14 +489,13 @@ class HumanAgentAssistantConfig(proto.Message):
 
         Attributes:
             knowledge_base_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.KnowledgeBaseQuerySource):
-                Query from knowledgebase. It is used by:
-
-                ARTICLE_SUGGESTION, FAQ.
+                Query from knowledgebase. It is used by: ARTICLE_SUGGESTION,
+                FAQ.
 
                 This field is a member of `oneof`_ ``query_source``.
             document_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DocumentQuerySource):
-                Query from knowledge base document. It is used
-                by: SMART_REPLY, SMART_COMPOSE.
+                Query from knowledge base document. It is used by:
+                SMART_REPLY, SMART_COMPOSE.
 
                 This field is a member of `oneof`_ ``query_source``.
             dialogflow_query_source (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.DialogflowQuerySource):
@@ -521,29 +510,26 @@ class HumanAgentAssistantConfig(proto.Message):
             confidence_threshold (float):
                 Confidence threshold of query result.
 
-                Agent Assist gives each suggestion a score in
-                the range [0.0, 1.0], based on the relevance
-                between the suggestion and the current
-                conversation context. A score of 0.0 has no
-                relevance, while a score of 1.0 has high
-                relevance. Only suggestions with a score greater
-                than or equal to the value of this field are
-                included in the results.
+                Agent Assist gives each suggestion a score in the range
+                [0.0, 1.0], based on the relevance between the suggestion
+                and the current conversation context. A score of 0.0 has no
+                relevance, while a score of 1.0 has high relevance. Only
+                suggestions with a score greater than or equal to the value
+                of this field are included in the results.
 
-                For a baseline model (the default), the
-                recommended value is in the range [0.05, 0.1].
+                For a baseline model (the default), the recommended value is
+                in the range [0.05, 0.1].
 
-                For a custom model, there is no recommended
-                value. Tune this value by starting from a very
-                low value and slowly increasing until you have
-                desired results.
+                For a custom model, there is no recommended value. Tune this
+                value by starting from a very low value and slowly
+                increasing until you have desired results.
 
-                If this field is not set, it is default to 0.0,
-                which means that all suggestions are returned.
+                If this field is not set, it is default to 0.0, which means
+                that all suggestions are returned.
 
-                Supported features: ARTICLE_SUGGESTION, FAQ,
-                SMART_REPLY, SMART_COMPOSE, KNOWLEDGE_SEARCH,
-                KNOWLEDGE_ASSIST, ENTITY_EXTRACTION.
+                Supported features: ARTICLE_SUGGESTION, FAQ, SMART_REPLY,
+                SMART_COMPOSE, KNOWLEDGE_SEARCH, KNOWLEDGE_ASSIST,
+                ENTITY_EXTRACTION.
             context_filter_settings (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionQueryConfig.ContextFilterSettings):
                 Determines how recent conversation context is
                 filtered when generating suggestions. If
@@ -553,9 +539,8 @@ class HumanAgentAssistantConfig(proto.Message):
                 return when requesting a summary of a
                 conversation.
             context_size (int):
-                Optional. The number of recent messages to
-                include in the context. Supported features:
-                KNOWLEDGE_ASSIST.
+                Optional. The number of recent messages to include in the
+                context. Supported features: KNOWLEDGE_ASSIST.
         """
 
         class KnowledgeBaseQuerySource(proto.Message):
@@ -703,13 +688,12 @@ class HumanAgentAssistantConfig(proto.Message):
                         describing the result of the conversation.
                         Section name: "resolution".
                     REASON_FOR_CANCELLATION (4):
-                        Reason for cancellation if the customer requests
-                        for a cancellation. "N/A" otherwise.
-                        Section name: "reason_for_cancellation".
+                        Reason for cancellation if the customer requests for a
+                        cancellation. "N/A" otherwise. Section name:
+                        "reason_for_cancellation".
                     CUSTOMER_SATISFACTION (5):
-                        "Unsatisfied" or "Satisfied" depending on the
-                        customer's feelings at the end of the
-                        conversation. Section name:
+                        "Unsatisfied" or "Satisfied" depending on the customer's
+                        feelings at the end of the conversation. Section name:
                         "customer_satisfaction".
                     ENTITIES (6):
                         Key entities extracted from the conversation,
@@ -717,6 +701,7 @@ class HumanAgentAssistantConfig(proto.Message):
                         amount, etc. Section names are prefixed by
                         "entities/".
                 """
+
                 SECTION_TYPE_UNSPECIFIED = 0
                 SITUATION = 1
                 ACTION = 2
@@ -779,8 +764,8 @@ class HumanAgentAssistantConfig(proto.Message):
     class ConversationModelConfig(proto.Message):
         r"""Custom conversation models used in agent assist feature.
 
-        Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE,
-        SMART_REPLY, CONVERSATION_SUMMARIZATION.
+        Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY,
+        CONVERSATION_SUMMARIZATION.
 
         Attributes:
             model (str):
@@ -830,13 +815,13 @@ class HumanAgentAssistantConfig(proto.Message):
 
         Attributes:
             enable_entity_extraction (bool):
-                Enable entity extraction in conversation
-                messages on [agent assist
-                stage](https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages).
+                Enable entity extraction in conversation messages on `agent
+                assist
+                stage <https://cloud.google.com/dialogflow/priv/docs/contact-center/basics#stages>`__.
                 If unspecified, defaults to false.
 
-                Currently, this feature is not general
-                available, please contact Google to get access.
+                Currently, this feature is not general available, please
+                contact Google to get access.
             enable_sentiment_analysis (bool):
                 Enable sentiment analysis in conversation messages on `agent
                 assist
@@ -1023,6 +1008,7 @@ class NotificationConfig(proto.Message):
             JSON (2):
                 Pub/Sub message will be json.
         """
+
         MESSAGE_FORMAT_UNSPECIFIED = 0
         PROTO = 1
         JSON = 2
@@ -1069,8 +1055,8 @@ class ListConversationProfilesRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -1093,9 +1079,9 @@ class ListConversationProfilesResponse(proto.Message):
 
     Attributes:
         conversation_profiles (MutableSequence[google.cloud.dialogflow_v2beta1.types.ConversationProfile]):
-            The list of project conversation profiles. There
-            is a maximum number of items returned based on
-            the page_size field in the request.
+            The list of project conversation profiles. There is a
+            maximum number of items returned based on the page_size
+            field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -1211,9 +1197,9 @@ class SetSuggestionFeatureConfigRequest(proto.Message):
             suggestion feature config. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
         participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-            Required. The participant role to add or update
-            the suggestion feature config. Only HUMAN_AGENT
-            or END_USER can be used.
+            Required. The participant role to add or update the
+            suggestion feature config. Only HUMAN_AGENT or END_USER can
+            be used.
         suggestion_feature_config (google.cloud.dialogflow_v2beta1.types.HumanAgentAssistantConfig.SuggestionFeatureConfig):
             Required. The suggestion feature config to
             add or update.
@@ -1246,9 +1232,8 @@ class ClearSuggestionFeatureConfigRequest(proto.Message):
             suggestion feature config. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``.
         participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-            Required. The participant role to remove the
-            suggestion feature config. Only HUMAN_AGENT or
-            END_USER can be used.
+            Required. The participant role to remove the suggestion
+            feature config. Only HUMAN_AGENT or END_USER can be used.
         suggestion_feature_type (google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type):
             Required. The type of the suggestion feature
             to remove.
@@ -1279,9 +1264,9 @@ class SetSuggestionFeatureConfigOperationMetadata(proto.Message):
             The resource name of the conversation profile. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``
         participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-            Required. The participant role to add or update
-            the suggestion feature config. Only HUMAN_AGENT
-            or END_USER can be used.
+            Required. The participant role to add or update the
+            suggestion feature config. Only HUMAN_AGENT or END_USER can
+            be used.
         suggestion_feature_type (google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type):
             Required. The type of the suggestion feature
             to add or update.
@@ -1320,9 +1305,8 @@ class ClearSuggestionFeatureConfigOperationMetadata(proto.Message):
             The resource name of the conversation profile. Format:
             ``projects/<Project ID>/locations/<Location ID>/conversationProfiles/<Conversation Profile ID>``
         participant_role (google.cloud.dialogflow_v2beta1.types.Participant.Role):
-            Required. The participant role to remove the
-            suggestion feature config. Only HUMAN_AGENT or
-            END_USER can be used.
+            Required. The participant role to remove the suggestion
+            feature config. Only HUMAN_AGENT or END_USER can be used.
         suggestion_feature_type (google.cloud.dialogflow_v2beta1.types.SuggestionFeature.Type):
             Required. The type of the suggestion feature
             to remove.

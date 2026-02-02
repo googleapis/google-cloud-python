@@ -56,7 +56,9 @@ from .hypercompute_cluster import (
     StorageResourceConfig,
     UpdateClusterRequest,
 )
-from .operation_metadata import OperationMetadata
+from .operation_metadata import (
+    OperationMetadata,
+)
 
 __all__ = (
     "BootDisk",

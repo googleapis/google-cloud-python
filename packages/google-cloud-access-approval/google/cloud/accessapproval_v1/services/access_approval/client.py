@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.accessapproval_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.accessapproval_v1.services.access_approval import pagers
 from google.cloud.accessapproval_v1.types import accessapproval
@@ -81,9 +81,7 @@ class AccessApprovalClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[AccessApprovalTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[AccessApprovalTransport]]
     _transport_registry["grpc"] = AccessApprovalGrpcTransport
     _transport_registry["grpc_asyncio"] = AccessApprovalGrpcAsyncIOTransport
     _transport_registry["rest"] = AccessApprovalRestTransport
@@ -686,11 +684,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = AccessApprovalClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            AccessApprovalClient._read_environment_variables()
+        )
         self._client_cert_source = AccessApprovalClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -725,8 +721,7 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(AccessApprovalTransport, transport)
             self._api_endpoint = self._transport.host
@@ -931,8 +926,8 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> accessapproval.ApprovalRequest:
-        r"""Gets an approval request. Returns NOT_FOUND if the
-        request does not exist.
+        r"""Gets an approval request. Returns NOT_FOUND if the request does
+        not exist.
 
         .. code-block:: python
 
@@ -963,10 +958,8 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
             request (Union[google.cloud.accessapproval_v1.types.GetApprovalRequestMessage, dict]):
                 The request object. Request to get an approval request.
             name (str):
-                The name of the approval request to
-                retrieve. Format:
-
-                "{projects\|folders\|organizations}/{id}/approvalRequests/{approval_request}"
+                The name of the approval request to retrieve. Format:
+                "{projects|folders|organizations}/{id}/approvalRequests/{approval_request}"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1041,11 +1034,11 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> accessapproval.ApprovalRequest:
-        r"""Approves a request and returns the updated
-        ApprovalRequest.
+        r"""Approves a request and returns the updated ApprovalRequest.
+
         Returns NOT_FOUND if the request does not exist. Returns
-        FAILED_PRECONDITION if the request exists but is not in
-        a pending state.
+        FAILED_PRECONDITION if the request exists but is not in a
+        pending state.
 
         .. code-block:: python
 
@@ -1130,16 +1123,16 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> accessapproval.ApprovalRequest:
-        r"""Dismisses a request. Returns the updated
-        ApprovalRequest.
-        NOTE: This does not deny access to the resource if
-        another request has been made and approved. It is
-        equivalent in effect to ignoring the request altogether.
+        r"""Dismisses a request. Returns the updated ApprovalRequest.
+
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It is equivalent in effect
+        to ignoring the request altogether.
 
         Returns NOT_FOUND if the request does not exist.
 
-        Returns FAILED_PRECONDITION if the request exists but is
-        not in a pending state.
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        a pending state.
 
         .. code-block:: python
 
@@ -1224,15 +1217,15 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> accessapproval.ApprovalRequest:
-        r"""Invalidates an existing ApprovalRequest. Returns the
-        updated ApprovalRequest.
+        r"""Invalidates an existing ApprovalRequest. Returns the updated
+        ApprovalRequest.
 
-        NOTE: This does not deny access to the resource if
-        another request has been made and approved. It only
-        invalidates a single approval.
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It only invalidates a single
+        approval.
 
-        Returns FAILED_PRECONDITION if the request exists but is
-        not in an approved state.
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        an approved state.
 
         .. code-block:: python
 
@@ -1353,9 +1346,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
                 The request object. Request to get access approval
                 settings.
             name (str):
-                The name of the AccessApprovalSettings
-                to retrieve. Format:
-                "{projects\|folders\|organizations}/{id}/accessApprovalSettings"
+                The name of the AccessApprovalSettings to retrieve.
+                Format:
+                "{projects|folders|organizations}/{id}/accessApprovalSettings"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1435,9 +1428,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> accessapproval.AccessApprovalSettings:
-        r"""Updates the settings associated with a project, folder,
-        or organization. Settings to update are determined by
-        the value of field_mask.
+        r"""Updates the settings associated with a project, folder, or
+        organization. Settings to update are determined by the value of
+        field_mask.
 
         .. code-block:: python
 

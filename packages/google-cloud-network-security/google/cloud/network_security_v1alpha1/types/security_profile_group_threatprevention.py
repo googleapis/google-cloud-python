@@ -75,6 +75,7 @@ class Severity(proto.Enum):
             target does not need to be manipulated into
             performing any special functions.
     """
+
     SEVERITY_UNSPECIFIED = 0
     INFORMATIONAL = 1
     LOW = 2
@@ -108,6 +109,7 @@ class ThreatType(proto.Enum):
         DNS (5):
             Threats related to DNS.
     """
+
     THREAT_TYPE_UNSPECIFIED = 0
     UNKNOWN = 1
     VULNERABILITY = 2
@@ -129,14 +131,13 @@ class ThreatAction(proto.Enum):
             The packet matching this rule will be allowed
             to transmit.
         ALERT (2):
-            The packet matching this rule will be allowed to
-            transmit, but a threat_log entry will be sent to
-            the consumer project.
+            The packet matching this rule will be allowed to transmit,
+            but a threat_log entry will be sent to the consumer project.
         DENY (3):
-            The packet matching this rule will be dropped,
-            and a threat_log entry will be sent to the
-            consumer project.
+            The packet matching this rule will be dropped, and a
+            threat_log entry will be sent to the consumer project.
     """
+
     THREAT_ACTION_UNSPECIFIED = 0
     DEFAULT_ACTION = 4
     ALLOW = 1
@@ -165,6 +166,7 @@ class Protocol(proto.Enum):
         FTP (7):
             FTP protocol
     """
+
     PROTOCOL_UNSPECIFIED = 0
     SMTP = 1
     SMB = 2
@@ -184,11 +186,10 @@ class ThreatPreventionProfile(proto.Message):
             Optional. Configuration for overriding
             threats actions by severity match.
         threat_overrides (MutableSequence[google.cloud.network_security_v1alpha1.types.ThreatOverride]):
-            Optional. Configuration for overriding threats
-            actions by threat_id match. If a threat is
-            matched both by configuration provided in
-            severity_overrides and threat_overrides, the
-            threat_overrides action is applied.
+            Optional. Configuration for overriding threats actions by
+            threat_id match. If a threat is matched both by
+            configuration provided in severity_overrides and
+            threat_overrides, the threat_overrides action is applied.
         antivirus_overrides (MutableSequence[google.cloud.network_security_v1alpha1.types.AntivirusOverride]):
             Optional. Configuration for overriding
             antivirus actions per protocol.

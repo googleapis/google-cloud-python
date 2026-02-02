@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -80,6 +80,7 @@ class ClientGateway(proto.Message):
                 ClientGateway encountered an error and is in
                 indeterministic state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2

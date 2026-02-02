@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.assuredworkloads_v1.types import assuredworkloads
 
@@ -384,11 +384,10 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     ]:
         r"""Return a callable for the update workload method over gRPC.
 
-        Updates an existing workload.
-        Currently allows updating of workload display_name and
-        labels. For force updates don't set etag field in the
-        Workload. Only one update operation per workload can be
-        in progress.
+        Updates an existing workload. Currently allows updating of
+        workload display_name and labels. For force updates don't set
+        etag field in the Workload. Only one update operation per
+        workload can be in progress.
 
         Returns:
             Callable[[~.UpdateWorkloadRequest],
@@ -437,12 +436,12 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restrict_allowed_resources" not in self._stubs:
-            self._stubs[
-                "restrict_allowed_resources"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/RestrictAllowedResources",
-                request_serializer=assuredworkloads.RestrictAllowedResourcesRequest.serialize,
-                response_deserializer=assuredworkloads.RestrictAllowedResourcesResponse.deserialize,
+            self._stubs["restrict_allowed_resources"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.assuredworkloads.v1.AssuredWorkloadsService/RestrictAllowedResources",
+                    request_serializer=assuredworkloads.RestrictAllowedResourcesRequest.serialize,
+                    response_deserializer=assuredworkloads.RestrictAllowedResourcesResponse.deserialize,
+                )
             )
         return self._stubs["restrict_allowed_resources"]
 
@@ -452,9 +451,9 @@ class AssuredWorkloadsServiceGrpcAsyncIOTransport(AssuredWorkloadsServiceTranspo
     ) -> Callable[[assuredworkloads.DeleteWorkloadRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete workload method over gRPC.
 
-        Deletes the workload. Make sure that workload's direct
-        children are already in a deleted state, otherwise the
-        request will fail with a FAILED_PRECONDITION error.
+        Deletes the workload. Make sure that workload's direct children
+        are already in a deleted state, otherwise the request will fail
+        with a FAILED_PRECONDITION error.
 
         Returns:
             Callable[[~.DeleteWorkloadRequest],

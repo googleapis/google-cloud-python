@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -147,8 +147,8 @@ class PublicCertificateAuthorityServiceRestTransport(
 ):
     """REST backend synchronous transport for PublicCertificateAuthorityService.
 
-    Manages the resources required for ACME [external account
-    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4) for
+    Manages the resources required for ACME `external account
+    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__ for
     the public certificate authority service.
 
     This class defines the same methods as the primary client, so the
@@ -286,17 +286,14 @@ class PublicCertificateAuthorityServiceRestTransport(
 
                 Returns:
                     ~.resources.ExternalAccountKey:
-                        A representation of an
-                    ExternalAccountKey used for [external
-                    account
-                    binding](https://tools.ietf.org/html/rfc8555#section-7.3.4)
+                        A representation of an ExternalAccountKey used for
+                    `external account
+                    binding <https://tools.ietf.org/html/rfc8555#section-7.3.4>`__
                     within ACME.
 
             """
 
-            http_options = (
-                _BasePublicCertificateAuthorityServiceRestTransport._BaseCreateExternalAccountKey._get_http_options()
-            )
+            http_options = _BasePublicCertificateAuthorityServiceRestTransport._BaseCreateExternalAccountKey._get_http_options()
 
             request, metadata = self._interceptor.pre_create_external_account_key(
                 request, metadata
@@ -399,7 +396,9 @@ class PublicCertificateAuthorityServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateExternalAccountKey(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateExternalAccountKey(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

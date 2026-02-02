@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import common, document
@@ -68,9 +68,8 @@ class ListLinkedTargetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the document, for which
-            all target links are returned. Format:
-
+            Required. The name of the document, for which all target
+            links are returned. Format:
             projects/{project_number}/locations/{location}/documents/{target_document_id}.
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the
@@ -121,9 +120,8 @@ class ListLinkedSourcesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the document, for which
-            all source links are returned. Format:
-
+            Required. The name of the document, for which all source
+            links are returned. Format:
             projects/{project_number}/locations/{location}/documents/{source_document_id}.
         page_size (int):
             The maximum number of document-links to
@@ -170,12 +168,10 @@ class DocumentLink(proto.Message):
 
     Attributes:
         name (str):
-            Name of this document-link.
-            It is required that the parent derived form the
-            name to be consistent with the source document
-            reference. Otherwise an exception will be
-            thrown. Format:
-
+            Name of this document-link. It is required that the parent
+            derived form the name to be consistent with the source
+            document reference. Otherwise an exception will be thrown.
+            Format:
             projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
         source_document_reference (google.cloud.contentwarehouse_v1.types.DocumentReference):
             Document references of the source document.
@@ -209,6 +205,7 @@ class DocumentLink(proto.Message):
                 Target document is deleted, and mark the
                 documentlink as soft-deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SOFT_DELETED = 2
@@ -253,14 +250,12 @@ class CreateDocumentLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Parent of the document-link to be
-            created. parent of document-link should be a
-            document. Format:
-
+            Required. Parent of the document-link to be created. parent
+            of document-link should be a document. Format:
             projects/{project_number}/locations/{location}/documents/{source_document_id}.
         document_link (google.cloud.contentwarehouse_v1.types.DocumentLink):
-            Required. Document links associated with the
-            source documents (source_document_id).
+            Required. Document links associated with the source
+            documents (source_document_id).
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the
             document creator, used to enforce access control
@@ -288,9 +283,8 @@ class DeleteDocumentLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document-link to be
-            deleted. Format:
-
+            Required. The name of the document-link to be deleted.
+            Format:
             projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
         request_metadata (google.cloud.contentwarehouse_v1.types.RequestMetadata):
             The meta information collected about the

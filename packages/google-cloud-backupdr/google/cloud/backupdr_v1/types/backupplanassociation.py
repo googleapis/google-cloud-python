@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import backupvault_cloudsql
@@ -127,6 +127,7 @@ class BackupPlanAssociation(proto.Message):
             UPDATING (5):
                 The resource is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -223,6 +224,7 @@ class RuleConfigInfo(proto.Message):
             FAILED (4):
                 The last backup operation failed.
         """
+
         LAST_BACKUP_STATE_UNSPECIFIED = 0
         FIRST_BACKUP_PENDING = 1
         PERMISSION_DENIED = 2
@@ -373,12 +375,12 @@ class ListBackupPlanAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackupPlanAssociation",
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackupPlanAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -481,12 +483,12 @@ class FetchBackupPlanAssociationsForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backup_plan_associations: MutableSequence[
-        "BackupPlanAssociation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackupPlanAssociation",
+    backup_plan_associations: MutableSequence["BackupPlanAssociation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackupPlanAssociation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -557,17 +559,15 @@ class UpdateBackupPlanAssociationRequest(proto.Message):
         backup_plan_association (google.cloud.backupdr_v1.types.BackupPlanAssociation):
             Required. The resource being updated
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The list of fields to update.
-            Field mask is used to specify the fields to be
-            overwritten in the BackupPlanAssociation
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then the request will
-            fail. Currently
-            backup_plan_association.backup_plan is the only
-            supported field.
+            Required. The list of fields to update. Field mask is used
+            to specify the fields to be overwritten in the
+            BackupPlanAssociation resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then the
+            request will fail. Currently
+            backup_plan_association.backup_plan is the only supported
+            field.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -615,8 +615,8 @@ class TriggerBackupRequest(proto.Message):
             the format
             ``projects/{project}/locations/{location}/backupPlanAssociations/{backupPlanAssociationId}``
         rule_id (str):
-            Required. backup rule_id for which a backup
-            needs to be triggered.
+            Required. backup rule_id for which a backup needs to be
+            triggered.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if

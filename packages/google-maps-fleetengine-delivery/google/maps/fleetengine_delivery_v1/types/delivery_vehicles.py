@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.fleetengine_delivery_v1.types import common
@@ -177,6 +177,7 @@ class DeliveryVehicle(proto.Message):
                 A human transporter, typically walking or
                 running, traveling along pedestrian pathways.
         """
+
         DELIVERY_VEHICLE_TYPE_UNSPECIFIED = 0
         AUTO = 1
         TWO_WHEELER = 2
@@ -192,12 +193,12 @@ class DeliveryVehicle(proto.Message):
         number=2,
         message=common.DeliveryVehicleLocation,
     )
-    past_locations: MutableSequence[
-        common.DeliveryVehicleLocation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=common.DeliveryVehicleLocation,
+    past_locations: MutableSequence[common.DeliveryVehicleLocation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=common.DeliveryVehicleLocation,
+        )
     )
     navigation_status: common.DeliveryVehicleNavigationStatus = proto.Field(
         proto.ENUM,
@@ -223,12 +224,12 @@ class DeliveryVehicle(proto.Message):
         number=7,
         message=duration_pb2.Duration,
     )
-    remaining_vehicle_journey_segments: MutableSequence[
-        "VehicleJourneySegment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="VehicleJourneySegment",
+    remaining_vehicle_journey_segments: MutableSequence["VehicleJourneySegment"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="VehicleJourneySegment",
+        )
     )
     attributes: MutableSequence[common.DeliveryVehicleAttribute] = proto.RepeatedField(
         proto.MESSAGE,
@@ -367,6 +368,7 @@ class VehicleStop(proto.Message):
                 Vehicle is routing to the next stop, that all
                 previous stops have been completed.
         """
+
         STATE_UNSPECIFIED = 0
         NEW = 1
         ENROUTE = 2

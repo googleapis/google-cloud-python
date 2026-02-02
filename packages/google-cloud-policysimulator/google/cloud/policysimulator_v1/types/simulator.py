@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.policysimulator_v1.types import explanations
@@ -82,6 +82,7 @@ class Replay(proto.Message):
             FAILED (4):
                 The ``Replay`` has finished with an error.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -432,6 +433,7 @@ class ReplayConfig(proto.Message):
                 logs may not include logs from the most recent 7
                 days.
         """
+
         LOG_SOURCE_UNSPECIFIED = 0
         RECENT_ACCESSES = 1
 
@@ -545,6 +547,7 @@ class AccessStateDiff(proto.Message):
                   ``UNKNOWN``, but they will have access after the proposed
                   changes (``GRANTED``).
         """
+
         ACCESS_CHANGE_TYPE_UNSPECIFIED = 0
         NO_CHANGE = 1
         UNKNOWN_CHANGE = 2

@@ -16,10 +16,12 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -27,16 +29,16 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.managedkafka_schemaregistry_v1.types import (
+    schema_registry,
+    schema_registry_resources,
+)
+from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseManagedSchemaRegistryRestTransport
@@ -1945,9 +1947,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Response for CheckCompatibility.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCheckCompatibility._get_http_options()
 
             request, metadata = self._interceptor.pre_check_compatibility(
                 request, metadata
@@ -2105,9 +2105,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateSchemaRegistry._get_http_options()
 
             request, metadata = self._interceptor.pre_create_schema_registry(
                 request, metadata
@@ -2262,9 +2260,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Response for CreateVersion.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_version(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseCreateVersion._get_transcoded_request(
@@ -2417,9 +2413,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_schema_config(
                 request, metadata
@@ -2580,9 +2574,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaMode._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_schema_mode(
                 request, metadata
@@ -2727,9 +2719,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSchemaRegistry._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_schema_registry(
                 request, metadata
@@ -2751,7 +2741,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2839,65 +2829,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_subject(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteSubject._get_transcoded_request(
@@ -2917,7 +2901,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3037,65 +3021,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseDeleteVersion._get_transcoded_request(
@@ -3115,7 +3093,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3241,9 +3219,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_http_options()
 
             request, metadata = self._interceptor.pre_get_context(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetContext._get_transcoded_request(
@@ -3385,65 +3361,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_raw_schema(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchema._get_transcoded_request(
@@ -3463,7 +3433,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3583,65 +3553,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetRawSchemaVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_raw_schema_version(
                 request, metadata
@@ -3663,7 +3627,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3788,9 +3752,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Schema for a Kafka message.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchema._get_transcoded_request(
@@ -3938,9 +3900,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema_config(
                 request, metadata
@@ -4102,9 +4062,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema_mode(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaMode._get_transcoded_request(
@@ -4251,9 +4209,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetSchemaRegistry._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema_registry(
                 request, metadata
@@ -4402,9 +4358,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Version of a schema.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_version(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetVersion._get_transcoded_request(
@@ -4546,65 +4500,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_contexts(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListContexts._get_transcoded_request(
@@ -4624,7 +4572,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4744,65 +4692,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListReferencedSchemas._get_http_options()
 
             request, metadata = self._interceptor.pre_list_referenced_schemas(
                 request, metadata
@@ -4824,7 +4766,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4949,9 +4891,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Request for ListSchemaRegistries.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaRegistries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_schema_registries(
                 request, metadata
@@ -5097,65 +5037,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaTypes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_schema_types(
                 request, metadata
@@ -5177,7 +5111,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5299,65 +5233,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSchemaVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_schema_versions(
                 request, metadata
@@ -5379,7 +5307,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5501,65 +5429,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subjects(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListSubjects._get_transcoded_request(
@@ -5579,7 +5501,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5700,65 +5622,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
                 Returns:
                     ~.httpbody_pb2.HttpBody:
-                        Message that represents an arbitrary
-                    HTTP body. It should only be used for
-                    payload formats that can't be
-                    represented as JSON, such as raw binary
-                    or an HTML page.
+                        Message that represents an arbitrary HTTP body. It
+                    should only be used for payload formats that can't be
+                    represented as JSON, such as raw binary or an HTML page.
 
-                    This message can be used both in
-                    streaming and non-streaming API methods
-                    in the request as well as the response.
+                    This message can be used both in streaming and
+                    non-streaming API methods in the request as well as the
+                    response.
 
-                    It can be used as a top-level request
-                    field, which is convenient if one wants
-                    to extract parameters from either the
-                    URL or HTTP template into the request
-                    fields and also want access to the raw
-                    HTTP body.
+                    It can be used as a top-level request field, which is
+                    convenient if one wants to extract parameters from
+                    either the URL or HTTP template into the request fields
+                    and also want access to the raw HTTP body.
 
                     Example:
 
-                    message GetResourceRequest {
-                    // A unique request id.
-                    string request_id = 1;
+                    ::
 
-                    // The raw HTTP body is bound to this
-                    field. google.api.HttpBody http_body =
-                    2;
+                        message GetResourceRequest {
+                          // A unique request id.
+                          string request_id = 1;
 
-                    }
+                          // The raw HTTP body is bound to this field.
+                          google.api.HttpBody http_body = 2;
 
-                    service ResourceService {
-                    rpc GetResource(GetResourceRequest)
-                    returns (google.api.HttpBody);
-                    rpc UpdateResource(google.api.HttpBody)
-                    returns (google.protobuf.Empty);
+                        }
 
-                    }
+                        service ResourceService {
+                          rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
+                          rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
+
+                        }
 
                     Example with streaming methods:
 
-                    service CaldavService {
-                    rpc GetCalendar(stream
-                    google.api.HttpBody) returns (stream
-                    google.api.HttpBody);
-                    rpc UpdateCalendar(stream
-                    google.api.HttpBody) returns (stream
-                    google.api.HttpBody);
+                    ::
 
-                    }
+                        service CaldavService {
+                          rpc GetCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
+                          rpc UpdateCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
 
-                    Use of this type only changes how the
-                    request and response bodies are handled,
-                    all other features will continue to work
-                    unchanged.
+                        }
+
+                    Use of this type only changes how the request and
+                    response bodies are handled, all other features will
+                    continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListSubjectsBySchemaId._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subjects_by_schema_id(
                 request, metadata
@@ -5780,7 +5696,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5900,65 +5816,59 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListVersions._get_transcoded_request(
@@ -5978,7 +5888,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6102,9 +6012,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     Version of a schema.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_version(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseLookupVersion._get_transcoded_request(
@@ -6261,9 +6169,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_schema_config(
                 request, metadata
@@ -6431,9 +6337,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
 
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseUpdateSchemaMode._get_http_options()
 
             request, metadata = self._interceptor.pre_update_schema_mode(
                 request, metadata
@@ -6745,7 +6649,9 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSubjectsBySchemaId(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSubjectsBySchemaId(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_versions(
@@ -6844,9 +6750,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetLocation._get_transcoded_request(
@@ -6985,9 +6889,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListLocations._get_transcoded_request(
@@ -7124,9 +7026,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -7246,9 +7146,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -7366,9 +7264,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseGetOperation._get_transcoded_request(
@@ -7507,9 +7403,7 @@ class ManagedSchemaRegistryRestTransport(_BaseManagedSchemaRegistryRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseManagedSchemaRegistryRestTransport._BaseListOperations._get_transcoded_request(

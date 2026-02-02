@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import shared
@@ -345,6 +345,7 @@ class Session(proto.Message):
                 The session is no longer running due to an
                 error.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -482,6 +483,7 @@ class JupyterConfig(proto.Message):
             SCALA (2):
                 Scala kernel.
         """
+
         KERNEL_UNSPECIFIED = 0
         PYTHON = 1
         SCALA = 2

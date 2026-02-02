@@ -16,20 +16,20 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import entity_type
 from google.cloud.dialogflowcx_v3.types import entity_type as gcdc_entity_type
@@ -380,8 +380,8 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         Creates an entity type in the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.CreateEntityTypeRequest],
@@ -412,8 +412,8 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         Updates the specified entity type.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateEntityTypeRequest],
@@ -442,8 +442,8 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         Deletes the specified entity type.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteEntityTypeRequest],

@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.container_v1beta1.types import cluster_service
 
@@ -383,21 +383,19 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
     ) -> Callable[[cluster_service.CreateClusterRequest], cluster_service.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
-        Creates a cluster, consisting of the specified number
-        and type of Google Compute Engine instances.
+        Creates a cluster, consisting of the specified number and type
+        of Google Compute Engine instances.
 
-        By default, the cluster is created in the project's
-        [default
-        network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
+        By default, the cluster is created in the project's `default
+        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
-        One firewall is added for the cluster. After cluster
-        creation, the kubelet creates routes for each node to
-        allow the containers on that node to communicate with
-        all other instances in the cluster.
+        One firewall is added for the cluster. After cluster creation,
+        the kubelet creates routes for each node to allow the containers
+        on that node to communicate with all other instances in the
+        cluster.
 
-        Finally, an entry is added to the project's global
-        metadata indicating which CIDR range the cluster is
-        using.
+        Finally, an entry is added to the project's global metadata
+        indicating which CIDR range the cluster is using.
 
         Returns:
             Callable[[~.CreateClusterRequest],
@@ -964,12 +962,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "complete_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CompleteNodePoolUpgrade",
-                request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["complete_node_pool_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CompleteNodePoolUpgrade",
+                    request_serializer=cluster_service.CompleteNodePoolUpgradeRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["complete_node_pool_upgrade"]
 
@@ -996,12 +994,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_node_pool_upgrade" not in self._stubs:
-            self._stubs[
-                "rollback_node_pool_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/RollbackNodePoolUpgrade",
-                request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
-                response_deserializer=cluster_service.Operation.deserialize,
+            self._stubs["rollback_node_pool_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/RollbackNodePoolUpgrade",
+                    request_serializer=cluster_service.RollbackNodePoolUpgradeRequest.serialize,
+                    response_deserializer=cluster_service.Operation.deserialize,
+                )
             )
         return self._stubs["rollback_node_pool_upgrade"]
 
@@ -1276,12 +1274,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_autopilot_compatibility" not in self._stubs:
-            self._stubs[
-                "check_autopilot_compatibility"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
-                request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
-                response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
+            self._stubs["check_autopilot_compatibility"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CheckAutopilotCompatibility",
+                    request_serializer=cluster_service.CheckAutopilotCompatibilityRequest.serialize,
+                    response_deserializer=cluster_service.CheckAutopilotCompatibilityResponse.deserialize,
+                )
             )
         return self._stubs["check_autopilot_compatibility"]
 
@@ -1336,12 +1334,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_cluster_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_cluster_upgrade_info"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo",
-                request_serializer=cluster_service.FetchClusterUpgradeInfoRequest.serialize,
-                response_deserializer=cluster_service.ClusterUpgradeInfo.deserialize,
+            self._stubs["fetch_cluster_upgrade_info"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/FetchClusterUpgradeInfo",
+                    request_serializer=cluster_service.FetchClusterUpgradeInfoRequest.serialize,
+                    response_deserializer=cluster_service.ClusterUpgradeInfo.deserialize,
+                )
             )
         return self._stubs["fetch_cluster_upgrade_info"]
 
@@ -1367,12 +1365,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_node_pool_upgrade_info" not in self._stubs:
-            self._stubs[
-                "fetch_node_pool_upgrade_info"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo",
-                request_serializer=cluster_service.FetchNodePoolUpgradeInfoRequest.serialize,
-                response_deserializer=cluster_service.NodePoolUpgradeInfo.deserialize,
+            self._stubs["fetch_node_pool_upgrade_info"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/FetchNodePoolUpgradeInfo",
+                    request_serializer=cluster_service.FetchNodePoolUpgradeInfoRequest.serialize,
+                    response_deserializer=cluster_service.NodePoolUpgradeInfo.deserialize,
+                )
             )
         return self._stubs["fetch_node_pool_upgrade_info"]
 
@@ -1399,12 +1397,12 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "complete_control_plane_upgrade" not in self._stubs:
-            self._stubs[
-                "complete_control_plane_upgrade"
-            ] = self._logged_channel.unary_unary(
-                "/google.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade",
-                request_serializer=cluster_service.CompleteControlPlaneUpgradeRequest.serialize,
-                response_deserializer=cluster_service.Operation.deserialize,
+            self._stubs["complete_control_plane_upgrade"] = (
+                self._logged_channel.unary_unary(
+                    "/google.container.v1beta1.ClusterManager/CompleteControlPlaneUpgrade",
+                    request_serializer=cluster_service.CompleteControlPlaneUpgradeRequest.serialize,
+                    response_deserializer=cluster_service.Operation.deserialize,
+                )
             )
         return self._stubs["complete_control_plane_upgrade"]
 

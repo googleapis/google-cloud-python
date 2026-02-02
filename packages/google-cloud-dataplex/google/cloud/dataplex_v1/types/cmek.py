@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,9 +41,8 @@ class EncryptionConfig(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            EncryptionConfig. Format:
-
+            Identifier. The resource name of the EncryptionConfig.
+            Format:
             organizations/{organization}/locations/{location}/encryptionConfigs/{encryption_config}
             Global location is not supported.
         key (str):
@@ -92,6 +91,7 @@ class EncryptionConfig(proto.Message):
                 fails due to reasons like permission issues,
                 invalid key etc.
         """
+
         ENCRYPTION_STATE_UNSPECIFIED = 0
         ENCRYPTING = 1
         COMPLETED = 2
@@ -104,9 +104,8 @@ class EncryptionConfig(proto.Message):
             error_code (google.cloud.dataplex_v1.types.EncryptionConfig.FailureDetails.ErrorCode):
                 Output only. The error code for the failure.
             error_message (str):
-                Output only. The error message will be shown to
-                the user. Set only if the error code is
-                REQUIRE_USER_ACTION.
+                Output only. The error message will be shown to the user.
+                Set only if the error code is REQUIRE_USER_ACTION.
         """
 
         class ErrorCode(proto.Enum):
@@ -122,6 +121,7 @@ class EncryptionConfig(proto.Message):
                 REQUIRE_USER_ACTION (2):
                     User action is required to resolve the error.
             """
+
             UNKNOWN = 0
             INTERNAL_ERROR = 1
             REQUIRE_USER_ACTION = 2

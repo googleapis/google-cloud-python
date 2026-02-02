@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import column_spec, data_stats, ranges
@@ -39,8 +39,8 @@ class TablesDatasetMetadata(proto.Message):
 
     Attributes:
         primary_table_spec_id (str):
-            Output only. The table_spec_id of the primary
-            table of this dataset.
+            Output only. The table_spec_id of the primary table of this
+            dataset.
         target_column_spec_id (str):
             column_spec_id of the primary table's column that should be
             used as the training & prediction target. This column must
@@ -57,17 +57,15 @@ class TablesDatasetMetadata(proto.Message):
             NOTE: Updates of this field will instantly affect any other
             users concurrently working with the dataset.
         weight_column_spec_id (str):
-            column_spec_id of the primary table's column
-            that should be used as the weight column, i.e.
-            the higher the value the more important the row
-            will be during model training.
-            Required type: FLOAT64.
-            Allowed values: 0 to 10000, inclusive on both
-            ends; 0 means the row is ignored for training.
-            If not set all rows are assumed to have equal
-            weight of 1. NOTE: Updates of this field will
-            instantly affect any other users concurrently
-            working with the dataset.
+            column_spec_id of the primary table's column that should be
+            used as the weight column, i.e. the higher the value the
+            more important the row will be during model training.
+            Required type: FLOAT64. Allowed values: 0 to 10000,
+            inclusive on both ends; 0 means the row is ignored for
+            training. If not set all rows are assumed to have equal
+            weight of 1. NOTE: Updates of this field will instantly
+            affect any other users concurrently working with the
+            dataset.
         ml_use_column_spec_id (str):
             column_spec_id of the primary table column which specifies a
             possible ML use of the row, i.e. the column will be used to
@@ -97,13 +95,12 @@ class TablesDatasetMetadata(proto.Message):
             updated.
         stats_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent timestamp when
-            target_column_correlations field and all
-            descendant ColumnSpec.data_stats and
-            ColumnSpec.top_correlated_columns fields were
-            last (re-)generated. Any changes that happened
-            to the dataset afterwards are not reflected in
-            these fields values. The regeneration happens in
-            the background on a best effort basis.
+            target_column_correlations field and all descendant
+            ColumnSpec.data_stats and ColumnSpec.top_correlated_columns
+            fields were last (re-)generated. Any changes that happened
+            to the dataset afterwards are not reflected in these fields
+            values. The regeneration happens in the background on a best
+            effort basis.
     """
 
     primary_table_spec_id: str = proto.Field(
@@ -122,13 +119,13 @@ class TablesDatasetMetadata(proto.Message):
         proto.STRING,
         number=4,
     )
-    target_column_correlations: MutableMapping[
-        str, data_stats.CorrelationStats
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=6,
-        message=data_stats.CorrelationStats,
+    target_column_correlations: MutableMapping[str, data_stats.CorrelationStats] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=6,
+            message=data_stats.CorrelationStats,
+        )
     )
     stats_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -150,27 +147,24 @@ class TablesModelMetadata(proto.Message):
     Attributes:
         optimization_objective_recall_value (float):
             Required when optimization_objective is
-            "MAXIMIZE_PRECISION_AT_RECALL". Must be between
-            0 and 1, inclusive.
+            "MAXIMIZE_PRECISION_AT_RECALL". Must be between 0 and 1,
+            inclusive.
 
             This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         optimization_objective_precision_value (float):
             Required when optimization_objective is
-            "MAXIMIZE_RECALL_AT_PRECISION". Must be between
-            0 and 1, inclusive.
+            "MAXIMIZE_RECALL_AT_PRECISION". Must be between 0 and 1,
+            inclusive.
 
             This field is a member of `oneof`_ ``additional_optimization_objective_config``.
         target_column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
-            Column spec of the dataset's primary table's
-            column the model is predicting. Snapshotted when
-            model creation started. Only 3 fields are used:
-
-            name - May be set on CreateModel, if it's not
-            then the ColumnSpec corresponding to the current
-            target_column_spec_id of the dataset the model
-            is trained from is used.
-            If neither is set, CreateModel will error.
-            display_name - Output only.
+            Column spec of the dataset's primary table's column the
+            model is predicting. Snapshotted when model creation
+            started. Only 3 fields are used: name - May be set on
+            CreateModel, if it's not then the ColumnSpec corresponding
+            to the current target_column_spec_id of the dataset the
+            model is trained from is used. If neither is set,
+            CreateModel will error. display_name - Output only.
             data_type - Output only.
         input_feature_column_specs (MutableSequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
             Column specs of the dataset's primary table's columns, on
@@ -198,44 +192,34 @@ class TablesModelMetadata(proto.Message):
 
             - data_type - Output only.
         optimization_objective (str):
-            Objective function the model is optimizing
-            towards. The training process creates a model
-            that maximizes/minimizes the value of the
-            objective function over the validation set.
+            Objective function the model is optimizing towards. The
+            training process creates a model that maximizes/minimizes
+            the value of the objective function over the validation set.
 
-            The supported optimization objectives depend on
-            the prediction type. If the field is not set, a
-            default objective function is used.
+            The supported optimization objectives depend on the
+            prediction type. If the field is not set, a default
+            objective function is used.
 
-            CLASSIFICATION_BINARY:
+            CLASSIFICATION_BINARY: "MAXIMIZE_AU_ROC" (default) -
+            Maximize the area under the receiver operating
+            characteristic (ROC) curve. "MINIMIZE_LOG_LOSS" - Minimize
+            log loss. "MAXIMIZE_AU_PRC" - Maximize the area under the
+            precision-recall curve. "MAXIMIZE_PRECISION_AT_RECALL" -
+            Maximize precision for a specified recall value.
+            "MAXIMIZE_RECALL_AT_PRECISION" - Maximize recall for a
+            specified precision value.
 
-            "MAXIMIZE_AU_ROC" (default) - Maximize the area
-            under the receiver operating characteristic
-            (ROC) curve.
-            "MINIMIZE_LOG_LOSS" - Minimize log loss.
-            "MAXIMIZE_AU_PRC" - Maximize the area under the
-            precision-recall curve.
-            "MAXIMIZE_PRECISION_AT_RECALL" - Maximize
-            precision for a specified recall value.
-            "MAXIMIZE_RECALL_AT_PRECISION" - Maximize recall
-            for a specified precision value.
+            CLASSIFICATION_MULTI_CLASS : "MINIMIZE_LOG_LOSS" (default) -
+            Minimize log loss.
 
-            CLASSIFICATION_MULTI_CLASS :
-
-            "MINIMIZE_LOG_LOSS" (default) - Minimize log
-            loss.
-
-            REGRESSION:
-
-            "MINIMIZE_RMSE" (default) - Minimize
-            root-mean-squared error (RMSE). "MINIMIZE_MAE" -
-            Minimize mean-absolute error (MAE).
-            "MINIMIZE_RMSLE" - Minimize root-mean-squared
-            log error (RMSLE).
+            REGRESSION: "MINIMIZE_RMSE" (default) - Minimize
+            root-mean-squared error (RMSE). "MINIMIZE_MAE" - Minimize
+            mean-absolute error (MAE). "MINIMIZE_RMSLE" - Minimize
+            root-mean-squared log error (RMSLE).
         tables_model_column_info (MutableSequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
-            Output only. Auxiliary information for each of
-            the input_feature_column_specs with respect to
-            this particular model.
+            Output only. Auxiliary information for each of the
+            input_feature_column_specs with respect to this particular
+            model.
         train_budget_milli_node_hours (int):
             Required. The train budget of creating this
             model, expressed in milli node hours i.e. 1,000
@@ -284,23 +268,23 @@ class TablesModelMetadata(proto.Message):
         number=2,
         message=column_spec.ColumnSpec,
     )
-    input_feature_column_specs: MutableSequence[
-        column_spec.ColumnSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=column_spec.ColumnSpec,
+    input_feature_column_specs: MutableSequence[column_spec.ColumnSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=column_spec.ColumnSpec,
+        )
     )
     optimization_objective: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    tables_model_column_info: MutableSequence[
-        "TablesModelColumnInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="TablesModelColumnInfo",
+    tables_model_column_info: MutableSequence["TablesModelColumnInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="TablesModelColumnInfo",
+        )
     )
     train_budget_milli_node_hours: int = proto.Field(
         proto.INT64,
@@ -384,12 +368,12 @@ class TablesAnnotation(proto.Message):
         number=2,
         message=struct_pb2.Value,
     )
-    tables_model_column_info: MutableSequence[
-        "TablesModelColumnInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="TablesModelColumnInfo",
+    tables_model_column_info: MutableSequence["TablesModelColumnInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="TablesModelColumnInfo",
+        )
     )
     baseline_score: float = proto.Field(
         proto.FLOAT,
@@ -407,8 +391,8 @@ class TablesModelColumnInfo(proto.Message):
             describing the column. Not populated when this
             proto is outputted to BigQuery.
         column_display_name (str):
-            Output only. The display name of the column
-            (same as the display_name of its ColumnSpec).
+            Output only. The display name of the column (same as the
+            display_name of its ColumnSpec).
         feature_importance (float):
             Output only. When given as part of a Model (always
             populated): Measurement of how much model predictions

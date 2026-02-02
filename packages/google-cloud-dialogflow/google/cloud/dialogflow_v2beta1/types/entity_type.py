@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -100,6 +100,7 @@ class EntityType(proto.Message):
                 Regexp entity types allow to specify regular
                 expressions in entries values.
         """
+
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -118,6 +119,7 @@ class EntityType(proto.Message):
                 Allows an agent to recognize values that have
                 not been explicitly listed in the entity.
         """
+
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1
 
@@ -199,19 +201,18 @@ class ListEntityTypesRequest(proto.Message):
             - ``projects/<Project ID>/agent``
             - ``projects/<Project ID>/locations/<Location ID>/agent``
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         page_size (int):
             Optional. The maximum number of items to
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -238,9 +239,9 @@ class ListEntityTypesResponse(proto.Message):
 
     Attributes:
         entity_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.EntityType]):
-            The list of agent entity types. There will be a
-            maximum number of items returned based on the
-            page_size field in the request.
+            The list of agent entity types. There will be a maximum
+            number of items returned based on the page_size field in the
+            request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -273,12 +274,11 @@ class GetEntityTypeRequest(proto.Message):
             - ``projects/<Project ID>/agent/entityTypes/<Entity Type ID>``
             - ``projects/<Project ID>/locations/<Location ID>/agent/entityTypes/<Entity Type ID>``
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
     """
 
     name: str = proto.Field(
@@ -305,12 +305,11 @@ class CreateEntityTypeRequest(proto.Message):
         entity_type (google.cloud.dialogflow_v2beta1.types.EntityType):
             Required. The entity type to create.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
     """
 
     parent: str = proto.Field(
@@ -336,12 +335,11 @@ class UpdateEntityTypeRequest(proto.Message):
         entity_type (google.cloud.dialogflow_v2beta1.types.EntityType):
             Required. The entity type to update.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
@@ -414,12 +412,11 @@ class BatchUpdateEntityTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``entity_type_batch``.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
@@ -508,12 +505,11 @@ class BatchCreateEntitiesRequest(proto.Message):
         entities (MutableSequence[google.cloud.dialogflow_v2beta1.types.EntityType.Entity]):
             Required. The entities to create.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
     """
 
     parent: str = proto.Field(
@@ -545,12 +541,11 @@ class BatchUpdateEntitiesRequest(proto.Message):
         entities (MutableSequence[google.cloud.dialogflow_v2beta1.types.EntityType.Entity]):
             Required. The entities to update or create.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
@@ -592,12 +587,11 @@ class BatchDeleteEntitiesRequest(proto.Message):
             delete. Note that these are not fully-qualified names, i.e.
             they don't start with ``projects/<Project ID>``.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
     """
 
     parent: str = proto.Field(

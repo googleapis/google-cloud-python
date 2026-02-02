@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import flow
@@ -100,6 +100,7 @@ class Version(proto.Message):
             FAILED (3):
                 Version training failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -148,8 +149,8 @@ class ListVersionsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -172,11 +173,10 @@ class ListVersionsResponse(proto.Message):
 
     Attributes:
         versions (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.Version]):
-            A list of versions. There will be a maximum
-            number of items returned based on the page_size
-            field in the request. The list may in some cases
-            be empty or contain fewer entries than page_size
-            even if this isn't the last page.
+            A list of versions. There will be a maximum number of items
+            returned based on the page_size field in the request. The
+            list may in some cases be empty or contain fewer entries
+            than page_size even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -333,11 +333,11 @@ class CompareVersionsRequest(proto.Message):
         language_code (str):
             The language to compare the flow versions for.
 
-            If not specified, the agent's default language
-            is used. [Many
-            languages](https://cloud.google.com/dialogflow/docs/reference/language)
-            are supported. Note: languages must be enabled
-            in the agent before they can be used.
+            If not specified, the agent's default language is used.
+            `Many
+            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported. Note: languages must be enabled in the agent
+            before they can be used.
     """
 
     base_version: str = proto.Field(

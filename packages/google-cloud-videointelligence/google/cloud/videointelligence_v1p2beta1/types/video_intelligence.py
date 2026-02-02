@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -75,6 +75,7 @@ class Feature(proto.Enum):
         OBJECT_TRACKING (9):
             Object detection and tracking.
     """
+
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
@@ -97,6 +98,7 @@ class LabelDetectionMode(proto.Enum):
             Detect both shot-level and frame-level
             labels.
     """
+
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -120,6 +122,7 @@ class Likelihood(proto.Enum):
         VERY_LIKELY (5):
             Very likely.
     """
+
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -366,8 +369,7 @@ class LabelSegment(proto.Message):
         segment (google.cloud.videointelligence_v1p2beta1.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
-            Confidence that the label is accurate. Range:
-            [0, 1].
+            Confidence that the label is accurate. Range: [0, 1].
     """
 
     segment: "VideoSegment" = proto.Field(
@@ -390,8 +392,7 @@ class LabelFrame(proto.Message):
             video, corresponding to the video frame for this
             location.
         confidence (float):
-            Confidence that the label is accurate. Range:
-            [0, 1].
+            Confidence that the label is accurate. Range: [0, 1].
     """
 
     time_offset: duration_pb2.Duration = proto.Field(
@@ -410,9 +411,9 @@ class Entity(proto.Message):
 
     Attributes:
         entity_id (str):
-            Opaque entity ID. Some IDs may be available in
-            [Google Knowledge Graph Search
-            API](https://developers.google.com/knowledge-graph/).
+            Opaque entity ID. Some IDs may be available in `Google
+            Knowledge Graph Search
+            API <https://developers.google.com/knowledge-graph/>`__.
         description (str):
             Textual description, e.g. ``Fixed-gear bicycle``.
         language_code (str):
@@ -516,9 +517,8 @@ class ExplicitContentAnnotation(proto.Message):
 
 
 class NormalizedBoundingBox(proto.Message):
-    r"""Normalized bounding box.
-    The normalized vertex coordinates are relative to the original
-    image. Range: [0, 1].
+    r"""Normalized bounding box. The normalized vertex coordinates are
+    relative to the original image. Range: [0, 1].
 
     Attributes:
         left (float):
@@ -621,12 +621,12 @@ class VideoAnnotationResults(proto.Message):
         number=12,
         message="TextAnnotation",
     )
-    object_annotations: MutableSequence[
-        "ObjectTrackingAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="ObjectTrackingAnnotation",
+    object_annotations: MutableSequence["ObjectTrackingAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="ObjectTrackingAnnotation",
+        )
     )
     error: status_pb2.Status = proto.Field(
         proto.MESSAGE,
@@ -700,12 +700,12 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="VideoAnnotationProgress",
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="VideoAnnotationProgress",
+        )
     )
 
 
@@ -732,26 +732,17 @@ class NormalizedVertex(proto.Message):
 
 
 class NormalizedBoundingPoly(proto.Message):
-    r"""Normalized bounding polygon for text (that might not be aligned
-    with axis). Contains list of the corner points in clockwise
-    order starting from top-left corner. For example, for a
-    rectangular bounding box:
+    r"""Normalized bounding polygon for text (that might not be aligned with
+    axis). Contains list of the corner points in clockwise order
+    starting from top-left corner. For example, for a rectangular
+    bounding box: When the text is horizontal it might look like: 0----1
+    \| \| 3----2
 
-    When the text is horizontal it might look like:
+    When it's clockwise rotated 180 degrees around the top-left corner
+    it becomes: 2----3 \| \| 1----0
 
-    0----1
-    \| \|
-    3----2
-
-    When it's clockwise rotated 180 degrees around the top-left
-    corner it becomes:
-
-    2----3
-    \| \|
-    1----0
-
-    and the vertex order will still be (0, 1, 2, 3). Note that
-    values can be less than 0, or greater than 1 due to trignometric
+    and the vertex order will still be (0, 1, 2, 3). Note that values
+    can be less than 0, or greater than 1 due to trignometric
     calculations for location of the box.
 
     Attributes:
@@ -890,15 +881,12 @@ class ObjectTrackingAnnotation(proto.Message):
 
             This field is a member of `oneof`_ ``track_info``.
         track_id (int):
-            Streaming mode ONLY.
-            In streaming mode, we do not know the end time
-            of a tracked object before it is completed.
-            Hence, there is no VideoSegment info returned.
-            Instead, we provide a unique identifiable
-            integer track_id so that the customers can
-            correlate the results of the ongoing
-            ObjectTrackAnnotation of the same track_id over
-            time.
+            Streaming mode ONLY. In streaming mode, we do not know the
+            end time of a tracked object before it is completed. Hence,
+            there is no VideoSegment info returned. Instead, we provide
+            a unique identifiable integer track_id so that the customers
+            can correlate the results of the ongoing
+            ObjectTrackAnnotation of the same track_id over time.
 
             This field is a member of `oneof`_ ``track_info``.
         entity (google.cloud.videointelligence_v1p2beta1.types.Entity):

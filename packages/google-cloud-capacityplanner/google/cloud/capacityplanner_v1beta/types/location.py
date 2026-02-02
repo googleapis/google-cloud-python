@@ -47,6 +47,7 @@ class LocationLevel(proto.Enum):
         MULTI_REGION (6):
             Multiple regions.
     """
+
     LOCATION_LEVEL_UNSPECIFIED = 0
     REGION = 1
     ZONE = 2

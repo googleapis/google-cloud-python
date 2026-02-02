@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.admin_v1beta.types import access_report, resources
@@ -133,14 +133,12 @@ class RunAccessReportRequest(proto.Message):
             ranges. Requests are allowed up to 2 date
             ranges.
         dimension_filter (google.analytics.admin_v1beta.types.AccessFilterExpression):
-            Dimension filters let you restrict report
-            response to specific dimension values which
-            match the filter. For example, filtering on
-            access records of a single user. To learn more,
-            see [Fundamentals of Dimension
-            Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
-            for examples. Metrics cannot be used in this
-            filter.
+            Dimension filters let you restrict report response to
+            specific dimension values which match the filter. For
+            example, filtering on access records of a single user. To
+            learn more, see `Fundamentals of Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
         metric_filter (google.analytics.admin_v1beta.types.AccessFilterExpression):
             Metric filters allow you to restrict report
             response to specific metric values which match
@@ -172,14 +170,13 @@ class RunAccessReportRequest(proto.Message):
             To learn more about this pagination parameter, see
             `Pagination <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>`__.
         time_zone (str):
-            This request's time zone if specified. If
-            unspecified, the property's time zone is used.
-            The request's time zone is used to interpret the
-            start & end dates of the report.
+            This request's time zone if specified. If unspecified, the
+            property's time zone is used. The request's time zone is
+            used to interpret the start & end dates of the report.
 
-            Formatted as strings from the IANA Time Zone
-            database (https://www.iana.org/time-zones); for
-            example "America/New_York" or "Asia/Tokyo".
+            Formatted as strings from the IANA Time Zone database
+            (https://www.iana.org/time-zones); for example
+            "America/New_York" or "Asia/Tokyo".
         order_bys (MutableSequence[google.analytics.admin_v1beta.types.AccessOrderBy]):
             Specifies how rows are ordered in the
             response.
@@ -197,12 +194,11 @@ class RunAccessReportRequest(proto.Message):
             an API call or not. If false, only the users who
             have made an API call will be included.
         expand_groups (bool):
-            Optional. Decides whether to return the users
-            within user groups. This field works only when
-            include_all_users is set to true. If true, it
-            will return all users with access to the
-            specified property or account. If false, only
-            the users with direct access will be returned.
+            Optional. Decides whether to return the users within user
+            groups. This field works only when include_all_users is set
+            to true. If true, it will return all users with access to
+            the specified property or account. If false, only the users
+            with direct access will be returned.
     """
 
     entity: str = proto.Field(
@@ -300,19 +296,19 @@ class RunAccessReportResponse(proto.Message):
             with account-level requests.
     """
 
-    dimension_headers: MutableSequence[
-        access_report.AccessDimensionHeader
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=access_report.AccessDimensionHeader,
+    dimension_headers: MutableSequence[access_report.AccessDimensionHeader] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=access_report.AccessDimensionHeader,
+        )
     )
-    metric_headers: MutableSequence[
-        access_report.AccessMetricHeader
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=access_report.AccessMetricHeader,
+    metric_headers: MutableSequence[access_report.AccessMetricHeader] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=access_report.AccessMetricHeader,
+        )
     )
     rows: MutableSequence[access_report.AccessRow] = proto.RepeatedField(
         proto.MESSAGE,
@@ -495,9 +491,8 @@ class GetPropertyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the property to lookup.
-            Format: properties/{property_id}
-            Example: "properties/1000".
+            Required. The name of the property to lookup. Format:
+            properties/{property_id} Example: "properties/1000".
     """
 
     name: str = proto.Field(
@@ -642,9 +637,8 @@ class DeletePropertyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Property to
-            soft-delete. Format: properties/{property_id}
-            Example: "properties/1000".
+            Required. The name of the Property to soft-delete. Format:
+            properties/{property_id} Example: "properties/1000".
     """
 
     name: str = proto.Field(
@@ -1052,12 +1046,12 @@ class SearchChangeHistoryEventsRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    resource_type: MutableSequence[
-        resources.ChangeHistoryResourceType
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=3,
-        enum=resources.ChangeHistoryResourceType,
+    resource_type: MutableSequence[resources.ChangeHistoryResourceType] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum=resources.ChangeHistoryResourceType,
+        )
     )
     action: MutableSequence[resources.ActionType] = proto.RepeatedField(
         proto.ENUM,
@@ -1104,12 +1098,12 @@ class SearchChangeHistoryEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    change_history_events: MutableSequence[
-        resources.ChangeHistoryEvent
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.ChangeHistoryEvent,
+    change_history_events: MutableSequence[resources.ChangeHistoryEvent] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.ChangeHistoryEvent,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1319,8 +1313,8 @@ class GetConversionEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the conversion
-            event to retrieve. Format:
+            Required. The resource name of the conversion event to
+            retrieve. Format:
             properties/{property}/conversionEvents/{conversion_event}
             Example: "properties/123/conversionEvents/456".
     """
@@ -1336,8 +1330,8 @@ class DeleteConversionEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the conversion
-            event to delete. Format:
+            Required. The resource name of the conversion event to
+            delete. Format:
             properties/{property}/conversionEvents/{conversion_event}
             Example: "properties/123/conversionEvents/456".
     """
@@ -1463,10 +1457,9 @@ class GetKeyEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Key Event to
-            retrieve. Format:
-            properties/{property}/keyEvents/{key_event}
-            Example: "properties/123/keyEvents/456".
+            Required. The resource name of the Key Event to retrieve.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
     """
 
     name: str = proto.Field(
@@ -1480,10 +1473,9 @@ class DeleteKeyEventRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Key Event to
-            delete. Format:
-            properties/{property}/keyEvents/{key_event}
-            Example: "properties/123/keyEvents/456".
+            Required. The resource name of the Key Event to delete.
+            Format: properties/{property}/keyEvents/{key_event} Example:
+            "properties/123/keyEvents/456".
     """
 
     name: str = proto.Field(

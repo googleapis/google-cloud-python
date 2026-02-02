@@ -80,6 +80,7 @@ class ContextualAddOnMarkup(proto.Message):
                     AVATAR (2):
                         Circular border.
                 """
+
                 IMAGE_STYLE_UNSPECIFIED = 0
                 IMAGE = 1
                 AVATAR = 2
@@ -113,15 +114,12 @@ class ContextualAddOnMarkup(proto.Message):
 
             Attributes:
                 header (str):
-                    The header of the section. Formatted text is
-                    supported. For more information
-                    about formatting text, see
-                    [Formatting text in Google Chat
-                    apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
-                    and
-                    [Formatting
-                    text in Google Workspace
-                    Add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
+                    The header of the section. Formatted text is supported. For
+                    more information about formatting text, see `Formatting text
+                    in Google Chat
+                    apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
+                    and `Formatting text in Google Workspace
+                    Add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
                 widgets (MutableSequence[google.apps.chat_v1.types.WidgetMarkup]):
                     A section must contain at least one widget.
             """
@@ -167,19 +165,19 @@ class ContextualAddOnMarkup(proto.Message):
             number=1,
             message="ContextualAddOnMarkup.Card.CardHeader",
         )
-        sections: MutableSequence[
-            "ContextualAddOnMarkup.Card.Section"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ContextualAddOnMarkup.Card.Section",
+        sections: MutableSequence["ContextualAddOnMarkup.Card.Section"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ContextualAddOnMarkup.Card.Section",
+            )
         )
-        card_actions: MutableSequence[
-            "ContextualAddOnMarkup.Card.CardAction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ContextualAddOnMarkup.Card.CardAction",
+        card_actions: MutableSequence["ContextualAddOnMarkup.Card.CardAction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ContextualAddOnMarkup.Card.CardAction",
+            )
         )
         name: str = proto.Field(
             proto.STRING,

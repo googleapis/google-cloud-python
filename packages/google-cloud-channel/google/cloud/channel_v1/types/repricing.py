@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import decimal_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.decimal_pb2 as decimal_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -55,6 +55,7 @@ class RebillingBasis(proto.Enum):
             the customer would see if they viewed the bill
             in the Google Cloud Console.
     """
+
     REBILLING_BASIS_UNSPECIFIED = 0
     COST_AT_LIST = 1
     DIRECT_CUSTOMER_COST = 2
@@ -65,9 +66,8 @@ class CustomerRepricingConfig(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the
-            CustomerRepricingConfig. Format:
-
+            Output only. Resource name of the CustomerRepricingConfig.
+            Format:
             accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
         repricing_config (google.cloud.channel_v1.types.RepricingConfig):
             Required. The configuration for bill
@@ -104,7 +104,6 @@ class ChannelPartnerRepricingConfig(proto.Message):
         name (str):
             Output only. Resource name of the
             ChannelPartnerRepricingConfig. Format:
-
             accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
         repricing_config (google.cloud.channel_v1.types.RepricingConfig):
             Required. The configuration for bill
@@ -198,9 +197,7 @@ class RepricingConfig(proto.Message):
 
         Attributes:
             entitlement (str):
-                Resource name of the entitlement.
-                Format:
-
+                Resource name of the entitlement. Format:
                 accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         """
 
@@ -358,12 +355,9 @@ class SkuGroupCondition(proto.Message):
     Attributes:
         sku_group (str):
             Specifies a SKU group
-            (https://cloud.google.com/skus/sku-groups).
-            Resource name of SKU group. Format:
-
-            accounts/{account}/skuGroups/{sku_group}.
+            (https://cloud.google.com/skus/sku-groups). Resource name of
+            SKU group. Format: accounts/{account}/skuGroups/{sku_group}.
             Example:
-
             "accounts/C01234/skuGroups/3d50fd57-3157-4577-a5a9-a219b8490041".
     """
 

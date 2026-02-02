@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -60,6 +60,7 @@ class State(proto.Enum):
             The resource's Delete operation is in
             progress
     """
+
     STATE_UNSPECIFIED = 0
     CREATING = 1
     ACTIVE = 2
@@ -88,10 +89,9 @@ class Hub(proto.Message):
             Output only. A list of the URIs of all
             attached spokes
         unique_id (str):
-            Output only. Google-generated UUID for this
-            resource. This is unique across all Hub
-            resources. If a Hub resource is deleted and
-            another with the same name is created, it gets a
+            Output only. Google-generated UUID for this resource. This
+            is unique across all Hub resources. If a Hub resource is
+            deleted and another with the same name is created, it gets a
             different unique_id.
         state (google.cloud.networkconnectivity_v1alpha1.types.State):
             Output only. The current lifecycle state of
@@ -163,10 +163,9 @@ class Spoke(proto.Message):
         linked_router_appliance_instances (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.RouterApplianceInstance]):
             The URIs of linked Router appliance resources
         unique_id (str):
-            Output only. Google-generated UUID for this
-            resource. This is unique across all Spoke
-            resources. If a Spoke resource is deleted and
-            another with the same name is created, it gets a
+            Output only. Google-generated UUID for this resource. This
+            is unique across all Spoke resources. If a Spoke resource is
+            deleted and another with the same name is created, it gets a
             different unique_id.
         state (google.cloud.networkconnectivity_v1alpha1.types.State):
             Output only. The current lifecycle state of
@@ -208,12 +207,12 @@ class Spoke(proto.Message):
         proto.STRING,
         number=13,
     )
-    linked_router_appliance_instances: MutableSequence[
-        "RouterApplianceInstance"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="RouterApplianceInstance",
+    linked_router_appliance_instances: MutableSequence["RouterApplianceInstance"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="RouterApplianceInstance",
+        )
     )
     unique_id: str = proto.Field(
         proto.STRING,
@@ -277,10 +276,9 @@ class ListHubsResponse(proto.Message):
         hubs (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.Hub]):
             Hubs to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -381,13 +379,12 @@ class UpdateHubRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Hub resource by
-            the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Hub resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         hub (google.cloud.networkconnectivity_v1alpha1.types.Hub):
             Required. The state that the Hub should be in
             after the update.
@@ -517,10 +514,9 @@ class ListSpokesResponse(proto.Message):
         spokes (MutableSequence[google.cloud.networkconnectivity_v1alpha1.types.Spoke]):
             Spokes to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -619,13 +615,12 @@ class UpdateSpokeRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Spoke resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Spoke resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         spoke (google.cloud.networkconnectivity_v1alpha1.types.Spoke):
             Required. The state that the Spoke should be
             in after the update.

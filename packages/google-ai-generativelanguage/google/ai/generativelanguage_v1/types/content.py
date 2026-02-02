@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,6 +50,7 @@ class Modality(proto.Enum):
         DOCUMENT (5):
             Document, e.g. PDF.
     """
+
     MODALITY_UNSPECIFIED = 0
     TEXT = 1
     IMAGE = 2
@@ -117,9 +118,9 @@ class Part(proto.Message):
 
             This field is a member of `oneof`_ ``data``.
         video_metadata (google.ai.generativelanguage_v1.types.VideoMetadata):
-            Optional. Video metadata. The metadata should
-            only be specified while the video data is
-            presented in inline_data or file_data.
+            Optional. Video metadata. The metadata should only be
+            specified while the video data is presented in inline_data
+            or file_data.
 
             This field is a member of `oneof`_ ``metadata``.
     """
@@ -180,9 +181,9 @@ class VideoMetadata(proto.Message):
         end_offset (google.protobuf.duration_pb2.Duration):
             Optional. The end offset of the video.
         fps (float):
-            Optional. The frame rate of the video sent to
-            the model. If not specified, the default value
-            will be 1.0. The fps range is (0.0, 24.0].
+            Optional. The frame rate of the video sent to the model. If
+            not specified, the default value will be 1.0. The fps range
+            is (0.0, 24.0].
     """
 
     start_offset: duration_pb2.Duration = proto.Field(

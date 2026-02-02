@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import context
@@ -55,21 +55,22 @@ class IntentView(proto.Enum):
         INTENT_VIEW_FULL (1):
             All fields are populated.
     """
+
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_FULL = 1
 
 
 class Intent(proto.Message):
-    r"""An intent categorizes an end-user's intention for one
-    conversation turn. For each agent, you define many intents,
-    where your combined intents can handle a complete conversation.
-    When an end-user writes or says something, referred to as an
-    end-user expression or end-user input, Dialogflow matches the
-    end-user input to the best intent in your agent. Matching an
-    intent is also known as intent classification.
+    r"""An intent categorizes an end-user's intention for one conversation
+    turn. For each agent, you define many intents, where your combined
+    intents can handle a complete conversation. When an end-user writes
+    or says something, referred to as an end-user expression or end-user
+    input, Dialogflow matches the end-user input to the best intent in
+    your agent. Matching an intent is also known as intent
+    classification.
 
-    For more information, see the [intent
-    guide](https://cloud.google.com/dialogflow/docs/intents-overview).
+    For more information, see the `intent
+    guide <https://cloud.google.com/dialogflow/docs/intents-overview>`__.
 
     Attributes:
         name (str):
@@ -103,11 +104,10 @@ class Intent(proto.Message):
             in ``ML ONLY`` match mode. Also, auto-markup in the UI is
             turned off.
         live_agent_handoff (bool):
-            Optional. Indicates that a live agent should be
-            brought in to handle the interaction with the
-            user. In most cases, when you set this flag to
-            true, you would also want to set end_interaction
-            to true as well. Default is false.
+            Optional. Indicates that a live agent should be brought in
+            to handle the interaction with the user. In most cases, when
+            you set this flag to true, you would also want to set
+            end_interaction to true as well. Default is false.
         end_interaction (bool):
             Optional. Indicates that this intent ends an
             interaction. Some integrations (e.g., Actions on
@@ -150,9 +150,9 @@ class Intent(proto.Message):
             Optional. The collection of rich messages corresponding to
             the ``Response`` field in the Dialogflow console.
         default_response_platforms (MutableSequence[google.cloud.dialogflow_v2.types.Intent.Message.Platform]):
-            Optional. The list of platforms for which the
-            first responses will be copied from the messages
-            in PLATFORM_UNSPECIFIED (i.e. default platform).
+            Optional. The list of platforms for which the first
+            responses will be copied from the messages in
+            PLATFORM_UNSPECIFIED (i.e. default platform).
         root_followup_intent_name (str):
             Output only. Read-only. The unique identifier of the root
             intent in the chain of followup intents. It identifies the
@@ -193,6 +193,7 @@ class Intent(proto.Message):
                 intent. Also, each slot filling prompt is
                 forwarded to the webhook.
         """
+
         WEBHOOK_STATE_UNSPECIFIED = 0
         WEBHOOK_STATE_ENABLED = 1
         WEBHOOK_STATE_ENABLED_FOR_SLOT_FILLING = 2
@@ -258,6 +259,7 @@ class Intent(proto.Message):
                     existing training phrases that you've created in
                     template mode, those will continue to work.
             """
+
             TYPE_UNSPECIFIED = 0
             EXAMPLE = 1
             TEMPLATE = 2
@@ -495,12 +497,12 @@ class Intent(proto.Message):
                 VIBER (7):
                     Viber.
                 ACTIONS_ON_GOOGLE (8):
-                    Google Assistant
-                    See [Dialogflow webhook
-                    format](https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json)
+                    Google Assistant See `Dialogflow webhook
+                    format <https://developers.google.com/assistant/actions/build/json/dialogflow-webhook-json>`__
                 GOOGLE_HANGOUTS (11):
                     Google Hangouts.
             """
+
             PLATFORM_UNSPECIFIED = 0
             FACEBOOK = 1
             SLACK = 2
@@ -613,12 +615,12 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            buttons: MutableSequence[
-                "Intent.Message.Card.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="Intent.Message.Card.Button",
+            buttons: MutableSequence["Intent.Message.Card.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Intent.Message.Card.Button",
+                )
             )
 
         class SimpleResponse(proto.Message):
@@ -626,14 +628,12 @@ class Intent(proto.Message):
 
             Attributes:
                 text_to_speech (str):
-                    One of text_to_speech or ssml must be provided.
-                    The plain text of the speech output. Mutually
-                    exclusive with ssml.
+                    One of text_to_speech or ssml must be provided. The plain
+                    text of the speech output. Mutually exclusive with ssml.
                 ssml (str):
-                    One of text_to_speech or ssml must be provided.
-                    Structured spoken response to the user in the
-                    SSML format. Mutually exclusive with
-                    text_to_speech.
+                    One of text_to_speech or ssml must be provided. Structured
+                    spoken response to the user in the SSML format. Mutually
+                    exclusive with text_to_speech.
                 display_text (str):
                     Optional. The text to display.
             """
@@ -662,12 +662,12 @@ class Intent(proto.Message):
                     Required. The list of simple responses.
             """
 
-            simple_responses: MutableSequence[
-                "Intent.Message.SimpleResponse"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.SimpleResponse",
+            simple_responses: MutableSequence["Intent.Message.SimpleResponse"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.SimpleResponse",
+                )
             )
 
         class BasicCard(proto.Message):
@@ -740,12 +740,12 @@ class Intent(proto.Message):
                 number=4,
                 message="Intent.Message.Image",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=5,
-                message="Intent.Message.BasicCard.Button",
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=5,
+                    message="Intent.Message.BasicCard.Button",
+                )
             )
 
         class Suggestion(proto.Message):
@@ -771,12 +771,12 @@ class Intent(proto.Message):
                     Required. The list of suggested replies.
             """
 
-            suggestions: MutableSequence[
-                "Intent.Message.Suggestion"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.Suggestion",
+            suggestions: MutableSequence["Intent.Message.Suggestion"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.Suggestion",
+                )
             )
 
         class LinkOutSuggestion(proto.Message):
@@ -851,12 +851,12 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            items: MutableSequence[
-                "Intent.Message.ListSelect.Item"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Intent.Message.ListSelect.Item",
+            items: MutableSequence["Intent.Message.ListSelect.Item"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Intent.Message.ListSelect.Item",
+                )
             )
             subtitle: str = proto.Field(
                 proto.STRING,
@@ -905,12 +905,12 @@ class Intent(proto.Message):
                     message="Intent.Message.Image",
                 )
 
-            items: MutableSequence[
-                "Intent.Message.CarouselSelect.Item"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.CarouselSelect.Item",
+            items: MutableSequence["Intent.Message.CarouselSelect.Item"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.CarouselSelect.Item",
+                )
             )
 
         class SelectItemInfo(proto.Message):
@@ -955,6 +955,7 @@ class Intent(proto.Message):
                     AUDIO (1):
                         Response media type is audio.
                 """
+
                 RESPONSE_MEDIA_TYPE_UNSPECIFIED = 0
                 AUDIO = 1
 
@@ -1069,6 +1070,7 @@ class Intent(proto.Message):
                         Pad the gaps between image and image frame
                         with a blurred copy of the same image.
                 """
+
                 IMAGE_DISPLAY_OPTIONS_UNSPECIFIED = 0
                 GRAY = 1
                 WHITE = 2
@@ -1120,6 +1122,7 @@ class Intent(proto.Message):
                                 to a canonical URL which refers to AMP content
                                 via <link rel="amphtml">.
                         """
+
                         URL_TYPE_HINT_UNSPECIFIED = 0
                         AMP_ACTION = 1
                         AMP_CONTENT = 2
@@ -1203,24 +1206,24 @@ class Intent(proto.Message):
                 number=3,
                 message="Intent.Message.Image",
             )
-            column_properties: MutableSequence[
-                "Intent.Message.ColumnProperties"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="Intent.Message.ColumnProperties",
+            column_properties: MutableSequence["Intent.Message.ColumnProperties"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="Intent.Message.ColumnProperties",
+                )
             )
             rows: MutableSequence["Intent.Message.TableCardRow"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Intent.Message.TableCardRow",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=6,
-                message="Intent.Message.BasicCard.Button",
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=6,
+                    message="Intent.Message.BasicCard.Button",
+                )
             )
 
         class ColumnProperties(proto.Message):
@@ -1251,6 +1254,7 @@ class Intent(proto.Message):
                         Text is aligned to the trailing edge of the
                         column.
                 """
+
                 HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
                 LEADING = 1
                 CENTER = 2
@@ -1279,12 +1283,12 @@ class Intent(proto.Message):
                     after this row.
             """
 
-            cells: MutableSequence[
-                "Intent.Message.TableCardCell"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="Intent.Message.TableCardCell",
+            cells: MutableSequence["Intent.Message.TableCardCell"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="Intent.Message.TableCardCell",
+                )
             )
             divider_after: bool = proto.Field(
                 proto.BOOL,
@@ -1523,12 +1527,11 @@ class ListIntentsRequest(proto.Message):
             Note: training phrases of the intents will not be returned
             for non-draft environment.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1537,8 +1540,8 @@ class ListIntentsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -1570,9 +1573,8 @@ class ListIntentsResponse(proto.Message):
 
     Attributes:
         intents (MutableSequence[google.cloud.dialogflow_v2.types.Intent]):
-            The list of agent intents. There will be a
-            maximum number of items returned based on the
-            page_size field in the request.
+            The list of agent intents. There will be a maximum number of
+            items returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -1603,12 +1605,11 @@ class GetIntentRequest(proto.Message):
             Required. The name of the intent. Format:
             ``projects/<Project ID>/agent/intents/<Intent ID>``.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1640,12 +1641,11 @@ class CreateIntentRequest(proto.Message):
         intent (google.cloud.dialogflow_v2.types.Intent):
             Required. The intent to create.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         intent_view (google.cloud.dialogflow_v2.types.IntentView):
             Optional. The resource view to apply to the
             returned intent.
@@ -1679,12 +1679,11 @@ class UpdateIntentRequest(proto.Message):
         intent (google.cloud.dialogflow_v2.types.Intent):
             Required. The intent to update.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.
@@ -1760,12 +1759,11 @@ class BatchUpdateIntentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``intent_batch``.
         language_code (str):
-            Optional. The language used to access
-            language-specific data. If not specified, the
-            agent's default language is used. For more
-            information, see
-            [Multilingual intent and entity
-            data](https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity).
+            Optional. The language used to access language-specific
+            data. If not specified, the agent's default language is
+            used. For more information, see `Multilingual intent and
+            entity
+            data <https://cloud.google.com/dialogflow/docs/agents-multilingual#intent-entity>`__.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. The mask to control which fields
             get updated.

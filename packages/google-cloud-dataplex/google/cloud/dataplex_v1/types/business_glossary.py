@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -57,9 +57,8 @@ class Glossary(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. The resource name of
-            the Glossary. Format:
-
+            Output only. Identifier. The resource name of the Glossary.
+            Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
         uid (str):
             Output only. System generated unique id for
@@ -149,9 +148,8 @@ class GlossaryCategory(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. The resource name of
-            the GlossaryCategory. Format:
-
+            Output only. Identifier. The resource name of the
+            GlossaryCategory. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
         uid (str):
             Output only. System generated unique id for
@@ -176,11 +174,9 @@ class GlossaryCategory(proto.Message):
             Optional. User-defined labels for the
             GlossaryCategory.
         parent (str):
-            Required. The immediate parent of the
-            GlossaryCategory in the resource-hierarchy. It
-            can either be a Glossary or a GlossaryCategory.
-            Format:
-
+            Required. The immediate parent of the GlossaryCategory in
+            the resource-hierarchy. It can either be a Glossary or a
+            GlossaryCategory. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
             OR
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
@@ -230,9 +226,8 @@ class GlossaryTerm(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. The resource name of
-            the GlossaryTerm. Format:
-
+            Output only. Identifier. The resource name of the
+            GlossaryTerm. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
         uid (str):
             Output only. System generated unique id for
@@ -256,11 +251,9 @@ class GlossaryTerm(proto.Message):
             Optional. User-defined labels for the
             GlossaryTerm.
         parent (str):
-            Required. The immediate parent of the
-            GlossaryTerm in the resource-hierarchy. It can
-            either be a Glossary or a GlossaryCategory.
-            Format:
-
+            Required. The immediate parent of the GlossaryTerm in the
+            resource-hierarchy. It can either be a Glossary or a
+            GlossaryCategory. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
             OR
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
@@ -376,9 +369,7 @@ class DeleteGlossaryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Glossary to delete.
-            Format:
-
+            Required. The name of the Glossary to delete. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
         etag (str):
             Optional. The etag of the Glossary.
@@ -403,9 +394,7 @@ class GetGlossaryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Glossary to retrieve.
-            Format:
-
+            Required. The name of the Glossary to retrieve. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
     """
 
@@ -566,9 +555,8 @@ class DeleteGlossaryCategoryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the GlossaryCategory to
-            delete. Format:
-
+            Required. The name of the GlossaryCategory to delete.
+            Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
     """
 
@@ -583,9 +571,8 @@ class GetGlossaryCategoryRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the GlossaryCategory to
-            retrieve. Format:
-
+            Required. The name of the GlossaryCategory to retrieve.
+            Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
     """
 
@@ -600,9 +587,8 @@ class ListGlossaryCategoriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which has this collection
-            of GlossaryCategories. Format:
-
+            Required. The parent, which has this collection of
+            GlossaryCategories. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
             Location is the Google Cloud region.
         page_size (int):
@@ -755,9 +741,7 @@ class DeleteGlossaryTermRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the GlossaryTerm to
-            delete. Format:
-
+            Required. The name of the GlossaryTerm to delete. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
     """
 
@@ -772,9 +756,7 @@ class GetGlossaryTermRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the GlossaryTerm to
-            retrieve. Format:
-
+            Required. The name of the GlossaryTerm to retrieve. Format:
             projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
     """
 

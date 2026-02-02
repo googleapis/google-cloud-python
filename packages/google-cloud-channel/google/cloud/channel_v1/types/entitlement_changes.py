@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.channel_v1.types import entitlements
@@ -54,18 +54,15 @@ class EntitlementChange(proto.Message):
 
             This field is a member of `oneof`_ ``change_reason``.
         other_change_reason (str):
-            e.g. purchase_number change reason, entered by
-            CRS.
+            e.g. purchase_number change reason, entered by CRS.
 
             This field is a member of `oneof`_ ``change_reason``.
         entitlement (str):
-            Required. Resource name of an entitlement in the
-            form:
+            Required. Resource name of an entitlement in the form:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         offer (str):
-            Required. Resource name of the Offer at the time
-            of change. Takes the form:
-            accounts/{account_id}/offers/{offer_id}.
+            Required. Resource name of the Offer at the time of change.
+            Takes the form: accounts/{account_id}/offers/{offer_id}.
         provisioned_service (google.cloud.channel_v1.types.ProvisionedService):
             Service provisioned for an Entitlement.
         change_type (google.cloud.channel_v1.types.EntitlementChange.ChangeType):
@@ -75,16 +72,14 @@ class EntitlementChange(proto.Message):
         operator_type (google.cloud.channel_v1.types.EntitlementChange.OperatorType):
             Operator type responsible for the change.
         parameters (MutableSequence[google.cloud.channel_v1.types.Parameter]):
-            Extended parameters, such as:
-
-            purchase_order_number, gcp_details;
-            internal_correlation_id,
+            Extended parameters, such as: purchase_order_number,
+            gcp_details; internal_correlation_id,
             long_running_operation_id, order_id; etc.
         operator (str):
-            Human-readable identifier that shows what
-            operator made a change. When the operator_type
-            is RESELLER, this is the user's email address.
-            For all other operator types, this is empty.
+            Human-readable identifier that shows what operator made a
+            change. When the operator_type is RESELLER, this is the
+            user's email address. For all other operator types, this is
+            empty.
     """
 
     class ChangeType(proto.Enum):
@@ -131,6 +126,7 @@ class EntitlementChange(proto.Message):
             TRIAL_STARTED (15):
                 Entitlement started trial.
         """
+
         CHANGE_TYPE_UNSPECIFIED = 0
         CREATED = 1
         PRICE_PLAN_SWITCHED = 3
@@ -162,6 +158,7 @@ class EntitlementChange(proto.Message):
             RESELLER (4):
                 Reseller user.
         """
+
         OPERATOR_TYPE_UNSPECIFIED = 0
         CUSTOMER_SERVICE_REPRESENTATIVE = 1
         SYSTEM = 2
@@ -185,6 +182,7 @@ class EntitlementChange(proto.Message):
                 while still keeping other entitlement(s) with
                 the reseller.
         """
+
         CANCELLATION_REASON_UNSPECIFIED = 0
         SERVICE_TERMINATED = 1
         RELATIONSHIP_ENDED = 2
@@ -210,6 +208,7 @@ class EntitlementChange(proto.Message):
                 cancellation, added a payment plan to a trial
                 entitlement, etc.)
         """
+
         ACTIVATION_REASON_UNSPECIFIED = 0
         RESELLER_REVOKED_SUSPENSION = 1
         CUSTOMER_ACCEPTED_PENDING_TOS = 2

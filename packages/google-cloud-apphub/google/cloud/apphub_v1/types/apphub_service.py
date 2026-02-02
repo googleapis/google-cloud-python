@@ -17,15 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.apphub_v1.types import application as gca_application
+from google.cloud.apphub_v1.types import service as gca_service
 from google.cloud.apphub_v1.types import (
     service_project_attachment as gca_service_project_attachment,
 )
-from google.cloud.apphub_v1.types import application as gca_application
-from google.cloud.apphub_v1.types import service as gca_service
 from google.cloud.apphub_v1.types import workload as gca_workload
 
 __protobuf__ = proto.module(
@@ -195,11 +195,9 @@ class CreateServiceProjectAttachmentRequest(proto.Message):
             supported. Expected format:
             ``projects/{project}/locations/{location}``.
         service_project_attachment_id (str):
-            Required. The service project attachment
-            identifier must contain the project id of the
-            service project specified in the
-            service_project_attachment.service_project
-            field.
+            Required. The service project attachment identifier must
+            contain the project id of the service project specified in
+            the service_project_attachment.service_project field.
         service_project_attachment (google.cloud.apphub_v1.types.ServiceProjectAttachment):
             Required. The resource being created.
         request_id (str):
@@ -456,12 +454,12 @@ class ListDiscoveredServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_services: MutableSequence[
-        gca_service.DiscoveredService
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gca_service.DiscoveredService,
+    discovered_services: MutableSequence[gca_service.DiscoveredService] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gca_service.DiscoveredService,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -608,18 +606,15 @@ class UpdateServiceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Service resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request.
-            The API changes the values of the fields as
-            specified in the update_mask. The API ignores
-            the values of all fields not covered by the
-            update_mask. You can also unset a field by not
-            specifying it in the updated message, but adding
-            the field to the mask. This clears whatever
-            value the field previously had.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Service resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. The API changes the values
+            of the fields as specified in the update_mask. The API
+            ignores the values of all fields not covered by the
+            update_mask. You can also unset a field by not specifying it
+            in the updated message, but adding the field to the mask.
+            This clears whatever value the field previously had.
         service (google.cloud.apphub_v1.types.Service):
             Required. The resource being updated.
         request_id (str):
@@ -854,18 +849,15 @@ class UpdateApplicationRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Application
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request.
-            The API changes the values of the fields as
-            specified in the update_mask. The API ignores
-            the values of all fields not covered by the
-            update_mask. You can also unset a field by not
-            specifying it in the updated message, but adding
-            the field to the mask. This clears whatever
-            value the field previously had.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Application resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. The API changes the values
+            of the fields as specified in the update_mask. The API
+            ignores the values of all fields not covered by the
+            update_mask. You can also unset a field by not specifying it
+            in the updated message, but adding the field to the mask.
+            This clears whatever value the field previously had.
         application (google.cloud.apphub_v1.types.Application):
             Required. The resource being updated.
         request_id (str):
@@ -1083,12 +1075,12 @@ class ListDiscoveredWorkloadsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_workloads: MutableSequence[
-        gca_workload.DiscoveredWorkload
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gca_workload.DiscoveredWorkload,
+    discovered_workloads: MutableSequence[gca_workload.DiscoveredWorkload] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gca_workload.DiscoveredWorkload,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1234,18 +1226,15 @@ class UpdateWorkloadRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Workload
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request.
-            The API changes the values of the fields as
-            specified in the update_mask. The API ignores
-            the values of all fields not covered by the
-            update_mask. You can also unset a field by not
-            specifying it in the updated message, but adding
-            the field to the mask. This clears whatever
-            value the field previously had.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Workload resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. The API changes the values
+            of the fields as specified in the update_mask. The API
+            ignores the values of all fields not covered by the
+            update_mask. You can also unset a field by not specifying it
+            in the updated message, but adding the field to the mask.
+            This clears whatever value the field previously had.
         workload (google.cloud.apphub_v1.types.Workload):
             Required. The resource being updated.
         request_id (str):

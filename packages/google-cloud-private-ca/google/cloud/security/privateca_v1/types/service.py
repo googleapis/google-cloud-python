@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.security.privateca_v1.types import resources
@@ -216,15 +216,15 @@ class ListCertificatesRequest(proto.Message):
             Optional. Pagination token, returned earlier via
             [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificatesResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For details on supported
-            filters and syntax, see [Certificates Filtering
-            documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support).
+            Optional. Only include resources that match the filter in
+            the response. For details on supported filters and syntax,
+            see `Certificates Filtering
+            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. For details on supported fields and
-            syntax, see [Certificates Sorting
-            documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support).
+            Optional. Specify how the results should be sorted. For
+            details on supported fields and syntax, see `Certificates
+            Sorting
+            documentation <https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support>`__.
     """
 
     parent: str = proto.Field(
@@ -400,9 +400,9 @@ class ActivateCertificateAuthorityRequest(proto.Message):
             Required. The signed CA certificate issued from
             [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1.FetchCertificateAuthorityCsrResponse.pem_csr].
         subordinate_config (google.cloud.security.privateca_v1.types.SubordinateConfig):
-            Required. Must include information about the
-            issuer of 'pem_ca_certificate', and any further
-            issuers until the self-signed CA.
+            Required. Must include information about the issuer of
+            'pem_ca_certificate', and any further issuers until the
+            self-signed CA.
         request_id (str):
             Optional. An ID to identify requests. Specify
             a unique request ID so that if you must retry
@@ -725,12 +725,12 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_authorities: MutableSequence[
-        resources.CertificateAuthority
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CertificateAuthority,
+    certificate_authorities: MutableSequence[resources.CertificateAuthority] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CertificateAuthority,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1597,12 +1597,12 @@ class ListCertificateTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_templates: MutableSequence[
-        resources.CertificateTemplate
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CertificateTemplate,
+    certificate_templates: MutableSequence[resources.CertificateTemplate] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CertificateTemplate,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

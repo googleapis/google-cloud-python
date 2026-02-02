@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -27,10 +30,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.talent_v4.types import event, event_service
 
@@ -338,12 +338,12 @@ class EventServiceGrpcAsyncIOTransport(EventServiceTransport):
     ]:
         r"""Return a callable for the create client event method over gRPC.
 
-        Report events issued when end user interacts with
-        customer's application that uses Cloud Talent Solution.
-        You may inspect the created events in [self service
-        tools](https://console.cloud.google.com/talent-solution/overview).
-        [Learn
-        more](https://cloud.google.com/talent-solution/docs/management-tools)
+        Report events issued when end user interacts with customer's
+        application that uses Cloud Talent Solution. You may inspect the
+        created events in `self service
+        tools <https://console.cloud.google.com/talent-solution/overview>`__.
+        `Learn
+        more <https://cloud.google.com/talent-solution/docs/management-tools>`__
         about self service tools.
 
         Returns:

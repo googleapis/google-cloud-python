@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.chat_v1.types import group, user
@@ -73,11 +73,11 @@ class Membership(proto.Message):
 
             This field is a member of `oneof`_ ``memberType``.
         group_member (google.apps.chat_v1.types.Group):
-            Optional. The Google Group the membership
-            corresponds to.
-            Reading or mutating memberships for Google
-            Groups requires [user
-            authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+            Optional. The Google Group the membership corresponds to.
+
+            Reading or mutating memberships for Google Groups requires
+            `user
+            authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
 
             This field is a member of `oneof`_ ``memberType``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -112,6 +112,7 @@ class Membership(proto.Message):
                 doesn't have a pending invitation to join the
                 space.
         """
+
         MEMBERSHIP_STATE_UNSPECIFIED = 0
         JOINED = 1
         INVITED = 2
@@ -193,6 +194,7 @@ class Membership(proto.Message):
                 To learn more, see `Manage space
                 settings <https://support.google.com/chat/answer/13340792>`__.
         """
+
         MEMBERSHIP_ROLE_UNSPECIFIED = 0
         ROLE_MEMBER = 1
         ROLE_MANAGER = 2

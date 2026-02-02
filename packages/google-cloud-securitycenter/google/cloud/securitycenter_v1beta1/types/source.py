@@ -38,7 +38,6 @@ class Source(proto.Message):
             The relative resource name of this source. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
-
             "organizations/{organization_id}/sources/{source_id}".
         display_name (str):
             The source's display name.

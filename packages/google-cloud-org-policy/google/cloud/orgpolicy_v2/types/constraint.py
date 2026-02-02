@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -121,6 +121,7 @@ class Constraint(proto.Message):
                 constraints. Indicate that enforcement is on for
                 boolean constraints.
         """
+
         CONSTRAINT_DEFAULT_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -213,6 +214,7 @@ class Constraint(proto.Message):
                     Constraint applied when enforcing forced
                     tagging.
             """
+
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
             UPDATE = 2
@@ -233,6 +235,7 @@ class Constraint(proto.Message):
                 DENY (2):
                     Deny action type.
             """
+
             ACTION_TYPE_UNSPECIFIED = 0
             ALLOW = 1
             DENY = 2
@@ -275,6 +278,7 @@ class Constraint(proto.Message):
                     BOOLEAN (3):
                         Boolean parameter type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 LIST = 1
                 STRING = 2
@@ -456,9 +460,8 @@ class CustomConstraint(proto.Message):
         action_type (google.cloud.orgpolicy_v2.types.CustomConstraint.ActionType):
             Allow or deny type.
         display_name (str):
-            One line display name for the UI.
-            The max length of the display_name is 200
-            characters.
+            One line display name for the UI. The max length of the
+            display_name is 200 characters.
         description (str):
             Detailed information about this custom policy
             constraint. The max length of the description is
@@ -501,6 +504,7 @@ class CustomConstraint(proto.Message):
                 Constraint applied when enforcing forced
                 tagging.
         """
+
         METHOD_TYPE_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -521,6 +525,7 @@ class CustomConstraint(proto.Message):
             DENY (2):
                 Deny action type.
         """
+
         ACTION_TYPE_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2

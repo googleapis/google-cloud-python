@@ -17,14 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import (
-    service_perimeter_pb2,
-)  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.cloud.orgpolicy.v1.orgpolicy_pb2 as orgpolicy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_level_pb2 as access_level_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_policy_pb2 as access_policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.service_perimeter_pb2 as service_perimeter_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,13 +35,13 @@ __protobuf__ = proto.module(
 
 
 class Asset(proto.Message):
-    r"""An asset in Google Cloud. An asset can be any resource in the
-    Google Cloud [resource
-    hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
+    r"""An asset in Google Cloud. An asset can be any resource in the Google
+    Cloud `resource
+    hierarchy <https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>`__,
     a resource outside the Google Cloud resource hierarchy (such as
-    Google Kubernetes Engine clusters and objects), or a policy
-    (e.g. IAM policy). See [Supported asset
-    types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+    Google Kubernetes Engine clusters and objects), or a policy (e.g.
+    IAM policy). See `Supported asset
+    types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
     for more information.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -82,24 +80,23 @@ class Asset(proto.Message):
             topic <https://cloud.google.com/iam/help/allow-policies/inheritance>`__
             for more information.
         org_policy (MutableSequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
-            A representation of an [organization
-            policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
-            There can be more than one organization policy
-            with different constraints set on a given
-            resource.
+            A representation of an `organization
+            policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
+            There can be more than one organization policy with
+            different constraints set on a given resource.
         access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
-            Please also refer to the [access policy user
-            guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
+            Please also refer to the `access policy user
+            guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
-            Please also refer to the [access level user
-            guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
+            Please also refer to the `access level user
+            guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
-            Please also refer to the [service perimeter user
-            guide](https://cloud.google.com/vpc-service-controls/docs/overview).
+            Please also refer to the `service perimeter user
+            guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
 
             This field is a member of `oneof`_ ``access_context_policy``.
         ancestors (MutableSequence[str]):

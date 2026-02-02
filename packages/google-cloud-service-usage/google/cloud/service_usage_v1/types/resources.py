@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import auth_pb2  # type: ignore
-from google.api import documentation_pb2  # type: ignore
-from google.api import endpoint_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
-from google.api import monitoring_pb2  # type: ignore
-from google.api import quota_pb2  # type: ignore
-from google.api import usage_pb2  # type: ignore
-from google.protobuf import api_pb2  # type: ignore
+import google.api.auth_pb2 as auth_pb2  # type: ignore
+import google.api.documentation_pb2 as documentation_pb2  # type: ignore
+import google.api.endpoint_pb2 as endpoint_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.api.monitoring_pb2 as monitoring_pb2  # type: ignore
+import google.api.quota_pb2 as quota_pb2  # type: ignore
+import google.api.usage_pb2 as usage_pb2  # type: ignore
+import google.protobuf.api_pb2 as api_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -57,6 +57,7 @@ class State(proto.Enum):
             The service has been explicitly enabled for
             use by this consumer.
     """
+
     STATE_UNSPECIFIED = 0
     DISABLED = 1
     ENABLED = 2
@@ -145,8 +146,7 @@ class ServiceConfig(proto.Message):
             [Service.logging][google.api.Service.logging]
             configurations.
         monitoring (google.api.monitoring_pb2.Monitoring):
-            Monitoring configuration.
-            This should not include the
+            Monitoring configuration. This should not include the
             'producer_destinations' field.
     """
 

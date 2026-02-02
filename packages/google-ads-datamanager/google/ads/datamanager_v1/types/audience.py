@@ -52,9 +52,8 @@ class AudienceMember(proto.Message):
 
             This field is a member of `oneof`_ ``data``.
         pair_data (google.ads.datamanager_v1.types.PairData):
-            [Publisher Advertiser Identity Reconciliation
-            (PAIR)
-            IDs](//support.google.com/admanager/answer/15067908).
+            `Publisher Advertiser Identity Reconciliation (PAIR)
+            IDs <//support.google.com/admanager/answer/15067908>`__.
 
             This field is a member of `oneof`_ ``data``.
         mobile_data (google.ads.datamanager_v1.types.MobileData):

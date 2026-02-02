@@ -42,7 +42,6 @@ class GatewayRouteView(proto.Message):
         name (str):
             Output only. Identifier. Full path name of the
             GatewayRouteView resource. Format:
-
             projects/{project_number}/locations/{location}/gateways/{gateway}/routeViews/{route_view}
         route_project_number (int):
             Output only. Project number where the route
@@ -83,9 +82,8 @@ class MeshRouteView(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. Full path name of the
-            MeshRouteView resource. Format:
-
+            Output only. Identifier. Full path name of the MeshRouteView
+            resource. Format:
             projects/{project}/locations/{location}/meshes/{mesh}/routeViews/{route_view}
         route_project_number (int):
             Output only. Project number where the route
@@ -126,9 +124,7 @@ class GetGatewayRouteViewRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the GatewayRouteView resource.
-            Formats:
-
+            Required. Name of the GatewayRouteView resource. Formats:
             projects/{project}/locations/{location}/gateways/{gateway}/routeViews/{route_view}
     """
 
@@ -143,9 +139,7 @@ class GetMeshRouteViewRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the MeshRouteView resource.
-            Format:
-
+            Required. Name of the MeshRouteView resource. Format:
             projects/{project}/locations/{location}/meshes/{mesh}/routeViews/{route_view}
     """
 

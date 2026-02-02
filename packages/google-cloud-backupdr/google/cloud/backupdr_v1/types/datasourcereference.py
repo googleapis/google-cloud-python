@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import backupvault, backupvault_cloudsql
@@ -44,9 +44,8 @@ class DataSourceReference(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            DataSourceReference. Format:
-
+            Identifier. The resource name of the DataSourceReference.
+            Format:
             projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
         data_source (str):
             Output only. The resource name of the
@@ -188,9 +187,8 @@ class GetDataSourceReferenceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DataSourceReference to
-            retrieve. Format:
-
+            Required. The name of the DataSourceReference to retrieve.
+            Format:
             projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
     """
 
@@ -285,12 +283,12 @@ class ListDataSourceReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_source_references: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DataSourceReference",
+    data_source_references: MutableSequence["DataSourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataSourceReference",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -397,12 +395,12 @@ class FetchDataSourceReferencesForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_source_references: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DataSourceReference",
+    data_source_references: MutableSequence["DataSourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataSourceReference",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

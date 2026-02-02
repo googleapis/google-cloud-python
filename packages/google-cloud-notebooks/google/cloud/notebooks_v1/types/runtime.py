@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import environment
@@ -102,6 +102,7 @@ class Runtime(proto.Message):
                 The runtime is being created and set up. It
                 is not ready for use.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -133,6 +134,7 @@ class Runtime(proto.Message):
                 The runtime health monitoring agent is not
                 running. Applies to ACTIVE state.
         """
+
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2
@@ -239,6 +241,7 @@ class RuntimeAcceleratorConfig(proto.Message):
                 Accelerator type is NVIDIA Tesla P4 Virtual
                 Workstations.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -367,11 +370,10 @@ class LocalDisk(proto.Message):
 
     class RuntimeGuestOsFeature(proto.Message):
         r"""Optional. A list of features to enable on the guest operating
-        system. Applicable only for bootable images.
-        Read [Enabling guest operating system
-        features](https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features)
-        to see a list of available options.
-        Guest OS features for boot disk.
+        system. Applicable only for bootable images. Read `Enabling guest
+        operating system
+        features <https://cloud.google.com/compute/docs/images/create-delete-deprecate-private-images#guest-os-features>`__
+        to see a list of available options. Guest OS features for boot disk.
 
         Attributes:
             type_ (str):
@@ -497,6 +499,7 @@ class LocalDiskInitializeParams(proto.Message):
             PD_EXTREME (4):
                 Extreme persistent disk type.
         """
+
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -558,6 +561,7 @@ class RuntimeAccessConfig(proto.Message):
                 Users accessing the Runtime need ActAs (Service
                 Account User) permission.
         """
+
         RUNTIME_ACCESS_TYPE_UNSPECIFIED = 0
         SINGLE_USER = 1
         SERVICE_ACCOUNT = 2
@@ -654,6 +658,7 @@ class RuntimeSoftwareConfig(proto.Message):
                 Downloads and runs the provided post startup
                 script at every start.
         """
+
         POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED = 0
         RUN_EVERY_START = 1
         DOWNLOAD_AND_RUN_EVERY_START = 2
@@ -732,9 +737,9 @@ class RuntimeMetrics(proto.Message):
 
 
 class RuntimeShieldedInstanceConfig(proto.Message):
-    r"""A set of Shielded Instance options.
-    Check [Images using supported Shielded VM
-    features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+    r"""A set of Shielded Instance options. Check `Images using supported
+    Shielded VM
+    features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
     Not all combinations are valid.
 
     Attributes:
@@ -871,19 +876,17 @@ class VirtualMachineConfig(proto.Message):
             networks, and all dependencies must be configured to be
             accessible without external IP addresses.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to
-            runtime (see [Tagging
-            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
+            Optional. The Compute Engine tags to add to runtime (see
+            `Tagging
+            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
         guest_attributes (MutableMapping[str, str]):
-            Output only. The Compute Engine guest
-            attributes. (see [Project and instance
-            guest
-            attributes](https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes)).
+            Output only. The Compute Engine guest attributes. (see
+            `Project and instance guest
+            attributes <https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes>`__).
         metadata (MutableMapping[str, str]):
-            Optional. The Compute Engine metadata entries to
-            add to virtual machine. (see [Project and
-            instance
-            metadata](https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
+            Optional. The Compute Engine metadata entries to add to
+            virtual machine. (see `Project and instance
+            metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
         labels (MutableMapping[str, str]):
             Optional. The labels to associate with this runtime. Label
             **keys** must contain 1 to 63 characters, and must conform
@@ -920,8 +923,7 @@ class VirtualMachineConfig(proto.Message):
     """
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver.
-        Default should be UNSPECIFIED_NIC_TYPE.
+        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
 
         Values:
             UNSPECIFIED_NIC_TYPE (0):
@@ -931,6 +933,7 @@ class VirtualMachineConfig(proto.Message):
             GVNIC (2):
                 GVNIC
         """
+
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2

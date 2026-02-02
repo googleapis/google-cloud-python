@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import common
@@ -62,10 +62,9 @@ class Condition(proto.Message):
             value (str):
                 The specific query value to match against
 
-                Must be lowercase, must be UTF-8.
-                Can have at most 3 space separated terms if
-                full_match is true. Cannot be an empty string.
-                Maximum length of 5000 characters.
+                Must be lowercase, must be UTF-8. Can have at most 3 space
+                separated terms if full_match is true. Cannot be an empty
+                string. Maximum length of 5000 characters.
             full_match (bool):
                 Whether the search query needs to exactly
                 match the query term.
@@ -207,9 +206,8 @@ class Control(proto.Message):
 
         Attributes:
             fixed_boost (float):
-                Optional. Strength of the boost, which should be
-                in [-1, 1]. Negative boost means demotion.
-                Default is 0.0 (No-op).
+                Optional. Strength of the boost, which should be in [-1, 1].
+                Negative boost means demotion. Default is 0.0 (No-op).
 
                 This field is a member of `oneof`_ ``boost_spec``.
             interpolation_boost_spec (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec):
@@ -219,9 +217,8 @@ class Control(proto.Message):
 
                 This field is a member of `oneof`_ ``boost_spec``.
             boost (float):
-                Strength of the boost, which should be in [-1,
-                1]. Negative boost means demotion. Default is
-                0.0 (No-op).
+                Strength of the boost, which should be in [-1, 1]. Negative
+                boost means demotion. Default is 0.0 (No-op).
             filter (str):
                 Required. Specifies which products to apply
                 the boost to.
@@ -232,9 +229,8 @@ class Control(proto.Message):
                 Maximum length is 5000 characters.
                 Otherwise an INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents
-                can be boosted by this control. Full data store
-                name e.g.
+                Required. Specifies which data store's documents can be
+                boosted by this control. Full data store name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
@@ -248,23 +244,20 @@ class Control(proto.Message):
                     Optional. The name of the field whose value
                     will be used to determine the boost amount.
                 attribute_type (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.AttributeType):
-                    Optional. The attribute type to be used to
-                    determine the boost amount. The attribute value
-                    can be derived from the field value of the
-                    specified field_name. In the case of numerical
-                    it is straightforward i.e. attribute_value =
-                    numerical_field_value. In the case of freshness
-                    however, attribute_value = (time.now() -
-                    datetime_field_value).
+                    Optional. The attribute type to be used to determine the
+                    boost amount. The attribute value can be derived from the
+                    field value of the specified field_name. In the case of
+                    numerical it is straightforward i.e. attribute_value =
+                    numerical_field_value. In the case of freshness however,
+                    attribute_value = (time.now() - datetime_field_value).
                 interpolation_type (google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.InterpolationType):
                     Optional. The interpolation type to be
                     applied to connect the control points listed
                     below.
                 control_points (MutableSequence[google.cloud.discoveryengine_v1.types.Control.BoostAction.InterpolationBoostSpec.ControlPoint]):
-                    Optional. The control points used to define the
-                    curve. The monotonic function (defined through
-                    the interpolation_type above) passes through the
-                    control points listed here.
+                    Optional. The control points used to define the curve. The
+                    monotonic function (defined through the interpolation_type
+                    above) passes through the control points listed here.
             """
 
             class AttributeType(proto.Enum):
@@ -275,11 +268,10 @@ class Control(proto.Message):
                     ATTRIBUTE_TYPE_UNSPECIFIED (0):
                         Unspecified AttributeType.
                     NUMERICAL (1):
-                        The value of the numerical field will be used to
-                        dynamically update the boost amount. In this
-                        case, the attribute_value (the x value) of the
-                        control point will be the actual value of the
-                        numerical field for which the boost_amount is
+                        The value of the numerical field will be used to dynamically
+                        update the boost amount. In this case, the attribute_value
+                        (the x value) of the control point will be the actual value
+                        of the numerical field for which the boost_amount is
                         specified.
                     FRESHNESS (2):
                         For the freshness use case the attribute value will be the
@@ -290,6 +282,7 @@ class Control(proto.Message):
                         ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                         ``T24H``.
                 """
+
                 ATTRIBUTE_TYPE_UNSPECIFIED = 0
                 NUMERICAL = 1
                 FRESHNESS = 2
@@ -306,6 +299,7 @@ class Control(proto.Message):
                         Piecewise linear interpolation will be
                         applied.
                 """
+
                 INTERPOLATION_TYPE_UNSPECIFIED = 0
                 LINEAR = 1
 
@@ -324,9 +318,9 @@ class Control(proto.Message):
                            restricted subset of an ISO 8601 duration value). The
                            pattern for this is: ``[nD][T[nH][nM][nS]]``.
                     boost_amount (float):
-                        Optional. The value between -1 to 1 by which to
-                        boost the score if the attribute_value evaluates
-                        to the value specified above.
+                        Optional. The value between -1 to 1 by which to boost the
+                        score if the attribute_value evaluates to the value
+                        specified above.
                 """
 
                 attribute_value: str = proto.Field(
@@ -401,9 +395,8 @@ class Control(proto.Message):
                 Maximum length is 5000 characters. Otherwise an
                 INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents
-                can be filtered by this control. Full data store
-                name e.g.
+                Required. Specifies which data store's documents can be
+                filtered by this control. Full data store name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 

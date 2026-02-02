@@ -17,19 +17,24 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
-from google.cloud.datacatalog_v1.types import bigquery, common
+from google.cloud.datacatalog_v1.types import (
+    bigquery,
+    common,
+    dataplex_spec,
+    search,
+    table_spec,
+    timestamps,
+    usage,
+)
 from google.cloud.datacatalog_v1.types import data_source as gcd_data_source
-from google.cloud.datacatalog_v1.types import dataplex_spec
+from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
 from google.cloud.datacatalog_v1.types import schema as gcd_schema
-from google.cloud.datacatalog_v1.types import search, table_spec
 from google.cloud.datacatalog_v1.types import tags as gcd_tags
-from google.cloud.datacatalog_v1.types import timestamps, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
@@ -131,9 +136,8 @@ class EntryType(proto.Enum):
         MODEL (5):
             The type of models.
 
-            For more information, see [Supported models in
-            BigQuery
-            ML](/bigquery/docs/bqml-introduction#supported_models).
+            For more information, see `Supported models in BigQuery
+            ML </bigquery/docs/bqml-introduction#supported_models>`__.
         DATA_STREAM (3):
             An entry type for streaming entries. For
             example, a Pub/Sub topic.
@@ -181,6 +185,7 @@ class EntryType(proto.Enum):
             Feature Group resource in Vertex AI Feature
             Store.
     """
+
     ENTRY_TYPE_UNSPECIFIED = 0
     TABLE = 2
     MODEL = 5
@@ -217,6 +222,7 @@ class TagTemplateMigration(proto.Enum):
             Migration of Tag Templates from Data Catalog
             to Dataplex is disabled.
     """
+
     TAG_TEMPLATE_MIGRATION_UNSPECIFIED = 0
     TAG_TEMPLATE_MIGRATION_ENABLED = 1
     TAG_TEMPLATE_MIGRATION_DISABLED = 2
@@ -234,6 +240,7 @@ class CatalogUIExperience(proto.Enum):
         CATALOG_UI_EXPERIENCE_DISABLED (2):
             The UI is Data Catalog.
     """
+
     CATALOG_UI_EXPERIENCE_UNSPECIFIED = 0
     CATALOG_UI_EXPERIENCE_ENABLED = 1
     CATALOG_UI_EXPERIENCE_DISABLED = 2
@@ -894,13 +901,12 @@ class Entry(proto.Message):
             slashes (/), dashes (-), and hashes (#). The maximum size is
             200 bytes when encoded in UTF-8.
         fully_qualified_name (str):
-            [Fully Qualified Name
-            (FQN)](https://cloud.google.com//data-catalog/docs/fully-qualified-names)
-            of the resource. Set automatically for entries
-            representing resources from synced systems.
-            Settable only during creation, and read-only
-            later. Can be used for search and lookup of the
-            entries.
+            `Fully Qualified Name
+            (FQN) <https://cloud.google.com//data-catalog/docs/fully-qualified-names>`__
+            of the resource. Set automatically for entries representing
+            resources from synced systems. Settable only during
+            creation, and read-only later. Can be used for search and
+            lookup of the entries.
         type_ (google.cloud.datacatalog_v1.types.EntryType):
             The type of the entry.
 
@@ -1256,6 +1262,7 @@ class DatabaseTableSpec(proto.Message):
             EXTERNAL (2):
                 External table.
         """
+
         TABLE_TYPE_UNSPECIFIED = 0
         NATIVE = 1
         EXTERNAL = 2
@@ -1295,6 +1302,7 @@ class DatabaseTableSpec(proto.Message):
                 MATERIALIZED_VIEW (2):
                     Materialized view.
             """
+
             VIEW_TYPE_UNSPECIFIED = 0
             STANDARD_VIEW = 1
             MATERIALIZED_VIEW = 2
@@ -1408,6 +1416,7 @@ class RoutineSpec(proto.Message):
             PROCEDURE (2):
                 Stored procedure.
         """
+
         ROUTINE_TYPE_UNSPECIFIED = 0
         SCALAR_FUNCTION = 1
         PROCEDURE = 2
@@ -1440,6 +1449,7 @@ class RoutineSpec(proto.Message):
                 INOUT (3):
                     The argument is both an input and an output.
             """
+
             MODE_UNSPECIFIED = 0
             IN = 1
             OUT = 2
@@ -1517,26 +1527,15 @@ class SqlDatabaseSystemSpec(proto.Message):
 
     Attributes:
         sql_engine (str):
-            SQL Database Engine.
-            enum SqlEngine {
-            UNDEFINED = 0;
-            MY_SQL = 1;
-            POSTGRE_SQL = 2;
-            SQL_SERVER = 3;
-            }
-            Engine of the enclosing database instance.
+            SQL Database Engine. enum SqlEngine { UNDEFINED = 0; MY_SQL
+            = 1; POSTGRE_SQL = 2; SQL_SERVER = 3; } Engine of the
+            enclosing database instance.
         database_version (str):
             Version of the database engine.
         instance_host (str):
-            Host of the SQL database
-            enum InstanceHost {
-            UNDEFINED = 0;
-            SELF_HOSTED = 1;
-            CLOUD_SQL = 2;
-            AMAZON_RDS = 3;
-            AZURE_SQL = 4;
-            }
-            Host of the enclousing database instance.
+            Host of the SQL database enum InstanceHost { UNDEFINED = 0;
+            SELF_HOSTED = 1; CLOUD_SQL = 2; AMAZON_RDS = 3; AZURE_SQL =
+            4; } Host of the enclousing database instance.
     """
 
     sql_engine: str = proto.Field(
@@ -1664,12 +1663,12 @@ class CloudBigtableInstanceSpec(proto.Message):
             number=4,
         )
 
-    cloud_bigtable_cluster_specs: MutableSequence[
-        CloudBigtableClusterSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=CloudBigtableClusterSpec,
+    cloud_bigtable_cluster_specs: MutableSequence[CloudBigtableClusterSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=CloudBigtableClusterSpec,
+        )
     )
 
 
@@ -1735,6 +1734,7 @@ class VertexModelSourceInfo(proto.Message):
             MARKETPLACE (7):
                 The Model is saved or tuned from Marketplace.
         """
+
         MODEL_SOURCE_TYPE_UNSPECIFIED = 0
         AUTOML = 1
         CUSTOM = 2
@@ -1851,6 +1851,7 @@ class VertexDatasetSpec(proto.Message):
                 Text prompt dataset which supports Large
                 Language Models.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         TABLE = 1
         IMAGE = 2
@@ -1920,6 +1921,7 @@ class FeatureOnlineStoreSpec(proto.Message):
                 Underlying is optimized online server
                 (Lightning).
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         BIGTABLE = 1
         OPTIMIZED = 2
@@ -2038,13 +2040,12 @@ class EntryGroup(proto.Message):
             Output only. Timestamps of the entry group.
             Default value is empty.
         transferred_to_dataplex (bool):
-            Optional. When set to [true], it means
-            DataCatalog EntryGroup was transferred to
-            Dataplex Catalog Service. It makes EntryGroup
-            and its Entries to be read-only in DataCatalog.
-            However, new Tags on EntryGroup and its Entries
-            can be created. After setting the flag to [true]
-            it cannot be unset.
+            Optional. When set to [true], it means DataCatalog
+            EntryGroup was transferred to Dataplex Catalog Service. It
+            makes EntryGroup and its Entries to be read-only in
+            DataCatalog. However, new Tags on EntryGroup and its Entries
+            can be created. After setting the flag to [true] it cannot
+            be unset.
     """
 
     name: str = proto.Field(
@@ -2563,6 +2564,7 @@ class ReconcileTagsMetadata(proto.Message):
             RECONCILIATION_DONE (3):
                 The reconciliation has been finished.
         """
+
         RECONCILIATION_STATE_UNSPECIFIED = 0
         RECONCILIATION_QUEUED = 1
         RECONCILIATION_IN_PROGRESS = 2
@@ -2803,6 +2805,7 @@ class ImportEntriesMetadata(proto.Message):
                 The import of entries has been abandoned in
                 favor of a newer request.
         """
+
         IMPORT_STATE_UNSPECIFIED = 0
         IMPORT_QUEUED = 1
         IMPORT_IN_PROGRESS = 2

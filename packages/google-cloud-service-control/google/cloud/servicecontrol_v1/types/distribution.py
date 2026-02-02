@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import distribution_pb2  # type: ignore
+import google.api.distribution_pb2 as distribution_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -228,12 +228,12 @@ class Distribution(proto.Message):
         oneof="bucket_option",
         message=ExplicitBuckets,
     )
-    exemplars: MutableSequence[
-        distribution_pb2.Distribution.Exemplar
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message=distribution_pb2.Distribution.Exemplar,
+    exemplars: MutableSequence[distribution_pb2.Distribution.Exemplar] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=distribution_pb2.Distribution.Exemplar,
+        )
     )
 
 

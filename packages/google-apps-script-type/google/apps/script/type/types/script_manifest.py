@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.script.type.types import addon_widget_set, extension_point
@@ -48,6 +48,7 @@ class HttpAuthorizationHeader(proto.Enum):
         NONE (3):
             Do not send an Authentication header
     """
+
     HTTP_AUTHORIZATION_HEADER_UNSPECIFIED = 0
     SYSTEM_ID_TOKEN = 1
     USER_ID_TOKEN = 2

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.types import common
@@ -65,9 +65,8 @@ class Volume(proto.Message):
             size if the storage volume has been configured
             with auto grow or auto shrink.
         emergency_size_gib (int):
-            Additional emergency size that was requested for
-            this Volume, in GiB. current_size_gib includes
-            this value.
+            Additional emergency size that was requested for this
+            Volume, in GiB. current_size_gib includes this value.
         max_size_gib (int):
             Maximum size volume can be expanded to in
             case of evergency, in GiB.
@@ -131,6 +130,7 @@ class Volume(proto.Message):
             HDD (2):
                 This storage type for this volume is HDD.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2
@@ -154,6 +154,7 @@ class Volume(proto.Message):
                 The storage volume is in cool off state. It will be deleted
                 after ``expire_time``.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -177,6 +178,7 @@ class Volume(proto.Message):
             NEWEST_FIRST (3):
                 Delete the newest snapshots first.
         """
+
         SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED = 0
         DISABLED = 1
         OLDEST_FIRST = 2
@@ -195,6 +197,7 @@ class Volume(proto.Message):
                 volume. Such volumes cannot be manipulated via
                 Volumes API.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         FIBRE_CHANNEL = 1
         NFS = 2
@@ -210,6 +213,7 @@ class Volume(proto.Message):
             HANA (2):
                 The workload profile is hana.
         """
+
         WORKLOAD_PROFILE_UNSPECIFIED = 0
         GENERIC = 1
         HANA = 2
@@ -232,13 +236,11 @@ class Volume(proto.Message):
                 The amount, in GiB, of available space in
                 this storage volume's reserved snapshot space.
             reserved_space_percent (int):
-                Percent of the total Volume size reserved for
-                snapshot copies. Enabling snapshots requires
-                reserving 20% or more of the storage volume
-                space for snapshots. Maximum reserved space for
-                snapshots is 40%.
-                Setting this field will effectively set
-                snapshot_enabled to true.
+                Percent of the total Volume size reserved for snapshot
+                copies. Enabling snapshots requires reserving 20% or more of
+                the storage volume space for snapshots. Maximum reserved
+                space for snapshots is 40%. Setting this field will
+                effectively set snapshot_enabled to true.
         """
 
         reserved_space_gib: int = proto.Field(

@@ -20,11 +20,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
 
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
-from google.cloud.dataqna_v1alpha.types import question
+from google.cloud.dataqna_v1alpha.types import question, question_service, user_feedback
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
-from google.cloud.dataqna_v1alpha.types import question_service
-from google.cloud.dataqna_v1alpha.types import user_feedback
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 
 from .base import DEFAULT_CLIENT_INFO, QuestionServiceTransport
 

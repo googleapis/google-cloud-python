@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,9 +42,8 @@ class Organization(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the
-            organization. This is the organization's
-            relative path in the API. Its format is
+            Output only. The resource name of the organization. This is
+            the organization's relative path in the API. Its format is
             "organizations/[organization_id]". For example,
             "organizations/1234".
         display_name (str):
@@ -93,6 +92,7 @@ class Organization(proto.Message):
                 The organization has been marked for deletion
                 by the user.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETE_REQUESTED = 2
@@ -142,10 +142,9 @@ class GetOrganizationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Organization
-            to fetch. This is the organization's relative
-            path in the API, formatted as
-            "organizations/[organizationId]". For example,
+            Required. The resource name of the Organization to fetch.
+            This is the organization's relative path in the API,
+            formatted as "organizations/[organizationId]". For example,
             "organizations/1234".
     """
 

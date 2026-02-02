@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.vectorsearch_v1beta.types import common, embedding_config
 from google.cloud.vectorsearch_v1beta.types import data_object as gcv_data_object
-from google.cloud.vectorsearch_v1beta.types import common
-from google.cloud.vectorsearch_v1beta.types import embedding_config
 
 __protobuf__ = proto.module(
     package="google.cloud.vectorsearch.v1beta",
@@ -61,6 +60,7 @@ class AggregationMethod(proto.Enum):
             Count the number of data objects that match
             the filter.
     """
+
     AGGREGATION_METHOD_UNSPECIFIED = 0
     COUNT = 1
 
@@ -231,9 +231,8 @@ class VectorSearch(proto.Message):
             index if one is available, and fall back to the
             default KNN search otherwise.
         distance_metric (google.cloud.vectorsearch_v1beta.types.DistanceMetric):
-            Optional. The distance metric to use for the KNN
-            search. If not specified, DOT_PRODUCT will be
-            used as the default.
+            Optional. The distance metric to use for the KNN search. If
+            not specified, DOT_PRODUCT will be used as the default.
     """
 
     vector: gcv_data_object.DenseVector = proto.Field(

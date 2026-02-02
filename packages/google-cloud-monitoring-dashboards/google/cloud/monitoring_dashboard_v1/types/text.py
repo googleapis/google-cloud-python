@@ -50,6 +50,7 @@ class Text(proto.Message):
             RAW (2):
                 The text contains no special formatting.
         """
+
         FORMAT_UNSPECIFIED = 0
         MARKDOWN = 1
         RAW = 2
@@ -88,8 +89,7 @@ class Text(proto.Message):
 
             Values:
                 HORIZONTAL_ALIGNMENT_UNSPECIFIED (0):
-                    No horizontal alignment specified, will default
-                    to H_LEFT
+                    No horizontal alignment specified, will default to H_LEFT
                 H_LEFT (1):
                     Left-align
                 H_CENTER (2):
@@ -97,6 +97,7 @@ class Text(proto.Message):
                 H_RIGHT (3):
                     Right-align
             """
+
             HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
             H_LEFT = 1
             H_CENTER = 2
@@ -108,8 +109,7 @@ class Text(proto.Message):
 
             Values:
                 VERTICAL_ALIGNMENT_UNSPECIFIED (0):
-                    No vertical alignment specified, will default to
-                    V_TOP
+                    No vertical alignment specified, will default to V_TOP
                 V_TOP (1):
                     Top-align
                 V_CENTER (2):
@@ -117,6 +117,7 @@ class Text(proto.Message):
                 V_BOTTOM (3):
                     Bottom-align
             """
+
             VERTICAL_ALIGNMENT_UNSPECIFIED = 0
             V_TOP = 1
             V_CENTER = 2
@@ -127,8 +128,7 @@ class Text(proto.Message):
 
             Values:
                 PADDING_SIZE_UNSPECIFIED (0):
-                    No padding size specified, will default to
-                    P_EXTRA_SMALL
+                    No padding size specified, will default to P_EXTRA_SMALL
                 P_EXTRA_SMALL (1):
                     Extra small padding
                 P_SMALL (2):
@@ -140,6 +140,7 @@ class Text(proto.Message):
                 P_EXTRA_LARGE (5):
                     Extra large padding
             """
+
             PADDING_SIZE_UNSPECIFIED = 0
             P_EXTRA_SMALL = 1
             P_SMALL = 2
@@ -165,6 +166,7 @@ class Text(proto.Message):
                 FS_EXTRA_LARGE (5):
                     Extra large font size
             """
+
             FONT_SIZE_UNSPECIFIED = 0
             FS_EXTRA_SMALL = 1
             FS_SMALL = 2
@@ -215,6 +217,7 @@ class Text(proto.Message):
                     Placed on the top of the left side of the
                     widget
             """
+
             POINTER_LOCATION_UNSPECIFIED = 0
             PL_TOP = 1
             PL_RIGHT = 2

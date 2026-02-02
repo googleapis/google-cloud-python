@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1898,9 +1898,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_abandon_instances(
                 request, metadata
@@ -2054,9 +2052,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -2233,9 +2229,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_apply_updates_to_instances(
                 request, metadata
@@ -2416,9 +2410,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instances(
                 request, metadata
@@ -2776,9 +2768,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instances(
                 request, metadata
@@ -2962,9 +2952,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_per_instance_configs(
                 request, metadata
@@ -3277,15 +3265,12 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_available_accelerator_topologies(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_available_accelerator_topologies(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_transcoded_request(
                 http_options, request
@@ -3350,11 +3335,10 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             resp = self._interceptor.post_get_available_accelerator_topologies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_available_accelerator_topologies_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_available_accelerator_topologies_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3615,9 +3599,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.InstanceGroupManagerList:
-                    [Output Only] A list of managed instance
-                groups.
-
+                    [Output Only] A list of managed instance groups.
             """
 
             http_options = (
@@ -3767,9 +3749,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseListErrors._get_transcoded_request(
@@ -3918,9 +3898,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_managed_instances(
                 request, metadata
@@ -4071,9 +4049,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_per_instance_configs(
                 request, metadata
@@ -4435,9 +4411,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_per_instance_configs(
                 request, metadata
@@ -4618,9 +4592,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_recreate_instances(
                 request, metadata
@@ -4978,9 +4950,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseResizeAdvanced._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseResizeAdvanced._get_http_options()
 
             request, metadata = self._interceptor.pre_resize_advanced(request, metadata)
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseResizeAdvanced._get_transcoded_request(
@@ -5159,9 +5129,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_instances(
                 request, metadata
@@ -5344,9 +5312,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseSetAutoHealingPolicies._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseSetAutoHealingPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_set_auto_healing_policies(
                 request, metadata
@@ -5527,9 +5493,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_set_instance_template(
                 request, metadata
@@ -5712,9 +5676,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
 
             request, metadata = self._interceptor.pre_set_target_pools(
                 request, metadata
@@ -5895,9 +5857,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_start_instances(request, metadata)
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseStartInstances._get_transcoded_request(
@@ -6076,9 +6036,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_instances(request, metadata)
             transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseStopInstances._get_transcoded_request(
@@ -6257,9 +6215,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_suspend_instances(
                 request, metadata
@@ -6414,9 +6370,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -6781,9 +6735,7 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             """
 
-            http_options = (
-                _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_update_per_instance_configs(
                 request, metadata
@@ -6907,7 +6859,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ApplyUpdatesToInstances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ApplyUpdatesToInstances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_instances(
@@ -6945,7 +6899,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeletePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeletePerInstanceConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get(
@@ -6966,7 +6922,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAvailableAcceleratorTopologies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAvailableAcceleratorTopologies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def insert(
@@ -7017,7 +6975,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPerInstanceConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def patch(
@@ -7035,7 +6995,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PatchPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PatchPerInstanceConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def recreate_instances(
@@ -7083,7 +7045,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetAutoHealingPolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetAutoHealingPolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_instance_template(
@@ -7162,7 +7126,9 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdatePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdatePerInstanceConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

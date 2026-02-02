@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1beta.types import answer as gcd_answer
+from google.cloud.discoveryengine_v1beta.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1beta.types import search_service
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
@@ -203,12 +203,12 @@ class ConverseConversationResponse(proto.Message):
         proto.STRING,
         number=6,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=search_service.SearchResponse.SearchResult,
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=search_service.SearchResponse.SearchResult,
+        )
     )
 
 
@@ -309,12 +309,10 @@ class ListConversationsRequest(proto.Message):
             A page token, received from a previous ``ListConversations``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The
-            supported features are: user_pseudo_id, state.
+            A filter to apply on the list results. The supported
+            features are: user_pseudo_id, state.
 
-            Example:
-
-            "user_pseudo_id = some_id".
+            Example: "user_pseudo_id = some_id".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for
@@ -518,6 +516,7 @@ class AnswerQueryRequest(proto.Message):
                 FILTERING_LEVEL_HIGH (2):
                     Filter answers based on a high threshold.
             """
+
             FILTERING_LEVEL_UNSPECIFIED = 0
             FILTERING_LEVEL_LOW = 1
             FILTERING_LEVEL_HIGH = 2
@@ -825,11 +824,9 @@ class AnswerQueryRequest(proto.Message):
                         extractive_segments (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveSegment]):
                             List of extractive segments.
                         extractive_answers (MutableSequence[google.cloud.discoveryengine_v1beta.types.AnswerQueryRequest.SearchSpec.SearchResultList.SearchResult.UnstructuredDocumentInfo.ExtractiveAnswer]):
-                            Deprecated: This field is deprecated and will
-                            have no effect on the Answer generation.
-                            Please use document_contexts and
-                            extractive_segments fields. List of extractive
-                            answers.
+                            Deprecated: This field is deprecated and will have no effect
+                            on the Answer generation. Please use document_contexts and
+                            extractive_segments fields. List of extractive answers.
                     """
 
                     class DocumentContext(proto.Message):
@@ -1046,6 +1043,7 @@ class AnswerQueryRequest(proto.Message):
                         Non-answer-seeking query classification type,
                         for no clear intent.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

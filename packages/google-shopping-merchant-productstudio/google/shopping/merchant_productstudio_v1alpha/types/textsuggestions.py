@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -162,22 +162,18 @@ class TitleExample(proto.Message):
 
             This field is a member of `oneof`_ ``_category``.
         title_format (str):
-            Required. The attributes or approximate
-            attributes that make up the title. For example,
-            title "Google GShoe M" title_format can be
-            "brand \| product \| size".
+            Required. The attributes or approximate attributes that make
+            up the title. For example, title "Google GShoe M"
+            title_format can be "brand \| product \| size".
 
             This field is a member of `oneof`_ ``_title_format``.
         final_product_info (MutableMapping[str, str]):
-            Required. A map in the same format as
-            product_info but with all improvements included.
-            For example, {"brand": "Dresses4All", "product":
-
-            "dress", "color": "red", ...}. The order of
-            attributes in this map may be used to guide the
-            order in which they appear in the final
-            generated title. For instance, the above will
-            become: Dresses4All dress \| red
+            Required. A map in the same format as product_info but with
+            all improvements included. For example, {"brand":
+            "Dresses4All", "product": "dress", "color": "red", ...}. The
+            order of attributes in this map may be used to guide the
+            order in which they appear in the final generated title. For
+            instance, the above will become: Dresses4All dress \| red
     """
 
     product_info: MutableMapping[str, str] = proto.MapField(
@@ -297,11 +293,10 @@ class OutputSpec(proto.Message):
 
     Attributes:
         workflow_id (str):
-            Optional. The workflow to execute for the
-            provided product data. Workflows may populate
-            the response's title, description, or both.
-            Currently supported workflow_ids are: "title",
-            "description", and "tide".
+            Optional. The workflow to execute for the provided product
+            data. Workflows may populate the response's title,
+            description, or both. Currently supported workflow_ids are:
+            "title", "description", and "tide".
 
             This field is a member of `oneof`_ ``_workflow_id``.
         tone (str):
@@ -324,16 +319,14 @@ class OutputSpec(proto.Message):
 
             This field is a member of `oneof`_ ``_target_language``.
         attribute_order (MutableSequence[str]):
-            Optional. The order that generated attributes
-            should be placed in the generated title. Eg., if
-            the attribute order is ["brand", "product",
-            "size"], the generated title will have brand
-            first, followed by the product name, and then
+            Optional. The order that generated attributes should be
+            placed in the generated title. Eg., if the attribute order
+            is ["brand", "product", "size"], the generated title will
+            have brand first, followed by the product name, and then
             size information after that.
         attribute_separator (str):
-            Optional. Character used to separate attributes
-            in the generated title. For example, '\|', '-',
-            ','.
+            Optional. Character used to separate attributes in the
+            generated title. For example, '\|', '-', ','.
 
             This field is a member of `oneof`_ ``_attribute_separator``.
     """

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.storageinsights_v1 import gapic_version as package_version
 
@@ -61,15 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
 
 from google.cloud.storageinsights_v1.services.storage_insights import pagers
 from google.cloud.storageinsights_v1.types import storageinsights
@@ -88,9 +88,7 @@ class StorageInsightsClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[StorageInsightsTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[StorageInsightsTransport]]
     _transport_registry["grpc"] = StorageInsightsGrpcTransport
     _transport_registry["grpc_asyncio"] = StorageInsightsGrpcAsyncIOTransport
     _transport_registry["rest"] = StorageInsightsRestTransport
@@ -678,11 +676,9 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = StorageInsightsClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            StorageInsightsClient._read_environment_variables()
+        )
         self._client_cert_source = StorageInsightsClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -717,8 +713,7 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(StorageInsightsTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1186,15 +1181,12 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                ReportConfig resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the ReportConfig resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1775,10 +1767,9 @@ class StorageInsightsClient(metaclass=StorageInsightsClientMeta):
 
         Returns:
             google.cloud.storageinsights_v1.types.DatasetConfig:
-                Message describing the dataset
-                configuration properties. For more
-                information, see [Dataset configuration
-                properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+                Message describing the dataset configuration properties. For more
+                   information, see [Dataset configuration
+                   properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
 
         """
         # Create or coerce a protobuf request object.

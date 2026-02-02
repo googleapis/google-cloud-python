@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.monitoring_metrics_scope_v1 import gapic_version as package_version
 
@@ -45,10 +45,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.monitoring_metrics_scope_v1.types import metrics_scope, metrics_scopes
 
@@ -126,7 +126,8 @@ class MetricsScopesAsyncClient:
         Returns:
             MetricsScopesAsyncClient: The constructed client.
         """
-        return MetricsScopesClient.from_service_account_info.__func__(MetricsScopesAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = MetricsScopesClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(MetricsScopesAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -142,7 +143,8 @@ class MetricsScopesAsyncClient:
         Returns:
             MetricsScopesAsyncClient: The constructed client.
         """
-        return MetricsScopesClient.from_service_account_file.__func__(MetricsScopesAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = MetricsScopesClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(MetricsScopesAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -359,10 +361,10 @@ class MetricsScopesAsyncClient:
         Returns:
             google.cloud.monitoring_metrics_scope_v1.types.MetricsScope:
                 Represents a [Metrics
-                Scope](https://cloud.google.com/monitoring/settings#concept-scope)
-                in Cloud Monitoring, which specifies one
-                or more Google projects and zero or more
-                AWS accounts to monitor together.
+                   Scope](https://cloud.google.com/monitoring/settings#concept-scope)
+                   in Cloud Monitoring, which specifies one or more
+                   Google projects and zero or more AWS accounts to
+                   monitor together.
 
         """
         # Create or coerce a protobuf request object.

@@ -52,6 +52,7 @@ class AutoRenewalBehavior(proto.Enum):
             Auto Renewal will be disabled on
             subscription.
     """
+
     AUTO_RENEWAL_BEHAVIOR_UNSPECIFIED = 0
     AUTO_RENEWAL_BEHAVIOR_ENABLE = 1
     AUTO_RENEWAL_BEHAVIOR_DISABLE = 2
@@ -229,26 +230,22 @@ class ModifyOrderRequest(proto.Message):
 
         Attributes:
             line_item_id (str):
-                Required. ID of the existing line item to make
-                change to. Required when change type is
-                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE]
-                or
+                Required. ID of the existing line item to make change to.
+                Required when change type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE] or
                 [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_CANCEL].
             change_type (google.cloud.commerce_consumer_procurement_v1.types.LineItemChangeType):
                 Required. Type of change to make.
             new_line_item_info (google.cloud.commerce_consumer_procurement_v1.types.LineItemInfo):
-                Optional. The line item to update to.
-                Required when change_type is
-                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_CREATE]
-                or
+                Optional. The line item to update to. Required when
+                change_type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_CREATE] or
                 [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE].
             auto_renewal_behavior (google.cloud.commerce_consumer_procurement_v1.types.AutoRenewalBehavior):
-                Optional. Auto renewal behavior of the
-                subscription for the update. Applied when
-                change_type is
-                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE].
-                Follows plan default config when this field is
-                not specified.
+                Optional. Auto renewal behavior of the subscription for the
+                update. Applied when change_type is
+                [LineItemChangeType.LINE_ITEM_CHANGE_TYPE_UPDATE]. Follows
+                plan default config when this field is not specified.
         """
 
         line_item_id: str = proto.Field(
@@ -338,6 +335,7 @@ class CancelOrderRequest(proto.Message):
                 order is not subscription based, the request
                 will fail.
         """
+
         CANCELLATION_POLICY_UNSPECIFIED = 0
         CANCELLATION_POLICY_CANCEL_IMMEDIATELY = 1
         CANCELLATION_POLICY_CANCEL_AT_TERM_END = 2

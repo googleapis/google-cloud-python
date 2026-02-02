@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1 import gapic_version as package_version
 
@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1.types import developerregistration
 
@@ -79,13 +79,11 @@ class DeveloperRegistrationServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DeveloperRegistrationServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DeveloperRegistrationServiceTransport]]
     _transport_registry["grpc"] = DeveloperRegistrationServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = DeveloperRegistrationServiceGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = (
+        DeveloperRegistrationServiceGrpcAsyncIOTransport
+    )
     _transport_registry["rest"] = DeveloperRegistrationServiceRestTransport
 
     def get_transport_class(
@@ -628,11 +626,9 @@ class DeveloperRegistrationServiceClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DeveloperRegistrationServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DeveloperRegistrationServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             DeveloperRegistrationServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -671,8 +667,7 @@ class DeveloperRegistrationServiceClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DeveloperRegistrationServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -751,10 +746,10 @@ class DeveloperRegistrationServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> developerregistration.DeveloperRegistration:
-        r"""Registers the GCP used for the API call to the shopping
-        account passed in the request. Will create a user with
-        an "API developer" and add the "developer_email" as a
-        contact with "API notifications" email preference on.
+        r"""Registers the GCP used for the API call to the shopping account
+        passed in the request. Will create a user with an "API
+        developer" and add the "developer_email" as a contact with "API
+        notifications" email preference on.
 
         .. code-block:: python
 
@@ -1041,8 +1036,8 @@ class DeveloperRegistrationServiceClient(
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.protobuf import empty_pb2  # type: ignore
             from google.shopping import merchant_accounts_v1
+            import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
             def sample_get_account_for_gcp_registration():
                 # Create a client

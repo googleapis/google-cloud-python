@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -376,6 +376,7 @@ class AccessSettings(proto.Message):
                 Use external identities set up on Google
                 Cloud Workforce Identity Federation.
         """
+
         IDENTITY_SOURCE_UNSPECIFIED = 0
         WORKFORCE_IDENTITY_FEDERATION = 3
 
@@ -584,6 +585,7 @@ class ReauthSettings(proto.Message):
             ENROLLED_SECOND_FACTORS (4):
                 User can use any enabled 2nd factor.
         """
+
         METHOD_UNSPECIFIED = 0
         LOGIN = 1
         PASSWORD = 2
@@ -604,6 +606,7 @@ class ReauthSettings(proto.Message):
                 This policy acts as a default if no other
                 reauth policy is set.
         """
+
         POLICY_TYPE_UNSPECIFIED = 0
         MINIMUM = 1
         DEFAULT = 2
@@ -835,6 +838,7 @@ class AttributePropagationSettings(proto.Message):
                 Propagate attributes in the RCToken of the form:
                 ``"additional_claims": { "my_attribute": ["value1", "value2"] }``
         """
+
         OUTPUT_CREDENTIALS_UNSPECIFIED = 0
         HEADER = 1
         JWT = 2
@@ -889,8 +893,7 @@ class ListBrandsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. GCP Project number/id.
-            In the following format:
+            Required. GCP Project number/id. In the following format:
             projects/{project_number/id}.
     """
 
@@ -920,8 +923,8 @@ class CreateBrandRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. GCP Project number/id under which the
-            brand is to be created. In the following format:
+            Required. GCP Project number/id under which the brand is to
+            be created. In the following format:
             projects/{project_number/id}.
         brand (google.cloud.iap_v1.types.Brand):
             Required. The brand to be created.
@@ -943,9 +946,8 @@ class GetBrandRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the brand to be fetched.
-            In the following format:
-            projects/{project_number/id}/brands/{brand}.
+            Required. Name of the brand to be fetched. In the following
+            format: projects/{project_number/id}/brands/{brand}.
     """
 
     name: str = proto.Field(
@@ -959,8 +961,7 @@ class ListIdentityAwareProxyClientsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full brand path.
-            In the following format:
+            Required. Full brand path. In the following format:
             projects/{project_number/id}/brands/{brand}.
         page_size (int):
             The maximum number of clients to return. The
@@ -1008,12 +1009,12 @@ class ListIdentityAwareProxyClientsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_aware_proxy_clients: MutableSequence[
-        "IdentityAwareProxyClient"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="IdentityAwareProxyClient",
+    identity_aware_proxy_clients: MutableSequence["IdentityAwareProxyClient"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="IdentityAwareProxyClient",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1026,11 +1027,9 @@ class CreateIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Path to create the client in.
-            In the following format:
-
-            projects/{project_number/id}/brands/{brand}.
-            The project must belong to a G Suite account.
+            Required. Path to create the client in. In the following
+            format: projects/{project_number/id}/brands/{brand}. The
+            project must belong to a G Suite account.
         identity_aware_proxy_client (google.cloud.iap_v1.types.IdentityAwareProxyClient):
             Required. Identity Aware Proxy Client to be
             created.
@@ -1052,9 +1051,8 @@ class GetIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy
-            client to be fetched. In the following format:
-
+            Required. Name of the Identity Aware Proxy client to be
+            fetched. In the following format:
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
@@ -1069,10 +1067,8 @@ class ResetIdentityAwareProxyClientSecretRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy
-            client to that will have its secret reset. In
-            the following format:
-
+            Required. Name of the Identity Aware Proxy client to that
+            will have its secret reset. In the following format:
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 
@@ -1087,9 +1083,8 @@ class DeleteIdentityAwareProxyClientRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the Identity Aware Proxy
-            client to be deleted. In the following format:
-
+            Required. Name of the Identity Aware Proxy client to be
+            deleted. In the following format:
             projects/{project_number/id}/brands/{brand}/identityAwareProxyClients/{client_id}.
     """
 

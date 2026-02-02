@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicecontrol_v1.types import log_entry, metric_value
@@ -131,6 +131,7 @@ class Operation(proto.Message):
                 significant monetary value or audit trail. This
                 feature only applies to the client libraries.
         """
+
         LOW = 0
         HIGH = 1
 
@@ -161,12 +162,12 @@ class Operation(proto.Message):
         proto.STRING,
         number=6,
     )
-    metric_value_sets: MutableSequence[
-        metric_value.MetricValueSet
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=metric_value.MetricValueSet,
+    metric_value_sets: MutableSequence[metric_value.MetricValueSet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=metric_value.MetricValueSet,
+        )
     )
     log_entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,

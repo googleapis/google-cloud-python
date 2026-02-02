@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -52,6 +52,7 @@ class AccessState(proto.Enum):
             have access to all of the policies that Policy Simulator
             needs to evaluate.
     """
+
     ACCESS_STATE_UNSPECIFIED = 0
     GRANTED = 1
     NOT_GRANTED = 2
@@ -76,6 +77,7 @@ class HeuristicRelevance(proto.Enum):
             result. Changing the data point is likely to
             affect the overall determination.
     """
+
     HEURISTIC_RELEVANCE_UNSPECIFIED = 0
     NORMAL = 1
     HIGH = 2
@@ -286,6 +288,7 @@ class BindingExplanation(proto.Message):
                 [Replay][google.cloud.policysimulator.v1.Replay] is not
                 allowed to access the binding.
         """
+
         ROLE_PERMISSION_UNSPECIFIED = 0
         ROLE_PERMISSION_INCLUDED = 1
         ROLE_PERMISSION_NOT_INCLUDED = 2
@@ -317,6 +320,7 @@ class BindingExplanation(proto.Message):
                 Google Accounts and service accounts are
                 supported.
         """
+
         MEMBERSHIP_UNSPECIFIED = 0
         MEMBERSHIP_INCLUDED = 1
         MEMBERSHIP_NOT_INCLUDED = 2

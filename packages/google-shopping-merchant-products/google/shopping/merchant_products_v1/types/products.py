@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 from google.shopping.merchant_products_v1.types import products_common
 
@@ -35,18 +35,17 @@ __protobuf__ = proto.module(
 
 class Product(proto.Message):
     r"""The processed product, built from multiple [product
-    inputs][google.shopping.merchant.products.v1main.ProductInput]
-    after applying rules and supplemental data sources. This
-    processed product matches what is shown in your Merchant Center
-    account. Each product is built from exactly one primary data
-    source product input, and multiple supplemental data source
-    inputs. After inserting, updating, or deleting a product input,
-    it may take several minutes before the updated processed product
-    can be retrieved.
+    inputs][google.shopping.merchant.products.v1main.ProductInput] after
+    applying rules and supplemental data sources. This processed product
+    matches what is shown in your Merchant Center account. Each product
+    is built from exactly one primary data source product input, and
+    multiple supplemental data source inputs. After inserting, updating,
+    or deleting a product input, it may take several minutes before the
+    updated processed product can be retrieved.
 
-    All fields in the processed product and its sub-messages match
-    the name of their corresponding attribute in the [Product data
-    specification](https://support.google.com/merchants/answer/7052112)
+    All fields in the processed product and its sub-messages match the
+    name of their corresponding attribute in the `Product data
+    specification <https://support.google.com/merchants/answer/7052112>`__
     with some exceptions.
 
 
@@ -71,18 +70,17 @@ class Product(proto.Message):
             should be distinguished with a ``local~`` prefix. For
             example, ``accounts/123/products/local~en~US~sku123``.
         offer_id (str):
-            Output only. Your unique identifier for the
-            product. This is the same for the product input
-            and processed product. Leading and trailing
-            whitespaces are stripped and multiple
-            whitespaces are replaced by a single whitespace
-            upon submission. See the [product data
-            specification](https://support.google.com/merchants/answer/188494#id)
+            Output only. Your unique identifier for the product. This is
+            the same for the product input and processed product.
+            Leading and trailing whitespaces are stripped and multiple
+            whitespaces are replaced by a single whitespace upon
+            submission. See the `product data
+            specification <https://support.google.com/merchants/answer/188494#id>`__
             for details.
         content_language (str):
-            Output only. The two-letter [ISO
-            639-1](http://en.wikipedia.org/wiki/ISO_639-1)
-            language code for the product.
+            Output only. The two-letter `ISO
+            639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
+            code for the product.
         feed_label (str):
             Output only. The feed label lets you categorize and identify
             your products. The maximum allowed characters is 20 and the

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.appengine_admin_v1.types import app_yaml, deploy
@@ -77,6 +77,7 @@ class InboundServiceType(proto.Enum):
         INBOUND_SERVICE_WARMUP (9):
             Enables warmup requests.
     """
+
     INBOUND_SERVICE_UNSPECIFIED = 0
     INBOUND_SERVICE_MAIL = 1
     INBOUND_SERVICE_MAIL_BOUNCE = 2
@@ -103,6 +104,7 @@ class ServingStatus(proto.Enum):
             settings are ignored until the state of the version changes
             to ``SERVING``.
     """
+
     SERVING_STATUS_UNSPECIFIED = 0
     SERVING = 1
     STOPPED = 2
@@ -306,10 +308,9 @@ class Version(proto.Message):
         endpoints_api_service (google.cloud.appengine_admin_v1.types.EndpointsApiService):
             Cloud Endpoints configuration.
 
-            If endpoints_api_service is set, the Cloud
-            Endpoints Extensible Service Proxy will be
-            provided to serve the API implemented by the
-            app.
+            If endpoints_api_service is set, the Cloud Endpoints
+            Extensible Service Proxy will be provided to serve the API
+            implemented by the app.
         entrypoint (google.cloud.appengine_admin_v1.types.Entrypoint):
             The entrypoint for the application.
         vpc_access_connector (google.cloud.appengine_admin_v1.types.VpcAccessConnector):
@@ -557,6 +558,7 @@ class EndpointsApiService(proto.Message):
                 Endpoints service configuration ID will be
                 updated with each rollout.
         """
+
         UNSPECIFIED_ROLLOUT_STRATEGY = 0
         FIXED = 1
         MANAGED = 2
@@ -1052,6 +1054,7 @@ class VpcAccessConnector(proto.Message):
                 Use the VPC Access Connector for private IP
                 space from RFC1918.
         """
+
         EGRESS_SETTING_UNSPECIFIED = 0
         ALL_TRAFFIC = 1
         PRIVATE_IP_RANGES = 2

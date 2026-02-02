@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.shopping.merchant_accounts_v1.types import businessidentity
 
@@ -116,8 +116,8 @@ class _LoggingClientAIOInterceptor(
 class BusinessIdentityServiceGrpcAsyncIOTransport(BusinessIdentityServiceTransport):
     """gRPC AsyncIO backend transport for BusinessIdentityService.
 
-    Service to support [business
-    identity](https://support.google.com/merchants/answer/12564247)
+    Service to support `business
+    identity <https://support.google.com/merchants/answer/12564247>`__
     API.
 
     This class defines the same methods as the primary client, so the

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -128,32 +128,29 @@ class HttpRoute(proto.Message):
 
         Attributes:
             exact_match (str):
-                The value of the header should match exactly the
-                content of exact_match.
+                The value of the header should match exactly the content of
+                exact_match.
 
                 This field is a member of `oneof`_ ``MatchType``.
             regex_match (str):
-                The value of the header must match the regular
-                expression specified in regex_match. For regular
-                expression grammar, please see:
-
-                https://github.com/google/re2/wiki/Syntax
+                The value of the header must match the regular expression
+                specified in regex_match. For regular expression grammar,
+                please see: https://github.com/google/re2/wiki/Syntax
 
                 This field is a member of `oneof`_ ``MatchType``.
             prefix_match (str):
-                The value of the header must start with the
-                contents of prefix_match.
+                The value of the header must start with the contents of
+                prefix_match.
 
                 This field is a member of `oneof`_ ``MatchType``.
             present_match (bool):
-                A header with header_name must exist. The match
-                takes place whether or not the header has a
-                value.
+                A header with header_name must exist. The match takes place
+                whether or not the header has a value.
 
                 This field is a member of `oneof`_ ``MatchType``.
             suffix_match (str):
-                The value of the header must end with the
-                contents of suffix_match.
+                The value of the header must end with the contents of
+                suffix_match.
 
                 This field is a member of `oneof`_ ``MatchType``.
             range_match (google.cloud.network_services_v1.types.HttpRoute.HeaderMatch.IntegerRange):
@@ -240,31 +237,30 @@ class HttpRoute(proto.Message):
 
         Attributes:
             exact_match (str):
-                The value of the query parameter must exactly
-                match the contents of exact_match.
+                The value of the query parameter must exactly match the
+                contents of exact_match.
 
-                Only one of exact_match, regex_match, or
-                present_match must be set.
+                Only one of exact_match, regex_match, or present_match must
+                be set.
 
                 This field is a member of `oneof`_ ``MatchType``.
             regex_match (str):
-                The value of the query parameter must match the
-                regular expression specified by regex_match. For
-                regular expression grammar, please see
+                The value of the query parameter must match the regular
+                expression specified by regex_match. For regular expression
+                grammar, please see
                 https://github.com/google/re2/wiki/Syntax
 
-                Only one of exact_match, regex_match, or
-                present_match must be set.
+                Only one of exact_match, regex_match, or present_match must
+                be set.
 
                 This field is a member of `oneof`_ ``MatchType``.
             present_match (bool):
-                Specifies that the QueryParameterMatcher matches
-                if request contains query parameter,
-                irrespective of whether the parameter has a
-                value or not.
+                Specifies that the QueryParameterMatcher matches if request
+                contains query parameter, irrespective of whether the
+                parameter has a value or not.
 
-                Only one of exact_match, regex_match, or
-                present_match must be set.
+                Only one of exact_match, regex_match, or present_match must
+                be set.
 
                 This field is a member of `oneof`_ ``MatchType``.
             query_parameter (str):
@@ -305,37 +301,34 @@ class HttpRoute(proto.Message):
 
         Attributes:
             full_path_match (str):
-                The HTTP request path value should exactly match
-                this value.
-                Only one of full_path_match, prefix_match, or
-                regex_match should be used.
+                The HTTP request path value should exactly match this value.
+
+                Only one of full_path_match, prefix_match, or regex_match
+                should be used.
 
                 This field is a member of `oneof`_ ``PathMatch``.
             prefix_match (str):
-                The HTTP request path value must begin with
-                specified prefix_match. prefix_match must begin
-                with a /.
+                The HTTP request path value must begin with specified
+                prefix_match. prefix_match must begin with a /.
 
-                Only one of full_path_match, prefix_match, or
-                regex_match should be used.
+                Only one of full_path_match, prefix_match, or regex_match
+                should be used.
 
                 This field is a member of `oneof`_ ``PathMatch``.
             regex_match (str):
-                The HTTP request path value must satisfy the
-                regular expression specified by regex_match
-                after removing any query parameters and anchor
-                supplied with the original URL. For regular
-                expression grammar, please see
+                The HTTP request path value must satisfy the regular
+                expression specified by regex_match after removing any query
+                parameters and anchor supplied with the original URL. For
+                regular expression grammar, please see
                 https://github.com/google/re2/wiki/Syntax
 
-                Only one of full_path_match, prefix_match, or
-                regex_match should be used.
+                Only one of full_path_match, prefix_match, or regex_match
+                should be used.
 
                 This field is a member of `oneof`_ ``PathMatch``.
             ignore_case (bool):
-                Specifies if prefix_match and full_path_match
-                matches are case sensitive. The default value is
-                false.
+                Specifies if prefix_match and full_path_match matches are
+                case sensitive. The default value is false.
             headers (MutableSequence[google.cloud.network_services_v1.types.HttpRoute.HeaderMatch]):
                 Specifies a list of HTTP request headers to
                 match against. ALL of the supplied headers must
@@ -370,12 +363,12 @@ class HttpRoute(proto.Message):
             number=5,
             message="HttpRoute.HeaderMatch",
         )
-        query_parameters: MutableSequence[
-            "HttpRoute.QueryParameterMatch"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="HttpRoute.QueryParameterMatch",
+        query_parameters: MutableSequence["HttpRoute.QueryParameterMatch"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="HttpRoute.QueryParameterMatch",
+            )
         )
 
     class Destination(proto.Message):
@@ -453,13 +446,11 @@ class HttpRoute(proto.Message):
                 response instead of the one that was supplied in
                 the request.
             path_redirect (str):
-                The path that will be used in the redirect
-                response instead of the one that was supplied in
-                the request. path_redirect can not be supplied
-                together with prefix_redirect. Supply one alone
-                or neither. If neither is supplied, the path of
-                the original request will be used for the
-                redirect.
+                The path that will be used in the redirect response instead
+                of the one that was supplied in the request. path_redirect
+                can not be supplied together with prefix_redirect. Supply
+                one alone or neither. If neither is supplied, the path of
+                the original request will be used for the redirect.
             prefix_rewrite (str):
                 Indicates that during redirection, the
                 matched prefix (or path) should be swapped with
@@ -506,6 +497,7 @@ class HttpRoute(proto.Message):
                     Corresponds to 308. In this case, the request
                     method will be retained.
             """
+
             RESPONSE_CODE_UNSPECIFIED = 0
             MOVED_PERMANENTLY_DEFAULT = 1
             FOUND = 2
@@ -570,8 +562,8 @@ class HttpRoute(proto.Message):
                     Specify a fixed delay before forwarding the
                     request.
                 percentage (int):
-                    The percentage of traffic on which delay will be
-                    injected.
+                    The percentage of traffic on which delay will be injected.
+
                     The value must be between [0, 100]
             """
 
@@ -710,34 +702,27 @@ class HttpRoute(proto.Message):
 
         Attributes:
             retry_conditions (MutableSequence[str]):
-                Specifies one or more conditions when this retry
-                policy applies. Valid values are:
+                Specifies one or more conditions when this retry policy
+                applies. Valid values are: 5xx: Proxy will attempt a retry
+                if the destination service responds with any 5xx response
+                code, of if the destination service does not respond at all,
+                example: disconnect, reset, read timeout, connection failure
+                and refused streams.
 
-                5xx: Proxy will attempt a retry if the
-                destination service responds with any 5xx
-                response code, of if the destination service
-                does not respond at all, example: disconnect,
-                reset, read timeout, connection failure and
-                refused streams.
+                gateway-error: Similar to 5xx, but only applies to response
+                codes 502, 503, 504.
 
-                gateway-error: Similar to 5xx, but only applies
-                to response codes 502, 503, 504.
+                reset: Proxy will attempt a retry if the destination service
+                does not respond at all (disconnect/reset/read timeout)
 
-                reset: Proxy will attempt a retry if the
-                destination service does not respond at all
-                (disconnect/reset/read timeout)
+                connect-failure: Proxy will retry on failures connecting to
+                destination for example due to connection timeouts.
 
-                connect-failure: Proxy will retry on failures
-                connecting to destination for example due to
-                connection timeouts.
+                retriable-4xx: Proxy will retry fro retriable 4xx response
+                codes. Currently the only retriable error supported is 409.
 
-                retriable-4xx: Proxy will retry fro retriable
-                4xx response codes. Currently the only retriable
-                error supported is 409.
-
-                refused-stream: Proxy will retry if the
-                destination resets the stream with a
-                REFUSED_STREAM error code. This reset type
+                refused-stream: Proxy will retry if the destination resets
+                the stream with a REFUSED_STREAM error code. This reset type
                 indicates that it is safe to retry.
             num_retries (int):
                 Specifies the allowed number of retries. This
@@ -796,11 +781,9 @@ class HttpRoute(proto.Message):
 
         Attributes:
             allow_origins (MutableSequence[str]):
-                Specifies the list of origins that will be
-                allowed to do CORS requests. An origin is
-                allowed if it matches either an item in
-                allow_origins or an item in
-                allow_origin_regexes.
+                Specifies the list of origins that will be allowed to do
+                CORS requests. An origin is allowed if it matches either an
+                item in allow_origins or an item in allow_origin_regexes.
             allow_origin_regexes (MutableSequence[str]):
                 Specifies the regular expression patterns
                 that match allowed origins. For regular
@@ -918,19 +901,16 @@ class HttpRoute(proto.Message):
                 If set, the request is directed as configured
                 by this field.
             fault_injection_policy (google.cloud.network_services_v1.types.HttpRoute.FaultInjectionPolicy):
-                The specification for fault injection introduced
-                into traffic to test the resiliency of clients
-                to backend service failure. As part of fault
-                injection, when clients send requests to a
-                backend service, delays can be introduced on a
-                percentage of requests before sending those
-                requests to the backend service. Similarly
-                requests from clients can be aborted for a
-                percentage of requests.
+                The specification for fault injection introduced into
+                traffic to test the resiliency of clients to backend service
+                failure. As part of fault injection, when clients send
+                requests to a backend service, delays can be introduced on a
+                percentage of requests before sending those requests to the
+                backend service. Similarly requests from clients can be
+                aborted for a percentage of requests.
 
-                timeout and retry_policy will be ignored by
-                clients that are configured with a
-                fault_injection_policy
+                timeout and retry_policy will be ignored by clients that are
+                configured with a fault_injection_policy
             request_header_modifier (google.cloud.network_services_v1.types.HttpRoute.HeaderModifier):
                 The specification for modifying the headers
                 of a matching request prior to delivery of the
@@ -1261,14 +1241,12 @@ class UpdateHttpRouteRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the HttpRoute
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the HttpRoute resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         http_route (google.cloud.network_services_v1.types.HttpRoute):
             Required. Updated HttpRoute resource.
     """

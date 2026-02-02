@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -100,6 +100,7 @@ class ConversionSource(proto.Message):
                 Conversion source creation has started but
                 not fully finished yet.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ARCHIVED = 2
@@ -117,6 +118,7 @@ class ConversionSource(proto.Message):
             YOUTUBE_AFFILIATES (2):
                 Controlled by the YT Affiliates program.
         """
+
         CONTROLLER_UNSPECIFIED = 0
         MERCHANT = 1
         YOUTUBE_AFFILIATES = 2
@@ -198,6 +200,7 @@ class AttributionSettings(proto.Message):
             CROSS_CHANNEL_TIME_DECAY (9):
                 Cross-channel Time Decay model.
         """
+
         ATTRIBUTION_MODEL_UNSPECIFIED = 0
         CROSS_CHANNEL_LAST_CLICK = 1
         ADS_PREFERRED_LAST_CLICK = 2
@@ -349,8 +352,8 @@ class UpdateConversionSourceRequest(proto.Message):
 
     Attributes:
         conversion_source (google.shopping.merchant_conversions_v1beta.types.ConversionSource):
-            Required. The new version of the conversion
-            source data. Format:
+            Required. The new version of the conversion source data.
+            Format:
             accounts/{account}/conversionSources/{conversion_source}
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields being updated.
@@ -373,8 +376,8 @@ class DeleteConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to
-            be deleted. Format:
+            Required. The name of the conversion source to be deleted.
+            Format:
             accounts/{account}/conversionSources/{conversion_source}
     """
 
@@ -389,8 +392,8 @@ class UndeleteConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to
-            be undeleted. Format:
+            Required. The name of the conversion source to be undeleted.
+            Format:
             accounts/{account}/conversionSources/{conversion_source}
     """
 
@@ -405,8 +408,8 @@ class GetConversionSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the conversion source to
-            be fetched. Format:
+            Required. The name of the conversion source to be fetched.
+            Format:
             accounts/{account}/conversionsources/{conversion_source}
     """
 

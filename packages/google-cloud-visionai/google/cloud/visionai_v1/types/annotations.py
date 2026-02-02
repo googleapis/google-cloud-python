@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -54,18 +54,18 @@ class StreamAnnotationType(proto.Enum):
         STREAM_ANNOTATION_TYPE_UNSPECIFIED (0):
             Type UNSPECIFIED.
         STREAM_ANNOTATION_TYPE_ACTIVE_ZONE (1):
-            active_zone annotation defines a polygon on top
-            of the content from an image/video based stream,
-            following processing will only focus on the
-            content inside the active zone.
+            active_zone annotation defines a polygon on top of the
+            content from an image/video based stream, following
+            processing will only focus on the content inside the active
+            zone.
         STREAM_ANNOTATION_TYPE_CROSSING_LINE (2):
-            crossing_line annotation defines a polyline on
-            top of the content from an image/video based
-            Vision AI stream, events happening across the
-            line will be captured. For example, the counts
-            of people who goes acroos the line in Occupancy
+            crossing_line annotation defines a polyline on top of the
+            content from an image/video based Vision AI stream, events
+            happening across the line will be captured. For example, the
+            counts of people who goes acroos the line in Occupancy
             Analytic Processor.
     """
+
     STREAM_ANNOTATION_TYPE_UNSPECIFIED = 0
     STREAM_ANNOTATION_TYPE_ACTIVE_ZONE = 1
     STREAM_ANNOTATION_TYPE_CROSSING_LINE = 2
@@ -107,9 +107,8 @@ class PersonalProtectiveEquipmentDetectionOutput(proto.Message):
                 Human readable string of the label (Examples:
                 helmet, glove, mask).
             ppe_supercategory_label_string (str):
-                Human readable string of the super category
-                label (Examples: head_cover, hands_cover,
-                face_cover).
+                Human readable string of the super category label (Examples:
+                head_cover, hands_cover, face_cover).
             ppe_entity_id (int):
                 Entity id.
         """
@@ -572,9 +571,9 @@ class VideoActionRecognitionPredictionResult(proto.Message):
     """
 
     class IdentifiedAction(proto.Message):
-        r"""Each IdentifiedAction is one particular identification of an
-        action specified with the AnnotationSpec id, display_name and
-        the associated confidence score.
+        r"""Each IdentifiedAction is one particular identification of an action
+        specified with the AnnotationSpec id, display_name and the
+        associated confidence score.
 
         Attributes:
             id (str):
@@ -674,10 +673,9 @@ class VideoObjectTrackingPredictionResult(proto.Message):
         )
 
     class DetectedObject(proto.Message):
-        r"""Each DetectedObject is one particular identification of an
-        object specified with the AnnotationSpec id and display_name,
-        the bounding box, the associated confidence score and the
-        corresponding track_id.
+        r"""Each DetectedObject is one particular identification of an object
+        specified with the AnnotationSpec id and display_name, the bounding
+        box, the associated confidence score and the corresponding track_id.
 
         Attributes:
             id (str):
@@ -693,11 +691,10 @@ class VideoObjectTrackingPredictionResult(proto.Message):
                 identification, higher value means higher
                 confidence.
             track_id (int):
-                The same object may be identified on muitiple
-                frames which are typical adjacent. The set of
-                frames where a particular object has been
-                detected form a track. This track_id can be used
-                to trace down all frames for an detected object.
+                The same object may be identified on muitiple frames which
+                are typical adjacent. The set of frames where a particular
+                object has been detected form a track. This track_id can be
+                used to trace down all frames for an detected object.
         """
 
         id: str = proto.Field(
@@ -759,8 +756,8 @@ class VideoClassificationPredictionResult(proto.Message):
     """
 
     class IdentifiedClassification(proto.Message):
-        r"""Each IdentifiedClassification is one particular identification
-        of an classification specified with the AnnotationSpec id and
+        r"""Each IdentifiedClassification is one particular identification of an
+        classification specified with the AnnotationSpec id and
         display_name, and the associated confidence score.
 
         Attributes:
@@ -1255,8 +1252,8 @@ class NormalizedPolygon(proto.Message):
 
     Attributes:
         normalized_vertices (MutableSequence[google.cloud.visionai_v1.types.NormalizedVertex]):
-            The bounding polygon normalized vertices. Top
-            left corner of the image will be [0, 0].
+            The bounding polygon normalized vertices. Top left corner of
+            the image will be [0, 0].
     """
 
     normalized_vertices: MutableSequence["NormalizedVertex"] = proto.RepeatedField(
@@ -1455,11 +1452,10 @@ class AppPlatformEventBody(proto.Message):
             For the case of Pub/Sub, it will be stored in
             the message attributes. ​​pubsub.proto
         event_id (str):
-            User defined Event Id, used to classify event,
-            within a delivery interval, events from the same
-            application instance with the same id will be
-            de-duplicated & only first one will be sent out.
-            Empty event_id will be treated as "".
+            User defined Event Id, used to classify event, within a
+            delivery interval, events from the same application instance
+            with the same id will be de-duplicated & only first one will
+            be sent out. Empty event_id will be treated as "".
     """
 
     event_message: str = proto.Field(

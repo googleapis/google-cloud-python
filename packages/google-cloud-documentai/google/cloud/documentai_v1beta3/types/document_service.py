@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.documentai_v1beta3.types import document_io, operation_metadata
 from google.cloud.documentai_v1beta3.types import dataset as gcd_dataset
 from google.cloud.documentai_v1beta3.types import document as gcd_document
+from google.cloud.documentai_v1beta3.types import document_io, operation_metadata
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
@@ -64,6 +64,7 @@ class DatasetSplitType(proto.Enum):
         DATASET_SPLIT_UNASSIGNED (3):
             Identifies the unassigned documents.
     """
+
     DATASET_SPLIT_TYPE_UNSPECIFIED = 0
     DATASET_SPLIT_TRAIN = 1
     DATASET_SPLIT_TEST = 2
@@ -83,6 +84,7 @@ class DocumentLabelingState(proto.Enum):
         DOCUMENT_AUTO_LABELED (3):
             Document has been auto-labeled.
     """
+
     DOCUMENT_LABELING_STATE_UNSPECIFIED = 0
     DOCUMENT_LABELED = 1
     DOCUMENT_UNLABELED = 2
@@ -205,12 +207,12 @@ class ImportDocumentsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    batch_documents_import_configs: MutableSequence[
-        BatchDocumentsImportConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=BatchDocumentsImportConfig,
+    batch_documents_import_configs: MutableSequence[BatchDocumentsImportConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=BatchDocumentsImportConfig,
+        )
     )
 
 
@@ -293,19 +295,19 @@ class ImportDocumentsMetadata(proto.Message):
         number=1,
         message=operation_metadata.CommonOperationMetadata,
     )
-    individual_import_statuses: MutableSequence[
-        IndividualImportStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=IndividualImportStatus,
+    individual_import_statuses: MutableSequence[IndividualImportStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=IndividualImportStatus,
+        )
     )
-    import_config_validation_results: MutableSequence[
-        ImportConfigValidationResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=ImportConfigValidationResult,
+    import_config_validation_results: MutableSequence[ImportConfigValidationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=ImportConfigValidationResult,
+        )
     )
     total_document_count: int = proto.Field(
         proto.INT32,
@@ -573,12 +575,12 @@ class BatchDeleteDocumentsMetadata(proto.Message):
         number=1,
         message=operation_metadata.CommonOperationMetadata,
     )
-    individual_batch_delete_statuses: MutableSequence[
-        IndividualBatchDeleteStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=IndividualBatchDeleteStatus,
+    individual_batch_delete_statuses: MutableSequence[IndividualBatchDeleteStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=IndividualBatchDeleteStatus,
+        )
     )
     total_document_count: int = proto.Field(
         proto.INT32,

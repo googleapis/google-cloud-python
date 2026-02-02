@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2beta.types import common, import_config
@@ -234,6 +234,7 @@ class CatalogAttribute(proto.Message):
             NUMERICAL (2):
                 Numerical attribute.
         """
+
         UNKNOWN = 0
         TEXTUAL = 1
         NUMERICAL = 2
@@ -249,6 +250,7 @@ class CatalogAttribute(proto.Message):
             INDEXABLE_DISABLED (2):
                 Indexable option disabled for an attribute.
         """
+
         INDEXABLE_OPTION_UNSPECIFIED = 0
         INDEXABLE_ENABLED = 1
         INDEXABLE_DISABLED = 2
@@ -267,6 +269,7 @@ class CatalogAttribute(proto.Message):
                 Dynamic facetable option disabled for an
                 attribute.
         """
+
         DYNAMIC_FACETABLE_OPTION_UNSPECIFIED = 0
         DYNAMIC_FACETABLE_ENABLED = 1
         DYNAMIC_FACETABLE_DISABLED = 2
@@ -282,6 +285,7 @@ class CatalogAttribute(proto.Message):
             SEARCHABLE_DISABLED (2):
                 Searchable option disabled for an attribute.
         """
+
         SEARCHABLE_OPTION_UNSPECIFIED = 0
         SEARCHABLE_ENABLED = 1
         SEARCHABLE_DISABLED = 2
@@ -300,6 +304,7 @@ class CatalogAttribute(proto.Message):
                 Exact searchable option disabled for an
                 attribute.
         """
+
         EXACT_SEARCHABLE_OPTION_UNSPECIFIED = 0
         EXACT_SEARCHABLE_ENABLED = 1
         EXACT_SEARCHABLE_DISABLED = 2
@@ -315,6 +320,7 @@ class CatalogAttribute(proto.Message):
             RETRIEVABLE_DISABLED (2):
                 Retrievable option disabled for an attribute.
         """
+
         RETRIEVABLE_OPTION_UNSPECIFIED = 0
         RETRIEVABLE_ENABLED = 1
         RETRIEVABLE_DISABLED = 2
@@ -426,9 +432,9 @@ class CatalogAttribute(proto.Message):
                     MergedFacetValue is 25. Each value can have up to 128
                     characters.
                 merged_value (str):
-                    All the previous values are replaced by this
-                    merged facet value. This merged_value must be
-                    non-empty and can have up to 128 characters.
+                    All the previous values are replaced by this merged facet
+                    value. This merged_value must be non-empty and can have up
+                    to 128 characters.
             """
 
             values: MutableSequence[str] = proto.RepeatedField(
@@ -466,15 +472,15 @@ class CatalogAttribute(proto.Message):
             )
 
         class RerankConfig(proto.Message):
-            r"""Options to rerank based on facet values engaged by the user for
-            the current key. That key needs to be a custom textual key and
-            facetable. To use this control, you also need to pass all the
-            facet keys engaged by the user in the request using the field
+            r"""Options to rerank based on facet values engaged by the user for the
+            current key. That key needs to be a custom textual key and
+            facetable. To use this control, you also need to pass all the facet
+            keys engaged by the user in the request using the field
             [SearchRequest.FacetSpec]. In particular, if you don't pass the
-            facet keys engaged that you want to rerank on, this control
-            won't be effective. Moreover, to obtain better results, the
-            facet values that you want to rerank on should be close to
-            English (ideally made of words, underscores, and spaces).
+            facet keys engaged that you want to rerank on, this control won't be
+            effective. Moreover, to obtain better results, the facet values that
+            you want to rerank on should be close to English (ideally made of
+            words, underscores, and spaces).
 
             Attributes:
                 rerank_facet (bool):
@@ -751,21 +757,19 @@ class MerchantCenterLink(proto.Message):
 
     Attributes:
         merchant_center_account_id (int):
-            Required. The linked [Merchant Center account
-            ID](https://developers.google.com/shopping-content/guides/accountstatuses).
-            The account must be a standalone account or a
-            sub-account of a MCA.
+            Required. The linked `Merchant Center account
+            ID <https://developers.google.com/shopping-content/guides/accountstatuses>`__.
+            The account must be a standalone account or a sub-account of
+            a MCA.
         branch_id (str):
-            The branch ID (e.g. 0/1/2) within this catalog
-            that products from merchant_center_account_id
-            are streamed to. When updating this field, an
-            empty value will use the currently configured
-            default branch. However, changing the default
-            branch later on won't change the linked branch
-            here.
+            The branch ID (e.g. 0/1/2) within this catalog that products
+            from merchant_center_account_id are streamed to. When
+            updating this field, an empty value will use the currently
+            configured default branch. However, changing the default
+            branch later on won't change the linked branch here.
 
-            A single branch ID can only have one linked
-            Merchant Center account ID.
+            A single branch ID can only have one linked Merchant Center
+            account ID.
         destinations (MutableSequence[str]):
             String representing the destination to import for, all if
             left empty. List of possible values is given in `Included
@@ -876,9 +880,9 @@ class Catalog(proto.Message):
         display_name (str):
             Required. Immutable. The catalog display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         product_level_config (google.cloud.retail_v2beta.types.ProductLevelConfig):
             Required. The product level configuration.
         merchant_center_linking_config (google.cloud.retail_v2beta.types.MerchantCenterLinkingConfig):

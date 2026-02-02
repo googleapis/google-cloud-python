@@ -58,6 +58,7 @@ class TransitPreferences(proto.Message):
                 Travel by rail. This is equivalent to a combination of
                 ``SUBWAY``, ``TRAIN``, and ``LIGHT_RAIL``.
         """
+
         TRANSIT_TRAVEL_MODE_UNSPECIFIED = 0
         BUS = 1
         SUBWAY = 2
@@ -78,6 +79,7 @@ class TransitPreferences(proto.Message):
                 Indicates that the calculated route should
                 prefer a limited number of transfers.
         """
+
         TRANSIT_ROUTING_PREFERENCE_UNSPECIFIED = 0
         LESS_WALKING = 1
         FEWER_TRANSFERS = 2

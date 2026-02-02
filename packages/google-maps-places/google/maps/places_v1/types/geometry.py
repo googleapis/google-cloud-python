@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import latlng_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,12 +35,11 @@ class Circle(proto.Message):
         center (google.type.latlng_pb2.LatLng):
             Required. Center latitude and longitude.
 
-            The range of latitude must be within [-90.0,
-            90.0]. The range of the longitude must be within
-            [-180.0, 180.0].
+            The range of latitude must be within [-90.0, 90.0]. The
+            range of the longitude must be within [-180.0, 180.0].
         radius (float):
-            Required. Radius measured in meters. The radius
-            must be within [0.0, 50000.0].
+            Required. Radius measured in meters. The radius must be
+            within [0.0, 50000.0].
     """
 
     center: latlng_pb2.LatLng = proto.Field(

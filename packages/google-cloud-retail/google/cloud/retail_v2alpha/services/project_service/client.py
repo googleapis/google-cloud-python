@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.retail_v2alpha import gapic_version as package_version
 
@@ -61,16 +61,14 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.retail_v2alpha.types import common
-from google.cloud.retail_v2alpha.types import project
+from google.cloud.retail_v2alpha.types import common, project, project_service
 from google.cloud.retail_v2alpha.types import project as gcr_project
-from google.cloud.retail_v2alpha.types import project_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
 from .transports.grpc import ProjectServiceGrpcTransport
@@ -86,9 +84,7 @@ class ProjectServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ProjectServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ProjectServiceTransport]]
     _transport_registry["grpc"] = ProjectServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ProjectServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ProjectServiceRestTransport
@@ -651,11 +647,9 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ProjectServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ProjectServiceClient._read_environment_variables()
+        )
         self._client_cert_source = ProjectServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -690,8 +684,7 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ProjectServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -993,9 +986,9 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
 
         The [Recommendations AI solution
         type][google.cloud.retail.v2alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-        is enrolled by default when your project enables Retail
-        API, so you don't need to call the enrollSolution method
-        for recommendations.
+        is enrolled by default when your project enables Retail API, so
+        you don't need to call the enrollSolution method for
+        recommendations.
 
         .. code-block:: python
 
@@ -1242,8 +1235,7 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
                 [ProjectService.GetLoggingConfig][google.cloud.retail.v2alpha.ProjectService.GetLoggingConfig]
                 method.
             name (str):
-                Required. Full LoggingConfig resource
-                name. Format:
+                Required. Full LoggingConfig resource name. Format:
                 projects/{project_number}/loggingConfig
 
                 This corresponds to the ``name`` field
@@ -1498,8 +1490,7 @@ class ProjectServiceClient(metaclass=ProjectServiceClientMeta):
                 [ProjectService.GetAlertConfig][google.cloud.retail.v2alpha.ProjectService.GetAlertConfig]
                 method.
             name (str):
-                Required. Full AlertConfig resource
-                name. Format:
+                Required. Full AlertConfig resource name. Format:
                 projects/{project_number}/alertConfig
 
                 This corresponds to the ``name`` field

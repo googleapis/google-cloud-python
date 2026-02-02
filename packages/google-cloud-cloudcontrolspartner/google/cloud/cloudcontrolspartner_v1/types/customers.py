@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1.types import (
@@ -57,9 +57,9 @@ class Customer(proto.Message):
             Output only. Indicates whether a customer is
             fully onboarded
         organization_domain (str):
-            Output only. The customer organization domain,
-            extracted from CRM Organization’s display_name
-            field. e.g. "google.com".
+            Output only. The customer organization domain, extracted
+            from CRM Organization’s display_name field. e.g.
+            "google.com".
     """
 
     name: str = proto.Field(
@@ -248,6 +248,7 @@ class CustomerOnboardingStep(proto.Message):
             CUSTOMER_ENVIRONMENT (2):
                 Customer Environment
         """
+
         STEP_UNSPECIFIED = 0
         KAJ_ENROLLMENT = 1
         CUSTOMER_ENVIRONMENT = 2

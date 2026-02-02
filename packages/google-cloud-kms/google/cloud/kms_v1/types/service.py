@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.kms_v1.types import resources
@@ -96,16 +96,15 @@ class ListKeyRingsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
     parent: str = proto.Field(
@@ -155,16 +154,15 @@ class ListCryptoKeysRequest(proto.Message):
             The fields of the primary version to include
             in the response.
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
     parent: str = proto.Field(
@@ -218,16 +216,15 @@ class ListCryptoKeyVersionsRequest(proto.Message):
         view (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionView):
             The fields to include in the response.
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
     parent: str = proto.Field(
@@ -279,16 +276,15 @@ class ListImportJobsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
     parent: str = proto.Field(
@@ -418,12 +414,12 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    crypto_key_versions: MutableSequence[
-        resources.CryptoKeyVersion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.CryptoKeyVersion,
+    crypto_key_versions: MutableSequence[resources.CryptoKeyVersion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.CryptoKeyVersion,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2466,13 +2462,11 @@ class MacVerifyResponse(proto.Message):
             but this field is still false, discard the response and
             perform a limited number of retries.
         verified_success_integrity (bool):
-            Integrity verification field. This value is used
-            for the integrity verification of
-            [MacVerifyResponse.success]. If the value of
-            this field contradicts the value of
-            [MacVerifyResponse.success], discard the
-            response and perform a limited number of
-            retries.
+            Integrity verification field. This value is used for the
+            integrity verification of [MacVerifyResponse.success]. If
+            the value of this field contradicts the value of
+            [MacVerifyResponse.success], discard the response and
+            perform a limited number of retries.
         protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             The [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
             of the
@@ -2521,8 +2515,8 @@ class DecapsulateResponse(proto.Message):
             used for decapsulation. Check this field to verify that the
             intended resource was used for decapsulation.
         shared_secret (bytes):
-            The decapsulated shared_secret originally
-            encapsulated with the matching public key.
+            The decapsulated shared_secret originally encapsulated with
+            the matching public key.
         shared_secret_crc32c (int):
             Integrity verification field. A CRC32C checksum of the
             returned

@@ -16,21 +16,21 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.secretmanager_v1beta1.types import resources, service
 
@@ -751,14 +751,14 @@ class SecretManagerServiceGrpcTransport(SecretManagerServiceTransport):
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns permissions that a caller has for the specified
-        secret. If the secret does not exist, this call returns
-        an empty set of permissions, not a NOT_FOUND error.
+        Returns permissions that a caller has for the specified secret.
+        If the secret does not exist, this call returns an empty set of
+        permissions, not a NOT_FOUND error.
 
         Note: This operation is designed to be used for building
         permission-aware UIs and command-line tools, not for
-        authorization checking. This operation may "fail open"
-        without warning.
+        authorization checking. This operation may "fail open" without
+        warning.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

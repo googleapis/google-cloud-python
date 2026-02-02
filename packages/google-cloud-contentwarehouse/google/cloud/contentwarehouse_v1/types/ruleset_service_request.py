@@ -39,8 +39,7 @@ class CreateRuleSetRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent name.
-            Format:
+            Required. The parent name. Format:
             projects/{project_number}/locations/{location}.
         rule_set (google.cloud.contentwarehouse_v1.types.RuleSet):
             Required. The rule set to create.
@@ -62,9 +61,7 @@ class GetRuleSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the rule set to retrieve.
-            Format:
-
+            Required. The name of the rule set to retrieve. Format:
             projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
     """
 
@@ -79,9 +76,7 @@ class UpdateRuleSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the rule set to update.
-            Format:
-
+            Required. The name of the rule set to update. Format:
             projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
         rule_set (google.cloud.contentwarehouse_v1.types.RuleSet):
             Required. The rule set to update.
@@ -103,9 +98,7 @@ class DeleteRuleSetRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the rule set to delete.
-            Format:
-
+            Required. The name of the rule set to delete. Format:
             projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
     """
 
@@ -120,8 +113,8 @@ class ListRuleSetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of document. Format:
+            Required. The parent, which owns this collection of
+            document. Format:
             projects/{project_number}/locations/{location}.
         page_size (int):
             The maximum number of rule sets to return.

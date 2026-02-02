@@ -56,6 +56,7 @@ class BigQueryConnectionSpec(proto.Message):
             CLOUD_SQL (1):
                 Cloud SQL connection.
         """
+
         CONNECTION_TYPE_UNSPECIFIED = 0
         CLOUD_SQL = 1
 
@@ -101,6 +102,7 @@ class CloudSqlBigQueryConnectionSpec(proto.Message):
             MYSQL (2):
                 Cloud SQL for MySQL.
         """
+
         DATABASE_TYPE_UNSPECIFIED = 0
         POSTGRES = 1
         MYSQL = 2

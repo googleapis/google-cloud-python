@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -85,11 +85,12 @@ class SACRealm(proto.Message):
                 The default value. This value is used if the
                 state is omitted.
             PALO_ALTO_PRISMA_ACCESS (1):
-                [Palo Alto Networks Prisma
-                Access](https://www.paloaltonetworks.com/sase/access).
+                `Palo Alto Networks Prisma
+                Access <https://www.paloaltonetworks.com/sase/access>`__.
             SYMANTEC_CLOUD_SWG (2):
                 Symantec Cloud SWG.
         """
+
         SECURITY_SERVICE_UNSPECIFIED = 0
         PALO_ALTO_PRISMA_ACCESS = 1
         SYMANTEC_CLOUD_SWG = 2
@@ -113,6 +114,7 @@ class SACRealm(proto.Message):
                 expired pairing key. Used only for Prisma
                 Access.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_PARTNER_ATTACHMENT = 7
         PARTNER_ATTACHED = 1
@@ -177,6 +179,7 @@ class SACRealm(proto.Message):
                     Symantec API due to an invalid API key or
                     Symantec API unavailability.
             """
+
             SYMANTEC_CONNECTION_STATE_UNSPECIFIED = 0
             SUCCEEDED = 1
             READ_SECRET_FAILED = 2
@@ -484,6 +487,7 @@ class SACAttachment(proto.Message):
                 Was once attached to a partner but has been
                 detached.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_PARTNER_ATTACHMENT = 1
         PARTNER_ATTACHED = 2
@@ -765,29 +769,26 @@ class PartnerSSERealm(proto.Message):
             Required. value of the key to establish
             global handshake from SSERealm
         partner_vpc (str):
-            Optional. VPC owned by the partner to be peered
-            with CDEN sse_vpc in sse_project This field is
-            deprecated. Use partner_network instead.
+            Optional. VPC owned by the partner to be peered with CDEN
+            sse_vpc in sse_project This field is deprecated. Use
+            partner_network instead.
         sse_vpc (str):
-            Output only. CDEN owned VPC to be peered with
-            partner_vpc This field is deprecated. Use
-            sse_network instead.
+            Output only. CDEN owned VPC to be peered with partner_vpc
+            This field is deprecated. Use sse_network instead.
         sse_project (str):
-            Output only. CDEN owned project owning sse_vpc.
-            It stores project id in the TTM flow, but
-            project number in the NCCGW flow. This field
-            will be deprecated after the partner migrates
-            from using sse_project to using
-            sse_project_number.
+            Output only. CDEN owned project owning sse_vpc. It stores
+            project id in the TTM flow, but project number in the NCCGW
+            flow. This field will be deprecated after the partner
+            migrates from using sse_project to using sse_project_number.
         state (google.cloud.network_security_v1alpha1.types.PartnerSSERealm.State):
-            Output only. State of the realm. It can be
-            either CUSTOMER_ATTACHED or CUSTOMER_DETACHED.
+            Output only. State of the realm. It can be either
+            CUSTOMER_ATTACHED or CUSTOMER_DETACHED.
         partner_network (str):
-            Optional. Partner-owned network to be peered
-            with CDEN's sse_network in sse_project
+            Optional. Partner-owned network to be peered with CDEN's
+            sse_network in sse_project
         sse_network (str):
-            Output only. CDEN-owned network to be peered
-            with partner_network
+            Output only. CDEN-owned network to be peered with
+            partner_network
         pan_options (google.cloud.network_security_v1alpha1.types.PartnerSSERealm.PartnerSSERealmPanOptions):
             Optional. Required only for PAN.
         sse_project_number (int):
@@ -810,6 +811,7 @@ class PartnerSSERealm(proto.Message):
                 a customer realm. This is the state when the
                 customer realm is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CUSTOMER_ATTACHED = 1
         CUSTOMER_DETACHED = 2
@@ -819,11 +821,11 @@ class PartnerSSERealm(proto.Message):
 
         Attributes:
             serial_number (str):
-                Optional. serial_number is provided by PAN to
-                identify GCP customer on PAN side.
+                Optional. serial_number is provided by PAN to identify GCP
+                customer on PAN side.
             tenant_id (str):
-                Optional. tenant_id is provided by PAN to
-                identify GCP customer on PAN side.
+                Optional. tenant_id is provided by PAN to identify GCP
+                customer on PAN side.
         """
 
         serial_number: str = proto.Field(
@@ -989,10 +991,9 @@ class CreatePartnerSSERealmRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         partner_sse_realm_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and partner_sse_realm_id from the
-            method_signature of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and partner_sse_realm_id from
+            the method_signature of Create RPC
         partner_sse_realm (google.cloud.network_security_v1alpha1.types.PartnerSSERealm):
             Required. The resource being created
         request_id (str):

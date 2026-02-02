@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -58,19 +58,19 @@ class TlsInspectionPolicy(proto.Message):
             Output only. The timestamp when the resource
             was updated.
         ca_pool (str):
-            Required. A CA pool resource used to issue
-            interception certificates. The CA pool string
-            has a relative resource path following the form
+            Required. A CA pool resource used to issue interception
+            certificates. The CA pool string has a relative resource
+            path following the form
             "projects/{project}/locations/{location}/caPools/{ca_pool}".
         trust_config (str):
-            Optional. A TrustConfig resource used when
-            making a connection to the TLS server. This is a
-            relative resource path following the form
+            Optional. A TrustConfig resource used when making a
+            connection to the TLS server. This is a relative resource
+            path following the form
             "projects/{project}/locations/{location}/trustConfigs/{trust_config}".
-            This is necessary to intercept TLS connections
-            to servers with certificates signed by a private
-            CA or self-signed certificates. Note that Secure
-            Web Proxy does not yet honor this field.
+            This is necessary to intercept TLS connections to servers
+            with certificates signed by a private CA or self-signed
+            certificates. Note that Secure Web Proxy does not yet honor
+            this field.
         exclude_public_ca_set (bool):
             Optional. If FALSE (the default), use our default set of
             public CAs in addition to any CAs specified in trust_config.
@@ -100,14 +100,13 @@ class TlsInspectionPolicy(proto.Message):
             Note that Secure Web Proxy does not yet honor
             this field.
         tls_feature_profile (google.cloud.network_security_v1alpha1.types.TlsInspectionPolicy.Profile):
-            Optional. The selected Profile. If this is not
-            set, then the default value is to allow the
-            broadest set of clients and servers
-            ("PROFILE_COMPATIBLE"). Setting this to more
-            restrictive values may improve security, but may
-            also prevent the TLS inspection proxy from
-            connecting to some clients or servers. Note that
-            Secure Web Proxy does not yet honor this field.
+            Optional. The selected Profile. If this is not set, then the
+            default value is to allow the broadest set of clients and
+            servers ("PROFILE_COMPATIBLE"). Setting this to more
+            restrictive values may improve security, but may also
+            prevent the TLS inspection proxy from connecting to some
+            clients or servers. Note that Secure Web Proxy does not yet
+            honor this field.
         custom_tls_features (MutableSequence[str]):
             Optional. List of custom TLS cipher suites selected. This
             field is valid only if the selected tls_feature_profile is
@@ -135,6 +134,7 @@ class TlsInspectionPolicy(proto.Message):
             TLS_1_3 (4):
                 TLS 1.3
         """
+
         TLS_VERSION_UNSPECIFIED = 0
         TLS_1_0 = 1
         TLS_1_1 = 2
@@ -165,10 +165,10 @@ class TlsInspectionPolicy(proto.Message):
                 SSL features, intended to meet stricter
                 compliance requirements.
             PROFILE_CUSTOM (4):
-                Custom profile. Allow only the set of allowed
-                SSL features specified in the custom_features
-                field of SslPolicy.
+                Custom profile. Allow only the set of allowed SSL features
+                specified in the custom_features field of SslPolicy.
         """
+
         PROFILE_UNSPECIFIED = 0
         PROFILE_COMPATIBLE = 1
         PROFILE_MODERN = 2
@@ -231,11 +231,10 @@ class CreateTlsInspectionPolicyRequest(proto.Message):
             Must be in the format
             ``projects/{project}/locations/{location}``.
         tls_inspection_policy_id (str):
-            Required. Short name of the TlsInspectionPolicy
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g.
+            Required. Short name of the TlsInspectionPolicy resource to
+            be created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g.
             "tls_inspection_policy1".
         tls_inspection_policy (google.cloud.network_security_v1alpha1.types.TlsInspectionPolicy):
             Required. TlsInspectionPolicy resource to be
@@ -297,11 +296,10 @@ class ListTlsInspectionPoliciesResponse(proto.Message):
         tls_inspection_policies (MutableSequence[google.cloud.network_security_v1alpha1.types.TlsInspectionPolicy]):
             List of TlsInspectionPolicies resources.
         next_page_token (str):
-            If there might be more results than those
-            appearing in this response, then
-            'next_page_token' is included. To get the next
-            set of results, call this method again using the
-            value of 'next_page_token' as 'page_token'.
+            If there might be more results than those appearing in this
+            response, then 'next_page_token' is included. To get the
+            next set of results, call this method again using the value
+            of 'next_page_token' as 'page_token'.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -310,12 +308,12 @@ class ListTlsInspectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tls_inspection_policies: MutableSequence[
-        "TlsInspectionPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="TlsInspectionPolicy",
+    tls_inspection_policies: MutableSequence["TlsInspectionPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="TlsInspectionPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -373,14 +371,12 @@ class UpdateTlsInspectionPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            TlsInspectionPolicy resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask. If the
-            user does not provide a mask then all fields
-            will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the TlsInspectionPolicy resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         tls_inspection_policy (google.cloud.network_security_v1alpha1.types.TlsInspectionPolicy):
             Required. Updated TlsInspectionPolicy
             resource.

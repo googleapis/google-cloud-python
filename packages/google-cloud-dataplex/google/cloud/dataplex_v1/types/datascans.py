@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import (
@@ -68,6 +68,7 @@ class DataScanType(proto.Enum):
         DATA_DOCUMENTATION (4):
             Data documentation scan.
     """
+
     DATA_SCAN_TYPE_UNSPECIFIED = 0
     DATA_QUALITY = 1
     DATA_PROFILE = 2
@@ -202,6 +203,7 @@ class GetDataScanRequest(proto.Message):
             FULL (10):
                 Include everything.
         """
+
         DATA_SCAN_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 10
@@ -362,6 +364,7 @@ class GetDataScanJobRequest(proto.Message):
             FULL (10):
                 Include everything.
         """
+
         DATA_SCAN_JOB_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 10
@@ -888,6 +891,7 @@ class DataScanJob(proto.Message):
                 The DataScanJob has been created but not
                 started to run yet.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELING = 2

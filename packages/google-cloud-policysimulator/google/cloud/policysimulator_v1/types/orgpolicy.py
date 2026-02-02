@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import proto  # type: ignore
 from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy as gcov_orgpolicy
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.policysimulator.v1",
@@ -66,6 +66,7 @@ class PreviewState(proto.Enum):
             [OrgPolicyViolationsPreview][google.cloud.policysimulator.v1.OrgPolicyViolationsPreview]
             creation failed with an error.
     """
+
     PREVIEW_STATE_UNSPECIFIED = 0
     PREVIEW_PENDING = 1
     PREVIEW_RUNNING = 2
@@ -391,9 +392,8 @@ class CreateOrgPolicyViolationsPreviewOperationMetadata(proto.Message):
             Output only. The current state of the
             operation.
         resources_found (int):
-            Total number of resources that need scanning.
-            Should equal resource_scanned +
-            resources_pending
+            Total number of resources that need scanning. Should equal
+            resource_scanned + resources_pending
         resources_scanned (int):
             Number of resources already scanned.
         resources_pending (int):
@@ -485,12 +485,12 @@ class ListOrgPolicyViolationsPreviewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    org_policy_violations_previews: MutableSequence[
-        "OrgPolicyViolationsPreview"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="OrgPolicyViolationsPreview",
+    org_policy_violations_previews: MutableSequence["OrgPolicyViolationsPreview"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="OrgPolicyViolationsPreview",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

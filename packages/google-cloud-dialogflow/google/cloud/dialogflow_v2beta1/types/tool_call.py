@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -76,6 +76,7 @@ class ToolCall(proto.Message):
                 The tool call requires confirmation from a
                 human.
         """
+
         STATE_UNSPECIFIED = 0
         TRIGGERED = 1
         NEEDS_CONFIRMATION = 2

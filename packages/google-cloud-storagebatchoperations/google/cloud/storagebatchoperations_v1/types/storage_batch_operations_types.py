@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,14 +53,11 @@ class Job(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the Job. job_id
-            is unique within the project, that is either set
-            by the customer or defined by the service.
-            Format:
-
-            projects/{project}/locations/global/jobs/{job_id}
-            . For example:
-            "projects/123456/locations/global/jobs/job01".
+            Identifier. The resource name of the Job. job_id is unique
+            within the project, that is either set by the customer or
+            defined by the service. Format:
+            projects/{project}/locations/global/jobs/{job_id} . For
+            example: "projects/123456/locations/global/jobs/job01".
         description (str):
             Optional. A description provided by the user
             for the job. Its max length is 1024 bytes when
@@ -133,6 +130,7 @@ class Job(proto.Message):
             FAILED (4):
                 Terminated due to an unrecoverable failure.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -351,6 +349,7 @@ class PutObjectHold(proto.Message):
             UNSET (2):
                 Releases the hold.
         """
+
         HOLD_STATUS_UNSPECIFIED = 0
         SET = 1
         UNSET = 2
@@ -451,13 +450,13 @@ class ObjectRetention(proto.Message):
 
         Values:
             RETENTION_MODE_UNSPECIFIED (0):
-                If set and retain_until_time is empty, clears
-                the retention.
+                If set and retain_until_time is empty, clears the retention.
             LOCKED (1):
                 Sets the retention mode to locked.
             UNLOCKED (2):
                 Sets the retention mode to unlocked.
         """
+
         RETENTION_MODE_UNSPECIFIED = 0
         LOCKED = 1
         UNLOCKED = 2
@@ -516,10 +515,9 @@ class PutMetadata(proto.Message):
 
             This field is a member of `oneof`_ ``_content_type``.
         cache_control (str):
-            Optional. Updates objects Cache-Control fixed
-            metadata. Unset values will be ignored. Set
-            empty values to clear the metadata.
-            Additionally, the value for Custom-Time cannot
+            Optional. Updates objects Cache-Control fixed metadata.
+            Unset values will be ignored. Set empty values to clear the
+            metadata. Additionally, the value for Custom-Time cannot
             decrease. Refer to documentation in
             https://cloud.google.com/storage/docs/metadata#caching_data.
 
@@ -708,6 +706,7 @@ class LoggingConfig(proto.Message):
                 The corresponding transform action in this
                 job.
         """
+
         LOGGABLE_ACTION_UNSPECIFIED = 0
         TRANSFORM = 6
 
@@ -726,6 +725,7 @@ class LoggingConfig(proto.Message):
                 actions are logged as
                 [ERROR][google.logging.type.LogSeverity.ERROR].
         """
+
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

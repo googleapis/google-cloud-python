@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -514,13 +514,12 @@ class Artifact(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Last update timestamp.
         mime_type (str):
-            A content type specifier for the artifact.
-            Content type specifiers are Media Types
-            (https://en.wikipedia.org/wiki/Media_type) with
-            a possible "schema" parameter that specifies a
-            schema for the stored information. Content types
-            can specify compression. Currently only GZip
-            compression is supported (indicated with
+            A content type specifier for the artifact. Content type
+            specifiers are Media Types
+            (https://en.wikipedia.org/wiki/Media_type) with a possible
+            "schema" parameter that specifies a schema for the stored
+            information. Content types can specify compression.
+            Currently only GZip compression is supported (indicated with
             "+gzip").
         size_bytes (int):
             Output only. The size of the artifact in

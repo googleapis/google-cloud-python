@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -83,9 +83,7 @@ class SynonymSetServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[SynonymSetServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SynonymSetServiceTransport]]
     _transport_registry["grpc"] = SynonymSetServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = SynonymSetServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = SynonymSetServiceRestTransport
@@ -646,11 +644,9 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SynonymSetServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SynonymSetServiceClient._read_environment_variables()
+        )
         self._client_cert_source = SynonymSetServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -685,8 +681,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SynonymSetServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -767,9 +762,9 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Creates a SynonymSet for a single context.
-        Throws an ALREADY_EXISTS exception if a synonymset
-        already exists for the context.
+        r"""Creates a SynonymSet for a single context. Throws an
+        ALREADY_EXISTS exception if a synonymset already exists for the
+        context.
 
         .. code-block:: python
 
@@ -802,8 +797,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 The request object. Request message for
                 SynonymSetService.CreateSynonymSet.
             parent (str):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -896,9 +890,8 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Gets a SynonymSet for a particular context.
-        Throws a NOT_FOUND exception if the Synonymset
-        does not exist
+        r"""Gets a SynonymSet for a particular context. Throws a NOT_FOUND
+        exception if the Synonymset does not exist
 
         .. code-block:: python
 
@@ -932,9 +925,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 SynonymSetService.GetSynonymSet. Will
                 return synonymSet for a certain context.
             name (str):
-                Required. The name of the synonymSet to
-                retrieve Format:
-
+                Required. The name of the synonymSet to retrieve Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -1019,10 +1010,9 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Remove the existing SynonymSet for the context and
-        replaces it with a new one.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        r"""Remove the existing SynonymSet for the context and replaces it
+        with a new one. Throws a NOT_FOUND exception if the SynonymSet
+        is not found.
 
         .. code-block:: python
 
@@ -1058,9 +1048,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 context and replaces it with the
                 SynonymSet in this request.
             name (str):
-                Required. The name of the synonymSet to
-                update Format:
-
+                Required. The name of the synonymSet to update Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -1153,9 +1141,8 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a SynonymSet for a given context.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        r"""Deletes a SynonymSet for a given context. Throws a NOT_FOUND
+        exception if the SynonymSet is not found.
 
         .. code-block:: python
 
@@ -1185,9 +1172,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 The request object. Request message for
                 SynonymSetService.DeleteSynonymSet.
             name (str):
-                Required. The name of the synonymSet to
-                delete Format:
-
+                Required. The name of the synonymSet to delete Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -1292,8 +1277,7 @@ class SynonymSetServiceClient(metaclass=SynonymSetServiceClientMeta):
                 return all synonymSets belonging to the
                 customer project.
             parent (str):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

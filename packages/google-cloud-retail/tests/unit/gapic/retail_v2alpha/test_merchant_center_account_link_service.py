@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,10 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,11 +55,8 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
@@ -69,10 +69,12 @@ from google.cloud.retail_v2alpha.services.merchant_center_account_link_service i
     transports,
 )
 from google.cloud.retail_v2alpha.types import (
+    merchant_center_account_link,
+    merchant_center_account_link_service,
+)
+from google.cloud.retail_v2alpha.types import (
     merchant_center_account_link as gcr_merchant_center_account_link,
 )
-from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
-from google.cloud.retail_v2alpha.types import merchant_center_account_link
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1076,10 +1078,9 @@ def test_merchant_center_account_link_service_client_get_mtls_endpoint_and_cert_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1124,10 +1125,9 @@ def test_merchant_center_account_link_service_client_get_mtls_endpoint_and_cert_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1163,10 +1163,9 @@ def test_merchant_center_account_link_service_client_get_mtls_endpoint_and_cert_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1430,13 +1429,13 @@ def test_merchant_center_account_link_service_client_create_channel_credentials_
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1480,9 +1479,7 @@ def test_list_merchant_center_account_links(request_type, transport: str = "grpc
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        call.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
         response = client.list_merchant_center_account_links(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1677,9 +1674,7 @@ def test_list_merchant_center_account_links_field_headers():
     with mock.patch.object(
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
-        call.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        call.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
         client.list_merchant_center_account_links(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1741,9 +1736,7 @@ def test_list_merchant_center_account_links_flattened():
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        call.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_merchant_center_account_links(
@@ -1784,9 +1777,7 @@ async def test_list_merchant_center_account_links_flattened_async():
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        call.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
@@ -1849,9 +1840,7 @@ def test_create_merchant_center_account_link(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1885,10 +1874,11 @@ def test_create_merchant_center_account_link_non_empty_request_with_auto_populat
         client.create_merchant_center_account_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
-            parent="parent_value",
+        assert (
+            args[0]
+            == merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
+                parent="parent_value",
+            )
         )
 
 
@@ -2011,9 +2001,7 @@ async def test_create_merchant_center_account_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2230,9 +2218,7 @@ def test_delete_merchant_center_account_link(request_type, transport: str = "grp
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2266,10 +2252,11 @@ def test_delete_merchant_center_account_link_non_empty_request_with_auto_populat
         client.delete_merchant_center_account_link(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
-            name="name_value",
+        assert (
+            args[0]
+            == merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
+                name="name_value",
+            )
         )
 
 
@@ -2380,9 +2367,7 @@ async def test_delete_merchant_center_account_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2685,9 +2670,7 @@ def test_list_merchant_center_account_links_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3247,9 +3230,7 @@ def test_list_merchant_center_account_links_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.list_merchant_center_account_links), "__call__"
     ) as call:
-        call.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        call.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
         client.list_merchant_center_account_links(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3280,9 +3261,7 @@ def test_create_merchant_center_account_link_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -3305,9 +3284,7 @@ def test_delete_merchant_center_account_link_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -3377,9 +3354,7 @@ async def test_create_merchant_center_account_link_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -3404,9 +3379,7 @@ async def test_delete_merchant_center_account_link_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -3429,8 +3402,9 @@ def test_list_merchant_center_account_links_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3462,9 +3436,7 @@ def test_list_merchant_center_account_links_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
 
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3497,20 +3469,22 @@ def test_list_merchant_center_account_links_rest_interceptors(null_interceptor):
     )
     client = MerchantCenterAccountLinkServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "post_list_merchant_center_account_links",
-    ) as post, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "post_list_merchant_center_account_links_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "pre_list_merchant_center_account_links",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "post_list_merchant_center_account_links",
+        ) as post,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "post_list_merchant_center_account_links_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "pre_list_merchant_center_account_links",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3540,9 +3514,7 @@ def test_list_merchant_center_account_links_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-        )
+        post.return_value = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
         post_with_metadata.return_value = (
             merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse(),
             metadata,
@@ -3572,8 +3544,9 @@ def test_create_merchant_center_account_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3721,22 +3694,23 @@ def test_create_merchant_center_account_link_rest_interceptors(null_interceptor)
     )
     client = MerchantCenterAccountLinkServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "post_create_merchant_center_account_link",
-    ) as post, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "post_create_merchant_center_account_link_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "pre_create_merchant_center_account_link",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "post_create_merchant_center_account_link",
+        ) as post,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "post_create_merchant_center_account_link_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "pre_create_merchant_center_account_link",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3756,9 +3730,7 @@ def test_create_merchant_center_account_link_rest_interceptors(null_interceptor)
         return_value = json_format.MessageToJson(operations_pb2.Operation())
         req.return_value.content = return_value
 
-        request = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -3793,8 +3765,9 @@ def test_delete_merchant_center_account_link_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3853,14 +3826,14 @@ def test_delete_merchant_center_account_link_rest_interceptors(null_interceptor)
     )
     client = MerchantCenterAccountLinkServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.MerchantCenterAccountLinkServiceRestInterceptor,
-        "pre_delete_merchant_center_account_link",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.MerchantCenterAccountLinkServiceRestInterceptor,
+            "pre_delete_merchant_center_account_link",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest.pb(
             merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
@@ -3876,9 +3849,7 @@ def test_delete_merchant_center_account_link_rest_interceptors(null_interceptor)
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        request = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -3912,8 +3883,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -3976,8 +3948,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -4073,9 +4046,7 @@ def test_create_merchant_center_account_link_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -4097,9 +4068,7 @@ def test_delete_merchant_center_account_link_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
-        )
+        request_msg = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest()
 
         assert args[0] == request_msg
 
@@ -4183,11 +4152,14 @@ def test_merchant_center_account_link_service_base_transport():
 
 def test_merchant_center_account_link_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.retail_v2alpha.services.merchant_center_account_link_service.transports.MerchantCenterAccountLinkServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.retail_v2alpha.services.merchant_center_account_link_service.transports.MerchantCenterAccountLinkServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MerchantCenterAccountLinkServiceTransport(
@@ -4204,9 +4176,12 @@ def test_merchant_center_account_link_service_base_transport_with_credentials_fi
 
 def test_merchant_center_account_link_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.retail_v2alpha.services.merchant_center_account_link_service.transports.MerchantCenterAccountLinkServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.retail_v2alpha.services.merchant_center_account_link_service.transports.MerchantCenterAccountLinkServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MerchantCenterAccountLinkServiceTransport()
@@ -4285,11 +4260,12 @@ def test_merchant_center_account_link_service_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

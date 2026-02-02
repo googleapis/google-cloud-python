@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import common
+from google.cloud.contentwarehouse_v1.types import common, histogram, rule_engine
 from google.cloud.contentwarehouse_v1.types import document as gcc_document
-from google.cloud.contentwarehouse_v1.types import histogram, rule_engine
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -46,8 +45,8 @@ class CreateDocumentResponse(proto.Message):
             Document created after executing create
             request.
         rule_engine_output (google.cloud.contentwarehouse_v1.types.RuleEngineOutput):
-            Output from Rule Engine recording the rule
-            evaluator and action executor's output.
+            Output from Rule Engine recording the rule evaluator and
+            action executor's output.
 
             Refer format in:
             google/cloud/contentwarehouse/v1/rule_engine.proto
@@ -73,12 +72,12 @@ class CreateDocumentResponse(proto.Message):
         number=3,
         message=common.ResponseMetadata,
     )
-    long_running_operations: MutableSequence[
-        operations_pb2.Operation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=operations_pb2.Operation,
+    long_running_operations: MutableSequence[operations_pb2.Operation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=operations_pb2.Operation,
+        )
     )
 
 
@@ -90,8 +89,8 @@ class UpdateDocumentResponse(proto.Message):
             Updated document after executing update
             request.
         rule_engine_output (google.cloud.contentwarehouse_v1.types.RuleEngineOutput):
-            Output from Rule Engine recording the rule
-            evaluator and action executor's output.
+            Output from Rule Engine recording the rule evaluator and
+            action executor's output.
 
             Refer format in:
             google/cloud/contentwarehouse/v1/rule_engine.proto
@@ -124,10 +123,10 @@ class QAResult(proto.Message):
         highlights (MutableSequence[google.cloud.contentwarehouse_v1.types.QAResult.Highlight]):
             Highlighted sections in the snippet.
         confidence_score (float):
-            The calibrated confidence score for this
-            document, in the range [0., 1.]. This represents
-            the confidence level for whether the returned
-            document and snippet answers the user's query.
+            The calibrated confidence score for this document, in the
+            range [0., 1.]. This represents the confidence level for
+            whether the returned document and snippet answers the user's
+            query.
     """
 
     class Highlight(proto.Message):
@@ -266,12 +265,12 @@ class SearchDocumentsResponse(proto.Message):
         number=4,
         message=common.ResponseMetadata,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=histogram.HistogramQueryResult,
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=histogram.HistogramQueryResult,
+        )
     )
     question_answer: str = proto.Field(
         proto.STRING,

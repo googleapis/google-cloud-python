@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
@@ -95,11 +95,9 @@ class VolumeBackup(proto.Message):
             read-modify-write cycle to perform volume backup updates in
             order to avoid race conditions.
         satisfies_pzs (bool):
-            Output only. [Output Only] Reserved for future
-            use.
+            Output only. [Output Only] Reserved for future use.
         satisfies_pzi (bool):
-            Output only. [Output Only] Reserved for future
-            use.
+            Output only. [Output Only] Reserved for future use.
     """
 
     class VolumeBackupFormat(proto.Enum):
@@ -112,6 +110,7 @@ class VolumeBackup(proto.Message):
                 Compute Engine Persistent Disk snapshot based
                 volume backup.
         """
+
         VOLUME_BACKUP_FORMAT_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
@@ -149,6 +148,7 @@ class VolumeBackup(proto.Message):
                 The underlying artifacts of a volume backup
                 (eg: persistent disk snapshots) are deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SNAPSHOTTING = 2
@@ -287,6 +287,7 @@ class VolumeRestore(proto.Message):
             GCE_PERSISTENT_DISK (1):
                 Compute Engine Persistent Disk volume
         """
+
         VOLUME_TYPE_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 
@@ -310,6 +311,7 @@ class VolumeRestore(proto.Message):
                 This VolumeRestore resource is in the process
                 of being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RESTORING = 2

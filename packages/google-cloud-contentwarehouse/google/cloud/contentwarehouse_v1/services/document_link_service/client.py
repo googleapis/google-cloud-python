@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_link_service import pagers
 from google.cloud.contentwarehouse_v1.types import document, document_link_service
@@ -81,9 +81,7 @@ class DocumentLinkServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DocumentLinkServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DocumentLinkServiceTransport]]
     _transport_registry["grpc"] = DocumentLinkServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentLinkServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = DocumentLinkServiceRestTransport
@@ -654,11 +652,9 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DocumentLinkServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DocumentLinkServiceClient._read_environment_variables()
+        )
         self._client_cert_source = DocumentLinkServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -693,8 +689,7 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DocumentLinkServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -807,10 +802,8 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 The request object. Request message for
                 DocumentLinkService.ListLinkedTargets.
             parent (str):
-                Required. The name of the document, for
-                which all target links are returned.
-                Format:
-
+                Required. The name of the document, for which all target
+                links are returned. Format:
                 projects/{project_number}/locations/{location}/documents/{target_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -921,10 +914,8 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 The request object. Response message for
                 DocumentLinkService.ListLinkedSources.
             parent (str):
-                Required. The name of the document, for
-                which all source links are returned.
-                Format:
-
+                Required. The name of the document, for which all source
+                links are returned. Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
@@ -1050,19 +1041,16 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 The request object. Request message for
                 DocumentLinkService.CreateDocumentLink.
             parent (str):
-                Required. Parent of the document-link to
-                be created. parent of document-link
-                should be a document. Format:
-
+                Required. Parent of the document-link to be created.
+                parent of document-link should be a document. Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             document_link (google.cloud.contentwarehouse_v1.types.DocumentLink):
-                Required. Document links associated with
-                the source documents
-                (source_document_id).
+                Required. Document links associated with the source
+                documents (source_document_id).
 
                 This corresponds to the ``document_link`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1171,9 +1159,8 @@ class DocumentLinkServiceClient(metaclass=DocumentLinkServiceClientMeta):
                 The request object. Request message for
                 DocumentLinkService.DeleteDocumentLink.
             name (str):
-                Required. The name of the document-link
-                to be deleted. Format:
-
+                Required. The name of the document-link to be deleted.
+                Format:
                 projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
 
                 This corresponds to the ``name`` field

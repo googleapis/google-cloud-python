@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -44,9 +44,7 @@ class InternalRange(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of an internal range.
-            Format:
-
+            Identifier. The name of an internal range. Format:
             projects/{project}/locations/{location}/internalRanges/{internal_range}
             See:
             https://google.aip.dev/122#fields-representing-resource-names
@@ -61,11 +59,10 @@ class InternalRange(proto.Message):
         description (str):
             Optional. A description of this resource.
         ip_cidr_range (str):
-            Optional. The IP range that this internal range
-            defines. NOTE: IPv6 ranges are limited to
-            usage=EXTERNAL_TO_VPC and peering=FOR_SELF.
-            NOTE: For IPv6 Ranges this field is compulsory,
-            i.e. the address range must be specified
+            Optional. The IP range that this internal range defines.
+            NOTE: IPv6 ranges are limited to usage=EXTERNAL_TO_VPC and
+            peering=FOR_SELF. NOTE: For IPv6 Ranges this field is
+            compulsory, i.e. the address range must be specified
             explicitly.
         network (str):
             Immutable. The URL or resource ID of the
@@ -84,27 +81,23 @@ class InternalRange(proto.Message):
             Optional. The type of peering set for this
             internal range.
         prefix_length (int):
-            Optional. An alternate to ip_cidr_range. Can be
-            set when trying to create an IPv4 reservation
-            that automatically finds a free range of the
-            given size. If both ip_cidr_range and
-            prefix_length are set, there is an error if the
-            range sizes do not match. Can also be used
-            during updates to change the range size.
-            NOTE: For IPv6 this field only works if
-            ip_cidr_range is set as well, and both fields
-            must match. In other words, with IPv6 this field
-            only works as a redundant parameter.
+            Optional. An alternate to ip_cidr_range. Can be set when
+            trying to create an IPv4 reservation that automatically
+            finds a free range of the given size. If both ip_cidr_range
+            and prefix_length are set, there is an error if the range
+            sizes do not match. Can also be used during updates to
+            change the range size. NOTE: For IPv6 this field only works
+            if ip_cidr_range is set as well, and both fields must match.
+            In other words, with IPv6 this field only works as a
+            redundant parameter.
         target_cidr_range (MutableSequence[str]):
-            Optional. Can be set to narrow down or pick a
-            different address space while searching for a
-            free range. If not set, defaults to the
-            ["10.0.0.0/8", "172.16.0.0/12",
-            "192.168.0.0/16"] address space (for auto-mode
-            networks, the "10.0.0.0/9" range is used instead
-            of "10.0.0.0/8"). This can be used to target the
-            search in other rfc-1918 address spaces like
-            "172.16.0.0/12" and "192.168.0.0/16" or
+            Optional. Can be set to narrow down or pick a different
+            address space while searching for a free range. If not set,
+            defaults to the ["10.0.0.0/8", "172.16.0.0/12",
+            "192.168.0.0/16"] address space (for auto-mode networks, the
+            "10.0.0.0/9" range is used instead of "10.0.0.0/8"). This
+            can be used to target the search in other rfc-1918 address
+            spaces like "172.16.0.0/12" and "192.168.0.0/16" or
             non-rfc-1918 address spaces used in the VPC.
         users (MutableSequence[str]):
             Output only. The list of resources that refer
@@ -120,17 +113,15 @@ class InternalRange(proto.Message):
             Optional. Types of resources that are allowed
             to overlap with the current internal range.
         migration (google.cloud.networkconnectivity_v1.types.InternalRange.Migration):
-            Optional. Must be present if usage is set to
-            FOR_MIGRATION.
+            Optional. Must be present if usage is set to FOR_MIGRATION.
         immutable (bool):
             Optional. Immutable ranges cannot have their
             fields modified, except for labels and
             description.
         allocation_options (google.cloud.networkconnectivity_v1.types.InternalRange.AllocationOptions):
-            Optional. Range auto-allocation options, may be
-            set only when auto-allocation is selected by not
-            setting ip_cidr_range (and setting
-            prefix_length).
+            Optional. Range auto-allocation options, may be set only
+            when auto-allocation is selected by not setting
+            ip_cidr_range (and setting prefix_length).
         exclude_cidr_ranges (MutableSequence[str]):
             Optional. ExcludeCidrRanges flag. Specifies a
             set of CIDR blocks that allows exclusion of
@@ -152,22 +143,21 @@ class InternalRange(proto.Message):
                 CreateInternalRange or UpdateInternalRange
                 calls.
             FOR_VPC (1):
-                A VPC resource can use the reserved CIDR block
-                by associating it with the internal range
-                resource if usage is set to FOR_VPC.
+                A VPC resource can use the reserved CIDR block by
+                associating it with the internal range resource if usage is
+                set to FOR_VPC.
             EXTERNAL_TO_VPC (2):
-                Ranges created with EXTERNAL_TO_VPC cannot be
-                associated with VPC resources and are meant to
-                block out address ranges for various use cases,
-                like for example, usage on-prem, with dynamic
-                route announcements via interconnect.
+                Ranges created with EXTERNAL_TO_VPC cannot be associated
+                with VPC resources and are meant to block out address ranges
+                for various use cases, like for example, usage on-prem, with
+                dynamic route announcements via interconnect.
             FOR_MIGRATION (3):
-                Ranges created FOR_MIGRATION can be used to lock
-                a CIDR range between a source and target subnet.
-                If usage is set to FOR_MIGRATION, the peering
-                value has to be set to FOR_SELF or default to
-                FOR_SELF when unset.
+                Ranges created FOR_MIGRATION can be used to lock a CIDR
+                range between a source and target subnet. If usage is set to
+                FOR_MIGRATION, the peering value has to be set to FOR_SELF
+                or default to FOR_SELF when unset.
         """
+
         USAGE_UNSPECIFIED = 0
         FOR_VPC = 1
         EXTERNAL_TO_VPC = 2
@@ -178,9 +168,8 @@ class InternalRange(proto.Message):
 
         Values:
             PEERING_UNSPECIFIED (0):
-                If Peering is left unspecified in
-                CreateInternalRange or UpdateInternalRange, it
-                will be defaulted to FOR_SELF.
+                If Peering is left unspecified in CreateInternalRange or
+                UpdateInternalRange, it will be defaulted to FOR_SELF.
             FOR_SELF (1):
                 This is the default behavior and represents
                 the case that this internal range is intended to
@@ -196,18 +185,17 @@ class InternalRange(proto.Message):
                 This represents donating a range for peers to
                 use.
             NOT_SHARED (3):
-                This behavior can be set when the internal range
-                is being reserved for usage by the VPC in which
-                it is created, but not shared with peers. In a
-                sense, it is local to the VPC. This can be used
-                to create internal ranges for various purposes
-                like HTTP_INTERNAL_LOAD_BALANCER or for
-                Interconnect routes that are not shared with
-                peers. This also implies that peers cannot use
-                this range in a way that is visible to this VPC,
-                but can re-use this range as long as it is
-                NOT_SHARED from the peer VPC, too.
+                This behavior can be set when the internal range is being
+                reserved for usage by the VPC in which it is created, but
+                not shared with peers. In a sense, it is local to the VPC.
+                This can be used to create internal ranges for various
+                purposes like HTTP_INTERNAL_LOAD_BALANCER or for
+                Interconnect routes that are not shared with peers. This
+                also implies that peers cannot use this range in a way that
+                is visible to this VPC, but can re-use this range as long as
+                it is NOT_SHARED from the peer VPC, too.
         """
+
         PEERING_UNSPECIFIED = 0
         FOR_SELF = 1
         FOR_PEER = 2
@@ -226,6 +214,7 @@ class InternalRange(proto.Message):
                 Allow creation of internal ranges that
                 overlap with existing subnets.
         """
+
         OVERLAP_UNSPECIFIED = 0
         OVERLAP_ROUTE_RANGE = 1
         OVERLAP_EXISTING_SUBNET_RANGE = 2
@@ -235,10 +224,9 @@ class InternalRange(proto.Message):
 
         Values:
             ALLOCATION_STRATEGY_UNSPECIFIED (0):
-                Unspecified is the only valid option when the
-                range is specified explicitly by ip_cidr_range
-                field. Otherwise unspefified means using the
-                default strategy.
+                Unspecified is the only valid option when the range is
+                specified explicitly by ip_cidr_range field. Otherwise
+                unspefified means using the default strategy.
             RANDOM (1):
                 Random strategy, the legacy algorithm, used
                 for backwards compatibility. This allocation
@@ -253,18 +241,18 @@ class InternalRange(proto.Message):
                 strategy is deterministic and the result is easy
                 to predict.
             RANDOM_FIRST_N_AVAILABLE (3):
-                Pick an arbitrary range out of the first N
-                available ones. The N will be set in the
-                first_available_ranges_lookup_size field. This
-                strategy should be used when concurrent
-                allocation requests are made in the same space
-                of peered networks while the fragmentation of
-                the addrress space is reduced.
+                Pick an arbitrary range out of the first N available ones.
+                The N will be set in the first_available_ranges_lookup_size
+                field. This strategy should be used when concurrent
+                allocation requests are made in the same space of peered
+                networks while the fragmentation of the addrress space is
+                reduced.
             FIRST_SMALLEST_FITTING (4):
                 Pick the smallest but fitting available
                 range. This deterministic strategy minimizes
                 fragmentation of the address space.
         """
+
         ALLOCATION_STRATEGY_UNSPECIFIED = 0
         RANDOM = 1
         FIRST_AVAILABLE = 2
@@ -313,11 +301,10 @@ class InternalRange(proto.Message):
                 used.
             first_available_ranges_lookup_size (int):
                 Optional. This field must be set only when
-                allocation_strategy is set to
-                RANDOM_FIRST_N_AVAILABLE. The value should be
-                the maximum expected parallelism of range
-                creation requests issued to the same space of
-                peered netwroks.
+                allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The
+                value should be the maximum expected parallelism of range
+                creation requests issued to the same space of peered
+                netwroks.
         """
 
         allocation_strategy: "InternalRange.AllocationStrategy" = proto.Field(
@@ -455,10 +442,9 @@ class ListInternalRangesResponse(proto.Message):
         internal_ranges (MutableSequence[google.cloud.networkconnectivity_v1.types.InternalRange]):
             Internal ranges to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -504,12 +490,10 @@ class CreateInternalRangeRequest(proto.Message):
             Required. The parent resource's name of the
             internal range.
         internal_range_id (str):
-            Optional. Resource ID
-            (i.e. 'foo' in
-            '[...]/projects/p/locations/l/internalRanges/foo')
-            See
-            https://google.aip.dev/122#resource-id-segments
-            Unique per location.
+            Optional. Resource ID (i.e. 'foo' in
+            '[...]/projects/p/locations/l/internalRanges/foo') See
+            https://google.aip.dev/122#resource-id-segments Unique per
+            location.
         internal_range (google.cloud.networkconnectivity_v1.types.InternalRange):
             Required. Initial values for a new internal
             range
@@ -559,14 +543,12 @@ class UpdateInternalRangeRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the InternalRange
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the InternalRange resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         internal_range (google.cloud.networkconnectivity_v1.types.InternalRange):
             Required. New values to be patched into the
             resource.

@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.datalabeling_v1beta1.types import annotation, data_payloads
 from google.cloud.datalabeling_v1beta1.types import (
     human_annotation_config as gcd_human_annotation_config,
 )
-from google.cloud.datalabeling_v1beta1.types import annotation, data_payloads
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
@@ -62,6 +62,7 @@ class DataType(proto.Enum):
         GENERAL_DATA (6):
             Allowed for continuous evaluation.
     """
+
     DATA_TYPE_UNSPECIFIED = 0
     IMAGE = 1
     VIDEO = 2
@@ -77,7 +78,6 @@ class Dataset(proto.Message):
     Attributes:
         name (str):
             Output only. Dataset resource name, format is:
-
             projects/{project_id}/datasets/{dataset_id}
         display_name (str):
             Required. The display name of the dataset.
@@ -399,8 +399,7 @@ class DataItem(proto.Message):
 
             This field is a member of `oneof`_ ``payload``.
         name (str):
-            Output only. Name of the data item, in format
-            of:
+            Output only. Name of the data item, in format of:
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
@@ -435,8 +434,7 @@ class AnnotatedDataset(proto.Message):
 
     Attributes:
         name (str):
-            Output only. AnnotatedDataset resource name in
-            format of:
+            Output only. AnnotatedDataset resource name in format of:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}
         display_name (str):

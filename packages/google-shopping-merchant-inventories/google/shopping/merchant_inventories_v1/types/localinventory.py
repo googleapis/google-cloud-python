@@ -51,11 +51,10 @@ class LocalInventory(proto.Message):
             product. This field will be ignored if set by
             the client.
         store_code (str):
-            Required. Immutable. Store code (the store ID
-            from your Business Profile) of the physical
-            store the product is sold in. See the [Local
-            product inventory data
-            specification](https://support.google.com/merchants/answer/3061342)
+            Required. Immutable. Store code (the store ID from your
+            Business Profile) of the physical store the product is sold
+            in. See the `Local product inventory data
+            specification <https://support.google.com/merchants/answer/3061342>`__
             for more information.
         local_inventory_attributes (google.shopping.merchant_inventories_v1.types.LocalInventoryAttributes):
             Optional. A list of local inventory

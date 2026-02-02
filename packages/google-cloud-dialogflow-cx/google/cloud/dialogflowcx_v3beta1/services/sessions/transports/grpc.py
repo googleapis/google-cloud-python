@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import session
 
@@ -332,15 +332,14 @@ class SessionsGrpcTransport(SessionsTransport):
     ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         r"""Return a callable for the detect intent method over gRPC.
 
-        Processes a natural language query and returns
-        structured, actionable data as a result. This method is
-        not idempotent, because it may cause session entity
-        types to be updated, which in turn might affect results
-        of future queries.
+        Processes a natural language query and returns structured,
+        actionable data as a result. This method is not idempotent,
+        because it may cause session entity types to be updated, which
+        in turn might affect results of future queries.
 
-        Note: Always use agent versions for production traffic.
-        See [Versions and
-        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.DetectIntentRequest],
@@ -366,11 +365,10 @@ class SessionsGrpcTransport(SessionsTransport):
     ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         r"""Return a callable for the server streaming detect intent method over gRPC.
 
-        Processes a natural language query and returns
-        structured, actionable data as a result through
-        server-side streaming. Server-side streaming allows
-        Dialogflow to send [partial
-        responses](https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response)
+        Processes a natural language query and returns structured,
+        actionable data as a result through server-side streaming.
+        Server-side streaming allows Dialogflow to send `partial
+        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
         earlier in a single request.
 
         Returns:
@@ -384,12 +382,12 @@ class SessionsGrpcTransport(SessionsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "server_streaming_detect_intent" not in self._stubs:
-            self._stubs[
-                "server_streaming_detect_intent"
-            ] = self._logged_channel.unary_stream(
-                "/google.cloud.dialogflow.cx.v3beta1.Sessions/ServerStreamingDetectIntent",
-                request_serializer=session.DetectIntentRequest.serialize,
-                response_deserializer=session.DetectIntentResponse.deserialize,
+            self._stubs["server_streaming_detect_intent"] = (
+                self._logged_channel.unary_stream(
+                    "/google.cloud.dialogflow.cx.v3beta1.Sessions/ServerStreamingDetectIntent",
+                    request_serializer=session.DetectIntentRequest.serialize,
+                    response_deserializer=session.DetectIntentResponse.deserialize,
+                )
             )
         return self._stubs["server_streaming_detect_intent"]
 
@@ -402,13 +400,13 @@ class SessionsGrpcTransport(SessionsTransport):
         r"""Return a callable for the streaming detect intent method over gRPC.
 
         Processes a natural language query in audio format in a
-        streaming fashion and returns structured, actionable
-        data as a result. This method is only available via the
-        gRPC API (not REST).
+        streaming fashion and returns structured, actionable data as a
+        result. This method is only available via the gRPC API (not
+        REST).
 
-        Note: Always use agent versions for production traffic.
-        See [Versions and
-        environments](https://cloud.google.com/dialogflow/cx/docs/concept/version).
+        Note: Always use agent versions for production traffic. See
+        `Versions and
+        environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
         Returns:
             Callable[[~.StreamingDetectIntentRequest],

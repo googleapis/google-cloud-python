@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.bigquery_biglake_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigquery_biglake_v1.services.metastore_service import pagers
 from google.cloud.bigquery_biglake_v1.types import metastore
@@ -131,7 +131,8 @@ class MetastoreServiceAsyncClient:
         Returns:
             MetastoreServiceAsyncClient: The constructed client.
         """
-        return MetastoreServiceClient.from_service_account_info.__func__(MetastoreServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = MetastoreServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(MetastoreServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -147,7 +148,8 @@ class MetastoreServiceAsyncClient:
         Returns:
             MetastoreServiceAsyncClient: The constructed client.
         """
-        return MetastoreServiceClient.from_service_account_file.__func__(MetastoreServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = MetastoreServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(MetastoreServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -352,8 +354,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the CreateCatalog
                 method.
             parent (:class:`str`):
-                Required. The parent resource where this
-                catalog will be created. Format:
+                Required. The parent resource where this catalog will be
+                created. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -485,9 +487,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the DeleteCatalog
                 method.
             name (:class:`str`):
-                Required. The name of the catalog to
-                delete. Format:
-
+                Required. The name of the catalog to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -598,9 +598,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetCatalog
                 method.
             name (:class:`str`):
-                Required. The name of the catalog to
-                retrieve. Format:
-
+                Required. The name of the catalog to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -712,8 +710,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListCatalogs
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of catalogs. Format:
+                Required. The parent, which owns this collection of
+                catalogs. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -841,9 +839,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the
                 CreateDatabase method.
             parent (:class:`str`):
-                Required. The parent resource where this
-                database will be created. Format:
-
+                Required. The parent resource where this database will
+                be created. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -973,9 +970,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the
                 DeleteDatabase method.
             name (:class:`str`):
-                Required. The name of the database to
-                delete. Format:
-
+                Required. The name of the database to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1212,9 +1207,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetDatabase
                 method.
             name (:class:`str`):
-                Required. The name of the database to
-                retrieve. Format:
-
+                Required. The name of the database to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1324,9 +1317,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListDatabases
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of databases. Format:
-
+                Required. The parent, which owns this collection of
+                databases. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -1454,9 +1446,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the CreateTable
                 method.
             parent (:class:`str`):
-                Required. The parent resource where this
-                table will be created. Format:
-
+                Required. The parent resource where this table will be
+                created. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field
@@ -1584,9 +1575,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the DeleteTable
                 method.
             name (:class:`str`):
-                Required. The name of the table to
-                delete. Format:
-
+                Required. The name of the table to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -1944,9 +1933,7 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the GetTable
                 method.
             name (:class:`str`):
-                Required. The name of the table to
-                retrieve. Format:
-
+                Required. The name of the table to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -2056,9 +2043,8 @@ class MetastoreServiceAsyncClient:
                 The request object. Request message for the ListTables
                 method.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of tables. Format:
-
+                Required. The parent, which owns this collection of
+                tables. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.managedidentities_v1.types import resource
@@ -196,9 +196,8 @@ class ListDomainsRequest(proto.Message):
             operation. For example,
             ``Domain.fqdn="mydomain.myorginization"``.
         order_by (str):
-            Optional. Specifies the ordering of results. See
-            [Sorting
-            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
+            Optional. Specifies the ordering of results. See `Sorting
+            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
             for more information.
     """
 
@@ -291,9 +290,8 @@ class UpdateDomainRequest(proto.Message):
             - ``locations``
             - ``authorized_networks``
         domain (google.cloud.managedidentities_v1.types.Domain):
-            Required. Domain message with updated fields.
-            Only supported fields specified in update_mask
-            are updated.
+            Required. Domain message with updated fields. Only supported
+            fields specified in update_mask are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

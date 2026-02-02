@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -83,6 +83,7 @@ class TelephonyDtmf(proto.Enum):
             Pound/diamond/hash/square/gate/octothorpe:
             '#'.
     """
+
     TELEPHONY_DTMF_UNSPECIFIED = 0
     DTMF_ONE = 1
     DTMF_TWO = 2
@@ -103,10 +104,9 @@ class TelephonyDtmf(proto.Enum):
 
 
 class AudioEncoding(proto.Enum):
-    r"""Audio encoding of the audio content sent in the conversational
-    query request. Refer to the
-    [Cloud Speech API
-    documentation](https://cloud.google.com/speech-to-text/docs/basics)
+    r"""Audio encoding of the audio content sent in the conversational query
+    request. Refer to the `Cloud Speech API
+    documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
     for more details.
 
     Values:
@@ -156,6 +156,7 @@ class AudioEncoding(proto.Enum):
             8-bit samples that compand 13-bit audio
             samples using G.711 PCMU/a-law.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     AUDIO_ENCODING_LINEAR_16 = 1
     AUDIO_ENCODING_FLAC = 2
@@ -169,20 +170,19 @@ class AudioEncoding(proto.Enum):
 
 class SpeechModelVariant(proto.Enum):
     r"""Variant of the specified [Speech
-    model][google.cloud.dialogflow.v2.InputAudioConfig.model] to
-    use.
+    model][google.cloud.dialogflow.v2.InputAudioConfig.model] to use.
 
-    See the [Cloud Speech
-    documentation](https://cloud.google.com/speech-to-text/docs/enhanced-models)
+    See the `Cloud Speech
+    documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
     for which models have different variants. For example, the
-    "phone_call" model has both a standard and an enhanced variant.
-    When you use an enhanced model, you will generally receive
-    higher quality results than for a standard model.
+    "phone_call" model has both a standard and an enhanced variant. When
+    you use an enhanced model, you will generally receive higher quality
+    results than for a standard model.
 
     Values:
         SPEECH_MODEL_VARIANT_UNSPECIFIED (0):
-            No model variant specified. In this case
-            Dialogflow defaults to USE_BEST_AVAILABLE.
+            No model variant specified. In this case Dialogflow defaults
+            to USE_BEST_AVAILABLE.
         USE_BEST_AVAILABLE (1):
             Use the best available variant of the [Speech model][model]
             that the caller is eligible for.
@@ -191,9 +191,9 @@ class SpeechModelVariant(proto.Enum):
             docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
             for how to make your project eligible for enhanced models.
         USE_STANDARD (2):
-            Use standard model variant even if an enhanced
-            model is available. See the [Cloud Speech
-            documentation](https://cloud.google.com/speech-to-text/docs/enhanced-models)
+            Use standard model variant even if an enhanced model is
+            available. See the `Cloud Speech
+            documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
             for details about enhanced models.
         USE_ENHANCED (3):
             Use an enhanced model variant:
@@ -212,6 +212,7 @@ class SpeechModelVariant(proto.Enum):
               docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
               for how to make your project eligible.
     """
+
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
     USE_STANDARD = 2
@@ -234,6 +235,7 @@ class SsmlVoiceGender(proto.Enum):
         SSML_VOICE_GENDER_NEUTRAL (3):
             A gender-neutral voice.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     SSML_VOICE_GENDER_MALE = 1
     SSML_VOICE_GENDER_FEMALE = 2
@@ -268,6 +270,7 @@ class OutputAudioEncoding(proto.Enum):
             8-bit samples that compand 13-bit audio
             samples using G.711 PCMU/a-law.
     """
+
     OUTPUT_AUDIO_ENCODING_UNSPECIFIED = 0
     OUTPUT_AUDIO_ENCODING_LINEAR_16 = 1
     OUTPUT_AUDIO_ENCODING_MP3 = 2
@@ -379,10 +382,9 @@ class InputAudioConfig(proto.Message):
             Required. Audio encoding of the audio content
             to process.
         sample_rate_hertz (int):
-            Required. Sample rate (in Hertz) of the audio
-            content sent in the query. Refer to [Cloud
-            Speech API
-            documentation](https://cloud.google.com/speech-to-text/docs/basics)
+            Required. Sample rate (in Hertz) of the audio content sent
+            in the query. Refer to `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
             for more details.
         language_code (str):
             Required. The language of the supplied audio. Dialogflow
@@ -415,10 +417,10 @@ class InputAudioConfig(proto.Message):
             Dialogflow will treat the ```phrase_hints`` <>`__ as a
             single additional ```SpeechContext`` <>`__.
         speech_contexts (MutableSequence[google.cloud.dialogflow_v2.types.SpeechContext]):
-            Context information to assist speech
-            recognition.
-            See [the Cloud Speech
-            documentation](https://cloud.google.com/speech-to-text/docs/basics#phrase-hints)
+            Context information to assist speech recognition.
+
+            See `the Cloud Speech
+            documentation <https://cloud.google.com/speech-to-text/docs/basics#phrase-hints>`__
             for more details.
         model (str):
             Optional. Which Speech model to select for the given
@@ -426,8 +428,8 @@ class InputAudioConfig(proto.Message):
             models <https://cloud.google.com/dialogflow/es/docs/speech-models>`__.
         model_variant (google.cloud.dialogflow_v2.types.SpeechModelVariant):
             Which variant of the [Speech
-            model][google.cloud.dialogflow.v2.InputAudioConfig.model]
-            to use.
+            model][google.cloud.dialogflow.v2.InputAudioConfig.model] to
+            use.
         single_utterance (bool):
             If ``false`` (default), recognition does not cease until the
             client closes the stream. If ``true``, the recognizer will
@@ -553,30 +555,26 @@ class SynthesizeSpeechConfig(proto.Message):
 
     Attributes:
         speaking_rate (float):
-            Optional. Speaking rate/speed, in the range
-            [0.25, 4.0]. 1.0 is the normal native speed
-            supported by the specific voice. 2.0 is twice as
-            fast, and 0.5 is half as fast. If unset(0.0),
-            defaults to the native 1.0 speed. Any other
+            Optional. Speaking rate/speed, in the range [0.25, 4.0]. 1.0
+            is the normal native speed supported by the specific voice.
+            2.0 is twice as fast, and 0.5 is half as fast. If
+            unset(0.0), defaults to the native 1.0 speed. Any other
             values < 0.25 or > 4.0 will return an error.
         pitch (float):
-            Optional. Speaking pitch, in the range [-20.0,
-            20.0]. 20 means increase 20 semitones from the
-            original pitch. -20 means decrease 20 semitones
-            from the original pitch.
+            Optional. Speaking pitch, in the range [-20.0, 20.0]. 20
+            means increase 20 semitones from the original pitch. -20
+            means decrease 20 semitones from the original pitch.
         volume_gain_db (float):
-            Optional. Volume gain (in dB) of the normal
-            native volume supported by the specific voice,
-            in the range [-96.0, 16.0]. If unset, or set to
-            a value of 0.0 (dB), will play at normal native
-            signal amplitude. A value of -6.0 (dB) will play
-            at approximately half the amplitude of the
-            normal native signal amplitude. A value of +6.0
-            (dB) will play at approximately twice the
-            amplitude of the normal native signal amplitude.
-            We strongly recommend not to exceed +10 (dB) as
-            there's usually no effective increase in
-            loudness for any value greater than that.
+            Optional. Volume gain (in dB) of the normal native volume
+            supported by the specific voice, in the range [-96.0, 16.0].
+            If unset, or set to a value of 0.0 (dB), will play at normal
+            native signal amplitude. A value of -6.0 (dB) will play at
+            approximately half the amplitude of the normal native signal
+            amplitude. A value of +6.0 (dB) will play at approximately
+            twice the amplitude of the normal native signal amplitude.
+            We strongly recommend not to exceed +10 (dB) as there's
+            usually no effective increase in loudness for any value
+            greater than that.
         effects_profile_id (MutableSequence[str]):
             Optional. An identifier which selects 'audio
             effects' profiles that are applied on (post
@@ -648,6 +646,7 @@ class CustomPronunciationParams(proto.Message):
                 X-SAMPA, such as apple -> "{p@l".
                 https://en.wikipedia.org/wiki/X-SAMPA
         """
+
         PHONETIC_ENCODING_UNSPECIFIED = 0
         PHONETIC_ENCODING_IPA = 1
         PHONETIC_ENCODING_X_SAMPA = 2
@@ -759,18 +758,17 @@ class SpeechToTextConfig(proto.Message):
             settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
             for model selection.
         phrase_sets (MutableSequence[str]):
-            List of names of Cloud Speech phrase sets that
-            are used for transcription. For phrase set
-            limitations, please refer to [Cloud Speech API
-            quotas and
-            limits](https://cloud.google.com/speech-to-text/quotas#content).
+            List of names of Cloud Speech phrase sets that are used for
+            transcription. For phrase set limitations, please refer to
+            `Cloud Speech API quotas and
+            limits <https://cloud.google.com/speech-to-text/quotas#content>`__.
         audio_encoding (google.cloud.dialogflow_v2.types.AudioEncoding):
             Audio encoding of the audio content to
             process.
         sample_rate_hertz (int):
-            Sample rate (in Hertz) of the audio content sent
-            in the query. Refer to [Cloud Speech API
-            documentation](https://cloud.google.com/speech-to-text/docs/basics)
+            Sample rate (in Hertz) of the audio content sent in the
+            query. Refer to `Cloud Speech API
+            documentation <https://cloud.google.com/speech-to-text/docs/basics>`__
             for more details.
         language_code (str):
             The language of the supplied audio. Dialogflow does not do

@@ -28,9 +28,8 @@ __protobuf__ = proto.module(
 
 
 class CloudDlpInspection(proto.Message):
-    r"""Details about the Cloud Data Loss Prevention (Cloud DLP)
-    [inspection
-    job](https://cloud.google.com/dlp/docs/concepts-job-triggers)
+    r"""Details about the Cloud Data Loss Prevention (Cloud DLP) `inspection
+    job <https://cloud.google.com/dlp/docs/concepts-job-triggers>`__
     that produced the finding.
 
     Attributes:

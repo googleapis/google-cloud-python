@@ -51,9 +51,9 @@ class AvroRows(proto.Message):
         serialized_binary_rows (bytes):
             Binary serialized rows in a block.
         row_count (int):
-            [Deprecated] The count of rows in the returning
-            block. Please use the format-independent
-            ReadRowsResponse.row_count instead.
+            [Deprecated] The count of rows in the returning block.
+            Please use the format-independent ReadRowsResponse.row_count
+            instead.
     """
 
     serialized_binary_rows: bytes = proto.Field(
@@ -113,6 +113,7 @@ class AvroSerializationOptions(proto.Message):
                 picosecond value. The value will be encoded as a
                 string which conforms to ISO 8601 format.
         """
+
         PICOS_TIMESTAMP_PRECISION_UNSPECIFIED = 0
         TIMESTAMP_PRECISION_MICROS = 1
         TIMESTAMP_PRECISION_NANOS = 2

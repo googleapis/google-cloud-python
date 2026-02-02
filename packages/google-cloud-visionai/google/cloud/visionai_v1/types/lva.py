@@ -48,6 +48,7 @@ class RunMode(proto.Enum):
             launched to handle bounded video files, with no
             packet drop. Completion status is tracked.
     """
+
     RUN_MODE_UNSPECIFIED = 0
     LIVE = 1
     SUBMISSION = 2
@@ -346,27 +347,22 @@ class AnalyzerDefinition(proto.Message):
     class StreamInput(proto.Message):
         r"""The inputs to this analyzer.
 
-        We accept input name references of the following form:
-
-        <analyzer-name>:<output-argument-name>
+        We accept input name references of the following form: :
 
         Example:
 
         Suppose you had an operator named "SomeOp" that has 2 output
-        arguments, the first of which is named "foo" and the second of
-        which is named "bar", and an operator named "MyOp" that accepts
-        2 inputs.
+        arguments, the first of which is named "foo" and the second of which
+        is named "bar", and an operator named "MyOp" that accepts 2 inputs.
 
-        Also suppose that there is an analyzer named "some-analyzer"
-        that is running "SomeOp" and another analyzer named
-        "my-analyzer" running "MyOp".
+        Also suppose that there is an analyzer named "some-analyzer" that is
+        running "SomeOp" and another analyzer named "my-analyzer" running
+        "MyOp".
 
-        To indicate that "my-analyzer" is to consume "some-analyzer"'s
-        "foo" output as its first input and "some-analyzer"'s "bar"
-        output as its second input, you can set this field to the
-        following:
-
-        input = ["some-analyzer:foo", "some-analyzer:bar"]
+        To indicate that "my-analyzer" is to consume "some-analyzer"'s "foo"
+        output as its first input and "some-analyzer"'s "bar" output as its
+        second input, you can set this field to the following: input =
+        ["some-analyzer:foo", "some-analyzer:bar"]
 
         Attributes:
             input (str):
@@ -499,6 +495,7 @@ class RunStatus(proto.Message):
                 PENDING means the Process is created but yet
                 to be scheduled.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         RUNNING = 2

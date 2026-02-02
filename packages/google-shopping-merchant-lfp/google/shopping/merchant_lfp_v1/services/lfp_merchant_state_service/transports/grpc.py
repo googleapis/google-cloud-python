@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_lfp_v1.types import lfpmerchantstate
 
@@ -110,13 +110,12 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class LfpMerchantStateServiceGrpcTransport(LfpMerchantStateServiceTransport):
     """gRPC backend transport for LfpMerchantStateService.
 
-    Service for a [LFP
-    partner](https://support.google.com/merchants/answer/7676652) to
+    Service for a `LFP
+    partner <https://support.google.com/merchants/answer/7676652>`__ to
     get the state of a merchant.
 
-    For information about onboarding a retailer, see [How to onboard
-    a
-    retailer](https://support.google.com/merchants/answer/15243706).
+    For information about onboarding a retailer, see `How to onboard a
+    retailer <https://support.google.com/merchants/answer/15243706>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

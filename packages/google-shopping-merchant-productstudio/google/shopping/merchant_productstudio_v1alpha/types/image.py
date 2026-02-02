@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_productstudio_v1alpha.types import productstudio_common
@@ -211,11 +211,10 @@ class GeneratedImage(proto.Message):
 
     Attributes:
         uri (str):
-            Generally web-requestable URI of the generated
-            image. This is a temporary URI and will expire
-            after 6 months. A URI may not be populated
-            immediately after generation. Use get or list
-            api using image_id to get the URI.
+            Generally web-requestable URI of the generated image. This
+            is a temporary URI and will expire after 6 months. A URI may
+            not be populated immediately after generation. Use get or
+            list api using image_id to get the URI.
 
             This field is a member of `oneof`_ ``image``.
         image_bytes (bytes):

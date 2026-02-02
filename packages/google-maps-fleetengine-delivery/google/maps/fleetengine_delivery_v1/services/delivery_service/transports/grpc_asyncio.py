@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.maps.fleetengine_delivery_v1.types import (
     delivery_api,
@@ -403,8 +403,8 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
 
         Deletes a DeliveryVehicle from the Fleet Engine.
 
-        Returns FAILED_PRECONDITION if the DeliveryVehicle has
-        OPEN Tasks assigned to it.
+        Returns FAILED_PRECONDITION if the DeliveryVehicle has OPEN
+        Tasks assigned to it.
 
         Returns:
             Callable[[~.DeleteDeliveryVehicleRequest],
@@ -550,8 +550,8 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
 
         Deletes a single Task.
 
-        Returns FAILED_PRECONDITION if the Task is OPEN and
-        assigned to a DeliveryVehicle.
+        Returns FAILED_PRECONDITION if the Task is OPEN and assigned to
+        a DeliveryVehicle.
 
         Returns:
             Callable[[~.DeleteTaskRequest],

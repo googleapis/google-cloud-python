@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -64,6 +64,7 @@ class BatchOperationMetadata(proto.Message):
             BATCH (1):
                 Batch operation type.
         """
+
         BATCH_OPERATION_TYPE_UNSPECIFIED = 0
         BATCH = 1
 
@@ -141,6 +142,7 @@ class SessionOperationMetadata(proto.Message):
             DELETE (3):
                 Delete Session operation type.
         """
+
         SESSION_OPERATION_TYPE_UNSPECIFIED = 0
         CREATE = 1
         TERMINATE = 2
@@ -215,6 +217,7 @@ class ClusterOperationStatus(proto.Message):
                 The operation is done; either cancelled or
                 completed.
         """
+
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -348,6 +351,7 @@ class NodeGroupOperationMetadata(proto.Message):
             RESIZE (4):
                 Resize node group operation type.
         """
+
         NODE_GROUP_OPERATION_TYPE_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2

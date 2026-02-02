@@ -40,14 +40,15 @@ class ConsentStatus(proto.Enum):
         CONSENT_DENIED (2):
             Denied.
     """
+
     CONSENT_STATUS_UNSPECIFIED = 0
     CONSENT_GRANTED = 1
     CONSENT_DENIED = 2
 
 
 class Consent(proto.Message):
-    r"""[Digital Markets Act
-    (DMA)](//digital-markets-act.ec.europa.eu/index_en) consent
+    r"""`Digital Markets Act
+    (DMA) <//digital-markets-act.ec.europa.eu/index_en>`__ consent
     settings for the user.
 
     Attributes:

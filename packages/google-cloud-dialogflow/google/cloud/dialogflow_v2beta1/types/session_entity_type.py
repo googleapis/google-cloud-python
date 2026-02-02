@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import entity_type
@@ -37,15 +37,15 @@ __protobuf__ = proto.module(
 
 
 class SessionEntityType(proto.Message):
-    r"""A session represents a conversation between a Dialogflow agent
-    and an end-user. You can create special entities, called session
-    entities, during a session. Session entities can extend or
-    replace custom entity types and only exist during the session
-    that they were created for. All session data, including session
-    entities, is stored by Dialogflow for 20 minutes.
+    r"""A session represents a conversation between a Dialogflow agent and
+    an end-user. You can create special entities, called session
+    entities, during a session. Session entities can extend or replace
+    custom entity types and only exist during the session that they were
+    created for. All session data, including session entities, is stored
+    by Dialogflow for 20 minutes.
 
-    For more information, see the [session entity
-    guide](https://cloud.google.com/dialogflow/docs/entities-session).
+    For more information, see the `session entity
+    guide <https://cloud.google.com/dialogflow/docs/entities-session>`__.
 
     Attributes:
         name (str):
@@ -97,6 +97,7 @@ class SessionEntityType(proto.Message):
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType]
                 on the custom entity type and merge.
         """
+
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
         ENTITY_OVERRIDE_MODE_OVERRIDE = 1
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
@@ -140,8 +141,8 @@ class ListSessionEntityTypesRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -164,9 +165,9 @@ class ListSessionEntityTypesResponse(proto.Message):
 
     Attributes:
         session_entity_types (MutableSequence[google.cloud.dialogflow_v2beta1.types.SessionEntityType]):
-            The list of session entity types. There will be
-            a maximum number of items returned based on the
-            page_size field in the request.
+            The list of session entity types. There will be a maximum
+            number of items returned based on the page_size field in the
+            request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

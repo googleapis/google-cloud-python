@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,21 +48,19 @@ class MerchantCenterAccountLink(proto.Message):
             ``BranchId_MerchantCenterAccountId``.
             ``projects/*/locations/global/catalogs/default_catalog/merchantCenterAccountLinks/id_1``.
         merchant_center_account_id (int):
-            Required. The linked [Merchant center account
-            id](https://developers.google.com/shopping-content/guides/accountstatuses).
-            The account must be a standalone account or a
-            sub-account of a MCA.
+            Required. The linked `Merchant center account
+            id <https://developers.google.com/shopping-content/guides/accountstatuses>`__.
+            The account must be a standalone account or a sub-account of
+            a MCA.
         branch_id (str):
-            Required. The branch ID (e.g. 0/1/2) within the
-            catalog that products from
-            merchant_center_account_id are streamed to. When
-            updating this field, an empty value will use the
-            currently configured default branch. However,
-            changing the default branch later on won't
-            change the linked branch here.
+            Required. The branch ID (e.g. 0/1/2) within the catalog that
+            products from merchant_center_account_id are streamed to.
+            When updating this field, an empty value will use the
+            currently configured default branch. However, changing the
+            default branch later on won't change the linked branch here.
 
-            A single branch ID can only have one linked
-            Merchant Center account ID.
+            A single branch ID can only have one linked Merchant Center
+            account ID.
         feed_label (str):
             The FeedLabel used to perform filtering. Note: this replaces
             `region_id <https://developers.google.com/shopping-content/reference/rest/v2.1/products#Product.FIELDS.feed_label>`__.
@@ -107,6 +105,7 @@ class MerchantCenterAccountLink(proto.Message):
             FAILED (3):
                 Link creation failed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -117,8 +116,8 @@ class MerchantCenterAccountLink(proto.Message):
 
         Attributes:
             primary_feed_id (int):
-                Merchant Center primary feed ID.
-                Deprecated: use data_source_id instead.
+                Merchant Center primary feed ID. Deprecated: use
+                data_source_id instead.
             data_source_id (int):
                 AFM data source ID.
             primary_feed_name (str):

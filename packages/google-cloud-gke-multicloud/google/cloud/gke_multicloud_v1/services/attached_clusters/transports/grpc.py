@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import attached_resources, attached_service
 
@@ -559,12 +559,12 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_attached_server_config" not in self._stubs:
-            self._stubs[
-                "get_attached_server_config"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedServerConfig",
-                request_serializer=attached_service.GetAttachedServerConfigRequest.serialize,
-                response_deserializer=attached_resources.AttachedServerConfig.deserialize,
+            self._stubs["get_attached_server_config"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedServerConfig",
+                    request_serializer=attached_service.GetAttachedServerConfigRequest.serialize,
+                    response_deserializer=attached_resources.AttachedServerConfig.deserialize,
+                )
             )
         return self._stubs["get_attached_server_config"]
 
@@ -592,12 +592,12 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_attached_cluster_install_manifest" not in self._stubs:
-            self._stubs[
-                "generate_attached_cluster_install_manifest"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterInstallManifest",
-                request_serializer=attached_service.GenerateAttachedClusterInstallManifestRequest.serialize,
-                response_deserializer=attached_service.GenerateAttachedClusterInstallManifestResponse.deserialize,
+            self._stubs["generate_attached_cluster_install_manifest"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterInstallManifest",
+                    request_serializer=attached_service.GenerateAttachedClusterInstallManifestRequest.serialize,
+                    response_deserializer=attached_service.GenerateAttachedClusterInstallManifestResponse.deserialize,
+                )
             )
         return self._stubs["generate_attached_cluster_install_manifest"]
 
@@ -624,12 +624,12 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_attached_cluster_agent_token" not in self._stubs:
-            self._stubs[
-                "generate_attached_cluster_agent_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
-                request_serializer=attached_service.GenerateAttachedClusterAgentTokenRequest.serialize,
-                response_deserializer=attached_service.GenerateAttachedClusterAgentTokenResponse.deserialize,
+            self._stubs["generate_attached_cluster_agent_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
+                    request_serializer=attached_service.GenerateAttachedClusterAgentTokenRequest.serialize,
+                    response_deserializer=attached_service.GenerateAttachedClusterAgentTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_attached_cluster_agent_token"]
 

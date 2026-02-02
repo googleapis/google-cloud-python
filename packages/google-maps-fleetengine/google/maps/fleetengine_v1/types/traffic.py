@@ -29,10 +29,10 @@ __protobuf__ = proto.module(
 
 
 class SpeedReadingInterval(proto.Message):
-    r"""Traffic density indicator on a contiguous segment of a path.
-    Given a path with points P_0, P_1, ... , P_N (zero-based index),
-    the SpeedReadingInterval defines an interval and describes its
-    traffic using the following categories.
+    r"""Traffic density indicator on a contiguous segment of a path. Given a
+    path with points P_0, P_1, ... , P_N (zero-based index), the
+    SpeedReadingInterval defines an interval and describes its traffic
+    using the following categories.
 
     Attributes:
         start_polyline_point_index (int):
@@ -60,6 +60,7 @@ class SpeedReadingInterval(proto.Message):
             TRAFFIC_JAM (3):
                 Traffic delays.
         """
+
         SPEED_UNSPECIFIED = 0
         NORMAL = 1
         SLOW = 2
@@ -94,12 +95,12 @@ class ConsumableTrafficPolyline(proto.Message):
             ``speed_reading_interval``). Decoding is not yet supported.
     """
 
-    speed_reading_interval: MutableSequence[
-        "SpeedReadingInterval"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SpeedReadingInterval",
+    speed_reading_interval: MutableSequence["SpeedReadingInterval"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SpeedReadingInterval",
+        )
     )
     encoded_path_to_waypoint: str = proto.Field(
         proto.STRING,

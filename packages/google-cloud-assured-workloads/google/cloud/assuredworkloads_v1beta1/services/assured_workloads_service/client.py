@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.assuredworkloads_v1beta1 import gapic_version as package_version
 
@@ -61,11 +61,11 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     pagers,
@@ -86,9 +86,7 @@ class AssuredWorkloadsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[AssuredWorkloadsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[AssuredWorkloadsServiceTransport]]
     _transport_registry["grpc"] = AssuredWorkloadsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = AssuredWorkloadsServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = AssuredWorkloadsServiceRestTransport
@@ -634,11 +632,9 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = AssuredWorkloadsServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            AssuredWorkloadsServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             AssuredWorkloadsServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -675,8 +671,7 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(AssuredWorkloadsServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -890,11 +885,10 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> assuredworkloads.Workload:
-        r"""Updates an existing workload.
-        Currently allows updating of workload display_name and
-        labels. For force updates don't set etag field in the
-        Workload. Only one update operation per workload can be
-        in progress.
+        r"""Updates an existing workload. Currently allows updating of
+        workload display_name and labels. For force updates don't set
+        etag field in the Workload. Only one update operation per
+        workload can be in progress.
 
         .. code-block:: python
 
@@ -1108,13 +1102,12 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the workload. Make sure that workload's direct
-        children are already in a deleted state, otherwise the
-        request will fail with a FAILED_PRECONDITION error.
-        In addition to assuredworkloads.workload.delete
-        permission, the user should also have
-        orgpolicy.policy.set permission on the deleted folder to
-        remove Assured Workloads OrgPolicies.
+        r"""Deletes the workload. Make sure that workload's direct children
+        are already in a deleted state, otherwise the request will fail
+        with a FAILED_PRECONDITION error. In addition to
+        assuredworkloads.workload.delete permission, the user should
+        also have orgpolicy.policy.set permission on the deleted folder
+        to remove Assured Workloads OrgPolicies.
 
         .. code-block:: python
 
@@ -1242,9 +1235,8 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
             request (Union[google.cloud.assuredworkloads_v1beta1.types.GetWorkloadRequest, dict]):
                 The request object. Request for fetching a workload.
             name (str):
-                Required. The resource name of the
-                Workload to fetch. This is the
-                workloads's relative path in the API,
+                Required. The resource name of the Workload to fetch.
+                This is the workloads's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,
@@ -1357,33 +1349,24 @@ class AssuredWorkloadsServiceClient(metaclass=AssuredWorkloadsServiceClientMeta)
                 project-based workload to a target
                 (destination) folder-based workload.
             project (str):
-                The source type is a project. Specify
-                the project's relative resource name,
-                formatted as either a project number or
-                a project ID:
-
-                "projects/{PROJECT_NUMBER}" or
+                The source type is a project. Specify the project's
+                relative resource name, formatted as either a project
+                number or a project ID: "projects/{PROJECT_NUMBER}" or
                 "projects/{PROJECT_ID}" For example:
-
-                "projects/951040570662" when specifying
-                a project number, or
-                "projects/my-project-123" when
-                specifying a project ID.
+                "projects/951040570662" when specifying a project
+                number, or "projects/my-project-123" when specifying a
+                project ID.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target (str):
-                Required. The resource ID of the
-                folder-based destination workload. This
-                workload is where the source project
-                will hypothetically be moved to. Specify
-                the workload's relative resource name,
-                formatted as:
-
+                Required. The resource ID of the folder-based
+                destination workload. This workload is where the source
+                project will hypothetically be moved to. Specify the
+                workload's relative resource name, formatted as:
                 "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
                 For example:
-
                 "organizations/123/locations/us-east1/workloads/assured-workload-2"
 
                 This corresponds to the ``target`` field

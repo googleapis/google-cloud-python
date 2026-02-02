@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import common_fields
@@ -53,6 +53,7 @@ class CollectionType(proto.Enum):
             The collection type is delete. This should be
             used when an API is deleted at the source.
     """
+
     COLLECTION_TYPE_UNSPECIFIED = 0
     COLLECTION_TYPE_UPSERT = 1
     COLLECTION_TYPE_DELETE = 2

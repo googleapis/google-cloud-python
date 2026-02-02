@@ -35,8 +35,8 @@ class DbVersion(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the DbVersion resource
-            in the following format:
+            Output only. The name of the DbVersion resource in the
+            following format:
             projects/{project}/locations/{region}/dbVersions/{db_version}
         properties (google.cloud.oracledatabase_v1.types.DbVersionProperties):
             Output only. The properties of the DbVersion.

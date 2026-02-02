@@ -16,26 +16,30 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.automl_v1beta1.types import annotation_spec
-from google.cloud.automl_v1beta1.types import column_spec
+from google.cloud.automl_v1beta1.types import (
+    annotation_spec,
+    column_spec,
+    dataset,
+    model,
+    model_evaluation,
+    service,
+    table_spec,
+)
 from google.cloud.automl_v1beta1.types import column_spec as gca_column_spec
-from google.cloud.automl_v1beta1.types import dataset
 from google.cloud.automl_v1beta1.types import dataset as gca_dataset
-from google.cloud.automl_v1beta1.types import model, model_evaluation, service
-from google.cloud.automl_v1beta1.types import table_spec
 from google.cloud.automl_v1beta1.types import table_spec as gca_table_spec
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -1793,7 +1797,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1942,7 +1946,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2088,7 +2092,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2239,7 +2243,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2391,7 +2395,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2517,9 +2521,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
 
             """
 
-            http_options = (
-                _BaseAutoMlRestTransport._BaseExportEvaluatedExamples._get_http_options()
-            )
+            http_options = _BaseAutoMlRestTransport._BaseExportEvaluatedExamples._get_http_options()
 
             request, metadata = self._interceptor.pre_export_evaluated_examples(
                 request, metadata
@@ -2545,7 +2547,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2699,7 +2701,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3759,7 +3761,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4664,7 +4666,7 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5274,7 +5276,9 @@ class AutoMlRestTransport(_BaseAutoMlRestTransport):
     ) -> Callable[[service.ExportEvaluatedExamplesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportEvaluatedExamples(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ExportEvaluatedExamples(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def export_model(

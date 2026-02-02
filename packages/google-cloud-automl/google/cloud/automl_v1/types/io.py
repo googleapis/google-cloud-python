@@ -1079,17 +1079,13 @@ class OutputConfig(proto.Message):
 
     Attributes:
         gcs_destination (google.cloud.automl_v1.types.GcsDestination):
-            Required. The Google Cloud Storage location
-            where the output is to be written to. For Image
-            Object Detection, Text Extraction, Video
-            Classification and Tables, in the given
-            directory a new directory will be created with
-            name:
-
-            export_data-<dataset-display-name>-<timestamp-of-export-call>
-            where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
-            ISO-8601 format. All export output will be
-            written into that directory.
+            Required. The Google Cloud Storage location where the output
+            is to be written to. For Image Object Detection, Text
+            Extraction, Video Classification and Tables, in the given
+            directory a new directory will be created with name:
+            export_data-- where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
+            ISO-8601 format. All export output will be written into that
+            directory.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -1383,20 +1379,15 @@ class ModelExportOutputConfig(proto.Message):
 
     Attributes:
         gcs_destination (google.cloud.automl_v1.types.GcsDestination):
-            Required. The Google Cloud Storage location
-            where the model is to be written to. This
-            location may only be set for the following model
-            formats:
+            Required. The Google Cloud Storage location where the model
+            is to be written to. This location may only be set for the
+            following model formats: "tflite", "edgetpu_tflite",
+            "tf_saved_model", "tf_js", "core_ml".
 
-            "tflite", "edgetpu_tflite", "tf_saved_model",
-            "tf_js", "core_ml".
-
-            Under the directory given as the destination a
-            new one with name
-            "model-export-<model-display-name>-<timestamp-of-export-call>",
-            where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
-            ISO-8601 format, will be created. Inside the
-            model and any of its supporting files will be
+            Under the directory given as the destination a new one with
+            name "model-export--", where timestamp is in
+            YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
+            Inside the model and any of its supporting files will be
             written.
 
             This field is a member of `oneof`_ ``destination``.

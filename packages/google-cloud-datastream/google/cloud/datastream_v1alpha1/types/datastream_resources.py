@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -71,6 +71,7 @@ class GcsFileFormat(proto.Enum):
         AVRO (1):
             Avro file format
     """
+
     _pb_options = {"deprecated": True}
     GCS_FILE_FORMAT_UNSPECIFIED = 0
     AVRO = 1
@@ -87,6 +88,7 @@ class SchemaFileFormat(proto.Enum):
         AVRO_SCHEMA_FILE (2):
             Avro schema format.
     """
+
     SCHEMA_FILE_FORMAT_UNSPECIFIED = 0
     NO_SCHEMA_FILE = 1
     AVRO_SCHEMA_FILE = 2
@@ -323,6 +325,7 @@ class PrivateConnection(proto.Message):
             FAILED (3):
                 The private connection creation has failed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -442,29 +445,27 @@ class MysqlSslConfig(proto.Message):
 
     Attributes:
         client_key (str):
-            Input only. PEM-encoded private key associated
-            with the Client Certificate. If this field is
-            used then the 'client_certificate' and the
-            'ca_certificate' fields are mandatory.
+            Input only. PEM-encoded private key associated with the
+            Client Certificate. If this field is used then the
+            'client_certificate' and the 'ca_certificate' fields are
+            mandatory.
         client_key_set (bool):
-            Output only. Indicates whether the client_key
-            field is set.
+            Output only. Indicates whether the client_key field is set.
         client_certificate (str):
-            Input only. PEM-encoded certificate that will be
-            used by the replica to authenticate against the
-            source database server. If this field is used
-            then the 'client_key' and the 'ca_certificate'
-            fields are mandatory.
+            Input only. PEM-encoded certificate that will be used by the
+            replica to authenticate against the source database server.
+            If this field is used then the 'client_key' and the
+            'ca_certificate' fields are mandatory.
         client_certificate_set (bool):
-            Output only. Indicates whether the
-            client_certificate field is set.
+            Output only. Indicates whether the client_certificate field
+            is set.
         ca_certificate (str):
             Input only. PEM-encoded certificate of the CA
             that signed the source database server's
             certificate.
         ca_certificate_set (bool):
-            Output only. Indicates whether the
-            ca_certificate field is set.
+            Output only. Indicates whether the ca_certificate field is
+            set.
     """
 
     client_key: str = proto.Field(
@@ -962,6 +963,7 @@ class JsonFileFormat(proto.Message):
             GZIP (2):
                 Gzip compression.
         """
+
         JSON_COMPRESSION_UNSPECIFIED = 0
         NO_COMPRESSION = 1
         GZIP = 2
@@ -993,8 +995,8 @@ class GcsDestinationConfig(proto.Message):
             Path inside the Cloud Storage bucket to write
             data to.
         gcs_file_format (google.cloud.datastream_v1alpha1.types.GcsFileFormat):
-            File format that data should be written in.
-            Deprecated field - use file_format instead.
+            File format that data should be written in. Deprecated field
+            - use file_format instead.
         file_rotation_mb (int):
             The maximum file size to be saved in the
             bucket.
@@ -1143,6 +1145,7 @@ class Stream(proto.Message):
                 The Stream is no longer reading new events,
                 but still writing events in the buffer.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2
@@ -1340,6 +1343,7 @@ class Validation(proto.Message):
             PASSED (3):
                 Validation passed.
         """
+
         STATUS_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
@@ -1391,6 +1395,7 @@ class ValidationMessage(proto.Message):
             ERROR (2):
                 Definitely cause issues with the Stream.
         """
+
         LEVEL_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

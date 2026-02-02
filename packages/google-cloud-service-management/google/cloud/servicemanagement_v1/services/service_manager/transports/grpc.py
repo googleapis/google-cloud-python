@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api import service_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
+import google.api.service_pb2 as service_pb2  # type: ignore
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.servicemanagement_v1.types import resources, servicemanager
 
@@ -114,8 +116,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class ServiceManagerGrpcTransport(ServiceManagerTransport):
     """gRPC backend transport for ServiceManager.
 
-    [Google Service Management
-    API](https://cloud.google.com/service-infrastructure/docs/overview)
+    `Google Service Management
+    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -744,19 +746,18 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     ]:
         r"""Return a callable for the generate config report method over gRPC.
 
-        Generates and returns a report (errors, warnings and
-        changes from existing configurations) associated with
+        Generates and returns a report (errors, warnings and changes
+        from existing configurations) associated with
         GenerateConfigReportRequest.new_value
 
         If GenerateConfigReportRequest.old_value is specified,
-        GenerateConfigReportRequest will contain a single
-        ChangeReport based on the comparison between
+        GenerateConfigReportRequest will contain a single ChangeReport
+        based on the comparison between
         GenerateConfigReportRequest.new_value and
-        GenerateConfigReportRequest.old_value.
-        If GenerateConfigReportRequest.old_value is not
-        specified, this method will compare
-        GenerateConfigReportRequest.new_value with the last
-        pushed service configuration.
+        GenerateConfigReportRequest.old_value. If
+        GenerateConfigReportRequest.old_value is not specified, this
+        method will compare GenerateConfigReportRequest.new_value with
+        the last pushed service configuration.
 
         Returns:
             Callable[[~.GenerateConfigReportRequest],

@@ -91,6 +91,7 @@ class ChannelGroupFilter(proto.Message):
                     Partial regular expression match with the
                     string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -154,23 +155,21 @@ class ChannelGroupFilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.admin_v1alpha.types.ChannelGroupFilterExpressionList):
-            A list of expressions to be AND’ed together. It
-            can only contain ChannelGroupFilterExpressions
-            with or_group. This must be set for the top
-            level ChannelGroupFilterExpression.
+            A list of expressions to be AND’ed together. It can only
+            contain ChannelGroupFilterExpressions with or_group. This
+            must be set for the top level ChannelGroupFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         or_group (google.analytics.admin_v1alpha.types.ChannelGroupFilterExpressionList):
-            A list of expressions to OR’ed together. It
-            cannot contain ChannelGroupFilterExpressions
-            with and_group or or_group.
+            A list of expressions to OR’ed together. It cannot contain
+            ChannelGroupFilterExpressions with and_group or or_group.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.ChannelGroupFilterExpression):
-            A filter expression to be NOT'ed (that is
-            inverted, complemented). It can only include a
-            dimension_or_metric_filter. This cannot be set
-            on the top level ChannelGroupFilterExpression.
+            A filter expression to be NOT'ed (that is inverted,
+            complemented). It can only include a
+            dimension_or_metric_filter. This cannot be set on the top
+            level ChannelGroupFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.admin_v1alpha.types.ChannelGroupFilter):
@@ -215,12 +214,12 @@ class ChannelGroupFilterExpressionList(proto.Message):
             A list of Channel Group filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ChannelGroupFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ChannelGroupFilterExpression",
+    filter_expressions: MutableSequence["ChannelGroupFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ChannelGroupFilterExpression",
+        )
     )
 
 
@@ -253,8 +252,8 @@ class ChannelGroup(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this Channel
-            Group resource. Format:
+            Output only. The resource name for this Channel Group
+            resource. Format:
             properties/{property}/channelGroups/{channel_group}
         display_name (str):
             Required. The display name of the Channel

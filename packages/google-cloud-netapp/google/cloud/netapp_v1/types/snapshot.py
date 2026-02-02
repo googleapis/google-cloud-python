@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -46,9 +46,8 @@ class ListSnapshotsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are
-            additional results to retrieve for this list
-            request.
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -246,6 +245,7 @@ class Snapshot(proto.Message):
             ERROR (6):
                 Snapshot State is Error
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

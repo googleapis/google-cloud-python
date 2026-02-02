@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,8 +33,7 @@ class BillingAccount(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the billing
-            account. Format:
+            Output only. Resource name of the billing account. Format:
             accounts/{account_id}/billingAccounts/{billing_account_id}.
         display_name (str):
             Display name of the billing account.

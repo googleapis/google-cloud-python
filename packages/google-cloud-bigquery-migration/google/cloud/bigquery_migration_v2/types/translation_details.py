@@ -46,17 +46,15 @@ class TranslationDetails(proto.Message):
             The default source environment values for the
             translation.
         target_return_literals (MutableSequence[str]):
-            The list of literal targets that will be
-            directly returned to the response. Each entry
-            consists of the constructed path, EXCLUDING the
-            base path. Not providing a target_base_uri will
-            prevent writing to persistent storage.
+            The list of literal targets that will be directly returned
+            to the response. Each entry consists of the constructed
+            path, EXCLUDING the base path. Not providing a
+            target_base_uri will prevent writing to persistent storage.
         target_types (MutableSequence[str]):
-            The types of output to generate, e.g. sql,
-            metadata, lineage_from_sql_scripts, etc. If not
-            specified, a default set of targets will be
-            generated. Some additional target types may be
-            slower to generate. See the documentation for
+            The types of output to generate, e.g. sql, metadata,
+            lineage_from_sql_scripts, etc. If not specified, a default
+            set of targets will be generated. Some additional target
+            types may be slower to generate. See the documentation for
             the set of available target types.
     """
 
@@ -217,15 +215,13 @@ class SourceEnvironment(proto.Message):
             missing schema name, translation engine will
             search through this list to find the value.
         metadata_store_dataset (str):
-            Optional. Expects a validQ BigQuery dataset ID
-            that exists, e.g.,
-            project-123.metadata_store_123. If specified,
-            translation will search and read the required
-            schema information from a metadata store in this
-            dataset. If metadata store doesn't exist,
-            translation will parse the metadata file and
-            upload the schema info to a temp table in the
-            dataset to speed up future translation jobs.
+            Optional. Expects a validQ BigQuery dataset ID that exists,
+            e.g., project-123.metadata_store_123. If specified,
+            translation will search and read the required schema
+            information from a metadata store in this dataset. If
+            metadata store doesn't exist, translation will parse the
+            metadata file and upload the schema info to a temp table in
+            the dataset to speed up future translation jobs.
     """
 
     default_database: str = proto.Field(

@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.analytics.admin_v1alpha import gapic_version as package_version
 
@@ -45,12 +45,23 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 
 from google.analytics.admin_v1alpha.services.analytics_admin_service import pagers
+from google.analytics.admin_v1alpha.types import (
+    access_report,
+    analytics_admin,
+    audience,
+    channel_group,
+    event_create_and_edit,
+    expanded_data_set,
+    resources,
+    subproperty_event_filter,
+)
+from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
 from google.analytics.admin_v1alpha.types import (
     expanded_data_set as gaa_expanded_data_set,
@@ -58,14 +69,6 @@ from google.analytics.admin_v1alpha.types import (
 from google.analytics.admin_v1alpha.types import (
     subproperty_event_filter as gaa_subproperty_event_filter,
 )
-from google.analytics.admin_v1alpha.types import access_report, analytics_admin
-from google.analytics.admin_v1alpha.types import audience
-from google.analytics.admin_v1alpha.types import audience as gaa_audience
-from google.analytics.admin_v1alpha.types import channel_group
-from google.analytics.admin_v1alpha.types import event_create_and_edit
-from google.analytics.admin_v1alpha.types import expanded_data_set
-from google.analytics.admin_v1alpha.types import resources
-from google.analytics.admin_v1alpha.types import subproperty_event_filter
 
 from .client import AnalyticsAdminServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, AnalyticsAdminServiceTransport
@@ -325,7 +328,8 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             AnalyticsAdminServiceAsyncClient: The constructed client.
         """
-        return AnalyticsAdminServiceClient.from_service_account_info.__func__(AnalyticsAdminServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AnalyticsAdminServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AnalyticsAdminServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -341,7 +345,8 @@ class AnalyticsAdminServiceAsyncClient:
         Returns:
             AnalyticsAdminServiceAsyncClient: The constructed client.
         """
-        return AnalyticsAdminServiceClient.from_service_account_file.__func__(AnalyticsAdminServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AnalyticsAdminServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AnalyticsAdminServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -379,7 +384,9 @@ class AnalyticsAdminServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AnalyticsAdminServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AnalyticsAdminServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AnalyticsAdminServiceTransport:
@@ -991,9 +998,8 @@ class AnalyticsAdminServiceAsyncClient:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetPropertyRequest, dict]]):
                 The request object. Request message for GetProperty RPC.
             name (:class:`str`):
-                Required. The name of the property to
-                lookup. Format: properties/{property_id}
-                Example: "properties/1000"
+                Required. The name of the property to lookup. Format:
+                properties/{property_id} Example: "properties/1000"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1243,9 +1249,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for DeleteProperty
                 RPC.
             name (:class:`str`):
-                Required. The name of the Property to
-                soft-delete. Format:
-                properties/{property_id} Example:
+                Required. The name of the Property to soft-delete.
+                Format: properties/{property_id} Example:
                 "properties/1000"
 
                 This corresponds to the ``name`` field
@@ -2831,10 +2836,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetSKAdNetworkConversionValueSchema RPC.
             name (:class:`str`):
-                Required. The resource name of
-                SKAdNetwork conversion value schema to
-                look up. Format:
-
+                Required. The resource name of SKAdNetwork conversion
+                value schema to look up. Format:
                 properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
 
                 This corresponds to the ``name`` field
@@ -3034,9 +3037,7 @@ class AnalyticsAdminServiceAsyncClient:
                 RPC.
             name (:class:`str`):
                 Required. The name of the
-                SKAdNetworkConversionValueSchema to
-                delete. Format:
-
+                SKAdNetworkConversionValueSchema to delete. Format:
                 properties/{property}/dataStreams/{dataStream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}
 
                 This corresponds to the ``name`` field
@@ -3235,12 +3236,10 @@ class AnalyticsAdminServiceAsyncClient:
                 ListSKAdNetworkConversionValueSchemas
                 RPC
             parent (:class:`str`):
-                Required. The DataStream resource to
-                list schemas for. Format:
-
+                Required. The DataStream resource to list schemas for.
+                Format:
                 properties/{property_id}/dataStreams/{dataStream}
-                Example:
-                properties/1234/dataStreams/5678
+                Example: properties/1234/dataStreams/5678
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3833,11 +3832,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetConversionEvent RPC
             name (:class:`str`):
-                Required. The resource name of the
-                conversion event to retrieve. Format:
+                Required. The resource name of the conversion event to
+                retrieve. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example:
-                "properties/123/conversionEvents/456"
+                Example: "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3929,11 +3927,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteConversionEvent RPC
             name (:class:`str`):
-                Required. The resource name of the
-                conversion event to delete. Format:
+                Required. The resource name of the conversion event to
+                delete. Format:
                 properties/{property}/conversionEvents/{conversion_event}
-                Example:
-                "properties/123/conversionEvents/456"
+                Example: "properties/123/conversionEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4316,10 +4313,10 @@ class AnalyticsAdminServiceAsyncClient:
             request (Optional[Union[google.analytics.admin_v1alpha.types.GetKeyEventRequest, dict]]):
                 The request object. Request message for GetKeyEvent RPC
             name (:class:`str`):
-                Required. The resource name of the Key
-                Event to retrieve. Format:
-                properties/{property}/keyEvents/{key_event}
-                Example: "properties/123/keyEvents/456"
+                Required. The resource name of the Key Event to
+                retrieve. Format:
+                properties/{property}/keyEvents/{key_event} Example:
+                "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4403,9 +4400,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for DeleteKeyEvent
                 RPC
             name (:class:`str`):
-                Required. The resource name of the Key
-                Event to delete. Format:
-                properties/{property}/keyEvents/{key_event}
+                Required. The resource name of the Key Event to delete.
+                Format: properties/{property}/keyEvents/{key_event}
                 Example: "properties/123/keyEvents/456"
 
                 This corresponds to the ``name`` field
@@ -10137,11 +10133,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for GetBigQueryLink
                 RPC.
             name (:class:`str`):
-                Required. The name of the BigQuery link
-                to lookup. Format:
+                Required. The name of the BigQuery link to lookup.
+                Format:
                 properties/{property_id}/bigQueryLinks/{bigquery_link_id}
-                Example:
-                properties/123/bigQueryLinks/456
+                Example: properties/123/bigQueryLinks/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -10225,9 +10220,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for ListBigQueryLinks
                 RPC.
             parent (:class:`str`):
-                Required. The name of the property to
-                list BigQuery links under. Format:
-                properties/{property_id} Example:
+                Required. The name of the property to list BigQuery
+                links under. Format: properties/{property_id} Example:
                 properties/1234
 
                 This corresponds to the ``parent`` field
@@ -10511,9 +10505,7 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetEnhancedMeasurementSettings RPC.
             name (:class:`str`):
-                Required. The name of the settings to
-                lookup. Format:
-
+                Required. The name of the settings to lookup. Format:
                 properties/{property}/dataStreams/{data_stream}/enhancedMeasurementSettings
                 Example:
                 "properties/1000/dataStreams/2000/enhancedMeasurementSettings"
@@ -12253,9 +12245,7 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetDataRedactionSettings RPC.
             name (:class:`str`):
-                Required. The name of the settings to
-                lookup. Format:
-
+                Required. The name of the settings to lookup. Format:
                 properties/{property}/dataStreams/{data_stream}/dataRedactionSettings
                 Example:
                 "properties/1000/dataStreams/2000/dataRedactionSettings"
@@ -12345,11 +12335,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetCalculatedMetric RPC.
             name (:class:`str`):
-                Required. The name of the
-                CalculatedMetric to get. Format:
+                Required. The name of the CalculatedMetric to get.
+                Format:
                 properties/{property_id}/calculatedMetrics/{calculated_metric_id}
-                Example:
-                properties/1234/calculatedMetrics/Metric01
+                Example: properties/1234/calculatedMetrics/Metric01
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -12435,8 +12424,7 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateCalculatedMetric RPC.
             parent (:class:`str`):
-                Required. Format:
-                properties/{property_id} Example:
+                Required. Format: properties/{property_id} Example:
                 properties/1234
 
                 This corresponds to the ``parent`` field
@@ -12748,11 +12736,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteCalculatedMetric RPC.
             name (:class:`str`):
-                Required. The name of the
-                CalculatedMetric to delete. Format:
+                Required. The name of the CalculatedMetric to delete.
+                Format:
                 properties/{property_id}/calculatedMetrics/{calculated_metric_id}
-                Example:
-                properties/1234/calculatedMetrics/Metric01
+                Example: properties/1234/calculatedMetrics/Metric01
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -12889,12 +12876,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetRollupPropertySourceLink RPC.
             name (:class:`str`):
-                Required. The name of the roll-up
-                property source link to lookup. Format:
-
+                Required. The name of the roll-up property source link
+                to lookup. Format:
                 properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
-                Example:
-                properties/123/rollupPropertySourceLinks/456
+                Example: properties/123/rollupPropertySourceLinks/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -12984,11 +12969,9 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 ListRollupPropertySourceLinks RPC.
             parent (:class:`str`):
-                Required. The name of the roll-up
-                property to list roll-up property source
-                links under. Format:
-                properties/{property_id} Example:
-                properties/1234
+                Required. The name of the roll-up property to list
+                roll-up property source links under. Format:
+                properties/{property_id} Example: properties/1234
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -13096,8 +13079,7 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateRollupPropertySourceLink RPC.
             parent (:class:`str`):
-                Required. Format:
-                properties/{property_id} Example:
+                Required. Format: properties/{property_id} Example:
                 properties/1234
 
                 This corresponds to the ``parent`` field
@@ -13200,10 +13182,8 @@ class AnalyticsAdminServiceAsyncClient:
                 DeleteRollupPropertySourceLink RPC.
             name (:class:`str`):
                 Required. Format:
-
                 properties/{property_id}/rollupPropertySourceLinks/{rollup_property_source_link_id}
-                Example:
-                properties/1234/rollupPropertySourceLinks/5678
+                Example: properties/1234/rollupPropertySourceLinks/5678
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -13342,9 +13322,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateSubpropertyEventFilter RPC.
             parent (:class:`str`):
-                Required. The ordinary property for
-                which to create a subproperty event
-                filter. Format: properties/property_id
+                Required. The ordinary property for which to create a
+                subproperty event filter. Format: properties/property_id
                 Example: properties/123
 
                 This corresponds to the ``parent`` field
@@ -13441,13 +13420,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetSubpropertyEventFilter RPC.
             name (:class:`str`):
-                Required. Resource name of the
-                subproperty event filter to lookup.
-                Format:
-
+                Required. Resource name of the subproperty event filter
+                to lookup. Format:
                 properties/property_id/subpropertyEventFilters/subproperty_event_filter
-                Example:
-                properties/123/subpropertyEventFilters/456
+                Example: properties/123/subpropertyEventFilters/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -13534,9 +13510,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 ListSubpropertyEventFilters RPC.
             parent (:class:`str`):
-                Required. Resource name of the ordinary
-                property. Format: properties/property_id
-                Example: properties/123
+                Required. Resource name of the ordinary property.
+                Format: properties/property_id Example: properties/123
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -13746,13 +13721,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteSubpropertyEventFilter RPC.
             name (:class:`str`):
-                Required. Resource name of the
-                subproperty event filter to delete.
-                Format:
-
+                Required. Resource name of the subproperty event filter
+                to delete. Format:
                 properties/property_id/subpropertyEventFilters/subproperty_event_filter
-                Example:
-                properties/123/subpropertyEventFilters/456
+                Example: properties/123/subpropertyEventFilters/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -13830,9 +13802,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateReportingDataAnnotation RPC.
             parent (:class:`str`):
-                Required. The property for which to
-                create a Reporting Data Annotation.
-                Format: properties/property_id Example:
+                Required. The property for which to create a Reporting
+                Data Annotation. Format: properties/property_id Example:
                 properties/123
 
                 This corresponds to the ``parent`` field
@@ -13931,12 +13902,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetReportingDataAnnotation RPC.
             name (:class:`str`):
-                Required. Resource name of the Reporting
-                Data Annotation to lookup. Format:
-
+                Required. Resource name of the Reporting Data Annotation
+                to lookup. Format:
                 properties/property_id/reportingDataAnnotations/reportingDataAnnotation
-                Example:
-                properties/123/reportingDataAnnotations/456
+                Example: properties/123/reportingDataAnnotations/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -14023,9 +13992,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 ListReportingDataAnnotation RPC.
             parent (:class:`str`):
-                Required. Resource name of the property.
-                Format: properties/property_id
-                Example: properties/123
+                Required. Resource name of the property. Format:
+                properties/property_id Example: properties/123
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -14235,12 +14203,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteReportingDataAnnotation RPC.
             name (:class:`str`):
-                Required. Resource name of the Reporting
-                Data Annotation to delete. Format:
-
+                Required. Resource name of the Reporting Data Annotation
+                to delete. Format:
                 properties/property_id/reportingDataAnnotations/reporting_data_annotation
-                Example:
-                properties/123/reportingDataAnnotations/456
+                Example: properties/123/reportingDataAnnotations/456
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -14406,9 +14372,8 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 ListSubpropertySyncConfigs RPC.
             parent (:class:`str`):
-                Required. Resource name of the property.
-                Format: properties/property_id
-                Example: properties/123
+                Required. Resource name of the property. Format:
+                properties/property_id Example: properties/123
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -14617,12 +14582,10 @@ class AnalyticsAdminServiceAsyncClient:
                 The request object. Request message for
                 GetSubpropertySyncConfig RPC.
             name (:class:`str`):
-                Required. Resource name of the
-                SubpropertySyncConfig to lookup. Format:
-
+                Required. Resource name of the SubpropertySyncConfig to
+                lookup. Format:
                 properties/{ordinary_property_id}/subpropertySyncConfigs/{subproperty_id}
-                Example:
-                properties/1234/subpropertySyncConfigs/5678
+                Example: properties/1234/subpropertySyncConfigs/5678
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

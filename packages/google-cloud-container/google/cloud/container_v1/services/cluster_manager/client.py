@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.container_v1 import gapic_version as package_version
 
@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.container_v1.services.cluster_manager import pagers
 from google.cloud.container_v1.types import cluster_service
@@ -80,9 +80,7 @@ class ClusterManagerClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ClusterManagerTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ClusterManagerTransport]]
     _transport_registry["grpc"] = ClusterManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = ClusterManagerGrpcAsyncIOTransport
     _transport_registry["rest"] = ClusterManagerRestTransport
@@ -687,11 +685,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ClusterManagerClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ClusterManagerClient._read_environment_variables()
+        )
         self._client_cert_source = ClusterManagerClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -726,8 +722,7 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ClusterManagerTransport, transport)
             self._api_endpoint = self._transport.host
@@ -838,11 +833,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
             request (Union[google.cloud.container_v1.types.ListClustersRequest, dict]):
                 The request object. ListClustersRequest lists clusters.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the parent field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the
+                parent field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -974,11 +969,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. GetClusterRequest gets the settings
                 of a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1085,21 +1080,19 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cluster_service.Operation:
-        r"""Creates a cluster, consisting of the specified number
-        and type of Google Compute Engine instances.
+        r"""Creates a cluster, consisting of the specified number and type
+        of Google Compute Engine instances.
 
-        By default, the cluster is created in the project's
-        [default
-        network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks).
+        By default, the cluster is created in the project's `default
+        network <https://cloud.google.com/compute/docs/networks-and-firewalls#networks>`__.
 
-        One firewall is added for the cluster. After cluster
-        creation, the kubelet creates routes for each node to
-        allow the containers on that node to communicate with
-        all other instances in the cluster.
+        One firewall is added for the cluster. After cluster creation,
+        the kubelet creates routes for each node to allow the containers
+        on that node to communicate with all other instances in the
+        cluster.
 
-        Finally, an entry is added to the project's global
-        metadata indicating which CIDR range the cluster is
-        using.
+        Finally, an entry is added to the project's global metadata
+        indicating which CIDR range the cluster is using.
 
         .. code-block:: python
 
@@ -1131,11 +1124,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. CreateClusterRequest creates a
                 cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the parent field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the
+                parent field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1150,8 +1143,8 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             cluster (google.cloud.container_v1.types.Cluster):
-                Required. A [cluster
-                resource](https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters)
+                Required. A `cluster
+                resource <https://cloud.google.com/container-engine/reference/rest/v1/projects.locations.clusters>`__
 
                 This corresponds to the ``cluster`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1277,11 +1270,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. UpdateClusterRequest updates the
                 settings of a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1613,11 +1606,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. SetLoggingServiceRequest sets the
                 logging service of a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1785,11 +1778,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. SetMonitoringServiceRequest sets the
                 monitoring service of a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1956,11 +1949,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. SetAddonsConfigRequest sets the
                 addons associated with the cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2117,11 +2110,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. SetLocationsRequest sets the
                 locations of the cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2286,11 +2279,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. UpdateMasterRequest updates the
                 master of the cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2555,11 +2548,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. DeleteClusterRequest deletes a
                 cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2702,11 +2695,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. ListOperationsRequest lists
                 operations.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the parent field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the
+                parent field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2838,11 +2831,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. GetOperationRequest gets a single
                 operation.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2981,11 +2974,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. CancelOperationRequest cancels a
                 single operation.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3116,11 +3109,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. Gets the current Kubernetes Engine
                 service configuration.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3243,12 +3236,10 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         Args:
             request (Union[google.cloud.container_v1.types.GetJSONWebKeysRequest, dict]):
-                The request object. GetJSONWebKeysRequest gets the public
-                component of the keys used by the
-                cluster to sign token requests. This
-                will be the jwks_uri for the discover
-                document returned by getOpenIDConfig.
-                See the OpenID Connect Discovery 1.0
+                The request object. GetJSONWebKeysRequest gets the public component of the
+                keys used by the cluster to sign token requests. This
+                will be the jwks_uri for the discover document returned
+                by getOpenIDConfig. See the OpenID Connect Discovery 1.0
                 specification for details.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -3339,11 +3330,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. ListNodePoolsRequest lists the node
                 pool(s) for a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the parent field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the
+                parent field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3484,11 +3475,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. GetNodePoolRequest retrieves a node
                 pool for a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3647,11 +3638,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. CreateNodePoolRequest creates a node
                 pool for a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the parent field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the
+                parent field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3801,11 +3792,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. DeleteNodePoolRequest deletes a node
                 pool for a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4043,11 +4034,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 an no-op if the last upgrade
                 successfully  completed.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4385,11 +4376,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 disables the ABAC authorization
                 mechanism for a cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4543,11 +4534,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 node upgrade on each node pool to point
                 to the new IP.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4691,11 +4682,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. CompleteIPRotationRequest moves the
                 cluster master back into single-IP mode.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4928,11 +4919,11 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 enables/disables network policy for a
                 cluster.
             project_id (str):
-                Deprecated. The Google Developers
-                Console [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
-                This field has been deprecated and
-                replaced by the name field.
+                Deprecated. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
+                This field has been deprecated and replaced by the name
+                field.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5089,9 +5080,9 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
                 The request object. SetMaintenancePolicyRequest sets the
                 maintenance policy for a cluster.
             project_id (str):
-                Required. The Google Developers Console
-                [project ID or project
-                number](https://cloud.google.com/resource-manager/docs/creating-managing-projects).
+                Required. The Google Developers Console `project ID or
+                project
+                number <https://cloud.google.com/resource-manager/docs/creating-managing-projects>`__.
 
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

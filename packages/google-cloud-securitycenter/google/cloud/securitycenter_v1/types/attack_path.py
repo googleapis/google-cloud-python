@@ -49,13 +49,13 @@ class AttackPath(proto.Message):
 
         Attributes:
             resource (str):
-                The name of the resource at this point in the
-                attack path. The format of the name follows the
-                Cloud Asset Inventory [resource name
-                format](https://cloud.google.com/asset-inventory/docs/resource-name-format)
+                The name of the resource at this point in the attack path.
+                The format of the name follows the Cloud Asset Inventory
+                `resource name
+                format <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
             resource_type (str):
-                The [supported resource
-                type](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+                The `supported resource
+                type <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             display_name (str):
                 Human-readable name of this resource.
             associated_findings (MutableSequence[google.cloud.securitycenter_v1.types.AttackPath.AttackPathNode.PathNodeAssociatedFinding]):
@@ -83,6 +83,7 @@ class AttackPath(proto.Message):
                 NODE_TYPE_ATTACKER (4):
                     Incoming edge is attacker
             """
+
             NODE_TYPE_UNSPECIFIED = 0
             NODE_TYPE_AND = 1
             NODE_TYPE_OR = 2
@@ -180,12 +181,12 @@ class AttackPath(proto.Message):
             proto.STRING,
             number=5,
         )
-        attack_steps: MutableSequence[
-            "AttackPath.AttackPathNode.AttackStepNode"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="AttackPath.AttackPathNode.AttackStepNode",
+        attack_steps: MutableSequence["AttackPath.AttackPathNode.AttackStepNode"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="AttackPath.AttackPathNode.AttackStepNode",
+            )
         )
 
     class AttackPathEdge(proto.Message):

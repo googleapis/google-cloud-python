@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -76,6 +76,7 @@ class FileUpload(proto.Message):
                 The data source was processed successfully,
                 though some items might have had errors.
         """
+
         PROCESSING_STATE_UNSPECIFIED = 0
         FAILED = 1
         IN_PROGRESS = 2
@@ -95,8 +96,8 @@ class FileUpload(proto.Message):
                 items will be dropped".
             code (str):
                 Output only. The code of the error, for example,
-                "validation/invalid_value". Returns
-                "?" if the code is unknown.
+                "validation/invalid_value". Returns "?" if the code is
+                unknown.
             count (int):
                 Output only. The number of occurrences of the
                 error in the file upload.
@@ -119,6 +120,7 @@ class FileUpload(proto.Message):
                 ERROR (2):
                     The issue is an error.
             """
+
             SEVERITY_UNSPECIFIED = 0
             WARNING = 1
             ERROR = 2

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.geminidataanalytics_v1beta import gapic_version as package_version
 
@@ -44,23 +44,23 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.services.data_agent_service import pagers
 from google.cloud.geminidataanalytics_v1beta.types import (
+    data_agent,
     data_agent_service,
     data_analytics_agent,
 )
 from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
-from google.cloud.geminidataanalytics_v1beta.types import data_agent
 
 from .client import DataAgentServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataAgentServiceTransport
@@ -128,7 +128,8 @@ class DataAgentServiceAsyncClient:
         Returns:
             DataAgentServiceAsyncClient: The constructed client.
         """
-        return DataAgentServiceClient.from_service_account_info.__func__(DataAgentServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DataAgentServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DataAgentServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -144,7 +145,8 @@ class DataAgentServiceAsyncClient:
         Returns:
             DataAgentServiceAsyncClient: The constructed client.
         """
-        return DataAgentServiceClient.from_service_account_file.__func__(DataAgentServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DataAgentServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DataAgentServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -996,18 +998,15 @@ class DataAgentServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                DataAgent resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields with
-                non-default values present in the
-                request will be overwritten. If a
-                wildcard mask is provided, all fields
-                will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DataAgent resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields with non-default values
+                present in the request will be overwritten. If a
+                wildcard mask is provided, all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1139,18 +1138,15 @@ class DataAgentServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                DataAgent resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields with
-                non-default values present in the
-                request will be overwritten. If a
-                wildcard mask is provided, all fields
-                will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DataAgent resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields with non-default values
+                present in the request will be overwritten. If a
+                wildcard mask is provided, all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1473,7 +1469,7 @@ class DataAgentServiceAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import geminidataanalytics_v1beta
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -1611,7 +1607,7 @@ class DataAgentServiceAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import geminidataanalytics_v1beta
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client

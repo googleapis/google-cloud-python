@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import common
@@ -40,9 +40,8 @@ class ExadbVmCluster(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the ExadbVmCluster
-            resource in the following format:
-
+            Identifier. The name of the ExadbVmCluster resource in the
+            following format:
             projects/{project}/locations/{region}/exadbVmClusters/{exadb_vm_cluster}
         properties (google.cloud.oracledatabase_v1.types.ExadbVmClusterProperties):
             Required. The properties of the
@@ -57,23 +56,18 @@ class ExadbVmCluster(proto.Message):
             Optional. The labels or tags associated with
             the ExadbVmCluster.
         odb_network (str):
-            Optional. Immutable. The name of the OdbNetwork
-            associated with the ExadbVmCluster. Format:
-
+            Optional. Immutable. The name of the OdbNetwork associated
+            with the ExadbVmCluster. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}
-            It is optional but if specified, this should
-            match the parent ODBNetwork of the OdbSubnet.
+            It is optional but if specified, this should match the
+            parent ODBNetwork of the OdbSubnet.
         odb_subnet (str):
-            Required. Immutable. The name of the OdbSubnet
-            associated with the ExadbVmCluster for IP
-            allocation. Format:
-
+            Required. Immutable. The name of the OdbSubnet associated
+            with the ExadbVmCluster for IP allocation. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         backup_odb_subnet (str):
-            Required. Immutable. The name of the backup
-            OdbSubnet associated with the ExadbVmCluster.
-            Format:
-
+            Required. Immutable. The name of the backup OdbSubnet
+            associated with the ExadbVmCluster. Format:
             projects/{project}/locations/{location}/odbNetworks/{odb_network}/odbSubnets/{odb_subnet}
         display_name (str):
             Required. Immutable. The display name for the
@@ -183,14 +177,11 @@ class ExadbVmClusterProperties(proto.Message):
             Optional. Immutable. The license type of the
             ExadbVmCluster.
         exascale_db_storage_vault (str):
-            Required. Immutable. The name of
-            ExascaleDbStorageVault associated with the
-            ExadbVmCluster. It can refer to an existing
-            ExascaleDbStorageVault. Or a new one can be
-            created during the ExadbVmCluster creation
-            (requires storage_vault_properties to be set).
-            Format:
-
+            Required. Immutable. The name of ExascaleDbStorageVault
+            associated with the ExadbVmCluster. It can refer to an
+            existing ExascaleDbStorageVault. Or a new one can be created
+            during the ExadbVmCluster creation (requires
+            storage_vault_properties to be set). Format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
         hostname_prefix (str):
             Required. Immutable. Prefix for VM cluster
@@ -210,10 +201,9 @@ class ExadbVmClusterProperties(proto.Message):
         lifecycle_state (google.cloud.oracledatabase_v1.types.ExadbVmClusterProperties.ExadbVmClusterLifecycleState):
             Output only. State of the cluster.
         shape_attribute (google.cloud.oracledatabase_v1.types.ExadbVmClusterProperties.ShapeAttribute):
-            Required. Immutable. The shape attribute of the
-            VM cluster. The type of Exascale storage used
-            for Exadata VM cluster. The default is
-            SMART_STORAGE which supports Oracle Database
+            Required. Immutable. The shape attribute of the VM cluster.
+            The type of Exascale storage used for Exadata VM cluster.
+            The default is SMART_STORAGE which supports Oracle Database
             23ai and later
         memory_size_gb (int):
             Output only. Memory per VM (GB) (Read-only):
@@ -242,6 +232,7 @@ class ExadbVmClusterProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 Bring your own license.
         """
+
         LICENSE_MODEL_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -274,6 +265,7 @@ class ExadbVmClusterProperties(proto.Message):
                 Indicates that the resource is in maintenance
                 in progress state.
         """
+
         EXADB_VM_CLUSTER_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -284,9 +276,9 @@ class ExadbVmClusterProperties(proto.Message):
         MAINTENANCE_IN_PROGRESS = 7
 
     class ShapeAttribute(proto.Enum):
-        r"""The shape attribute of the VM cluster. The type of Exascale
-        storage used for Exadata VM cluster. The default is
-        SMART_STORAGE which supports Oracle Database 23ai and later
+        r"""The shape attribute of the VM cluster. The type of Exascale storage
+        used for Exadata VM cluster. The default is SMART_STORAGE which
+        supports Oracle Database 23ai and later
 
         Values:
             SHAPE_ATTRIBUTE_UNSPECIFIED (0):
@@ -298,6 +290,7 @@ class ExadbVmClusterProperties(proto.Message):
                 Indicates that the resource is in block
                 storage.
         """
+
         SHAPE_ATTRIBUTE_UNSPECIFIED = 0
         SMART_STORAGE = 1
         BLOCK_STORAGE = 2

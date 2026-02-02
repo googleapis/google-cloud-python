@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -700,65 +700,59 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             Returns:
                 ~.httpbody_pb2.HttpBody:
-                    Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                    Message that represents an arbitrary HTTP body. It
+                should only be used for payload formats that can't be
+                represented as JSON, such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                This message can be used both in streaming and
+                non-streaming API methods in the request as well as the
+                response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                It can be used as a top-level request field, which is
+                convenient if one wants to extract parameters from
+                either the URL or HTTP template into the request fields
+                and also want access to the raw HTTP body.
 
                 Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                ::
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                }
+                      // The raw HTTP body is bound to this field.
+                      google.api.HttpBody http_body = 2;
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                    }
 
-                }
+                    service ResourceService {
+                      rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);
+
+                    }
 
                 Example with streaming methods:
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                ::
 
-                }
+                    service CaldavService {
+                      rpc GetCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
+                      rpc UpdateCalendar(stream google.api.HttpBody)
+                        returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                    }
+
+                Use of this type only changes how the request and
+                response bodies are handled, all other features will
+                continue to work unchanged.
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_collect_user_event(
                 request, metadata
@@ -780,7 +774,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -908,9 +902,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_import_user_events(
                 request, metadata
@@ -936,7 +928,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1063,9 +1055,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_purge_user_events(
                 request, metadata
@@ -1091,7 +1081,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1218,9 +1208,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_write_user_event(
                 request, metadata
@@ -1403,9 +1391,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1665,9 +1651,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseUserEventServiceRestTransport._BaseListOperations._get_transcoded_request(

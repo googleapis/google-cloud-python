@@ -22,9 +22,7 @@ from .grpc_asyncio import LfpProvidersServiceGrpcAsyncIOTransport
 from .rest import LfpProvidersServiceRestInterceptor, LfpProvidersServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[LfpProvidersServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[LfpProvidersServiceTransport]]
 _transport_registry["grpc"] = LfpProvidersServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = LfpProvidersServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = LfpProvidersServiceRestTransport

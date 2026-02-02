@@ -34,7 +34,6 @@ class Folder(proto.Message):
     Attributes:
         resource_folder (str):
             Full resource name of this folder. See:
-
             https://cloud.google.com/apis/design/resource_names#full_resource_name
         resource_folder_display_name (str):
             The user defined display name for this

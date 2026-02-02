@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import error_details_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.error_details_pb2 as error_details_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -71,6 +71,7 @@ class Infrastructure(proto.Enum):
             Private Service Connect is used for
             connections.
     """
+
     INFRASTRUCTURE_UNSPECIFIED = 0
     PSC = 1
 
@@ -92,6 +93,7 @@ class ConnectionErrorType(proto.Enum):
             The error is due to the setup on producer
             side.
     """
+
     CONNECTION_ERROR_TYPE_UNSPECIFIED = 0
     ERROR_INTERNAL = 1
     ERROR_CONSUMER_SIDE = 2
@@ -111,6 +113,7 @@ class IPVersion(proto.Enum):
         IPV6 (2):
             Will use IPv6 only.
     """
+
     IP_VERSION_UNSPECIFIED = 0
     IPV4 = 1
     IPV6 = 2
@@ -123,9 +126,7 @@ class ServiceConnectionMap(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The name of a ServiceConnectionMap.
-            Format:
-
+            Immutable. The name of a ServiceConnectionMap. Format:
             projects/{project}/locations/{location}/serviceConnectionMaps/{service_connection_map}
             See:
             https://google.aip.dev/122#fields-representing-resource-names
@@ -215,22 +216,19 @@ class ServiceConnectionMap(proto.Message):
                 Output only. Overall state of PSC Connections
                 management for this consumer psc config.
             producer_instance_id (str):
-                Immutable. Deprecated. Use
-                producer_instance_metadata instead. An immutable
-                identifier for the producer instance.
+                Immutable. Deprecated. Use producer_instance_metadata
+                instead. An immutable identifier for the producer instance.
             service_attachment_ip_address_map (MutableMapping[str, str]):
                 Output only. A map to store mapping between
                 customer vip and target service attachment. Only
                 service attachment with producer specified ip
                 addresses are stored here.
             consumer_instance_project (str):
-                Required. The project ID or project number of
-                the consumer project. This project is the one
-                that the consumer uses to interact with the
-                producer instance. From the perspective of a
-                consumer who's created a producer instance, this
-                is the project of the producer instance. Format:
-
+                Required. The project ID or project number of the consumer
+                project. This project is the one that the consumer uses to
+                interact with the producer instance. From the perspective of
+                a consumer who's created a producer instance, this is the
+                project of the producer instance. Format:
                 'projects/<project_id_or_number>' Eg.
                 'projects/consumer-project' or 'projects/1234'
             producer_instance_metadata (MutableMapping[str, str]):
@@ -266,6 +264,7 @@ class ServiceConnectionMap(proto.Message):
                     AllowedGoogleProducersResourceHierarchyLevels of
                     the matching ServiceConnectionPolicy.
             """
+
             STATE_UNSPECIFIED = 0
             VALID = 1
             CONNECTION_POLICY_MISSING = 2
@@ -367,9 +366,8 @@ class ServiceConnectionMap(proto.Message):
                 subnetwork selected to allocate IP address for
                 this connection.
             producer_instance_id (str):
-                Immutable. Deprecated. Use
-                producer_instance_metadata instead. An immutable
-                identifier for the producer instance.
+                Immutable. Deprecated. Use producer_instance_metadata
+                instead. An immutable identifier for the producer instance.
             producer_instance_metadata (MutableMapping[str, str]):
                 Immutable. An immutable map for the producer
                 instance metadata.
@@ -409,6 +407,7 @@ class ServiceConnectionMap(proto.Message):
                     The connection is being repaired to complete
                     deletion.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             FAILED = 2
@@ -531,12 +530,12 @@ class ServiceConnectionMap(proto.Message):
         number=10,
         message=ConsumerPscConfig,
     )
-    consumer_psc_connections: MutableSequence[
-        ConsumerPscConnection
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message=ConsumerPscConnection,
+    consumer_psc_connections: MutableSequence[ConsumerPscConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message=ConsumerPscConnection,
+        )
     )
     token: str = proto.Field(
         proto.STRING,
@@ -597,10 +596,9 @@ class ListServiceConnectionMapsResponse(proto.Message):
         service_connection_maps (MutableSequence[google.cloud.networkconnectivity_v1.types.ServiceConnectionMap]):
             ServiceConnectionMaps to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -609,12 +607,12 @@ class ListServiceConnectionMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_maps: MutableSequence[
-        "ServiceConnectionMap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionMap",
+    service_connection_maps: MutableSequence["ServiceConnectionMap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionMap",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -650,13 +648,10 @@ class CreateServiceConnectionMapRequest(proto.Message):
             ServiceConnectionMap. ex.
             projects/123/locations/us-east1
         service_connection_map_id (str):
-            Optional. Resource ID
-            (i.e. 'foo' in
+            Optional. Resource ID (i.e. 'foo' in
             '[...]/projects/p/locations/l/serviceConnectionMaps/foo')
-            See
-            https://google.aip.dev/122#resource-id-segments
-            Unique per location.
-            If one is not provided, one will be generated.
+            See https://google.aip.dev/122#resource-id-segments Unique
+            per location. If one is not provided, one will be generated.
         service_connection_map (google.cloud.networkconnectivity_v1.types.ServiceConnectionMap):
             Required. Initial values for a new
             ServiceConnectionMaps
@@ -706,14 +701,12 @@ class UpdateServiceConnectionMapRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            ServiceConnectionMap resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask. If the
-            user does not provide a mask then all fields
-            will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServiceConnectionMap resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         service_connection_map (google.cloud.networkconnectivity_v1.types.ServiceConnectionMap):
             Required. New values to be patched into the
             resource.
@@ -815,9 +808,7 @@ class ServiceConnectionPolicy(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The name of a
-            ServiceConnectionPolicy. Format:
-
+            Immutable. The name of a ServiceConnectionPolicy. Format:
             projects/{project}/locations/{location}/serviceConnectionPolicies/{service_connection_policy}
             See:
             https://google.aip.dev/122#fields-representing-resource-names
@@ -855,8 +846,8 @@ class ServiceConnectionPolicy(proto.Message):
             Connect connections. Used when Infrastructure is
             PSC.
         psc_connections (MutableSequence[google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy.PscConnection]):
-            Output only. [Output only] Information about
-            each Private Service Connect connection.
+            Output only. [Output only] Information about each Private
+            Service Connect connection.
         etag (str):
             Optional. The etag is computed by the server,
             and may be sent on update and delete requests to
@@ -894,6 +885,7 @@ class ServiceConnectionPolicy(proto.Message):
                 The connection is being repaired to complete
                 deletion.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -926,28 +918,24 @@ class ServiceConnectionPolicy(proto.Message):
                 determine which projects the Producer instance
                 can be within.
             allowed_google_producers_resource_hierarchy_level (MutableSequence[str]):
-                Optional. List of Projects, Folders, or
-                Organizations from where the Producer instance
-                can be within. For example, a network
-                administrator can provide both
-                'organizations/foo' and 'projects/bar' as
-                allowed_google_producers_resource_hierarchy_levels.
-                This allowlists this network to connect with any
-                Producer instance within the 'foo' organization
-                or the 'bar' project. By default,
-                allowed_google_producers_resource_hierarchy_level
-                is empty. The format for each
-                allowed_google_producers_resource_hierarchy_level
-                is <resource type>/<id> where <resource type> is
-                one of 'projects', 'folders', or 'organizations'
-                and <id> is either the ID or the number of the
-                resource type. Format for each
-                allowed_google_producers_resource_hierarchy_level
+                Optional. List of Projects, Folders, or Organizations from
+                where the Producer instance can be within. For example, a
+                network administrator can provide both 'organizations/foo'
+                and 'projects/bar' as
+                allowed_google_producers_resource_hierarchy_levels. This
+                allowlists this network to connect with any Producer
+                instance within the 'foo' organization or the 'bar' project.
+                By default,
+                allowed_google_producers_resource_hierarchy_level is empty.
+                The format for each
+                allowed_google_producers_resource_hierarchy_level is / where
+                is one of 'projects', 'folders', or 'organizations' and is
+                either the ID or the number of the resource type. Format for
+                each allowed_google_producers_resource_hierarchy_level
                 value: 'projects/<project_id_or_number>' or
-                'folders/<folder_id>' or
-                'organizations/<organization_id>'
-                Eg. [projects/my-project-id, projects/567,
-                folders/891, organizations/123]
+                'folders/<folder_id>' or 'organizations/<organization_id>'
+                Eg. [projects/my-project-id, projects/567, folders/891,
+                organizations/123]
         """
 
         class ProducerInstanceLocation(proto.Enum):
@@ -957,20 +945,18 @@ class ServiceConnectionPolicy(proto.Message):
 
             Values:
                 PRODUCER_INSTANCE_LOCATION_UNSPECIFIED (0):
-                    Producer instance location is not specified.
-                    When this option is chosen, then the PSC
-                    connections created by this
-                    ServiceConnectionPolicy must be within the same
-                    project as the Producer instance. This is the
-                    default ProducerInstanceLocation value. To allow
-                    for PSC connections from this network to other
-                    networks, use the
+                    Producer instance location is not specified. When this
+                    option is chosen, then the PSC connections created by this
+                    ServiceConnectionPolicy must be within the same project as
+                    the Producer instance. This is the default
+                    ProducerInstanceLocation value. To allow for PSC connections
+                    from this network to other networks, use the
                     CUSTOM_RESOURCE_HIERARCHY_LEVELS option.
                 CUSTOM_RESOURCE_HIERARCHY_LEVELS (1):
-                    Producer instance must be within one of the
-                    values provided in
-                    allowed_google_producers_resource_hierarchy_level.
+                    Producer instance must be within one of the values provided
+                    in allowed_google_producers_resource_hierarchy_level.
             """
+
             PRODUCER_INSTANCE_LOCATION_UNSPECIFIED = 0
             CUSTOM_RESOURCE_HIERARCHY_LEVELS = 1
 
@@ -988,11 +974,11 @@ class ServiceConnectionPolicy(proto.Message):
             number=3,
             enum="ServiceConnectionPolicy.PscConfig.ProducerInstanceLocation",
         )
-        allowed_google_producers_resource_hierarchy_level: MutableSequence[
-            str
-        ] = proto.RepeatedField(
-            proto.STRING,
-            number=4,
+        allowed_google_producers_resource_hierarchy_level: MutableSequence[str] = (
+            proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
         )
 
     class PscConnection(proto.Message):
@@ -1016,9 +1002,8 @@ class ServiceConnectionPolicy(proto.Message):
                 consumer facing, producer facing or system
                 internal.
             error (google.rpc.status_pb2.Status):
-                The most recent error during operating this
-                connection. Deprecated, please use error_info
-                instead.
+                The most recent error during operating this connection.
+                Deprecated, please use error_info instead.
             gce_operation (str):
                 The last Compute Engine operation to setup
                 PSC connection.
@@ -1036,17 +1021,15 @@ class ServiceConnectionPolicy(proto.Message):
                 selected to allocate IP address for this
                 connection.
             producer_instance_id (str):
-                Immutable. Deprecated. Use
-                producer_instance_metadata instead. An immutable
-                identifier for the producer instance.
+                Immutable. Deprecated. Use producer_instance_metadata
+                instead. An immutable identifier for the producer instance.
             producer_instance_metadata (MutableMapping[str, str]):
                 Immutable. An immutable map for the producer
                 instance metadata.
             service_class (str):
-                Output only. [Output only] The service class
-                associated with this PSC Connection. The value
-                is derived from the SCPolicy and matches the
-                service class name provided by the customer.
+                Output only. [Output only] The service class associated with
+                this PSC Connection. The value is derived from the SCPolicy
+                and matches the service class name provided by the customer.
             ip_version (google.cloud.networkconnectivity_v1.types.IPVersion):
                 The requested IP version for the PSC
                 connection.
@@ -1219,10 +1202,9 @@ class ListServiceConnectionPoliciesResponse(proto.Message):
         service_connection_policies (MutableSequence[google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy]):
             ServiceConnectionPolicies to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1231,12 +1213,12 @@ class ListServiceConnectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_policies: MutableSequence[
-        "ServiceConnectionPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionPolicy",
+    service_connection_policies: MutableSequence["ServiceConnectionPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1272,12 +1254,10 @@ class CreateServiceConnectionPolicyRequest(proto.Message):
             ServiceConnectionPolicy. ex.
             projects/123/locations/us-east1
         service_connection_policy_id (str):
-            Optional. Resource ID
-            (i.e. 'foo' in
+            Optional. Resource ID (i.e. 'foo' in
             '[...]/projects/p/locations/l/serviceConnectionPolicies/foo')
-            See
-            https://google.aip.dev/122#resource-id-segments
-            Unique per location.
+            See https://google.aip.dev/122#resource-id-segments Unique
+            per location.
         service_connection_policy (google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy):
             Required. Initial values for a new
             ServiceConnectionPolicies
@@ -1327,14 +1307,12 @@ class UpdateServiceConnectionPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            ServiceConnectionPolicy resource by the update.
-            The fields specified in the update_mask are
-            relative to the resource, not the full request.
-            A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then
-            all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServiceConnectionPolicy resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         service_connection_policy (google.cloud.networkconnectivity_v1.types.ServiceConnectionPolicy):
             Required. New values to be patched into the
             resource.
@@ -1436,9 +1414,7 @@ class ServiceClass(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The name of a ServiceClass resource.
-            Format:
-
+            Immutable. The name of a ServiceClass resource. Format:
             projects/{project}/locations/{location}/serviceClasses/{service_class}
             See:
             https://google.aip.dev/122#fields-representing-resource-names
@@ -1548,10 +1524,9 @@ class ListServiceClassesResponse(proto.Message):
         service_classes (MutableSequence[google.cloud.networkconnectivity_v1.types.ServiceClass]):
             ServiceClasses to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1594,14 +1569,12 @@ class UpdateServiceClassRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the ServiceClass
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServiceClass resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         service_class (google.cloud.networkconnectivity_v1.types.ServiceClass):
             Required. New values to be patched into the
             resource.
@@ -1703,9 +1676,7 @@ class ServiceConnectionToken(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The name of a ServiceConnectionToken.
-            Format:
-
+            Immutable. The name of a ServiceConnectionToken. Format:
             projects/{project}/locations/{location}/ServiceConnectionTokens/{service_connection_token}
             See:
             https://google.aip.dev/122#fields-representing-resource-names
@@ -1830,10 +1801,9 @@ class ListServiceConnectionTokensResponse(proto.Message):
         service_connection_tokens (MutableSequence[google.cloud.networkconnectivity_v1.types.ServiceConnectionToken]):
             ServiceConnectionTokens to be returned.
         next_page_token (str):
-            The next pagination token in the List response.
-            It should be used as page_token for the
-            following request. An empty value means no more
-            result.
+            The next pagination token in the List response. It should be
+            used as page_token for the following request. An empty value
+            means no more result.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1842,12 +1812,12 @@ class ListServiceConnectionTokensResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_tokens: MutableSequence[
-        "ServiceConnectionToken"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionToken",
+    service_connection_tokens: MutableSequence["ServiceConnectionToken"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionToken",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1883,13 +1853,10 @@ class CreateServiceConnectionTokenRequest(proto.Message):
             ServiceConnectionToken. ex.
             projects/123/locations/us-east1
         service_connection_token_id (str):
-            Optional. Resource ID
-            (i.e. 'foo' in
+            Optional. Resource ID (i.e. 'foo' in
             '[...]/projects/p/locations/l/ServiceConnectionTokens/foo')
-            See
-            https://google.aip.dev/122#resource-id-segments
-            Unique per location.
-            If one is not provided, one will be generated.
+            See https://google.aip.dev/122#resource-id-segments Unique
+            per location. If one is not provided, one will be generated.
         service_connection_token (google.cloud.networkconnectivity_v1.types.ServiceConnectionToken):
             Required. Initial values for a new
             ServiceConnectionTokens

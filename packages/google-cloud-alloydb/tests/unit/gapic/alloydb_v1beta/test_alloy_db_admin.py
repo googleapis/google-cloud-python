@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,17 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,26 +62,18 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
 
 from google.cloud.alloydb_v1beta.services.alloy_db_admin import (
     AlloyDBAdminAsyncClient,
@@ -953,10 +955,9 @@ def test_alloy_db_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1001,10 +1002,9 @@ def test_alloy_db_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1040,10 +1040,9 @@ def test_alloy_db_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1282,13 +1281,13 @@ def test_alloy_db_admin_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4745,9 +4744,9 @@ def test_switchover_cluster_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.switchover_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.switchover_cluster] = (
+            mock_rpc
+        )
         request = {}
         client.switchover_cluster(request)
 
@@ -7347,9 +7346,9 @@ def test_batch_create_instances_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_instances
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_instances] = (
+            mock_rpc
+        )
         request = {}
         client.batch_create_instances(request)
 
@@ -8274,9 +8273,9 @@ def test_failover_instance_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.failover_instance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.failover_instance] = (
+            mock_rpc
+        )
         request = {}
         client.failover_instance(request)
 
@@ -8954,9 +8953,9 @@ def test_restart_instance_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.restart_instance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.restart_instance] = (
+            mock_rpc
+        )
         request = {}
         client.restart_instance(request)
 
@@ -12482,9 +12481,9 @@ def test_get_connection_info_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_connection_info
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_connection_info] = (
+            mock_rpc
+        )
         request = {}
         client.get_connection_info(request)
 
@@ -17330,9 +17329,9 @@ def test_switchover_cluster_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.switchover_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.switchover_cluster] = (
+            mock_rpc
+        )
 
         request = {}
         client.switchover_cluster(request)
@@ -18760,9 +18759,9 @@ def test_batch_create_instances_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_create_instances
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_create_instances] = (
+            mock_rpc
+        )
 
         request = {}
         client.batch_create_instances(request)
@@ -19288,9 +19287,9 @@ def test_failover_instance_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.failover_instance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.failover_instance] = (
+            mock_rpc
+        )
 
         request = {}
         client.failover_instance(request)
@@ -19658,9 +19657,9 @@ def test_restart_instance_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.restart_instance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.restart_instance] = (
+            mock_rpc
+        )
 
         request = {}
         client.restart_instance(request)
@@ -21535,9 +21534,9 @@ def test_get_connection_info_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_connection_info
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_connection_info] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_connection_info(request)
@@ -25216,8 +25215,9 @@ def test_list_clusters_rest_bad_request(request_type=service.ListClustersRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25282,17 +25282,19 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_clusters"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_clusters_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_clusters_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25343,8 +25345,9 @@ def test_get_cluster_rest_bad_request(request_type=service.GetClusterRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25429,17 +25432,19 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25488,8 +25493,9 @@ def test_create_cluster_rest_bad_request(request_type=service.CreateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25712,19 +25718,20 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25775,8 +25782,9 @@ def test_update_cluster_rest_bad_request(request_type=service.UpdateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26001,19 +26009,20 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26062,8 +26071,9 @@ def test_export_cluster_rest_bad_request(request_type=service.ExportClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26120,19 +26130,20 @@ def test_export_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_export_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_export_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_export_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_export_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_export_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_export_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26181,8 +26192,9 @@ def test_import_cluster_rest_bad_request(request_type=service.ImportClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26239,19 +26251,20 @@ def test_import_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_import_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_import_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_import_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_import_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_import_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_import_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26300,8 +26313,9 @@ def test_upgrade_cluster_rest_bad_request(request_type=service.UpgradeClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26358,19 +26372,20 @@ def test_upgrade_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_upgrade_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_upgrade_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_upgrade_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26419,8 +26434,9 @@ def test_delete_cluster_rest_bad_request(request_type=service.DeleteClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26477,19 +26493,20 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26538,8 +26555,9 @@ def test_promote_cluster_rest_bad_request(request_type=service.PromoteClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26596,19 +26614,20 @@ def test_promote_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_promote_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_promote_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_promote_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_promote_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_promote_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_promote_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26659,8 +26678,9 @@ def test_switchover_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26717,19 +26737,21 @@ def test_switchover_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_switchover_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_switchover_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_switchover_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_switchover_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26780,8 +26802,9 @@ def test_restore_cluster_rest_bad_request(request_type=service.RestoreClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26838,19 +26861,20 @@ def test_restore_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restore_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restore_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_restore_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restore_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restore_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_restore_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26901,8 +26925,9 @@ def test_create_secondary_cluster_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27125,20 +27150,21 @@ def test_create_secondary_cluster_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_secondary_cluster"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_create_secondary_cluster_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_secondary_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_create_secondary_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27189,8 +27215,9 @@ def test_list_instances_rest_bad_request(request_type=service.ListInstancesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27255,17 +27282,19 @@ def test_list_instances_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_instances"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_instances_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_instances_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27318,8 +27347,9 @@ def test_get_instance_rest_bad_request(request_type=service.GetInstanceRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27412,17 +27442,19 @@ def test_get_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27471,8 +27503,9 @@ def test_create_instance_rest_bad_request(request_type=service.CreateInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27683,19 +27716,20 @@ def test_create_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27746,8 +27780,9 @@ def test_create_secondary_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27958,20 +27993,21 @@ def test_create_secondary_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_secondary_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_create_secondary_instance_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_secondary_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_create_secondary_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_secondary_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28024,8 +28060,9 @@ def test_batch_create_instances_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28257,20 +28294,21 @@ def test_batch_create_instances_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_batch_create_instances"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_batch_create_instances_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_batch_create_instances"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_batch_create_instances"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_batch_create_instances_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_batch_create_instances"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28325,8 +28363,9 @@ def test_update_instance_rest_bad_request(request_type=service.UpdateInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28541,19 +28580,20 @@ def test_update_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28604,8 +28644,9 @@ def test_delete_instance_rest_bad_request(request_type=service.DeleteInstanceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28664,19 +28705,20 @@ def test_delete_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_instance_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28729,8 +28771,9 @@ def test_failover_instance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28789,19 +28832,21 @@ def test_failover_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_failover_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_failover_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_failover_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_failover_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_failover_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_failover_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28854,8 +28899,9 @@ def test_inject_fault_rest_bad_request(request_type=service.InjectFaultRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28914,19 +28960,20 @@ def test_inject_fault_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_inject_fault_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_inject_fault"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_inject_fault_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_inject_fault"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28977,8 +29024,9 @@ def test_restart_instance_rest_bad_request(request_type=service.RestartInstanceR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29037,19 +29085,21 @@ def test_restart_instance_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restart_instance"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_restart_instance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_restart_instance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_restart_instance"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_restart_instance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_restart_instance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29100,8 +29150,9 @@ def test_execute_sql_rest_bad_request(request_type=service.ExecuteSqlRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29163,17 +29214,19 @@ def test_execute_sql_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_execute_sql"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_execute_sql_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_execute_sql"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_execute_sql"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_execute_sql_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_execute_sql"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29222,8 +29275,9 @@ def test_list_backups_rest_bad_request(request_type=service.ListBackupsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29288,17 +29342,19 @@ def test_list_backups_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_backups"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_backups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_backups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_backups"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_backups_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_backups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29349,8 +29405,9 @@ def test_get_backup_rest_bad_request(request_type=service.GetBackupRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29437,17 +29494,19 @@ def test_get_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29496,8 +29555,9 @@ def test_create_backup_rest_bad_request(request_type=service.CreateBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29650,19 +29710,20 @@ def test_create_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29713,8 +29774,9 @@ def test_update_backup_rest_bad_request(request_type=service.UpdateBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29869,19 +29931,20 @@ def test_update_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -29930,8 +29993,9 @@ def test_delete_backup_rest_bad_request(request_type=service.DeleteBackupRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -29988,19 +30052,20 @@ def test_delete_backup_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_backup"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_delete_backup_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_backup"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_backup"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_delete_backup_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_backup"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30051,8 +30116,9 @@ def test_list_supported_database_flags_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30115,18 +30181,20 @@ def test_list_supported_database_flags_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_supported_database_flags"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_list_supported_database_flags_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_supported_database_flags"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_supported_database_flags"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_list_supported_database_flags_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_supported_database_flags"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30184,8 +30252,9 @@ def test_generate_client_certificate_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30252,18 +30321,20 @@ def test_generate_client_certificate_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_generate_client_certificate"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor,
-        "post_generate_client_certificate_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_generate_client_certificate"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_generate_client_certificate"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_generate_client_certificate_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_generate_client_certificate"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30323,8 +30394,9 @@ def test_get_connection_info_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30399,17 +30471,20 @@ def test_get_connection_info_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_connection_info"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_connection_info_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_connection_info"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_connection_info"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor,
+            "post_get_connection_info_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_connection_info"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30460,8 +30535,9 @@ def test_list_users_rest_bad_request(request_type=service.ListUsersRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30526,17 +30602,19 @@ def test_list_users_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_users"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_users_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_users"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_users"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_users_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_users"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30587,8 +30665,9 @@ def test_get_user_rest_bad_request(request_type=service.GetUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30661,17 +30740,19 @@ def test_get_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_get_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_get_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_get_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_get_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30720,8 +30801,9 @@ def test_create_user_rest_bad_request(request_type=service.CreateUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -30866,17 +30948,19 @@ def test_create_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -30929,8 +31013,9 @@ def test_update_user_rest_bad_request(request_type=service.UpdateUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31079,17 +31164,19 @@ def test_update_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_user"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_update_user_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_update_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_user"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_update_user_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_update_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31140,8 +31227,9 @@ def test_delete_user_rest_bad_request(request_type=service.DeleteUserRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31200,13 +31288,13 @@ def test_delete_user_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_delete_user"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_delete_user"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteUserRequest.pb(service.DeleteUserRequest())
         transcode.return_value = {
@@ -31247,8 +31335,9 @@ def test_list_databases_rest_bad_request(request_type=service.ListDatabasesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31311,17 +31400,19 @@ def test_list_databases_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_databases"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_list_databases_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_databases"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_list_databases_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_list_databases"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31372,8 +31463,9 @@ def test_create_database_rest_bad_request(request_type=service.CreateDatabaseReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -31524,17 +31616,19 @@ def test_create_database_rest_interceptors(null_interceptor):
     )
     client = AlloyDBAdminClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_database"
-    ) as post, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "post_create_database_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.AlloyDBAdminRestInterceptor, "pre_create_database"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_database"
+        ) as post,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "post_create_database_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.AlloyDBAdminRestInterceptor, "pre_create_database"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -31585,8 +31679,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31645,8 +31740,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31707,8 +31803,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31769,8 +31866,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31831,8 +31929,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -31893,8 +31992,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -32843,11 +32943,14 @@ def test_alloy_db_admin_base_transport():
 
 def test_alloy_db_admin_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.alloydb_v1beta.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.alloydb_v1beta.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlloyDBAdminTransport(
@@ -32864,9 +32967,12 @@ def test_alloy_db_admin_base_transport_with_credentials_file():
 
 def test_alloy_db_admin_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.alloydb_v1beta.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.alloydb_v1beta.services.alloy_db_admin.transports.AlloyDBAdminTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AlloyDBAdminTransport()
@@ -32938,11 +33044,12 @@ def test_alloy_db_admin_transport_auth_gdch_credentials(transport_class):
 def test_alloy_db_admin_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import catalog, common
@@ -119,6 +119,7 @@ class UserEvent(proto.Message):
                 The event is ingested via Import user events
                 API.
         """
+
         EVENT_SOURCE_UNSPECIFIED = 0
         AUTOML = 1
         ECOMMERCE = 2
@@ -266,14 +267,13 @@ class EventDetail(proto.Message):
             Optional, but highly encouraged for user events that are the
             result of a recommendation prediction query.
         event_attributes (google.cloud.recommendationengine_v1beta1.types.FeatureMap):
-            Optional. Extra user event features to include
-            in the recommendation model.
+            Optional. Extra user event features to include in the
+            recommendation model.
 
-            For product recommendation, an example of extra
-            user information is traffic_channel, i.e. how
-            user arrives at the site. Users can arrive at
-            the site by coming to the site directly, or
-            coming through Google search, and etc.
+            For product recommendation, an example of extra user
+            information is traffic_channel, i.e. how user arrives at the
+            site. Users can arrive at the site by coming to the site
+            directly, or coming through Google search, and etc.
     """
 
     uri: str = proto.Field(
@@ -369,12 +369,12 @@ class ProductEventDetail(proto.Message):
         proto.STRING,
         number=1,
     )
-    page_categories: MutableSequence[
-        catalog.CatalogItem.CategoryHierarchy
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=catalog.CatalogItem.CategoryHierarchy,
+    page_categories: MutableSequence[catalog.CatalogItem.CategoryHierarchy] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=catalog.CatalogItem.CategoryHierarchy,
+        )
     )
     product_details: MutableSequence["ProductDetail"] = proto.RepeatedField(
         proto.MESSAGE,

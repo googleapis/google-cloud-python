@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import service as gm_service
@@ -304,12 +304,14 @@ class ListServiceLevelObjectivesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent containing
-            the listed SLOs, either a project or a
-            Monitoring Metrics Scope. The formats are:
+            Required. Resource name of the parent containing the listed
+            SLOs, either a project or a Monitoring Metrics Scope. The
+            formats are:
 
-            projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
-            workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
+                workspaces/[HOST_PROJECT_ID_OR_NUMBER]/services/-
         filter (str):
             A filter specifying what ``ServiceLevelObjective``\ s to
             return.
@@ -372,12 +374,12 @@ class ListServiceLevelObjectivesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_level_objectives: MutableSequence[
-        gm_service.ServiceLevelObjective
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gm_service.ServiceLevelObjective,
+    service_level_objectives: MutableSequence[gm_service.ServiceLevelObjective] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gm_service.ServiceLevelObjective,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,10 +33,9 @@ __protobuf__ = proto.module(
 
 
 class Subscription(proto.Message):
-    r"""A subscription to receive events about a Google Workspace
-    resource. To learn more about subscriptions, see the [Google
-    Workspace Events API
-    overview](https://developers.google.com/workspace/events).
+    r"""A subscription to receive events about a Google Workspace resource.
+    To learn more about subscriptions, see the `Google Workspace Events
+    API overview <https://developers.google.com/workspace/events>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -161,6 +160,7 @@ class Subscription(proto.Message):
             DELETED (3):
                 The subscription is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -173,11 +173,10 @@ class Subscription(proto.Message):
             ERROR_TYPE_UNSPECIFIED (0):
                 Default value. This value is unused.
             USER_SCOPE_REVOKED (1):
-                The authorizing user has revoked the grant of
-                one or more OAuth scopes. To learn more about
-                authorization for Google Workspace, see
-                [Configure the OAuth consent
-                screen](https://developers.google.com/workspace/guides/configure-oauth-consent#choose-scopes).
+                The authorizing user has revoked the grant of one or more
+                OAuth scopes. To learn more about authorization for Google
+                Workspace, see `Configure the OAuth consent
+                screen <https://developers.google.com/workspace/guides/configure-oauth-consent#choose-scopes>`__.
             RESOURCE_DELETED (2):
                 The target resource for the subscription no
                 longer exists.
@@ -201,6 +200,7 @@ class Subscription(proto.Message):
             OTHER (5):
                 An unidentified error has occurred.
         """
+
         ERROR_TYPE_UNSPECIFIED = 0
         USER_SCOPE_REVOKED = 1
         RESOURCE_DELETED = 2

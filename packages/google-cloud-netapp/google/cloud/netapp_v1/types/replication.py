@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.netapp_v1.types import common, volume
@@ -181,8 +181,8 @@ class Replication(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Replication create time.
         destination_volume (str):
-            Output only. Full name of destination volume
-            resource. Example :
+            Output only. Full name of destination volume resource.
+            Example :
             "projects/{project}/locations/{location}/volumes/{volume_id}".
         transfer_stats (google.cloud.netapp_v1.types.TransferStats):
             Output only. Replication transfer statistics.
@@ -198,8 +198,7 @@ class Replication(proto.Message):
             Required. Input only. Destination volume
             parameters
         source_volume (str):
-            Output only. Full name of source volume
-            resource. Example :
+            Output only. Full name of source volume resource. Example :
             "projects/{project}/locations/{location}/volumes/{volume_id}".
         hybrid_peering_details (google.cloud.netapp_v1.types.HybridPeeringDetails):
             Output only. Hybrid peering details.
@@ -244,6 +243,7 @@ class Replication(proto.Message):
                 Onprem ONTAP is destination and Replication
                 can only be managed from Onprem.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -267,6 +267,7 @@ class Replication(proto.Message):
             DESTINATION (2):
                 Indicates Destination volume.
         """
+
         REPLICATION_ROLE_UNSPECIFIED = 0
         SOURCE = 1
         DESTINATION = 2
@@ -286,6 +287,7 @@ class Replication(proto.Message):
             DAILY (3):
                 Replication happens once every day.
         """
+
         REPLICATION_SCHEDULE_UNSPECIFIED = 0
         EVERY_10_MINUTES = 1
         HOURLY = 2
@@ -318,6 +320,7 @@ class Replication(proto.Message):
             PENDING_PEERING (8):
                 Peering is yet to be established.
         """
+
         MIRROR_STATE_UNSPECIFIED = 0
         PREPARING = 1
         MIRRORED = 2
@@ -347,6 +350,7 @@ class Replication(proto.Message):
                 Transfer in the reverse direction (GCNV is
                 source and Onprem is destination)
         """
+
         HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
         MIGRATION = 1
         CONTINUOUS_REPLICATION = 2
@@ -511,9 +515,8 @@ class ListReplicationsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are
-            additional results to retrieve for this list
-            request.
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -728,8 +731,8 @@ class StopReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication,
-            in the format of
+            Required. The resource name of the replication, in the
+            format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
         force (bool):
             Indicates whether to stop replication
@@ -756,8 +759,8 @@ class ResumeReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication,
-            in the format of
+            Required. The resource name of the replication, in the
+            format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 
@@ -774,8 +777,8 @@ class ReverseReplicationDirectionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication,
-            in the format of
+            Required. The resource name of the replication, in the
+            format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 
@@ -791,8 +794,8 @@ class EstablishPeeringRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication,
-            in the format of
+            Required. The resource name of the replication, in the
+            format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
         peer_cluster_name (str):
             Required. Name of the user's local source
@@ -838,8 +841,8 @@ class SyncReplicationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the replication,
-            in the format of
+            Required. The resource name of the replication, in the
+            format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}/replications/{replication_id}.
     """
 

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataplex_v1.types import resources
@@ -39,8 +39,8 @@ class Environment(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the
-            environment, of the form:
+            Output only. The relative resource name of the environment,
+            of the form:
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
         display_name (str):
             Optional. User friendly display name.
@@ -108,9 +108,8 @@ class Environment(proto.Message):
                     Optional. Total number of nodes in the
                     sessions created for this environment.
                 max_node_count (int):
-                    Optional. Max configurable nodes.
-                    If max_node_count > node_count, then
-                    auto-scaling is enabled.
+                    Optional. Max configurable nodes. If max_node_count >
+                    node_count, then auto-scaling is enabled.
             """
 
             disk_size_gb: int = proto.Field(
@@ -314,8 +313,8 @@ class Content(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the
-            content, of the form:
+            Output only. The relative resource name of the content, of
+            the form:
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
         uid (str):
             Output only. System generated globally unique
@@ -369,6 +368,7 @@ class Content(proto.Message):
                 SPARK (2):
                     Spark SQL Query.
             """
+
             QUERY_ENGINE_UNSPECIFIED = 0
             SPARK = 2
 
@@ -395,6 +395,7 @@ class Content(proto.Message):
                 PYTHON3 (1):
                     Python 3 Kernel.
             """
+
             KERNEL_TYPE_UNSPECIFIED = 0
             PYTHON3 = 1
 
@@ -459,8 +460,8 @@ class Session(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The relative resource name of the
-            content, of the form:
+            Output only. The relative resource name of the content, of
+            the form:
             projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}/sessions/{session_id}
         user_id (str):
             Output only. Email of user running the

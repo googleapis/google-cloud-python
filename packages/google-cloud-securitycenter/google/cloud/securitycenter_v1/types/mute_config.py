@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -121,6 +121,7 @@ class MuteConfig(proto.Message):
                 dynamic mute state may become "unmuted" (unless
                 other configs still match).
         """
+
         MUTE_CONFIG_TYPE_UNSPECIFIED = 0
         STATIC = 1
         DYNAMIC = 2

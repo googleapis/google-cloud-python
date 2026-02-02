@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datastream_v1.types import datastream_resources
@@ -392,12 +392,12 @@ class ListConnectionProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connection_profiles: MutableSequence[
-        datastream_resources.ConnectionProfile
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=datastream_resources.ConnectionProfile,
+    connection_profiles: MutableSequence[datastream_resources.ConnectionProfile] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=datastream_resources.ConnectionProfile,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -497,14 +497,12 @@ class UpdateConnectionProfileRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            ConnectionProfile resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask. If the
-            user does not provide a mask then all fields
-            will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ConnectionProfile resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         connection_profile (google.cloud.datastream_v1.types.ConnectionProfile):
             Required. The connection profile to update.
         request_id (str):
@@ -765,13 +763,12 @@ class UpdateStreamRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the stream resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the stream resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         stream (google.cloud.datastream_v1.types.Stream):
             Required. The stream resource to update.
         request_id (str):
@@ -871,8 +868,8 @@ class RunStreamRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the stream resource to start,
-            in the format:
+            Required. Name of the stream resource to start, in the
+            format:
             projects/{project_id}/locations/{location}/streams/{stream_name}
         cdc_strategy (google.cloud.datastream_v1.types.CdcStrategy):
             Optional. The CDC strategy of the stream. If
@@ -1053,12 +1050,12 @@ class ListStreamObjectsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    stream_objects: MutableSequence[
-        datastream_resources.StreamObject
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=datastream_resources.StreamObject,
+    stream_objects: MutableSequence[datastream_resources.StreamObject] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=datastream_resources.StreamObject,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1276,12 +1273,12 @@ class ListPrivateConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_connections: MutableSequence[
-        datastream_resources.PrivateConnection
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=datastream_resources.PrivateConnection,
+    private_connections: MutableSequence[datastream_resources.PrivateConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=datastream_resources.PrivateConnection,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -43,9 +43,8 @@ class ExascaleDbStorageVault(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of the
-            ExascaleDbStorageVault. Format:
-
+            Identifier. The resource name of the ExascaleDbStorageVault.
+            Format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}
         display_name (str):
             Required. The display name for the
@@ -168,6 +167,7 @@ class ExascaleDbStorageVaultProperties(proto.Message):
             FAILED (6):
                 The ExascaleDbStorageVault has failed.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -190,6 +190,7 @@ class ExascaleDbStorageVaultProperties(proto.Message):
                 Indicates that the resource is in block
                 storage.
         """
+
         SHAPE_ATTRIBUTE_UNSPECIFIED = 0
         SMART_STORAGE = 1
         BLOCK_STORAGE = 2
@@ -273,8 +274,8 @@ class GetExascaleDbStorageVaultRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExascaleDbStorageVault
-            in the following format:
+            Required. The name of the ExascaleDbStorageVault in the
+            following format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
     """
 
@@ -351,12 +352,12 @@ class ListExascaleDbStorageVaultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    exascale_db_storage_vaults: MutableSequence[
-        "ExascaleDbStorageVault"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ExascaleDbStorageVault",
+    exascale_db_storage_vaults: MutableSequence["ExascaleDbStorageVault"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ExascaleDbStorageVault",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -426,8 +427,8 @@ class DeleteExascaleDbStorageVaultRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the ExascaleDbStorageVault
-            in the following format:
+            Required. The name of the ExascaleDbStorageVault in the
+            following format:
             projects/{project}/locations/{location}/exascaleDbStorageVaults/{exascale_db_storage_vault}.
         request_id (str):
             Optional. An optional ID to identify the

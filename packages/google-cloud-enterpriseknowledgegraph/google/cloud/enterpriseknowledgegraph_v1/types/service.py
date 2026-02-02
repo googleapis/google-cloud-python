@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.enterpriseknowledgegraph_v1.types import job_state, operation_metadata
@@ -91,6 +91,7 @@ class InputConfig(proto.Message):
             PERSON (7):
                 Person entity.
         """
+
         ENTITY_TYPE_UNSPECIFIED = 0
         PEOPLE = 1
         ESTABLISHMENT = 2
@@ -100,12 +101,12 @@ class InputConfig(proto.Message):
         LOCAL_BUSINESS = 6
         PERSON = 7
 
-    bigquery_input_configs: MutableSequence[
-        "BigQueryInputConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BigQueryInputConfig",
+    bigquery_input_configs: MutableSequence["BigQueryInputConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BigQueryInputConfig",
+        )
     )
     entity_type: EntityType = proto.Field(
         proto.ENUM,
@@ -344,9 +345,8 @@ class ListEntityReconciliationJobsRequest(proto.Message):
             resource. Format:
             ``projects/{project}/locations/{location}``
         filter (str):
-            An expression for filtering the results of the
-            request. For field names both snake_case and
-            camelCase are supported.
+            An expression for filtering the results of the request. For
+            field names both snake_case and camelCase are supported.
         page_size (int):
             The standard list page size.
         page_token (str):
@@ -387,12 +387,12 @@ class ListEntityReconciliationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_reconciliation_jobs: MutableSequence[
-        "EntityReconciliationJob"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="EntityReconciliationJob",
+    entity_reconciliation_jobs: MutableSequence["EntityReconciliationJob"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="EntityReconciliationJob",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -447,8 +447,8 @@ class EntityReconciliationJob(proto.Message):
         state (google.cloud.enterpriseknowledgegraph_v1.types.JobState):
             Output only. The detailed state of the job.
         error (google.rpc.status_pb2.Status):
-            Output only. Only populated when the job's state
-            is JOB_STATE_FAILED or JOB_STATE_CANCELLED.
+            Output only. Only populated when the job's state is
+            JOB_STATE_FAILED or JOB_STATE_CANCELLED.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the
             EntityReconciliationJob was created.

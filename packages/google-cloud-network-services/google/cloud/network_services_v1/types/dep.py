@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -88,6 +88,7 @@ class EventType(proto.Enum):
             If included in ``supported_events``, the extension is called
             when the HTTP response trailers arrives.
     """
+
     EVENT_TYPE_UNSPECIFIED = 0
     REQUEST_HEADERS = 1
     REQUEST_BODY = 2
@@ -113,6 +114,7 @@ class LoadBalancingScheme(proto.Enum):
             Signifies that this is used for External
             Managed HTTP(S) Load Balancing.
     """
+
     LOAD_BALANCING_SCHEME_UNSPECIFIED = 0
     INTERNAL_MANAGED = 1
     EXTERNAL_MANAGED = 2
@@ -131,6 +133,7 @@ class WireFormat(proto.Enum):
             HTTP2 or H2C as the protocol. All ``supported_events`` for a
             client request are sent as part of the same gRPC stream.
     """
+
     WIRE_FORMAT_UNSPECIFIED = 0
     EXT_PROC_GRPC = 1
 
@@ -166,12 +169,12 @@ class ExtensionChain(proto.Message):
 
         Attributes:
             cel_expression (str):
-                Required. A Common Expression Language (CEL)
-                expression that is used to match requests for
-                which the extension chain is executed.
+                Required. A Common Expression Language (CEL) expression that
+                is used to match requests for which the extension chain is
+                executed.
 
-                For more information, see [CEL matcher language
-                reference](https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference).
+                For more information, see `CEL matcher language
+                reference <https://cloud.google.com/service-extensions/docs/cel-matcher-language-reference>`__.
         """
 
         cel_expression: str = proto.Field(

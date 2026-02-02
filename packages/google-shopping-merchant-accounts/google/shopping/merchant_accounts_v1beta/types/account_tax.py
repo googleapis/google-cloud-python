@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta.types import tax_rule
@@ -40,9 +40,7 @@ class AccountTax(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the tax setting.
-            Format:
-
+            Identifier. The name of the tax setting. Format:
             "{account_tax.name=accounts/{account}}".
         account (int):
             Output only. The ID of the account to which

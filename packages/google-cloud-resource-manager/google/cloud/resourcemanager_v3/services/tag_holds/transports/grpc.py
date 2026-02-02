@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.resourcemanager_v3.types import tag_holds
 
@@ -350,9 +350,8 @@ class TagHoldsGrpcTransport(TagHoldsTransport):
     ) -> Callable[[tag_holds.CreateTagHoldRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tag hold method over gRPC.
 
-        Creates a TagHold. Returns ALREADY_EXISTS if a TagHold
-        with the same resource and origin exists under the same
-        TagValue.
+        Creates a TagHold. Returns ALREADY_EXISTS if a TagHold with the
+        same resource and origin exists under the same TagValue.
 
         Returns:
             Callable[[~.CreateTagHoldRequest],

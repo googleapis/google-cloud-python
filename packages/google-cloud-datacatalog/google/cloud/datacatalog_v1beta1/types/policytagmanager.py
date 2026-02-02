@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.types import common, timestamps
@@ -52,8 +52,7 @@ class Taxonomy(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name of this taxonomy,
-            whose format is:
+            Identifier. Resource name of this taxonomy, whose format is:
             "projects/{project_number}/locations/{location_id}/taxonomies/{id}".
         display_name (str):
             Required. User defined name of this taxonomy.
@@ -75,8 +74,8 @@ class Taxonomy(proto.Message):
             Output only. Number of policy tags contained
             in this taxonomy.
         taxonomy_timestamps (google.cloud.datacatalog_v1beta1.types.SystemTimestamps):
-            Output only. Timestamps about this taxonomy.
-            Only create_time and update_time are used.
+            Output only. Timestamps about this taxonomy. Only
+            create_time and update_time are used.
         activated_policy_types (MutableSequence[google.cloud.datacatalog_v1beta1.types.Taxonomy.PolicyType]):
             Optional. A list of policy types that are
             activated for this taxonomy. If not set,
@@ -98,6 +97,7 @@ class Taxonomy(proto.Message):
                 Fine grained access control policy, which
                 enables access control on tagged resources.
         """
+
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
 
@@ -165,8 +165,8 @@ class PolicyTag(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name of this policy tag,
-            whose format is:
+            Identifier. Resource name of this policy tag, whose format
+            is:
             "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{id}".
         display_name (str):
             Required. User defined name of this policy
@@ -264,9 +264,8 @@ class UpdateTaxonomyRequest(proto.Message):
 
     Attributes:
         taxonomy (google.cloud.datacatalog_v1beta1.types.Taxonomy):
-            The taxonomy to update. Only description,
-            display_name, and activated policy types can be
-            updated.
+            The taxonomy to update. Only description, display_name, and
+            activated policy types can be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource. For the
             ``FieldMask`` definition, see
@@ -300,9 +299,8 @@ class ListTaxonomiesRequest(proto.Message):
             be a value between 1 and 1000. If not set,
             defaults to 50.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any. If not set,
-            defaults to an empty string.
+            The next_page_token value returned from a previous list
+            request, if any. If not set, defaults to an empty string.
         filter (str):
             Supported field for filter is 'service' and
             value is 'dataplex'. Eg: service=dataplex.
@@ -417,8 +415,7 @@ class UpdatePolicyTagRequest(proto.Message):
     Attributes:
         policy_tag (google.cloud.datacatalog_v1beta1.types.PolicyTag):
             The policy tag to update. Only the description,
-            display_name, and parent_policy_tag fields can
-            be updated.
+            display_name, and parent_policy_tag fields can be updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource. Only display_name,
             description and parent_policy_tag can be updated and thus
@@ -456,9 +453,8 @@ class ListPolicyTagsRequest(proto.Message):
             be a value between 1 and 1000. If not set,
             defaults to 50.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any. If not set,
-            defaults to an empty string.
+            The next_page_token value returned from a previous List
+            request, if any. If not set, defaults to an empty string.
     """
 
     parent: str = proto.Field(

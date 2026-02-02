@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import common
@@ -155,8 +155,8 @@ class GetLoggingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Full LoggingConfig resource name.
-            Format: projects/{project_number}/loggingConfig
+            Required. Full LoggingConfig resource name. Format:
+            projects/{project_number}/loggingConfig
     """
 
     name: str = proto.Field(
@@ -213,8 +213,8 @@ class GetAlertConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Full AlertConfig resource name.
-            Format: projects/{project_number}/alertConfig
+            Required. Full AlertConfig resource name. Format:
+            projects/{project_number}/alertConfig
     """
 
     name: str = proto.Field(

@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contact_center_insights_v1.types import resources
@@ -168,6 +168,7 @@ class ConversationView(proto.Enum):
             Populates all fields in the conversation
             except the transcript.
     """
+
     CONVERSATION_VIEW_UNSPECIFIED = 0
     FULL = 2
     BASIC = 1
@@ -272,12 +273,12 @@ class CalculateStatsResponse(proto.Message):
             number=1,
             message=duration_pb2.Duration,
         )
-        points: MutableSequence[
-            "CalculateStatsResponse.TimeSeries.Interval"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="CalculateStatsResponse.TimeSeries.Interval",
+        points: MutableSequence["CalculateStatsResponse.TimeSeries.Interval"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="CalculateStatsResponse.TimeSeries.Interval",
+            )
         )
 
     average_duration: duration_pb2.Duration = proto.Field(
@@ -763,6 +764,7 @@ class IngestConversationsRequest(proto.Message):
                 AUDIO (2):
                     The object is an audio file.
             """
+
             BUCKET_OBJECT_TYPE_UNSPECIFIED = 0
             TRANSCRIPT = 1
             AUDIO = 2
@@ -911,9 +913,9 @@ class IngestConversationsMetadata(proto.Message):
                 Output only. The number of new conversations
                 added during this ingest operation.
             failed_ingest_count (int):
-                Output only. The number of objects which were
-                unable to be ingested due to errors. The errors
-                are populated in the partial_errors field.
+                Output only. The number of objects which were unable to be
+                ingested due to errors. The errors are populated in the
+                partial_errors field.
         """
 
         processed_object_count: int = proto.Field(
@@ -1094,8 +1096,8 @@ class BulkAnalyzeConversationsRequest(proto.Message):
             Required. Filter used to select the subset of
             conversations to analyze.
         analysis_percentage (float):
-            Required. Percentage of selected conversation to
-            analyze, between [0, 100].
+            Required. Percentage of selected conversation to analyze,
+            between [0, 100].
         annotator_selector (google.cloud.contact_center_insights_v1.types.AnnotatorSelector):
             To select the annotators to run and the
             phrase matchers to use (if any). If not
@@ -1325,6 +1327,7 @@ class ExportInsightsDataRequest(proto.Message):
                 If the table already exists, BigQuery will
                 append data to the table.
         """
+
         WRITE_DISPOSITION_UNSPECIFIED = 0
         WRITE_TRUNCATE = 1
         WRITE_APPEND = 2
@@ -1339,15 +1342,13 @@ class ExportInsightsDataRequest(proto.Message):
                 project instead of the resource project.
                 Otherwise, the resource project will be used.
             dataset (str):
-                Required. The name of the BigQuery dataset that
-                the snapshot result should be exported to. If
-                this dataset does not exist, the export call
-                returns an INVALID_ARGUMENT error.
+                Required. The name of the BigQuery dataset that the snapshot
+                result should be exported to. If this dataset does not
+                exist, the export call returns an INVALID_ARGUMENT error.
             table (str):
-                The BigQuery table name to which the insights
-                data should be written. If this table does not
-                exist, the export call returns an
-                INVALID_ARGUMENT error.
+                The BigQuery table name to which the insights data should be
+                written. If this table does not exist, the export call
+                returns an INVALID_ARGUMENT error.
         """
 
         project_id: str = proto.Field(
@@ -2149,8 +2150,8 @@ class UpdateSettingsRequest(proto.Message):
 
 
 class CreateAnalysisRuleRequest(proto.Message):
-    r"""The request to create a analysis rule.
-    analysis_rule_id will be generated by the server.
+    r"""The request to create a analysis rule. analysis_rule_id will be
+    generated by the server.
 
     Attributes:
         parent (str):
@@ -2196,9 +2197,9 @@ class UpdateAnalysisRuleRequest(proto.Message):
         analysis_rule (google.cloud.contact_center_insights_v1.types.AnalysisRule):
             Required. The new analysis rule.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. The list of fields to be updated.
-            If the update_mask is not provided, the update
-            will be applied to all fields.
+            Optional. The list of fields to be updated. If the
+            update_mask is not provided, the update will be applied to
+            all fields.
     """
 
     analysis_rule: resources.AnalysisRule = proto.Field(
@@ -2576,6 +2577,7 @@ class Dimension(proto.Message):
                 The dimension is keyed by the conversation
                 profile ID.
         """
+
         DIMENSION_KEY_UNSPECIFIED = 0
         ISSUE = 1
         AGENT = 2
@@ -2735,12 +2737,11 @@ class QueryMetricsRequest(proto.Message):
             Required. The location of the data.
             "projects/{project}/locations/{location}".
         filter (str):
-            Required. Filter to select a subset of
-            conversations to compute the metrics. Must
-            specify a window of the conversation create time
-            to compute the metrics. The returned metrics
-            will be from the range [DATE(starting create
-            time), DATE(ending create time)).
+            Required. Filter to select a subset of conversations to
+            compute the metrics. Must specify a window of the
+            conversation create time to compute the metrics. The
+            returned metrics will be from the range [DATE(starting
+            create time), DATE(ending create time)).
         time_granularity (google.cloud.contact_center_insights_v1.types.QueryMetricsRequest.TimeGranularity):
             The time granularity of each data point in
             the time series. Defaults to NONE if this field
@@ -2779,26 +2780,23 @@ class QueryMetricsRequest(proto.Message):
                 contain a time series. This is the default value
                 if no time granularity is specified.
             DAILY (2):
-                Data points in the time series will aggregate at
-                a daily granularity. 1 day means [midnight to
-                midnight).
+                Data points in the time series will aggregate at a daily
+                granularity. 1 day means [midnight to midnight).
             HOURLY (3):
-                Data points in the time series will aggregate at
-                a daily granularity. 1 HOUR means [01:00 to
-                02:00).
+                Data points in the time series will aggregate at a daily
+                granularity. 1 HOUR means [01:00 to 02:00).
             PER_MINUTE (4):
-                Data points in the time series will aggregate at
-                a daily granularity. PER_MINUTE means [01:00 to
-                01:01).
+                Data points in the time series will aggregate at a daily
+                granularity. PER_MINUTE means [01:00 to 01:01).
             PER_5_MINUTES (5):
-                Data points in the time series will aggregate at
-                a 1 minute granularity. PER_5_MINUTES means
-                [01:00 to 01:05).
+                Data points in the time series will aggregate at a 1 minute
+                granularity. PER_5_MINUTES means [01:00 to 01:05).
             MONTHLY (6):
-                Data points in the time series will aggregate at
-                a monthly granularity. 1 MONTH means [01st of
-                the month to 1st of the next month).
+                Data points in the time series will aggregate at a monthly
+                granularity. 1 MONTH means [01st of the month to 1st of the
+                next month).
         """
+
         TIME_GRANULARITY_UNSPECIFIED = 0
         NONE = 1
         DAILY = 2
@@ -2850,12 +2848,11 @@ class QueryMetricsResponse(proto.Message):
             combination of the cardinality of dimensions
             from the request.
         macro_average_slice (google.cloud.contact_center_insights_v1.types.QueryMetricsResponse.Slice):
-            The macro average slice contains aggregated
-            averages across the selected dimension. i.e. if
-            group_by agent is specified this field will
-            contain the average across all agents.
-            This field is only populated if the request
-            specifies a Dimension.
+            The macro average slice contains aggregated averages across
+            the selected dimension. i.e. if group_by agent is specified
+            this field will contain the average across all agents. This
+            field is only populated if the request specifies a
+            Dimension.
 
             This field is a member of `oneof`_ ``_macro_average_slice``.
     """
@@ -2878,9 +2875,8 @@ class QueryMetricsResponse(proto.Message):
                 A unique combination of dimensions that this
                 slice represents.
             total (google.cloud.contact_center_insights_v1.types.QueryMetricsResponse.Slice.DataPoint):
-                The total metric value. The interval of this
-                data point is [starting create time, ending
-                create time) from the request.
+                The total metric value. The interval of this data point is
+                [starting create time, ending create time) from the request.
             time_series (google.cloud.contact_center_insights_v1.types.QueryMetricsResponse.Slice.TimeSeries):
                 A time series of metric values. This is only
                 populated if the request specifies a time
@@ -2950,10 +2946,10 @@ class QueryMetricsResponse(proto.Message):
                     qa_tag_scores (MutableSequence[google.cloud.contact_center_insights_v1.types.QueryMetricsResponse.Slice.DataPoint.ConversationMeasure.QaTagScore]):
                         Average QA normalized score for all the tags.
                     average_qa_question_normalized_score (float):
-                        Average QA normalized score averaged for
-                        questions averaged across all revisions of the
-                        parent scorecard. Will be only populated if the
-                        request specifies a dimension of QA_QUESTION_ID.
+                        Average QA normalized score averaged for questions averaged
+                        across all revisions of the parent scorecard. Will be only
+                        populated if the request specifies a dimension of
+                        QA_QUESTION_ID.
 
                         This field is a member of `oneof`_ ``_average_qa_question_normalized_score``.
                 """
@@ -3052,12 +3048,12 @@ class QueryMetricsResponse(proto.Message):
                     .
             """
 
-            data_points: MutableSequence[
-                "QueryMetricsResponse.Slice.DataPoint"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="QueryMetricsResponse.Slice.DataPoint",
+            data_points: MutableSequence["QueryMetricsResponse.Slice.DataPoint"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="QueryMetricsResponse.Slice.DataPoint",
+                )
             )
 
         dimensions: MutableSequence["Dimension"] = proto.RepeatedField(
@@ -3755,12 +3751,12 @@ class ListQaScorecardRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    qa_scorecard_revisions: MutableSequence[
-        resources.QaScorecardRevision
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.QaScorecardRevision,
+    qa_scorecard_revisions: MutableSequence[resources.QaScorecardRevision] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.QaScorecardRevision,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -4057,6 +4053,7 @@ class BulkUploadFeedbackLabelsRequest(proto.Message):
                 JSON (2):
                     JSON format.
             """
+
             FORMAT_UNSPECIFIED = 0
             CSV = 1
             JSON = 2
@@ -4228,6 +4225,7 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
                 Downloaded file will contain only Topic
                 Modeling labels.
         """
+
         FEEDBACK_LABEL_TYPE_UNSPECIFIED = 0
         QUALITY_AI = 1
         TOPIC_MODELING = 2
@@ -4276,6 +4274,7 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
                     JSON format.
                     1 label stored per JSON file by default.
             """
+
             FORMAT_UNSPECIFIED = 0
             CSV = 1
             JSON = 2

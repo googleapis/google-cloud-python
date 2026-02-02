@@ -125,6 +125,7 @@ class SslSettings(proto.Message):
                 SSL support or a user-obtained SSL certificate
                 has been explictly mapped to this domain.
         """
+
         SSL_MANAGEMENT_TYPE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -175,6 +176,7 @@ class ResourceRecord(proto.Message):
                 A CNAME resource record. Data is a domain
                 name to be aliased.
         """
+
         RECORD_TYPE_UNSPECIFIED = 0
         A = 1
         AAAA = 2

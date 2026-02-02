@@ -16,20 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1964,9 +1966,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_metadata_job(
                 request, metadata
@@ -1992,7 +1992,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2085,9 +2085,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_http_options()
 
             request, metadata = self._interceptor.pre_create_aspect_type(
                 request, metadata
@@ -2113,7 +2111,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2391,9 +2389,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entry_group(
                 request, metadata
@@ -2419,7 +2415,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2543,9 +2539,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entry_link(
                 request, metadata
@@ -2698,9 +2692,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entry_type(
                 request, metadata
@@ -2726,7 +2718,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2851,9 +2843,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_metadata_job(
                 request, metadata
@@ -2879,7 +2869,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3003,9 +2993,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_aspect_type(
                 request, metadata
@@ -3027,7 +3015,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3297,9 +3285,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entry_group(
                 request, metadata
@@ -3321,7 +3307,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3443,9 +3429,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entry_link(
                 request, metadata
@@ -3592,9 +3576,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entry_type(
                 request, metadata
@@ -3616,7 +3598,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4619,9 +4601,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List AspectTypes response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_aspect_types(
                 request, metadata
@@ -4909,9 +4889,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List entry groups response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entry_groups(
                 request, metadata
@@ -5201,9 +5179,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List metadata jobs response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_metadata_jobs(
                 request, metadata
@@ -5645,9 +5621,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_http_options()
 
             request, metadata = self._interceptor.pre_update_aspect_type(
                 request, metadata
@@ -5673,7 +5647,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5951,9 +5925,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entry_group(
                 request, metadata
@@ -5979,7 +5951,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6104,9 +6076,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entry_type(
                 request, metadata
@@ -6132,7 +6102,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6756,9 +6726,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -6875,9 +6843,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata

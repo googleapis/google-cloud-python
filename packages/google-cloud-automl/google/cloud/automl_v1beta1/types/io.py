@@ -344,9 +344,9 @@ class InputConfig(proto.Message):
 
     Attributes:
         gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
-            The Google Cloud Storage location for the input
-            content. In ImportData, the gcs_source points to
-            a csv with structure described in the comment.
+            The Google Cloud Storage location for the input content. In
+            ImportData, the gcs_source points to a csv with structure
+            described in the comment.
 
             This field is a member of `oneof`_ ``source``.
         bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
@@ -625,16 +625,12 @@ class OutputConfig(proto.Message):
 
     Attributes:
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
-            The Google Cloud Storage location where the
-            output is to be written to. For Image Object
-            Detection, Text Extraction, Video Classification
-            and Tables, in the given directory a new
-            directory will be created with name:
-
-            export_data-<dataset-display-name>-<timestamp-of-export-call>
-            where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
-            ISO-8601 format. All export output will be
-            written into that directory.
+            The Google Cloud Storage location where the output is to be
+            written to. For Image Object Detection, Text Extraction,
+            Video Classification and Tables, in the given directory a
+            new directory will be created with name: export_data-- where
+            timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
+            All export output will be written into that directory.
 
             This field is a member of `oneof`_ ``destination``.
         bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
@@ -991,19 +987,15 @@ class ModelExportOutputConfig(proto.Message):
 
     Attributes:
         gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
-            The Google Cloud Storage location where the
-            model is to be written to. This location may
-            only be set for the following model formats:
-
-            "tflite", "edgetpu_tflite", "tf_saved_model",
+            The Google Cloud Storage location where the model is to be
+            written to. This location may only be set for the following
+            model formats: "tflite", "edgetpu_tflite", "tf_saved_model",
             "tf_js", "core_ml".
 
-            Under the directory given as the destination a
-            new one with name
-            "model-export-<model-display-name>-<timestamp-of-export-call>",
-            where timestamp is in YYYY-MM-DDThh:mm:ss.sssZ
-            ISO-8601 format, will be created. Inside the
-            model and any of its supporting files will be
+            Under the directory given as the destination a new one with
+            name "model-export--", where timestamp is in
+            YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
+            Inside the model and any of its supporting files will be
             written.
 
             This field is a member of `oneof`_ ``destination``.

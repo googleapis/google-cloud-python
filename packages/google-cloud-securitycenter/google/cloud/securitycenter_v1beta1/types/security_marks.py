@@ -36,11 +36,9 @@ class SecurityMarks(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of the SecurityMarks.
-            See:
+            The relative resource name of the SecurityMarks. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Examples:
-
             "organizations/{organization_id}/assets/{asset_id}/securityMarks"
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
         marks (MutableMapping[str, str]):

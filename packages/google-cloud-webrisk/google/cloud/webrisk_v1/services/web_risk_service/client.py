@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.webrisk_v1 import gapic_version as package_version
 
@@ -61,10 +61,10 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.webrisk_v1.types import webrisk
 
@@ -82,9 +82,7 @@ class WebRiskServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[WebRiskServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[WebRiskServiceTransport]]
     _transport_registry["grpc"] = WebRiskServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = WebRiskServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = WebRiskServiceRestTransport
@@ -604,11 +602,9 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = WebRiskServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            WebRiskServiceClient._read_environment_variables()
+        )
         self._client_cert_source = WebRiskServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -643,8 +639,7 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(WebRiskServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1096,15 +1091,15 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> webrisk.Submission:
-        r"""Creates a Submission of a URI suspected of containing
-        phishing content to be reviewed. If the result verifies
-        the existence of malicious phishing content, the site
-        will be added to the [Google's Social Engineering
-        lists](https://support.google.com/webmasters/answer/6350487/)
-        in order to protect users that could get exposed to this
-        threat in the future. Only allowlisted projects can use
-        this method during Early Access. Please reach out to
-        Sales or your customer engineer to obtain access.
+        r"""Creates a Submission of a URI suspected of containing phishing
+        content to be reviewed. If the result verifies the existence of
+        malicious phishing content, the site will be added to the
+        `Google's Social Engineering
+        lists <https://support.google.com/webmasters/answer/6350487/>`__
+        in order to protect users that could get exposed to this threat
+        in the future. Only allowlisted projects can use this method
+        during Early Access. Please reach out to Sales or your customer
+        engineer to obtain access.
 
         .. code-block:: python
 
@@ -1141,9 +1136,8 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 The request object. Request to send a potentially phishy
                 URI to WebRisk.
             parent (str):
-                Required. The name of the project that
-                is making the submission. This string is
-                in the format
+                Required. The name of the project that is making the
+                submission. This string is in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field
@@ -1281,9 +1275,8 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
                 The request object. Request to send a potentially
                 malicious URI to WebRisk.
             parent (str):
-                Required. The name of the project that
-                is making the submission. This string is
-                in the format
+                Required. The name of the project that is making the
+                submission. This string is in the format
                 "projects/{project_number}".
 
                 This corresponds to the ``parent`` field

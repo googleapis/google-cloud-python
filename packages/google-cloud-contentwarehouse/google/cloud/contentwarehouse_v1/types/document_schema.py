@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,13 +42,10 @@ class DocumentSchema(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the document schema.
-            Format:
-
+            The resource name of the document schema. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
 
-            The name is ignored when creating a document
-            schema.
+            The name is ignored when creating a document schema.
         display_name (str):
             Required. Name of the schema given by the
             user. Must be unique per project.
@@ -204,6 +201,7 @@ class PropertyDefinition(proto.Message):
             LOWEST (6):
                 Lowest importance (negative).
         """
+
         RETRIEVAL_IMPORTANCE_UNSPECIFIED = 0
         HIGHEST = 1
         HIGHER = 2

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -147,6 +147,7 @@ class MirroringEndpointGroup(proto.Message):
                 only permitted operation is to retry deleting
                 the endpoint group.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -165,6 +166,7 @@ class MirroringEndpointGroup(proto.Message):
                 An endpoint group that sends packets to a
                 single deployment group.
         """
+
         TYPE_UNSPECIFIED = 0
         DIRECT = 1
 
@@ -248,12 +250,12 @@ class MirroringEndpointGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_deployment_groups: MutableSequence[
-        ConnectedDeploymentGroup
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=ConnectedDeploymentGroup,
+    connected_deployment_groups: MutableSequence[ConnectedDeploymentGroup] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=ConnectedDeploymentGroup,
+        )
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -350,12 +352,12 @@ class ListMirroringEndpointGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_endpoint_groups: MutableSequence[
-        "MirroringEndpointGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="MirroringEndpointGroup",
+    mirroring_endpoint_groups: MutableSequence["MirroringEndpointGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="MirroringEndpointGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -368,9 +370,8 @@ class GetMirroringEndpointGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the endpoint group to
-            retrieve. Format:
-
+            Required. The name of the endpoint group to retrieve.
+            Format:
             projects/{project}/locations/{location}/mirroringEndpointGroups/{mirroring_endpoint_group}
     """
 
@@ -565,6 +566,7 @@ class MirroringEndpointGroupAssociation(proto.Message):
                 The only permitted operation is to retry
                 deleting the association.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 3
@@ -602,6 +604,7 @@ class MirroringEndpointGroupAssociation(proto.Message):
                     (e.g. an inaccessible location) and the system
                     is expected to recover automatically.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             OUT_OF_SYNC = 2
@@ -752,9 +755,7 @@ class GetMirroringEndpointGroupAssociationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the association to
-            retrieve. Format:
-
+            Required. The name of the association to retrieve. Format:
             projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroring_endpoint_group_association}
     """
 
@@ -936,6 +937,7 @@ class MirroringDeploymentGroup(proto.Message):
                 The deployment group is being wiped out
                 (project deleted).
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1004,12 +1006,12 @@ class MirroringDeploymentGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_endpoint_groups: MutableSequence[
-        ConnectedEndpointGroup
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=ConnectedEndpointGroup,
+    connected_endpoint_groups: MutableSequence[ConnectedEndpointGroup] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=ConnectedEndpointGroup,
+        )
     )
     nested_deployments: MutableSequence[Deployment] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1107,12 +1109,12 @@ class ListMirroringDeploymentGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_deployment_groups: MutableSequence[
-        "MirroringDeploymentGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="MirroringDeploymentGroup",
+    mirroring_deployment_groups: MutableSequence["MirroringDeploymentGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="MirroringDeploymentGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1125,9 +1127,8 @@ class GetMirroringDeploymentGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment group to
-            retrieve. Format:
-
+            Required. The name of the deployment group to retrieve.
+            Format:
             projects/{project}/locations/{location}/mirroringDeploymentGroups/{mirroring_deployment_group}
     """
 
@@ -1313,6 +1314,7 @@ class MirroringDeployment(proto.Message):
                 permitted operation is to retry deleting the
                 deployment.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1454,9 +1456,7 @@ class GetMirroringDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment to
-            retrieve. Format:
-
+            Required. The name of the deployment to retrieve. Format:
             projects/{project}/locations/{location}/mirroringDeployments/{mirroring_deployment}
     """
 
@@ -1591,6 +1591,7 @@ class MirroringLocation(proto.Message):
                 location) and the system is expected to recover
                 automatically.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         OUT_OF_SYNC = 2

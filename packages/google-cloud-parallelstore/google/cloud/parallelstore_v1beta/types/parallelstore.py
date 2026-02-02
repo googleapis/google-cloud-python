@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -67,6 +67,7 @@ class TransferType(proto.Enum):
         EXPORT (2):
             Exports from Parallelstore.
     """
+
     TRANSFER_TYPE_UNSPECIFIED = 0
     IMPORT = 1
     EXPORT = 2
@@ -86,6 +87,7 @@ class FileStripeLevel(proto.Enum):
         FILE_STRIPE_LEVEL_MAX (3):
             Maximum file striping
     """
+
     FILE_STRIPE_LEVEL_UNSPECIFIED = 0
     FILE_STRIPE_LEVEL_MIN = 1
     FILE_STRIPE_LEVEL_BALANCED = 2
@@ -106,6 +108,7 @@ class DirectoryStripeLevel(proto.Enum):
         DIRECTORY_STRIPE_LEVEL_MAX (3):
             Maximum directory striping
     """
+
     DIRECTORY_STRIPE_LEVEL_UNSPECIFIED = 0
     DIRECTORY_STRIPE_LEVEL_MIN = 1
     DIRECTORY_STRIPE_LEVEL_BALANCED = 2
@@ -124,6 +127,7 @@ class DeploymentType(proto.Enum):
         PERSISTENT (2):
             Persistent
     """
+
     DEPLOYMENT_TYPE_UNSPECIFIED = 0
     SCRATCH = 1
     PERSISTENT = 2
@@ -171,10 +175,9 @@ class Instance(proto.Message):
             network <https://cloud.google.com/vpc/docs/vpc>`__ to which
             the instance is connected.
         reserved_ip_range (str):
-            Optional. Immutable. The ID of the IP address
-            range being used by the instance's VPC network.
-            See [Configure a VPC
-            network](https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc).
+            Optional. Immutable. The ID of the IP address range being
+            used by the instance's VPC network. See `Configure a VPC
+            network <https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc>`__.
             If no ID is provided, all ranges are considered.
         effective_reserved_ip_range (str):
             Output only. Immutable. The ID of the IP
@@ -231,6 +234,7 @@ class Instance(proto.Message):
                 The instance is being repaired. This should only be used by
                 instances using the ``PERSISTENT`` deployment type.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -332,6 +336,7 @@ class TransferMetadataOptions(proto.Message):
                 Preserve UID that is in number format during
                 a transfer job.
         """
+
         UID_UNSPECIFIED = 0
         UID_SKIP = 1
         UID_NUMBER_PRESERVE = 2
@@ -348,6 +353,7 @@ class TransferMetadataOptions(proto.Message):
                 Preserve GID that is in number format during
                 a transfer job.
         """
+
         GID_UNSPECIFIED = 0
         GID_SKIP = 1
         GID_NUMBER_PRESERVE = 2
@@ -363,6 +369,7 @@ class TransferMetadataOptions(proto.Message):
             MODE_PRESERVE (2):
                 Preserve mode during a transfer job.
         """
+
         MODE_UNSPECIFIED = 0
         MODE_SKIP = 1
         MODE_PRESERVE = 2
@@ -543,12 +550,11 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Mask of fields to update. Field mask
-            is used to specify the fields to be overwritten
-            in the Instance resource by the update. At least
-            one path must be supplied in this field. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request.
+            Required. Mask of fields to update. Field mask is used to
+            specify the fields to be overwritten in the Instance
+            resource by the update. At least one path must be supplied
+            in this field. The fields specified in the update_mask are
+            relative to the resource, not the full request.
         instance (google.cloud.parallelstore_v1beta.types.Instance):
             Required. The instance to update.
         request_id (str):

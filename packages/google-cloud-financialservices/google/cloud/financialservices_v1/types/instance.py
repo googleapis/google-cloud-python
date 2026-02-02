@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.financialservices_v1.types import bigquery_destination
 from google.cloud.financialservices_v1.types import (
     line_of_business as gcf_line_of_business,
 )
-from google.cloud.financialservices_v1.types import bigquery_destination
 
 __protobuf__ = proto.module(
     package="google.cloud.financialservices.v1",
@@ -91,6 +91,7 @@ class Instance(proto.Message):
                 The resource is in the process of being
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -137,10 +138,9 @@ class ListInstancesRequest(proto.Message):
             location for that Instance. Every location has
             exactly one instance.
         page_size (int):
-            The number of resources to be included in the
-            response. The response contains a
-            next_page_token, which can be used to retrieve
-            the next page of resources.
+            The number of resources to be included in the response. The
+            response contains a next_page_token, which can be used to
+            retrieve the next page of resources.
         page_token (str):
             In case of paginated results, this is the
             token that was returned in the previous
@@ -281,18 +281,15 @@ class UpdateInstanceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Instance
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Instance resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         instance (google.cloud.financialservices_v1.types.Instance):
-            Required. The new value of the instance fields
-            that will be updated according to the
-            update_mask
+            Required. The new value of the instance fields that will be
+            updated according to the update_mask
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -407,6 +404,7 @@ class ImportRegisteredPartiesRequest(proto.Message):
             APPEND (2):
                 Add new parties to Parties Table.
         """
+
         UPDATE_MODE_UNSPECIFIED = 0
         REPLACE = 1
         APPEND = 2

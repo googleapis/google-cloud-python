@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -61,15 +61,17 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_schema_service import pagers
 from google.cloud.contentwarehouse_v1.types import (
+    document_schema,
+    document_schema_service,
+)
+from google.cloud.contentwarehouse_v1.types import (
     document_schema as gcc_document_schema,
 )
-from google.cloud.contentwarehouse_v1.types import document_schema
-from google.cloud.contentwarehouse_v1.types import document_schema_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, DocumentSchemaServiceTransport
 from .transports.grpc import DocumentSchemaServiceGrpcTransport
@@ -85,9 +87,7 @@ class DocumentSchemaServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DocumentSchemaServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DocumentSchemaServiceTransport]]
     _transport_registry["grpc"] = DocumentSchemaServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DocumentSchemaServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = DocumentSchemaServiceRestTransport
@@ -650,11 +650,9 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DocumentSchemaServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DocumentSchemaServiceClient._read_environment_variables()
+        )
         self._client_cert_source = DocumentSchemaServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -689,8 +687,7 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DocumentSchemaServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -936,9 +933,8 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 The request object. Request message for
                 DocumentSchemaService.UpdateDocumentSchema.
             name (str):
-                Required. The name of the document
-                schema to update. Format:
-
+                Required. The name of the document schema to update.
+                Format:
                 projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
 
                 This corresponds to the ``name`` field
@@ -1024,8 +1020,8 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_schema.DocumentSchema:
-        r"""Gets a document schema. Returns NOT_FOUND if the
-        document schema does not exist.
+        r"""Gets a document schema. Returns NOT_FOUND if the document schema
+        does not exist.
 
         .. code-block:: python
 
@@ -1135,9 +1131,9 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a document schema. Returns NOT_FOUND if the
-        document schema does not exist. Returns BAD_REQUEST if
-        the document schema has documents depending on it.
+        r"""Deletes a document schema. Returns NOT_FOUND if the document
+        schema does not exist. Returns BAD_REQUEST if the document
+        schema has documents depending on it.
 
         .. code-block:: python
 
@@ -1269,8 +1265,8 @@ class DocumentSchemaServiceClient(metaclass=DocumentSchemaServiceClientMeta):
                 The request object. Request message for
                 DocumentSchemaService.ListDocumentSchemas.
             parent (str):
-                Required. The parent, which owns this
-                collection of document schemas. Format:
+                Required. The parent, which owns this collection of
+                document schemas. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 
@@ -44,15 +44,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1alpha1.services.firewall_activation import pagers
 from google.cloud.network_security_v1alpha1.types import common, firewall_activation
@@ -141,7 +143,8 @@ class FirewallActivationAsyncClient:
         Returns:
             FirewallActivationAsyncClient: The constructed client.
         """
-        return FirewallActivationClient.from_service_account_info.__func__(FirewallActivationAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = FirewallActivationClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(FirewallActivationAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -157,7 +160,8 @@ class FirewallActivationAsyncClient:
         Returns:
             FirewallActivationAsyncClient: The constructed client.
         """
-        return FirewallActivationClient.from_service_account_file.__func__(FirewallActivationAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = FirewallActivationClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(FirewallActivationAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -195,7 +199,9 @@ class FirewallActivationAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return FirewallActivationClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return FirewallActivationClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> FirewallActivationTransport:
@@ -621,11 +627,10 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             firewall_endpoint_id (:class:`str`):
-                Required. Id of the requesting object.
-                If auto-generating Id server-side,
-                remove this field and
-                firewall_endpoint_id from the
-                method_signature of Create RPC.
+                Required. Id of the requesting object. If
+                auto-generating Id server-side, remove this field and
+                firewall_endpoint_id from the method_signature of Create
+                RPC.
 
                 This corresponds to the ``firewall_endpoint_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -896,15 +901,12 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                Endpoint resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Endpoint resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1296,11 +1298,10 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             firewall_endpoint_association_id (:class:`str`):
-                Optional. Id of the requesting object.
-                If auto-generating Id server-side,
-                remove this field and
-                firewall_endpoint_association_id from
-                the method_signature of Create RPC.
+                Optional. Id of the requesting object. If
+                auto-generating Id server-side, remove this field and
+                firewall_endpoint_association_id from the
+                method_signature of Create RPC.
 
                 This corresponds to the ``firewall_endpoint_association_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1586,15 +1587,12 @@ class FirewallActivationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                Association resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Association resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

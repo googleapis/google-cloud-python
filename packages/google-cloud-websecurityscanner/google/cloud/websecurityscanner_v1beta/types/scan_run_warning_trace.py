@@ -63,6 +63,7 @@ class ScanRunWarningTrace(proto.Message):
             BLOCKED_BY_IAP (4):
                 Indicates that a scan is blocked by IAP.
         """
+
         CODE_UNSPECIFIED = 0
         INSUFFICIENT_CRAWL_RESULTS = 1
         TOO_MANY_CRAWL_RESULTS = 2

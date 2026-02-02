@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.video.live_stream_v1.types import outputs
@@ -106,6 +106,7 @@ class Input(proto.Message):
                 Input will take an srt (Secure Reliable
                 Transport) input stream.
         """
+
         TYPE_UNSPECIFIED = 0
         RTMP_PUSH = 1
         SRT_PUSH = 2
@@ -135,6 +136,7 @@ class Input(proto.Message):
                 Resolution <= 4096x2160. Bitrate <= 50 Mbps.
                 FPS <= 60. H265 codec.
         """
+
         TIER_UNSPECIFIED = 0
         SD = 1
         HD = 2
@@ -322,6 +324,7 @@ class Channel(proto.Message):
             STOPPING (8):
                 Channel is stopping.
         """
+
         STREAMING_STATE_UNSPECIFIED = 0
         STREAMING = 1
         AWAITING_INPUT = 2
@@ -393,12 +396,12 @@ class Channel(proto.Message):
         number=12,
         message=outputs.Manifest,
     )
-    distribution_streams: MutableSequence[
-        outputs.DistributionStream
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=28,
-        message=outputs.DistributionStream,
+    distribution_streams: MutableSequence[outputs.DistributionStream] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=28,
+            message=outputs.DistributionStream,
+        )
     )
     distributions: MutableSequence[outputs.Distribution] = proto.RepeatedField(
         proto.MESSAGE,
@@ -462,11 +465,11 @@ class NormalizedCoordinate(proto.Message):
 
     Attributes:
         x (float):
-            Optional. Normalized x coordinate. Valid range
-            is [0.0, 1.0]. Default is 0.
+            Optional. Normalized x coordinate. Valid range is [0.0,
+            1.0]. Default is 0.
         y (float):
-            Optional. Normalized y coordinate. Valid range
-            is [0.0, 1.0]. Default is 0.
+            Optional. Normalized y coordinate. Valid range is [0.0,
+            1.0]. Default is 0.
     """
 
     x: float = proto.Field(
@@ -484,11 +487,11 @@ class NormalizedResolution(proto.Message):
 
     Attributes:
         w (float):
-            Optional. Normalized width. Valid range is [0.0,
-            1.0]. Default is 0.
+            Optional. Normalized width. Valid range is [0.0, 1.0].
+            Default is 0.
         h (float):
-            Optional. Normalized height. Valid range is
-            [0.0, 1.0]. Default is 0.
+            Optional. Normalized height. Valid range is [0.0, 1.0].
+            Default is 0.
     """
 
     w: float = proto.Field(
@@ -579,6 +582,7 @@ class InputConfig(proto.Message):
                 [AutomaticFailover][google.cloud.video.livestream.v1.InputAttachment.AutomaticFailover]
                 field is ignored.
         """
+
         INPUT_SWITCH_MODE_UNSPECIFIED = 0
         FAILOVER_PREFER_PRIMARY = 1
         MANUAL = 3
@@ -591,11 +595,10 @@ class InputConfig(proto.Message):
 
 
 class LogConfig(proto.Message):
-    r"""Configuration of platform logs.
-    See [Using and managing platform
-    logs](https://cloud.google.com/logging/docs/api/platform-logs#managing-logs)
-    for more information about how to view platform logs through
-    Cloud Logging.
+    r"""Configuration of platform logs. See `Using and managing platform
+    logs <https://cloud.google.com/logging/docs/api/platform-logs#managing-logs>`__
+    for more information about how to view platform logs through Cloud
+    Logging.
 
     Attributes:
         log_severity (google.cloud.video.live_stream_v1.types.LogConfig.LogSeverity):
@@ -631,6 +634,7 @@ class LogConfig(proto.Message):
                 Logs with severity higher than or equal to
                 ERROR are logged.
         """
+
         LOG_SEVERITY_UNSPECIFIED = 0
         OFF = 1
         DEBUG = 100
@@ -886,6 +890,7 @@ class AutoTranscriptionConfig(proto.Message):
                 output latency, and reduces viewing latency
                 between audio and auto-generated captions.
         """
+
         DISPLAY_TIMING_UNSPECIFIED = 0
         ASYNC = 1
         SYNC = 2
@@ -909,6 +914,7 @@ class AutoTranscriptionConfig(proto.Message):
                 Increases the quality of the auto-generated
                 captions at the cost of higher latency.
         """
+
         QUALITY_PRESET_UNSPECIFIED = 0
         LOW_LATENCY = 1
         BALANCED_QUALITY = 2
@@ -1020,6 +1026,7 @@ class Event(proto.Message):
                 Event was stopped before running for its full
                 duration.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2
@@ -1281,6 +1288,7 @@ class Clip(proto.Message):
                 The operation has failed. For additional information, see
                 the ``error`` field.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         CREATING = 2
@@ -1299,6 +1307,7 @@ class Clip(proto.Message):
             MP4 (2):
                 OutputType is an MP4 file.
         """
+
         OUTPUT_TYPE_UNSPECIFIED = 0
         MANIFEST = 1
         MP4 = 2
@@ -1357,16 +1366,12 @@ class Clip(proto.Message):
                 the parent channel. This key is the same as
                 ``channel.manifests.key`` for the selected manifest.
             output_uri (str):
-                Output only. The output URI of the generated
-                clip manifest. This field will be populated when
-                the CreateClip request is accepted. Current
-                output format is provided below but may change
-                in the future. Please read this field to get the
-                uri to the generated clip manifest. Format:
-
-                {clip.output_uri}/{channel.manifest.fileName}
-                Example:
-
+                Output only. The output URI of the generated clip manifest.
+                This field will be populated when the CreateClip request is
+                accepted. Current output format is provided below but may
+                change in the future. Please read this field to get the uri
+                to the generated clip manifest. Format:
+                {clip.output_uri}/{channel.manifest.fileName} Example:
                 gs://my-bucket/clip-outputs/main.m3u8
         """
 
@@ -1538,6 +1543,7 @@ class DvrSession(proto.Message):
                 will move to STOPPING state, if the parent
                 channel is updated.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         UPDATING = 2
@@ -1705,6 +1711,7 @@ class Asset(proto.Message):
             ERROR (4):
                 The asset has an error.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -2001,16 +2008,15 @@ class Pool(proto.Message):
 
         Attributes:
             peered_network (str):
-                peered_network is the network resource URL of
-                the network that is peered to the service
-                provider network. Must be of the format
+                peered_network is the network resource URL of the network
+                that is peered to the service provider network. Must be of
+                the format
                 projects/NETWORK_PROJECT_NUMBER/global/networks/NETWORK_NAME,
-                where NETWORK_PROJECT_NUMBER is the project
-                number of the Cloud project that holds your VPC
-                network and NETWORK_NAME is the name of your VPC
-                network. If peered_network is omitted or empty,
-                the pool will use endpoints that are publicly
-                available.
+                where NETWORK_PROJECT_NUMBER is the project number of the
+                Cloud project that holds your VPC network and NETWORK_NAME
+                is the name of your VPC network. If peered_network is
+                omitted or empty, the pool will use endpoints that are
+                publicly available.
         """
 
         peered_network: str = proto.Field(

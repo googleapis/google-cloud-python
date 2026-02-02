@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -152,9 +152,9 @@ class EkmMetadata(proto.Message):
     """
 
     class EkmSolution(proto.Enum):
-        r"""Represents Google Cloud supported external key management
-        partners [Google Cloud EKM partners
-        docs](https://cloud.google.com/kms/docs/ekm#supported_partners).
+        r"""Represents Google Cloud supported external key management partners
+        `Google Cloud EKM partners
+        docs <https://cloud.google.com/kms/docs/ekm#supported_partners>`__.
 
         Values:
             EKM_SOLUTION_UNSPECIFIED (0):
@@ -168,6 +168,7 @@ class EkmMetadata(proto.Message):
             VIRTRU (4):
                 This enum value is never used.
         """
+
         EKM_SOLUTION_UNSPECIFIED = 0
         FORTANIX = 1
         FUTUREX = 2

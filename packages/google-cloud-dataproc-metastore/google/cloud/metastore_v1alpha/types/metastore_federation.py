@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -106,6 +106,7 @@ class Federation(proto.Message):
                 error and cannot be used. The metastore
                 federation should be deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -194,6 +195,7 @@ class BackendMetastore(proto.Message):
             DATAPROC_METASTORE (3):
                 The backend metastore is Dataproc Metastore.
         """
+
         METASTORE_TYPE_UNSPECIFIED = 0
         DATAPLEX = 1
         BIGQUERY = 2
@@ -239,11 +241,11 @@ class ListFederationsRequest(proto.Message):
             Optional. The filter to apply to list
             results.
         order_by (str):
-            Optional. Specify the ordering of results as
-            described in [Sorting
-            Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
-            If not specified, the results will be sorted in
-            the default order.
+            Optional. Specify the ordering of results as described in
+            `Sorting
+            Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
+            If not specified, the results will be sorted in the default
+            order.
     """
 
     parent: str = proto.Field(

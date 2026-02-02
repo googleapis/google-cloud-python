@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import common
@@ -229,6 +229,7 @@ class Engine(proto.Message):
                 TRAINING (2):
                     The engine is training.
             """
+
             TRAINING_STATE_UNSPECIFIED = 0
             PAUSED = 1
             TRAINING = 2
@@ -419,16 +420,14 @@ class Engine(proto.Message):
                     knowledge connector LLM prompt and for knowledge
                     search.
                 default_language_code (str):
-                    Required. The default language of the agent as a
-                    language tag. See [Language
-                    Support](https://cloud.google.com/dialogflow/docs/reference/language)
-                    for a list of the currently supported language
-                    codes.
+                    Required. The default language of the agent as a language
+                    tag. See `Language
+                    Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
+                    for a list of the currently supported language codes.
                 time_zone (str):
-                    Required. The time zone of the agent from the
-                    [time zone
-                    database](https://www.iana.org/time-zones),
-                    e.g., America/New_York, Europe/Paris.
+                    Required. The time zone of the agent from the `time zone
+                    database <https://www.iana.org/time-zones>`__, e.g.,
+                    America/New_York, Europe/Paris.
                 location (str):
                     Agent location for Agent creation, supported
                     values: global/us/eu. If not provided, us Engine

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -136,6 +136,7 @@ class PolicyBinding(proto.Message):
             PRINCIPAL_ACCESS_BOUNDARY (1):
                 Principal access boundary policy kind
         """
+
         POLICY_KIND_UNSPECIFIED = 0
         PRINCIPAL_ACCESS_BOUNDARY = 1
 

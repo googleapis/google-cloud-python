@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.config_v1 import gapic_version as package_version
 
@@ -45,15 +45,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.config_v1.services.config import pagers
 from google.cloud.config_v1.types import config
@@ -139,7 +141,8 @@ class ConfigAsyncClient:
         Returns:
             ConfigAsyncClient: The constructed client.
         """
-        return ConfigClient.from_service_account_info.__func__(ConfigAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ConfigClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ConfigAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -155,7 +158,8 @@ class ConfigAsyncClient:
         Returns:
             ConfigAsyncClient: The constructed client.
         """
-        return ConfigClient.from_service_account_file.__func__(ConfigAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ConfigClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ConfigAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -356,10 +360,8 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.ListDeploymentsRequest, dict]]):
                 The request object.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Deployments are listed. The parent
-                value is in the format:
-
+                Required. The parent in whose context the Deployments
+                are listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}'.
 
                 This corresponds to the ``parent`` field
@@ -482,8 +484,7 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.GetDeploymentRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the deployment.
-                Format:
+                Required. The name of the deployment. Format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -605,9 +606,8 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.CreateDeploymentRequest, dict]]):
                 The request object.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Deployment is created. The parent
-                value is in the format:
+                Required. The parent in whose context the Deployment is
+                created. The parent value is in the format:
                 'projects/{project_id}/locations/{location}'.
 
                 This corresponds to the ``parent`` field
@@ -764,16 +764,13 @@ class ConfigAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask used to specify the
-                fields to be overwritten in the
-                Deployment resource by the update.
+                Optional. Field mask used to specify the fields to be
+                overwritten in the Deployment resource by the update.
 
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then all
-                fields will be overwritten.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -900,8 +897,7 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.DeleteDeploymentRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the Deployment in
-                the format:
+                Required. The name of the Deployment in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -1024,10 +1020,8 @@ class ConfigAsyncClient:
                 The request object. A request to list Revisions passed to
                 a 'ListRevisions' call.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Revisions are listed. The parent
-                value is in the format:
-
+                Required. The parent in whose context the Revisions are
+                listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``parent`` field
@@ -1153,8 +1147,7 @@ class ConfigAsyncClient:
                 The request object. A request to get a Revision from a
                 'GetRevision' call.
             name (:class:`str`):
-                Required. The name of the Revision in
-                the format:
+                Required. The name of the Revision in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
 
                 This corresponds to the ``name`` field
@@ -1269,8 +1262,7 @@ class ConfigAsyncClient:
                 The request object. A request to get a Resource from a
                 'GetResource' call.
             name (:class:`str`):
-                Required. The name of the Resource in
-                the format:
+                Required. The name of the Resource in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}/resource/{resource}'.
 
                 This corresponds to the ``name`` field
@@ -1385,10 +1377,8 @@ class ConfigAsyncClient:
                 The request object. A request to list Resources passed to
                 a 'ListResources' call.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Resources are listed. The parent
-                value is in the format:
-
+                Required. The parent in whose context the Resources are
+                listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
 
                 This corresponds to the ``parent`` field
@@ -1691,10 +1681,8 @@ class ConfigAsyncClient:
                 The request object. A request to import a state file
                 passed to a 'ImportStatefile' call.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the statefile is listed. The parent
-                value is in the format:
-
+                Required. The parent in whose context the statefile is
+                listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``parent`` field
@@ -1814,8 +1802,7 @@ class ConfigAsyncClient:
                 The request object. A request to delete a state file
                 passed to a 'DeleteStatefile' call.
             name (:class:`str`):
-                Required. The name of the deployment in
-                the format:
+                Required. The name of the deployment in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -1921,8 +1908,7 @@ class ConfigAsyncClient:
                 The request object. A request to lock a deployment passed
                 to a 'LockDeployment' call.
             name (:class:`str`):
-                Required. The name of the deployment in
-                the format:
+                Required. The name of the deployment in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -2049,8 +2035,7 @@ class ConfigAsyncClient:
                 The request object. A request to unlock a state file
                 passed to a 'UnlockDeployment' call.
             name (:class:`str`):
-                Required. The name of the deployment in
-                the format:
+                Required. The name of the deployment in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -2180,8 +2165,7 @@ class ConfigAsyncClient:
                 The request object. A request to get a state file lock
                 info passed to a 'ExportLockInfo' call.
             name (:class:`str`):
-                Required. The name of the deployment in
-                the format:
+                Required. The name of the deployment in the format:
                 'projects/{project_id}/locations/{location}/deployments/{deployment}'.
 
                 This corresponds to the ``name`` field
@@ -2301,9 +2285,8 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.CreatePreviewRequest, dict]]):
                 The request object. A request to create a preview.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Preview is created. The parent value
-                is in the format:
+                Required. The parent in whose context the Preview is
+                created. The parent value is in the format:
                 'projects/{project_id}/locations/{location}'.
 
                 This corresponds to the ``parent`` field
@@ -2434,8 +2417,7 @@ class ConfigAsyncClient:
                 The request object. A request to get details about a
                 preview.
             name (:class:`str`):
-                Required. The name of the preview.
-                Format:
+                Required. The name of the preview. Format:
                 'projects/{project_id}/locations/{location}/previews/{preview}'.
 
                 This corresponds to the ``name`` field
@@ -2550,9 +2532,8 @@ class ConfigAsyncClient:
                 The request object. A request to list all previews for a
                 given project and location.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the Previews are listed. The parent
-                value is in the format:
+                Required. The parent in whose context the Previews are
+                listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}'.
 
                 This corresponds to the ``parent`` field
@@ -2680,8 +2661,7 @@ class ConfigAsyncClient:
             request (Optional[Union[google.cloud.config_v1.types.DeletePreviewRequest, dict]]):
                 The request object. A request to delete a preview.
             name (:class:`str`):
-                Required. The name of the Preview in the
-                format:
+                Required. The name of the Preview in the format:
                 'projects/{project_id}/locations/{location}/previews/{preview}'.
 
                 This corresponds to the ``name`` field
@@ -2891,11 +2871,9 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 ListTerraformVersions method.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the TerraformVersions are listed. The
-                parent value is in the format:
-
-                'projects/{project_id}/locations/{location}'.
+                Required. The parent in whose context the
+                TerraformVersions are listed. The parent value is in the
+                format: 'projects/{project_id}/locations/{location}'.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3020,8 +2998,7 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 GetTerraformVersion method.
             name (:class:`str`):
-                Required. The name of the
-                TerraformVersion. Format:
+                Required. The name of the TerraformVersion. Format:
                 'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
 
                 This corresponds to the ``name`` field
@@ -3134,10 +3111,9 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 ListResourceChanges method.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the ResourceChanges are listed. The
-                parent value is in the format:
-
+                Required. The parent in whose context the
+                ResourceChanges are listed. The parent value is in the
+                format:
                 'projects/{project_id}/locations/{location}/previews/{preview}'.
 
                 This corresponds to the ``parent`` field
@@ -3264,9 +3240,8 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 GetResourceChange method.
             name (:class:`str`):
-                Required. The name of the resource
-                change to retrieve. Format:
-
+                Required. The name of the resource change to retrieve.
+                Format:
                 'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
 
                 This corresponds to the ``name`` field
@@ -3378,10 +3353,8 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 ListResourceDrifts method.
             parent (:class:`str`):
-                Required. The parent in whose context
-                the ResourceDrifts are listed. The
-                parent value is in the format:
-
+                Required. The parent in whose context the ResourceDrifts
+                are listed. The parent value is in the format:
                 'projects/{project_id}/locations/{location}/previews/{preview}'.
 
                 This corresponds to the ``parent`` field
@@ -3506,9 +3479,8 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 GetResourceDrift method.
             name (:class:`str`):
-                Required. The name of the resource drift
-                to retrieve. Format:
-
+                Required. The name of the resource drift to retrieve.
+                Format:
                 'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
 
                 This corresponds to the ``name`` field
@@ -3620,9 +3592,7 @@ class ConfigAsyncClient:
                 The request object. The request message for the
                 GetAutoMigrationConfig method.
             name (:class:`str`):
-                Required. The name of the
-                AutoMigrationConfig. Format:
-
+                Required. The name of the AutoMigrationConfig. Format:
                 'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
 
                 This corresponds to the ``name`` field

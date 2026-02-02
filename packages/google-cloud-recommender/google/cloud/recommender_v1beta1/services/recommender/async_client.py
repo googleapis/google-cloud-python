@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.recommender_v1beta1 import gapic_version as package_version
 
@@ -44,23 +44,25 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.recommender_v1beta1.services.recommender import pagers
+from google.cloud.recommender_v1beta1.types import (
+    insight,
+    insight_type_config,
+    recommendation,
+    recommender_config,
+    recommender_service,
+)
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
 from google.cloud.recommender_v1beta1.types import (
     recommender_config as gcr_recommender_config,
 )
-from google.cloud.recommender_v1beta1.types import insight
-from google.cloud.recommender_v1beta1.types import insight_type_config
-from google.cloud.recommender_v1beta1.types import recommendation
-from google.cloud.recommender_v1beta1.types import recommender_config
-from google.cloud.recommender_v1beta1.types import recommender_service
 
 from .client import RecommenderClient
 from .transports.base import DEFAULT_CLIENT_INFO, RecommenderTransport
@@ -145,7 +147,8 @@ class RecommenderAsyncClient:
         Returns:
             RecommenderAsyncClient: The constructed client.
         """
-        return RecommenderClient.from_service_account_info.__func__(RecommenderAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = RecommenderClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(RecommenderAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -161,7 +164,8 @@ class RecommenderAsyncClient:
         Returns:
             RecommenderAsyncClient: The constructed client.
         """
-        return RecommenderClient.from_service_account_file.__func__(RecommenderAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = RecommenderClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(RecommenderAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -629,9 +633,8 @@ class RecommenderAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             state_metadata (:class:`MutableMapping[str, str]`):
-                Optional. State properties user wish to
-                include with this state. Full replace of
-                the current state_metadata.
+                Optional. State properties user wish to include with
+                this state. Full replace of the current state_metadata.
 
                 This corresponds to the ``state_metadata`` field
                 on the ``request`` instance; if ``request`` is provided, this

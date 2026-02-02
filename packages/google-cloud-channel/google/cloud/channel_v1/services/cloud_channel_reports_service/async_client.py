@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import warnings
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.channel_v1 import gapic_version as package_version
 
@@ -45,8 +45,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.channel_v1.services.cloud_channel_reports_service import pagers
@@ -68,13 +68,13 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class CloudChannelReportsServiceAsyncClient:
     """CloudChannelReportsService lets Google Cloud resellers and
-    distributors retrieve and combine a variety of data in Cloud
-    Channel for multiple products (Google Cloud, Google Voice, and
-    Google Workspace.)
+    distributors retrieve and combine a variety of data in Cloud Channel
+    for multiple products (Google Cloud, Google Voice, and Google
+    Workspace.)
 
-    Deprecated: This service is being deprecated. Please use [Export
+    Deprecated: This service is being deprecated. Please use `Export
     Channel Services data to
-    BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+    BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
     instead.
     """
 
@@ -139,7 +139,12 @@ class CloudChannelReportsServiceAsyncClient:
         Returns:
             CloudChannelReportsServiceAsyncClient: The constructed client.
         """
-        return CloudChannelReportsServiceClient.from_service_account_info.__func__(CloudChannelReportsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            CloudChannelReportsServiceClient.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            CloudChannelReportsServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -155,7 +160,12 @@ class CloudChannelReportsServiceAsyncClient:
         Returns:
             CloudChannelReportsServiceAsyncClient: The constructed client.
         """
-        return CloudChannelReportsServiceClient.from_service_account_file.__func__(CloudChannelReportsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            CloudChannelReportsServiceClient.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            CloudChannelReportsServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -193,7 +203,9 @@ class CloudChannelReportsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return CloudChannelReportsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return CloudChannelReportsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> CloudChannelReportsServiceTransport:
@@ -604,12 +616,12 @@ class CloudChannelReportsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListReportsAsyncPager:
-        r"""Lists the reports that RunReportJob can run. These
-        reports include an ID, a description, and the list of
-        columns that will be in the result.
+        r"""Lists the reports that RunReportJob can run. These reports
+        include an ID, a description, and the list of columns that will
+        be in the result.
 
-        Deprecated: Please use [Export Channel Services data to
-        BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+        Deprecated: Please use `Export Channel Services data to
+        BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
         instead.
 
         .. code-block:: python
@@ -644,9 +656,8 @@ class CloudChannelReportsServiceAsyncClient:
                 The request object. Request message for
                 [CloudChannelReportsService.ListReports][google.cloud.channel.v1.CloudChannelReportsService.ListReports].
             parent (:class:`str`):
-                Required. The resource name of the
-                partner account to list available
-                reports for. Parent uses the format:
+                Required. The resource name of the partner account to
+                list available reports for. Parent uses the format:
                 accounts/{account_id}
 
                 This corresponds to the ``parent`` field

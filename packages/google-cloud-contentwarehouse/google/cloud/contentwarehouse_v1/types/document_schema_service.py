@@ -79,9 +79,7 @@ class UpdateDocumentSchemaRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the document schema to
-            update. Format:
-
+            Required. The name of the document schema to update. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
         document_schema (google.cloud.contentwarehouse_v1.types.DocumentSchema):
             Required. The document schema to update with.
@@ -120,8 +118,8 @@ class ListDocumentSchemasRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of document schemas. Format:
+            Required. The parent, which owns this collection of document
+            schemas. Format:
             projects/{project_number}/locations/{location}.
         page_size (int):
             The maximum number of document schemas to
@@ -171,12 +169,12 @@ class ListDocumentSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_schemas: MutableSequence[
-        gcc_document_schema.DocumentSchema
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_document_schema.DocumentSchema,
+    document_schemas: MutableSequence[gcc_document_schema.DocumentSchema] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_document_schema.DocumentSchema,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

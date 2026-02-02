@@ -20,9 +20,7 @@ from .base import FutureReservationsTransport
 from .rest import FutureReservationsRestInterceptor, FutureReservationsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[FutureReservationsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[FutureReservationsTransport]]
 _transport_registry["rest"] = FutureReservationsRestTransport
 
 __all__ = (

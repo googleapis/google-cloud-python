@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import httpbody_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -236,6 +236,7 @@ class InstallationState(proto.Message):
             COMPLETE (10):
                 Installation process has been completed.
         """
+
         STAGE_UNSPECIFIED = 0
         PENDING_CREATE_APP = 1
         PENDING_USER_OAUTH = 2
@@ -374,8 +375,8 @@ class GitHubEnterpriseConfig(proto.Message):
             SSL certificate to use for requests to GitHub
             Enterprise.
         server_version (str):
-            Output only. GitHub Enterprise version installed
-            at the host_uri.
+            Output only. GitHub Enterprise version installed at the
+            host_uri.
     """
 
     host_uri: str = proto.Field(
@@ -1206,6 +1207,7 @@ class FetchGitRefsRequest(proto.Message):
             BRANCH (2):
                 To fetch branches.
         """
+
         REF_TYPE_UNSPECIFIED = 0
         TAG = 1
         BRANCH = 2

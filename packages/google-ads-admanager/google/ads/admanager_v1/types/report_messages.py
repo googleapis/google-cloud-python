@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import report_definition as gaa_report_definition
@@ -87,6 +87,7 @@ class Report(proto.Message):
                 Reports with this visibility will appear in
                 the Ad Manager UI.
         """
+
         _pb_options = {"allow_alias": True}
         HIDDEN = 0
         DRAFT = 1
@@ -151,32 +152,29 @@ class ReportDataTable(proto.Message):
                 as the order of the dimensions specified in the
                 request.
             metric_value_groups (MutableSequence[google.ads.admanager_v1.types.ReportDataTable.MetricValueGroup]):
-                The length of the metric_value_groups
-                field will be equal to the length of the
-                date_ranges field in the fetch response. The
-                metric_value_groups field is ordered such that
-                each index corresponds to the date_range at the
-                same index. For example, given date_ranges [x,
-                y], metric_value_groups will have a length of
-                two. The first entry in metric_value_groups
-                represents the metrics for date x and the second
-                entry in metric_value_groups represents the
-                metrics for date y.
+                The length of the metric_value_groups field will be equal to
+                the length of the date_ranges field in the fetch response.
+                The metric_value_groups field is ordered such that each
+                index corresponds to the date_range at the same index. For
+                example, given date_ranges [x, y], metric_value_groups will
+                have a length of two. The first entry in metric_value_groups
+                represents the metrics for date x and the second entry in
+                metric_value_groups represents the metrics for date y.
         """
 
-        dimension_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=report_value.ReportValue,
+        dimension_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=report_value.ReportValue,
+            )
         )
-        metric_value_groups: MutableSequence[
-            "ReportDataTable.MetricValueGroup"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ReportDataTable.MetricValueGroup",
+        metric_value_groups: MutableSequence["ReportDataTable.MetricValueGroup"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ReportDataTable.MetricValueGroup",
+            )
         )
 
     class MetricValueGroup(proto.Message):
@@ -190,22 +188,19 @@ class ReportDataTable(proto.Message):
             primary_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the PRIMARY MetricValueType.
             primary_percent_of_total_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
-                Data for the PRIMARY_PERCENT_OF_TOTAL
-                MetricValueType.
+                Data for the PRIMARY_PERCENT_OF_TOTAL MetricValueType.
             comparison_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the COMPARISON MetricValueType.
             comparison_percent_of_total_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
-                Data for the COMPARISON_PERCENT_OF_TOTAL
-                MetricValueType.
+                Data for the COMPARISON_PERCENT_OF_TOTAL MetricValueType.
             absolute_change_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the ABSOLUTE_CHANGE MetricValueType.
             relative_change_values (MutableSequence[google.ads.admanager_v1.types.ReportValue]):
                 Data for the RELATIVE_CHANGE MetricValueType.
             flag_values (MutableSequence[bool]):
-                If true, the flag's conditions are met. If
-                false, the flag's conditions are not met.
-                flag_values has the same length as flags and
-                index i of flag_values represents the flag at
+                If true, the flag's conditions are met. If false, the flag's
+                conditions are not met. flag_values has the same length as
+                flags and index i of flag_values represents the flag at
                 index i of flags.
         """
 
@@ -214,19 +209,19 @@ class ReportDataTable(proto.Message):
             number=1,
             message=report_value.ReportValue,
         )
-        primary_percent_of_total_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=report_value.ReportValue,
+        primary_percent_of_total_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=report_value.ReportValue,
+            )
         )
-        comparison_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=report_value.ReportValue,
+        comparison_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=report_value.ReportValue,
+            )
         )
         comparison_percent_of_total_values: MutableSequence[
             report_value.ReportValue
@@ -235,19 +230,19 @@ class ReportDataTable(proto.Message):
             number=4,
             message=report_value.ReportValue,
         )
-        absolute_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=report_value.ReportValue,
+        absolute_change_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=report_value.ReportValue,
+            )
         )
-        relative_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message=report_value.ReportValue,
+        relative_change_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message=report_value.ReportValue,
+            )
         )
         flag_values: MutableSequence[bool] = proto.RepeatedField(
             proto.BOOL,
@@ -266,8 +261,7 @@ class ScheduleOptions(proto.Message):
             report.
         flags (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.Flag]):
             Optional. The flags evaluated when
-            ReportDeliveryOption.WHEN_FLAG_PRESENT is
-            specified.
+            ReportDeliveryOption.WHEN_FLAG_PRESENT is specified.
     """
 
     class DeliveryCondition(proto.Enum):
@@ -282,6 +276,7 @@ class ScheduleOptions(proto.Message):
                 Deliver report when flag's conditions are
                 met.
         """
+
         NEVER = 0
         ALWAYS = 1
         WHEN_FLAG_CONDITIONS_MET = 2
@@ -349,6 +344,7 @@ class ScheduleOptions(proto.Message):
                 MONTHLY (7):
                     Schedule report to run on a monthly basis.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             HOURLY = 1
             TWO_TIMES_DAILY = 2
@@ -367,12 +363,12 @@ class ScheduleOptions(proto.Message):
                     report.
             """
 
-            weekly_scheduled_days: MutableSequence[
-                dayofweek_pb2.DayOfWeek
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=1,
-                enum=dayofweek_pb2.DayOfWeek,
+            weekly_scheduled_days: MutableSequence[dayofweek_pb2.DayOfWeek] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=1,
+                    enum=dayofweek_pb2.DayOfWeek,
+                )
             )
 
         class MonthlySchedule(proto.Message):
@@ -433,12 +429,12 @@ class ScheduleOptions(proto.Message):
         number=2,
         enum=DeliveryCondition,
     )
-    flags: MutableSequence[
-        gaa_report_definition.ReportDefinition.Flag
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=gaa_report_definition.ReportDefinition.Flag,
+    flags: MutableSequence[gaa_report_definition.ReportDefinition.Flag] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=gaa_report_definition.ReportDefinition.Flag,
+        )
     )
 
 

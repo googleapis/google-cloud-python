@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import environment
@@ -61,6 +61,7 @@ class ReservationAffinity(proto.Message):
                 Must specify key value fields for specifying the
                 reservations.
         """
+
         TYPE_UNSPECIFIED = 0
         NO_RESERVATION = 1
         ANY_RESERVATION = 2
@@ -120,15 +121,13 @@ class Instance(proto.Message):
             the service account users of your VM instance's service
             account can use the instance.
         service_account (str):
-            The service account on this instance, giving
-            access to other Google Cloud services.
-            You can use any service account within the same
-            project, but you must have the service account
-            user permission to use the instance.
+            The service account on this instance, giving access to other
+            Google Cloud services. You can use any service account
+            within the same project, but you must have the service
+            account user permission to use the instance.
 
-            If not specified, the [Compute Engine default
-            service
-            account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+            If not specified, the `Compute Engine default service
+            account <https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>`__
             is used.
         service_account_scopes (MutableSequence[str]):
             Optional. The URIs of service account scopes to be included
@@ -143,8 +142,8 @@ class Instance(proto.Message):
               using default scopes, you need at least:
               https://www.googleapis.com/auth/compute
         machine_type (str):
-            Required. The [Compute Engine machine
-            type](https://cloud.google.com/compute/docs/machine-types)
+            Required. The `Compute Engine machine
+            type <https://cloud.google.com/compute/docs/machine-types>`__
             of this instance.
         accelerator_config (google.cloud.notebooks_v1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
@@ -201,9 +200,9 @@ class Instance(proto.Message):
             Output only. Attached disks to notebook
             instance.
         shielded_instance_config (google.cloud.notebooks_v1.types.Instance.ShieldedInstanceConfig):
-            Optional. Shielded VM configuration.
-            [Images using supported Shielded VM
-            features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+            Optional. Shielded VM configuration. `Images using supported
+            Shielded VM
+            features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
         no_public_ip (bool):
             If true, no public IP will be assigned to
             this instance.
@@ -223,19 +222,18 @@ class Instance(proto.Message):
         metadata (MutableMapping[str, str]):
             Custom metadata to apply to this instance.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to
-            runtime (see [Tagging
-            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
+            Optional. The Compute Engine tags to add to runtime (see
+            `Tagging
+            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
         upgrade_history (MutableSequence[google.cloud.notebooks_v1.types.Instance.UpgradeHistoryEntry]):
             The upgrade history of this instance.
         nic_type (google.cloud.notebooks_v1.types.Instance.NicType):
             Optional. The type of vNIC to be used on this
             interface. This may be gVNIC or VirtioNet.
         reservation_affinity (google.cloud.notebooks_v1.types.ReservationAffinity):
-            Optional. The optional reservation affinity.
-            Setting this field will apply the specified
-            [Zonal Compute
-            Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
+            Optional. The optional reservation affinity. Setting this
+            field will apply the specified `Zonal Compute
+            Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
             to this notebook instance.
         creator (str):
             Output only. Email address of entity that
@@ -283,6 +281,7 @@ class Instance(proto.Message):
             TPU_V3 (7):
                 (Coming soon) Accelerator type is TPU V3.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -327,6 +326,7 @@ class Instance(proto.Message):
             SUSPENDED (11):
                 The instance is suspended.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -355,6 +355,7 @@ class Instance(proto.Message):
             PD_EXTREME (4):
                 Extreme persistent disk type.
         """
+
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -374,13 +375,13 @@ class Instance(proto.Message):
                 Use customer managed encryption keys to
                 encrypt the boot disk.
         """
+
         DISK_ENCRYPTION_UNSPECIFIED = 0
         GMEK = 1
         CMEK = 2
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver.
-        Default should be UNSPECIFIED_NIC_TYPE.
+        r"""The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE.
 
         Values:
             UNSPECIFIED_NIC_TYPE (0):
@@ -390,6 +391,7 @@ class Instance(proto.Message):
             GVNIC (2):
                 GVNIC
         """
+
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2
@@ -529,12 +531,12 @@ class Instance(proto.Message):
             proto.INT64,
             number=4,
         )
-        guest_os_features: MutableSequence[
-            "Instance.Disk.GuestOsFeature"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="Instance.Disk.GuestOsFeature",
+        guest_os_features: MutableSequence["Instance.Disk.GuestOsFeature"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Instance.Disk.GuestOsFeature",
+            )
         )
         index: int = proto.Field(
             proto.INT64,
@@ -566,9 +568,9 @@ class Instance(proto.Message):
         )
 
     class ShieldedInstanceConfig(proto.Message):
-        r"""A set of Shielded Instance options.
-        Check [Images using supported Shielded VM
-        features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+        r"""A set of Shielded Instance options. Check `Images using supported
+        Shielded VM
+        features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
         Not all combinations are valid.
 
         Attributes:
@@ -652,6 +654,7 @@ class Instance(proto.Message):
                 FAILED (3):
                     The instance upgrade is failed.
             """
+
             STATE_UNSPECIFIED = 0
             STARTED = 1
             SUCCEEDED = 2
@@ -668,6 +671,7 @@ class Instance(proto.Message):
                 ROLLBACK (2):
                     Rollback.
             """
+
             ACTION_UNSPECIFIED = 0
             UPGRADE = 1
             ROLLBACK = 2

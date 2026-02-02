@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import (
@@ -319,14 +319,13 @@ class ListTargetSitesRequest(proto.Message):
             under this site search engine, regardless of whether or not
             this branch exists, a PERMISSION_DENIED error is returned.
         page_size (int):
-            Requested page size. Server may return fewer
-            items than requested. If unspecified, server
-            will pick an appropriate default. The maximum
-            value is 1000; values above 1000 will be coerced
-            to 1000.
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an appropriate
+            default. The maximum value is 1000; values above 1000 will
+            be coerced to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT
-            error is returned.
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
         page_token (str):
             A page token, received from a previous ``ListTargetSites``
             call. Provide this to retrieve the subsequent page.
@@ -372,12 +371,12 @@ class ListTargetSitesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -425,12 +424,12 @@ class BatchCreateTargetSitesResponse(proto.Message):
             TargetSites created.
     """
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
 
 
@@ -619,6 +618,7 @@ class RecrawlUrisResponse(proto.Message):
                         Denotes a crawling attempt for the mobile
                         version of a page.
                 """
+
                 CORPUS_TYPE_UNSPECIFIED = 0
                 DESKTOP = 1
                 MOBILE = 2
@@ -676,8 +676,8 @@ class RecrawlUrisMetadata(proto.Message):
             TargetSites that haven't been fully indexed, or
             match a TargetSite with type EXCLUDE.
         valid_uris_count (int):
-            Total number of unique URIs in the request that
-            are not in invalid_uris.
+            Total number of unique URIs in the request that are not in
+            invalid_uris.
         success_count (int):
             Total number of URIs that have been crawled
             so far.
@@ -784,14 +784,13 @@ class FetchDomainVerificationStatusRequest(proto.Message):
             fetch all the domain verification status.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         page_size (int):
-            Requested page size. Server may return fewer
-            items than requested. If unspecified, server
-            will pick an appropriate default. The maximum
-            value is 1000; values above 1000 will be coerced
-            to 1000.
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an appropriate
+            default. The maximum value is 1000; values above 1000 will
+            be coerced to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT
-            error is returned.
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
         page_token (str):
             A page token, received from a previous
             ``FetchDomainVerificationStatus`` call. Provide this to
@@ -839,12 +838,12 @@ class FetchDomainVerificationStatusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    target_sites: MutableSequence[
-        gcd_site_search_engine.TargetSite
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_site_search_engine.TargetSite,
+    target_sites: MutableSequence[gcd_site_search_engine.TargetSite] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_site_search_engine.TargetSite,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

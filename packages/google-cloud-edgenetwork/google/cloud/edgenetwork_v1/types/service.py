@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.edgenetwork_v1.types import resources
@@ -252,10 +252,9 @@ class CreateNetworkRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         network_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and network_id from the method_signature
-            of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and network_id from the
+            method_signature of Create RPC
         network (google.cloud.edgenetwork_v1.types.Network):
             Required. The resource being created
         request_id (str):
@@ -431,10 +430,9 @@ class CreateSubnetRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         subnet_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and subnet_id from the method_signature of
-            Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and subnet_id from the
+            method_signature of Create RPC
         subnet (google.cloud.edgenetwork_v1.types.Subnet):
             Required. The resource being created
         request_id (str):
@@ -483,13 +481,12 @@ class UpdateSubnetRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Subnet resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Subnet resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         subnet (google.cloud.edgenetwork_v1.types.Subnet):
             Required. The resource being updated
         request_id (str):
@@ -715,12 +712,12 @@ class ListInterconnectAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    interconnect_attachments: MutableSequence[
-        resources.InterconnectAttachment
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.InterconnectAttachment,
+    interconnect_attachments: MutableSequence[resources.InterconnectAttachment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.InterconnectAttachment,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -753,10 +750,10 @@ class CreateInterconnectAttachmentRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         interconnect_attachment_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and interconnect_attachment_id from the
-            method_signature of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and
+            interconnect_attachment_id from the method_signature of
+            Create RPC
         interconnect_attachment (google.cloud.edgenetwork_v1.types.InterconnectAttachment):
             Required. The resource being created
         request_id (str):
@@ -932,10 +929,9 @@ class CreateRouterRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         router_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and router_id from the method_signature of
-            Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and router_id from the
+            method_signature of Create RPC
         router (google.cloud.edgenetwork_v1.types.Router):
             Required. The resource being created
         request_id (str):
@@ -984,13 +980,12 @@ class UpdateRouterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Router resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Router resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         router (google.cloud.edgenetwork_v1.types.Router):
             Required. The resource being updated
         request_id (str):
@@ -1185,6 +1180,7 @@ class DiagnoseNetworkResponse(proto.Message):
                     At least one relevant link does not have any
                     MACsec sessions up.
             """
+
             MACSEC_STATUS_UNSPECIFIED = 0
             SECURE = 1
             UNSECURE = 2

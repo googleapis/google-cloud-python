@@ -47,10 +47,9 @@ class LoggingConfig(proto.Message):
 
         Values:
             LOG_SEVERITY_UNSPECIFIED (0):
-                Log severity is not specified. This value is
-                treated the same as NONE, but is used to
-                distinguish between no update and update to NONE
-                in update_masks.
+                Log severity is not specified. This value is treated the
+                same as NONE, but is used to distinguish between no update
+                and update to NONE in update_masks.
             NONE (1):
                 Default value at resource creation, presence
                 of this value must be treated as no
@@ -75,6 +74,7 @@ class LoggingConfig(proto.Message):
             EMERGENCY (9):
                 One or more systems are unusable.
         """
+
         LOG_SEVERITY_UNSPECIFIED = 0
         NONE = 1
         DEBUG = 2

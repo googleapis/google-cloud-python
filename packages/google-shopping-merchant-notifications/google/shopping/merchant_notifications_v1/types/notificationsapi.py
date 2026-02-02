@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -163,12 +163,12 @@ class ListNotificationSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_subscriptions: MutableSequence[
-        "NotificationSubscription"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="NotificationSubscription",
+    notification_subscriptions: MutableSequence["NotificationSubscription"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NotificationSubscription",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -227,6 +227,7 @@ class NotificationSubscription(proto.Message):
                 Notification of product status changes, for
                 example when product becomes disapproved.
         """
+
         NOTIFICATION_EVENT_TYPE_UNSPECIFIED = 0
         PRODUCT_STATUS_CHANGE = 1
 

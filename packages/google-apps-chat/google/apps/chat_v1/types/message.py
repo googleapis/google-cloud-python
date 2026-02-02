@@ -17,21 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.apps.card_v1.types import card as gac_card
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.apps.card_v1.types import card as gac_card
 
 from google.apps.chat_v1.types import action_status as gc_action_status
-from google.apps.chat_v1.types import annotation
+from google.apps.chat_v1.types import annotation, contextual_addon, reaction, user
 from google.apps.chat_v1.types import attachment as gc_attachment
-from google.apps.chat_v1.types import contextual_addon
 from google.apps.chat_v1.types import deletion_metadata as gc_deletion_metadata
 from google.apps.chat_v1.types import matched_url as gc_matched_url
-from google.apps.chat_v1.types import reaction
 from google.apps.chat_v1.types import slash_command as gc_slash_command
 from google.apps.chat_v1.types import space as gc_space
-from google.apps.chat_v1.types import user
 
 __protobuf__ = proto.module(
     package="google.chat.v1",
@@ -102,17 +99,15 @@ class Message(proto.Message):
             was deleted in Google Chat. If the message is
             never deleted, this field is empty.
         text (str):
-            Optional. Plain-text body of the message. The
-            first link to an image, video, or web page
-            generates a [preview
-            chip](https://developers.google.com/workspace/chat/preview-links).
-            You can also [@mention a Google Chat
-            user](https://developers.google.com/workspace/chat/format-messages#messages-@mention),
+            Optional. Plain-text body of the message. The first link to
+            an image, video, or web page generates a `preview
+            chip <https://developers.google.com/workspace/chat/preview-links>`__.
+            You can also `@mention a Google Chat
+            user <https://developers.google.com/workspace/chat/format-messages#messages-@mention>`__,
             or everyone in the space.
 
-            To learn about creating text messages, see [Send
-            a
-            message](https://developers.google.com/workspace/chat/create-messages).
+            To learn about creating text messages, see `Send a
+            message <https://developers.google.com/workspace/chat/create-messages>`__.
         formatted_text (str):
             Output only. Contains the message ``text`` with markups
             added to communicate formatting. This field might not
@@ -171,9 +166,9 @@ class Message(proto.Message):
             Google Workspace resources like Google Docs or Sheets with
             ``start_index`` and ``length`` of 0.
         thread (google.apps.chat_v1.types.Thread):
-            The thread the message belongs to. For example
-            usage, see [Start or reply to a message
-            thread](https://developers.google.com/workspace/chat/create-messages#create-message-thread).
+            The thread the message belongs to. For example usage, see
+            `Start or reply to a message
+            thread <https://developers.google.com/workspace/chat/create-messages#create-message-thread>`__.
         space (google.apps.chat_v1.types.Space):
             Output only. If your Chat app `authenticates as a
             user <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__,
@@ -252,16 +247,15 @@ class Message(proto.Message):
             Output only. GIF images that are attached to
             the message.
         accessory_widgets (MutableSequence[google.apps.chat_v1.types.AccessoryWidget]):
-            Optional. One or more interactive widgets that
-            appear at the bottom of a message. You can add
-            accessory widgets to messages that contain text,
-            cards, or both text and cards. Not supported for
-            messages that contain dialogs. For details, see
-            [Add interactive widgets at the bottom of a
-            message](https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets).
+            Optional. One or more interactive widgets that appear at the
+            bottom of a message. You can add accessory widgets to
+            messages that contain text, cards, or both text and cards.
+            Not supported for messages that contain dialogs. For
+            details, see `Add interactive widgets at the bottom of a
+            message <https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets>`__.
 
-            Creating a message with accessory widgets
-            requires [app authentication]
+            Creating a message with accessory widgets requires [app
+            authentication]
             (https://developers.google.com/workspace/chat/authenticate-authorize-chat-app).
     """
 
@@ -297,12 +291,12 @@ class Message(proto.Message):
         proto.STRING,
         number=43,
     )
-    cards: MutableSequence[
-        contextual_addon.ContextualAddOnMarkup.Card
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=contextual_addon.ContextualAddOnMarkup.Card,
+    cards: MutableSequence[contextual_addon.ContextualAddOnMarkup.Card] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=contextual_addon.ContextualAddOnMarkup.Card,
+        )
     )
     cards_v2: MutableSequence["CardWithId"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -360,12 +354,12 @@ class Message(proto.Message):
         proto.STRING,
         number=32,
     )
-    emoji_reaction_summaries: MutableSequence[
-        reaction.EmojiReactionSummary
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=33,
-        message=reaction.EmojiReactionSummary,
+    emoji_reaction_summaries: MutableSequence[reaction.EmojiReactionSummary] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=33,
+            message=reaction.EmojiReactionSummary,
+        )
     )
     private_message_viewer: user.User = proto.Field(
         proto.MESSAGE,
@@ -531,6 +525,7 @@ class ActionResponse(proto.Message):
             UPDATE_WIDGET (7):
                 Widget text autocomplete options query.
         """
+
         TYPE_UNSPECIFIED = 0
         NEW_MESSAGE = 1
         UPDATE_MESSAGE = 2
@@ -547,12 +542,12 @@ class ActionResponse(proto.Message):
                 An array of the SelectionItem objects.
         """
 
-        items: MutableSequence[
-            gac_card.SelectionInput.SelectionItem
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=gac_card.SelectionInput.SelectionItem,
+        items: MutableSequence[gac_card.SelectionInput.SelectionItem] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=gac_card.SelectionInput.SelectionItem,
+            )
         )
 
     class UpdatedWidget(proto.Message):
@@ -607,9 +602,9 @@ class ActionResponse(proto.Message):
 
 class AccessoryWidget(proto.Message):
     r"""One or more interactive widgets that appear at the bottom of a
-    message. For details, see [Add interactive widgets at the bottom
-    of a
-    message](https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets).
+    message. For details, see `Add interactive widgets at the bottom of
+    a
+    message <https://developers.google.com/workspace/chat/create-messages#add-accessory-widgets>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -761,15 +756,14 @@ class CreateMessageRequest(proto.Message):
             returns the message created with that ID instead
             of creating a new message.
         message_reply_option (google.apps.chat_v1.types.CreateMessageRequest.MessageReplyOption):
-            Optional. Specifies whether a message starts a
-            thread or replies to one. Only supported in
-            named spaces.
+            Optional. Specifies whether a message starts a thread or
+            replies to one. Only supported in named spaces.
 
-            When [responding to user
-            interactions](https://developers.google.com/workspace/chat/receive-respond-interactions),
-            this field is ignored. For interactions within a
-            thread, the reply is created in the same thread.
-            Otherwise, the reply is created as a new thread.
+            When `responding to user
+            interactions <https://developers.google.com/workspace/chat/receive-respond-interactions>`__,
+            this field is ignored. For interactions within a thread, the
+            reply is created in the same thread. Otherwise, the reply is
+            created as a new thread.
         message_id (str):
             Optional. A custom ID for a message. Lets Chat apps get,
             update, or delete a message without needing to store the
@@ -814,6 +808,7 @@ class CreateMessageRequest(proto.Message):
                 message creation fails, a ``NOT_FOUND`` error is returned
                 instead.
         """
+
         MESSAGE_REPLY_OPTION_UNSPECIFIED = 0
         REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD = 1
         REPLY_MESSAGE_OR_FAIL = 2

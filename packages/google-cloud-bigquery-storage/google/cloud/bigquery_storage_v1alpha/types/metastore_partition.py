@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1alpha.types import partition
@@ -82,14 +82,12 @@ class BatchCreateMetastorePartitionsRequest(proto.Message):
             Required. Requests to add metastore
             partitions to the table.
         skip_existing_partitions (bool):
-            Optional. Mimics the ifNotExists flag in
-            IMetaStoreClient add_partitions(..). If the flag
-            is set to false, the server will return
-            ALREADY_EXISTS if any partition already exists.
-            If the flag is set to true, the server will skip
-            existing partitions and insert only the
-            non-existing partitions. A maximum of 900
-            partitions can be inserted in a batch.
+            Optional. Mimics the ifNotExists flag in IMetaStoreClient
+            add_partitions(..). If the flag is set to false, the server
+            will return ALREADY_EXISTS if any partition already exists.
+            If the flag is set to true, the server will skip existing
+            partitions and insert only the non-existing partitions. A
+            maximum of 900 partitions can be inserted in a batch.
         trace_id (str):
             Optional. Optional trace id to be used for debugging. It is
             expected that the client sets the same ``trace_id`` for all
@@ -164,12 +162,12 @@ class BatchDeleteMetastorePartitionsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    partition_values: MutableSequence[
-        partition.MetastorePartitionValues
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=partition.MetastorePartitionValues,
+    partition_values: MutableSequence[partition.MetastorePartitionValues] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=partition.MetastorePartitionValues,
+        )
     )
     trace_id: str = proto.Field(
         proto.STRING,
@@ -263,17 +261,14 @@ class ListMetastorePartitionsRequest(proto.Message):
             of
             projects/{project}/locations/{location}/datasets/{dataset}/tables/{table}.
         filter (str):
-            Optional. SQL text filtering statement, similar
-            to a WHERE clause in a query. Only supports
-            single-row expressions. Aggregate functions are
-            not supported.
+            Optional. SQL text filtering statement, similar to a WHERE
+            clause in a query. Only supports single-row expressions.
+            Aggregate functions are not supported.
 
-            Examples: "int_field > 5"
-            "date_field = CAST('2014-9-27' as DATE)"
-            "nullable_field is not NULL"
-            "st_equals(geo_field, st_geofromtext("POINT(2,
-            2)"))" "numeric_field BETWEEN 1.0 AND 5.0"
-            Restricted to a maximum length for 1 MB.
+            Examples: "int_field > 5" "date_field = CAST('2014-9-27' as
+            DATE)" "nullable_field is not NULL" "st_equals(geo_field,
+            st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
+            AND 5.0" Restricted to a maximum length for 1 MB.
         trace_id (str):
             Optional. Optional trace id to be used for debugging. It is
             expected that the client sets the same ``trace_id`` for all
@@ -361,12 +356,12 @@ class StreamMetastorePartitionsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    metastore_partitions: MutableSequence[
-        partition.MetastorePartition
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=partition.MetastorePartition,
+    metastore_partitions: MutableSequence[partition.MetastorePartition] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=partition.MetastorePartition,
+        )
     )
     skip_existing_partitions: bool = proto.Field(
         proto.BOOL,

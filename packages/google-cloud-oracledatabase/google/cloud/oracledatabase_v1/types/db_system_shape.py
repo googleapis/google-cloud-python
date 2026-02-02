@@ -33,8 +33,8 @@ class DbSystemShape(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Database System
-            Shape resource with the format:
+            Identifier. The name of the Database System Shape resource
+            with the format:
             projects/{project}/locations/{region}/dbSystemShapes/{db_system_shape}
         shape (str):
             Optional. shape

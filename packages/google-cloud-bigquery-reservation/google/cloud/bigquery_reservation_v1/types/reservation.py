@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -88,6 +88,7 @@ class Edition(proto.Enum):
         ENTERPRISE_PLUS (3):
             Enterprise Plus edition.
     """
+
     EDITION_UNSPECIFIED = 0
     STANDARD = 1
     ENTERPRISE = 2
@@ -114,6 +115,7 @@ class FailoverMode(proto.Enum):
             writes are replicated to the secondary. There
             can be data loss for hard failover.
     """
+
     FAILOVER_MODE_UNSPECIFIED = 0
     SOFT = 1
     HARD = 2
@@ -134,35 +136,29 @@ class Reservation(proto.Message):
             characters or dashes. It must start with a letter and must
             not end with a dash. Its maximum length is 64 characters.
         slot_capacity (int):
-            Optional. Baseline slots available to this
-            reservation. A slot is a unit of computational
-            power in BigQuery, and serves as the unit of
-            parallelism.
+            Optional. Baseline slots available to this reservation. A
+            slot is a unit of computational power in BigQuery, and
+            serves as the unit of parallelism.
 
-            Queries using this reservation might use more
-            slots during runtime if ignore_idle_slots is set
-            to false, or autoscaling is enabled.
+            Queries using this reservation might use more slots during
+            runtime if ignore_idle_slots is set to false, or autoscaling
+            is enabled.
 
-            The total slot_capacity of the reservation and
-            its siblings may exceed the total slot_count of
-            capacity commitments. In that case, the
-            exceeding slots will be charged with the
-            autoscale SKU. You can increase the number of
-            baseline slots in a reservation every few
-            minutes. If you want to decrease your baseline
-            slots, you are limited to once an hour if you
-            have recently changed your baseline slot
-            capacity and your baseline slots exceed your
-            committed slots. Otherwise, you can decrease
-            your baseline slots every few minutes.
+            The total slot_capacity of the reservation and its siblings
+            may exceed the total slot_count of capacity commitments. In
+            that case, the exceeding slots will be charged with the
+            autoscale SKU. You can increase the number of baseline slots
+            in a reservation every few minutes. If you want to decrease
+            your baseline slots, you are limited to once an hour if you
+            have recently changed your baseline slot capacity and your
+            baseline slots exceed your committed slots. Otherwise, you
+            can decrease your baseline slots every few minutes.
         ignore_idle_slots (bool):
-            Optional. If false, any query or pipeline job
-            using this reservation will use idle slots from
-            other reservations within the same admin
-            project. If true, a query or pipeline job using
-            this reservation will execute with the slot
-            capacity specified in the slot_capacity field at
-            most.
+            Optional. If false, any query or pipeline job using this
+            reservation will use idle slots from other reservations
+            within the same admin project. If true, a query or pipeline
+            job using this reservation will execute with the slot
+            capacity specified in the slot_capacity field at most.
         autoscale (google.cloud.bigquery_reservation_v1.types.Reservation.Autoscale):
             Optional. The configuration parameters for
             the auto scaling feature.
@@ -286,12 +282,10 @@ class Reservation(proto.Message):
             property when you create or update a
             reservation.
         reservation_group (str):
-            Optional. The reservation group that this
-            reservation belongs to. You can set this
-            property when you create or update a
-            reservation. Reservations do not need to belong
-            to a reservation group. Format:
-
+            Optional. The reservation group that this reservation
+            belongs to. You can set this property when you create or
+            update a reservation. Reservations do not need to belong to
+            a reservation group. Format:
             projects/{project}/locations/{location}/reservationGroups/{reservation_group}
             or just {reservation_group}
         replication_status (google.cloud.bigquery_reservation_v1.types.Reservation.ReplicationStatus):
@@ -381,6 +375,7 @@ class Reservation(proto.Message):
                 be set to false. Otherwise the request will be rejected with
                 error code ``google.rpc.Code.INVALID_ARGUMENT``.
         """
+
         SCALING_MODE_UNSPECIFIED = 0
         AUTOSCALE_ONLY = 1
         IDLE_SLOTS_ONLY = 2
@@ -391,14 +386,12 @@ class Reservation(proto.Message):
 
         Attributes:
             current_slots (int):
-                Output only. The slot capacity added to this
-                reservation when autoscale happens. Will be
-                between [0, max_slots]. Note: after users reduce
-                max_slots, it may take a while before it can be
-                propagated, so current_slots may stay in the
-                original value and could be larger than
-                max_slots for that brief period (less than one
-                minute)
+                Output only. The slot capacity added to this reservation
+                when autoscale happens. Will be between [0, max_slots].
+                Note: after users reduce max_slots, it may take a while
+                before it can be propagated, so current_slots may stay in
+                the original value and could be larger than max_slots for
+                that brief period (less than one minute)
             max_slots (int):
                 Optional. Number of slots to be scaled when
                 needed.
@@ -634,29 +627,26 @@ class CapacityCommitment(proto.Message):
         state (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.State):
             Output only. State of the commitment.
         commitment_start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The start of the current commitment
-            period. It is applicable only for ACTIVE
-            capacity commitments. Note after the commitment
-            is renewed, commitment_start_time won't be
-            changed. It refers to the start time of the
-            original commitment.
+            Output only. The start of the current commitment period. It
+            is applicable only for ACTIVE capacity commitments. Note
+            after the commitment is renewed, commitment_start_time won't
+            be changed. It refers to the start time of the original
+            commitment.
         commitment_end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The end of the current commitment
-            period. It is applicable only for ACTIVE
-            capacity commitments. Note after renewal,
-            commitment_end_time is the time the renewed
-            commitment expires. So itwould be at a time
-            after commitment_start_time + committed period,
-            because we don't change commitment_start_time ,
+            Output only. The end of the current commitment period. It is
+            applicable only for ACTIVE capacity commitments. Note after
+            renewal, commitment_end_time is the time the renewed
+            commitment expires. So itwould be at a time after
+            commitment_start_time + committed period, because we don't
+            change commitment_start_time ,
         failure_status (google.rpc.status_pb2.Status):
             Output only. For FAILED commitment plan,
             provides the reason of failure.
         renewal_plan (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.CommitmentPlan):
-            Optional. The plan this capacity commitment is
-            converted to after commitment_end_time passes.
-            Once the plan is changed, committed period is
-            extended according to commitment plan. Only
-            applicable for ANNUAL and TRIAL commitments.
+            Optional. The plan this capacity commitment is converted to
+            after commitment_end_time passes. Once the plan is changed,
+            committed period is extended according to commitment plan.
+            Only applicable for ANNUAL and TRIAL commitments.
         multi_region_auxiliary (bool):
             Applicable only for commitments located
             within one of the BigQuery multi-regions (US or
@@ -711,10 +701,9 @@ class CapacityCommitment(proto.Message):
                 Same as MONTHLY, should only be used if
                 flat-rate commitments are still available.
             ANNUAL (4):
-                Annual commitments have a committed period of
-                365 days after becoming ACTIVE. After that they
-                are converted to a new commitment based on the
-                renewal_plan.
+                Annual commitments have a committed period of 365 days after
+                becoming ACTIVE. After that they are converted to a new
+                commitment based on the renewal_plan.
             ANNUAL_FLAT_RATE (9):
                 Same as ANNUAL, should only be used if
                 flat-rate commitments are still available.
@@ -732,6 +721,7 @@ class CapacityCommitment(proto.Message):
                 renewal_plan is NONE, capacity commitment will be removed at
                 the end of its commitment period.
         """
+
         COMMITMENT_PLAN_UNSPECIFIED = 0
         FLEX = 3
         FLEX_FLAT_RATE = 7
@@ -751,17 +741,17 @@ class CapacityCommitment(proto.Message):
             STATE_UNSPECIFIED (0):
                 Invalid state value.
             PENDING (1):
-                Capacity commitment is pending provisioning.
-                Pending capacity commitment does not contribute
-                to the project's slot_capacity.
+                Capacity commitment is pending provisioning. Pending
+                capacity commitment does not contribute to the project's
+                slot_capacity.
             ACTIVE (2):
-                Once slots are provisioned, capacity commitment
-                becomes active. slot_count is added to the
-                project's slot_capacity.
+                Once slots are provisioned, capacity commitment becomes
+                active. slot_count is added to the project's slot_capacity.
             FAILED (3):
                 Capacity commitment is failed to be activated
                 by the backend.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -864,8 +854,8 @@ class ListReservationsRequest(proto.Message):
             The maximum number of items to return per
             page.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1056,8 +1046,8 @@ class ListReservationGroupsRequest(proto.Message):
             The maximum number of items to return per
             page.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1173,8 +1163,8 @@ class ListCapacityCommitmentsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1458,6 +1448,7 @@ class Assignment(proto.Message):
                 priority over a default BACKGROUND reservation
                 assignment (if it exists).
         """
+
         JOB_TYPE_UNSPECIFIED = 0
         PIPELINE = 1
         QUERY = 2
@@ -1482,6 +1473,7 @@ class Assignment(proto.Message):
             ACTIVE (2):
                 Assignment is ready.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -1567,8 +1559,8 @@ class ListAssignmentsRequest(proto.Message):
             The maximum number of items to return per
             page.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1654,8 +1646,8 @@ class SearchAssignmentsRequest(proto.Message):
             The maximum number of items to return per
             page.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1699,8 +1691,8 @@ class SearchAllAssignmentsRequest(proto.Message):
             The maximum number of items to return per
             page.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -58,6 +58,7 @@ class WasmPluginView(proto.Enum):
             resource, the server's response includes the ``WasmPlugin``
             resource with all its versions.
     """
+
     WASM_PLUGIN_VIEW_UNSPECIFIED = 0
     WASM_PLUGIN_VIEW_BASIC = 1
     WASM_PLUGIN_VIEW_FULL = 2
@@ -286,6 +287,7 @@ class WasmPlugin(proto.Message):
                 CRITICAL (6):
                     Report logs with CRITICAL level only.
             """
+
             LOG_LEVEL_UNSPECIFIED = 0
             TRACE = 1
             DEBUG = 2

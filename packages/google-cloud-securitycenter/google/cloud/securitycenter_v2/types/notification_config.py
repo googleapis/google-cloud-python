@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,8 +53,7 @@ class NotificationConfig(proto.Message):
             The description of the notification config
             (max of 1024 characters).
         pubsub_topic (str):
-            The Pub/Sub topic to send notifications to. Its
-            format is
+            The Pub/Sub topic to send notifications to. Its format is
             "projects/[project_id]/topics/[topic]".
         service_account (str):
             Output only. The service account that needs

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -71,6 +71,7 @@ class ProjectSettings(proto.Message):
                 Redirection is partially enabled and missing
                 images are copied from GCR
         """
+
         REDIRECTION_STATE_UNSPECIFIED = 0
         REDIRECTION_FROM_GCR_IO_DISABLED = 1
         REDIRECTION_FROM_GCR_IO_ENABLED = 2

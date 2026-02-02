@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
@@ -44,11 +44,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.intents import pagers
 from google.cloud.dialogflowcx_v3beta1.types import intent
@@ -116,7 +116,8 @@ class IntentsAsyncClient:
         Returns:
             IntentsAsyncClient: The constructed client.
         """
-        return IntentsClient.from_service_account_info.__func__(IntentsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = IntentsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(IntentsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -132,7 +133,8 @@ class IntentsAsyncClient:
         Returns:
             IntentsAsyncClient: The constructed client.
         """
-        return IntentsClient.from_service_account_file.__func__(IntentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = IntentsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(IntentsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -546,8 +548,8 @@ class IntentsAsyncClient:
         r"""Creates an intent in the specified agent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -678,8 +680,8 @@ class IntentsAsyncClient:
         r"""Updates the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 
@@ -811,8 +813,8 @@ class IntentsAsyncClient:
         r"""Deletes the specified intent.
 
         Note: You should always train a flow prior to sending it
-        queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         .. code-block:: python
 

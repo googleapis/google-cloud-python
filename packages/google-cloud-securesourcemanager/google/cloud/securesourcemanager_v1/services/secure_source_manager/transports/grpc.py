@@ -16,21 +16,25 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.securesourcemanager_v1.types import secure_source_manager
 
@@ -1185,12 +1189,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_pull_request_file_diffs" not in self._stubs:
-            self._stubs[
-                "list_pull_request_file_diffs"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestFileDiffs",
-                request_serializer=secure_source_manager.ListPullRequestFileDiffsRequest.serialize,
-                response_deserializer=secure_source_manager.ListPullRequestFileDiffsResponse.deserialize,
+            self._stubs["list_pull_request_file_diffs"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestFileDiffs",
+                    request_serializer=secure_source_manager.ListPullRequestFileDiffsRequest.serialize,
+                    response_deserializer=secure_source_manager.ListPullRequestFileDiffsResponse.deserialize,
+                )
             )
         return self._stubs["list_pull_request_file_diffs"]
 
@@ -1488,12 +1492,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "list_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestComments",
-                request_serializer=secure_source_manager.ListPullRequestCommentsRequest.serialize,
-                response_deserializer=secure_source_manager.ListPullRequestCommentsResponse.deserialize,
+            self._stubs["list_pull_request_comments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/ListPullRequestComments",
+                    request_serializer=secure_source_manager.ListPullRequestCommentsRequest.serialize,
+                    response_deserializer=secure_source_manager.ListPullRequestCommentsResponse.deserialize,
+                )
             )
         return self._stubs["list_pull_request_comments"]
 
@@ -1524,12 +1528,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "create_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequestComment",
-                request_serializer=secure_source_manager.CreatePullRequestCommentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_pull_request_comment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/CreatePullRequestComment",
+                    request_serializer=secure_source_manager.CreatePullRequestCommentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_pull_request_comment"]
 
@@ -1555,12 +1559,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "update_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequestComment",
-                request_serializer=secure_source_manager.UpdatePullRequestCommentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_pull_request_comment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/UpdatePullRequestComment",
+                    request_serializer=secure_source_manager.UpdatePullRequestCommentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_pull_request_comment"]
 
@@ -1586,12 +1590,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_pull_request_comment" not in self._stubs:
-            self._stubs[
-                "delete_pull_request_comment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeletePullRequestComment",
-                request_serializer=secure_source_manager.DeletePullRequestCommentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_pull_request_comment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/DeletePullRequestComment",
+                    request_serializer=secure_source_manager.DeletePullRequestCommentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_pull_request_comment"]
 
@@ -1623,12 +1627,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "batch_create_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/BatchCreatePullRequestComments",
-                request_serializer=secure_source_manager.BatchCreatePullRequestCommentsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["batch_create_pull_request_comments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/BatchCreatePullRequestComments",
+                    request_serializer=secure_source_manager.BatchCreatePullRequestCommentsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["batch_create_pull_request_comments"]
 
@@ -1641,10 +1645,9 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
     ]:
         r"""Return a callable for the resolve pull request comments method over gRPC.
 
-        Resolves pull request comments. A list of
-        PullRequestComment names must be provided. The
-        PullRequestComment names must be in the same
-        conversation thread. If auto_fill is set, all comments
+        Resolves pull request comments. A list of PullRequestComment
+        names must be provided. The PullRequestComment names must be in
+        the same conversation thread. If auto_fill is set, all comments
         in the conversation thread will be resolved.
 
         Returns:
@@ -1658,12 +1661,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "resolve_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "resolve_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/ResolvePullRequestComments",
-                request_serializer=secure_source_manager.ResolvePullRequestCommentsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["resolve_pull_request_comments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/ResolvePullRequestComments",
+                    request_serializer=secure_source_manager.ResolvePullRequestCommentsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["resolve_pull_request_comments"]
 
@@ -1677,10 +1680,9 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         r"""Return a callable for the unresolve pull request
         comments method over gRPC.
 
-        Unresolves pull request comments. A list of
-        PullRequestComment names must be provided. The
-        PullRequestComment names must be in the same
-        conversation thread. If auto_fill is set, all comments
+        Unresolves pull request comments. A list of PullRequestComment
+        names must be provided. The PullRequestComment names must be in
+        the same conversation thread. If auto_fill is set, all comments
         in the conversation thread will be unresolved.
 
         Returns:
@@ -1694,12 +1696,12 @@ class SecureSourceManagerGrpcTransport(SecureSourceManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "unresolve_pull_request_comments" not in self._stubs:
-            self._stubs[
-                "unresolve_pull_request_comments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securesourcemanager.v1.SecureSourceManager/UnresolvePullRequestComments",
-                request_serializer=secure_source_manager.UnresolvePullRequestCommentsRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["unresolve_pull_request_comments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securesourcemanager.v1.SecureSourceManager/UnresolvePullRequestComments",
+                    request_serializer=secure_source_manager.UnresolvePullRequestCommentsRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["unresolve_pull_request_comments"]
 

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -72,6 +72,7 @@ class DnsThreatDetector(proto.Message):
             INFOBLOX (1):
                 The Infoblox DNS threat detector provider.
         """
+
         PROVIDER_UNSPECIFIED = 0
         INFOBLOX = 1
 
@@ -221,14 +222,12 @@ class UpdateDnsThreatDetectorRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. The field mask is used to specify the
-            fields to be overwritten in the
-            DnsThreatDetector resource by the update. The
-            fields specified in the update_mask are relative
-            to the resource, not the full request. A field
-            will be overwritten if it is in the mask. If the
-            mask is not provided then all fields present in
-            the request will be overwritten.
+            Optional. The field mask is used to specify the fields to be
+            overwritten in the DnsThreatDetector resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the mask is not provided then all
+            fields present in the request will be overwritten.
         dns_threat_detector (google.cloud.network_security_v1beta1.types.DnsThreatDetector):
             Required. The DnsThreatDetector resource
             being updated.

@@ -109,9 +109,8 @@ class ListDiscoveredApiOperationsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent, which owns this collection
-            of DiscoveredApiOperations. Format:
-
+            Required. The parent, which owns this collection of
+            DiscoveredApiOperations. Format:
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
         page_size (int):
             Optional. DiscoveredApiOperations will be
@@ -159,12 +158,12 @@ class ListDiscoveredApiOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_api_operations: MutableSequence[
-        common_fields.DiscoveredApiOperation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=common_fields.DiscoveredApiOperation,
+    discovered_api_operations: MutableSequence[common_fields.DiscoveredApiOperation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=common_fields.DiscoveredApiOperation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -177,9 +176,8 @@ class GetDiscoveredApiObservationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the
-            DiscoveredApiObservation to retrieve. Format:
-
+            Required. The name of the DiscoveredApiObservation to
+            retrieve. Format:
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}
     """
 
@@ -194,9 +192,8 @@ class GetDiscoveredApiOperationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the DiscoveredApiOperation
-            to retrieve. Format:
-
+            Required. The name of the DiscoveredApiOperation to
+            retrieve. Format:
             projects/{project}/locations/{location}/discoveredApiObservations/{discovered_api_observation}/discoveredApiOperations/{discovered_api_operation}
     """
 

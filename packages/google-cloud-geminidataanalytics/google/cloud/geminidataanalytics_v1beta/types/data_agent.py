@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import (
@@ -65,11 +65,11 @@ class DataAgent(proto.Message):
 
             - Must be between 1-1024 characters.
         labels (MutableMapping[str, str]):
-            Optional. Labels to help users filter related
-            agents. For example, "sales", "business", "etl",
-            and so on. Note labels are used only for
-            filtering and not for policies. See the [labels
-            documentation](https://cloud.google.com/resource-manager/docs/labels-overview)
+            Optional. Labels to help users filter related agents. For
+            example, "sales", "business", "etl", and so on. Note labels
+            are used only for filtering and not for policies. See the
+            `labels
+            documentation <https://cloud.google.com/resource-manager/docs/labels-overview>`__
             for more details on label usage.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the data agent was
@@ -78,8 +78,8 @@ class DataAgent(proto.Message):
             Output only. The time when the data agent was
             last updated.
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. [Output only] The time the data
-            agent was soft deleted.
+            Output only. [Output only] The time the data agent was soft
+            deleted.
         purge_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp in UTC of when this data agent is
             considered expired. This is *always* provided on output,

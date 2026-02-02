@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -82,6 +82,7 @@ class IcebergCatalog(proto.Message):
                 Catalog type for Google Cloud Storage
                 Buckets.
         """
+
         CATALOG_TYPE_UNSPECIFIED = 0
         CATALOG_TYPE_GCS_BUCKET = 1
 
@@ -110,6 +111,7 @@ class IcebergCatalog(proto.Message):
                 https://github.com/apache/iceberg/blob/931865ecaf40a827f9081dddb675bf1c95c05461/open-api/rest-catalog-open-api.yaml#L1854
                 for more details.
         """
+
         CREDENTIAL_MODE_UNSPECIFIED = 0
         CREDENTIAL_MODE_END_USER = 1
         CREDENTIAL_MODE_VENDED_CREDENTIALS = 2
@@ -157,8 +159,8 @@ class CreateIcebergCatalogRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this catalog
-            will be created. Format: projects/{project_id}
+            Required. The parent resource where this catalog will be
+            created. Format: projects/{project_id}
         iceberg_catalog_id (str):
             Required. The name of the catalog.
         iceberg_catalog (google.cloud.biglake_v1.types.IcebergCatalog):
@@ -225,8 +227,8 @@ class ListIcebergCatalogsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource where this catalog
-            will be created. Format: projects/{project_id}
+            Required. The parent resource where this catalog will be
+            created. Format: projects/{project_id}
         view (google.cloud.biglake_v1.types.ListIcebergCatalogsRequest.CatalogView):
             Optional. The view of the catalog to return.
         page_size (int):
@@ -250,6 +252,7 @@ class ListIcebergCatalogsRequest(proto.Message):
             CATALOG_VIEW_FULL (2):
                 Include all fields of the catalog.
         """
+
         CATALOG_VIEW_UNSPECIFIED = 0
         CATALOG_VIEW_BASIC = 1
         CATALOG_VIEW_FULL = 2
@@ -320,10 +323,10 @@ class FailoverIcebergCatalogRequest(proto.Message):
             regions in the catalog's list of replicas marked
             as a "secondary".
         validate_only (bool):
-            Optional. If set, only validate the request, but
-            do not perform the update. This can be used to
-            inspect the replication_time at any time,
-            including before performing a fail-over.
+            Optional. If set, only validate the request, but do not
+            perform the update. This can be used to inspect the
+            replication_time at any time, including before performing a
+            fail-over.
         conditional_failover_replication_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. If unset, wait for all data from
             the source region to replicate to the new
@@ -362,15 +365,13 @@ class FailoverIcebergCatalogResponse(proto.Message):
 
     Attributes:
         replication_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The min timestamp for which all
-            namespaces and table metadata have been
-            replicated in the region specified as the new
-            primary_replica. Some resources may have been
-            replicated more recently than this timestamp. If
-            empty, the replica has just been created and has
-            not yet been fully initialized. NOTE: When the
-            Cloud Storage replication watermark is
-            available, this will represent both catalog
+            Output only. The min timestamp for which all namespaces and
+            table metadata have been replicated in the region specified
+            as the new primary_replica. Some resources may have been
+            replicated more recently than this timestamp. If empty, the
+            replica has just been created and has not yet been fully
+            initialized. NOTE: When the Cloud Storage replication
+            watermark is available, this will represent both catalog
             metadata and Cloud Storage data.
     """
 

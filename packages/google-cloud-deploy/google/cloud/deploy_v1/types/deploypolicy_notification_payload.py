@@ -31,9 +31,9 @@ __protobuf__ = proto.module(
 
 class DeployPolicyNotificationEvent(proto.Message):
     r"""Payload proto for
-    "clouddeploy.googleapis.com/deploypolicy_notification". Platform
-    Log event that describes the failure to send a pub/sub
-    notification when there is a DeployPolicy status change.
+    "clouddeploy.googleapis.com/deploypolicy_notification". Platform Log
+    event that describes the failure to send a pub/sub notification when
+    there is a DeployPolicy status change.
 
     Attributes:
         message (str):

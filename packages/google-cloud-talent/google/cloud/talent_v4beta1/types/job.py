@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.talent_v4beta1.types import common
@@ -55,16 +55,14 @@ class Job(proto.Message):
             [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id]
             since this value is unique.
         company (str):
-            Required. The resource name of the company
-            listing the job.
+            Required. The resource name of the company listing the job.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}".
-            For example,
-            "projects/foo/tenants/bar/companies/baz".
+            For example, "projects/foo/tenants/bar/companies/baz".
 
-            If tenant id is unspecified, the default tenant
-            is used. For example,
-            "projects/foo/companies/bar".
+            If tenant id is unspecified, the default tenant is used. For
+            example, "projects/foo/companies/bar".
         requisition_id (str):
             Required. The requisition ID, also referred to as the
             posting ID, is assigned by the client to identify a job.
@@ -185,17 +183,14 @@ class Job(proto.Message):
             The experience level associated with the job,
             such as "Entry Level".
         promotion_value (int):
-            A promotion value of the job, as determined by
-            the client. The value determines the sort order
-            of the jobs returned when searching for jobs
-            using the featured jobs search call, with higher
-            promotional values being returned first and ties
-            being resolved by relevance sort. Only the jobs
-            with a promotionValue >0 are returned in a
-            FEATURED_JOB_SEARCH.
+            A promotion value of the job, as determined by the client.
+            The value determines the sort order of the jobs returned
+            when searching for jobs using the featured jobs search call,
+            with higher promotional values being returned first and ties
+            being resolved by relevance sort. Only the jobs with a
+            promotionValue >0 are returned in a FEATURED_JOB_SEARCH.
 
-            Default value is 0, and negative values are
-            treated as 0.
+            Default value is 0, and negative values are treated as 0.
         qualifications (str):
             A description of the qualifications required to perform the
             job. The use of this field is recommended as an alternative

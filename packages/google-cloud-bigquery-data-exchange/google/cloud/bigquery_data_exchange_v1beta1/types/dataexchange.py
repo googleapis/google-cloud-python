@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -320,6 +320,7 @@ class Listing(proto.Message):
                 dataexchange.listings.subscribe permission can
                 subscribe to this listing.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
@@ -368,6 +369,7 @@ class Listing(proto.Message):
             CATEGORY_TRAVEL_AND_TOURISM (19):
                 No description available.
         """
+
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
         CATEGORY_ADVERTISING_AND_MARKETING = 2

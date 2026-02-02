@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -64,22 +64,19 @@ class TargetSite(proto.Message):
             The type of the target site, e.g., whether
             the site is to be included or excluded.
         exact_match (bool):
-            Input only. If set to false, a uri_pattern is
-            generated to include all pages whose address
-            contains the provided_uri_pattern. If set to
-            true, an uri_pattern is generated to try to be
-            an exact match of the provided_uri_pattern or
-            just the specific page if the
-            provided_uri_pattern is a specific one.
-            provided_uri_pattern is always normalized to
-            generate the URI pattern to be used by the
-            search engine.
+            Input only. If set to false, a uri_pattern is generated to
+            include all pages whose address contains the
+            provided_uri_pattern. If set to true, an uri_pattern is
+            generated to try to be an exact match of the
+            provided_uri_pattern or just the specific page if the
+            provided_uri_pattern is a specific one. provided_uri_pattern
+            is always normalized to generate the URI pattern to be used
+            by the search engine.
         generated_uri_pattern (str):
-            Output only. This is system-generated based on
-            the provided_uri_pattern.
-        root_domain_uri (str):
-            Output only. Root domain of the
+            Output only. This is system-generated based on the
             provided_uri_pattern.
+        root_domain_uri (str):
+            Output only. Root domain of the provided_uri_pattern.
         site_verification_info (google.cloud.discoveryengine_v1alpha.types.SiteVerificationInfo):
             Output only. Site ownership and validity
             verification status.
@@ -105,6 +102,7 @@ class TargetSite(proto.Message):
             EXCLUDE (2):
                 Exclude the target site.
         """
+
         TYPE_UNSPECIFIED = 0
         INCLUDE = 1
         EXCLUDE = 2
@@ -132,6 +130,7 @@ class TargetSite(proto.Message):
                 2. state reverts to SUCCEEDED if the unindexing
                     fails.
         """
+
         INDEXING_STATUS_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -246,6 +245,7 @@ class SiteVerificationInfo(proto.Message):
                 Site exempt from verification, e.g., a public
                 website that opens to all.
         """
+
         SITE_VERIFICATION_STATE_UNSPECIFIED = 0
         VERIFIED = 1
         UNVERIFIED = 2

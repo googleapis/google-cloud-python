@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.securitycenter_v2 import gapic_version as package_version
 
@@ -44,14 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
@@ -76,8 +76,8 @@ from google.cloud.securitycenter_v2.types import (
     database,
     disk,
     exfiltration,
-)
-from google.cloud.securitycenter_v2.types import (
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -88,19 +88,27 @@ from google.cloud.securitycenter_v2.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v2.types import (
+    mute_config,
+    network,
+    notebook,
+    notification_config,
+    org_policy,
+    process,
+    resource,
+    resource_value_config,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v2.types import (
+    source,
     toxic_combination,
     valued_resource,
     vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
@@ -108,17 +116,6 @@ from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import file
-from google.cloud.securitycenter_v2.types import finding
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import network, notebook
-from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process, resource
-from google.cloud.securitycenter_v2.types import resource_value_config
-from google.cloud.securitycenter_v2.types import security_marks
-from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
 
 from .client import SecurityCenterClient
@@ -233,7 +230,8 @@ class SecurityCenterAsyncClient:
         Returns:
             SecurityCenterAsyncClient: The constructed client.
         """
-        return SecurityCenterClient.from_service_account_info.__func__(SecurityCenterAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SecurityCenterClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SecurityCenterAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -249,7 +247,8 @@ class SecurityCenterAsyncClient:
         Returns:
             SecurityCenterAsyncClient: The constructed client.
         """
-        return SecurityCenterClient.from_service_account_file.__func__(SecurityCenterAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SecurityCenterClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SecurityCenterAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -896,10 +895,9 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             finding (:class:`google.cloud.securitycenter_v2.types.Finding`):
-                Required. The Finding being created. The
-                name and security_marks will be ignored
-                as they are both output only fields on
-                this resource.
+                Required. The Finding being created. The name and
+                security_marks will be ignored as they are both output
+                only fields on this resource.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1362,9 +1360,9 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source (:class:`google.cloud.securitycenter_v2.types.Source`):
-                Required. The Source being created, only
-                the display_name and description will be
-                used. All other fields will be ignored.
+                Required. The Source being created, only the
+                display_name and description will be used. All other
+                fields will be ignored.
 
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2271,7 +2269,7 @@ class SecurityCenterAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -2705,8 +2703,8 @@ class SecurityCenterAsyncClient:
                 The request object. Request message to get resource value
                 config
             name (:class:`str`):
-                Required. Name of the resource value
-                config to retrieve. Its format is
+                Required. Name of the resource value config to retrieve.
+                Its format is
                 organizations/{organization}/resourceValueConfigs/{config_id}.
 
                 This corresponds to the ``name`` field
@@ -2984,11 +2982,10 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             group_by (:class:`str`):
-                Required. Expression that defines what
-                assets fields to use for grouping. The
-                string value should follow SQL syntax:
-                comma separated list of fields. For
-                example: "parent,resource_name".
+                Required. Expression that defines what assets fields to
+                use for grouping. The string value should follow SQL
+                syntax: comma separated list of fields. For example:
+                "parent,resource_name".
 
                 This corresponds to the ``group_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3706,12 +3703,10 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for listing
                 notification configs.
             parent (:class:`str`):
-                Required. The name of the parent in
-                which to list the notification
-                configurations. Its format is
+                Required. The name of the parent in which to list the
+                notification configurations. Its format is
                 "organizations/[organization_id]/locations/[location_id]",
-                "folders/[folder_id]/locations/[location_id]",
-                or
+                "folders/[folder_id]/locations/[location_id]", or
                 "projects/[project_id]/locations/[location_id]".
 
                 This corresponds to the ``parent`` field
@@ -4362,7 +4357,7 @@ class SecurityCenterAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client
@@ -4650,7 +4645,7 @@ class SecurityCenterAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_test_iam_permissions():
                 # Create a client
@@ -5049,31 +5044,27 @@ class SecurityCenterAsyncClient:
                 The request object. Request message for updating or
                 creating a finding.
             finding (:class:`google.cloud.securitycenter_v2.types.Finding`):
-                Required. The finding resource to update
-                or create if it does not already exist.
-                parent, security_marks, and update_time
-                will be ignored.
+                Required. The finding resource to update or create if it
+                does not already exist. parent, security_marks, and
+                update_time will be ignored.
 
-                In the case of creation, the finding id
-                portion of the name must be alphanumeric
-                and less than or equal to 32 characters
-                and greater than 0 characters in length.
+                In the case of creation, the finding id portion of the
+                name must be alphanumeric and less than or equal to 32
+                characters and greater than 0 characters in length.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The FieldMask to use when updating the
-                finding resource. This field should not
-                be specified when creating a finding.
+                The FieldMask to use when updating the finding resource.
+                This field should not be specified when creating a
+                finding.
 
-                When updating a finding, an empty mask
-                is treated as updating all mutable
-                fields and replacing source_properties.
-                Individual source_properties can be
-                added/updated by using
-                "source_properties.<property key>" in
-                the field mask.
+                When updating a finding, an empty mask is treated as
+                updating all mutable fields and replacing
+                source_properties. Individual source_properties can be
+                added/updated by using "source_properties." in the field
+                mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5319,9 +5310,8 @@ class SecurityCenterAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcs_notification_config.NotificationConfig:
-        r"""Updates a notification config. The following update
-        fields are allowed: description, pubsub_topic,
-        streaming_config.filter
+        r"""Updates a notification config. The following update fields are
+        allowed: description, pubsub_topic, streaming_config.filter
 
         .. code-block:: python
 
@@ -5495,14 +5485,13 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The list of fields to be updated.
-                If empty all mutable fields will be
-                updated.
+                The list of fields to be updated. If empty all mutable
+                fields will be updated.
 
-                To update nested fields, include the top
-                level field in the mask For example, to
-                update gcp_metadata.resource_type,
-                include the "gcp_metadata" field mask
+                To update nested fields, include the top level field in
+                the mask For example, to update
+                gcp_metadata.resource_type, include the "gcp_metadata"
+                field mask
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5632,11 +5621,11 @@ class SecurityCenterAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                The FieldMask to use when updating the
-                security marks resource.
-                The field mask must not contain
-                duplicate fields. If empty or set to
-                "marks", all marks will be replaced.
+                The FieldMask to use when updating the security marks
+                resource.
+
+                The field mask must not contain duplicate fields. If
+                empty or set to "marks", all marks will be replaced.
                 Individual marks can be updated using
                 "marks.<mark_key>".
 

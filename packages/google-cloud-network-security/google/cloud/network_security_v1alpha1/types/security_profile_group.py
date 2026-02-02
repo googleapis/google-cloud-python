@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_security_v1alpha1.types import (
@@ -198,6 +198,7 @@ class SecurityProfile(proto.Message):
             URL_FILTERING (5):
                 Profile type for URL filtering.
         """
+
         PROFILE_TYPE_UNSPECIFIED = 0
         THREAT_PREVENTION = 1
         CUSTOM_MIRRORING = 2

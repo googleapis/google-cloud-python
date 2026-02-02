@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.maps.solar_v1 import gapic_version as package_version
 
@@ -61,10 +61,10 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import httpbody_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 
 from google.maps.solar_v1.types import solar_service
 
@@ -600,11 +600,9 @@ class SolarClient(metaclass=SolarClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SolarClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SolarClient._read_environment_variables()
+        )
         self._client_cert_source = SolarClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -639,8 +637,7 @@ class SolarClient(metaclass=SolarClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SolarTransport, transport)
             self._api_endpoint = self._transport.host
@@ -928,59 +925,52 @@ class SolarClient(metaclass=SolarClientMeta):
 
         Returns:
             google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                Message that represents an arbitrary HTTP body. It should only be used for
+                   payload formats that can't be represented as JSON,
+                   such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                   This message can be used both in streaming and
+                   non-streaming API methods in the request as well as
+                   the response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                   It can be used as a top-level request field, which is
+                   convenient if one wants to extract parameters from
+                   either the URL or HTTP template into the request
+                   fields and also want access to the raw HTTP body.
 
-                Example:
+                   Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                      message GetResourceRequest {
+                         // A unique request id. string request_id = 1;
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                         // The raw HTTP body is bound to this field.
+                         google.api.HttpBody http_body = 2;
 
-                }
+                      }
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                      service ResourceService {
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
 
-                }
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
-                Example with streaming methods:
+                      }
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                   Example with streaming methods:
 
-                }
+                      service CaldavService {
+                         rpc GetCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                         rpc UpdateCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
+
+                      }
+
+                   Use of this type only changes how the request and
+                   response bodies are handled, all other features will
+                   continue to work unchanged.
 
         """
         # Create or coerce a protobuf request object.

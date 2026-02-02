@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.tasks_v2beta3.types import target
@@ -184,16 +184,14 @@ class Task(proto.Message):
             VIEW_UNSPECIFIED (0):
                 Unspecified. Defaults to BASIC.
             BASIC (1):
-                The basic view omits fields which can be large
-                or can contain sensitive data.
+                The basic view omits fields which can be large or can
+                contain sensitive data.
 
-                This view does not include the
-                [body in
+                This view does not include the [body in
                 AppEngineHttpRequest][google.cloud.tasks.v2beta3.AppEngineHttpRequest.body].
-                Bodies are desirable to return only when needed,
-                because they can be large and because of the
-                sensitivity of the data that you choose to store
-                in it.
+                Bodies are desirable to return only when needed, because
+                they can be large and because of the sensitivity of the data
+                that you choose to store in it.
             FULL (2):
                 All information is returned.
 
@@ -203,6 +201,7 @@ class Task(proto.Message):
                 IAM <https://cloud.google.com/iam/>`__ permission on the
                 [Queue][google.cloud.tasks.v2beta3.Queue] resource.
         """
+
         VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

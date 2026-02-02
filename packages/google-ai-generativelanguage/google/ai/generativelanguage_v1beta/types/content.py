@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -80,6 +80,7 @@ class Type(proto.Enum):
         NULL (7):
             Null type.
     """
+
     TYPE_UNSPECIFIED = 0
     STRING = 1
     NUMBER = 2
@@ -107,6 +108,7 @@ class Modality(proto.Enum):
         DOCUMENT (5):
             Document, e.g. PDF.
     """
+
     MODALITY_UNSPECIFIED = 0
     TEXT = 1
     IMAGE = 2
@@ -201,9 +203,9 @@ class Part(proto.Message):
 
             This field is a member of `oneof`_ ``data``.
         video_metadata (google.ai.generativelanguage_v1beta.types.VideoMetadata):
-            Optional. Video metadata. The metadata should
-            only be specified while the video data is
-            presented in inline_data or file_data.
+            Optional. Video metadata. The metadata should only be
+            specified while the video data is presented in inline_data
+            or file_data.
 
             This field is a member of `oneof`_ ``metadata``.
         thought (bool):
@@ -401,9 +403,9 @@ class VideoMetadata(proto.Message):
         end_offset (google.protobuf.duration_pb2.Duration):
             Optional. The end offset of the video.
         fps (float):
-            Optional. The frame rate of the video sent to
-            the model. If not specified, the default value
-            will be 1.0. The fps range is (0.0, 24.0].
+            Optional. The frame rate of the video sent to the model. If
+            not specified, the default value will be 1.0. The fps range
+            is (0.0, 24.0].
     """
 
     start_offset: duration_pb2.Duration = proto.Field(
@@ -448,6 +450,7 @@ class ExecutableCode(proto.Message):
                 Python >= 3.10, with numpy and simpy
                 available.
         """
+
         LANGUAGE_UNSPECIFIED = 0
         PYTHON = 1
 
@@ -494,6 +497,7 @@ class CodeExecutionResult(proto.Message):
                 cancelled. There may or may not be a partial
                 output present.
         """
+
         OUTCOME_UNSPECIFIED = 0
         OUTCOME_OK = 1
         OUTCOME_FAILED = 2
@@ -609,6 +613,7 @@ class Tool(proto.Message):
                 ENVIRONMENT_BROWSER (1):
                     Operates in a web browser.
             """
+
             ENVIRONMENT_UNSPECIFIED = 0
             ENVIRONMENT_BROWSER = 1
 
@@ -800,6 +805,7 @@ class DynamicRetrievalConfig(proto.Message):
                 Run retrieval only when system decides it is
                 necessary.
         """
+
         MODE_UNSPECIFIED = 0
         MODE_DYNAMIC = 1
 
@@ -880,14 +886,12 @@ class FunctionCallingConfig(proto.Message):
             function calling should execute. If unspecified,
             the default value will be set to AUTO.
         allowed_function_names (MutableSequence[str]):
-            Optional. A set of function names that, when
-            provided, limits the functions the model will
-            call.
+            Optional. A set of function names that, when provided,
+            limits the functions the model will call.
 
-            This should only be set when the Mode is ANY or
-            VALIDATED. Function names should match
-            [FunctionDeclaration.name]. When set, model will
-            predict a function call from only allowed
+            This should only be set when the Mode is ANY or VALIDATED.
+            Function names should match [FunctionDeclaration.name]. When
+            set, model will predict a function call from only allowed
             function names.
     """
 
@@ -904,27 +908,24 @@ class FunctionCallingConfig(proto.Message):
                 predict either a function call or a natural
                 language response.
             ANY (2):
-                Model is constrained to always predicting a
-                function call only. If "allowed_function_names"
-                are set, the predicted function call will be
-                limited to any one of "allowed_function_names",
-                else the predicted function call will be any one
-                of the provided "function_declarations".
+                Model is constrained to always predicting a function call
+                only. If "allowed_function_names" are set, the predicted
+                function call will be limited to any one of
+                "allowed_function_names", else the predicted function call
+                will be any one of the provided "function_declarations".
             NONE (3):
                 Model will not predict any function call.
                 Model behavior is same as when not passing any
                 function declarations.
             VALIDATED (4):
-                Model decides to predict either a function call
-                or a natural language response, but will
-                validate function calls with constrained
-                decoding.
-                If "allowed_function_names" are set, the
-                predicted function call will be limited to any
-                one of "allowed_function_names", else the
-                predicted function call will be any one of the
-                provided "function_declarations".
+                Model decides to predict either a function call or a natural
+                language response, but will validate function calls with
+                constrained decoding. If "allowed_function_names" are set,
+                the predicted function call will be limited to any one of
+                "allowed_function_names", else the predicted function call
+                will be any one of the provided "function_declarations".
         """
+
         MODE_UNSPECIFIED = 0
         AUTO = 1
         ANY = 2
@@ -1031,6 +1032,7 @@ class FunctionDeclaration(proto.Message):
                 available while maintaining the conversation
                 between the user and the model.
         """
+
         UNSPECIFIED = 0
         BLOCKING = 1
         NON_BLOCKING = 2
@@ -1156,10 +1158,9 @@ class FunctionResponse(proto.Message):
             finish the function call, additionally set ``scheduling`` to
             ``SILENT``.
         scheduling (google.ai.generativelanguage_v1beta.types.FunctionResponse.Scheduling):
-            Optional. Specifies how the response should be
-            scheduled in the conversation. Only applicable
-            to NON_BLOCKING function calls, is ignored
-            otherwise. Defaults to WHEN_IDLE.
+            Optional. Specifies how the response should be scheduled in
+            the conversation. Only applicable to NON_BLOCKING function
+            calls, is ignored otherwise. Defaults to WHEN_IDLE.
 
             This field is a member of `oneof`_ ``_scheduling``.
     """
@@ -1183,6 +1184,7 @@ class FunctionResponse(proto.Message):
                 interrupt ongoing generation and prompt to
                 generate output.
         """
+
         SCHEDULING_UNSPECIFIED = 0
         SILENT = 1
         WHEN_IDLE = 2
@@ -1244,12 +1246,10 @@ class Schema(proto.Message):
         nullable (bool):
             Optional. Indicates if the value may be null.
         enum (MutableSequence[str]):
-            Optional. Possible values of the element of
-            Type.STRING with enum format. For example we can
-            define an Enum Direction as :
-
-            {type:STRING, format:enum, enum:["EAST", NORTH",
-            "SOUTH", "WEST"]}
+            Optional. Possible values of the element of Type.STRING with
+            enum format. For example we can define an Enum Direction as
+            : {type:STRING, format:enum, enum:["EAST", NORTH", "SOUTH",
+            "WEST"]}
         items (google.ai.generativelanguage_v1beta.types.Schema):
             Optional. Schema of the elements of
             Type.ARRAY.

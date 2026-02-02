@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -47,6 +47,7 @@ class EnvoyHeaders(proto.Enum):
             x-envoy-original-path
             x-envoy-upstream-stream-duration-ms
     """
+
     ENVOY_HEADERS_UNSPECIFIED = 0
     NONE = 1
     DEBUG_HEADERS = 2
@@ -154,42 +155,36 @@ class EndpointMatcher(proto.Message):
             metadata_label_match_criteria (google.cloud.network_services_v1.types.EndpointMatcher.MetadataLabelMatcher.MetadataLabelMatchCriteria):
                 Specifies how matching should be done.
 
-                Supported values are:
+                Supported values are: MATCH_ANY: At least one of the Labels
+                specified in the matcher should match the metadata presented
+                by xDS client. MATCH_ALL: The metadata presented by the xDS
+                client should contain all of the labels specified here.
 
-                MATCH_ANY: At least one of the Labels specified
-                in the matcher should match the metadata
-                presented by xDS client. MATCH_ALL: The metadata
-                presented by the xDS client should contain all
-                of the labels specified here.
-
-                The selection is determined based on the best
-                match. For example, suppose there are three
-                EndpointPolicy resources P1, P2 and P3 and if P1
-                has a the matcher as MATCH_ANY <A:1, B:1>, P2
-                has MATCH_ALL <A:1,B:1>, and P3 has MATCH_ALL
+                The selection is determined based on the best match. For
+                example, suppose there are three EndpointPolicy resources
+                P1, P2 and P3 and if P1 has a the matcher as MATCH_ANY <A:1,
+                B:1>, P2 has MATCH_ALL <A:1,B:1>, and P3 has MATCH_ALL
                 <A:1,B:1,C:1>.
 
-                If a client with label <A:1> connects, the
-                config from P1 will be selected.
+                If a client with label <A:1> connects, the config from P1
+                will be selected.
 
-                If a client with label <A:1,B:1> connects, the
-                config from P2 will be selected.
+                If a client with label <A:1,B:1> connects, the config from
+                P2 will be selected.
 
-                If a client with label <A:1,B:1,C:1> connects,
-                the config from P3 will be selected.
+                If a client with label <A:1,B:1,C:1> connects, the config
+                from P3 will be selected.
 
-                If there is more than one best match, (for
-                example, if a config P4 with selector <A:1,D:1>
-                exists and if a client with label <A:1,B:1,D:1>
-                connects), pick up the one with older creation
-                time.
+                If there is more than one best match, (for example, if a
+                config P4 with selector <A:1,D:1> exists and if a client
+                with label <A:1,B:1,D:1> connects), pick up the one with
+                older creation time.
             metadata_labels (MutableSequence[google.cloud.network_services_v1.types.EndpointMatcher.MetadataLabelMatcher.MetadataLabels]):
-                The list of label value pairs that must match
-                labels in the provided metadata based on
-                filterMatchCriteria This list can have at most
-                64 entries. The list can be empty if the match
-                criteria is MATCH_ANY, to specify a wildcard
-                match (i.e this matches any client).
+                The list of label value pairs that must match labels in the
+                provided metadata based on filterMatchCriteria This list can
+                have at most 64 entries. The list can be empty if the match
+                criteria is MATCH_ANY, to specify a wildcard match (i.e this
+                matches any client).
         """
 
         class MetadataLabelMatchCriteria(proto.Enum):
@@ -207,6 +202,7 @@ class EndpointMatcher(proto.Message):
                     The metadata presented by the xDS client
                     should contain all of the labels specified here.
             """
+
             METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED = 0
             MATCH_ANY = 1
             MATCH_ALL = 2

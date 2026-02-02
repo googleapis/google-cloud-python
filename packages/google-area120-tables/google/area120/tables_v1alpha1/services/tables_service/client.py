@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.area120.tables_v1alpha1 import gapic_version as package_version
 
@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.area120.tables_v1alpha1.services.tables_service import pagers
 from google.area120.tables_v1alpha1.types import tables
@@ -659,11 +659,9 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = TablesServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            TablesServiceClient._read_environment_variables()
+        )
         self._client_cert_source = TablesServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -698,8 +696,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(TablesServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -776,8 +773,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Table:
-        r"""Gets a table. Returns NOT_FOUND if the table does not
-        exist.
+        r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
         .. code-block:: python
 
@@ -975,8 +971,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Workspace:
-        r"""Gets a workspace. Returns NOT_FOUND if the workspace
-        does not exist.
+        r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
+        exist.
 
         .. code-block:: python
 
@@ -1175,8 +1171,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> tables.Row:
-        r"""Gets a row. Returns NOT_FOUND if the row does not exist
-        in the table.
+        r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
+        table.
 
         .. code-block:: python
 
@@ -1283,8 +1279,8 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListRowsPager:
-        r"""Lists rows in a table. Returns NOT_FOUND if the table
-        does not exist.
+        r"""Lists rows in a table. Returns NOT_FOUND if the table does not
+        exist.
 
         .. code-block:: python
 

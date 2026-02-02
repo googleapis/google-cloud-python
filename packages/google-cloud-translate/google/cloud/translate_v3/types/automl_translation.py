@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.translate_v3.types import common
@@ -94,9 +94,9 @@ class DatasetInputConfig(proto.Message):
 
         Attributes:
             usage (str):
-                Optional. Usage of the file contents. Options
-                are TRAIN\|VALIDATION\|TEST, or UNASSIGNED (by
-                default) for auto split.
+                Optional. Usage of the file contents. Options are
+                TRAIN|VALIDATION|TEST, or UNASSIGNED (by default) for auto
+                split.
             gcs_source (google.cloud.translate_v3.types.GcsInputSource):
                 Google Cloud Storage file source.
 
@@ -315,10 +315,9 @@ class ListDatasetsRequest(proto.Message):
             Optional. Requested page size. The server can
             return fewer results than requested.
         page_token (str):
-            Optional. A token identifying a page of results
-            for the server to return. Typically obtained
-            from next_page_token field in the response of a
-            ListDatasets call.
+            Optional. A token identifying a page of results for the
+            server to return. Typically obtained from next_page_token
+            field in the response of a ListDatasets call.
     """
 
     parent: str = proto.Field(
@@ -342,10 +341,9 @@ class ListDatasetsResponse(proto.Message):
         datasets (MutableSequence[google.cloud.translate_v3.types.Dataset]):
             The datasets read.
         next_page_token (str):
-            A token to retrieve next page of results.
-            Pass this token to the page_token field in the
-            ListDatasetsRequest to obtain the corresponding
-            page.
+            A token to retrieve next page of results. Pass this token to
+            the page_token field in the ListDatasetsRequest to obtain
+            the corresponding page.
     """
 
     @property
@@ -437,10 +435,9 @@ class ListExamplesRequest(proto.Message):
             Optional. Requested page size. The server can
             return fewer results than requested.
         page_token (str):
-            Optional. A token identifying a page of results
-            for the server to return. Typically obtained
-            from next_page_token field in the response of a
-            ListExamples call.
+            Optional. A token identifying a page of results for the
+            server to return. Typically obtained from next_page_token
+            field in the response of a ListExamples call.
     """
 
     parent: str = proto.Field(
@@ -468,10 +465,9 @@ class ListExamplesResponse(proto.Message):
         examples (MutableSequence[google.cloud.translate_v3.types.Example]):
             The sentence pairs.
         next_page_token (str):
-            A token to retrieve next page of results.
-            Pass this token to the page_token field in the
-            ListExamplesRequest to obtain the corresponding
-            page.
+            A token to retrieve next page of results. Pass this token to
+            the page_token field in the ListExamplesRequest to obtain
+            the corresponding page.
     """
 
     @property
@@ -501,8 +497,8 @@ class Example(proto.Message):
         target_text (str):
             Sentence in target language.
         usage (str):
-            Output only. Usage of the sentence pair. Options
-            are TRAIN\|VALIDATION\|TEST.
+            Output only. Usage of the sentence pair. Options are
+            TRAIN|VALIDATION|TEST.
     """
 
     name: str = proto.Field(
@@ -725,10 +721,9 @@ class ListModelsRequest(proto.Message):
             Optional. Requested page size. The server can
             return fewer results than requested.
         page_token (str):
-            Optional. A token identifying a page of results
-            for the server to return. Typically obtained
-            from next_page_token field in the response of a
-            ListModels call.
+            Optional. A token identifying a page of results for the
+            server to return. Typically obtained from next_page_token
+            field in the response of a ListModels call.
     """
 
     parent: str = proto.Field(
@@ -756,10 +751,9 @@ class ListModelsResponse(proto.Message):
         models (MutableSequence[google.cloud.translate_v3.types.Model]):
             The models read.
         next_page_token (str):
-            A token to retrieve next page of results.
-            Pass this token to the page_token field in the
-            ListModelsRequest to obtain the corresponding
-            page.
+            A token to retrieve next page of results. Pass this token to
+            the page_token field in the ListModelsRequest to obtain the
+            corresponding page.
     """
 
     @property

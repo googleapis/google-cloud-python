@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -56,6 +56,7 @@ class Hash(proto.Message):
             MD5 (2):
                 MD5 hash.
         """
+
         HASH_TYPE_UNSPECIFIED = 0
         SHA256 = 1
         MD5 = 2
@@ -209,8 +210,8 @@ class ListFilesRequest(proto.Message):
             The maximum number of files to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
         order_by (str):
             The field to order the results by.
     """

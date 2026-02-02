@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.geminidataanalytics_v1beta import gapic_version as package_version
 
@@ -61,23 +61,23 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.services.data_agent_service import pagers
 from google.cloud.geminidataanalytics_v1beta.types import (
+    data_agent,
     data_agent_service,
     data_analytics_agent,
 )
 from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
-from google.cloud.geminidataanalytics_v1beta.types import data_agent
 
 from .transports.base import DEFAULT_CLIENT_INFO, DataAgentServiceTransport
 from .transports.grpc import DataAgentServiceGrpcTransport
@@ -93,9 +93,7 @@ class DataAgentServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[DataAgentServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[DataAgentServiceTransport]]
     _transport_registry["grpc"] = DataAgentServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DataAgentServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = DataAgentServiceRestTransport
@@ -637,11 +635,9 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = DataAgentServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            DataAgentServiceClient._read_environment_variables()
+        )
         self._client_cert_source = DataAgentServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -676,8 +672,7 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(DataAgentServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1425,18 +1420,15 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                DataAgent resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields with
-                non-default values present in the
-                request will be overwritten. If a
-                wildcard mask is provided, all fields
-                will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DataAgent resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields with non-default values
+                present in the request will be overwritten. If a
+                wildcard mask is provided, all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1565,18 +1557,15 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                DataAgent resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields with
-                non-default values present in the
-                request will be overwritten. If a
-                wildcard mask is provided, all fields
-                will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DataAgent resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields with non-default values
+                present in the request will be overwritten. If a
+                wildcard mask is provided, all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1890,7 +1879,7 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import geminidataanalytics_v1beta
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -2029,7 +2018,7 @@ class DataAgentServiceClient(metaclass=DataAgentServiceClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import geminidataanalytics_v1beta
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client

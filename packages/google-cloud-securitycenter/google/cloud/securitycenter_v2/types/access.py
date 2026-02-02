@@ -74,11 +74,10 @@ class Access(proto.Message):
             GKE_HUB_WORKLOAD, still use the legacy format
             ``serviceAccount:{identity pool name}[{subject}]``.
         service_account_key_name (str):
-            The name of the service account key that was
-            used to create or exchange credentials when
-            authenticating the service account that made the
-            request. This is a scheme-less URI full resource
-            name. For example:
+            The name of the service account key that was used to create
+            or exchange credentials when authenticating the service
+            account that made the request. This is a scheme-less URI
+            full resource name. For example:
 
             "//iam.googleapis.com/projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}".
         service_account_delegation_info (MutableSequence[google.cloud.securitycenter_v2.types.ServiceAccountDelegationInfo]):
@@ -136,12 +135,12 @@ class Access(proto.Message):
         proto.STRING,
         number=9,
     )
-    service_account_delegation_info: MutableSequence[
-        "ServiceAccountDelegationInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message="ServiceAccountDelegationInfo",
+    service_account_delegation_info: MutableSequence["ServiceAccountDelegationInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message="ServiceAccountDelegationInfo",
+        )
     )
     user_name: str = proto.Field(
         proto.STRING,

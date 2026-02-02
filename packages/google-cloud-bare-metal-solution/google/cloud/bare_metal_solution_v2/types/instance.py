@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.bare_metal_solution_v2.types import common
+from google.cloud.bare_metal_solution_v2.types import common, network, volume
 from google.cloud.bare_metal_solution_v2.types import lun as gcb_lun
-from google.cloud.bare_metal_solution_v2.types import network, volume
 
 __protobuf__ = proto.module(
     package="google.cloud.baremetalsolution.v2",
@@ -66,9 +65,8 @@ class Instance(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Update a time stamp.
         machine_type (str):
-            Immutable. The server type.
-            [Available server
-            types](https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations)
+            Immutable. The server type. `Available server
+            types <https://cloud.google.com/bare-metal/docs/bms-planning#server_configurations>`__
         state (google.cloud.bare_metal_solution_v2.types.Instance.State):
             Output only. The state of the server.
         hyperthreading_enabled (bool):
@@ -101,22 +99,19 @@ class Instance(proto.Message):
             (networks, volumes) allocated in the same pod
             only.
         network_template (str):
-            Instance network template name. For eg,
-            bondaa-bondaa, bondab-nic, etc. Generally, the
-            template name follows the syntax of
-            "bond<bond_mode>" or "nic".
+            Instance network template name. For eg, bondaa-bondaa,
+            bondab-nic, etc. Generally, the template name follows the
+            syntax of "bond<bond_mode>" or "nic".
         logical_interfaces (MutableSequence[google.cloud.bare_metal_solution_v2.types.LogicalInterface]):
-            List of logical interfaces for the instance. The
-            number of logical interfaces will be the same as
-            number of hardware bond/nic on the chosen
-            network template. For the non-multivlan
-            configurations (for eg, existing servers) that
-            use existing default network template
-            (bondaa-bondaa), both the Instance.networks
-            field and the Instance.logical_interfaces fields
-            will be filled to ensure backward compatibility.
-            For the others, only Instance.logical_interfaces
-            will be filled.
+            List of logical interfaces for the instance. The number of
+            logical interfaces will be the same as number of hardware
+            bond/nic on the chosen network template. For the
+            non-multivlan configurations (for eg, existing servers) that
+            use existing default network template (bondaa-bondaa), both
+            the Instance.networks field and the
+            Instance.logical_interfaces fields will be filled to ensure
+            backward compatibility. For the others, only
+            Instance.logical_interfaces will be filled.
         login_info (str):
             Output only. Text field about info for
             logging in.
@@ -148,6 +143,7 @@ class Instance(proto.Message):
             SHUTDOWN (7):
                 The server is shutdown.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -513,13 +509,11 @@ class ServerNetworkTemplate(proto.Message):
 
         Attributes:
             name (str):
-                Interface name.
-                This is not a globally unique identifier.
-                Name is unique only inside the
-                ServerNetworkTemplate. This is of syntax
-                <bond><interface_type_index><bond_mode> or
-                <nic><interface_type_index> and forms part of
-                the network template name.
+                Interface name. This is not a globally unique identifier.
+                Name is unique only inside the ServerNetworkTemplate. This
+                is of syntax <interface_type_index><bond_mode> or
+                <interface_type_index> and forms part of the network
+                template name.
             type_ (google.cloud.bare_metal_solution_v2.types.ServerNetworkTemplate.LogicalInterface.InterfaceType):
                 Interface type.
             required (bool):
@@ -538,6 +532,7 @@ class ServerNetworkTemplate(proto.Message):
                 NIC (2):
                     NIC interface type.
             """
+
             INTERFACE_TYPE_UNSPECIFIED = 0
             BOND = 1
             NIC = 2

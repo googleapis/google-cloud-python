@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -117,6 +117,7 @@ class Environment(proto.Message):
                 The environment is being deleted and can't be
                 connected to.
         """
+
         STATE_UNSPECIFIED = 0
         SUSPENDED = 1
         PENDING = 2
@@ -327,6 +328,7 @@ class StartEnvironmentMetadata(proto.Message):
                 environment. Otherwise, the operation will
                 contain details of the failure.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         UNARCHIVING_DISK = 2
@@ -478,6 +480,7 @@ class CloudShellErrorDetails(proto.Message):
                 The Cloud Shell environment is unavailable
                 and cannot be connected to at the moment.
         """
+
         CLOUD_SHELL_ERROR_CODE_UNSPECIFIED = 0
         IMAGE_UNAVAILABLE = 1
         CLOUD_SHELL_DISABLED = 2

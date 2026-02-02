@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -87,6 +87,7 @@ class ServiceAccountKeyAlgorithm(proto.Enum):
         KEY_ALG_RSA_2048 (2):
             2k RSA Key.
     """
+
     KEY_ALG_UNSPECIFIED = 0
     KEY_ALG_RSA_1024 = 1
     KEY_ALG_RSA_2048 = 2
@@ -105,6 +106,7 @@ class ServiceAccountPrivateKeyType(proto.Enum):
         TYPE_GOOGLE_CREDENTIALS_FILE (2):
             Google Credentials File format.
     """
+
     TYPE_UNSPECIFIED = 0
     TYPE_PKCS12_FILE = 1
     TYPE_GOOGLE_CREDENTIALS_FILE = 2
@@ -121,6 +123,7 @@ class ServiceAccountPublicKeyType(proto.Enum):
         TYPE_RAW_PUBLIC_KEY (2):
             Raw public key.
     """
+
     TYPE_NONE = 0
     TYPE_X509_PEM_FILE = 1
     TYPE_RAW_PUBLIC_KEY = 2
@@ -137,6 +140,7 @@ class ServiceAccountKeyOrigin(proto.Enum):
         GOOGLE_PROVIDED (2):
             Key is provided by Google.
     """
+
     ORIGIN_UNSPECIFIED = 0
     USER_PROVIDED = 1
     GOOGLE_PROVIDED = 2
@@ -152,6 +156,7 @@ class RoleView(proto.Enum):
         FULL (1):
             Returns all fields.
     """
+
     BASIC = 0
     FULL = 1
 
@@ -160,15 +165,14 @@ class ServiceAccount(proto.Message):
     r"""An IAM service account.
 
     A service account is an account for an application or a virtual
-    machine (VM) instance, not a person. You can use a service
-    account to call Google APIs. To learn more, read the [overview
-    of service
-    accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+    machine (VM) instance, not a person. You can use a service account
+    to call Google APIs. To learn more, read the `overview of service
+    accounts <https://cloud.google.com/iam/help/service-accounts/overview>`__.
 
-    When you create a service account, you specify the project ID
-    that owns the service account, as well as a name that must be
-    unique within the project. IAM uses these values to create an
-    email address that identifies the service account.
+    When you create a service account, you specify the project ID that
+    owns the service account, as well as a name that must be unique
+    within the project. IAM uses these values to create an email address
+    that identifies the service account.
 
     Attributes:
         name (str):
@@ -533,6 +537,7 @@ class ListServiceAccountKeysRequest(proto.Message):
                 System-managed keys (managed and rotated by
                 Google).
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         USER_MANAGED = 1
         SYSTEM_MANAGED = 2
@@ -843,8 +848,8 @@ class EnableServiceAccountKeyRequest(proto.Message):
 
 
 class SignBlobRequest(proto.Message):
-    r"""Deprecated. [Migrate to Service Account Credentials
-    API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    r"""Deprecated. `Migrate to Service Account Credentials
+    API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
     The service account sign blob request.
 
@@ -861,9 +866,9 @@ class SignBlobRequest(proto.Message):
             the ``email`` address or the ``unique_id`` of the service
             account.
         bytes_to_sign (bytes):
-            Required. Deprecated. [Migrate to Service
-            Account Credentials
-            API](https://cloud.google.com/iam/help/credentials/migrate-api).
+            Required. Deprecated. `Migrate to Service Account
+            Credentials
+            API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
             The bytes to sign.
     """
@@ -879,22 +884,20 @@ class SignBlobRequest(proto.Message):
 
 
 class SignBlobResponse(proto.Message):
-    r"""Deprecated. [Migrate to Service Account Credentials
-    API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    r"""Deprecated. `Migrate to Service Account Credentials
+    API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
     The service account sign blob response.
 
     Attributes:
         key_id (str):
-            Deprecated. [Migrate to Service Account
-            Credentials
-            API](https://cloud.google.com/iam/help/credentials/migrate-api).
+            Deprecated. `Migrate to Service Account Credentials
+            API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
             The id of the key used to sign the blob.
         signature (bytes):
-            Deprecated. [Migrate to Service Account
-            Credentials
-            API](https://cloud.google.com/iam/help/credentials/migrate-api).
+            Deprecated. `Migrate to Service Account Credentials
+            API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
             The signed blob.
     """
@@ -910,8 +913,8 @@ class SignBlobResponse(proto.Message):
 
 
 class SignJwtRequest(proto.Message):
-    r"""Deprecated. [Migrate to Service Account Credentials
-    API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    r"""Deprecated. `Migrate to Service Account Credentials
+    API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
     The service account sign JWT request.
 
@@ -956,22 +959,20 @@ class SignJwtRequest(proto.Message):
 
 
 class SignJwtResponse(proto.Message):
-    r"""Deprecated. [Migrate to Service Account Credentials
-    API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    r"""Deprecated. `Migrate to Service Account Credentials
+    API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
     The service account sign JWT response.
 
     Attributes:
         key_id (str):
-            Deprecated. [Migrate to Service Account
-            Credentials
-            API](https://cloud.google.com/iam/help/credentials/migrate-api).
+            Deprecated. `Migrate to Service Account Credentials
+            API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
             The id of the key used to sign the JWT.
         signed_jwt (str):
-            Deprecated. [Migrate to Service Account
-            Credentials
-            API](https://cloud.google.com/iam/help/credentials/migrate-api).
+            Deprecated. `Migrate to Service Account Credentials
+            API <https://cloud.google.com/iam/help/credentials/migrate-api>`__.
 
             The signed JWT.
     """
@@ -993,15 +994,14 @@ class Role(proto.Message):
         name (str):
             The name of the role.
 
-            When Role is used in CreateRole, the role name
-            must not be set.
+            When Role is used in CreateRole, the role name must not be
+            set.
 
-            When Role is used in output and other input such
-            as UpdateRole, the role name is the complete
-            path, e.g., roles/logging.viewer for predefined
-            roles and
-            organizations/{ORGANIZATION_ID}/roles/logging.viewer
-            for custom roles.
+            When Role is used in output and other input such as
+            UpdateRole, the role name is the complete path, e.g.,
+            roles/logging.viewer for predefined roles and
+            organizations/{ORGANIZATION_ID}/roles/logging.viewer for
+            custom roles.
         title (str):
             Optional. A human-readable title for the
             role.  Typically this is limited to 100 UTF-8
@@ -1052,6 +1052,7 @@ class Role(proto.Message):
                 The user has indicated this role is currently
                 in an EAP phase.
         """
+
         ALPHA = 0
         BETA = 1
         GA = 2
@@ -1530,10 +1531,9 @@ class Permission(proto.Message):
             The service API associated with the
             permission is not enabled.
         primary_permission (str):
-            The preferred name for this permission. If
-            present, then this permission is an alias of,
-            and equivalent to, the listed
-            primary_permission.
+            The preferred name for this permission. If present, then
+            this permission is an alias of, and equivalent to, the
+            listed primary_permission.
     """
 
     class PermissionLaunchStage(proto.Enum):
@@ -1550,6 +1550,7 @@ class Permission(proto.Message):
             DEPRECATED (3):
                 The permission is being deprecated.
         """
+
         ALPHA = 0
         BETA = 1
         GA = 2
@@ -1569,6 +1570,7 @@ class Permission(proto.Message):
                 Permission is not supported for custom role
                 use.
         """
+
         SUPPORTED = 0
         TESTING = 1
         NOT_SUPPORTED = 2
@@ -1802,6 +1804,7 @@ class LintResult(proto.Message):
                 A validation unit which operates on an
                 individual condition within a binding.
         """
+
         LEVEL_UNSPECIFIED = 0
         CONDITION = 3
 
@@ -1842,6 +1845,7 @@ class LintResult(proto.Message):
             DEPRECATED (5):
                 Deprecated severity level.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2

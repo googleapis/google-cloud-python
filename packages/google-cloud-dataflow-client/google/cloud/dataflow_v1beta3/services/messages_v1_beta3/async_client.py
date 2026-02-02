@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dataflow_v1beta3 import gapic_version as package_version
 
@@ -113,7 +113,8 @@ class MessagesV1Beta3AsyncClient:
         Returns:
             MessagesV1Beta3AsyncClient: The constructed client.
         """
-        return MessagesV1Beta3Client.from_service_account_info.__func__(MessagesV1Beta3AsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = MessagesV1Beta3Client.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(MessagesV1Beta3AsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -129,7 +130,8 @@ class MessagesV1Beta3AsyncClient:
         Returns:
             MessagesV1Beta3AsyncClient: The constructed client.
         """
-        return MessagesV1Beta3Client.from_service_account_file.__func__(MessagesV1Beta3AsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = MessagesV1Beta3Client.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(MessagesV1Beta3AsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -335,12 +337,10 @@ class MessagesV1Beta3AsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.dataflow_v1beta3.types.ListJobMessagesRequest, dict]]):
-                The request object. Request to list job messages.
-                Up to max_results messages will be
-                returned in the time range specified
-                starting with the oldest messages first.
-                If no time range is specified the
-                results with start with the oldest
+                The request object. Request to list job messages. Up to max_results messages
+                will be returned in the time range specified starting
+                with the oldest messages first. If no time range is
+                specified the results with start with the oldest
                 message.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.iap_v1 import gapic_version as package_version
 
@@ -61,9 +61,9 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.iap_v1.services.identity_aware_proxy_admin_service import pagers
 from google.cloud.iap_v1.types import service
@@ -85,13 +85,11 @@ class IdentityAwareProxyAdminServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[IdentityAwareProxyAdminServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[IdentityAwareProxyAdminServiceTransport]]
     _transport_registry["grpc"] = IdentityAwareProxyAdminServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = IdentityAwareProxyAdminServiceGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = (
+        IdentityAwareProxyAdminServiceGrpcAsyncIOTransport
+    )
     _transport_registry["rest"] = IdentityAwareProxyAdminServiceRestTransport
 
     def get_transport_class(
@@ -660,11 +658,9 @@ class IdentityAwareProxyAdminServiceClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = IdentityAwareProxyAdminServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            IdentityAwareProxyAdminServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             IdentityAwareProxyAdminServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -705,8 +701,7 @@ class IdentityAwareProxyAdminServiceClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(IdentityAwareProxyAdminServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -785,11 +780,9 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the access control policy for an Identity-Aware
-        Proxy protected resource. Replaces any existing policy.
-        More information about managing access via IAP can be
-        found at:
-
+        r"""Sets the access control policy for an Identity-Aware Proxy
+        protected resource. Replaces any existing policy. More
+        information about managing access via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python
@@ -802,7 +795,7 @@ class IdentityAwareProxyAdminServiceClient(
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iap_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
@@ -905,11 +898,9 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> policy_pb2.Policy:
-        r"""Gets the access control policy for an Identity-Aware
-        Proxy protected resource.
-        More information about managing access via IAP can be
-        found at:
-
+        r"""Gets the access control policy for an Identity-Aware Proxy
+        protected resource. More information about managing access via
+        IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python
@@ -922,7 +913,7 @@ class IdentityAwareProxyAdminServiceClient(
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iap_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -1025,11 +1016,9 @@ class IdentityAwareProxyAdminServiceClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
-        r"""Returns permissions that a caller has on the
-        Identity-Aware Proxy protected resource.
-        More information about managing access via IAP can be
-        found at:
-
+        r"""Returns permissions that a caller has on the Identity-Aware
+        Proxy protected resource. More information about managing access
+        via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         .. code-block:: python
@@ -1042,7 +1031,7 @@ class IdentityAwareProxyAdminServiceClient(
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import iap_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client

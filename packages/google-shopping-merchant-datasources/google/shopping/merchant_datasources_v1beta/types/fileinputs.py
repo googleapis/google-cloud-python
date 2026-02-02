@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -63,6 +63,7 @@ class FileInput(proto.Message):
                 The file is fetched from Google Sheets specified in the
                 [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
         """
+
         FILE_INPUT_TYPE_UNSPECIFIED = 0
         UPLOAD = 1
         FETCH = 2
@@ -114,16 +115,12 @@ class FileInput(proto.Message):
         """
 
         class Frequency(proto.Enum):
-            r"""The required fields vary based on the frequency of fetching. For
-            a monthly
-            fetch schedule,
-            [day of
+            r"""The required fields vary based on the frequency of fetching. For a
+            monthly fetch schedule, [day of
             month][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_month]
-            and
-            [hour of
+            and [hour of
             day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
-            are required. For a weekly fetch schedule,
-            [day of
+            are required. For a weekly fetch schedule, [day of
             week][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.day_of_week]
             and [hour of
             day][google.shopping.content.bundles.DataSources.FileInput.FetchSchedule.time_of_day]
@@ -141,6 +138,7 @@ class FileInput(proto.Message):
                 FREQUENCY_MONTHLY (3):
                     The fetch happens every month.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             FREQUENCY_DAILY = 1
             FREQUENCY_WEEKLY = 2

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,13 +42,13 @@ class ExecutionView(proto.Enum):
         EXECUTION_VIEW_UNSPECIFIED (0):
             The default / unset value.
         BASIC (1):
-            Includes only basic metadata about the
-            execution. The following fields are returned:
-            name, start_time, end_time, duration, state, and
-            workflow_revision_id.
+            Includes only basic metadata about the execution. The
+            following fields are returned: name, start_time, end_time,
+            duration, state, and workflow_revision_id.
         FULL (2):
             Includes all data.
     """
+
     EXECUTION_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -140,6 +140,7 @@ class Execution(proto.Message):
                 Request has been placed in the backlog for
                 processing at a later time.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUCCEEDED = 2
@@ -164,6 +165,7 @@ class Execution(proto.Message):
             LOG_NONE (3):
                 Explicitly log nothing.
         """
+
         CALL_LOG_LEVEL_UNSPECIFIED = 0
         LOG_ALL_CALLS = 1
         LOG_ERRORS_ONLY = 2
@@ -329,6 +331,7 @@ class Execution(proto.Message):
                 KMS_ERROR (1):
                     Caused by an issue with KMS.
             """
+
             TYPE_UNSPECIFIED = 0
             KMS_ERROR = 1
 
@@ -436,21 +439,16 @@ class ListExecutionsRequest(proto.Message):
             be filled in the returned executions. The API
             will default to the BASIC view.
         filter (str):
-            Optional. Filters applied to the
-            [Executions.ListExecutions] results. The
-            following fields are supported for filtering:
-
-            executionID, state, startTime, endTime,
-            duration, workflowRevisionID, stepName, and
-            label.
+            Optional. Filters applied to the [Executions.ListExecutions]
+            results. The following fields are supported for filtering:
+            executionID, state, startTime, endTime, duration,
+            workflowRevisionID, stepName, and label.
         order_by (str):
             Optional. The ordering applied to the
-            [Executions.ListExecutions] results. By default
-            the ordering is based on descending start time.
-            The following fields are supported for order by:
-
-            executionID, startTime, endTime, duration,
-            state, and workflowRevisionID.
+            [Executions.ListExecutions] results. By default the ordering
+            is based on descending start time. The following fields are
+            supported for order by: executionID, startTime, endTime,
+            duration, state, and workflowRevisionID.
     """
 
     parent: str = proto.Field(

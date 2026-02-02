@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import companions, events, live_configs
@@ -333,11 +333,10 @@ class LiveSession(proto.Message):
                 for ads and the session uses client-side ad
                 tracking.
             targeting_parameters (MutableMapping[str, str]):
-                [Targeting
-                parameters](https://support.google.com/admanager/answer/7320899)
-                to send to Ad Manager to generate a stream ID.
-                This should only be set if the session uses
-                server-side ad tracking.
+                `Targeting
+                parameters <https://support.google.com/admanager/answer/7320899>`__
+                to send to Ad Manager to generate a stream ID. This should
+                only be set if the session uses server-side ad tracking.
         """
 
         stream_id: str = proto.Field(
@@ -409,6 +408,7 @@ class ManifestOptions(proto.Message):
             DESCENDING (2):
                 Order by descending.
         """
+
         ORDER_POLICY_UNSPECIFIED = 0
         ASCENDING = 1
         DESCENDING = 2

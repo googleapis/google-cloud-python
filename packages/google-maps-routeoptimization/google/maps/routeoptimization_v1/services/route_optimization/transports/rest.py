@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -544,9 +544,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
 
             """
 
-            http_options = (
-                _BaseRouteOptimizationRestTransport._BaseBatchOptimizeTours._get_http_options()
-            )
+            http_options = _BaseRouteOptimizationRestTransport._BaseBatchOptimizeTours._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_optimize_tours(
                 request, metadata
@@ -572,7 +570,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -703,9 +701,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
 
             """
 
-            http_options = (
-                _BaseRouteOptimizationRestTransport._BaseOptimizeTours._get_http_options()
-            )
+            http_options = _BaseRouteOptimizationRestTransport._BaseOptimizeTours._get_http_options()
 
             request, metadata = self._interceptor.pre_optimize_tours(request, metadata)
             transcoded_request = _BaseRouteOptimizationRestTransport._BaseOptimizeTours._get_transcoded_request(
@@ -865,9 +861,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
 
             """
 
-            http_options = (
-                _BaseRouteOptimizationRestTransport._BaseOptimizeToursLongRunning._get_http_options()
-            )
+            http_options = _BaseRouteOptimizationRestTransport._BaseOptimizeToursLongRunning._get_http_options()
 
             request, metadata = self._interceptor.pre_optimize_tours_long_running(
                 request, metadata
@@ -893,7 +887,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1021,9 +1015,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
 
             """
 
-            http_options = (
-                _BaseRouteOptimizationRestTransport._BaseOptimizeToursUri._get_http_options()
-            )
+            http_options = _BaseRouteOptimizationRestTransport._BaseOptimizeToursUri._get_http_options()
 
             request, metadata = self._interceptor.pre_optimize_tours_uri(
                 request, metadata
@@ -1049,7 +1041,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1145,7 +1137,9 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._OptimizeToursLongRunning(self._session, self._host, self._interceptor)  # type: ignore
+        return self._OptimizeToursLongRunning(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def optimize_tours_uri(
@@ -1214,9 +1208,7 @@ class RouteOptimizationRestTransport(_BaseRouteOptimizationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRouteOptimizationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRouteOptimizationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseRouteOptimizationRestTransport._BaseGetOperation._get_transcoded_request(

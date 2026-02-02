@@ -16,22 +16,24 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.dataplex_v1.types import catalog
 
@@ -816,13 +818,12 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     ) -> Callable[[catalog.ListEntriesRequest], catalog.ListEntriesResponse]:
         r"""Return a callable for the list entries method over gRPC.
 
-        Lists Entries within an EntryGroup.
-        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored
-        in Dataplex Universal Catalog is changing. For more
-        information, see [Changes to metadata stored in Dataplex
-        Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        Lists Entries within an EntryGroup. Caution: The Vertex AI,
+        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
+        metadata that is stored in Dataplex Universal Catalog is
+        changing. For more information, see `Changes to metadata stored
+        in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         Returns:
             Callable[[~.ListEntriesRequest],
@@ -846,13 +847,12 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     def get_entry(self) -> Callable[[catalog.GetEntryRequest], catalog.Entry]:
         r"""Return a callable for the get entry method over gRPC.
 
-        Gets an Entry.
-        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored
-        in Dataplex Universal Catalog is changing. For more
-        information, see [Changes to metadata stored in Dataplex
+        Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
+        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
+        stored in Dataplex Universal Catalog is changing. For more
+        information, see `Changes to metadata stored in Dataplex
         Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         Returns:
             Callable[[~.GetEntryRequest],
@@ -876,13 +876,12 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], catalog.Entry]:
         r"""Return a callable for the lookup entry method over gRPC.
 
-        Looks up an entry by name using the permission on the
-        source system. Caution: The Vertex AI, Bigtable,
-        Spanner, Pub/Sub, Dataform, and Dataproc Metastore
-        metadata that is stored in Dataplex Universal Catalog is
-        changing. For more information, see [Changes to metadata
-        stored in Dataplex Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        Looks up an entry by name using the permission on the source
+        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
+        Dataform, and Dataproc Metastore metadata that is stored in
+        Dataplex Universal Catalog is changing. For more information,
+        see `Changes to metadata stored in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         Returns:
             Callable[[~.LookupEntryRequest],

@@ -74,13 +74,13 @@ class GcpWrappedKeyInfo(proto.Message):
             Required. The type of algorithm used to
             encrypt the data.
         wip_provider (str):
-            Required. The [Workload
-            Identity](//cloud.google.com/iam/docs/workload-identity-federation)
+            Required. The `Workload
+            Identity <//cloud.google.com/iam/docs/workload-identity-federation>`__
             pool provider required to use KEK.
         kek_uri (str):
-            Required. Google Cloud Platform [Cloud Key
-            Management Service resource
-            ID](//cloud.google.com/kms/docs/getting-resource-ids).
+            Required. Google Cloud Platform `Cloud Key Management
+            Service resource
+            ID <//cloud.google.com/kms/docs/getting-resource-ids>`__.
             Should be in the format of
             "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}".
         encrypted_dek (str):
@@ -97,6 +97,7 @@ class GcpWrappedKeyInfo(proto.Message):
             XCHACHA20_POLY1305 (1):
                 Algorithm XChaCha20-Poly1305
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         XCHACHA20_POLY1305 = 1
 
@@ -127,13 +128,12 @@ class AwsWrappedKeyInfo(proto.Message):
             Required. The type of algorithm used to
             encrypt the data.
         role_arn (str):
-            Required. The Amazon Resource Name of the IAM
-            Role to assume for KMS decryption access. Should
-            be in the format of
+            Required. The Amazon Resource Name of the IAM Role to assume
+            for KMS decryption access. Should be in the format of
             "arn:{partition}:iam::{account_id}:role/{role_name}".
         kek_uri (str):
-            Required. The URI of the AWS KMS key used to
-            decrypt the DEK. Should be in the format of
+            Required. The URI of the AWS KMS key used to decrypt the
+            DEK. Should be in the format of
             "arn:{partition}:kms:{region}:{account_id}:key/{key_id}".
         encrypted_dek (str):
             Required. The base64 encoded encrypted data
@@ -149,6 +149,7 @@ class AwsWrappedKeyInfo(proto.Message):
             XCHACHA20_POLY1305 (1):
                 Algorithm XChaCha20-Poly1305
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         XCHACHA20_POLY1305 = 1
 

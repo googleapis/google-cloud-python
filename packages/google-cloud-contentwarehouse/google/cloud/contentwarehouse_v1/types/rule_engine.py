@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,9 +48,8 @@ class RuleSet(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the rule set. Managed
-            internally. Format:
-
+            The resource name of the rule set. Managed internally.
+            Format:
             projects/{project_number}/locations/{location}/ruleSet/{rule_set_id}.
 
             The name is ignored when creating a rule set.
@@ -95,10 +94,9 @@ class Rule(proto.Message):
             Identifies the trigger type for running the
             policy.
         condition (str):
-            Represents the conditional expression to be
-            evaluated. Expression should evaluate to a
-            boolean result. When the condition is true
-            actions are executed. Example: user_role =
+            Represents the conditional expression to be evaluated.
+            Expression should evaluate to a boolean result. When the
+            condition is true actions are executed. Example: user_role =
             "hsbc_role_1" AND doc.salary > 20000
         actions (MutableSequence[google.cloud.contentwarehouse_v1.types.Action]):
             List of actions that are executed when the
@@ -120,6 +118,7 @@ class Rule(proto.Message):
             ON_DELETE_LINK (8):
                 Trigger for delete link action.
         """
+
         UNKNOWN = 0
         ON_CREATE = 1
         ON_UPDATE = 4
@@ -273,6 +272,7 @@ class AccessControlAction(proto.Message):
                 Replaces existing policy bindings with the
                 given policy binding list
         """
+
         UNKNOWN = 0
         ADD_POLICY_BINDING = 1
         REMOVE_POLICY_BINDING = 2
@@ -338,9 +338,8 @@ class AddToFolderAction(proto.Message):
 
     Attributes:
         folders (MutableSequence[str]):
-            Names of the folder under which new document is
-            to be added. Format:
-
+            Names of the folder under which new document is to be added.
+            Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 
@@ -358,9 +357,8 @@ class RemoveFromFolderAction(proto.Message):
         condition (str):
             Condition of the action to be executed.
         folder (str):
-            Name of the folder under which new document is
-            to be added. Format:
-
+            Name of the folder under which new document is to be added.
+            Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
     """
 
@@ -565,6 +563,7 @@ class ActionOutput(proto.Message):
             ACTION_PENDING (4):
                 State indicating action is pending.
         """
+
         UNKNOWN = 0
         ACTION_SUCCEEDED = 1
         ACTION_FAILED = 2

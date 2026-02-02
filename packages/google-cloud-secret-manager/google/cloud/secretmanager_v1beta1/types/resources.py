@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -145,6 +145,7 @@ class SecretVersion(proto.Message):
                 is destroyed and the secret data is no longer stored. A
                 version may not leave this state once entered.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -230,12 +231,12 @@ class Replication(proto.Message):
                 number=1,
             )
 
-        replicas: MutableSequence[
-            "Replication.UserManaged.Replica"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Replication.UserManaged.Replica",
+        replicas: MutableSequence["Replication.UserManaged.Replica"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Replication.UserManaged.Replica",
+            )
         )
 
     automatic: Automatic = proto.Field(

@@ -32,12 +32,11 @@ class LogsPanel(proto.Message):
 
     Attributes:
         filter (str):
-            A filter that chooses which log entries to
-            return. See [Advanced Logs
-            Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
-            Only log entries that match the filter are
-            returned. An empty filter matches all log
-            entries.
+            A filter that chooses which log entries to return. See
+            `Advanced Logs
+            Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__.
+            Only log entries that match the filter are returned. An
+            empty filter matches all log entries.
         resource_names (MutableSequence[str]):
             The names of logging resources to collect
             logs for. Currently only projects are supported.

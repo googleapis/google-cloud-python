@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -150,6 +150,7 @@ class Job(proto.Message):
                 The job has failed. For additional information, see
                 `Troubleshooting <https://cloud.google.com/transcoder/docs/troubleshooting>`__.
         """
+
         PROCESSING_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -170,6 +171,7 @@ class Job(proto.Message):
                 The job processing mode is batch mode.
                 Batch mode allows queuing of jobs.
         """
+
         PROCESSING_MODE_UNSPECIFIED = 0
         PROCESSING_MODE_INTERACTIVE = 1
         PROCESSING_MODE_BATCH = 2
@@ -185,6 +187,7 @@ class Job(proto.Message):
             DISABLED (2):
                 Disable all optimizations.
         """
+
         OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
         AUTODETECT = 1
         DISABLED = 2
@@ -709,6 +712,7 @@ class Manifest(proto.Message):
                 Create an MPEG-DASH manifest. The corresponding file
                 extension is ``.mpd``.
         """
+
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
@@ -758,6 +762,7 @@ class Manifest(proto.Message):
                              media="hd-stream$Number%010d$.m4s" startNumber="0">
                          ...
             """
+
             SEGMENT_REFERENCE_SCHEME_UNSPECIFIED = 0
             SEGMENT_LIST = 1
             SEGMENT_TEMPLATE_NUMBER = 2
@@ -968,6 +973,7 @@ class Overlay(proto.Message):
             FADE_OUT (2):
                 Fade the overlay object out of view.
         """
+
         FADE_TYPE_UNSPECIFIED = 0
         FADE_IN = 1
         FADE_OUT = 2
@@ -1553,10 +1559,9 @@ class TrackDefinition(proto.Message):
 
             This field is a member of `oneof`_ ``_input_track``.
         languages (MutableSequence[str]):
-            Optional. A list of languages spoken in the
-            input asset, represented by a BCP 47 language
-            code, such as "en-US" or "sr-Latn". For more
-            information, see
+            Optional. A list of languages spoken in the input asset,
+            represented by a BCP 47 language code, such as "en-US" or
+            "sr-Latn". For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         detect_languages (bool):
             Optional. Whether to automatically detect the
@@ -1565,13 +1570,12 @@ class TrackDefinition(proto.Message):
             languages present in the track and populate the
             languages field.
         detected_languages (MutableSequence[str]):
-            Output only. A list of languages detected in the
-            input asset, represented by a BCP 47 language
-            code, such as "en-US" or "sr-Latn". For more
-            information, see
+            Output only. A list of languages detected in the input
+            asset, represented by a BCP 47 language code, such as
+            "en-US" or "sr-Latn". For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
-            This field is only populated if the
-            detect_languages field is set to true.
+            This field is only populated if the detect_languages field
+            is set to true.
     """
 
     input_track: int = proto.Field(
@@ -1655,6 +1659,7 @@ class VideoStream(proto.Message):
                 Drop or duplicate frames to match the
                 specified frame rate.
         """
+
         FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED = 0
         DOWNSAMPLE = 1
         DROP_DUPLICATE = 2

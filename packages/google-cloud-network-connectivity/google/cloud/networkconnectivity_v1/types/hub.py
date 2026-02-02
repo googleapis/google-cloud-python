@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -103,6 +103,7 @@ class LocationFeature(proto.Enum):
             Site-to-site spokes are supported in this
             location
     """
+
     LOCATION_FEATURE_UNSPECIFIED = 0
     SITE_TO_CLOUD_SPOKES = 1
     SITE_TO_SITE_SPOKES = 2
@@ -128,6 +129,7 @@ class RouteType(proto.Enum):
             Gateway Protocol (BGP) advertisements received
             from an NCC hybrid spoke.
     """
+
     ROUTE_TYPE_UNSPECIFIED = 0
     VPC_PRIMARY_SUBNET = 1
     VPC_SECONDARY_SUBNET = 2
@@ -170,6 +172,7 @@ class State(proto.Enum):
             try to delete the resource later or contact
             support for help.
     """
+
     STATE_UNSPECIFIED = 0
     CREATING = 1
     ACTIVE = 2
@@ -202,6 +205,7 @@ class SpokeType(proto.Enum):
             Spokes that are backed by a producer VPC
             network.
     """
+
     SPOKE_TYPE_UNSPECIFIED = 0
     VPN_TUNNEL = 1
     INTERCONNECT_ATTACHMENT = 2
@@ -215,11 +219,12 @@ class PolicyMode(proto.Enum):
 
     Values:
         POLICY_MODE_UNSPECIFIED (0):
-            Policy mode is unspecified. It defaults to
-            PRESET with preset_topology = MESH.
+            Policy mode is unspecified. It defaults to PRESET with
+            preset_topology = MESH.
         PRESET (1):
             Hub uses one of the preset topologies.
     """
+
     POLICY_MODE_UNSPECIFIED = 0
     PRESET = 1
 
@@ -229,8 +234,8 @@ class PresetTopology(proto.Enum):
 
     Values:
         PRESET_TOPOLOGY_UNSPECIFIED (0):
-            Preset topology is unspecified. When policy_mode
-            = PRESET, it defaults to MESH.
+            Preset topology is unspecified. When policy_mode = PRESET,
+            it defaults to MESH.
         MESH (2):
             Mesh topology is implemented. Group ``default`` is
             automatically created. All spokes in the hub are added to
@@ -240,6 +245,7 @@ class PresetTopology(proto.Enum):
             ``edge``, are automatically created along with hub creation.
             Spokes have to join one of the groups during creation.
     """
+
     PRESET_TOPOLOGY_UNSPECIFIED = 0
     MESH = 2
     STAR = 3
@@ -268,18 +274,16 @@ class Hub(proto.Message):
             Output only. The time the hub was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional labels in key-value pair format. For
-            more information about labels, see [Requirements
-            for
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+            Optional labels in key-value pair format. For more
+            information about labels, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
             Optional. An optional description of the hub.
         unique_id (str):
-            Output only. The Google-generated UUID for the
-            hub. This value is unique across all hub
-            resources. If a hub is deleted and another with
-            the same name is created, the new hub is
-            assigned a different unique_id.
+            Output only. The Google-generated UUID for the hub. This
+            value is unique across all hub resources. If a hub is
+            deleted and another with the same name is created, the new
+            hub is assigned a different unique_id.
         state (google.cloud.networkconnectivity_v1.types.State):
             Output only. The current lifecycle state of
             this hub.
@@ -305,18 +309,16 @@ class Hub(proto.Message):
             summary also lists the reasons they are
             inactive, including a count for each reason.
         policy_mode (google.cloud.networkconnectivity_v1.types.PolicyMode):
-            Optional. The policy mode of this hub. This
-            field can be either PRESET or CUSTOM. If
-            unspecified, the policy_mode defaults to PRESET.
+            Optional. The policy mode of this hub. This field can be
+            either PRESET or CUSTOM. If unspecified, the policy_mode
+            defaults to PRESET.
         preset_topology (google.cloud.networkconnectivity_v1.types.PresetTopology):
-            Optional. The topology implemented in this hub.
-            Currently, this field is only used when
-            policy_mode = PRESET. The available preset
-            topologies are MESH and STAR. If preset_topology
-            is unspecified and policy_mode = PRESET, the
-            preset_topology defaults to MESH. When
-            policy_mode = CUSTOM, the preset_topology is set
-            to PRESET_TOPOLOGY_UNSPECIFIED.
+            Optional. The topology implemented in this hub. Currently,
+            this field is only used when policy_mode = PRESET. The
+            available preset topologies are MESH and STAR. If
+            preset_topology is unspecified and policy_mode = PRESET, the
+            preset_topology defaults to MESH. When policy_mode = CUSTOM,
+            the preset_topology is set to PRESET_TOPOLOGY_UNSPECIFIED.
         export_psc (bool):
             Optional. Whether Private Service Connect
             connection propagation is enabled for the hub.
@@ -399,14 +401,12 @@ class RoutingVPC(proto.Message):
         uri (str):
             The URI of the VPC network.
         required_for_new_site_to_site_data_transfer_spokes (bool):
-            Output only. If true, indicates that this VPC
-            network is currently associated with spokes that
-            use the data transfer feature (spokes where the
-            site_to_site_data_transfer field is set to
-            true). If you create new spokes that use data
-            transfer, they must be associated with this VPC
-            network. At most, one VPC network will have this
-            field set to true.
+            Output only. If true, indicates that this VPC network is
+            currently associated with spokes that use the data transfer
+            feature (spokes where the site_to_site_data_transfer field
+            is set to true). If you create new spokes that use data
+            transfer, they must be associated with this VPC network. At
+            most, one VPC network will have this field set to true.
     """
 
     uri: str = proto.Field(
@@ -442,10 +442,9 @@ class Spoke(proto.Message):
             Output only. The time the spoke was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional labels in key-value pair format. For
-            more information about labels, see [Requirements
-            for
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+            Optional labels in key-value pair format. For more
+            information about labels, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
             Optional. An optional description of the
             spoke.
@@ -534,6 +533,7 @@ class Spoke(proto.Message):
                     Network Connectivity Center encountered
                     errors while accepting the spoke update.
             """
+
             CODE_UNSPECIFIED = 0
             PENDING_REVIEW = 1
             REJECTED = 2
@@ -657,10 +657,9 @@ class RouteTable(proto.Message):
             Output only. The time the route table was
             last updated.
         labels (MutableMapping[str, str]):
-            Optional labels in key-value pair format. For
-            more information about labels, see [Requirements
-            for
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+            Optional labels in key-value pair format. For more
+            information about labels, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
             An optional description of the route table.
         uid (str):
@@ -732,10 +731,9 @@ class Route(proto.Message):
             Immutable. The destination VPC network for
             packets on this route.
         labels (MutableMapping[str, str]):
-            Optional labels in key-value pair format. For
-            more information about labels, see [Requirements
-            for
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+            Optional labels in key-value pair format. For more
+            information about labels, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
             An optional description of the route.
         uid (str):
@@ -862,18 +860,16 @@ class Group(proto.Message):
             Output only. The time the group was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels in key-value pair format. For
-            more information about labels, see [Requirements
-            for
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements).
+            Optional. Labels in key-value pair format. For more
+            information about labels, see `Requirements for
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
         description (str):
             Optional. The description of the group.
         uid (str):
-            Output only. The Google-generated UUID for the
-            group. This value is unique across all group
-            resources. If a group is deleted and another
-            with the same name is created, the new route
-            table is assigned a different unique_id.
+            Output only. The Google-generated UUID for the group. This
+            value is unique across all group resources. If a group is
+            deleted and another with the same name is created, the new
+            route table is assigned a different unique_id.
         state (google.cloud.networkconnectivity_v1.types.State):
             Output only. The current lifecycle state of
             this group.
@@ -1004,10 +1000,9 @@ class ListHubsResponse(proto.Message):
         hubs (MutableSequence[google.cloud.networkconnectivity_v1.types.Hub]):
             The requested hubs.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1109,13 +1104,12 @@ class UpdateHubRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. In the case of an update to an
-            existing hub, field mask is used to specify the
-            fields to be overwritten. The fields specified
-            in the update_mask are relative to the resource,
-            not the full request. A field is overwritten if
-            it is in the mask. If the user does not provide
-            a mask, then all fields are overwritten.
+            Optional. In the case of an update to an existing hub, field
+            mask is used to specify the fields to be overwritten. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not provide a mask, then
+            all fields are overwritten.
         hub (google.cloud.networkconnectivity_v1.types.Hub):
             Required. The state that the hub should be in
             after the update.
@@ -1248,6 +1242,7 @@ class ListHubSpokesRequest(proto.Message):
                 ``DETAILED`` view only when you set the ``spoke_locations``
                 field to ``[global]``.
         """
+
         SPOKE_VIEW_UNSPECIFIED = 0
         BASIC = 1
         DETAILED = 2
@@ -1293,10 +1288,9 @@ class ListHubSpokesResponse(proto.Message):
             populated based on the ``view`` field in the request
             message.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1403,10 +1397,9 @@ class QueryHubStatusResponse(proto.Message):
         hub_status_entries (MutableSequence[google.cloud.networkconnectivity_v1.types.HubStatusEntry]):
             The list of hub status.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
     """
 
     @property
@@ -1518,6 +1511,7 @@ class PscPropagationStatus(proto.Message):
                 because the ``PSC_PROPAGATED_CONNECTIONS_PER_VPC_NETWORK``
                 quota in the consumer VPC network has been exceeded.
         """
+
         CODE_UNSPECIFIED = 0
         READY = 1
         PROPAGATING = 2
@@ -1606,10 +1600,9 @@ class ListSpokesResponse(proto.Message):
         spokes (MutableSequence[google.cloud.networkconnectivity_v1.types.Spoke]):
             The requested spokes.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -1708,14 +1701,12 @@ class UpdateSpokeRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. In the case of an update to an
-            existing spoke, field mask is used to specify
-            the fields to be overwritten. The fields
-            specified in the update_mask are relative to the
-            resource, not the full request. A field is
-            overwritten if it is in the mask. If the user
-            does not provide a mask, then all fields are
-            overwritten.
+            Optional. In the case of an update to an existing spoke,
+            field mask is used to specify the fields to be overwritten.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not provide a mask, then
+            all fields are overwritten.
         spoke (google.cloud.networkconnectivity_v1.types.Spoke):
             Required. The state that the spoke should be
             in after the update.
@@ -2164,10 +2155,9 @@ class ListRoutesResponse(proto.Message):
         routes (MutableSequence[google.cloud.networkconnectivity_v1.types.Route]):
             The requested routes.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             RouteTables that could not be reached.
     """
@@ -2242,10 +2232,9 @@ class ListRouteTablesResponse(proto.Message):
         route_tables (MutableSequence[google.cloud.networkconnectivity_v1.types.RouteTable]):
             The requested route tables.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             Hubs that could not be reached.
     """
@@ -2320,10 +2309,9 @@ class ListGroupsResponse(proto.Message):
         groups (MutableSequence[google.cloud.networkconnectivity_v1.types.Group]):
             The requested groups.
         next_page_token (str):
-            The token for the next page of the response. To
-            see more results, use this value as the
-            page_token for your next request. If this value
-            is empty, there are no more results.
+            The token for the next page of the response. To see more
+            results, use this value as the page_token for your next
+            request. If this value is empty, there are no more results.
         unreachable (MutableSequence[str]):
             Hubs that could not be reached.
     """
@@ -2358,18 +2346,17 @@ class LinkedVpnTunnels(proto.Message):
         uris (MutableSequence[str]):
             The URIs of linked VPN tunnel resources.
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site data
-            transfer is enabled for these resources. Data
-            transfer is available only in [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
         vpc_network (str):
             Output only. The VPC network where these VPN
             tunnels are located.
         include_import_ranges (MutableSequence[str]):
-            Optional. IP ranges allowed to be included
-            during import from hub (does not control transit
-            connectivity). The only allowed value for now is
-            "ALL_IPV4_RANGES".
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -2402,18 +2389,17 @@ class LinkedInterconnectAttachments(proto.Message):
             The URIs of linked interconnect attachment
             resources
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site data
-            transfer is enabled for these resources. Data
-            transfer is available only in [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
         vpc_network (str):
             Output only. The VPC network where these VLAN
             attachments are located.
         include_import_ranges (MutableSequence[str]):
-            Optional. IP ranges allowed to be included
-            during import from hub (does not control transit
-            connectivity). The only allowed value for now is
-            "ALL_IPV4_RANGES".
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     uris: MutableSequence[str] = proto.RepeatedField(
@@ -2444,18 +2430,17 @@ class LinkedRouterApplianceInstances(proto.Message):
         instances (MutableSequence[google.cloud.networkconnectivity_v1.types.RouterApplianceInstance]):
             The list of router appliance instances.
         site_to_site_data_transfer (bool):
-            A value that controls whether site-to-site data
-            transfer is enabled for these resources. Data
-            transfer is available only in [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            A value that controls whether site-to-site data transfer is
+            enabled for these resources. Data transfer is available only
+            in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
         vpc_network (str):
             Output only. The VPC network where these
             router appliance instances are located.
         include_import_ranges (MutableSequence[str]):
-            Optional. IP ranges allowed to be included
-            during import from hub (does not control transit
-            connectivity). The only allowed value for now is
-            "ALL_IPV4_RANGES".
+            Optional. IP ranges allowed to be included during import
+            from hub (does not control transit connectivity). The only
+            allowed value for now is "ALL_IPV4_RANGES".
     """
 
     instances: MutableSequence["RouterApplianceInstance"] = proto.RepeatedField(
@@ -2668,10 +2653,10 @@ class NextHopVPNTunnel(proto.Message):
             The VPC network where this VPN tunnel is
             located.
         site_to_site_data_transfer (bool):
-            Indicates whether site-to-site data transfer is
-            allowed for this VPN tunnel resource. Data
-            transfer is available only in [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            Indicates whether site-to-site data transfer is allowed for
+            this VPN tunnel resource. Data transfer is available only in
+            `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     uri: str = proto.Field(
@@ -2697,11 +2682,10 @@ class NextHopRouterApplianceInstance(proto.Message):
         vpc_network (str):
             The VPC network where this VM is located.
         site_to_site_data_transfer (bool):
-            Indicates whether site-to-site data transfer is
-            allowed for this Router appliance instance
-            resource. Data transfer is available only in
-            [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            Indicates whether site-to-site data transfer is allowed for
+            this Router appliance instance resource. Data transfer is
+            available only in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     uri: str = proto.Field(
@@ -2730,11 +2714,10 @@ class NextHopInterconnectAttachment(proto.Message):
             The VPC network where this interconnect
             attachment is located.
         site_to_site_data_transfer (bool):
-            Indicates whether site-to-site data transfer is
-            allowed for this interconnect attachment
-            resource. Data transfer is available only in
-            [supported
-            locations](https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations).
+            Indicates whether site-to-site data transfer is allowed for
+            this interconnect attachment resource. Data transfer is
+            available only in `supported
+            locations <https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>`__.
     """
 
     uri: str = proto.Field(
@@ -2853,12 +2836,12 @@ class SpokeSummary(proto.Message):
         number=2,
         message=SpokeStateCount,
     )
-    spoke_state_reason_counts: MutableSequence[
-        SpokeStateReasonCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=SpokeStateReasonCount,
+    spoke_state_reason_counts: MutableSequence[SpokeStateReasonCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=SpokeStateReasonCount,
+        )
     )
 
 
@@ -2885,14 +2868,12 @@ class UpdateGroupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. In the case of an update to an
-            existing group, field mask is used to specify
-            the fields to be overwritten. The fields
-            specified in the update_mask are relative to the
-            resource, not the full request. A field is
-            overwritten if it is in the mask. If the user
-            does not provide a mask, then all fields are
-            overwritten.
+            Optional. In the case of an update to an existing group,
+            field mask is used to specify the fields to be overwritten.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field is overwritten if it
+            is in the mask. If the user does not provide a mask, then
+            all fields are overwritten.
         group (google.cloud.networkconnectivity_v1.types.Group):
             Required. The state that the group should be
             in after the update.

@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.contentwarehouse_v1.types import rule_engine, ruleset_service_request
 
@@ -355,8 +355,7 @@ class RuleSetServiceGrpcTransport(RuleSetServiceTransport):
     ) -> Callable[[ruleset_service_request.GetRuleSetRequest], rule_engine.RuleSet]:
         r"""Return a callable for the get rule set method over gRPC.
 
-        Gets a ruleset. Returns NOT_FOUND if the ruleset does
-        not exist.
+        Gets a ruleset. Returns NOT_FOUND if the ruleset does not exist.
 
         Returns:
             Callable[[~.GetRuleSetRequest],
@@ -382,9 +381,8 @@ class RuleSetServiceGrpcTransport(RuleSetServiceTransport):
     ) -> Callable[[ruleset_service_request.UpdateRuleSetRequest], rule_engine.RuleSet]:
         r"""Return a callable for the update rule set method over gRPC.
 
-        Updates a ruleset. Returns INVALID_ARGUMENT if the name
-        of the ruleset is non-empty and does not equal the
-        existing name.
+        Updates a ruleset. Returns INVALID_ARGUMENT if the name of the
+        ruleset is non-empty and does not equal the existing name.
 
         Returns:
             Callable[[~.UpdateRuleSetRequest],
@@ -410,8 +408,8 @@ class RuleSetServiceGrpcTransport(RuleSetServiceTransport):
     ) -> Callable[[ruleset_service_request.DeleteRuleSetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete rule set method over gRPC.
 
-        Deletes a ruleset. Returns NOT_FOUND if the document
-        does not exist.
+        Deletes a ruleset. Returns NOT_FOUND if the document does not
+        exist.
 
         Returns:
             Callable[[~.DeleteRuleSetRequest],

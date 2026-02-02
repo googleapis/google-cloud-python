@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import custom_field_messages
@@ -147,12 +147,12 @@ class ListCustomFieldsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=custom_field_messages.CustomField,
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=custom_field_messages.CustomField,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -218,12 +218,12 @@ class BatchCreateCustomFieldsResponse(proto.Message):
             The ``CustomField`` objects created.
     """
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=custom_field_messages.CustomField,
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=custom_field_messages.CustomField,
+        )
     )
 
 
@@ -284,12 +284,12 @@ class BatchUpdateCustomFieldsResponse(proto.Message):
             The ``CustomField`` objects updated.
     """
 
-    custom_fields: MutableSequence[
-        custom_field_messages.CustomField
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=custom_field_messages.CustomField,
+    custom_fields: MutableSequence[custom_field_messages.CustomField] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=custom_field_messages.CustomField,
+        )
     )
 
 

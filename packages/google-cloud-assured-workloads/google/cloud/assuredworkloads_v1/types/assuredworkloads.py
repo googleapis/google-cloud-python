@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -134,9 +134,8 @@ class GetWorkloadRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Workload to
-            fetch. This is the workload's relative path in
-            the API, formatted as
+            Required. The resource name of the Workload to fetch. This
+            is the workload's relative path in the API, formatted as
             "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
             For example,
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -261,23 +260,17 @@ class Workload(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
-            Input only. The parent resource for the
-            resources managed by this Assured Workload. May
-            be either empty or a folder resource which is a
-            child of the Workload parent. If not specified
-            all resources are created under the parent
-            organization.
-            Format:
-
-            folders/{folder_id}
+            Input only. The parent resource for the resources managed by
+            this Assured Workload. May be either empty or a folder
+            resource which is a child of the Workload parent. If not
+            specified all resources are created under the parent
+            organization. Format: folders/{folder_id}
         kms_settings (google.cloud.assuredworkloads_v1.types.Workload.KMSSettings):
-            Input only. Settings used to create a CMEK
-            crypto key. When set, a project with a KMS CMEK
-            key is provisioned. This field is deprecated as
-            of Feb 28, 2022.
-            In order to create a Keyring, callers should
-            specify, ENCRYPTION_KEYS_PROJECT or KEYRING in
-            ResourceSettings.resource_type field.
+            Input only. Settings used to create a CMEK crypto key. When
+            set, a project with a KMS CMEK key is provisioned. This
+            field is deprecated as of Feb 28, 2022. In order to create a
+            Keyring, callers should specify, ENCRYPTION_KEYS_PROJECT or
+            KEYRING in ResourceSettings.resource_type field.
         resource_settings (MutableSequence[google.cloud.assuredworkloads_v1.types.Workload.ResourceSettings]):
             Input only. Resource properties that are used
             to customize workload resources. These
@@ -349,6 +342,7 @@ class Workload(proto.Message):
             ASSURED_WORKLOADS_FOR_PARTNERS (12):
                 Assured Workloads for Partners
         """
+
         COMPLIANCE_REGIME_UNSPECIFIED = 0
         IL4 = 1
         CJIS = 2
@@ -374,6 +368,7 @@ class Workload(proto.Message):
             KAJ_ENROLLMENT_STATE_COMPLETE (2):
                 Complete State for KAJ Enrollment.
         """
+
         KAJ_ENROLLMENT_STATE_UNSPECIFIED = 0
         KAJ_ENROLLMENT_STATE_PENDING = 1
         KAJ_ENROLLMENT_STATE_COMPLETE = 2
@@ -387,6 +382,7 @@ class Workload(proto.Message):
             LOCAL_CONTROLS_BY_S3NS (1):
                 S3NS regime/controls.
         """
+
         PARTNER_UNSPECIFIED = 0
         LOCAL_CONTROLS_BY_S3NS = 1
 
@@ -395,8 +391,8 @@ class Workload(proto.Message):
 
         Attributes:
             resource_id (int):
-                Resource identifier.
-                For a project this represents project_number.
+                Resource identifier. For a project this represents
+                project_number.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
                 Indicates the type of resource.
         """
@@ -408,12 +404,10 @@ class Workload(proto.Message):
                 RESOURCE_TYPE_UNSPECIFIED (0):
                     Unknown resource type.
                 CONSUMER_PROJECT (1):
-                    Consumer project.
-                    AssuredWorkloads Projects are no longer
-                    supported. This field will be ignored only in
-                    CreateWorkload requests. ListWorkloads and
-                    GetWorkload will continue to provide projects
-                    information. Use CONSUMER_FOLDER instead.
+                    Consumer project. AssuredWorkloads Projects are no longer
+                    supported. This field will be ignored only in CreateWorkload
+                    requests. ListWorkloads and GetWorkload will continue to
+                    provide projects information. Use CONSUMER_FOLDER instead.
                 CONSUMER_FOLDER (4):
                     Consumer Folder.
                 ENCRYPTION_KEYS_PROJECT (2):
@@ -421,6 +415,7 @@ class Workload(proto.Message):
                 KEYRING (3):
                     Keyring resource that hosts encryption keys.
             """
+
             RESOURCE_TYPE_UNSPECIFIED = 0
             CONSUMER_PROJECT = 1
             CONSUMER_FOLDER = 4
@@ -438,11 +433,10 @@ class Workload(proto.Message):
         )
 
     class KMSSettings(proto.Message):
-        r"""Settings specific to the Key Management Service.
-        This message is deprecated.
-        In order to create a Keyring, callers should specify,
-        ENCRYPTION_KEYS_PROJECT or KEYRING in
-        ResourceSettings.resource_type field.
+        r"""Settings specific to the Key Management Service. This message is
+        deprecated. In order to create a Keyring, callers should specify,
+        ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type
+        field.
 
         Attributes:
             next_rotation_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -451,11 +445,10 @@ class Workload(proto.Message):
                 automatically create a new version of the crypto
                 key and mark it as the primary.
             rotation_period (google.protobuf.duration_pb2.Duration):
-                Required. Input only. Immutable.
-                [next_rotation_time] will be advanced by this
-                period when the Key Management Service
-                automatically rotates a key. Must be at least 24
-                hours and at most 876,000 hours.
+                Required. Input only. Immutable. [next_rotation_time] will
+                be advanced by this period when the Key Management Service
+                automatically rotates a key. Must be at least 24 hours and
+                at most 876,000 hours.
         """
 
         next_rotation_time: timestamp_pb2.Timestamp = proto.Field(
@@ -475,18 +468,15 @@ class Workload(proto.Message):
 
         Attributes:
             resource_id (str):
-                Resource identifier.
-                For a project this represents project_id. If the
-                project is already taken, the workload creation
-                will fail.
-                For KeyRing, this represents the keyring_id.
-                For a folder, don't set this value as folder_id
+                Resource identifier. For a project this represents
+                project_id. If the project is already taken, the workload
+                creation will fail. For KeyRing, this represents the
+                keyring_id. For a folder, don't set this value as folder_id
                 is assigned by Google.
             resource_type (google.cloud.assuredworkloads_v1.types.Workload.ResourceInfo.ResourceType):
-                Indicates the type of resource. This field
-                should be specified to correspond the id to the
-                right resource type (CONSUMER_FOLDER or
-                ENCRYPTION_KEYS_PROJECT)
+                Indicates the type of resource. This field should be
+                specified to correspond the id to the right resource type
+                (CONSUMER_FOLDER or ENCRYPTION_KEYS_PROJECT)
             display_name (str):
                 User-assigned resource display name.
                 If not empty it will be used to create a
@@ -533,6 +523,7 @@ class Workload(proto.Message):
                 STATUS_COMPLETE (2):
                     SAA enrollment comopleted.
             """
+
             SETUP_STATE_UNSPECIFIED = 0
             STATUS_PENDING = 1
             STATUS_COMPLETE = 2
@@ -557,6 +548,7 @@ class Workload(proto.Message):
                     Returned when exception was encountered
                     during evaluation of other criteria.
             """
+
             SETUP_ERROR_UNSPECIFIED = 0
             ERROR_INVALID_BASE_SETUP = 1
             ERROR_MISSING_EXTERNAL_SIGNING_KEY = 2
@@ -569,12 +561,12 @@ class Workload(proto.Message):
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors: MutableSequence[
-            "Workload.SaaEnrollmentResponse.SetupError"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=2,
-            enum="Workload.SaaEnrollmentResponse.SetupError",
+        setup_errors: MutableSequence["Workload.SaaEnrollmentResponse.SetupError"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="Workload.SaaEnrollmentResponse.SetupError",
+            )
         )
 
     name: str = proto.Field(
@@ -695,9 +687,8 @@ class RestrictAllowedResourcesRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Workload.
-            This is the workloads's relative path in the
-            API, formatted as
+            Required. The resource name of the Workload. This is the
+            workloads's relative path in the API, formatted as
             "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
             For example,
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -723,6 +714,7 @@ class RestrictAllowedResourcesRequest(proto.Message):
                 https://cloud.google.com/assured-workloads/docs/supported-products
                 for the list of supported resources.
         """
+
         RESTRICTION_TYPE_UNSPECIFIED = 0
         ALLOW_ALL_GCP_RESOURCES = 1
         ALLOW_COMPLIANT_RESOURCES = 2
@@ -756,13 +748,10 @@ class AcknowledgeViolationRequest(proto.Message):
             Required. Business justification explaining
             the need for violation acknowledgement
         non_compliant_org_policy (str):
-            Optional. This field is deprecated and will be
-            removed in future version of the API. Name of
-            the OrgPolicy which was modified with
-            non-compliant change and resulted in this
-            violation.
-            Format:
-
+            Optional. This field is deprecated and will be removed in
+            future version of the API. Name of the OrgPolicy which was
+            modified with non-compliant change and resulted in this
+            violation. Format:
             projects/{project_number}/policies/{constraint_name}
             folders/{folder_id}/policies/{constraint_name}
             organizations/{organization_id}/policies/{constraint_name}
@@ -816,10 +805,9 @@ class ListViolationsRequest(proto.Message):
             Required. The Workload name. Format
             ``organizations/{org_id}/locations/{location}/workloads/{workload}``.
         interval (google.cloud.assuredworkloads_v1.types.TimeWindow):
-            Optional. Specifies the time window for
-            retrieving active Violations. When specified,
-            retrieves Violations that were active between
-            start_time and end_time.
+            Optional. Specifies the time window for retrieving active
+            Violations. When specified, retrieves Violations that were
+            active between start_time and end_time.
         page_size (int):
             Optional. Page size.
         page_token (str):
@@ -903,9 +891,7 @@ class Violation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Immutable. Name of the Violation.
-            Format:
-
+            Output only. Immutable. Name of the Violation. Format:
             organizations/{organization}/locations/{location}/workloads/{workload_id}/violations/{violations_id}
         description (str):
             Output only. Description for the Violation.
@@ -937,10 +923,9 @@ class Violation(proto.Message):
 
             https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{timeRange}{folder}
         non_compliant_org_policy (str):
-            Output only. Immutable. Name of the OrgPolicy
-            which was modified with non-compliant change and
-            resulted this violation. Format:
-
+            Output only. Immutable. Name of the OrgPolicy which was
+            modified with non-compliant change and resulted this
+            violation. Format:
             projects/{project_number}/policies/{constraint_name}
             folders/{folder_id}/policies/{constraint_name}
             organizations/{organization_id}/policies/{constraint_name}
@@ -976,6 +961,7 @@ class Violation(proto.Message):
             EXCEPTION (4):
                 Violation is Exception
         """
+
         STATE_UNSPECIFIED = 0
         RESOLVED = 2
         UNRESOLVED = 3
@@ -1021,6 +1007,7 @@ class Violation(proto.Message):
                     Remediation type for
                     gcp.restrictCmekCryptoKeyProjects
             """
+
             REMEDIATION_TYPE_UNSPECIFIED = 0
             REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION = 1
             REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION = 2

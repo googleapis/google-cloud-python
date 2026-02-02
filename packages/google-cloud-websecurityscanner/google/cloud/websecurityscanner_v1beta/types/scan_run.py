@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.types import (
@@ -77,9 +77,9 @@ class ScanRun(proto.Message):
             ranges from 0 to 100. If the scan is finished,
             the value is 100.
         error_trace (google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace):
-            If result_state is an ERROR, this field provides
-            the primary reason for scan's termination and
-            more details, if such are available.
+            If result_state is an ERROR, this field provides the primary
+            reason for scan's termination and more details, if such are
+            available.
         warning_traces (MutableSequence[google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace]):
             A list of warnings, if such are encountered
             during this scan run.
@@ -101,6 +101,7 @@ class ScanRun(proto.Message):
                 The scan is either finished or stopped by
                 user.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
@@ -120,6 +121,7 @@ class ScanRun(proto.Message):
             KILLED (3):
                 The scan was terminated by user.
         """
+
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
@@ -170,12 +172,12 @@ class ScanRun(proto.Message):
         number=10,
         message=scan_run_error_trace.ScanRunErrorTrace,
     )
-    warning_traces: MutableSequence[
-        scan_run_warning_trace.ScanRunWarningTrace
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message=scan_run_warning_trace.ScanRunWarningTrace,
+    warning_traces: MutableSequence[scan_run_warning_trace.ScanRunWarningTrace] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message=scan_run_warning_trace.ScanRunWarningTrace,
+        )
     )
 
 

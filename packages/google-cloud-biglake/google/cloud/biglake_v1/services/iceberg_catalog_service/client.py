@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.biglake_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.biglake_v1.services.iceberg_catalog_service import pagers
 from google.cloud.biglake_v1.types import iceberg_rest_catalog
@@ -81,9 +81,7 @@ class IcebergCatalogServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[IcebergCatalogServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[IcebergCatalogServiceTransport]]
     _transport_registry["grpc"] = IcebergCatalogServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = IcebergCatalogServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = IcebergCatalogServiceRestTransport
@@ -652,11 +650,9 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = IcebergCatalogServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            IcebergCatalogServiceClient._read_environment_variables()
+        )
         self._client_cert_source = IcebergCatalogServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -691,8 +687,7 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(IcebergCatalogServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -911,9 +906,8 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
             request (Union[google.cloud.biglake_v1.types.ListIcebergCatalogsRequest, dict]):
                 The request object. The request message for the ``ListIcebergCatalogs`` API.
             parent (str):
-                Required. The parent resource where this
-                catalog will be created. Format:
-                projects/{project_id}
+                Required. The parent resource where this catalog will be
+                created. Format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1170,9 +1164,8 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
                 The request object. The request message for the ``CreateIcebergCatalog``
                 API.
             parent (str):
-                Required. The parent resource where this
-                catalog will be created. Format:
-                projects/{project_id}
+                Required. The parent resource where this catalog will be
+                created. Format: projects/{project_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1300,8 +1293,7 @@ class IcebergCatalogServiceClient(metaclass=IcebergCatalogServiceClientMeta):
                 The request object. Request message for
                 FailoverIcebergCatalog.
             name (str):
-                Required. The name of the catalog in the
-                form
+                Required. The name of the catalog in the form
                 "projects/{project_id}/catalogs/{catalog_id}"
 
                 This corresponds to the ``name`` field

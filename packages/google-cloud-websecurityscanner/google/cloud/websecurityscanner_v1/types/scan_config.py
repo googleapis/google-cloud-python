@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,12 +42,10 @@ class ScanConfig(proto.Message):
             Required. The user provided display name of
             the ScanConfig.
         max_qps (int):
-            The maximum QPS during scanning. A valid value
-            ranges from 5 to 20 inclusively. If the field is
-            unspecified or its value is set 0, server will
-            default to 15. Other values outside of [5, 20]
-            range will be rejected with INVALID_ARGUMENT
-            error.
+            The maximum QPS during scanning. A valid value ranges from 5
+            to 20 inclusively. If the field is unspecified or its value
+            is set 0, server will default to 15. Other values outside of
+            [5, 20] range will be rejected with INVALID_ARGUMENT error.
         starting_urls (MutableSequence[str]):
             Required. The starting URLs from which the
             scanner finds site pages.
@@ -85,8 +83,8 @@ class ScanConfig(proto.Message):
 
         Values:
             USER_AGENT_UNSPECIFIED (0):
-                The user agent is unknown. Service will default
-                to CHROME_LINUX.
+                The user agent is unknown. Service will default to
+                CHROME_LINUX.
             CHROME_LINUX (1):
                 Chrome on Linux. This is the service default
                 if unspecified.
@@ -95,6 +93,7 @@ class ScanConfig(proto.Message):
             SAFARI_IPHONE (3):
                 Safari on IPhone.
         """
+
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
@@ -114,6 +113,7 @@ class ScanConfig(proto.Message):
             LOW (2):
                 Lower impact scanning
         """
+
         RISK_LEVEL_UNSPECIFIED = 0
         NORMAL = 1
         LOW = 2
@@ -132,6 +132,7 @@ class ScanConfig(proto.Message):
                 Do not export results of this scan to
                 Security Command Center.
         """
+
         EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

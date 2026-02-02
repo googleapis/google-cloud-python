@@ -17,14 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1.types import cmek_config_service, common, schema
 from google.cloud.discoveryengine_v1.types import (
     document_processing_config as gcd_document_processing_config,
 )
-from google.cloud.discoveryengine_v1.types import cmek_config_service, common
-from google.cloud.discoveryengine_v1.types import schema
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -51,9 +50,9 @@ class DataStore(proto.Message):
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
             Immutable. The industry vertical that the
             data store registers.
@@ -82,15 +81,15 @@ class DataStore(proto.Message):
             Optional. Configuration for advanced site
             search.
         kms_key_name (str):
-            Input only. The KMS key to be used to protect
-            this DataStore at creation time.
+            Input only. The KMS key to be used to protect this DataStore
+            at creation time.
 
-            Must be set for requests that need to comply
-            with CMEK Org Policy protections.
+            Must be set for requests that need to comply with CMEK Org
+            Policy protections.
 
-            If this field is set and processed successfully,
-            the DataStore will be protected by the KMS key,
-            as indicated in the cmek_config field.
+            If this field is set and processed successfully, the
+            DataStore will be protected by the KMS key, as indicated in
+            the cmek_config field.
         cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Output only. CMEK-related information for the
             DataStore.
@@ -174,6 +173,7 @@ class DataStore(proto.Message):
                 workspace data store are specified in the
                 [WorkspaceConfig][google.cloud.discoveryengine.v1.WorkspaceConfig].
         """
+
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1
         CONTENT_REQUIRED = 2
@@ -384,6 +384,7 @@ class WorkspaceConfig(proto.Message):
             GOOGLE_PEOPLE (8):
                 Workspace Data Store contains People data
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DRIVE = 1
         GOOGLE_MAIL = 2

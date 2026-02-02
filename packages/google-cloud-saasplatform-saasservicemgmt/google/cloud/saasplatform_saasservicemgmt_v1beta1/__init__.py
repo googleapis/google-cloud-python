@@ -30,6 +30,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.saas_deployments import SaasDeploymentsAsyncClient, SaasDeploymentsClient
 from .services.saas_rollouts import SaasRolloutsAsyncClient, SaasRolloutsClient
 from .types.common import (
@@ -123,7 +124,9 @@ if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
 ):  # pragma: NO COVER
     api_core.check_python_version("google.cloud.saasplatform_saasservicemgmt_v1beta1")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.saasplatform_saasservicemgmt_v1beta1")  # type: ignore
+    api_core.check_dependency_versions(
+        "google.cloud.saasplatform_saasservicemgmt_v1beta1"
+    )  # type: ignore
 else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.

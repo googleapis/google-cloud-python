@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .operation_metadata import OperationMetadata
-from .policy_binding_resources import PolicyBinding
+from .operation_metadata import (
+    OperationMetadata,
+)
+from .policy_binding_resources import (
+    PolicyBinding,
+)
 from .policy_bindings_service import (
     CreatePolicyBindingRequest,
     DeletePolicyBindingRequest,

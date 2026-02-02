@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -523,9 +523,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseProvisionProject._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseProvisionProject._get_http_options()
 
             request, metadata = self._interceptor.pre_provision_project(
                 request, metadata
@@ -551,7 +549,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -681,9 +679,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProjectServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseProjectServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata

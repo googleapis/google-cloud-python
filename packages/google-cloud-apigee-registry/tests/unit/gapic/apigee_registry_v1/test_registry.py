@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,23 +43,30 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.apigee_registry_v1.services.registry import (
     RegistryAsyncClient,
@@ -916,10 +923,9 @@ def test_registry_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -964,10 +970,9 @@ def test_registry_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1003,10 +1008,9 @@ def test_registry_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1231,13 +1235,13 @@ def test_registry_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3219,9 +3223,9 @@ def test_list_api_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_api_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_api_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_api_versions(request)
 
@@ -4106,9 +4110,9 @@ def test_create_api_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_api_version] = (
+            mock_rpc
+        )
         request = {}
         client.create_api_version(request)
 
@@ -4476,9 +4480,9 @@ def test_update_api_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_api_version] = (
+            mock_rpc
+        )
         request = {}
         client.update_api_version(request)
 
@@ -4831,9 +4835,9 @@ def test_delete_api_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_api_version] = (
+            mock_rpc
+        )
         request = {}
         client.delete_api_version(request)
 
@@ -6043,9 +6047,9 @@ def test_get_api_spec_contents_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_api_spec_contents
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_api_spec_contents] = (
+            mock_rpc
+        )
         request = {}
         client.get_api_spec_contents(request)
 
@@ -7455,9 +7459,9 @@ def test_tag_api_spec_revision_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.tag_api_spec_revision
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.tag_api_spec_revision] = (
+            mock_rpc
+        )
         request = {}
         client.tag_api_spec_revision(request)
 
@@ -8204,9 +8208,9 @@ def test_rollback_api_spec_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.rollback_api_spec
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.rollback_api_spec] = (
+            mock_rpc
+        )
         request = {}
         client.rollback_api_spec(request)
 
@@ -8855,9 +8859,9 @@ def test_list_api_deployments_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_api_deployments
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_api_deployments] = (
+            mock_rpc
+        )
         request = {}
         client.list_api_deployments(request)
 
@@ -9415,9 +9419,9 @@ def test_get_api_deployment_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_api_deployment] = (
+            mock_rpc
+        )
         request = {}
         client.get_api_deployment(request)
 
@@ -9792,9 +9796,9 @@ def test_create_api_deployment_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_api_deployment] = (
+            mock_rpc
+        )
         request = {}
         client.create_api_deployment(request)
 
@@ -10183,9 +10187,9 @@ def test_update_api_deployment_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_api_deployment] = (
+            mock_rpc
+        )
         request = {}
         client.update_api_deployment(request)
 
@@ -10549,9 +10553,9 @@ def test_delete_api_deployment_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_api_deployment] = (
+            mock_rpc
+        )
         request = {}
         client.delete_api_deployment(request)
 
@@ -13165,9 +13169,9 @@ def test_get_artifact_contents_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_artifact_contents
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_artifact_contents] = (
+            mock_rpc
+        )
         request = {}
         client.get_artifact_contents(request)
 
@@ -13868,9 +13872,9 @@ def test_replace_artifact_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.replace_artifact
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.replace_artifact] = (
+            mock_rpc
+        )
         request = {}
         client.replace_artifact(request)
 
@@ -15449,9 +15453,9 @@ def test_list_api_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_api_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_api_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_api_versions(request)
@@ -15891,9 +15895,9 @@ def test_create_api_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_api_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_api_version(request)
@@ -16102,9 +16106,9 @@ def test_update_api_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_api_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_api_version(request)
@@ -16301,9 +16305,9 @@ def test_delete_api_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_api_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_api_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_api_version(request)
@@ -16925,9 +16929,9 @@ def test_get_api_spec_contents_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_api_spec_contents
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_api_spec_contents] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_api_spec_contents(request)
@@ -17687,9 +17691,9 @@ def test_tag_api_spec_revision_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.tag_api_spec_revision
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.tag_api_spec_revision] = (
+            mock_rpc
+        )
 
         request = {}
         client.tag_api_spec_revision(request)
@@ -18029,9 +18033,9 @@ def test_rollback_api_spec_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.rollback_api_spec
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.rollback_api_spec] = (
+            mock_rpc
+        )
 
         request = {}
         client.rollback_api_spec(request)
@@ -18351,9 +18355,9 @@ def test_list_api_deployments_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_api_deployments
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_api_deployments] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_api_deployments(request)
@@ -18613,9 +18617,9 @@ def test_get_api_deployment_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_api_deployment] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_api_deployment(request)
@@ -18798,9 +18802,9 @@ def test_create_api_deployment_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_api_deployment] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_api_deployment(request)
@@ -19010,9 +19014,9 @@ def test_update_api_deployment_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_api_deployment] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_api_deployment(request)
@@ -19210,9 +19214,9 @@ def test_delete_api_deployment_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_api_deployment
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_api_deployment] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_api_deployment(request)
@@ -20501,9 +20505,9 @@ def test_get_artifact_contents_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_artifact_contents
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_artifact_contents] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_artifact_contents(request)
@@ -20885,9 +20889,9 @@ def test_replace_artifact_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.replace_artifact
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.replace_artifact] = (
+            mock_rpc
+        )
 
         request = {}
         client.replace_artifact(request)
@@ -23222,8 +23226,9 @@ def test_list_apis_rest_bad_request(request_type=registry_service.ListApisReques
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23284,17 +23289,15 @@ def test_list_apis_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_apis"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_apis_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_apis"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegistryRestInterceptor, "post_list_apis") as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_apis_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegistryRestInterceptor, "pre_list_apis") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23347,8 +23350,9 @@ def test_get_api_rest_bad_request(request_type=registry_service.GetApiRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23419,17 +23423,15 @@ def test_get_api_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_api"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegistryRestInterceptor, "post_get_api") as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegistryRestInterceptor, "pre_get_api") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23478,8 +23480,9 @@ def test_create_api_rest_bad_request(request_type=registry_service.CreateApiRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23629,17 +23632,17 @@ def test_create_api_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_create_api"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegistryRestInterceptor, "pre_create_api") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23690,8 +23693,9 @@ def test_update_api_rest_bad_request(request_type=registry_service.UpdateApiRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23841,17 +23845,17 @@ def test_update_api_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_update_api"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(transports.RegistryRestInterceptor, "pre_update_api") as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23902,8 +23906,9 @@ def test_delete_api_rest_bad_request(request_type=registry_service.DeleteApiRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23958,13 +23963,11 @@ def test_delete_api_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(transports.RegistryRestInterceptor, "pre_delete_api") as pre,
+    ):
         pre.assert_not_called()
         pb_message = registry_service.DeleteApiRequest.pb(
             registry_service.DeleteApiRequest()
@@ -24009,8 +24012,9 @@ def test_list_api_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24071,17 +24075,19 @@ def test_list_api_versions_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_versions"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_versions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_api_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_versions"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_versions_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_api_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24141,8 +24147,9 @@ def test_get_api_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24211,17 +24218,19 @@ def test_get_api_version_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_version"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_api_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_version"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_version_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_api_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24274,8 +24283,9 @@ def test_create_api_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24419,17 +24429,19 @@ def test_create_api_version_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_version"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_create_api_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_version"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_version_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_create_api_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24486,8 +24498,9 @@ def test_update_api_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24635,17 +24648,19 @@ def test_update_api_version_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_version"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_version_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_update_api_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_version"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_version_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_update_api_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24700,8 +24715,9 @@ def test_delete_api_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24758,13 +24774,13 @@ def test_delete_api_version_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_api_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registry_service.DeleteApiVersionRequest.pb(
             registry_service.DeleteApiVersionRequest()
@@ -24811,8 +24827,9 @@ def test_list_api_specs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24875,17 +24892,19 @@ def test_list_api_specs_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_specs"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_specs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_api_specs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_specs"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_specs_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_api_specs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24943,8 +24962,9 @@ def test_get_api_spec_rest_bad_request(request_type=registry_service.GetApiSpecR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25023,17 +25043,19 @@ def test_get_api_spec_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_spec"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_spec_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_api_spec"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_spec"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_spec_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_api_spec"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25088,8 +25110,9 @@ def test_get_api_spec_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25151,17 +25174,20 @@ def test_get_api_spec_contents_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_spec_contents"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_spec_contents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_api_spec_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_spec_contents"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_get_api_spec_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_api_spec_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25216,8 +25242,9 @@ def test_create_api_spec_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25379,17 +25406,19 @@ def test_create_api_spec_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_spec"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_spec_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_create_api_spec"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_spec"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_spec_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_create_api_spec"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25446,8 +25475,9 @@ def test_update_api_spec_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25611,17 +25641,19 @@ def test_update_api_spec_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_spec"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_spec_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_update_api_spec"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_spec"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_spec_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_update_api_spec"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25676,8 +25708,9 @@ def test_delete_api_spec_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25734,13 +25767,13 @@ def test_delete_api_spec_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api_spec"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_api_spec"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registry_service.DeleteApiSpecRequest.pb(
             registry_service.DeleteApiSpecRequest()
@@ -25787,8 +25820,9 @@ def test_tag_api_spec_revision_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25867,17 +25901,20 @@ def test_tag_api_spec_revision_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_tag_api_spec_revision"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_tag_api_spec_revision_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_tag_api_spec_revision"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_tag_api_spec_revision"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_tag_api_spec_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_tag_api_spec_revision"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25932,8 +25969,9 @@ def test_list_api_spec_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25996,17 +26034,20 @@ def test_list_api_spec_revisions_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_spec_revisions"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_spec_revisions_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_api_spec_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_spec_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_list_api_spec_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_api_spec_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26066,8 +26107,9 @@ def test_rollback_api_spec_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26146,17 +26188,19 @@ def test_rollback_api_spec_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_rollback_api_spec"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_rollback_api_spec_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_rollback_api_spec"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_rollback_api_spec"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_rollback_api_spec_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_rollback_api_spec"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26211,8 +26255,9 @@ def test_delete_api_spec_revision_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26291,18 +26336,20 @@ def test_delete_api_spec_revision_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_delete_api_spec_revision"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor,
-        "post_delete_api_spec_revision_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api_spec_revision"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_delete_api_spec_revision"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_delete_api_spec_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_api_spec_revision"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26355,8 +26402,9 @@ def test_list_api_deployments_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26417,17 +26465,20 @@ def test_list_api_deployments_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_deployments"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_deployments_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_api_deployments"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_deployments"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_list_api_deployments_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_api_deployments"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26487,8 +26538,9 @@ def test_get_api_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26567,17 +26619,19 @@ def test_get_api_deployment_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_deployment"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_api_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_api_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_api_deployment_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_api_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26632,8 +26686,9 @@ def test_create_api_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26795,17 +26850,20 @@ def test_create_api_deployment_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_deployment"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_api_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_create_api_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_api_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_create_api_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_create_api_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26864,8 +26922,9 @@ def test_update_api_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27031,17 +27090,20 @@ def test_update_api_deployment_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_deployment"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_update_api_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_update_api_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_update_api_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_update_api_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_update_api_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27098,8 +27160,9 @@ def test_delete_api_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27156,13 +27219,13 @@ def test_delete_api_deployment_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_api_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registry_service.DeleteApiDeploymentRequest.pb(
             registry_service.DeleteApiDeploymentRequest()
@@ -27209,8 +27272,9 @@ def test_tag_api_deployment_revision_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27289,18 +27353,20 @@ def test_tag_api_deployment_revision_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_tag_api_deployment_revision"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor,
-        "post_tag_api_deployment_revision_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_tag_api_deployment_revision"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_tag_api_deployment_revision"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_tag_api_deployment_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_tag_api_deployment_revision"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27357,8 +27423,9 @@ def test_list_api_deployment_revisions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27423,18 +27490,20 @@ def test_list_api_deployment_revisions_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_api_deployment_revisions"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor,
-        "post_list_api_deployment_revisions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_api_deployment_revisions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_api_deployment_revisions"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_list_api_deployment_revisions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_api_deployment_revisions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27494,8 +27563,9 @@ def test_rollback_api_deployment_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27574,17 +27644,20 @@ def test_rollback_api_deployment_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_rollback_api_deployment"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_rollback_api_deployment_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_rollback_api_deployment"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_rollback_api_deployment"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_rollback_api_deployment_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_rollback_api_deployment"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27641,8 +27714,9 @@ def test_delete_api_deployment_revision_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27721,18 +27795,20 @@ def test_delete_api_deployment_revision_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_delete_api_deployment_revision"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor,
-        "post_delete_api_deployment_revision_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_api_deployment_revision"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_delete_api_deployment_revision"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_delete_api_deployment_revision_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_api_deployment_revision"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27787,8 +27863,9 @@ def test_list_artifacts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27849,17 +27926,19 @@ def test_list_artifacts_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_artifacts"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_list_artifacts_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_list_artifacts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_artifacts"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_list_artifacts_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_list_artifacts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27917,8 +27996,9 @@ def test_get_artifact_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27987,17 +28067,19 @@ def test_get_artifact_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_artifact"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_artifact_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_artifact"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_artifact"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_artifact_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_artifact"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28050,8 +28132,9 @@ def test_get_artifact_contents_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28111,17 +28194,20 @@ def test_get_artifact_contents_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_artifact_contents"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_get_artifact_contents_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_get_artifact_contents"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_get_artifact_contents"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor,
+            "post_get_artifact_contents_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_get_artifact_contents"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28174,8 +28260,9 @@ def test_create_artifact_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28320,17 +28407,19 @@ def test_create_artifact_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_artifact"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_create_artifact_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_create_artifact"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_artifact"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_create_artifact_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_create_artifact"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28385,8 +28474,9 @@ def test_replace_artifact_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28533,17 +28623,19 @@ def test_replace_artifact_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_replace_artifact"
-    ) as post, mock.patch.object(
-        transports.RegistryRestInterceptor, "post_replace_artifact_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_replace_artifact"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_replace_artifact"
+        ) as post,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "post_replace_artifact_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_replace_artifact"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28596,8 +28688,9 @@ def test_delete_artifact_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28652,13 +28745,13 @@ def test_delete_artifact_rest_interceptors(null_interceptor):
     )
     client = RegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RegistryRestInterceptor, "pre_delete_artifact"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RegistryRestInterceptor, "pre_delete_artifact"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = registry_service.DeleteArtifactRequest.pb(
             registry_service.DeleteArtifactRequest()
@@ -28703,8 +28796,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28763,8 +28857,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28825,8 +28920,9 @@ def test_get_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28887,8 +28983,9 @@ def test_set_iam_policy_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28949,8 +29046,9 @@ def test_test_iam_permissions_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -29011,8 +29109,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -29073,8 +29172,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -29135,8 +29235,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -29197,8 +29298,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -30087,11 +30189,14 @@ def test_registry_base_transport():
 
 def test_registry_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.apigee_registry_v1.services.registry.transports.RegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.apigee_registry_v1.services.registry.transports.RegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegistryTransport(
@@ -30108,9 +30213,12 @@ def test_registry_base_transport_with_credentials_file():
 
 def test_registry_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.apigee_registry_v1.services.registry.transports.RegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.apigee_registry_v1.services.registry.transports.RegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegistryTransport()
@@ -30182,11 +30290,12 @@ def test_registry_transport_auth_gdch_credentials(transport_class):
 def test_registry_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

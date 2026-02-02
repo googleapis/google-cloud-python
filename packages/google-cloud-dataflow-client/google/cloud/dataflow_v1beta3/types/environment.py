@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -48,9 +48,9 @@ __protobuf__ = proto.module(
 
 class JobType(proto.Enum):
     r"""Specifies the processing model used by a
-    [google.dataflow.v1beta3.Job], which determines the way the Job
-    is managed by the Cloud Dataflow service (how workers are
-    scheduled, how inputs are sharded, etc).
+    [google.dataflow.v1beta3.Job], which determines the way the Job is
+    managed by the Cloud Dataflow service (how workers are scheduled,
+    how inputs are sharded, etc).
 
     Values:
         JOB_TYPE_UNKNOWN (0):
@@ -65,6 +65,7 @@ class JobType(proto.Enum):
             data is read, processed, and written
             continuously.
     """
+
     JOB_TYPE_UNKNOWN = 0
     JOB_TYPE_BATCH = 1
     JOB_TYPE_STREAMING = 2
@@ -82,6 +83,7 @@ class FlexResourceSchedulingGoal(proto.Enum):
         FLEXRS_COST_OPTIMIZED (2):
             Optimize for lower cost.
     """
+
     FLEXRS_UNSPECIFIED = 0
     FLEXRS_SPEED_OPTIMIZED = 1
     FLEXRS_COST_OPTIMIZED = 2
@@ -105,6 +107,7 @@ class TeardownPolicy(proto.Enum):
             Never teardown the resource. This is useful
             for debugging and development.
     """
+
     TEARDOWN_POLICY_UNKNOWN = 0
     TEARDOWN_ALWAYS = 1
     TEARDOWN_ON_SUCCESS = 2
@@ -130,6 +133,7 @@ class DefaultPackageSet(proto.Enum):
             Stage packages typically useful to workers
             written in Python.
     """
+
     DEFAULT_PACKAGE_SET_UNKNOWN = 0
     DEFAULT_PACKAGE_SET_NONE = 1
     DEFAULT_PACKAGE_SET_JAVA = 2
@@ -151,15 +155,16 @@ class AutoscalingAlgorithm(proto.Enum):
             Increase worker count over time to reduce job
             execution time.
     """
+
     AUTOSCALING_ALGORITHM_UNKNOWN = 0
     AUTOSCALING_ALGORITHM_NONE = 1
     AUTOSCALING_ALGORITHM_BASIC = 2
 
 
 class WorkerIPAddressConfiguration(proto.Enum):
-    r"""Specifies how to allocate IP addresses to worker machines. You
-    can also use [pipeline
-    options](https://cloud.google.com/dataflow/docs/reference/pipeline-options#security_and_networking)
+    r"""Specifies how to allocate IP addresses to worker machines. You can
+    also use `pipeline
+    options <https://cloud.google.com/dataflow/docs/reference/pipeline-options#security_and_networking>`__
     to specify whether Dataflow workers use external IP addresses.
 
     Values:
@@ -170,16 +175,16 @@ class WorkerIPAddressConfiguration(proto.Enum):
         WORKER_IP_PRIVATE (2):
             Workers should have private IP addresses.
     """
+
     WORKER_IP_UNSPECIFIED = 0
     WORKER_IP_PUBLIC = 1
     WORKER_IP_PRIVATE = 2
 
 
 class ShuffleMode(proto.Enum):
-    r"""Specifies the shuffle mode used by a
-    [google.dataflow.v1beta3.Job], which determines the approach
-    data is shuffled during processing. More details in:
-
+    r"""Specifies the shuffle mode used by a [google.dataflow.v1beta3.Job],
+    which determines the approach data is shuffled during processing.
+    More details in:
     https://cloud.google.com/dataflow/docs/guides/deploying-a-pipeline#dataflow-shuffle
 
     Values:
@@ -190,6 +195,7 @@ class ShuffleMode(proto.Enum):
         SERVICE_BASED (2):
             Shuffle is done on the service side.
     """
+
     SHUFFLE_MODE_UNSPECIFIED = 0
     VM_BASED = 1
     SERVICE_BASED = 2
@@ -199,10 +205,10 @@ class StreamingMode(proto.Enum):
     r"""Specifies the Streaming Engine message processing guarantees.
     Reduces cost and latency but might result in duplicate messages
     written to storage. Designed to run simple mapping streaming ETL
-    jobs at the lowest cost. For example, Change Data Capture (CDC)
-    to BigQuery is a canonical use case. For more information, see
-    [Set the pipeline streaming
-    mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+    jobs at the lowest cost. For example, Change Data Capture (CDC) to
+    BigQuery is a canonical use case. For more information, see `Set the
+    pipeline streaming
+    mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
 
     Values:
         STREAMING_MODE_UNSPECIFIED (0):
@@ -219,6 +225,7 @@ class StreamingMode(proto.Enum):
             Setting this value also enables Streaming Engine
             and Streaming Engine resource-based billing.
     """
+
     STREAMING_MODE_UNSPECIFIED = 0
     STREAMING_MODE_EXACTLY_ONCE = 1
     STREAMING_MODE_AT_LEAST_ONCE = 2
@@ -229,16 +236,14 @@ class Environment(proto.Message):
 
     Attributes:
         temp_storage_prefix (str):
-            The prefix of the resources the system should
-            use for temporary storage. The system will
-            append the suffix "/temp-{JOBNAME} to this
-            resource prefix, where {JOBNAME} is the value of
-            the job_name field. The resulting bucket and
-            object prefix is used as the prefix of the
-            resources used to store temporary data needed
-            during the job execution. NOTE: This will
-            override the value in taskrunner_settings.
-            The supported resource type is:
+            The prefix of the resources the system should use for
+            temporary storage. The system will append the suffix
+            "/temp-{JOBNAME} to this resource prefix, where {JOBNAME} is
+            the value of the job_name field. The resulting bucket and
+            object prefix is used as the prefix of the resources used to
+            store temporary data needed during the job execution. NOTE:
+            This will override the value in taskrunner_settings. The
+            supported resource type is:
 
             Google Cloud Storage:
 
@@ -251,11 +256,10 @@ class Environment(proto.Message):
             in the form of the API service name, e.g.
             "compute.googleapis.com".
         experiments (MutableSequence[str]):
-            The list of experiments to enable. This field
-            should be used for SDK related experiments and
-            not for service related experiments. The proper
-            field for service related experiments is
-            service_options.
+            The list of experiments to enable. This field should be used
+            for SDK related experiments and not for service related
+            experiments. The proper field for service related
+            experiments is service_options.
         service_options (MutableSequence[str]):
             Optional. The list of service options to
             enable. This field should be used for service
@@ -264,12 +268,11 @@ class Environment(proto.Message):
             dedicated fields or become default (i.e. always
             on).
         service_kms_key_name (str):
-            Optional. If set, contains the Cloud KMS key
-            identifier used to encrypt data at rest, AKA a
-            Customer Managed Encryption Key (CMEK).
+            Optional. If set, contains the Cloud KMS key identifier used
+            to encrypt data at rest, AKA a Customer Managed Encryption
+            Key (CMEK).
 
             Format:
-
             projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
         worker_pools (MutableSequence[google.cloud.dataflow_v1beta3.types.WorkerPool]):
             The worker pools. At least one "harness"
@@ -309,19 +312,17 @@ class Environment(proto.Message):
         worker_region (str):
             Optional. The Compute Engine region
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            in which worker processing should occur, e.g.
-            "us-west1". Mutually exclusive with worker_zone.
-            If neither worker_region nor worker_zone is
-            specified, default to the control plane's
-            region.
+            in which worker processing should occur, e.g. "us-west1".
+            Mutually exclusive with worker_zone. If neither
+            worker_region nor worker_zone is specified, default to the
+            control plane's region.
         worker_zone (str):
             Optional. The Compute Engine zone
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            in which worker processing should occur, e.g.
-            "us-west1-a". Mutually exclusive with
-            worker_region. If neither worker_region nor
-            worker_zone is specified, a zone in the control
-            plane's region is chosen based on available
+            in which worker processing should occur, e.g. "us-west1-a".
+            Mutually exclusive with worker_region. If neither
+            worker_region nor worker_zone is specified, a zone in the
+            control plane's region is chosen based on available
             capacity.
         shuffle_mode (google.cloud.dataflow_v1beta3.types.ShuffleMode):
             Output only. The shuffle mode used for the
@@ -333,16 +334,14 @@ class Environment(proto.Message):
             Output only. Whether the job uses the
             Streaming Engine resource-based billing model.
         streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
-            Optional. Specifies the Streaming Engine message
-            processing guarantees. Reduces cost and latency
-            but might result in duplicate messages committed
-            to storage. Designed to run simple mapping
-            streaming ETL jobs at the lowest cost. For
-            example, Change Data Capture (CDC) to BigQuery
-            is a canonical use case. For more information,
-            see
-            [Set the pipeline streaming
-            mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
     """
 
     temp_storage_prefix: str = proto.Field(
@@ -892,9 +891,9 @@ class WorkerPool(proto.Message):
             desired.  Expected to be of the form
             "regions/REGION/subnetworks/SUBNETWORK".
         worker_harness_container_image (str):
-            Required. Docker container image that executes
-            the Cloud Dataflow worker harness, residing in
-            Google Container Registry.
+            Required. Docker container image that executes the Cloud
+            Dataflow worker harness, residing in Google Container
+            Registry.
 
             Deprecated for the Fn API path. Use
             sdk_harness_container_images instead.
@@ -1008,12 +1007,12 @@ class WorkerPool(proto.Message):
         number=21,
         enum="WorkerIPAddressConfiguration",
     )
-    sdk_harness_container_images: MutableSequence[
-        "SdkHarnessContainerImage"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message="SdkHarnessContainerImage",
+    sdk_harness_container_images: MutableSequence["SdkHarnessContainerImage"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message="SdkHarnessContainerImage",
+        )
     )
 
 
@@ -1022,17 +1021,15 @@ class DataSamplingConfig(proto.Message):
 
     Attributes:
         behaviors (MutableSequence[google.cloud.dataflow_v1beta3.types.DataSamplingConfig.DataSamplingBehavior]):
-            List of given sampling behaviors to enable. For
-            example, specifying behaviors = [ALWAYS_ON]
-            samples in-flight elements but does not sample
-            exceptions. Can be used to specify multiple
-            behaviors like, behaviors = [ALWAYS_ON,
-            EXCEPTIONS] for specifying periodic sampling and
-            exception sampling.
+            List of given sampling behaviors to enable. For example,
+            specifying behaviors = [ALWAYS_ON] samples in-flight
+            elements but does not sample exceptions. Can be used to
+            specify multiple behaviors like, behaviors = [ALWAYS_ON,
+            EXCEPTIONS] for specifying periodic sampling and exception
+            sampling.
 
-            If DISABLED is in the list, then sampling will
-            be disabled and ignore the other given
-            behaviors.
+            If DISABLED is in the list, then sampling will be disabled
+            and ignore the other given behaviors.
 
             Ordering does not matter.
     """
@@ -1054,6 +1051,7 @@ class DataSamplingConfig(proto.Message):
                 When given, enables sampling input elements
                 when a user-defined DoFn causes an exception.
         """
+
         DATA_SAMPLING_BEHAVIOR_UNSPECIFIED = 0
         DISABLED = 1
         ALWAYS_ON = 2

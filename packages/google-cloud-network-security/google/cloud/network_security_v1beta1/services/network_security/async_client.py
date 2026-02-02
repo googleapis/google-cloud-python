@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1beta1 import gapic_version as package_version
 
@@ -44,17 +44,26 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1beta1.services.network_security import pagers
+from google.cloud.network_security_v1beta1.types import (
+    authorization_policy,
+    client_tls_policy,
+    common,
+    server_tls_policy,
+    tls,
+)
 from google.cloud.network_security_v1beta1.types import (
     authorization_policy as gcn_authorization_policy,
 )
@@ -64,11 +73,6 @@ from google.cloud.network_security_v1beta1.types import (
 from google.cloud.network_security_v1beta1.types import (
     server_tls_policy as gcn_server_tls_policy,
 )
-from google.cloud.network_security_v1beta1.types import authorization_policy
-from google.cloud.network_security_v1beta1.types import client_tls_policy
-from google.cloud.network_security_v1beta1.types import common
-from google.cloud.network_security_v1beta1.types import server_tls_policy
-from google.cloud.network_security_v1beta1.types import tls
 
 from .client import NetworkSecurityClient
 from .transports.base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
@@ -151,7 +155,8 @@ class NetworkSecurityAsyncClient:
         Returns:
             NetworkSecurityAsyncClient: The constructed client.
         """
-        return NetworkSecurityClient.from_service_account_info.__func__(NetworkSecurityAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = NetworkSecurityClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(NetworkSecurityAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -167,7 +172,8 @@ class NetworkSecurityAsyncClient:
         Returns:
             NetworkSecurityAsyncClient: The constructed client.
         """
-        return NetworkSecurityClient.from_service_account_file.__func__(NetworkSecurityAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = NetworkSecurityClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(NetworkSecurityAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -652,13 +658,11 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             authorization_policy_id (:class:`str`):
-                Required. Short name of the
-                AuthorizationPolicy resource to be
-                created. This value should be 1-63
-                characters long, containing only
-                letters, numbers, hyphens, and
-                underscores, and should not start with a
-                number. E.g. "authz_policy".
+                Required. Short name of the AuthorizationPolicy resource
+                to be created. This value should be 1-63 characters
+                long, containing only letters, numbers, hyphens, and
+                underscores, and should not start with a number. E.g.
+                "authz_policy".
 
                 This corresponds to the ``authorization_policy_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -808,15 +812,12 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                AuthorizationPolicy resource by the
-                update. The fields specified in the
-                update_mask are relative to the
-                resource, not the full request. A field
-                will be overwritten if it is in the
-                mask. If the user does not provide a
-                mask then all fields will be
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the AuthorizationPolicy resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
                 overwritten.
 
                 This corresponds to the ``update_mask`` field
@@ -1362,12 +1363,10 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             server_tls_policy_id (:class:`str`):
-                Required. Short name of the
-                ServerTlsPolicy resource to be created.
-                This value should be 1-63 characters
-                long, containing only letters, numbers,
-                hyphens, and underscores, and should not
-                start with a number. E.g.
+                Required. Short name of the ServerTlsPolicy resource to
+                be created. This value should be 1-63 characters long,
+                containing only letters, numbers, hyphens, and
+                underscores, and should not start with a number. E.g.
                 "server_mtls_policy".
 
                 This corresponds to the ``server_tls_policy_id`` field
@@ -1512,15 +1511,13 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                ServerTlsPolicy resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then all
-                fields will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the ServerTlsPolicy resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2060,12 +2057,10 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             client_tls_policy_id (:class:`str`):
-                Required. Short name of the
-                ClientTlsPolicy resource to be created.
-                This value should be 1-63 characters
-                long, containing only letters, numbers,
-                hyphens, and underscores, and should not
-                start with a number. E.g.
+                Required. Short name of the ClientTlsPolicy resource to
+                be created. This value should be 1-63 characters long,
+                containing only letters, numbers, hyphens, and
+                underscores, and should not start with a number. E.g.
                 "client_mtls_policy".
 
                 This corresponds to the ``client_tls_policy_id`` field
@@ -2209,15 +2204,13 @@ class NetworkSecurityAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                ClientTlsPolicy resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then all
-                fields will be overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the ClientTlsPolicy resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask then all fields will be
+                overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

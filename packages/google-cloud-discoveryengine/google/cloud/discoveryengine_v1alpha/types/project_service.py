@@ -127,6 +127,7 @@ class ReportConsentChangeRequest(proto.Message):
             ACCEPT (1):
                 User accepts service terms.
         """
+
         CONSENT_CHANGE_ACTION_UNSPECIFIED = 0
         ACCEPT = 1
 

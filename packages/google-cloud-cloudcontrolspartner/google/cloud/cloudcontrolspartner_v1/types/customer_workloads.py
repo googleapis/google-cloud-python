@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1.types import (
@@ -38,8 +38,8 @@ __protobuf__ = proto.module(
 
 
 class Workload(proto.Message):
-    r"""Contains metadata around the [Workload
-    resource](https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload)
+    r"""Contains metadata around the `Workload
+    resource <https://cloud.google.com/assured-workloads/docs/reference/rest/Shared.Types/Workload>`__
     in the Assured Workloads API.
 
     Attributes:
@@ -90,6 +90,7 @@ class Workload(proto.Message):
                 Arabia) partner offering without EKM
                 provisioning.
         """
+
         PARTNER_UNSPECIFIED = 0
         PARTNER_LOCAL_CONTROLS_BY_S3NS = 1
         PARTNER_SOVEREIGN_CONTROLS_BY_T_SYSTEMS = 2
@@ -271,6 +272,7 @@ class WorkloadOnboardingStep(proto.Message):
             SIGNED_ACCESS_APPROVAL_CONFIGURED (2):
                 Signed Access Approval step.
         """
+
         STEP_UNSPECIFIED = 0
         EKM_PROVISIONED = 1
         SIGNED_ACCESS_APPROVAL_CONFIGURED = 2

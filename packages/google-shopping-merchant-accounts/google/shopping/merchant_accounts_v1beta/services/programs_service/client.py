@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1beta import gapic_version as package_version
 
@@ -78,9 +78,7 @@ class ProgramsServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ProgramsServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ProgramsServiceTransport]]
     _transport_registry["grpc"] = ProgramsServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ProgramsServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ProgramsServiceRestTransport
@@ -110,17 +108,15 @@ class ProgramsServiceClientMeta(type):
 class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
     """Service for program management.
 
-    Programs provide a mechanism for adding functionality to
-    merchant accounts. A typical example of this is the [Free
-    product
-    listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-    program, which enables products from a merchant's store to be
-    shown across Google for free.
+    Programs provide a mechanism for adding functionality to merchant
+    accounts. A typical example of this is the `Free product
+    listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+    program, which enables products from a merchant's store to be shown
+    across Google for free.
 
-    This service exposes methods to retrieve a merchant's
-    participation in all available programs, in addition to methods
-    for explicitly enabling or disabling participation in each
-    program.
+    This service exposes methods to retrieve a merchant's participation
+    in all available programs, in addition to methods for explicitly
+    enabling or disabling participation in each program.
     """
 
     @staticmethod
@@ -630,11 +626,9 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ProgramsServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ProgramsServiceClient._read_environment_variables()
+        )
         self._client_cert_source = ProgramsServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -669,8 +663,7 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ProgramsServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -796,16 +789,15 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -1037,16 +1029,15 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.
@@ -1156,16 +1147,15 @@ class ProgramsServiceClient(metaclass=ProgramsServiceClientMeta):
 
         Returns:
             google.shopping.merchant_accounts_v1beta.types.Program:
-                Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                Defines participation in a given program for the
+                specified account.
+
+                   Programs provide a mechanism for adding functionality
+                   to merchant accounts. A typical example of this is
+                   the [Free product
+                   listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
+                   program, which enables products from a merchant's
+                   store to be shown across Google for free.
 
         """
         # Create or coerce a protobuf request object.

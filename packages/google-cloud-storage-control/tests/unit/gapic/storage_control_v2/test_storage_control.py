@@ -23,17 +23,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -44,7 +44,17 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -53,22 +63,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
 
 from google.cloud.storage_control_v2.services.storage_control import (
     StorageControlAsyncClient,
@@ -963,10 +963,9 @@ def test_storage_control_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1011,10 +1010,9 @@ def test_storage_control_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1050,10 +1048,9 @@ def test_storage_control_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1296,13 +1293,13 @@ def test_storage_control_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3052,9 +3049,9 @@ def test_get_storage_layout_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_storage_layout
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_storage_layout] = (
+            mock_rpc
+        )
         request = {}
         client.get_storage_layout(request)
 
@@ -3355,9 +3352,9 @@ def test_create_managed_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_managed_folder
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_managed_folder] = (
+            mock_rpc
+        )
         request = {}
         client.create_managed_folder(request)
 
@@ -3669,9 +3666,9 @@ def test_delete_managed_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_managed_folder
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_managed_folder] = (
+            mock_rpc
+        )
         request = {}
         client.delete_managed_folder(request)
 
@@ -3958,9 +3955,9 @@ def test_get_managed_folder_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_managed_folder
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_managed_folder] = (
+            mock_rpc
+        )
         request = {}
         client.get_managed_folder(request)
 
@@ -4258,9 +4255,9 @@ def test_list_managed_folders_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_managed_folders
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_managed_folders] = (
+            mock_rpc
+        )
         request = {}
         client.list_managed_folders(request)
 
@@ -4749,9 +4746,9 @@ def test_create_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.create_anywhere_cache(request)
 
@@ -5054,9 +5051,9 @@ def test_update_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.update_anywhere_cache(request)
 
@@ -5374,9 +5371,9 @@ def test_disable_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.disable_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.disable_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.disable_anywhere_cache(request)
 
@@ -5684,9 +5681,9 @@ def test_pause_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.pause_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.pause_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.pause_anywhere_cache(request)
 
@@ -5995,9 +5992,9 @@ def test_resume_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.resume_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.resume_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.resume_anywhere_cache(request)
 
@@ -6305,9 +6302,9 @@ def test_get_anywhere_cache_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_anywhere_cache
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_anywhere_cache] = (
+            mock_rpc
+        )
         request = {}
         client.get_anywhere_cache(request)
 
@@ -6609,9 +6606,9 @@ def test_list_anywhere_caches_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_anywhere_caches
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_anywhere_caches] = (
+            mock_rpc
+        )
         request = {}
         client.list_anywhere_caches(request)
 
@@ -9789,9 +9786,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -15294,8 +15291,9 @@ def test_get_project_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15363,18 +15361,22 @@ def test_get_project_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor, "post_get_project_intelligence_config"
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_project_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor, "pre_get_project_intelligence_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_project_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_project_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_project_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15433,8 +15435,9 @@ def test_update_project_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15598,20 +15601,22 @@ def test_update_project_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_project_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_project_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_project_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_project_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_project_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_project_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15666,8 +15671,9 @@ def test_get_folder_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15735,18 +15741,22 @@ def test_get_folder_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor, "post_get_folder_intelligence_config"
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_folder_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor, "pre_get_folder_intelligence_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_folder_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_folder_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_folder_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15805,8 +15815,9 @@ def test_update_folder_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15970,20 +15981,22 @@ def test_update_folder_intelligence_config_rest_interceptors(null_interceptor):
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_folder_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_folder_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_folder_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_folder_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_folder_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_folder_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16040,8 +16053,9 @@ def test_get_organization_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16111,20 +16125,22 @@ def test_get_organization_intelligence_config_rest_interceptors(null_interceptor
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_organization_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_get_organization_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_get_organization_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_organization_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_get_organization_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_get_organization_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16183,8 +16199,9 @@ def test_update_organization_intelligence_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16350,20 +16367,22 @@ def test_update_organization_intelligence_config_rest_interceptors(null_intercep
     )
     client = StorageControlClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_organization_intelligence_config",
-    ) as post, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "post_update_organization_intelligence_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.StorageControlRestInterceptor,
-        "pre_update_organization_intelligence_config",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_organization_intelligence_config",
+        ) as post,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "post_update_organization_intelligence_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.StorageControlRestInterceptor,
+            "pre_update_organization_intelligence_config",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17982,11 +18001,14 @@ def test_storage_control_base_transport():
 
 def test_storage_control_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.StorageControlTransport(
@@ -18009,9 +18031,12 @@ def test_storage_control_base_transport_with_credentials_file():
 
 def test_storage_control_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.storage_control_v2.services.storage_control.transports.StorageControlTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.StorageControlTransport()
@@ -18095,11 +18120,12 @@ def test_storage_control_transport_auth_gdch_credentials(transport_class):
 def test_storage_control_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import httpbody_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -220,9 +220,8 @@ class StorageSource(proto.Message):
 
     Attributes:
         bucket (str):
-            Cloud Storage bucket containing the source (see
-            [Bucket Name
-            Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+            Cloud Storage bucket containing the source (see `Bucket Name
+            Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
             Required. Cloud Storage object containing the source.
 
@@ -250,6 +249,7 @@ class StorageSource(proto.Message):
                 Use the Cloud Storage Fetcher tool to
                 download the source file.
         """
+
         SOURCE_FETCHER_UNSPECIFIED = 0
         GSUTIL = 1
         GCS_FETCHER = 2
@@ -415,9 +415,9 @@ class StorageSourceManifest(proto.Message):
 
     Attributes:
         bucket (str):
-            Required. Cloud Storage bucket containing the
-            source manifest (see [Bucket Name
-            Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+            Required. Cloud Storage bucket containing the source
+            manifest (see `Bucket Name
+            Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
             Required. Cloud Storage object containing the
             source manifest.
@@ -827,21 +827,21 @@ class BuildStep(proto.Message):
             build completion; step status is not updated in
             real-time as the build progresses.
         allow_failure (bool):
-            Allow this build step to fail without failing
-            the entire build.
-            If false, the entire build will fail if this
-            step fails. Otherwise, the build will succeed,
-            but this step will still have a failure status.
-            Error information will be reported in the
-            failure_detail field.
+            Allow this build step to fail without failing the entire
+            build.
+
+            If false, the entire build will fail if this step fails.
+            Otherwise, the build will succeed, but this step will still
+            have a failure status. Error information will be reported in
+            the failure_detail field.
         exit_code (int):
             Output only. Return code from running the
             step.
         allow_exit_codes (MutableSequence[int]):
-            Allow this build step to fail without failing
-            the entire build if and only if the exit code is
-            one of the specified codes. If allow_failure is
-            also specified, this field will take precedence.
+            Allow this build step to fail without failing the entire
+            build if and only if the exit code is one of the specified
+            codes. If allow_failure is also specified, this field will
+            take precedence.
         script (str):
             A shell script to be executed in the step.
 
@@ -1136,11 +1136,11 @@ class Build(proto.Message):
             Output only. Time at which execution of the
             build was started.
         finish_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time at which execution of the
-            build was finished.
-            The difference between finish_time and
-            start_time is the duration of the build's
-            execution.
+            Output only. Time at which execution of the build was
+            finished.
+
+            The difference between finish_time and start_time is the
+            duration of the build's execution.
         timeout (google.protobuf.duration_pb2.Duration):
             Amount of time that this build should be allowed to run, to
             second granularity. If this amount of time elapses, work on
@@ -1266,6 +1266,7 @@ class Build(proto.Message):
                 Build was enqueued for longer than the value of
                 ``queue_ttl``.
         """
+
         STATUS_UNKNOWN = 0
         PENDING = 10
         QUEUED = 1
@@ -1304,6 +1305,7 @@ class Build(proto.Message):
                     e.g. alerts that a feature used in the build
                     is pending removal
             """
+
             PRIORITY_UNSPECIFIED = 0
             INFO = 1
             WARNING = 2
@@ -1351,6 +1353,7 @@ class Build(proto.Message):
                 FETCH_SOURCE_FAILED (6):
                     The source fetching has failed.
             """
+
             FAILURE_TYPE_UNSPECIFIED = 0
             PUSH_FAILED = 1
             PUSH_IMAGE_NOT_FOUND = 2
@@ -1747,14 +1750,12 @@ class Artifacts(proto.Message):
 
         Attributes:
             location (str):
-                Cloud Storage bucket and optional object path,
-                in the form "gs://bucket/path/to/somewhere/".
-                (see [Bucket Name
-                Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+                Cloud Storage bucket and optional object path, in the form
+                "gs://bucket/path/to/somewhere/". (see `Bucket Name
+                Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
 
-                Files in the workspace matching any path pattern
-                will be uploaded to Cloud Storage with this
-                location as a prefix.
+                Files in the workspace matching any path pattern will be
+                uploaded to Cloud Storage with this location as a prefix.
             paths (MutableSequence[str]):
                 Path globs used to match files in the build's
                 workspace.
@@ -2129,6 +2130,7 @@ class Hash(proto.Message):
             SHA512 (4):
                 Use a sha512 hash.
         """
+
         NONE = 0
         SHA256 = 1
         MD5 = 2
@@ -2327,13 +2329,11 @@ class ListBuildsRequest(proto.Message):
         page_token (str):
             The page token for the next page of Builds.
 
-            If unspecified, the first page of results is
-            returned.
+            If unspecified, the first page of results is returned.
 
-            If the token is rejected for any reason,
-            INVALID_ARGUMENT will be thrown. In this case,
-            the token should be discarded, and pagination
-            should be restarted from the first page of
+            If the token is rejected for any reason, INVALID_ARGUMENT
+            will be thrown. In this case, the token should be discarded,
+            and pagination should be restarted from the first page of
             results.
 
             See https://google.aip.dev/158 for more.
@@ -2422,8 +2422,7 @@ class ApproveBuildRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the target build.
-            For example:
+            Required. Name of the target build. For example:
             "projects/{$project_id}/builds/{$build_id}".
         approval_result (google.cloud.devtools.cloudbuild_v1.types.ApprovalResult):
             Approval decision and metadata.
@@ -2472,6 +2471,7 @@ class BuildApproval(proto.Message):
                 Build was cancelled while it was still
                 pending approval.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         APPROVED = 2
@@ -2552,6 +2552,7 @@ class ApprovalResult(proto.Message):
             REJECTED (2):
                 Build is rejected.
         """
+
         DECISION_UNSPECIFIED = 0
         APPROVED = 1
         REJECTED = 2
@@ -2703,6 +2704,7 @@ class GitFileSource(proto.Message):
             GITLAB (4):
                 A GitLab-hosted repo.
         """
+
         UNKNOWN = 0
         CLOUD_SOURCE_REPOSITORIES = 1
         GITHUB = 2
@@ -2843,16 +2845,15 @@ class BuildTrigger(proto.Message):
             files that are outside of the ignored_files globs, then we
             do not trigger a build.
         included_files (MutableSequence[str]):
-            If any of the files altered in the commit pass
-            the ignored_files filter and included_files is
-            empty, then as far as this filter is concerned,
-            we should trigger the build.
+            If any of the files altered in the commit pass the
+            ignored_files filter and included_files is empty, then as
+            far as this filter is concerned, we should trigger the
+            build.
 
-            If any of the files altered in the commit pass
-            the ignored_files filter and included_files is
-            not empty, then we make sure that at least one
-            of those files matches a included_files glob. If
-            not, then we do not trigger a build.
+            If any of the files altered in the commit pass the
+            ignored_files filter and included_files is not empty, then
+            we make sure that at least one of those files matches a
+            included_files glob. If not, then we do not trigger a build.
         filter (str):
             Optional. A Common Expression Language
             string.
@@ -3025,6 +3026,7 @@ class RepositoryEventConfig(proto.Message):
             GITLAB_ENTERPRISE (3):
                 The SCM repo is GITLAB Enterprise.
         """
+
         REPOSITORY_TYPE_UNSPECIFIED = 0
         GITHUB = 1
         GITHUB_ENTERPRISE = 2
@@ -3155,6 +3157,7 @@ class PubsubConfig(proto.Message):
                 Some of the subscription's field are
                 misconfigured.
         """
+
         STATE_UNSPECIFIED = 0
         OK = 1
         SUBSCRIPTION_DELETED = 2
@@ -3211,9 +3214,9 @@ class WebhookConfig(proto.Message):
             OK (1):
                 The auth configuration is properly setup.
             SECRET_DELETED (2):
-                The secret provided in auth_method has been
-                deleted.
+                The secret provided in auth_method has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         OK = 1
         SECRET_DELETED = 2
@@ -3257,8 +3260,8 @@ class PullRequestFilter(proto.Message):
             ``/gcbrun`` from a user with repository write permission or
             above will still trigger builds to run.
         invert_regex (bool):
-            If true, branches that do NOT match the git_ref
-            will trigger a build.
+            If true, branches that do NOT match the git_ref will trigger
+            a build.
     """
 
     class CommentControl(proto.Enum):
@@ -3294,6 +3297,7 @@ class PullRequestFilter(proto.Message):
                    with write permissions or above must comment ``/gcbrun``
                    in order to fire a build.
         """
+
         COMMENTS_DISABLED = 0
         COMMENTS_ENABLED = 1
         COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY = 2
@@ -3343,8 +3347,8 @@ class PushFilter(proto.Message):
 
             This field is a member of `oneof`_ ``git_ref``.
         invert_regex (bool):
-            When true, only trigger a build if the revision
-            regex does NOT match the git_ref regex.
+            When true, only trigger a build if the revision regex does
+            NOT match the git_ref regex.
     """
 
     branch: str = proto.Field(
@@ -3569,12 +3573,11 @@ class BuildOptions(proto.Message):
             builds that request more than the maximum are rejected with
             an error.
         substitution_option (google.cloud.devtools.cloudbuild_v1.types.BuildOptions.SubstitutionOption):
-            Option to specify behavior when there is an
-            error in the substitution checks.
+            Option to specify behavior when there is an error in the
+            substitution checks.
 
-            NOTE: this is always set to ALLOW_LOOSE for
-            triggered builds and cannot be overridden in the
-            build configuration file.
+            NOTE: this is always set to ALLOW_LOOSE for triggered builds
+            and cannot be overridden in the build configuration file.
         dynamic_substitutions (bool):
             Option to specify whether or not to apply
             bash style string operations to the
@@ -3640,8 +3643,9 @@ class BuildOptions(proto.Message):
     """
 
     class VerifyOption(proto.Enum):
-        r"""Specifies the manner in which the build should be verified, if
-        at all.
+        r"""Specifies the manner in which the build should be verified, if at
+        all.
+
         If a verified build is requested, and any part of the process to
         generate and upload provenance fails, the build will also fail.
 
@@ -3649,8 +3653,8 @@ class BuildOptions(proto.Message):
         occur, but is not guaranteed to. If it does occur and fails, the
         build will not fail.
 
-        For more information, see [Viewing Build
-        Provenance](https://cloud.google.com/build/docs/securing-builds/view-build-provenance).
+        For more information, see `Viewing Build
+        Provenance <https://cloud.google.com/build/docs/securing-builds/view-build-provenance>`__.
 
         Values:
             NOT_VERIFIED (0):
@@ -3658,13 +3662,14 @@ class BuildOptions(proto.Message):
             VERIFIED (1):
                 Build must be verified.
         """
+
         NOT_VERIFIED = 0
         VERIFIED = 1
 
     class MachineType(proto.Enum):
-        r"""Supported Compute Engine machine types.
-        For more information, see [Machine
-        types](https://cloud.google.com/compute/docs/machine-types).
+        r"""Supported Compute Engine machine types. For more information, see
+        `Machine
+        types <https://cloud.google.com/compute/docs/machine-types>`__.
 
         Values:
             UNSPECIFIED (0):
@@ -3680,6 +3685,7 @@ class BuildOptions(proto.Message):
             E2_MEDIUM (7):
                 E2 machine with 1 CPU.
         """
+
         UNSPECIFIED = 0
         N1_HIGHCPU_8 = 1
         N1_HIGHCPU_32 = 2
@@ -3700,6 +3706,7 @@ class BuildOptions(proto.Message):
                 Do not fail the build if error in
                 substitutions checks.
         """
+
         MUST_MATCH = 0
         ALLOW_LOOSE = 1
 
@@ -3719,6 +3726,7 @@ class BuildOptions(proto.Message):
                 Storage; they will be written when the build is
                 completed.
         """
+
         STREAM_DEFAULT = 0
         STREAM_ON = 1
         STREAM_OFF = 2
@@ -3739,13 +3747,14 @@ class BuildOptions(proto.Message):
             STACKDRIVER_ONLY (3):
                 This option is the same as CLOUD_LOGGING_ONLY.
             CLOUD_LOGGING_ONLY (5):
-                Build logs are stored in Cloud Logging.
-                Selecting this option will not allow [logs
-                streaming](https://cloud.google.com/sdk/gcloud/reference/builds/log).
+                Build logs are stored in Cloud Logging. Selecting this
+                option will not allow `logs
+                streaming <https://cloud.google.com/sdk/gcloud/reference/builds/log>`__.
             NONE (4):
                 Turn off all logging. No build logs will be
                 captured.
         """
+
         LOGGING_UNSPECIFIED = 0
         LEGACY = 1
         GCS_ONLY = 2
@@ -3769,6 +3778,7 @@ class BuildOptions(proto.Message):
                 Bucket is located in a Google-owned project
                 and is not regionalized.
         """
+
         DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED = 0
         REGIONAL_USER_OWNED_BUCKET = 1
         LEGACY_BUCKET = 2
@@ -3871,8 +3881,8 @@ class BuildOptions(proto.Message):
 
 
 class ReceiveTriggerWebhookRequest(proto.Message):
-    r"""ReceiveTriggerWebhookRequest [Experimental] is the request
-    object accepted by the ReceiveTriggerWebhook method.
+    r"""ReceiveTriggerWebhookRequest [Experimental] is the request object
+    accepted by the ReceiveTriggerWebhook method.
 
     Attributes:
         name (str):
@@ -3915,8 +3925,8 @@ class ReceiveTriggerWebhookRequest(proto.Message):
 
 
 class ReceiveTriggerWebhookResponse(proto.Message):
-    r"""ReceiveTriggerWebhookResponse [Experimental] is the response
-    object for the ReceiveTriggerWebhook method.
+    r"""ReceiveTriggerWebhookResponse [Experimental] is the response object
+    for the ReceiveTriggerWebhook method.
 
     """
 
@@ -3927,9 +3937,8 @@ class GitHubEnterpriseConfig(proto.Message):
 
     Attributes:
         name (str):
-            The full resource name for the
-            GitHubEnterpriseConfig For example:
-
+            The full resource name for the GitHubEnterpriseConfig For
+            example:
             "projects/{$project_id}/locations/{$location_id}/githubEnterpriseConfigs/{$config_id}".
         host_url (str):
             The URL of the github enterprise host the
@@ -4119,6 +4128,7 @@ class WorkerPool(proto.Message):
             UPDATING (5):
                 ``WorkerPool`` is being updated; new builds cannot be run.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -4272,6 +4282,7 @@ class PrivatePoolV1Config(proto.Message):
                     If set, workers are created with a public
                     address which allows for public internet egress.
             """
+
             EGRESS_OPTION_UNSPECIFIED = 0
             NO_PUBLIC_EGRESS = 1
             PUBLIC_EGRESS = 2

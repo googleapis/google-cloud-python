@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.asset_v1 import gapic_version as package_version
 
@@ -44,13 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
 
 from google.cloud.asset_v1.services.asset_service import pagers
 from google.cloud.asset_v1.types import asset_service, assets
@@ -131,7 +131,8 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
-        return AssetServiceClient.from_service_account_info.__func__(AssetServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AssetServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AssetServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -147,7 +148,8 @@ class AssetServiceAsyncClient:
         Returns:
             AssetServiceAsyncClient: The constructed client.
         """
-        return AssetServiceClient.from_service_account_file.__func__(AssetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AssetServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AssetServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -466,17 +468,13 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.ListAssetsRequest, dict]]):
                 The request object. ListAssets request.
             parent (:class:`str`):
-                Required. Name of the organization,
-                folder, or project the assets belong to.
-                Format:
-                "organizations/[organization-number]"
-                (such as "organizations/123"),
-                "projects/[project-id]" (such as
-                "projects/my-project-id"),
-                "projects/[project-number]" (such as
-                "projects/12345"), or
-                "folders/[folder-number]" (such as
-                "folders/12345").
+                Required. Name of the organization, folder, or project
+                the assets belong to. Format:
+                "organizations/[organization-number]" (such as
+                "organizations/123"), "projects/[project-id]" (such as
+                "projects/my-project-id"), "projects/[project-number]"
+                (such as "projects/12345"), or "folders/[folder-number]"
+                (such as "folders/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -568,13 +566,12 @@ class AssetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> asset_service.BatchGetAssetsHistoryResponse:
-        r"""Batch gets the update history of assets that overlap a
-        time window. For IAM_POLICY content, this API outputs
-        history when the asset and its attached IAM POLICY both
-        exist. This can create gaps in the output history.
-        Otherwise, this API outputs history with asset in both
-        non-delete or deleted status.
-        If a specified asset does not exist, this API returns an
+        r"""Batch gets the update history of assets that overlap a time
+        window. For IAM_POLICY content, this API outputs history when
+        the asset and its attached IAM POLICY both exist. This can
+        create gaps in the output history. Otherwise, this API outputs
+        history with asset in both non-delete or deleted status. If a
+        specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
         .. code-block:: python
@@ -821,9 +818,8 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.GetFeedRequest, dict]]):
                 The request object. Get asset feed request.
             name (:class:`str`):
-                Required. The name of the Feed and it
-                must be in the format of:
-                projects/project_number/feeds/feed_id
+                Required. The name of the Feed and it must be in the
+                format of: projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -1172,9 +1168,8 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]]):
                 The request object.
             name (:class:`str`):
-                Required. The name of the feed and it
-                must be in the format of:
-                projects/project_number/feeds/feed_id
+                Required. The name of the feed and it must be in the
+                format of: projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
 
@@ -2158,15 +2153,12 @@ class AssetServiceAsyncClient:
             request (Optional[Union[google.cloud.asset_v1.types.CreateSavedQueryRequest, dict]]):
                 The request object. Request to create a saved query.
             parent (:class:`str`):
-                Required. The name of the
-                project/folder/organization where this
-                saved_query should be created in. It can
-                only be an organization number (such as
-                "organizations/123"), a folder number
-                (such as "folders/123"), a project ID
-                (such as "projects/my-project-id"), or a
-                project number (such as
-                "projects/12345").
+                Required. The name of the project/folder/organization
+                where this saved_query should be created in. It can only
+                be an organization number (such as "organizations/123"),
+                a folder number (such as "folders/123"), a project ID
+                (such as "projects/my-project-id"), or a project number
+                (such as "projects/12345").
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

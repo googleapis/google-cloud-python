@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -196,6 +196,7 @@ class Instance(proto.Message):
                 The Instance encountered an error during a
                 state change.
         """
+
         STATE_UNSPECIFIED = 0
         INACTIVE = 1
         CREATING = 2

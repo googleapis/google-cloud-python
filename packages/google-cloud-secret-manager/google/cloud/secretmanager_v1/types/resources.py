@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -282,14 +282,12 @@ class SecretVersion(proto.Message):
             on
             [SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion].
         scheduled_destroy_time (google.protobuf.timestamp_pb2.Timestamp):
-            Optional. Output only. Scheduled destroy time
-            for secret version. This is a part of the
-            Delayed secret version destroy feature. For a
-            Secret with a valid version destroy TTL, when a
-            secert version is destroyed, version is moved to
-            disabled state and it is scheduled for
-            destruction Version is destroyed only after the
-            scheduled_destroy_time.
+            Optional. Output only. Scheduled destroy time for secret
+            version. This is a part of the Delayed secret version
+            destroy feature. For a Secret with a valid version destroy
+            TTL, when a secert version is destroyed, version is moved to
+            disabled state and it is scheduled for destruction Version
+            is destroyed only after the scheduled_destroy_time.
         customer_managed_encryption (google.cloud.secretmanager_v1.types.CustomerManagedEncryptionStatus):
             Output only. The customer-managed encryption status of the
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
@@ -324,6 +322,7 @@ class SecretVersion(proto.Message):
                 is destroyed and the secret data is no longer stored. A
                 version may not leave this state once entered.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -471,12 +470,12 @@ class Replication(proto.Message):
                 message="CustomerManagedEncryption",
             )
 
-        replicas: MutableSequence[
-            "Replication.UserManaged.Replica"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Replication.UserManaged.Replica",
+        replicas: MutableSequence["Replication.UserManaged.Replica"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Replication.UserManaged.Replica",
+            )
         )
 
     automatic: Automatic = proto.Field(

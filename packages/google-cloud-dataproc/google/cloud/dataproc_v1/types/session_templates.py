@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import sessions, shared
@@ -105,9 +105,9 @@ class ListSessionTemplatesRequest(proto.Message):
             ``ListSessions`` call. Provide this token to retrieve the
             subsequent page.
         filter (str):
-            Optional. A filter for the session templates to
-            return in the response. Filters are case
-            sensitive and have the following syntax:
+            Optional. A filter for the session templates to return in
+            the response. Filters are case sensitive and have the
+            following syntax:
 
             [field = value] AND [field [= value]] ...
     """

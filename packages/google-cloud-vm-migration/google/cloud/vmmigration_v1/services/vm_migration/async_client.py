@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.vmmigration_v1 import gapic_version as package_version
 
@@ -44,15 +44,15 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.vmmigration_v1.services.vm_migration import pagers
 from google.cloud.vmmigration_v1.types import vmmigration
@@ -163,7 +163,8 @@ class VmMigrationAsyncClient:
         Returns:
             VmMigrationAsyncClient: The constructed client.
         """
-        return VmMigrationClient.from_service_account_info.__func__(VmMigrationAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = VmMigrationClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(VmMigrationAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -179,7 +180,8 @@ class VmMigrationAsyncClient:
         Returns:
             VmMigrationAsyncClient: The constructed client.
         """
-        return VmMigrationClient.from_service_account_file.__func__(VmMigrationAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = VmMigrationClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(VmMigrationAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -766,15 +768,12 @@ class VmMigrationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the Source resource
-                by the update. The fields specified in
-                the update_mask are relative to the
-                resource, not the full request. A field
-                will be overwritten if it is in the
-                mask. If the user does not provide a
-                mask then all fields will be
-                overwritten.
+                Field mask is used to specify the fields to be
+                overwritten in the Source resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2837,15 +2836,12 @@ class VmMigrationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the MigratingVm
-                resource by the update. The fields
-                specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Field mask is used to specify the fields to be
+                overwritten in the MigratingVm resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5099,15 +5095,12 @@ class VmMigrationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the Group resource
-                by the update. The fields specified in
-                the update_mask are relative to the
-                resource, not the full request. A field
-                will be overwritten if it is in the
-                mask. If the user does not provide a
-                mask then all fields will be
-                overwritten.
+                Field mask is used to specify the fields to be
+                overwritten in the Group resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6018,15 +6011,12 @@ class VmMigrationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the TargetProject
-                resource by the update. The fields
-                specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Field mask is used to specify the fields to be
+                overwritten in the TargetProject resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -7815,16 +7805,13 @@ class VmMigrationAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                DiskMigrationJob resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask, then a
-                mask equivalent to all fields that are
-                populated (have a non-empty value), will
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DiskMigrationJob resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask. If the user
+                does not provide a mask, then a mask equivalent to all
+                fields that are populated (have a non-empty value), will
                 be implied.
 
                 This corresponds to the ``update_mask`` field

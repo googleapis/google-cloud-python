@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.issueresolution.v1beta",
@@ -94,12 +94,12 @@ class ListAggregateProductStatusesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    aggregate_product_statuses: MutableSequence[
-        "AggregateProductStatus"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AggregateProductStatus",
+    aggregate_product_statuses: MutableSequence["AggregateProductStatus"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AggregateProductStatus",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -120,9 +120,9 @@ class AggregateProductStatus(proto.Message):
             The reporting context of the aggregate
             product statuses.
         country (str):
-            The country of the aggregate product statuses.
-            Represented as a [CLDR territory
-            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml).
+            The country of the aggregate product statuses. Represented
+            as a `CLDR territory
+            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__.
         stats (google.shopping.merchant_issueresolution_v1beta.types.AggregateProductStatus.Stats):
             Products statistics for the given reporting
             context and country.
@@ -203,6 +203,7 @@ class AggregateProductStatus(proto.Message):
                 DISAPPROVED (3):
                     Issue disapproves the product.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DEMOTED = 2
@@ -219,6 +220,7 @@ class AggregateProductStatus(proto.Message):
                 PENDING_PROCESSING (2):
                     The issue will be resolved auomatically.
             """
+
             RESOLUTION_UNSPECIFIED = 0
             MERCHANT_ACTION = 1
             PENDING_PROCESSING = 2

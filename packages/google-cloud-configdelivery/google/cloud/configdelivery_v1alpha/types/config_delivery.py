@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -96,6 +96,7 @@ class DeletionPropagationPolicy(proto.Enum):
             resources synced to the cluster will be
             abandoned.
     """
+
     DELETION_PROPAGATION_POLICY_UNSPECIFIED = 0
     FOREGROUND = 1
     ORPHAN = 2
@@ -242,10 +243,9 @@ class CreateResourceBundleRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         resource_bundle_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and resource_bundle_id from the
-            method_signature of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and resource_bundle_id from
+            the method_signature of Create RPC
         resource_bundle (google.cloud.configdelivery_v1alpha.types.ResourceBundle):
             Required. The resource being created
         request_id (str):
@@ -294,14 +294,12 @@ class UpdateResourceBundleRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the ResourceBundle
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ResourceBundle resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         resource_bundle (google.cloud.configdelivery_v1alpha.types.ResourceBundle):
             Required. The resource being updated
         request_id (str):
@@ -459,6 +457,7 @@ class FleetPackage(proto.Message):
             SUSPENDED (2):
                 ``FleetPackage`` is intended to be suspended.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -719,6 +718,7 @@ class FleetPackageInfo(proto.Message):
             DELETING (4):
                 ``FleetPackage`` is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -817,6 +817,7 @@ class ClusterInfo(proto.Message):
             SKIPPED (9):
                 Skipped state.
         """
+
         STATE_UNSPECIFIED = 0
         WAITING = 1
         IN_PROGRESS = 2
@@ -915,6 +916,7 @@ class ResourceBundleDeploymentInfo(proto.Message):
             DELETED (8):
                 Deleted state.
         """
+
         SYNC_STATE_UNSPECIFIED = 0
         RECONCILING = 1
         STALLED = 2
@@ -966,10 +968,9 @@ class Fleet(proto.Message):
 
         Attributes:
             match_labels (MutableMapping[str, str]):
-                Optional. match_labels is a map of {key,value}
-                pairs. Each {key,value} pair must match an
-                existing label key and value exactly in order to
-                satisfy the match.
+                Optional. match_labels is a map of {key,value} pairs. Each
+                {key,value} pair must match an existing label key and value
+                exactly in order to satisfy the match.
         """
 
         match_labels: MutableMapping[str, str] = proto.MapField(
@@ -1222,9 +1223,8 @@ class CreateFleetPackageRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         fleet_package_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and fleet_package_id from the
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and fleet_package_id from the
             method_signature of Create RPC
         fleet_package (google.cloud.configdelivery_v1alpha.types.FleetPackage):
             Required. The resource being created.
@@ -1274,14 +1274,12 @@ class UpdateFleetPackageRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the FleetPackage
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the FleetPackage resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         fleet_package (google.cloud.configdelivery_v1alpha.types.FleetPackage):
             Required. The resource being updated
         request_id (str):
@@ -1479,6 +1477,7 @@ class Release(proto.Message):
                 indicates that the ``Release`` is now published (or
                 released) and immutable.
         """
+
         LIFECYCLE_UNSPECIFIED = 0
         DRAFT = 1
         PUBLISHED = 2
@@ -1714,13 +1713,12 @@ class UpdateVariantRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Variant resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Variant resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         variant (google.cloud.configdelivery_v1alpha.types.Variant):
             Required. The resource being updated
         request_id (str):
@@ -1921,10 +1919,9 @@ class CreateReleaseRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         release_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and release_id from the method_signature
-            of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and release_id from the
+            method_signature of Create RPC
         release (google.cloud.configdelivery_v1alpha.types.Release):
             Required. The resource being created
         request_id (str):
@@ -1973,13 +1970,12 @@ class UpdateReleaseRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Release resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Release resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         release (google.cloud.configdelivery_v1alpha.types.Release):
             Required. The resource being updated
         request_id (str):
@@ -2198,6 +2194,7 @@ class RolloutInfo(proto.Message):
             ABORTING (8):
                 Rollout aborting.
         """
+
         STATE_UNSPECIFIED = 0
         COMPLETED = 1
         SUSPENDED = 2

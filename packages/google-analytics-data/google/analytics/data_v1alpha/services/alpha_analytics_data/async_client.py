@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.analytics.data_v1alpha import gapic_version as package_version
 
@@ -44,10 +44,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.analytics.data_v1alpha.services.alpha_analytics_data import pagers
 from google.analytics.data_v1alpha.types import analytics_data_api, data
@@ -136,7 +136,8 @@ class AlphaAnalyticsDataAsyncClient:
         Returns:
             AlphaAnalyticsDataAsyncClient: The constructed client.
         """
-        return AlphaAnalyticsDataClient.from_service_account_info.__func__(AlphaAnalyticsDataAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AlphaAnalyticsDataClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AlphaAnalyticsDataAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -152,7 +153,8 @@ class AlphaAnalyticsDataAsyncClient:
         Returns:
             AlphaAnalyticsDataAsyncClient: The constructed client.
         """
-        return AlphaAnalyticsDataClient.from_service_account_file.__func__(AlphaAnalyticsDataAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AlphaAnalyticsDataClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AlphaAnalyticsDataAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -190,7 +192,9 @@ class AlphaAnalyticsDataAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AlphaAnalyticsDataClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AlphaAnalyticsDataClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AlphaAnalyticsDataTransport:
@@ -324,27 +328,24 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RunFunnelReportResponse:
-        r"""Returns a customized funnel report of your Google
-        Analytics event data. The data returned from the API is
-        as a table with columns for the requested dimensions and
-        metrics.
+        r"""Returns a customized funnel report of your Google Analytics
+        event data. The data returned from the API is as a table with
+        columns for the requested dimensions and metrics.
 
-        Funnel exploration lets you visualize the steps your
-        users take to complete a task and quickly see how well
-        they are succeeding or failing at each step. For
-        example, how do prospects become shoppers and then
-        become buyers? How do one time buyers become repeat
-        buyers? With this information, you can improve
-        inefficient or abandoned customer journeys. To learn
-        more, see [GA4 Funnel
-        Explorations](https://support.google.com/analytics/answer/9327974).
+        Funnel exploration lets you visualize the steps your users take
+        to complete a task and quickly see how well they are succeeding
+        or failing at each step. For example, how do prospects become
+        shoppers and then become buyers? How do one time buyers become
+        repeat buyers? With this information, you can improve
+        inefficient or abandoned customer journeys. To learn more, see
+        `GA4 Funnel
+        Explorations <https://support.google.com/analytics/answer/9327974>`__.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the [Google Analytics Data API
-        Funnel Reporting
-        Feedback](https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform).
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Data API Funnel Reporting
+        Feedback <https://docs.google.com/forms/d/e/1FAIpQLSdwOlQDJAUoBiIgUZZ3S_Lwi8gr7Bb0k1jhvc-DEg7Rol3UjA/viewform>`__.
 
         .. code-block:: python
 
@@ -1137,29 +1138,25 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RecurringAudienceList:
-        r"""Creates a recurring audience list. Recurring audience
-        lists produces new audience lists each day. Audience
-        lists are users in an audience at the time of the list's
-        creation.
+        r"""Creates a recurring audience list. Recurring audience lists
+        produces new audience lists each day. Audience lists are users
+        in an audience at the time of the list's creation.
 
-        A recurring audience list ensures that you have audience
-        list based on the most recent data available for use
-        each day. If you manually create audience list, you
-        don't know when an audience list based on an additional
-        day's data is available. This recurring audience list
-        automates the creation of an audience list when an
-        additional day's data is available. You will consume
-        fewer quota tokens by using recurring audience list
-        versus manually creating audience list at various times
-        of day trying to guess when an additional day's data is
-        ready.
+        A recurring audience list ensures that you have audience list
+        based on the most recent data available for use each day. If you
+        manually create audience list, you don't know when an audience
+        list based on an additional day's data is available. This
+        recurring audience list automates the creation of an audience
+        list when an additional day's data is available. You will
+        consume fewer quota tokens by using recurring audience list
+        versus manually creating audience list at various times of day
+        trying to guess when an additional day's data is ready.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the
-        [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 
@@ -1293,20 +1290,18 @@ class AlphaAnalyticsDataAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> analytics_data_api.RecurringAudienceList:
-        r"""Gets configuration metadata about a specific recurring
-        audience list. This method can be used to understand a
-        recurring audience list's state after it has been
-        created. For example, a recurring audience list resource
-        will generate audience list instances for each day, and
-        this method can be used to get the resource name of the
-        most recent audience list instance.
+        r"""Gets configuration metadata about a specific recurring audience
+        list. This method can be used to understand a recurring audience
+        list's state after it has been created. For example, a recurring
+        audience list resource will generate audience list instances for
+        each day, and this method can be used to get the resource name
+        of the most recent audience list instance.
 
-        This method is introduced at alpha stability with the
-        intention of gathering feedback on syntax and
-        capabilities before entering beta. To give your feedback
-        on this API, complete the
-        [Google Analytics Audience Export API
-        Feedback](https://forms.gle/EeA5u5LW6PEggtCEA) form.
+        This method is introduced at alpha stability with the intention
+        of gathering feedback on syntax and capabilities before entering
+        beta. To give your feedback on this API, complete the `Google
+        Analytics Audience Export API
+        Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
         .. code-block:: python
 

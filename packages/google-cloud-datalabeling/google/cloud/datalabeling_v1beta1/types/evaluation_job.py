@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 from google.cloud.datalabeling_v1beta1.types import (
     human_annotation_config as gcd_human_annotation_config,
 )
-from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
@@ -46,11 +46,10 @@ class EvaluationJob(proto.Message):
 
     Attributes:
         name (str):
-            Output only. After you create a job, Data
-            Labeling Service assigns a name to the job with
-            the following format:
+            Output only. After you create a job, Data Labeling Service
+            assigns a name to the job with the following format:
 
-            "projects/<var>{project_id}</var>/evaluationJobs/<var>{evaluation_job_id}</var>".
+            "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
         description (str):
             Required. Description of the job. The
             description can be up to 25,000 characters long.
@@ -72,17 +71,15 @@ class EvaluationJob(proto.Message):
             UTC. Only the interval from this schedule is used, not the
             specific time of day.
         model_version (str):
-            Required. The [AI Platform Prediction model
-            version](/ml-engine/docs/prediction-overview) to
-            be evaluated. Prediction input and output is
-            sampled from this model version. When creating
-            an evaluation job, specify the model version in
-            the following format:
+            Required. The `AI Platform Prediction model
+            version </ml-engine/docs/prediction-overview>`__ to be
+            evaluated. Prediction input and output is sampled from this
+            model version. When creating an evaluation job, specify the
+            model version in the following format:
 
-            "projects/<var>{project_id}</var>/models/<var>{model_name}</var>/versions/<var>{version_name}</var>"
+            "projects/{project_id}/models/{model_name}/versions/{version_name}"
 
-            There can only be one evaluation job per model
-            version.
+            There can only be one evaluation job per model version.
         evaluation_job_config (google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig):
             Required. Configuration details for the
             evaluation job.
@@ -170,6 +167,7 @@ class EvaluationJob(proto.Message):
                 The job has this state right before it is
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2

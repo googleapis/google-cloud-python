@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -350,9 +350,7 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_http_options()
 
             request, metadata = self._interceptor.pre_accept_terms_of_service(
                 request, metadata
@@ -374,7 +372,7 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -465,9 +463,7 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                     A ``TermsOfService``.
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_http_options()
 
             request, metadata = self._interceptor.pre_get_terms_of_service(
                 request, metadata
@@ -618,9 +614,7 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                         A ``TermsOfService``.
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_http_options()
 
             request, metadata = self._interceptor.pre_retrieve_latest_terms_of_service(
                 request, metadata
@@ -684,11 +678,10 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             resp = self._interceptor.post_retrieve_latest_terms_of_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_retrieve_latest_terms_of_service_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_retrieve_latest_terms_of_service_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -740,7 +733,9 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RetrieveLatestTermsOfService(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RetrieveLatestTermsOfService(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

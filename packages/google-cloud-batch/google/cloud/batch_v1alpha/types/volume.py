@@ -56,8 +56,8 @@ class Volume(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         device_name (str):
-            Device name of an attached disk volume, which
-            should align with a device_name specified by
+            Device name of an attached disk volume, which should align
+            with a device_name specified by
             job.allocation_policy.instances[0].policy.disks[i].device_name
             or defined by the given instance template in
             job.allocation_policy.instances[0].instance_template.
@@ -173,9 +173,8 @@ class GCS(proto.Message):
 
     Attributes:
         remote_path (str):
-            Remote path, either a bucket name or a
-            subdirectory of a bucket, e.g.: bucket_name,
-            bucket_name/subdirectory/
+            Remote path, either a bucket name or a subdirectory of a
+            bucket, e.g.: bucket_name, bucket_name/subdirectory/
     """
 
     remote_path: str = proto.Field(

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -77,6 +77,7 @@ class JobMessageImportance(proto.Enum):
             default, and these messages are displayed by
             default in the Dataflow monitoring UI.
     """
+
     JOB_MESSAGE_IMPORTANCE_UNKNOWN = 0
     JOB_MESSAGE_DEBUG = 1
     JOB_MESSAGE_DETAILED = 2
@@ -189,8 +190,8 @@ class AutoscalingEvent(proto.Message):
             failed, or why the system decided to not make
             any changes to the number of workers.
         time (google.protobuf.timestamp_pb2.Timestamp):
-            The time this event was emitted to indicate a
-            new target or current num_workers value.
+            The time this event was emitted to indicate a new target or
+            current num_workers value.
         worker_pool (str):
             A short and friendly name for the worker pool
             this event refers to.
@@ -204,30 +205,27 @@ class AutoscalingEvent(proto.Message):
                 Default type for the enum.  Value should
                 never be returned.
             TARGET_NUM_WORKERS_CHANGED (1):
-                The TARGET_NUM_WORKERS_CHANGED type should be
-                used when the target worker pool size has
-                changed at the start of an actuation. An event
-                should always be specified as
-                TARGET_NUM_WORKERS_CHANGED if it reflects a
-                change in the target_num_workers.
+                The TARGET_NUM_WORKERS_CHANGED type should be used when the
+                target worker pool size has changed at the start of an
+                actuation. An event should always be specified as
+                TARGET_NUM_WORKERS_CHANGED if it reflects a change in the
+                target_num_workers.
             CURRENT_NUM_WORKERS_CHANGED (2):
-                The CURRENT_NUM_WORKERS_CHANGED type should be
-                used when actual worker pool size has been
-                changed, but the target_num_workers has not
-                changed.
+                The CURRENT_NUM_WORKERS_CHANGED type should be used when
+                actual worker pool size has been changed, but the
+                target_num_workers has not changed.
             ACTUATION_FAILURE (3):
-                The ACTUATION_FAILURE type should be used when
-                we want to report an error to the user
-                indicating why the current number of workers in
-                the pool could not be changed.
-                Displayed in the current status and history
-                widgets.
+                The ACTUATION_FAILURE type should be used when we want to
+                report an error to the user indicating why the current
+                number of workers in the pool could not be changed.
+                Displayed in the current status and history widgets.
             NO_CHANGE (4):
-                Used when we want to report to the user a reason
-                why we are not currently adjusting the number of
-                workers. Should specify both target_num_workers,
-                current_num_workers and a decision_message.
+                Used when we want to report to the user a reason why we are
+                not currently adjusting the number of workers. Should
+                specify both target_num_workers, current_num_workers and a
+                decision_message.
         """
+
         TYPE_UNKNOWN = 0
         TARGET_NUM_WORKERS_CHANGED = 1
         CURRENT_NUM_WORKERS_CHANGED = 2
@@ -264,11 +262,10 @@ class AutoscalingEvent(proto.Message):
 
 
 class ListJobMessagesRequest(proto.Message):
-    r"""Request to list job messages.
-    Up to max_results messages will be returned in the time range
-    specified starting with the oldest messages first. If no time
-    range is specified the results with start with the oldest
-    message.
+    r"""Request to list job messages. Up to max_results messages will be
+    returned in the time range specified starting with the oldest
+    messages first. If no time range is specified the results with start
+    with the oldest message.
 
     Attributes:
         project_id (str):
@@ -285,18 +282,16 @@ class ListJobMessagesRequest(proto.Message):
             may return an arbitrarily large number of
             results.
         page_token (str):
-            If supplied, this should be the value of
-            next_page_token returned by an earlier call.
-            This will cause the next page of results to be
-            returned.
+            If supplied, this should be the value of next_page_token
+            returned by an earlier call. This will cause the next page
+            of results to be returned.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            If specified, return only messages with
-            timestamps >= start_time. The default is the job
-            creation time (i.e. beginning of messages).
+            If specified, return only messages with timestamps >=
+            start_time. The default is the job creation time (i.e.
+            beginning of messages).
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Return only messages with timestamps < end_time.
-            The default is now (i.e. return up to the latest
-            messages available).
+            Return only messages with timestamps < end_time. The default
+            is now (i.e. return up to the latest messages available).
         location (str):
             The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)

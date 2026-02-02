@@ -22,9 +22,7 @@ from .grpc_asyncio import SearchTuningServiceGrpcAsyncIOTransport
 from .rest import SearchTuningServiceRestInterceptor, SearchTuningServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SearchTuningServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SearchTuningServiceTransport]]
 _transport_registry["grpc"] = SearchTuningServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SearchTuningServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = SearchTuningServiceRestTransport

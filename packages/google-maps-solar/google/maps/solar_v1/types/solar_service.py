@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import date_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -69,6 +69,7 @@ class DataLayerView(proto.Enum):
         FULL_LAYERS (5):
             Get all data.
     """
+
     DATA_LAYER_VIEW_UNSPECIFIED = 0
     DSM_LAYER = 1
     IMAGERY_LAYERS = 2
@@ -103,6 +104,7 @@ class ImageryQuality(proto.Enum):
             Solar data is derived from enhanced satellite
             imagery processed at 0.25 m/pixel.
     """
+
     IMAGERY_QUALITY_UNSPECIFIED = 0
     HIGH = 1
     MEDIUM = 2
@@ -125,6 +127,7 @@ class SolarPanelOrientation(proto.Enum):
             A ``PORTRAIT`` panel has its long edge parallel to the
             azimuth direction of the roof segment that it is placed on.
     """
+
     SOLAR_PANEL_ORIENTATION_UNSPECIFIED = 0
     LANDSCAPE = 1
     PORTRAIT = 2
@@ -137,11 +140,11 @@ class Experiment(proto.Enum):
         EXPERIMENT_UNSPECIFIED (0):
             No experiments are specified.
         EXPANDED_COVERAGE (1):
-            Expands the geographic region available for
-            querying solar data. For more information, see
-            [Expanded
-            Coverage](https://developers.google.com/maps/documentation/solar/expanded-coverage).
+            Expands the geographic region available for querying solar
+            data. For more information, see `Expanded
+            Coverage <https://developers.google.com/maps/documentation/solar/expanded-coverage>`__.
     """
+
     EXPERIMENT_UNSPECIFIED = 0
     EXPANDED_COVERAGE = 1
 
@@ -440,12 +443,12 @@ class SolarPotential(proto.Message):
         number=13,
         message="SizeAndSunshineStats",
     )
-    roof_segment_stats: MutableSequence[
-        "RoofSegmentSizeAndSunshineStats"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message="RoofSegmentSizeAndSunshineStats",
+    roof_segment_stats: MutableSequence["RoofSegmentSizeAndSunshineStats"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message="RoofSegmentSizeAndSunshineStats",
+        )
     )
     solar_panels: MutableSequence["SolarPanel"] = proto.RepeatedField(
         proto.MESSAGE,

@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_products_v1beta import gapic_version as package_version
 
@@ -115,7 +115,8 @@ class ProductsServiceAsyncClient:
         Returns:
             ProductsServiceAsyncClient: The constructed client.
         """
-        return ProductsServiceClient.from_service_account_info.__func__(ProductsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ProductsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ProductsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -131,7 +132,8 @@ class ProductsServiceAsyncClient:
         Returns:
             ProductsServiceAsyncClient: The constructed client.
         """
-        return ProductsServiceClient.from_service_account_file.__func__(ProductsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ProductsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ProductsServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -357,27 +359,22 @@ class ProductsServiceAsyncClient:
 
         Returns:
             google.shopping.merchant_products_v1beta.types.Product:
-                The processed product, built from
-                multiple [product
-                inputs][google.shopping.merchant.products.v1main.ProductInput]
-                after applying rules and supplemental
-                data sources. This processed product
-                matches what is shown in your Merchant
-                Center account. Each product is built
-                from exactly one primary data source
-                product input, and multiple supplemental
-                data source inputs. After inserting,
-                updating, or deleting a product input,
-                it may take several minutes before the
-                updated processed product can be
-                retrieved.
+                The processed product, built from multiple [product
+                   inputs][google.shopping.merchant.products.v1main.ProductInput]
+                   after applying rules and supplemental data sources.
+                   This processed product matches what is shown in your
+                   Merchant Center account. Each product is built from
+                   exactly one primary data source product input, and
+                   multiple supplemental data source inputs. After
+                   inserting, updating, or deleting a product input, it
+                   may take several minutes before the updated processed
+                   product can be retrieved.
 
-                All fields in the processed product and
-                its sub-messages match the name of their
-                corresponding attribute in the [Product
-                data
-                specification](https://support.google.com/merchants/answer/7052112)
-                with some exceptions.
+                   All fields in the processed product and its
+                   sub-messages match the name of their corresponding
+                   attribute in the [Product data
+                   specification](https://support.google.com/merchants/answer/7052112)
+                   with some exceptions.
 
         """
         # Create or coerce a protobuf request object.

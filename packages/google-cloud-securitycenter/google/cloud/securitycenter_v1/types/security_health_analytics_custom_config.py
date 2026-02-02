@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import expr_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -78,6 +78,7 @@ class CustomConfig(proto.Message):
             LOW (4):
                 Low severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -120,12 +121,12 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence[
-            "CustomConfig.CustomOutputSpec.Property"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="CustomConfig.CustomOutputSpec.Property",
+        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="CustomConfig.CustomOutputSpec.Property",
+            )
         )
 
     class ResourceSelector(proto.Message):

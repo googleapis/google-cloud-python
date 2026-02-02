@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -101,6 +101,7 @@ class ConversionSource(proto.Message):
                 Conversion source creation has started but
                 not fully finished yet.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ARCHIVED = 2
@@ -118,6 +119,7 @@ class ConversionSource(proto.Message):
             YOUTUBE_AFFILIATES (2):
                 Controlled by the Youtube Affiliates program.
         """
+
         CONTROLLER_UNSPECIFIED = 0
         MERCHANT = 1
         YOUTUBE_AFFILIATES = 2
@@ -174,9 +176,9 @@ class AttributionSettings(proto.Message):
     """
 
     class AttributionModel(proto.Enum):
-        r"""The attribution model used for this source. We support the same
-        set of [models offered by Google Analytics
-        4](https://support.google.com/analytics/answer/10596866).
+        r"""The attribution model used for this source. We support the same set
+        of `models offered by Google Analytics
+        4 <https://support.google.com/analytics/answer/10596866>`__.
 
         Values:
             ATTRIBUTION_MODEL_UNSPECIFIED (0):
@@ -196,6 +198,7 @@ class AttributionSettings(proto.Message):
             CROSS_CHANNEL_TIME_DECAY (9):
                 Cross-channel Time Decay model.
         """
+
         ATTRIBUTION_MODEL_UNSPECIFIED = 0
         CROSS_CHANNEL_LAST_CLICK = 1
         ADS_PREFERRED_LAST_CLICK = 2

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.logging.type import log_severity_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.logging.type.log_severity_pb2 as log_severity_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -233,8 +233,8 @@ class RequestLog(proto.Message):
             Stackdriver Trace identifier for this
             request.
         trace_sampled (bool):
-            If true, the value in the 'trace_id' field was
-            sampled for storage in a trace backend.
+            If true, the value in the 'trace_id' field was sampled for
+            storage in a trace backend.
         source_reference (MutableSequence[google.cloud.appengine_logging_v1.types.SourceReference]):
             Source code for the application that handled
             this request. There can be more than one source

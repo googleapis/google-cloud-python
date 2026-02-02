@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
@@ -179,6 +179,7 @@ class ListAccessibleDataAgentsRequest(proto.Message):
                 Only agents not created by the user calling
                 the API will be returned.
         """
+
         CREATOR_FILTER_UNSPECIFIED = 0
         NONE = 1
         CREATOR_ONLY = 2
@@ -320,15 +321,13 @@ class UpdateDataAgentRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the DataAgent
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields with
-            non-default values present in the request will
-            be overwritten. If a wildcard mask is provided,
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the DataAgent resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields with non-default values present in the
+            request will be overwritten. If a wildcard mask is provided,
             all fields will be overwritten.
         data_agent (google.cloud.geminidataanalytics_v1beta.types.DataAgent):
             Required. The resource being updated.

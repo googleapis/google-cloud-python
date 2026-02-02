@@ -44,16 +44,15 @@ class CompleteQueryRequest(proto.Message):
             suggestions.
             The maximum number of allowed characters is 255.
         visitor_id (str):
-            Recommended field. A unique identifier for
-            tracking visitors. For example, this could be
-            implemented with an HTTP cookie, which should be
-            able to uniquely identify a visitor on a single
-            device. This unique identifier should not change
-            if the visitor logs in or out of the website.
+            Recommended field. A unique identifier for tracking
+            visitors. For example, this could be implemented with an
+            HTTP cookie, which should be able to uniquely identify a
+            visitor on a single device. This unique identifier should
+            not change if the visitor logs in or out of the website.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            The field must be a UTF-8 encoded string with a length limit
+            of 128 characters. Otherwise, an INVALID_ARGUMENT error is
+            returned.
         language_codes (MutableSequence[str]):
             Note that this field applies for ``user-data`` dataset only.
             For requests with ``cloud-retail`` dataset, setting this

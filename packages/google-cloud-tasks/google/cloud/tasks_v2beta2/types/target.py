@@ -60,6 +60,7 @@ class HttpMethod(proto.Enum):
         OPTIONS (7):
             HTTP OPTIONS
     """
+
     HTTP_METHOD_UNSPECIFIED = 0
     POST = 1
     GET = 2
@@ -229,17 +230,16 @@ class AppEngineHttpRequest(proto.Message):
 
     Attributes:
         http_method (google.cloud.tasks_v2beta2.types.HttpMethod):
-            The HTTP method to use for the request. The
-            default is POST.
-            The app's request handler for the task's target
-            URL must be able to handle HTTP requests with
-            this http_method, otherwise the task attempt
-            fails with error code 405 (Method Not Allowed).
-            See [Writing a push task request
-            handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)
-            and the App Engine documentation for your
-            runtime on [How Requests are
-            Handled](https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled).
+            The HTTP method to use for the request. The default is POST.
+
+            The app's request handler for the task's target URL must be
+            able to handle HTTP requests with this http_method,
+            otherwise the task attempt fails with error code 405 (Method
+            Not Allowed). See `Writing a push task request
+            handler <https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler>`__
+            and the App Engine documentation for your runtime on `How
+            Requests are
+            Handled <https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>`__.
         app_engine_routing (google.cloud.tasks_v2beta2.types.AppEngineRouting):
             Task-level setting for App Engine routing.
 
@@ -346,18 +346,18 @@ class AppEngineHttpRequest(proto.Message):
 class AppEngineRouting(proto.Message):
     r"""App Engine Routing.
 
-    Defines routing characteristics specific to App Engine -
-    service, version, and instance.
+    Defines routing characteristics specific to App Engine - service,
+    version, and instance.
 
-    For more information about services, versions, and instances see
-    [An Overview of App
-    Engine](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine),
-    [Microservices Architecture on Google App
-    Engine](https://cloud.google.com/appengine/docs/python/microservices-on-app-engine),
-    [App Engine Standard request
-    routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed),
-    and [App Engine Flex request
-    routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
+    For more information about services, versions, and instances see `An
+    Overview of App
+    Engine <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine>`__,
+    `Microservices Architecture on Google App
+    Engine <https://cloud.google.com/appengine/docs/python/microservices-on-app-engine>`__,
+    `App Engine Standard request
+    routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__,
+    and `App Engine Flex request
+    routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
 
     Attributes:
         service (str):
@@ -411,18 +411,17 @@ class AppEngineRouting(proto.Message):
         instance (str):
             App instance.
 
-            By default, the task is sent to an instance
-            which is available when the task is attempted.
+            By default, the task is sent to an instance which is
+            available when the task is attempted.
 
-            Requests can only be sent to a specific instance
-            if [manual scaling is used in App Engine
-            Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).
-            App Engine Flex does not support instances. For
-            more information, see [App Engine Standard
-            request
-            routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)
-            and [App Engine Flex request
-            routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).
+            Requests can only be sent to a specific instance if `manual
+            scaling is used in App Engine
+            Standard <https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes>`__.
+            App Engine Flex does not support instances. For more
+            information, see `App Engine Standard request
+            routing <https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>`__
+            and `App Engine Flex request
+            routing <https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>`__.
         host (str):
             Output only. The host that the task is sent to.
 
@@ -706,12 +705,11 @@ class UriOverride(proto.Message):
         host (str):
             Host override.
 
-            When specified, replaces the host part of the
-            task URL. For example, if the task URL is
-            "https://www.google.com," and host value is set
-            to "example.net", the overridden URI will be
-            changed to "https://example.net." Host value
-            cannot be an empty string (INVALID_ARGUMENT).
+            When specified, replaces the host part of the task URL. For
+            example, if the task URL is "https://www.google.com," and
+            host value is set to "example.net", the overridden URI will
+            be changed to "https://example.net." Host value cannot be an
+            empty string (INVALID_ARGUMENT).
 
             This field is a member of `oneof`_ ``_host``.
         port (int):
@@ -761,6 +759,7 @@ class UriOverride(proto.Message):
                 http://www.google.ca will change to
                 https://www.google.ca.
         """
+
         SCHEME_UNSPECIFIED = 0
         HTTP = 1
         HTTPS = 2
@@ -773,13 +772,13 @@ class UriOverride(proto.Message):
             URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED (0):
                 OverrideMode Unspecified. Defaults to ALWAYS.
             IF_NOT_EXISTS (1):
-                In the IF_NOT_EXISTS mode, queue-level
-                configuration is only applied where task-level
-                configuration does not exist.
+                In the IF_NOT_EXISTS mode, queue-level configuration is only
+                applied where task-level configuration does not exist.
             ALWAYS (2):
                 In the ALWAYS mode, queue-level configuration
                 overrides all task-level configuration
         """
+
         URI_OVERRIDE_ENFORCE_MODE_UNSPECIFIED = 0
         IF_NOT_EXISTS = 1
         ALWAYS = 2
@@ -1001,12 +1000,11 @@ class OAuthToken(proto.Message):
 
 
 class OidcToken(proto.Message):
-    r"""Contains information needed for generating an
-    [OpenID Connect
-    token](https://developers.google.com/identity/protocols/OpenIDConnect).
-    This type of authorization can be used for many scenarios,
-    including calling Cloud Run, or endpoints where you intend to
-    validate the token yourself.
+    r"""Contains information needed for generating an `OpenID Connect
+    token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
+    This type of authorization can be used for many scenarios, including
+    calling Cloud Run, or endpoints where you intend to validate the
+    token yourself.
 
     Attributes:
         service_account_email (str):

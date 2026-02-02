@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,8 +35,8 @@ class DbNode(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the database node
-            resource in the following format:
+            Identifier. The name of the database node resource in the
+            following format:
             projects/{project}/locations/{location}/cloudVmClusters/{cloud_vm_cluster}/dbNodes/{db_node}
         properties (google.cloud.oracledatabase_v1.types.DbNodeProperties):
             Optional. Various properties of the database
@@ -113,6 +113,7 @@ class DbNodeProperties(proto.Message):
                 Indicates that the resource is in failed
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2

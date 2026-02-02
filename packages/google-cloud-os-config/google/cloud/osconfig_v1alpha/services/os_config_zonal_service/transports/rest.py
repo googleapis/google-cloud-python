@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1102,9 +1102,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseCreateOSPolicyAssignment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_os_policy_assignment(
                 request, metadata
@@ -1130,7 +1128,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1257,9 +1255,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseDeleteOSPolicyAssignment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_os_policy_assignment(
                 request, metadata
@@ -1281,7 +1277,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1404,36 +1400,30 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
                 Returns:
                     ~.instance_os_policies_compliance.InstanceOSPoliciesCompliance:
-                        This API resource represents the OS
-                    policies compliance data for a Compute
-                    Engine virtual machine (VM) instance at
-                    a given point in time.
+                        This API resource represents the OS policies compliance
+                    data for a Compute Engine virtual machine (VM) instance
+                    at a given point in time.
 
-                    A Compute Engine VM can have multiple OS
-                    policy assignments, and each assignment
-                    can have multiple OS policies. As a
-                    result, multiple OS policies could be
+                    A Compute Engine VM can have multiple OS policy
+                    assignments, and each assignment can have multiple OS
+                    policies. As a result, multiple OS policies could be
                     applied to a single VM.
 
-                    You can use this API resource to
-                    determine both the compliance state of
-                    your VM as well as the compliance state
-                    of an individual OS policy.
+                    You can use this API resource to determine both the
+                    compliance state of your VM as well as the compliance
+                    state of an individual OS policy.
 
-                    For more information, see [View
-                    compliance](https://cloud.google.com/compute/docs/os-configuration-management/view-compliance).
+                    For more information, see `View
+                    compliance <https://cloud.google.com/compute/docs/os-configuration-management/view-compliance>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetInstanceOSPoliciesCompliance._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetInstanceOSPoliciesCompliance._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_instance_os_policies_compliance(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_instance_os_policies_compliance(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetInstanceOSPoliciesCompliance._get_transcoded_request(
                 http_options, request
@@ -1496,11 +1486,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_instance_os_policies_compliance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_instance_os_policies_compliance_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_instance_os_policies_compliance_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1580,23 +1569,20 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.inventory.Inventory:
-                    This API resource represents the
-                available inventory data for a Compute
-                Engine virtual machine (VM) instance at
-                a given point in time.
+                    This API resource represents the available inventory
+                data for a Compute Engine virtual machine (VM) instance
+                at a given point in time.
 
-                You can use this API resource to
-                determine the inventory data of your VM.
+                You can use this API resource to determine the inventory
+                data of your VM.
 
-                For more information, see [Information
-                provided by OS inventory
-                management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
+                For more information, see `Information provided by OS
+                inventory
+                management <https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_http_options()
 
             request, metadata = self._interceptor.pre_get_inventory(request, metadata)
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseGetInventory._get_transcoded_request(
@@ -1737,28 +1723,22 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.os_policy_assignments.OSPolicyAssignment:
-                    OS policy assignment is an API resource
-                that is used to apply a set of OS
-                policies to a dynamically targeted group
-                of Compute Engine VM instances.
+                    OS policy assignment is an API resource that is used to
+                apply a set of OS policies to a dynamically targeted
+                group of Compute Engine VM instances.
 
-                An OS policy is used to define the
-                desired state configuration for a
-                Compute Engine VM instance through a set
-                of configuration resources that provide
-                capabilities such as installing or
-                removing software packages, or executing
-                a script.
+                An OS policy is used to define the desired state
+                configuration for a Compute Engine VM instance through a
+                set of configuration resources that provide capabilities
+                such as installing or removing software packages, or
+                executing a script.
 
-                For more information, see [OS policy and
-                OS policy
-                assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+                For more information, see `OS policy and OS policy
+                assignment <https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_os_policy_assignment(
                 request, metadata
@@ -1911,9 +1891,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetOSPolicyAssignmentReport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_os_policy_assignment_report(
                 request, metadata
@@ -1977,11 +1955,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_get_os_policy_assignment_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_os_policy_assignment_report_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_os_policy_assignment_report_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2064,19 +2041,16 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             Returns:
                 ~.vulnerability.VulnerabilityReport:
-                    This API resource represents the
-                vulnerability report for a specified
-                Compute Engine virtual machine (VM)
+                    This API resource represents the vulnerability report
+                for a specified Compute Engine virtual machine (VM)
                 instance at a given point in time.
 
-                For more information, see [Vulnerability
-                reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
+                For more information, see `Vulnerability
+                reports <https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseGetVulnerabilityReport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_vulnerability_report(
                 request, metadata
@@ -2233,15 +2207,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListInstanceOSPoliciesCompliances._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListInstanceOSPoliciesCompliances._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_instance_os_policies_compliances(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_instance_os_policies_compliances(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListInstanceOSPoliciesCompliances._get_transcoded_request(
                 http_options, request
@@ -2295,9 +2266,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
-            )
+            resp = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse()
             pb_resp = instance_os_policies_compliance.ListInstanceOSPoliciesCompliancesResponse.pb(
                 resp
             )
@@ -2306,11 +2275,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_instance_os_policies_compliances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_instance_os_policies_compliances_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_instance_os_policies_compliances_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2397,9 +2365,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListInventories._get_http_options()
 
             request, metadata = self._interceptor.pre_list_inventories(
                 request, metadata
@@ -2553,9 +2519,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentReports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_os_policy_assignment_reports(
                 request, metadata
@@ -2623,11 +2587,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_os_policy_assignment_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_os_policy_assignment_reports_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_os_policy_assignment_reports_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2715,15 +2678,12 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_os_policy_assignment_revisions(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_os_policy_assignment_revisions(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignmentRevisions._get_transcoded_request(
                 http_options, request
@@ -2786,11 +2746,10 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             resp = self._interceptor.post_list_os_policy_assignment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_os_policy_assignment_revisions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_os_policy_assignment_revisions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2876,9 +2835,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListOSPolicyAssignments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_os_policy_assignments(
                 request, metadata
@@ -3033,9 +2990,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseListVulnerabilityReports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_vulnerability_reports(
                 request, metadata
@@ -3188,9 +3143,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_http_options()
-            )
+            http_options = _BaseOsConfigZonalServiceRestTransport._BaseUpdateOSPolicyAssignment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_os_policy_assignment(
                 request, metadata
@@ -3216,7 +3169,7 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3292,7 +3245,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOSPolicyAssignment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_os_policy_assignment(
@@ -3303,7 +3258,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteOSPolicyAssignment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_instance_os_policies_compliance(
@@ -3314,7 +3271,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetInstanceOSPoliciesCompliance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetInstanceOSPoliciesCompliance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_inventory(
@@ -3344,7 +3303,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetOSPolicyAssignmentReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOSPolicyAssignmentReport(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_vulnerability_report(
@@ -3354,7 +3315,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetVulnerabilityReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetVulnerabilityReport(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_instance_os_policies_compliances(
@@ -3365,7 +3328,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListInstanceOSPoliciesCompliances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListInstanceOSPoliciesCompliances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_inventories(
@@ -3386,7 +3351,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOSPolicyAssignmentReports(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOSPolicyAssignmentReports(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_os_policy_assignment_revisions(
@@ -3397,7 +3364,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOSPolicyAssignmentRevisions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOSPolicyAssignmentRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_os_policy_assignments(
@@ -3408,7 +3377,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOSPolicyAssignments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOSPolicyAssignments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_vulnerability_reports(
@@ -3419,7 +3390,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListVulnerabilityReports(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListVulnerabilityReports(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_os_policy_assignment(
@@ -3430,7 +3403,9 @@ class OsConfigZonalServiceRestTransport(_BaseOsConfigZonalServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateOSPolicyAssignment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateOSPolicyAssignment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

@@ -36,9 +36,10 @@ class AnnotationSpecSet(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The AnnotationSpecSet resource name
-            in the following format:
-            "projects/<var>{project_id}</var>/annotationSpecSets/<var>{annotation_spec_set_id}</var>".
+            Output only. The AnnotationSpecSet resource name in the
+            following format:
+
+            "projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}".
         display_name (str):
             Required. The display name for
             AnnotationSpecSet that you define when you

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -73,6 +73,7 @@ class SpaceNotificationSetting(proto.Message):
             OFF (4):
                 Notification is off.
         """
+
         NOTIFICATION_SETTING_UNSPECIFIED = 0
         ALL = 1
         MAIN_CONVERSATIONS = 2
@@ -93,6 +94,7 @@ class SpaceNotificationSetting(proto.Message):
                 for the space, regardless of the notification
                 setting.
         """
+
         MUTE_SETTING_UNSPECIFIED = 0
         UNMUTED = 1
         MUTED = 2

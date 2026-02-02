@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.osconfig_v1alpha.types import config_common
@@ -34,20 +34,20 @@ __protobuf__ = proto.module(
 
 
 class InstanceOSPoliciesCompliance(proto.Message):
-    r"""This API resource represents the OS policies compliance data for
-    a Compute Engine virtual machine (VM) instance at a given point
-    in time.
+    r"""This API resource represents the OS policies compliance data for a
+    Compute Engine virtual machine (VM) instance at a given point in
+    time.
 
     A Compute Engine VM can have multiple OS policy assignments, and
-    each assignment can have multiple OS policies. As a result,
-    multiple OS policies could be applied to a single VM.
+    each assignment can have multiple OS policies. As a result, multiple
+    OS policies could be applied to a single VM.
 
-    You can use this API resource to determine both the compliance
-    state of your VM as well as the compliance state of an
-    individual OS policy.
+    You can use this API resource to determine both the compliance state
+    of your VM as well as the compliance state of an individual OS
+    policy.
 
-    For more information, see [View
-    compliance](https://cloud.google.com/compute/docs/os-configuration-management/view-compliance).
+    For more information, see `View
+    compliance <https://cloud.google.com/compute/docs/os-configuration-management/view-compliance>`__.
 
     Attributes:
         name (str):

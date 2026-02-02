@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.essential_contacts_v1.types import enums
@@ -45,8 +45,7 @@ class Contact(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The identifier for the contact.
-            Format:
+            Output only. The identifier for the contact. Format:
             {resource_type}/{resource_id}/contacts/{contact_id}
         email (str):
             Required. The email address to send
@@ -57,10 +56,9 @@ class Contact(proto.Message):
             that the contact will receive communications
             for.
         language_tag (str):
-            Required. The preferred language for
-            notifications, as a ISO 639-1 language code. See
-            [Supported
-            languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
+            Required. The preferred language for notifications, as a ISO
+            639-1 language code. See `Supported
+            languages <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages>`__
             for a list of supported languages.
         validation_state (google.cloud.essential_contacts_v1.types.ValidationState):
             Output only. The validity of the contact. A
@@ -68,10 +66,9 @@ class Contact(proto.Message):
             recipient for notifications for a particular
             resource.
         validate_time (google.protobuf.timestamp_pb2.Timestamp):
-            The last time the validation_state was updated,
-            either manually or automatically. A contact is
-            considered stale if its validation state was
-            updated more than 1 year ago.
+            The last time the validation_state was updated, either
+            manually or automatically. A contact is considered stale if
+            its validation state was updated more than 1 year ago.
     """
 
     name: str = proto.Field(
@@ -82,12 +79,12 @@ class Contact(proto.Message):
         proto.STRING,
         number=2,
     )
-    notification_category_subscriptions: MutableSequence[
-        enums.NotificationCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=3,
-        enum=enums.NotificationCategory,
+    notification_category_subscriptions: MutableSequence[enums.NotificationCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum=enums.NotificationCategory,
+        )
     )
     language_tag: str = proto.Field(
         proto.STRING,
@@ -110,9 +107,9 @@ class ListContactsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name.
-            Format: organizations/{organization_id},
-            folders/{folder_id} or projects/{project_id}
+            Required. The parent resource name. Format:
+            organizations/{organization_id}, folders/{folder_id} or
+            projects/{project_id}
         page_size (int):
             Optional. The maximum number of results to return from this
             request. Non-positive values are ignored. The presence of
@@ -175,8 +172,7 @@ class GetContactRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the contact to retrieve.
-            Format:
+            Required. The name of the contact to retrieve. Format:
             organizations/{organization_id}/contacts/{contact_id},
             folders/{folder_id}/contacts/{contact_id} or
             projects/{project_id}/contacts/{contact_id}
@@ -193,8 +189,7 @@ class DeleteContactRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the contact to delete.
-            Format:
+            Required. The name of the contact to delete. Format:
             organizations/{organization_id}/contacts/{contact_id},
             folders/{folder_id}/contacts/{contact_id} or
             projects/{project_id}/contacts/{contact_id}
@@ -211,9 +206,9 @@ class CreateContactRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource to save this contact for.
-            Format: organizations/{organization_id},
-            folders/{folder_id} or projects/{project_id}
+            Required. The resource to save this contact for. Format:
+            organizations/{organization_id}, folders/{folder_id} or
+            projects/{project_id}
         contact (google.cloud.essential_contacts_v1.types.Contact):
             Required. The contact to create. Must specify
             an email address and language tag.
@@ -261,10 +256,9 @@ class ComputeContactsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the resource to compute
-            contacts for. Format:
-            organizations/{organization_id},
-            folders/{folder_id} or projects/{project_id}
+            Required. The name of the resource to compute contacts for.
+            Format: organizations/{organization_id}, folders/{folder_id}
+            or projects/{project_id}
         notification_categories (MutableSequence[google.cloud.essential_contacts_v1.types.NotificationCategory]):
             The categories of notifications to compute
             contacts for. If ALL is included in this list,
@@ -288,12 +282,12 @@ class ComputeContactsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    notification_categories: MutableSequence[
-        enums.NotificationCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=enums.NotificationCategory,
+    notification_categories: MutableSequence[enums.NotificationCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=enums.NotificationCategory,
+        )
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -342,20 +336,18 @@ class SendTestMessageRequest(proto.Message):
 
     Attributes:
         contacts (MutableSequence[str]):
-            Required. The list of names of the contacts to
-            send a test message to. Format:
+            Required. The list of names of the contacts to send a test
+            message to. Format:
             organizations/{organization_id}/contacts/{contact_id},
             folders/{folder_id}/contacts/{contact_id} or
             projects/{project_id}/contacts/{contact_id}
         resource (str):
-            Required. The name of the resource to send the
-            test message for. All contacts must either be
-            set directly on this resource or inherited from
-            another resource that is an ancestor of this
-            one. Format:
-
-            organizations/{organization_id},
-            folders/{folder_id} or projects/{project_id}
+            Required. The name of the resource to send the test message
+            for. All contacts must either be set directly on this
+            resource or inherited from another resource that is an
+            ancestor of this one. Format:
+            organizations/{organization_id}, folders/{folder_id} or
+            projects/{project_id}
         notification_category (google.cloud.essential_contacts_v1.types.NotificationCategory):
             Required. The notification category to send
             the test message for. All contacts must be

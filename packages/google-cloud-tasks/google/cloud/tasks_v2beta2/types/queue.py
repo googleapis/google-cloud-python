@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.tasks_v2beta2.types import target
@@ -86,8 +86,8 @@ class Queue(proto.Message):
 
             This field is a member of `oneof`_ ``target_type``.
         http_target (google.cloud.tasks_v2beta2.types.HttpTarget):
-            An http_target is used to override the target
-            values for HTTP tasks.
+            An http_target is used to override the target values for
+            HTTP tasks.
 
             This field is a member of `oneof`_ ``target_type``.
         rate_limits (google.cloud.tasks_v2beta2.types.RateLimits):
@@ -223,6 +223,7 @@ class Queue(proto.Message):
                 To permanently delete this queue and all of its tasks, call
                 [DeleteQueue][google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue].
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gdchardwaremanagement_v1alpha.types import resources
@@ -220,13 +220,11 @@ class UpdateOrderRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. A mask to specify the fields in the
-            Order to overwrite with this update. The fields
-            specified in the update_mask are relative to the
-            order, not the full request. A field will be
-            overwritten if it is in the mask. If you don't
-            provide a mask then all fields will be
-            overwritten.
+            Required. A mask to specify the fields in the Order to
+            overwrite with this update. The fields specified in the
+            update_mask are relative to the order, not the full request.
+            A field will be overwritten if it is in the mask. If you
+            don't provide a mask then all fields will be overwritten.
         order (google.cloud.gdchardwaremanagement_v1alpha.types.Order):
             Required. The order to update.
         request_id (str):
@@ -327,6 +325,7 @@ class SubmitOrderRequest(proto.Message):
                 hardware physical and installation information, etc. Further
                 changes to any order information will no longer be allowed.
         """
+
         TYPE_UNSPECIFIED = 0
         INFO_PENDING = 1
         INFO_COMPLETE = 2
@@ -512,13 +511,11 @@ class UpdateSiteRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. A mask to specify the fields in the
-            Site to overwrite with this update. The fields
-            specified in the update_mask are relative to the
-            site, not the full request. A field will be
-            overwritten if it is in the mask. If you don't
-            provide a mask then all fields will be
-            overwritten.
+            Required. A mask to specify the fields in the Site to
+            overwrite with this update. The fields specified in the
+            update_mask are relative to the site, not the full request.
+            A field will be overwritten if it is in the mask. If you
+            don't provide a mask then all fields will be overwritten.
         site (google.cloud.gdchardwaremanagement_v1alpha.types.Site):
             Required. The site to update.
         request_id (str):
@@ -703,13 +700,12 @@ class UpdateHardwareGroupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. A mask to specify the fields in the
-            HardwareGroup to overwrite with this update. The
-            fields specified in the update_mask are relative
-            to the hardware group, not the full request. A
-            field will be overwritten if it is in the mask.
-            If you don't provide a mask then all fields will
-            be overwritten.
+            Required. A mask to specify the fields in the HardwareGroup
+            to overwrite with this update. The fields specified in the
+            update_mask are relative to the hardware group, not the full
+            request. A field will be overwritten if it is in the mask.
+            If you don't provide a mask then all fields will be
+            overwritten.
         hardware_group (google.cloud.gdchardwaremanagement_v1alpha.types.HardwareGroup):
             Required. The hardware group to update.
         request_id (str):
@@ -892,12 +888,11 @@ class UpdateHardwareRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. A mask to specify the fields in the
-            Hardware to overwrite with this update. The
-            fields specified in the update_mask are relative
-            to the hardware, not the full request. A field
-            will be overwritten if it is in the mask. If you
-            don't provide a mask then all fields will be
+            Required. A mask to specify the fields in the Hardware to
+            overwrite with this update. The fields specified in the
+            update_mask are relative to the hardware, not the full
+            request. A field will be overwritten if it is in the mask.
+            If you don't provide a mask then all fields will be
             overwritten.
         hardware (google.cloud.gdchardwaremanagement_v1alpha.types.Hardware):
             Required. The hardware to update.
@@ -1100,6 +1095,7 @@ class RecordActionOnCommentRequest(proto.Message):
             UNREAD (2):
                 Mark comment as unread.
         """
+
         ACTION_TYPE_UNSPECIFIED = 0
         READ = 1
         UNREAD = 2
@@ -1447,13 +1443,11 @@ class UpdateZoneRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. A mask to specify the fields in the
-            Zone to overwrite with this update. The fields
-            specified in the update_mask are relative to the
-            zone, not the full request. A field will be
-            overwritten if it is in the mask. If you don't
-            provide a mask then all fields will be
-            overwritten.
+            Required. A mask to specify the fields in the Zone to
+            overwrite with this update. The fields specified in the
+            update_mask are relative to the zone, not the full request.
+            A field will be overwritten if it is in the mask. If you
+            don't provide a mask then all fields will be overwritten.
         zone (google.cloud.gdchardwaremanagement_v1alpha.types.Zone):
             Required. The zone to update.
         request_id (str):
@@ -1510,24 +1504,21 @@ class SignalZoneStateRequest(proto.Message):
             Optional. An optional unique identifier for this request.
             See `AIP-155 <https://google.aip.dev/155>`__.
         state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal):
-            Optional. The state signal to send for this
-            zone. Either state_signal or
-            provisioning_state_signal must be set, but not
-            both.
+            Optional. The state signal to send for this zone. Either
+            state_signal or provisioning_state_signal must be set, but
+            not both.
         provisioning_state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.ProvisioningStateSignal):
-            Optional. The provisioning state signal to send
-            for this zone. Either state_signal or
-            provisioning_state_signal must be set, but not
-            both.
+            Optional. The provisioning state signal to send for this
+            zone. Either state_signal or provisioning_state_signal must
+            be set, but not both.
         step (str):
-            Optional. The step being executed. Provides a
-            finer grained status when the state_signal is
+            Optional. The step being executed. Provides a finer grained
+            status when the state_signal is
             FACTORY_TURNUP_CHECKS_STARTED or
             FACTORY_TURNUP_CHECKS_FAILED.
         details (str):
-            Optional. Additional details, such as an error
-            message when state_signal is
-            FACTORY_TURNUP_CHECKS_FAILED.
+            Optional. Additional details, such as an error message when
+            state_signal is FACTORY_TURNUP_CHECKS_FAILED.
     """
 
     class StateSignal(proto.Enum):
@@ -1549,6 +1540,7 @@ class SignalZoneStateRequest(proto.Message):
                 Verify that a valid cluster intent is
                 present.
         """
+
         _pb_options = {"allow_alias": True}
         STATE_SIGNAL_UNSPECIFIED = 0
         FACTORY_TURNUP_CHECKS_STARTED = 3
@@ -1568,6 +1560,7 @@ class SignalZoneStateRequest(proto.Message):
             PROVISIONING_COMPLETE (2):
                 Provisioning is complete.
         """
+
         PROVISIONING_STATE_SIGNAL_UNSPECIFIED = 0
         PROVISIONING_IN_PROGRESS = 1
         PROVISIONING_COMPLETE = 2

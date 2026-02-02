@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.accessapproval_v1.types import accessapproval
 
@@ -396,8 +396,8 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the get approval request method over gRPC.
 
-        Gets an approval request. Returns NOT_FOUND if the
-        request does not exist.
+        Gets an approval request. Returns NOT_FOUND if the request does
+        not exist.
 
         Returns:
             Callable[[~.GetApprovalRequestMessage],
@@ -425,11 +425,11 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the approve approval request method over gRPC.
 
-        Approves a request and returns the updated
-        ApprovalRequest.
+        Approves a request and returns the updated ApprovalRequest.
+
         Returns NOT_FOUND if the request does not exist. Returns
-        FAILED_PRECONDITION if the request exists but is not in
-        a pending state.
+        FAILED_PRECONDITION if the request exists but is not in a
+        pending state.
 
         Returns:
             Callable[[~.ApproveApprovalRequestMessage],
@@ -457,16 +457,16 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the dismiss approval request method over gRPC.
 
-        Dismisses a request. Returns the updated
-        ApprovalRequest.
-        NOTE: This does not deny access to the resource if
-        another request has been made and approved. It is
-        equivalent in effect to ignoring the request altogether.
+        Dismisses a request. Returns the updated ApprovalRequest.
+
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It is equivalent in effect
+        to ignoring the request altogether.
 
         Returns NOT_FOUND if the request does not exist.
 
-        Returns FAILED_PRECONDITION if the request exists but is
-        not in a pending state.
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        a pending state.
 
         Returns:
             Callable[[~.DismissApprovalRequestMessage],
@@ -495,15 +495,15 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
     ]:
         r"""Return a callable for the invalidate approval request method over gRPC.
 
-        Invalidates an existing ApprovalRequest. Returns the
-        updated ApprovalRequest.
+        Invalidates an existing ApprovalRequest. Returns the updated
+        ApprovalRequest.
 
-        NOTE: This does not deny access to the resource if
-        another request has been made and approved. It only
-        invalidates a single approval.
+        NOTE: This does not deny access to the resource if another
+        request has been made and approved. It only invalidates a single
+        approval.
 
-        Returns FAILED_PRECONDITION if the request exists but is
-        not in an approved state.
+        Returns FAILED_PRECONDITION if the request exists but is not in
+        an approved state.
 
         Returns:
             Callable[[~.InvalidateApprovalRequestMessage],
@@ -516,12 +516,12 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "invalidate_approval_request" not in self._stubs:
-            self._stubs[
-                "invalidate_approval_request"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
-                request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
-                response_deserializer=accessapproval.ApprovalRequest.deserialize,
+            self._stubs["invalidate_approval_request"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
+                    request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
+                    response_deserializer=accessapproval.ApprovalRequest.deserialize,
+                )
             )
         return self._stubs["invalidate_approval_request"]
 
@@ -548,12 +548,12 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "get_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalSettings",
-                request_serializer=accessapproval.GetAccessApprovalSettingsMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+            self._stubs["get_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalSettings",
+                    request_serializer=accessapproval.GetAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+                )
             )
         return self._stubs["get_access_approval_settings"]
 
@@ -567,9 +567,9 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         r"""Return a callable for the update access approval
         settings method over gRPC.
 
-        Updates the settings associated with a project, folder,
-        or organization. Settings to update are determined by
-        the value of field_mask.
+        Updates the settings associated with a project, folder, or
+        organization. Settings to update are determined by the value of
+        field_mask.
 
         Returns:
             Callable[[~.UpdateAccessApprovalSettingsMessage],
@@ -582,12 +582,12 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "update_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/UpdateAccessApprovalSettings",
-                request_serializer=accessapproval.UpdateAccessApprovalSettingsMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+            self._stubs["update_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/UpdateAccessApprovalSettings",
+                    request_serializer=accessapproval.UpdateAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+                )
             )
         return self._stubs["update_access_approval_settings"]
 
@@ -620,12 +620,12 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "delete_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/DeleteAccessApprovalSettings",
-                request_serializer=accessapproval.DeleteAccessApprovalSettingsMessage.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/DeleteAccessApprovalSettings",
+                    request_serializer=accessapproval.DeleteAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_access_approval_settings"]
 
@@ -654,12 +654,12 @@ class AccessApprovalGrpcTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_service_account" not in self._stubs:
-            self._stubs[
-                "get_access_approval_service_account"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
-                request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,
+            self._stubs["get_access_approval_service_account"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
+                    request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,
+                )
             )
         return self._stubs["get_access_approval_service_account"]
 

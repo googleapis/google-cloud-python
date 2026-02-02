@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,13 +27,11 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflow_v2.types import conversation
+from google.cloud.dialogflow_v2.types import conversation, participant
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
-from google.cloud.dialogflow_v2.types import participant
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseConversationsRestTransport
@@ -1000,9 +999,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseCompleteConversation._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseCompleteConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_conversation(
                 request, metadata
@@ -1160,9 +1157,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseCreateConversation._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseCreateConversation._get_http_options()
 
             request, metadata = self._interceptor.pre_create_conversation(
                 request, metadata
@@ -1317,9 +1312,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseGenerateStatelessSuggestion._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseGenerateStatelessSuggestion._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_stateless_suggestion(
                 request, metadata
@@ -1390,11 +1383,10 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             resp = self._interceptor.post_generate_stateless_suggestion(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_stateless_suggestion_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_stateless_suggestion_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1483,9 +1475,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseGenerateStatelessSummary._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseGenerateStatelessSummary._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_stateless_summary(
                 request, metadata
@@ -1642,9 +1632,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseGenerateSuggestions._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseGenerateSuggestions._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_suggestions(
                 request, metadata
@@ -1954,9 +1942,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseIngestContextReferences._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseIngestContextReferences._get_http_options()
 
             request, metadata = self._interceptor.pre_ingest_context_references(
                 request, metadata
@@ -2114,9 +2100,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseListConversations._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseListConversations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_conversations(
                 request, metadata
@@ -2574,9 +2558,7 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationsRestTransport._BaseSuggestConversationSummary._get_http_options()
-            )
+            http_options = _BaseConversationsRestTransport._BaseSuggestConversationSummary._get_http_options()
 
             request, metadata = self._interceptor.pre_suggest_conversation_summary(
                 request, metadata
@@ -2706,7 +2688,9 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateStatelessSuggestion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateStatelessSuggestion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_stateless_summary(
@@ -2717,7 +2701,9 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateStatelessSummary(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateStatelessSummary(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_suggestions(
@@ -2747,7 +2733,9 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._IngestContextReferences(self._session, self._host, self._interceptor)  # type: ignore
+        return self._IngestContextReferences(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_conversations(
@@ -2788,7 +2776,9 @@ class ConversationsRestTransport(_BaseConversationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SuggestConversationSummary(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SuggestConversationSummary(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

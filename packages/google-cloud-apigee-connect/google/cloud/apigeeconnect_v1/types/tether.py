@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -49,6 +49,7 @@ class Action(proto.Enum):
             Indicates that agent should open a new
             stream.
     """
+
     ACTION_UNSPECIFIED = 0
     OPEN_NEW_STREAM = 1
 
@@ -66,6 +67,7 @@ class TetherEndpoint(proto.Enum):
         APIGEE_MINT_RATING (3):
             Apigee Mint Rating endpoint.
     """
+
     TETHER_ENDPOINT_UNSPECIFIED = 0
     APIGEE_MART = 1
     APIGEE_RUNTIME = 2
@@ -81,6 +83,7 @@ class Scheme(proto.Enum):
         HTTPS (1):
             HTTPS protocol.
     """
+
     SCHEME_UNSPECIFIED = 0
     HTTPS = 1
 

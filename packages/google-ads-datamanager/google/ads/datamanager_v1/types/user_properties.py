@@ -45,6 +45,7 @@ class CustomerType(proto.Enum):
             The customer has re-engaged with the
             advertiser.
     """
+
     CUSTOMER_TYPE_UNSPECIFIED = 0
     NEW = 1
     RETURNING = 2
@@ -65,6 +66,7 @@ class CustomerValueBucket(proto.Enum):
         HIGH (3):
             The customer is high value.
     """
+
     CUSTOMER_VALUE_BUCKET_UNSPECIFIED = 0
     LOW = 1
     MEDIUM = 2
@@ -85,8 +87,8 @@ class UserProperties(proto.Message):
             Optional. The advertiser-assessed value of
             the customer.
         additional_user_properties (MutableSequence[google.ads.datamanager_v1.types.UserProperty]):
-            Optional. A bucket of any additional [user
-            properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties)
+            Optional. A bucket of any additional `user
+            properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
             for the user associated with this event.
     """
 
@@ -108,8 +110,8 @@ class UserProperties(proto.Message):
 
 
 class UserProperty(proto.Message):
-    r"""A bucket of any additional [user
-    properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties)
+    r"""A bucket of any additional `user
+    properties <https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties>`__
     for the user associated with this event.
 
     Attributes:

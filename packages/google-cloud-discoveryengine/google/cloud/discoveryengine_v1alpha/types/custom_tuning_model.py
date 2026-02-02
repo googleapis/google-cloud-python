@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -78,6 +78,7 @@ class CustomTuningModel(proto.Message):
                 Input data validation failed. Model training
                 didn't start.
         """
+
         MODEL_STATE_UNSPECIFIED = 0
         TRAINING_PAUSED = 1
         TRAINING = 2

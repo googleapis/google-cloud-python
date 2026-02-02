@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
@@ -310,9 +310,7 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
         Attributes:
             fhir_resources (MutableSequence[str]):
-                Required. The FHIR resources to match by.
-                Format:
-
+                Required. The FHIR resources to match by. Format:
                 projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
         """
 
@@ -397,6 +395,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                 The [Document][google.cloud.discoveryengine.v1beta.Document]
                 is not indexed.
         """
+
         STATE_UNSPECIFIED = 0
         INDEXED = 1
         NOT_IN_TARGET_SITE = 2
@@ -447,7 +446,6 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                     This field is a member of `oneof`_ ``matcher_value``.
                 fhir_resource (str):
                     Format:
-
                     projects/{project}/locations/{location}/datasets/{dataset}/fhirStores/{fhir_store}/fhir/{resource_type}/{fhir_resource_id}
 
                     This field is a member of `oneof`_ ``matcher_value``.

@@ -237,12 +237,11 @@ class TimestampStats(proto.Message):
 
     Attributes:
         granular_stats (MutableMapping[str, google.cloud.automl_v1beta1.types.TimestampStats.GranularStats]):
-            The string key is the pre-defined granularity.
-            Currently supported: hour_of_day, day_of_week,
-            month_of_year. Granularities finer that the
-            granularity of timestamp data are not populated
-            (e.g. if timestamps are at day granularity, then
-            hour_of_day is not populated).
+            The string key is the pre-defined granularity. Currently
+            supported: hour_of_day, day_of_week, month_of_year.
+            Granularities finer that the granularity of timestamp data
+            are not populated (e.g. if timestamps are at day
+            granularity, then hour_of_day is not populated).
     """
 
     class GranularStats(proto.Message):

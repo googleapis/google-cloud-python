@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -58,9 +58,8 @@ class Chunk(proto.Message):
             Metadata of the document from the current
             chunk.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
-            Output only. This field is OUTPUT_ONLY.
-            It contains derived data that are not in the
-            original input document.
+            Output only. This field is OUTPUT_ONLY. It contains derived
+            data that are not in the original input document.
         page_span (google.cloud.discoveryengine_v1.types.Chunk.PageSpan):
             Page span of the chunk.
         chunk_metadata (google.cloud.discoveryengine_v1.types.Chunk.ChunkMetadata):
@@ -93,6 +92,7 @@ class Chunk(proto.Message):
             CHECKBOX_STRUCTURE (3):
                 Checkbox structure.
         """
+
         STRUCTURE_TYPE_UNSPECIFIED = 0
         SHAREHOLDER_STRUCTURE = 1
         SIGNATURE_STRUCTURE = 2

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.events_subscriptions_v1.types import subscription_resource
@@ -265,12 +265,12 @@ class ListSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions: MutableSequence[
-        subscription_resource.Subscription
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=subscription_resource.Subscription,
+    subscriptions: MutableSequence[subscription_resource.Subscription] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=subscription_resource.Subscription,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

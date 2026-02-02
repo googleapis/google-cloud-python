@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.vmmigration_v1.types import vmmigration
 
@@ -674,12 +674,12 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_datacenter_connectors" not in self._stubs:
-            self._stubs[
-                "list_datacenter_connectors"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
-                request_serializer=vmmigration.ListDatacenterConnectorsRequest.serialize,
-                response_deserializer=vmmigration.ListDatacenterConnectorsResponse.deserialize,
+            self._stubs["list_datacenter_connectors"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vmmigration.v1.VmMigration/ListDatacenterConnectors",
+                    request_serializer=vmmigration.ListDatacenterConnectorsRequest.serialize,
+                    response_deserializer=vmmigration.ListDatacenterConnectorsResponse.deserialize,
+                )
             )
         return self._stubs["list_datacenter_connectors"]
 
@@ -732,12 +732,12 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_datacenter_connector" not in self._stubs:
-            self._stubs[
-                "create_datacenter_connector"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
-                request_serializer=vmmigration.CreateDatacenterConnectorRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_datacenter_connector"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vmmigration.v1.VmMigration/CreateDatacenterConnector",
+                    request_serializer=vmmigration.CreateDatacenterConnectorRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_datacenter_connector"]
 
@@ -762,12 +762,12 @@ class VmMigrationGrpcTransport(VmMigrationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_datacenter_connector" not in self._stubs:
-            self._stubs[
-                "delete_datacenter_connector"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
-                request_serializer=vmmigration.DeleteDatacenterConnectorRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_datacenter_connector"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
+                    request_serializer=vmmigration.DeleteDatacenterConnectorRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_datacenter_connector"]
 

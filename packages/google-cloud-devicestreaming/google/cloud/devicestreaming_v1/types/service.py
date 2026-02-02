@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,9 +42,8 @@ class CreateDeviceSessionRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The Compute Engine project under which
-            this device will be allocated.
-            "projects/{project_id}".
+            Required. The Compute Engine project under which this device
+            will be allocated. "projects/{project_id}".
         device_session (google.cloud.devicestreaming_v1.types.DeviceSession):
             Required. A DeviceSession to create.
         device_session_id (str):
@@ -76,17 +75,16 @@ class ListDeviceSessionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent to request,
-            e.g. "projects/{project_id}".
+            Required. The name of the parent to request, e.g.
+            "projects/{project_id}".
         page_size (int):
             Optional. The maximum number of
             DeviceSessions to return.
         page_token (str):
             Optional. A continuation token for paging.
         filter (str):
-            Optional. If specified, responses will be
-            filtered by the given filter. Allowed fields
-            are: session_state.
+            Optional. If specified, responses will be filtered by the
+            given filter. Allowed fields are: session_state.
     """
 
     parent: str = proto.Field(
@@ -211,9 +209,8 @@ class DeviceSession(proto.Message):
             Output only. Current state of the
             DeviceSession.
         state_histories (MutableSequence[google.cloud.devicestreaming_v1.types.DeviceSession.SessionStateEvent]):
-            Output only. The historical state transitions of
-            the session_state message including the current
-            session state.
+            Output only. The historical state transitions of the
+            session_state message including the current session state.
         ttl (google.protobuf.duration_pb2.Duration):
             Optional. The amount of time that a device
             will be initially allocated for. This can
@@ -229,9 +226,9 @@ class DeviceSession(proto.Message):
 
             This field is a member of `oneof`_ ``expiration``.
         inactivity_timeout (google.protobuf.duration_pb2.Duration):
-            Output only. The interval of time that this
-            device must be interacted with before it
-            transitions from ACTIVE to TIMEOUT_INACTIVITY.
+            Output only. The interval of time that this device must be
+            interacted with before it transitions from ACTIVE to
+            TIMEOUT_INACTIVITY.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that the Session was
             created.
@@ -278,6 +275,7 @@ class DeviceSession(proto.Message):
                 internal reason, such as an infrastructure
                 failure.
         """
+
         SESSION_STATE_UNSPECIFIED = 0
         REQUESTED = 1
         PENDING = 2
@@ -293,11 +291,10 @@ class DeviceSession(proto.Message):
 
         Attributes:
             session_state (google.cloud.devicestreaming_v1.types.DeviceSession.SessionState):
-                Output only. The session_state tracked by this
-                event
+                Output only. The session_state tracked by this event
             event_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. The time that the session_state
-                first encountered that state.
+                Output only. The time that the session_state first
+                encountered that state.
             state_message (str):
                 Output only. A human-readable message to
                 explain the state.

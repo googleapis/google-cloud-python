@@ -85,6 +85,7 @@ class User(proto.Message):
             BOT (2):
                 Chat app user.
         """
+
         TYPE_UNSPECIFIED = 0
         HUMAN = 1
         BOT = 2

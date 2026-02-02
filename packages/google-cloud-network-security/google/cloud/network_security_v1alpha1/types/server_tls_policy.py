@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_security_v1alpha1.types import tls
@@ -158,6 +158,7 @@ class ServerTlsPolicy(proto.Message):
                     If set, requires a reference to non-empty TrustConfig
                     specified in ``client_validation_trust_config``.
             """
+
             CLIENT_VALIDATION_MODE_UNSPECIFIED = 0
             ALLOW_INVALID_OR_MISSING_CLIENT_CERT = 1
             REJECT_INVALID = 2
@@ -323,11 +324,10 @@ class CreateServerTlsPolicyRequest(proto.Message):
             Required. The parent resource of the ServerTlsPolicy. Must
             be in the format ``projects/*/locations/{location}``.
         server_tls_policy_id (str):
-            Required. Short name of the ServerTlsPolicy
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g.
+            Required. Short name of the ServerTlsPolicy resource to be
+            created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g.
             "server_mtls_policy".
         server_tls_policy (google.cloud.network_security_v1alpha1.types.ServerTlsPolicy):
             Required. ServerTlsPolicy resource to be
@@ -354,14 +354,12 @@ class UpdateServerTlsPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the ServerTlsPolicy
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServerTlsPolicy resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         server_tls_policy (google.cloud.network_security_v1alpha1.types.ServerTlsPolicy):
             Required. Updated ServerTlsPolicy resource.
     """

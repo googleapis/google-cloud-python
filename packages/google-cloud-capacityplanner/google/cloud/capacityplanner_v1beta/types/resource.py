@@ -76,6 +76,7 @@ class Unit(proto.Enum):
         KOPS (18):
             No description available.
     """
+
     UNIT_UNSPECIFIED = 0
     UNIT_COUNT = 1
     KB = 2
@@ -123,6 +124,7 @@ class ResourceContainer(proto.Message):
             ORG (3):
                 No description available.
         """
+
         TYPE_UNSPECIFIED = 0
         PROJECT = 1
         FOLDER = 2
@@ -146,9 +148,9 @@ class ResourceIdKey(proto.Message):
 
     Attributes:
         resource_code (str):
-            Required. resource_code for the resource. eg:
-            gce-ram, gce-vcpus, gce-gpu, gce-tpu, gce-vm,
-            gce-persistent-disk, gce-local-ssd.
+            Required. resource_code for the resource. eg: gce-ram,
+            gce-vcpus, gce-gpu, gce-tpu, gce-vm, gce-persistent-disk,
+            gce-local-ssd.
 
             This field is a member of `oneof`_ ``demand_fields``.
         resource_id (google.cloud.capacityplanner_v1beta.types.ResourceIdentifier):

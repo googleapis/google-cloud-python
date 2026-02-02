@@ -25,13 +25,11 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PhishingProtectionServiceV1Beta1Transport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PhishingProtectionServiceV1Beta1Transport]]
 _transport_registry["grpc"] = PhishingProtectionServiceV1Beta1GrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = (
+    PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
+)
 _transport_registry["rest"] = PhishingProtectionServiceV1Beta1RestTransport
 
 __all__ = (

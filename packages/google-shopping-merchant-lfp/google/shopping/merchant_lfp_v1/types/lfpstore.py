@@ -72,11 +72,11 @@ class LfpStore(proto.Message):
 
             This field is a member of `oneof`_ ``_website_uri``.
         gcid_category (MutableSequence[str]):
-            Optional. [Google My Business category
-            id](https://gcid-explorer.corp.google.com/static/gcid.html).
+            Optional. `Google My Business category
+            id <https://gcid-explorer.corp.google.com/static/gcid.html>`__.
         place_id (str):
-            Optional. The [Google Place
-            Id](https://developers.google.com/maps/documentation/places/web-service/place-id#id-overview)
+            Optional. The `Google Place
+            Id <https://developers.google.com/maps/documentation/places/web-service/place-id#id-overview>`__
             of the store location.
 
             This field is a member of `oneof`_ ``_place_id``.
@@ -124,6 +124,7 @@ class LfpStore(proto.Message):
                 The ``LfpStore`` is not matched with a Google Business
                 Profile store.
         """
+
         STORE_MATCHING_STATE_UNSPECIFIED = 0
         STORE_MATCHING_STATE_MATCHED = 1
         STORE_MATCHING_STATE_FAILED = 2

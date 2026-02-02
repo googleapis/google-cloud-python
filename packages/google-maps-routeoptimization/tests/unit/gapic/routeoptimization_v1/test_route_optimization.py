@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,13 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,18 +58,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
 
 from google.maps.routeoptimization_v1.services.route_optimization import (
     RouteOptimizationAsyncClient,
@@ -990,10 +990,9 @@ def test_route_optimization_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1038,10 +1037,9 @@ def test_route_optimization_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1077,10 +1075,9 @@ def test_route_optimization_client_get_mtls_endpoint_and_cert_source(client_clas
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1328,13 +1325,13 @@ def test_route_optimization_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1688,9 +1685,9 @@ def test_batch_optimize_tours_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_optimize_tours
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_optimize_tours] = (
+            mock_rpc
+        )
         request = {}
         client.batch_optimize_tours(request)
 
@@ -2211,9 +2208,9 @@ def test_optimize_tours_uri_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.optimize_tours_uri
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.optimize_tours_uri] = (
+            mock_rpc
+        )
         request = {}
         client.optimize_tours_uri(request)
 
@@ -2529,9 +2526,9 @@ def test_batch_optimize_tours_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.batch_optimize_tours
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.batch_optimize_tours] = (
+            mock_rpc
+        )
 
         request = {}
         client.batch_optimize_tours(request)
@@ -2790,9 +2787,9 @@ def test_optimize_tours_uri_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.optimize_tours_uri
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.optimize_tours_uri] = (
+            mock_rpc
+        )
 
         request = {}
         client.optimize_tours_uri(request)
@@ -3238,8 +3235,9 @@ def test_optimize_tours_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3302,17 +3300,20 @@ def test_optimize_tours_rest_interceptors(null_interceptor):
     )
     client = RouteOptimizationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "post_optimize_tours"
-    ) as post, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "post_optimize_tours_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "pre_optimize_tours"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "post_optimize_tours"
+        ) as post,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "post_optimize_tours_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "pre_optimize_tours"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3370,8 +3371,9 @@ def test_batch_optimize_tours_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3428,20 +3430,21 @@ def test_batch_optimize_tours_rest_interceptors(null_interceptor):
     )
     client = RouteOptimizationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "post_batch_optimize_tours"
-    ) as post, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor,
-        "post_batch_optimize_tours_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "pre_batch_optimize_tours"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "post_batch_optimize_tours"
+        ) as post,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "post_batch_optimize_tours_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "pre_batch_optimize_tours"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3494,8 +3497,9 @@ def test_optimize_tours_long_running_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3552,20 +3556,23 @@ def test_optimize_tours_long_running_rest_interceptors(null_interceptor):
     )
     client = RouteOptimizationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "post_optimize_tours_long_running"
-    ) as post, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor,
-        "post_optimize_tours_long_running_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "pre_optimize_tours_long_running"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "post_optimize_tours_long_running",
+        ) as post,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "post_optimize_tours_long_running_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "pre_optimize_tours_long_running",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3618,8 +3625,9 @@ def test_optimize_tours_uri_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -3676,20 +3684,21 @@ def test_optimize_tours_uri_rest_interceptors(null_interceptor):
     )
     client = RouteOptimizationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "post_optimize_tours_uri"
-    ) as post, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor,
-        "post_optimize_tours_uri_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.RouteOptimizationRestInterceptor, "pre_optimize_tours_uri"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "post_optimize_tours_uri"
+        ) as post,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor,
+            "post_optimize_tours_uri_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.RouteOptimizationRestInterceptor, "pre_optimize_tours_uri"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -3744,8 +3753,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -3965,11 +3975,14 @@ def test_route_optimization_base_transport():
 
 def test_route_optimization_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.maps.routeoptimization_v1.services.route_optimization.transports.RouteOptimizationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.maps.routeoptimization_v1.services.route_optimization.transports.RouteOptimizationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RouteOptimizationTransport(
@@ -3986,9 +3999,12 @@ def test_route_optimization_base_transport_with_credentials_file():
 
 def test_route_optimization_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.maps.routeoptimization_v1.services.route_optimization.transports.RouteOptimizationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.maps.routeoptimization_v1.services.route_optimization.transports.RouteOptimizationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RouteOptimizationTransport()
@@ -4060,11 +4076,12 @@ def test_route_optimization_transport_auth_gdch_credentials(transport_class):
 def test_route_optimization_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

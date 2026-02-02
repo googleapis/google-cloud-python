@@ -79,9 +79,8 @@ class EventCreateRule(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for this
-            EventCreateRule resource. Format:
-
+            Output only. Resource name for this EventCreateRule
+            resource. Format:
             properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}
         destination_event (str):
             Required. The name of the new event to be created.
@@ -146,9 +145,8 @@ class EventEditRule(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. Resource name for this EventEditRule
-            resource. Format:
-
+            Identifier. Resource name for this EventEditRule resource.
+            Format:
             properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}
         display_name (str):
             Required. The display name of this event edit
@@ -204,11 +202,10 @@ class MatchingCondition(proto.Message):
 
     Attributes:
         field (str):
-            Required. The name of the field that is compared
-            against for the condition. If 'event_name' is
-            specified this condition will apply to the name
-            of the event. Otherwise the condition will apply
-            to a parameter with the specified name.
+            Required. The name of the field that is compared against for
+            the condition. If 'event_name' is specified this condition
+            will apply to the name of the event. Otherwise the condition
+            will apply to a parameter with the specified name.
 
             This value cannot contain spaces.
         comparison_type (google.analytics.admin_v1alpha.types.MatchingCondition.ComparisonType):
@@ -263,6 +260,7 @@ class MatchingCondition(proto.Message):
                 regular expression, case insensitive. Only
                 supported for web streams.
         """
+
         COMPARISON_TYPE_UNSPECIFIED = 0
         EQUALS = 1
         EQUALS_CASE_INSENSITIVE = 2

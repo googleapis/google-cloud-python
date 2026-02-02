@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import alert
@@ -78,9 +78,11 @@ class GetAlertPolicyRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The alerting policy to retrieve. The
-            format is:
-            projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+            Required. The alerting policy to retrieve. The format is:
+
+            ::
+
+                projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
     name: str = proto.Field(
@@ -108,12 +110,12 @@ class ListAlertPoliciesRequest(proto.Message):
             [GetAlertPolicy][google.monitoring.v3.AlertPolicyService.GetAlertPolicy]
             operation, instead.
         filter (str):
-            Optional. If provided, this field specifies the
-            criteria that must be met by alert policies to
-            be included in the response.
+            Optional. If provided, this field specifies the criteria
+            that must be met by alert policies to be included in the
+            response.
 
-            For more details, see [sorting and
-            filtering](https://cloud.google.com/monitoring/api/v3/sorting-and-filtering).
+            For more details, see `sorting and
+            filtering <https://cloud.google.com/monitoring/api/v3/sorting-and-filtering>`__.
         order_by (str):
             Optional. A comma-separated list of fields by which to sort
             the result. Supports the same set of field references as the

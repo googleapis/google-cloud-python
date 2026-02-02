@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -68,10 +68,9 @@ class ExpandedDataSetFilter(proto.Message):
                 Required. The string value to be matched
                 against.
             case_sensitive (bool):
-                Optional. If true, the match is case-sensitive.
-                If false, the match is case-insensitive.
-                Must be true when match_type is EXACT.
-                Must be false when match_type is CONTAINS.
+                Optional. If true, the match is case-sensitive. If false,
+                the match is case-insensitive. Must be true when match_type
+                is EXACT. Must be false when match_type is CONTAINS.
         """
 
         class MatchType(proto.Enum):
@@ -85,6 +84,7 @@ class ExpandedDataSetFilter(proto.Message):
                 CONTAINS (2):
                     Contains the string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             CONTAINS = 2
@@ -156,18 +156,17 @@ class ExpandedDataSetFilterExpression(proto.Message):
 
     Attributes:
         and_group (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpressionList):
-            A list of expressions to be AND’ed together. It
-            must contain a ExpandedDataSetFilterExpression
-            with either not_expression or dimension_filter.
-            This must be set for the top level
+            A list of expressions to be AND’ed together. It must contain
+            a ExpandedDataSetFilterExpression with either not_expression
+            or dimension_filter. This must be set for the top level
             ExpandedDataSetFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         not_expression (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpression):
-            A filter expression to be NOT'ed (that is,
-            inverted, complemented). It must include a
-            dimension_filter. This cannot be set on the top
-            level ExpandedDataSetFilterExpression.
+            A filter expression to be NOT'ed (that is, inverted,
+            complemented). It must include a dimension_filter. This
+            cannot be set on the top level
+            ExpandedDataSetFilterExpression.
 
             This field is a member of `oneof`_ ``expr``.
         filter (google.analytics.admin_v1alpha.types.ExpandedDataSetFilter):
@@ -206,12 +205,12 @@ class ExpandedDataSetFilterExpressionList(proto.Message):
             A list of ExpandedDataSet filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ExpandedDataSetFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ExpandedDataSetFilterExpression",
+    filter_expressions: MutableSequence["ExpandedDataSetFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ExpandedDataSetFilterExpression",
+        )
     )
 
 
@@ -220,8 +219,8 @@ class ExpandedDataSet(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name for this
-            ExpandedDataSet resource. Format:
+            Output only. The resource name for this ExpandedDataSet
+            resource. Format:
             properties/{property_id}/expandedDataSets/{expanded_data_set}
         display_name (str):
             Required. The display name of the
@@ -230,14 +229,14 @@ class ExpandedDataSet(proto.Message):
             Optional. The description of the
             ExpandedDataSet. Max 50 chars.
         dimension_names (MutableSequence[str]):
-            Immutable. The list of dimensions included in
-            the ExpandedDataSet. See the [API
-            Dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions)
+            Immutable. The list of dimensions included in the
+            ExpandedDataSet. See the `API
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>`__
             for the list of dimension names.
         metric_names (MutableSequence[str]):
             Immutable. The list of metrics included in the
-            ExpandedDataSet. See the [API
-            Metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics)
+            ExpandedDataSet. See the `API
+            Metrics <https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>`__
             for the list of dimension names.
         dimension_filter_expression (google.analytics.admin_v1alpha.types.ExpandedDataSetFilterExpression):
             Immutable. A logical expression of ExpandedDataSet filters

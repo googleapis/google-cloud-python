@@ -17,23 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.translate_v3beta1.types import translation_service
 
@@ -551,9 +553,8 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the create glossary method over gRPC.
 
-        Creates a glossary and returns the long-running
-        operation. Returns NOT_FOUND, if the project doesn't
-        exist.
+        Creates a glossary and returns the long-running operation.
+        Returns NOT_FOUND, if the project doesn't exist.
 
         Returns:
             Callable[[~.CreateGlossaryRequest],
@@ -582,8 +583,8 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the list glossaries method over gRPC.
 
-        Lists glossaries in a project. Returns NOT_FOUND, if the
-        project doesn't exist.
+        Lists glossaries in a project. Returns NOT_FOUND, if the project
+        doesn't exist.
 
         Returns:
             Callable[[~.ListGlossariesRequest],
@@ -612,8 +613,8 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the get glossary method over gRPC.
 
-        Gets a glossary. Returns NOT_FOUND, if the glossary
-        doesn't exist.
+        Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
+        exist.
 
         Returns:
             Callable[[~.GetGlossaryRequest],
@@ -641,9 +642,9 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     ]:
         r"""Return a callable for the delete glossary method over gRPC.
 
-        Deletes a glossary, or cancels glossary construction
-        if the glossary isn't created yet.
-        Returns NOT_FOUND, if the glossary doesn't exist.
+        Deletes a glossary, or cancels glossary construction if the
+        glossary isn't created yet. Returns NOT_FOUND, if the glossary
+        doesn't exist.
 
         Returns:
             Callable[[~.DeleteGlossaryRequest],

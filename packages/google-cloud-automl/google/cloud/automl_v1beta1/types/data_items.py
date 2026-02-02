@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import geometry, io
@@ -142,6 +142,7 @@ class DocumentDimensions(proto.Message):
                 Document dimension is measured in points. 72
                 points = 1 inch.
         """
+
         DOCUMENT_DIMENSION_UNIT_UNSPECIFIED = 0
         INCH = 1
         CENTIMETER = 2
@@ -224,16 +225,14 @@ class Document(proto.Message):
                 FORM_FIELD (3):
                     The text segment is a form field.
                 FORM_FIELD_NAME (4):
-                    The text segment is the name part of a form
-                    field. It will be treated as child of another
-                    FORM_FIELD TextSegment if its span is subspan of
-                    another TextSegment with type FORM_FIELD.
+                    The text segment is the name part of a form field. It will
+                    be treated as child of another FORM_FIELD TextSegment if its
+                    span is subspan of another TextSegment with type FORM_FIELD.
                 FORM_FIELD_CONTENTS (5):
-                    The text segment is the text content part of a
-                    form field. It will be treated as child of
-                    another FORM_FIELD TextSegment if its span is
-                    subspan of another TextSegment with type
-                    FORM_FIELD.
+                    The text segment is the text content part of a form field.
+                    It will be treated as child of another FORM_FIELD
+                    TextSegment if its span is subspan of another TextSegment
+                    with type FORM_FIELD.
                 TABLE (6):
                     The text segment is a whole table, including
                     headers, and all rows.
@@ -248,11 +247,11 @@ class Document(proto.Message):
                     if its span is subspan of another TextSegment
                     with type TABLE.
                 TABLE_CELL (9):
-                    The text segment is a cell in table. It will be
-                    treated as child of another TABLE_ROW
-                    TextSegment if its span is subspan of another
-                    TextSegment with type TABLE_ROW.
+                    The text segment is a cell in table. It will be treated as
+                    child of another TABLE_ROW TextSegment if its span is
+                    subspan of another TextSegment with type TABLE_ROW.
             """
+
             TEXT_SEGMENT_TYPE_UNSPECIFIED = 0
             TOKEN = 1
             PARAGRAPH = 2

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gkerecommender_v1 import gapic_version as package_version
 
@@ -78,9 +78,7 @@ class GkeInferenceQuickstartClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
     _transport_registry["grpc"] = GkeInferenceQuickstartGrpcTransport
     _transport_registry["grpc_asyncio"] = GkeInferenceQuickstartGrpcAsyncIOTransport
     _transport_registry["rest"] = GkeInferenceQuickstartRestTransport
@@ -608,11 +606,9 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = GkeInferenceQuickstartClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            GkeInferenceQuickstartClient._read_environment_variables()
+        )
         self._client_cert_source = GkeInferenceQuickstartClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -647,8 +643,7 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(GkeInferenceQuickstartTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1017,18 +1012,16 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchProfilesPager:
-        r"""Fetches available profiles. A profile contains
-        performance metrics and cost information for a specific
-        model server setup. Profiles can be filtered by
-        parameters. If no filters are provided, all profiles are
-        returned.
+        r"""Fetches available profiles. A profile contains performance
+        metrics and cost information for a specific model server setup.
+        Profiles can be filtered by parameters. If no filters are
+        provided, all profiles are returned.
 
-        Profiles display a single value per performance metric
-        based on the provided performance requirements. If no
-        requirements are given, the metrics represent the
-        inflection point. See [Run best practice inference with
-        GKE Inference Quickstart
-        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how)
+        Profiles display a single value per performance metric based on
+        the provided performance requirements. If no requirements are
+        given, the metrics represent the inflection point. See `Run best
+        practice inference with GKE Inference Quickstart
+        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart#how>`__
         for details.
 
         .. code-block:: python
@@ -1123,12 +1116,11 @@ class GkeInferenceQuickstartClient(metaclass=GkeInferenceQuickstartClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gkerecommender.GenerateOptimizedManifestResponse:
-        r"""Generates an optimized deployment manifest for a given
-        model and model server, based on the specified
-        accelerator, performance targets, and configurations.
-        See [Run best practice inference with GKE Inference
-        Quickstart
-        recipes](https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart)
+        r"""Generates an optimized deployment manifest for a given model and
+        model server, based on the specified accelerator, performance
+        targets, and configurations. See `Run best practice inference
+        with GKE Inference Quickstart
+        recipes <https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference/inference-quickstart>`__
         for deployment details.
 
         .. code-block:: python

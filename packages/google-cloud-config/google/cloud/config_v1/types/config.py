@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -115,6 +115,7 @@ class QuotaValidation(proto.Enum):
             deploy resources in terraform configuration
             files.
     """
+
     QUOTA_VALIDATION_UNSPECIFIED = 0
     ENABLED = 1
     ENFORCED = 2
@@ -272,6 +273,7 @@ class Deployment(proto.Message):
             DELETED (7):
                 The deployment has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -308,6 +310,7 @@ class Deployment(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         REVISION_FAILED = 1
         CLOUD_BUILD_PERMISSION_DENIED = 3
@@ -337,6 +340,7 @@ class Deployment(proto.Message):
             UNLOCK_FAILED (6):
                 The deployment has failed to unlock.
         """
+
         LOCK_STATE_UNSPECIFIED = 0
         LOCKED = 1
         UNLOCKED = 2
@@ -581,16 +585,13 @@ class ListDeploymentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Deployments are listed. The parent value is in
-            the format:
-
+            Required. The parent in whose context the Deployments are
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         page_size (int):
-            When requesting a page of resources, 'page_size'
-            specifies number of resources to return. If
-            unspecified, at most 500 will be returned. The
-            maximum value is 1000.
+            When requesting a page of resources, 'page_size' specifies
+            number of resources to return. If unspecified, at most 500
+            will be returned. The maximum value is 1000.
         page_token (str):
             Token returned by previous call to
             'ListDeployments' which specifies the position
@@ -684,7 +685,6 @@ class GetDeploymentRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the deployment. Format:
-
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
     """
 
@@ -699,10 +699,8 @@ class ListRevisionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Revisions are listed. The parent value is in the
-            format:
-
+            Required. The parent in whose context the Revisions are
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         page_size (int):
             When requesting a page of resources, ``page_size`` specifies
@@ -803,8 +801,7 @@ class GetRevisionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Revision in the
-            format:
+            Required. The name of the Revision in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
     """
 
@@ -819,9 +816,8 @@ class CreateDeploymentRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Deployment is created. The parent value is in
-            the format:
+            Required. The parent in whose context the Deployment is
+            created. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         deployment_id (str):
             Required. The Deployment ID.
@@ -874,15 +870,13 @@ class UpdateDeploymentRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask used to specify the fields
-            to be overwritten in the Deployment resource by
-            the update.
+            Optional. Field mask used to specify the fields to be
+            overwritten in the Deployment resource by the update.
 
-            The fields specified in the update_mask are
-            relative to the resource, not the full request.
-            A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then
-            all fields will be overwritten.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         deployment (google.cloud.config_v1.types.Deployment):
             Required. [Deployment][google.cloud.config.v1.Deployment] to
             update.
@@ -933,8 +927,7 @@ class DeleteDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Deployment in the
-            format:
+            Required. The name of the Deployment in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         request_id (str):
             Optional. An optional request ID to identify
@@ -982,6 +975,7 @@ class DeleteDeploymentRequest(proto.Message):
                 Abandons resources and only deletes the
                 deployment and its metadata.
         """
+
         DELETE_POLICY_UNSPECIFIED = 0
         DELETE = 1
         ABANDON = 2
@@ -1209,6 +1203,7 @@ class Revision(proto.Message):
             DELETE (3):
                 The revision was deleted.
         """
+
         ACTION_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -1229,6 +1224,7 @@ class Revision(proto.Message):
                 The revision could not be applied
                 successfully.
         """
+
         STATE_UNSPECIFIED = 0
         APPLYING = 1
         APPLIED = 2
@@ -1256,6 +1252,7 @@ class Revision(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         APPLY_BUILD_API_FAILED = 4
@@ -1494,6 +1491,7 @@ class DeploymentOperationMetadata(proto.Message):
             RUNNING_QUOTA_VALIDATION (12):
                 Running quota validation
         """
+
         DEPLOYMENT_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
         DOWNLOADING_BLUEPRINT = 2
@@ -1570,6 +1568,7 @@ class Resource(proto.Message):
                 Infra Manager will leave this Resource
                 untouched.
         """
+
         INTENT_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -1594,6 +1593,7 @@ class Resource(proto.Message):
             FAILED (4):
                 Resource failed to reconcile.
         """
+
         STATE_UNSPECIFIED = 0
         PLANNED = 1
         IN_PROGRESS = 2
@@ -1674,8 +1674,7 @@ class GetResourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Resource in the
-            format:
+            Required. The name of the Resource in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}/resource/{resource}'.
     """
 
@@ -1690,16 +1689,13 @@ class ListResourcesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Resources are listed. The parent value is in the
-            format:
-
+            Required. The parent in whose context the Resources are
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
         page_size (int):
-            When requesting a page of resources, 'page_size'
-            specifies number of resources to return. If
-            unspecified, at most 500 will be returned. The
-            maximum value is 1000.
+            When requesting a page of resources, 'page_size' specifies
+            number of resources to return. If unspecified, at most 500
+            will be returned. The maximum value is 1000.
         page_token (str):
             Token returned by previous call to
             'ListResources' which specifies the position in
@@ -1801,10 +1797,8 @@ class ExportDeploymentStatefileRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            statefile is listed. The parent value is in the
-            format:
-
+            Required. The parent in whose context the statefile is
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         draft (bool):
             Optional. If this flag is set to true, the
@@ -1830,10 +1824,8 @@ class ExportRevisionStatefileRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            statefile is listed. The parent value is in the
-            format:
-
+            Required. The parent in whose context the statefile is
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}/revisions/{revision}'.
     """
 
@@ -1849,10 +1841,8 @@ class ImportStatefileRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            statefile is listed. The parent value is in the
-            format:
-
+            Required. The parent in whose context the statefile is
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         lock_id (int):
             Required. Lock ID of the lock file to verify
@@ -1882,8 +1872,7 @@ class DeleteStatefileRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment in the
-            format:
+            Required. The name of the deployment in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         lock_id (int):
             Required. Lock ID of the lock file to verify
@@ -1907,8 +1896,7 @@ class LockDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment in the
-            format:
+            Required. The name of the deployment in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
     """
 
@@ -1924,8 +1912,7 @@ class UnlockDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment in the
-            format:
+            Required. The name of the deployment in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
         lock_id (int):
             Required. Lock ID of the lock file to be
@@ -1948,8 +1935,7 @@ class ExportLockInfoRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment in the
-            format:
+            Required. The name of the deployment in the format:
             'projects/{project_id}/locations/{location}/deployments/{deployment}'.
     """
 
@@ -2061,14 +2047,12 @@ class Preview(proto.Message):
 
             This field is a member of `oneof`_ ``_artifacts_gcs_bucket``.
         worker_pool (str):
-            Optional. The user-specified Worker Pool
-            resource in which the Cloud Build job will
-            execute. Format
+            Optional. The user-specified Worker Pool resource in which
+            the Cloud Build job will execute. Format
             projects/{project}/locations/{location}/workerPools/{workerPoolId}
-            If this field is unspecified, the default Cloud
-            Build worker pool will be used. If omitted and
-            deployment resource ref provided has worker_pool
-            defined, that worker pool is used.
+            If this field is unspecified, the default Cloud Build worker
+            pool will be used. If omitted and deployment resource ref
+            provided has worker_pool defined, that worker pool is used.
 
             This field is a member of `oneof`_ ``_worker_pool``.
         error_code (google.cloud.config_v1.types.Preview.ErrorCode):
@@ -2139,6 +2123,7 @@ class Preview(proto.Message):
             DELETED (7):
                 The preview has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SUCCEEDED = 2
@@ -2164,6 +2149,7 @@ class Preview(proto.Message):
                 DELETE mode generates as execution plan for
                 destroying current resources.
         """
+
         PREVIEW_MODE_UNSPECIFIED = 0
         DEFAULT = 1
         DELETE = 2
@@ -2196,6 +2182,7 @@ class Preview(proto.Message):
                 Failed to import values from an external
                 source.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         BUCKET_CREATION_PERMISSION_DENIED = 2
@@ -2354,6 +2341,7 @@ class PreviewOperationMetadata(proto.Message):
             VALIDATING_REPOSITORY (10):
                 Validating the provided repository.
         """
+
         PREVIEW_STEP_UNSPECIFIED = 0
         PREPARING_STORAGE_BUCKET = 1
         DOWNLOADING_BLUEPRINT = 2
@@ -2413,9 +2401,8 @@ class CreatePreviewRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Preview is created. The parent value is in the
-            format:
+            Required. The parent in whose context the Preview is
+            created. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         preview_id (str):
             Optional. The preview ID.
@@ -2469,7 +2456,6 @@ class GetPreviewRequest(proto.Message):
     Attributes:
         name (str):
             Required. The name of the preview. Format:
-
             'projects/{project_id}/locations/{location}/previews/{preview}'.
     """
 
@@ -2485,15 +2471,13 @@ class ListPreviewsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            Previews are listed. The parent value is in the
-            format:
+            Required. The parent in whose context the Previews are
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         page_size (int):
-            Optional. When requesting a page of resources,
-            'page_size' specifies number of resources to
-            return. If unspecified, at most 500 will be
-            returned. The maximum value is 1000.
+            Optional. When requesting a page of resources, 'page_size'
+            specifies number of resources to return. If unspecified, at
+            most 500 will be returned. The maximum value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListDeployments' which specifies the position
@@ -2625,9 +2609,8 @@ class ExportPreviewResultRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The preview whose results should be
-            exported. The preview value is in the format:
-
+            Required. The preview whose results should be exported. The
+            preview value is in the format:
             'projects/{project_id}/locations/{location}/previews/{preview}'.
     """
 
@@ -2679,8 +2662,7 @@ class GetTerraformVersionRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the TerraformVersion.
-            Format:
+            Required. The name of the TerraformVersion. Format:
             'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'
     """
 
@@ -2695,32 +2677,27 @@ class ListTerraformVersionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            TerraformVersions are listed. The parent value
-            is in the format:
-
+            Required. The parent in whose context the TerraformVersions
+            are listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}'.
         page_size (int):
-            Optional. When requesting a page of terraform
-            versions, 'page_size' specifies number of
-            terraform versions to return. If unspecified, at
-            most 500 will be returned. The maximum value is
-            1000.
+            Optional. When requesting a page of terraform versions,
+            'page_size' specifies number of terraform versions to
+            return. If unspecified, at most 500 will be returned. The
+            maximum value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListTerraformVersions' which specifies the
             position in the list from where to continue
             listing the terraform versions.
         filter (str):
-            Optional. Lists the TerraformVersions that match
-            the filter expression. A filter expression
-            filters the resources listed in the response.
-            The expression must be of the form '{field}
-            {operator} {value}' where operators: '<', '>',
-            '<=', '>=', '!=', '=', ':' are supported (colon
-            ':' represents a HAS operator which is roughly
-            synonymous with equality). {field} can refer to
-            a proto or JSON field, or a synthetic field.
+            Optional. Lists the TerraformVersions that match the filter
+            expression. A filter expression filters the resources listed
+            in the response. The expression must be of the form '{field}
+            {operator} {value}' where operators: '<', '>', '<=', '>=',
+            '!=', '=', ':' are supported (colon ':' represents a HAS
+            operator which is roughly synonymous with equality). {field}
+            can refer to a proto or JSON field, or a synthetic field.
             Field names can be camelCase or snake_case.
         order_by (str):
             Optional. Field to use to sort the list.
@@ -2792,7 +2769,6 @@ class TerraformVersion(proto.Message):
     Attributes:
         name (str):
             Identifier. The version name is in the format:
-
             'projects/{project_id}/locations/{location}/terraformVersions/{terraform_version}'.
         state (google.cloud.config_v1.types.TerraformVersion.State):
             Output only. The state of the version,
@@ -2823,6 +2799,7 @@ class TerraformVersion(proto.Message):
             OBSOLETE (3):
                 The version is obsolete.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DEPRECATED = 2
@@ -2901,9 +2878,7 @@ class ResourceChange(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the resource change.
-            Format:
-
+            Identifier. The name of the resource change. Format:
             'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
         terraform_info (google.cloud.config_v1.types.ResourceChangeTerraformInfo):
             Output only. Terraform info of the resource
@@ -2933,6 +2908,7 @@ class ResourceChange(proto.Message):
             UNCHANGED (5):
                 The resource will be untouched.
         """
+
         INTENT_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -3011,17 +2987,14 @@ class ListResourceChangesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            ResourceChanges are listed. The parent value is
-            in the format:
-
+            Required. The parent in whose context the ResourceChanges
+            are listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/previews/{preview}'.
         page_size (int):
-            Optional. When requesting a page of resource
-            changes, 'page_size' specifies number of
-            resource changes to return. If unspecified, at
-            most 500 will be returned. The maximum value is
-            1000.
+            Optional. When requesting a page of resource changes,
+            'page_size' specifies number of resource changes to return.
+            If unspecified, at most 500 will be returned. The maximum
+            value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListResourceChanges' which specifies the
@@ -3107,9 +3080,8 @@ class GetResourceChangeRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource change to
-            retrieve. Format:
-
+            Required. The name of the resource change to retrieve.
+            Format:
             'projects/{project_id}/locations/{location}/previews/{preview}/resourceChanges/{resource_change}'.
     """
 
@@ -3160,9 +3132,7 @@ class ResourceDrift(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the resource drift.
-            Format:
-
+            Identifier. The name of the resource drift. Format:
             'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
         terraform_info (google.cloud.config_v1.types.ResourceDriftTerraformInfo):
             Output only. Terraform info of the resource
@@ -3238,16 +3208,14 @@ class ListResourceDriftsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent in whose context the
-            ResourceDrifts are listed. The parent value is
-            in the format:
-
+            Required. The parent in whose context the ResourceDrifts are
+            listed. The parent value is in the format:
             'projects/{project_id}/locations/{location}/previews/{preview}'.
         page_size (int):
-            Optional. When requesting a page of resource
-            drifts, 'page_size' specifies number of resource
-            drifts to return. If unspecified, at most 500
-            will be returned. The maximum value is 1000.
+            Optional. When requesting a page of resource drifts,
+            'page_size' specifies number of resource drifts to return.
+            If unspecified, at most 500 will be returned. The maximum
+            value is 1000.
         page_token (str):
             Optional. Token returned by previous call to
             'ListResourceDrifts' which specifies the
@@ -3333,9 +3301,8 @@ class GetResourceDriftRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the resource drift to
-            retrieve. Format:
-
+            Required. The name of the resource drift to retrieve.
+            Format:
             'projects/{project_id}/locations/{location}/previews/{preview}/resourceDrifts/{resource_drift}'.
     """
 
@@ -3368,6 +3335,7 @@ class ProviderConfig(proto.Message):
             SERVICE_MAINTAINED (1):
                 Service maintained provider source type.
         """
+
         PROVIDER_SOURCE_UNSPECIFIED = 0
         SERVICE_MAINTAINED = 1
 
@@ -3384,9 +3352,7 @@ class GetAutoMigrationConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the AutoMigrationConfig.
-            Format:
-
+            Required. The name of the AutoMigrationConfig. Format:
             'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
     """
 
@@ -3402,9 +3368,7 @@ class AutoMigrationConfig(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the AutoMigrationConfig.
-            Format:
-
+            Identifier. The name of the AutoMigrationConfig. Format:
             'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the AutoMigrationConfig was

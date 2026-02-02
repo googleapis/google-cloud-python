@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -88,8 +88,8 @@ class ListSipTrunksRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -253,6 +253,7 @@ class Connection(proto.Message):
             KEEPALIVE (4):
                 SIP Trunk connection is keepalive.
         """
+
         STATE_UNSPECIFIED = 0
         CONNECTED = 1
         DISCONNECTED = 2
@@ -284,6 +285,7 @@ class Connection(proto.Message):
             CERTIFICATE_QUOTA_EXCEEDED (8):
                 Certificate has exhausted its quota.
         """
+
         CERTIFICATE_STATE_UNSPECIFIED = 0
         CERTIFICATE_VALID = 1
         CERTIFICATE_INVALID = 2

@@ -20,9 +20,7 @@ from .base import InterconnectGroupsTransport
 from .rest import InterconnectGroupsRestInterceptor, InterconnectGroupsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[InterconnectGroupsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[InterconnectGroupsTransport]]
 _transport_registry["rest"] = InterconnectGroupsRestTransport
 
 __all__ = (

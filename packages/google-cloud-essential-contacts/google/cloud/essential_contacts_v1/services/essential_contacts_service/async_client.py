@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.essential_contacts_v1 import gapic_version as package_version
 
@@ -44,8 +44,8 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.essential_contacts_v1.services.essential_contacts_service import (
     pagers,
@@ -124,7 +124,8 @@ class EssentialContactsServiceAsyncClient:
         Returns:
             EssentialContactsServiceAsyncClient: The constructed client.
         """
-        return EssentialContactsServiceClient.from_service_account_info.__func__(EssentialContactsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = EssentialContactsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(EssentialContactsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -140,7 +141,10 @@ class EssentialContactsServiceAsyncClient:
         Returns:
             EssentialContactsServiceAsyncClient: The constructed client.
         """
-        return EssentialContactsServiceClient.from_service_account_file.__func__(EssentialContactsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = EssentialContactsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(
+            EssentialContactsServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -178,7 +182,9 @@ class EssentialContactsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return EssentialContactsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return EssentialContactsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> EssentialContactsServiceTransport:
@@ -351,10 +357,8 @@ class EssentialContactsServiceAsyncClient:
                 The request object. Request message for the CreateContact
                 method.
             parent (:class:`str`):
-                Required. The resource to save this
-                contact for. Format:
-                organizations/{organization_id},
-                folders/{folder_id} or
+                Required. The resource to save this contact for. Format:
+                organizations/{organization_id}, folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -608,9 +612,8 @@ class EssentialContactsServiceAsyncClient:
                 The request object. Request message for the ListContacts
                 method.
             parent (:class:`str`):
-                Required. The parent resource name.
-                Format: organizations/{organization_id},
-                folders/{folder_id} or
+                Required. The parent resource name. Format:
+                organizations/{organization_id}, folders/{folder_id} or
                 projects/{project_id}
 
                 This corresponds to the ``parent`` field
@@ -735,11 +738,9 @@ class EssentialContactsServiceAsyncClient:
                 The request object. Request message for the GetContact
                 method.
             name (:class:`str`):
-                Required. The name of the contact to
-                retrieve. Format:
+                Required. The name of the contact to retrieve. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id}
-                or
+                folders/{folder_id}/contacts/{contact_id} or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field
@@ -847,11 +848,9 @@ class EssentialContactsServiceAsyncClient:
                 The request object. Request message for the DeleteContact
                 method.
             name (:class:`str`):
-                Required. The name of the contact to
-                delete. Format:
+                Required. The name of the contact to delete. Format:
                 organizations/{organization_id}/contacts/{contact_id},
-                folders/{folder_id}/contacts/{contact_id}
-                or
+                folders/{folder_id}/contacts/{contact_id} or
                 projects/{project_id}/contacts/{contact_id}
 
                 This corresponds to the ``name`` field

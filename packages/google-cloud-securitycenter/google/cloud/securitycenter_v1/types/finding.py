@@ -17,35 +17,44 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import (
-    compliance,
-    connection,
-    contact_details,
-    container,
-)
-from google.cloud.securitycenter_v1.types import (
-    external_system,
-    file,
-    group_membership,
-    iam_binding,
-)
+from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import application as gcs_application
 from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
 from google.cloud.securitycenter_v1.types import (
     backup_disaster_recovery as gcs_backup_disaster_recovery,
 )
+from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
 from google.cloud.securitycenter_v1.types import (
     cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
 )
 from google.cloud.securitycenter_v1.types import (
     cloud_dlp_inspection as gcs_cloud_dlp_inspection,
 )
+from google.cloud.securitycenter_v1.types import (
+    compliance,
+    connection,
+    contact_details,
+    container,
+    external_system,
+    file,
+    group_membership,
+    iam_binding,
+    load_balancer,
+    log_entry,
+    org_policy,
+    process,
+)
+from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
+from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
+from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
+from google.cloud.securitycenter_v1.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import (
     security_posture as gcs_security_posture,
@@ -54,15 +63,6 @@ from google.cloud.securitycenter_v1.types import (
     toxic_combination as gcs_toxic_combination,
 )
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
-from google.cloud.securitycenter_v1.types import access as gcs_access
-from google.cloud.securitycenter_v1.types import application as gcs_application
-from google.cloud.securitycenter_v1.types import cloud_armor as gcs_cloud_armor
-from google.cloud.securitycenter_v1.types import database as gcs_database
-from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
-from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
-from google.cloud.securitycenter_v1.types import load_balancer, log_entry
-from google.cloud.securitycenter_v1.types import notebook as gcs_notebook
-from google.cloud.securitycenter_v1.types import org_policy, process
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
@@ -83,38 +83,31 @@ class Finding(proto.Message):
 
     Attributes:
         name (str):
-            The [relative resource
-            name](https://cloud.google.com/apis/design/resource_names#relative_resource_name)
+            The `relative resource
+            name <https://cloud.google.com/apis/design/resource_names#relative_resource_name>`__
             of the finding. Example:
-
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
             "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
         parent (str):
-            The relative resource name of the source the
-            finding belongs to. See:
+            The relative resource name of the source the finding belongs
+            to. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
-            This field is immutable after creation time.
-            For example:
-
+            This field is immutable after creation time. For example:
             "organizations/{organization_id}/sources/{source_id}".
         resource_name (str):
-            For findings on Google Cloud resources, the full
-            resource name of the Google Cloud resource this
-            finding is for. See:
-
+            For findings on Google Cloud resources, the full resource
+            name of the Google Cloud resource this finding is for. See:
             https://cloud.google.com/apis/design/resource_names#full_resource_name
-            When the finding is for a non-Google Cloud
-            resource, the resourceName can be a customer or
-            partner defined string. This field is immutable
-            after creation time.
+            When the finding is for a non-Google Cloud resource, the
+            resourceName can be a customer or partner defined string.
+            This field is immutable after creation time.
         state (google.cloud.securitycenter_v1.types.Finding.State):
             The state of the finding.
         category (str):
-            The additional taxonomy group within findings
-            from a given source. This field is immutable
-            after creation time. Example:
-            "XSS_FLASH_INJECTION".
+            The additional taxonomy group within findings from a given
+            source. This field is immutable after creation time.
+            Example: "XSS_FLASH_INJECTION".
         external_uri (str):
             The URI that, if available, points to a web
             page outside of Security Command Center where
@@ -122,11 +115,10 @@ class Finding(proto.Message):
             found. This field is guaranteed to be either
             empty or a well formed URL.
         source_properties (MutableMapping[str, google.protobuf.struct_pb2.Value]):
-            Source specific properties. These properties are
-            managed by the source that writes the finding.
-            The key names in the source_properties map must
-            be between 1 and 255 characters, and must start
-            with a letter and contain alphanumeric
+            Source specific properties. These properties are managed by
+            the source that writes the finding. The key names in the
+            source_properties map must be between 1 and 255 characters,
+            and must start with a letter and contain alphanumeric
             characters or underscores only.
         security_marks (google.cloud.securitycenter_v1.types.SecurityMarks):
             Output only. User specified security marks.
@@ -156,8 +148,8 @@ class Finding(proto.Message):
             "folders/{folder_id}/sources/{source_id}/findings/{finding_id}"
             or
             "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
-            depending on the closest CRM ancestor of the
-            resource associated with the finding.
+            depending on the closest CRM ancestor of the resource
+            associated with the finding.
         mute (google.cloud.securitycenter_v1.types.Finding.Mute):
             Indicates the mute state of a finding (either
             muted, unmuted or undefined). Unlike other
@@ -206,26 +198,26 @@ class Finding(proto.Message):
             Represents operating system processes
             associated with the Finding.
         contacts (MutableMapping[str, google.cloud.securitycenter_v1.types.ContactDetails]):
-            Output only. Map containing the points of
-            contact for the given finding. The key
-            represents the type of contact, while the value
-            contains a list of all the contacts that
-            pertain. Please refer to:
-
+            Output only. Map containing the points of contact for the
+            given finding. The key represents the type of contact, while
+            the value contains a list of all the contacts that pertain.
+            Please refer to:
             https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories
 
-            {
-            "security": {
-            "contacts": [
-            {
-            "email": "person1@company.com"
-            },
-            {
-            "email": "person2@company.com"
-            }
-            ]
-            }
-            }
+            ::
+
+                {
+                  "security": {
+                    "contacts": [
+                      {
+                        "email": "person1@company.com"
+                      },
+                      {
+                        "email": "person2@company.com"
+                      }
+                    ]
+                  }
+                }
         compliances (MutableSequence[google.cloud.securitycenter_v1.types.Compliance]):
             Contains compliance information for security
             standards associated to the finding.
@@ -321,6 +313,7 @@ class Finding(proto.Message):
                 non-issue or otherwise addressed and is no
                 longer active.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -407,6 +400,7 @@ class Finding(proto.Message):
                 access to an environment but is not able to
                 access data, execute code, or create resources.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -426,6 +420,7 @@ class Finding(proto.Message):
             UNDEFINED (4):
                 Finding has never been muted/unmuted.
         """
+
         MUTE_UNSPECIFIED = 0
         MUTED = 1
         UNMUTED = 2
@@ -463,6 +458,7 @@ class Finding(proto.Message):
                 independently. A group of such issues is
                 referred to as a toxic combination.
         """
+
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
         VULNERABILITY = 2
@@ -541,12 +537,12 @@ class Finding(proto.Message):
             number=1,
             message="Finding.MuteInfo.StaticMute",
         )
-        dynamic_mute_records: MutableSequence[
-            "Finding.MuteInfo.DynamicMuteRecord"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="Finding.MuteInfo.DynamicMuteRecord",
+        dynamic_mute_records: MutableSequence["Finding.MuteInfo.DynamicMuteRecord"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Finding.MuteInfo.DynamicMuteRecord",
+            )
         )
 
     name: str = proto.Field(
@@ -629,13 +625,13 @@ class Finding(proto.Message):
         number=21,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems: MutableMapping[
-        str, external_system.ExternalSystem
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=22,
-        message=external_system.ExternalSystem,
+    external_systems: MutableMapping[str, external_system.ExternalSystem] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=22,
+            message=external_system.ExternalSystem,
+        )
     )
     mitre_attack: gcs_mitre_attack.MitreAttack = proto.Field(
         proto.MESSAGE,
@@ -792,12 +788,12 @@ class Finding(proto.Message):
         number=64,
         message=gcs_toxic_combination.ToxicCombination,
     )
-    group_memberships: MutableSequence[
-        group_membership.GroupMembership
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=65,
-        message=group_membership.GroupMembership,
+    group_memberships: MutableSequence[group_membership.GroupMembership] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=65,
+            message=group_membership.GroupMembership,
+        )
     )
 
 

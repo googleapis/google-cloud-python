@@ -43,19 +43,18 @@ class Kubernetes(proto.Message):
             `node <https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#nodes>`__
             information.
         node_pools (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.NodePool]):
-            GKE [node
-            pools](https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools)
-            associated with the finding. This field contains
-            node pool information for each node, when it is
-            available.
+            GKE `node
+            pools <https://cloud.google.com/kubernetes-engine/docs/concepts/node-pools>`__
+            associated with the finding. This field contains node pool
+            information for each node, when it is available.
         roles (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Role]):
-            Provides Kubernetes role information for
-            findings that involve [Roles or
-            ClusterRoles](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
+            Provides Kubernetes role information for findings that
+            involve `Roles or
+            ClusterRoles <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
         bindings (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Binding]):
-            Provides Kubernetes role binding information for
-            findings that involve [RoleBindings or
-            ClusterRoleBindings](https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control).
+            Provides Kubernetes role binding information for findings
+            that involve `RoleBindings or
+            ClusterRoleBindings <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control>`__.
         access_reviews (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.AccessReview]):
             Provides information on any Kubernetes access
             reviews (privilege checks) relevant to the
@@ -157,6 +156,7 @@ class Kubernetes(proto.Message):
                 CLUSTER_ROLE (2):
                     Kubernetes ClusterRole.
             """
+
             KIND_UNSPECIFIED = 0
             ROLE = 1
             CLUSTER_ROLE = 2
@@ -237,6 +237,7 @@ class Kubernetes(proto.Message):
                 GROUP (3):
                     Collection of users.
             """
+
             AUTH_TYPE_UNSPECIFIED = 0
             USER = 1
             SERVICEACCOUNT = 2

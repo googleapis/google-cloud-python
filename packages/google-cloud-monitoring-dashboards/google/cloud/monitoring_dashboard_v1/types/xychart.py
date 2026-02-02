@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
@@ -116,6 +116,7 @@ class XyChart(proto.Message):
                     type is not currently available in the Stackdriver
                     Monitoring application.
             """
+
             PLOT_TYPE_UNSPECIFIED = 0
             LINE = 1
             STACKED_AREA = 2
@@ -134,6 +135,7 @@ class XyChart(proto.Message):
                 Y2 (2):
                     The y2_axis (the left axis of chart).
             """
+
             TARGET_AXIS_UNSPECIFIED = 0
             Y1 = 1
             Y2 = 2
@@ -185,6 +187,7 @@ class XyChart(proto.Message):
                 LOG10 (2):
                     Logarithmic scale (base 10).
             """
+
             SCALE_UNSPECIFIED = 0
             LINEAR = 1
             LOG10 = 2
@@ -262,6 +265,7 @@ class ChartOptions(proto.Message):
                 The chart displays statistics such as
                 average, median, 95th percentile, and more.
         """
+
         MODE_UNSPECIFIED = 0
         COLOR = 1
         X_RAY = 2

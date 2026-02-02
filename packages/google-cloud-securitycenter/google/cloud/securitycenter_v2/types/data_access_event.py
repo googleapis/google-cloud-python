@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -60,6 +60,7 @@ class DataAccessEvent(proto.Message):
             COPY (3):
                 Represents a copy operation.
         """
+
         OPERATION_UNSPECIFIED = 0
         READ = 1
         MOVE = 2

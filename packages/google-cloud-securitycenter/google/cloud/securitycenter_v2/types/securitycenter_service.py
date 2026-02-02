@@ -17,25 +17,28 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v2.types import (
+    attack_path,
+    bigquery_export,
+    valued_resource,
+)
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
+from google.cloud.securitycenter_v2.types import resource as gcs_resource
 from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import attack_path, bigquery_export
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import resource as gcs_resource
 from google.cloud.securitycenter_v2.types import source as gcs_source
-from google.cloud.securitycenter_v2.types import valued_resource
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
@@ -202,6 +205,7 @@ class BulkMuteFindingsRequest(proto.Message):
                 Matching findings will have their mute state
                 cleared.
         """
+
         MUTE_STATE_UNSPECIFIED = 0
         MUTED = 1
         UNDEFINED = 2
@@ -280,9 +284,9 @@ class CreateFindingRequest(proto.Message):
             characters and greater than 0 characters in
             length.
         finding (google.cloud.securitycenter_v2.types.Finding):
-            Required. The Finding being created. The name
-            and security_marks will be ignored as they are
-            both output only fields on this resource.
+            Required. The Finding being created. The name and
+            security_marks will be ignored as they are both output only
+            fields on this resource.
     """
 
     parent: str = proto.Field(
@@ -405,9 +409,9 @@ class CreateSourceRequest(proto.Message):
             Required. Resource name of the new source's parent. Its
             format should be ``organizations/[organization_id]``.
         source (google.cloud.securitycenter_v2.types.Source):
-            Required. The Source being created, only the
-            display_name and description will be used. All
-            other fields will be ignored.
+            Required. The Source being created, only the display_name
+            and description will be used. All other fields will be
+            ignored.
     """
 
     parent: str = proto.Field(
@@ -635,8 +639,8 @@ class GetResourceValueConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the resource value config to
-            retrieve. Its format is
+            Required. Name of the resource value config to retrieve. Its
+            format is
             organizations/{organization}/resourceValueConfigs/{config_id}.
     """
 
@@ -749,10 +753,10 @@ class GroupFindingsRequest(proto.Message):
               - resource.project_display_name: ``=``, ``:``
               - resource.type: ``=``, ``:``
         group_by (str):
-            Required. Expression that defines what assets
-            fields to use for grouping. The string value
-            should follow SQL syntax: comma separated list
-            of fields. For example: "parent,resource_name".
+            Required. Expression that defines what assets fields to use
+            for grouping. The string value should follow SQL syntax:
+            comma separated list of fields. For example:
+            "parent,resource_name".
         page_token (str):
             The value returned by the last ``GroupFindingsResponse``;
             indicates that this is a continuation of a prior
@@ -1016,12 +1020,12 @@ class ListBigQueryExportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    big_query_exports: MutableSequence[
-        bigquery_export.BigQueryExport
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=bigquery_export.BigQueryExport,
+    big_query_exports: MutableSequence[bigquery_export.BigQueryExport] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=bigquery_export.BigQueryExport,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1119,26 +1123,17 @@ class ListFindingsRequest(proto.Message):
               - resource.folders.resource_folder: ``=``, ``:``
               - resource.display_name: ``=``, ``:``
         order_by (str):
-            Expression that defines what fields and order to
-            use for sorting. The string value should follow
-            SQL syntax: comma separated list of fields. For
-            example: "name,parent". The default sorting
-            order is ascending. To specify descending order
-            for a field, a suffix " desc" should be appended
-            to the field name. For example: "name
-            desc,parent". Redundant space characters in the
-            syntax are insignificant. "name desc,parent" and
-            " name desc , parent " are equivalent.
+            Expression that defines what fields and order to use for
+            sorting. The string value should follow SQL syntax: comma
+            separated list of fields. For example: "name,parent". The
+            default sorting order is ascending. To specify descending
+            order for a field, a suffix " desc" should be appended to
+            the field name. For example: "name desc,parent". Redundant
+            space characters in the syntax are insignificant. "name
+            desc,parent" and " name desc , parent " are equivalent.
 
-            The following fields are supported:
-
-            name
-            parent
-            state
-            category
-            resource_name
-            event_time
-            security_marks.marks
+            The following fields are supported: name parent state
+            category resource_name event_time security_marks.marks
         field_mask (google.protobuf.field_mask_pb2.FieldMask):
             A field mask to specify the Finding fields to
             be listed in the response. An empty field mask
@@ -1220,7 +1215,6 @@ class ListFindingsResponse(proto.Message):
             Attributes:
                 name (str):
                     The full resource name of the resource. See:
-
                     https://cloud.google.com/apis/design/resource_names#full_resource_name
                 display_name (str):
                     The human readable name of the resource.
@@ -1422,12 +1416,10 @@ class ListNotificationConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the parent in which to
-            list the notification configurations. Its format
-            is
+            Required. The name of the parent in which to list the
+            notification configurations. Its format is
             "organizations/[organization_id]/locations/[location_id]",
-            "folders/[folder_id]/locations/[location_id]",
-            or
+            "folders/[folder_id]/locations/[location_id]", or
             "projects/[project_id]/locations/[location_id]".
         page_token (str):
             The value returned by the last
@@ -1702,12 +1694,12 @@ class ListValuedResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    valued_resources: MutableSequence[
-        valued_resource.ValuedResource
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=valued_resource.ValuedResource,
+    valued_resources: MutableSequence[valued_resource.ValuedResource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=valued_resource.ValuedResource,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1854,25 +1846,21 @@ class UpdateFindingRequest(proto.Message):
 
     Attributes:
         finding (google.cloud.securitycenter_v2.types.Finding):
-            Required. The finding resource to update or
-            create if it does not already exist. parent,
-            security_marks, and update_time will be ignored.
+            Required. The finding resource to update or create if it
+            does not already exist. parent, security_marks, and
+            update_time will be ignored.
 
-            In the case of creation, the finding id portion
-            of the name must be alphanumeric and less than
-            or equal to 32 characters and greater than 0
-            characters in length.
+            In the case of creation, the finding id portion of the name
+            must be alphanumeric and less than or equal to 32 characters
+            and greater than 0 characters in length.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The FieldMask to use when updating the finding
-            resource. This field should not be specified
-            when creating a finding.
+            The FieldMask to use when updating the finding resource.
+            This field should not be specified when creating a finding.
 
-            When updating a finding, an empty mask is
-            treated as updating all mutable fields and
-            replacing source_properties. Individual
-            source_properties can be added/updated by using
-            "source_properties.<property key>" in the field
-            mask.
+            When updating a finding, an empty mask is treated as
+            updating all mutable fields and replacing source_properties.
+            Individual source_properties can be added/updated by using
+            "source_properties." in the field mask.
     """
 
     finding: gcs_finding.Finding = proto.Field(
@@ -1942,13 +1930,12 @@ class UpdateResourceValueConfigRequest(proto.Message):
             Required. The resource value config being
             updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to be updated.
-            If empty all mutable fields will be updated.
+            The list of fields to be updated. If empty all mutable
+            fields will be updated.
 
-            To update nested fields, include the top level
-            field in the mask For example, to update
-            gcp_metadata.resource_type, include the
-            "gcp_metadata" field mask
+            To update nested fields, include the top level field in the
+            mask For example, to update gcp_metadata.resource_type,
+            include the "gcp_metadata" field mask
     """
 
     resource_value_config: gcs_resource_value_config.ResourceValueConfig = proto.Field(
@@ -1971,12 +1958,12 @@ class UpdateSecurityMarksRequest(proto.Message):
             Required. The security marks resource to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The FieldMask to use when updating the security
-            marks resource.
-            The field mask must not contain duplicate
-            fields. If empty or set to "marks", all marks
-            will be replaced. Individual marks can be
-            updated using "marks.<mark_key>".
+            The FieldMask to use when updating the security marks
+            resource.
+
+            The field mask must not contain duplicate fields. If empty
+            or set to "marks", all marks will be replaced. Individual
+            marks can be updated using "marks.<mark_key>".
     """
 
     security_marks: gcs_security_marks.SecurityMarks = proto.Field(

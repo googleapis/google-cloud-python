@@ -51,10 +51,10 @@ class GmailAddOnManifest(proto.Message):
             Defines the set of conditions that trigger
             the add-on.
         universal_actions (MutableSequence[google.apps.script.type.gmail.types.UniversalAction]):
-            Defines set of [universal
-            actions](/gmail/add-ons/how-tos/universal-actions)
-            for the add-on. The user triggers universal
-            actions from the add-on toolbar menu.
+            Defines set of `universal
+            actions </gmail/add-ons/how-tos/universal-actions>`__ for
+            the add-on. The user triggers universal actions from the
+            add-on toolbar menu.
         compose_trigger (google.apps.script.type.gmail.types.ComposeTrigger):
             Defines the compose time trigger for a
             compose time add-on. This is the trigger that
@@ -121,10 +121,10 @@ class UniversalAction(proto.Message):
 
             This field is a member of `oneof`_ ``action_type``.
         run_function (str):
-            An endpoint that is called when the user
-            triggers the action. See the [universal actions
-            guide](/gmail/add-ons/how-tos/universal-actions)
-            for details.
+            An endpoint that is called when the user triggers the
+            action. See the `universal actions
+            guide </gmail/add-ons/how-tos/universal-actions>`__ for
+            details.
 
             This field is a member of `oneof`_ ``action_type``.
     """
@@ -176,16 +176,17 @@ class ComposeTrigger(proto.Message):
                 compose addon is triggered. This includes the
                 audience list (To/cc list) of a draft message.
         """
+
         UNSPECIFIED = 0
         NONE = 1
         METADATA = 2
 
-    actions: MutableSequence[
-        extension_point.MenuItemExtensionPoint
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=extension_point.MenuItemExtensionPoint,
+    actions: MutableSequence[extension_point.MenuItemExtensionPoint] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=extension_point.MenuItemExtensionPoint,
+        )
     )
     draft_access: DraftAccess = proto.Field(
         proto.ENUM,

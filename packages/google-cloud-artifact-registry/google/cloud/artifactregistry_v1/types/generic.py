@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -33,10 +33,9 @@ class GenericArtifact(proto.Message):
 
     Attributes:
         name (str):
-            Resource name of the generic artifact.
-            project, location, repository, package_id and
-            version_id create a unique generic artifact.
-            i.e.
+            Resource name of the generic artifact. project, location,
+            repository, package_id and version_id create a unique
+            generic artifact. i.e.
             "projects/test-project/locations/us-west4/repositories/test-repo/
             genericArtifacts/package_id:version_id".
         version (str):

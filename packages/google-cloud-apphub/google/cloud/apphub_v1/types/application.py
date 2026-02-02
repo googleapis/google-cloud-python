@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.apphub_v1.types import attributes as gca_attributes
@@ -80,6 +80,7 @@ class Application(proto.Message):
             DELETING (3):
                 The Application is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -147,6 +148,7 @@ class Scope(proto.Message):
             GLOBAL (2):
                 Global type.
         """
+
         TYPE_UNSPECIFIED = 0
         REGIONAL = 1
         GLOBAL = 2

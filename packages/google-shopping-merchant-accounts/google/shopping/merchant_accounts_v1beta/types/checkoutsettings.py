@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
@@ -162,13 +162,11 @@ class CheckoutSettings(proto.Message):
             will have the value of the parent account (for only
             marketplace sellers).
         effective_enrollment_state (google.shopping.merchant_accounts_v1beta.types.CheckoutSettings.CheckoutEnrollmentState):
-            Output only. The effective value of
-            enrollment_state for a given merchant ID. If
-            account level settings are present then this
-            value will be a copy of the account level
-            settings. Otherwise, it will have the value of
-            the parent account (for only marketplace
-            sellers).
+            Output only. The effective value of enrollment_state for a
+            given merchant ID. If account level settings are present
+            then this value will be a copy of the account level
+            settings. Otherwise, it will have the value of the parent
+            account (for only marketplace sellers).
 
             This field is a member of `oneof`_ ``_effective_enrollment_state``.
         effective_review_state (google.shopping.merchant_accounts_v1beta.types.CheckoutSettings.CheckoutReviewState):
@@ -199,6 +197,7 @@ class CheckoutSettings(proto.Message):
                 Merchant has previously enrolled but opted
                 out of the program.
         """
+
         CHECKOUT_ENROLLMENT_STATE_UNSPECIFIED = 0
         INACTIVE = 1
         ENROLLED = 2
@@ -222,6 +221,7 @@ class CheckoutSettings(proto.Message):
                 Merchant account has been disapproved due to
                 data quality issues.
         """
+
         CHECKOUT_REVIEW_STATE_UNSPECIFIED = 0
         IN_REVIEW = 1
         APPROVED = 2
@@ -237,12 +237,12 @@ class CheckoutSettings(proto.Message):
         optional=True,
         message="UriSettings",
     )
-    eligible_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=8,
-        enum=types.Destination.DestinationEnum,
+    eligible_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=8,
+            enum=types.Destination.DestinationEnum,
+        )
     )
     enrollment_state: CheckoutEnrollmentState = proto.Field(
         proto.ENUM,
@@ -287,20 +287,19 @@ class UriSettings(proto.Message):
 
     Attributes:
         checkout_uri_template (str):
-            Checkout URL template. When the placeholders are
-            expanded will redirect the buyer to the merchant
-            checkout page with the item in the cart. For
-            more details, check the [help center
-            doc](https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting)
+            Checkout URL template. When the placeholders are expanded
+            will redirect the buyer to the merchant checkout page with
+            the item in the cart. For more details, check the `help
+            center
+            doc <https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>`__
 
             This field is a member of `oneof`_ ``uri_template``.
         cart_uri_template (str):
-            Cart URL template. When the placeholders are
-            expanded will redirect the buyer to the cart
-            page on the merchant website with the selected
-            item in cart. For more details, check the [help
-            center
-            doc](https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting)
+            Cart URL template. When the placeholders are expanded will
+            redirect the buyer to the cart page on the merchant website
+            with the selected item in cart. For more details, check the
+            `help center
+            doc <https://support.google.com/merchants/answer/13945960#method1&zippy=%2Cproduct-level-url-formatting%2Caccount-level-url-formatting>`__
 
             This field is a member of `oneof`_ ``uri_template``.
     """

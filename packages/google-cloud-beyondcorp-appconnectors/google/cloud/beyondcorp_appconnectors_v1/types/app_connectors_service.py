@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.beyondcorp_appconnectors_v1.types import (
@@ -58,16 +58,14 @@ class ListAppConnectorsRequest(proto.Message):
             [next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous ListAppConnectorsRequest, if
-            any.
+            Optional. The next_page_token value returned from a previous
+            ListAppConnectorsRequest, if any.
         filter (str):
             Optional. A filter specifying constraints of
             a list operation.
         order_by (str):
-            Optional. Specifies the ordering of results. See
-            [Sorting
-            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
+            Optional. Specifies the ordering of results. See `Sorting
+            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
             for more information.
     """
 
@@ -222,9 +220,8 @@ class UpdateAppConnectorRequest(proto.Message):
             - ``labels``
             - ``display_name``
         app_connector (google.cloud.beyondcorp_appconnectors_v1.types.AppConnector):
-            Required. AppConnector message with updated
-            fields. Only supported fields specified in
-            update_mask are updated.
+            Required. AppConnector message with updated fields. Only
+            supported fields specified in update_mask are updated.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -430,6 +427,7 @@ class AppConnector(proto.Message):
                 the future. This happens when CCFE sends
                 ProjectState = OFF.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2

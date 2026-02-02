@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -50,6 +50,7 @@ class DataStoreType(proto.Enum):
             A data store that contains structured data
             (for example FAQ).
     """
+
     DATA_STORE_TYPE_UNSPECIFIED = 0
     PUBLIC_WEB = 1
     UNSTRUCTURED = 2
@@ -61,15 +62,15 @@ class DocumentProcessingMode(proto.Enum):
 
     Values:
         DOCUMENT_PROCESSING_MODE_UNSPECIFIED (0):
-            Not specified. This should be set for STRUCTURED
-            type data stores. Due to legacy reasons this is
-            considered as DOCUMENTS for STRUCTURED and
-            PUBLIC_WEB data stores.
+            Not specified. This should be set for STRUCTURED type data
+            stores. Due to legacy reasons this is considered as
+            DOCUMENTS for STRUCTURED and PUBLIC_WEB data stores.
         DOCUMENTS (1):
             Documents are processed as documents.
         CHUNKS (2):
             Documents are converted to chunks.
     """
+
     DOCUMENT_PROCESSING_MODE_UNSPECIFIED = 0
     DOCUMENTS = 1
     CHUNKS = 2
@@ -87,11 +88,10 @@ class DataStoreConnection(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``
             ``projects/{project}/locations/{location}/dataStores/{data_store}``
         document_processing_mode (google.cloud.dialogflowcx_v3beta1.types.DocumentProcessingMode):
-            The document processing mode for the data store
-            connection. Should only be set for PUBLIC_WEB
-            and UNSTRUCTURED data stores. If not set it is
-            considered as DOCUMENTS, as this is the legacy
-            mode.
+            The document processing mode for the data store connection.
+            Should only be set for PUBLIC_WEB and UNSTRUCTURED data
+            stores. If not set it is considered as DOCUMENTS, as this is
+            the legacy mode.
     """
 
     data_store_type: "DataStoreType" = proto.Field(
@@ -297,6 +297,7 @@ class DataStoreConnectionSignals(proto.Message):
                 REJECTED_BY_GROUNDING (2):
                     Grounding have rejected the answer.
             """
+
             GROUNDING_DECISION_UNSPECIFIED = 0
             ACCEPTED_BY_GROUNDING = 1
             REJECTED_BY_GROUNDING = 2
@@ -323,6 +324,7 @@ class DataStoreConnectionSignals(proto.Message):
                     We have very high confidence that the answer
                     is grounded.
             """
+
             GROUNDING_SCORE_BUCKET_UNSPECIFIED = 0
             VERY_LOW = 1
             LOW = 3
@@ -371,6 +373,7 @@ class DataStoreConnectionSignals(proto.Message):
                 REJECTED_BY_SAFETY_CHECK (2):
                     One ore more safety checks fired.
             """
+
             SAFETY_DECISION_UNSPECIFIED = 0
             ACCEPTED_BY_SAFETY_CHECK = 1
             REJECTED_BY_SAFETY_CHECK = 2
@@ -388,6 +391,7 @@ class DataStoreConnectionSignals(proto.Message):
                 BANNED_PHRASE_MATCH_RESPONSE (3):
                     A banned phrase matched the response.
             """
+
             BANNED_PHRASE_MATCH_UNSPECIFIED = 0
             BANNED_PHRASE_MATCH_NONE = 1
             BANNED_PHRASE_MATCH_QUERY = 2

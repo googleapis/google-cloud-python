@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,9 +61,8 @@ class ListKmsConfigsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value to use if there are
-            additional results to retrieve for this list
-            request.
+            The next_page_token value to use if there are additional
+            results to retrieve for this list request.
         order_by (str):
             Sort results. Supported values are "name",
             "name desc" or "" (unsorted).
@@ -164,14 +163,12 @@ class UpdateKmsConfigRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the KmsConfig
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the KmsConfig resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         kms_config (google.cloud.netapp_v1.types.KmsConfig):
             Required. The KmsConfig being updated
     """
@@ -327,6 +324,7 @@ class KmsConfig(proto.Message):
                 The existing volumes are migrating from SMEK to
                 CMEK.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

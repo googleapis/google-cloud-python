@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.artifactregistry_v1beta2 import gapic_version as package_version
 
@@ -44,24 +44,30 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.artifactregistry_v1beta2.services.artifact_registry import pagers
-from google.cloud.artifactregistry_v1beta2.types import apt_artifact, file, package
+from google.cloud.artifactregistry_v1beta2.types import (
+    apt_artifact,
+    file,
+    package,
+    repository,
+    service,
+    settings,
+    tag,
+    version,
+    yum_artifact,
+)
 from google.cloud.artifactregistry_v1beta2.types import repository as gda_repository
-from google.cloud.artifactregistry_v1beta2.types import repository
-from google.cloud.artifactregistry_v1beta2.types import service, settings
-from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
-from google.cloud.artifactregistry_v1beta2.types import version, yum_artifact
 
 from .client import ArtifactRegistryClient
 from .transports.base import DEFAULT_CLIENT_INFO, ArtifactRegistryTransport
@@ -160,7 +166,8 @@ class ArtifactRegistryAsyncClient:
         Returns:
             ArtifactRegistryAsyncClient: The constructed client.
         """
-        return ArtifactRegistryClient.from_service_account_info.__func__(ArtifactRegistryAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ArtifactRegistryClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ArtifactRegistryAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -176,7 +183,8 @@ class ArtifactRegistryAsyncClient:
         Returns:
             ArtifactRegistryAsyncClient: The constructed client.
         """
-        return ArtifactRegistryClient.from_service_account_file.__func__(ArtifactRegistryAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ArtifactRegistryClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ArtifactRegistryAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -2738,7 +2746,7 @@ class ArtifactRegistryAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client
@@ -2854,7 +2862,7 @@ class ArtifactRegistryAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -2971,7 +2979,7 @@ class ArtifactRegistryAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import artifactregistry_v1beta2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_test_iam_permissions():
                 # Create a client

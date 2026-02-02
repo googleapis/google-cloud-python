@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import clusters
@@ -113,18 +113,16 @@ class WorkflowTemplate(proto.Message):
             parameters must be provided when the template is
             instantiated.
         dag_timeout (google.protobuf.duration_pb2.Duration):
-            Optional. Timeout duration for the DAG of jobs,
-            expressed in seconds (see [JSON representation
-            of
-            duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
-            The timeout duration must be from 10 minutes
-            ("600s") to 24 hours ("86400s"). The timer
-            begins when the first job is submitted. If the
-            workflow is running at the end of the timeout
-            period, any remaining jobs are cancelled, the
-            workflow is ended, and if the workflow was
-            running on a [managed
-            cluster](/dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster),
+            Optional. Timeout duration for the DAG of jobs, expressed in
+            seconds (see `JSON representation of
+            duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            The timeout duration must be from 10 minutes ("600s") to 24
+            hours ("86400s"). The timer begins when the first job is
+            submitted. If the workflow is running at the end of the
+            timeout period, any remaining jobs are cancelled, the
+            workflow is ended, and if the workflow was running on a
+            `managed
+            cluster </dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster>`__,
             the cluster is deleted.
         encryption_config (google.cloud.dataproc_v1.types.WorkflowTemplate.EncryptionConfig):
             Optional. Encryption settings for encrypting
@@ -420,9 +418,9 @@ class OrderedJob(proto.Message):
         scheduling (google.cloud.dataproc_v1.types.JobScheduling):
             Optional. Job scheduling configuration.
         prerequisite_step_ids (MutableSequence[str]):
-            Optional. The optional list of prerequisite job
-            step_ids. If not specified, the job will start
-            at the beginning of workflow.
+            Optional. The optional list of prerequisite job step_ids. If
+            not specified, the job will start at the beginning of
+            workflow.
     """
 
     step_id: str = proto.Field(
@@ -712,10 +710,9 @@ class WorkflowMetadata(proto.Message):
         cluster_uuid (str):
             Output only. The UUID of target cluster.
         dag_timeout (google.protobuf.duration_pb2.Duration):
-            Output only. The timeout duration for the DAG of
-            jobs, expressed in seconds (see [JSON
-            representation of
-            duration](https://developers.google.com/protocol-buffers/docs/proto3#json)).
+            Output only. The timeout duration for the DAG of jobs,
+            expressed in seconds (see `JSON representation of
+            duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
         dag_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. DAG start time, only set for workflows with
             [dag_timeout][google.cloud.dataproc.v1.WorkflowMetadata.dag_timeout]
@@ -740,6 +737,7 @@ class WorkflowMetadata(proto.Message):
                 The operation is done; either cancelled or
                 completed.
         """
+
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -890,6 +888,7 @@ class WorkflowNode(proto.Message):
                 The node failed. A node can be marked FAILED
                 because its ancestor or peer failed.
         """
+
         NODE_STATE_UNSPECIFIED = 0
         BLOCKED = 1
         RUNNABLE = 2
@@ -1162,11 +1161,10 @@ class ListWorkflowTemplatesResponse(proto.Message):
         templates (MutableSequence[google.cloud.dataproc_v1.types.WorkflowTemplate]):
             Output only. WorkflowTemplates list.
         next_page_token (str):
-            Output only. This token is included in the
-            response if there are more results to fetch. To
-            fetch additional results, provide this value as
-            the page_token in a subsequent
-            <code>ListWorkflowTemplatesRequest</code>.
+            Output only. This token is included in the response if there
+            are more results to fetch. To fetch additional results,
+            provide this value as the page_token in a subsequent
+            ListWorkflowTemplatesRequest.
         unreachable (MutableSequence[str]):
             Output only. List of workflow templates that
             could not be included in the response.

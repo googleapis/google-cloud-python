@@ -51,6 +51,7 @@ class DiskEncryption(proto.Enum):
             Use customer managed encryption keys to
             encrypt the boot disk.
     """
+
     DISK_ENCRYPTION_UNSPECIFIED = 0
     GMEK = 1
     CMEK = 2
@@ -71,6 +72,7 @@ class DiskType(proto.Enum):
         PD_EXTREME (4):
             Extreme persistent disk type.
     """
+
     DISK_TYPE_UNSPECIFIED = 0
     PD_STANDARD = 1
     PD_SSD = 2
@@ -97,8 +99,7 @@ class NetworkInterface(proto.Message):
     """
 
     class NicType(proto.Enum):
-        r"""The type of vNIC driver.
-        Default should be NIC_TYPE_UNSPECIFIED.
+        r"""The type of vNIC driver. Default should be NIC_TYPE_UNSPECIFIED.
 
         Values:
             NIC_TYPE_UNSPECIFIED (0):
@@ -108,6 +109,7 @@ class NetworkInterface(proto.Message):
             GVNIC (2):
                 GVNIC
         """
+
         NIC_TYPE_UNSPECIFIED = 0
         VIRTIO_NET = 1
         GVNIC = 2
@@ -241,6 +243,7 @@ class AcceleratorConfig(proto.Message):
                 Accelerator type is NVIDIA Tesla P4 Virtual
                 Workstations.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_P100 = 2
         NVIDIA_TESLA_V100 = 3
@@ -265,9 +268,9 @@ class AcceleratorConfig(proto.Message):
 
 
 class ShieldedInstanceConfig(proto.Message):
-    r"""A set of Shielded Instance options.
-    See [Images using supported Shielded VM
-    features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+    r"""A set of Shielded Instance options. See `Images using supported
+    Shielded VM
+    features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
     Not all combinations are valid.
 
     Attributes:
@@ -487,9 +490,9 @@ class GceSetup(proto.Message):
             Optional. Data disks attached to the VM
             instance. Currently supports only one data disk.
         shielded_instance_config (google.cloud.notebooks_v2.types.ShieldedInstanceConfig):
-            Optional. Shielded VM configuration.
-            [Images using supported Shielded VM
-            features](https://cloud.google.com/compute/docs/instances/modifying-shielded-vm).
+            Optional. Shielded VM configuration. `Images using supported
+            Shielded VM
+            features <https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>`__.
         network_interfaces (MutableSequence[google.cloud.notebooks_v2.types.NetworkInterface]):
             Optional. The network interfaces for the VM.
             Supports only one interface.
@@ -497,9 +500,9 @@ class GceSetup(proto.Message):
             Optional. If true, no external IP will be
             assigned to this VM instance.
         tags (MutableSequence[str]):
-            Optional. The Compute Engine tags to add to
-            runtime (see [Tagging
-            instances](https://cloud.google.com/compute/docs/label-or-tag-resources#tags)).
+            Optional. The Compute Engine tags to add to runtime (see
+            `Tagging
+            instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
         metadata (MutableMapping[str, str]):
             Optional. Custom metadata to apply to this
             instance.

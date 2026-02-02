@@ -17,13 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1.types import accountservices
+from google.shopping.merchant_accounts_v1.types import (
+    accountservices,
+    verificationmailsettings,
+)
 from google.shopping.merchant_accounts_v1.types import user as gsma_user
-from google.shopping.merchant_accounts_v1.types import verificationmailsettings
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1",

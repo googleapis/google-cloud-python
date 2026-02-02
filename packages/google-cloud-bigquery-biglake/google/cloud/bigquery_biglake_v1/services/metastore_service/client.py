@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.bigquery_biglake_v1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigquery_biglake_v1.services.metastore_service import pagers
 from google.cloud.bigquery_biglake_v1.types import metastore
@@ -81,9 +81,7 @@ class MetastoreServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[MetastoreServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[MetastoreServiceTransport]]
     _transport_registry["grpc"] = MetastoreServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = MetastoreServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = MetastoreServiceRestTransport
@@ -686,11 +684,9 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = MetastoreServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            MetastoreServiceClient._read_environment_variables()
+        )
         self._client_cert_source = MetastoreServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -725,8 +721,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(MetastoreServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -840,8 +835,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the CreateCatalog
                 method.
             parent (str):
-                Required. The parent resource where this
-                catalog will be created. Format:
+                Required. The parent resource where this catalog will be
+                created. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -970,9 +965,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the DeleteCatalog
                 method.
             name (str):
-                Required. The name of the catalog to
-                delete. Format:
-
+                Required. The name of the catalog to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -1080,9 +1073,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the GetCatalog
                 method.
             name (str):
-                Required. The name of the catalog to
-                retrieve. Format:
-
+                Required. The name of the catalog to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``name`` field
@@ -1191,8 +1182,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the ListCatalogs
                 method.
             parent (str):
-                Required. The parent, which owns this
-                collection of catalogs. Format:
+                Required. The parent, which owns this collection of
+                catalogs. Format:
                 projects/{project_id_or_number}/locations/{location_id}
 
                 This corresponds to the ``parent`` field
@@ -1317,9 +1308,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the
                 CreateDatabase method.
             parent (str):
-                Required. The parent resource where this
-                database will be created. Format:
-
+                Required. The parent resource where this database will
+                be created. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -1446,9 +1436,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the
                 DeleteDatabase method.
             name (str):
-                Required. The name of the database to
-                delete. Format:
-
+                Required. The name of the database to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1679,9 +1667,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the GetDatabase
                 method.
             name (str):
-                Required. The name of the database to
-                retrieve. Format:
-
+                Required. The name of the database to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``name`` field
@@ -1788,9 +1774,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the ListDatabases
                 method.
             parent (str):
-                Required. The parent, which owns this
-                collection of databases. Format:
-
+                Required. The parent, which owns this collection of
+                databases. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}
 
                 This corresponds to the ``parent`` field
@@ -1915,9 +1900,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the CreateTable
                 method.
             parent (str):
-                Required. The parent resource where this
-                table will be created. Format:
-
+                Required. The parent resource where this table will be
+                created. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field
@@ -2042,9 +2026,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the DeleteTable
                 method.
             name (str):
-                Required. The name of the table to
-                delete. Format:
-
+                Required. The name of the table to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -2393,9 +2375,7 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the GetTable
                 method.
             name (str):
-                Required. The name of the table to
-                retrieve. Format:
-
+                Required. The name of the table to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}/tables/{table_id}
 
                 This corresponds to the ``name`` field
@@ -2502,9 +2482,8 @@ class MetastoreServiceClient(metaclass=MetastoreServiceClientMeta):
                 The request object. Request message for the ListTables
                 method.
             parent (str):
-                Required. The parent, which owns this
-                collection of tables. Format:
-
+                Required. The parent, which owns this collection of
+                tables. Format:
                 projects/{project_id_or_number}/locations/{location_id}/catalogs/{catalog_id}/databases/{database_id}
 
                 This corresponds to the ``parent`` field

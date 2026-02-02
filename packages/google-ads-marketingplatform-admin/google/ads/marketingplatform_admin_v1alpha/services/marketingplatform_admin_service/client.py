@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.ads.marketingplatform_admin_v1alpha import gapic_version as package_version
 
@@ -83,13 +83,11 @@ class MarketingplatformAdminServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[MarketingplatformAdminServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[MarketingplatformAdminServiceTransport]]
     _transport_registry["grpc"] = MarketingplatformAdminServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = MarketingplatformAdminServiceGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = (
+        MarketingplatformAdminServiceGrpcAsyncIOTransport
+    )
     _transport_registry["rest"] = MarketingplatformAdminServiceRestTransport
 
     def get_transport_class(
@@ -684,11 +682,9 @@ class MarketingplatformAdminServiceClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = MarketingplatformAdminServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            MarketingplatformAdminServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             MarketingplatformAdminServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -729,8 +725,7 @@ class MarketingplatformAdminServiceClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(MarketingplatformAdminServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -845,9 +840,8 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for GetOrganization
                 RPC.
             name (str):
-                Required. The name of the Organization
-                to retrieve. Format:
-                organizations/{org_id}
+                Required. The name of the Organization to retrieve.
+                Format: organizations/{org_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1150,9 +1144,8 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 ListAnalyticsAccountLinks RPC.
             parent (str):
-                Required. The parent organization, which
-                owns this collection of Analytics
-                account links. Format:
+                Required. The parent organization, which owns this
+                collection of Analytics account links. Format:
                 organizations/{org_id}
 
                 This corresponds to the ``parent`` field
@@ -1292,9 +1285,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 CreateAnalyticsAccountLink RPC.
             parent (str):
-                Required. The parent resource where this
-                Analytics account link will be created.
-                Format: organizations/{org_id}
+                Required. The parent resource where this Analytics
+                account link will be created. Format:
+                organizations/{org_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1420,9 +1413,8 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 DeleteAnalyticsAccountLink RPC.
             name (str):
-                Required. The name of the Analytics
-                account link to delete. Format:
-
+                Required. The name of the Analytics account link to
+                delete. Format:
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``name`` field
@@ -1529,10 +1521,8 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 SetPropertyServiceLevel RPC.
             analytics_account_link (str):
-                Required. The parent
-                AnalyticsAccountLink scope where this
-                property is in. Format:
-
+                Required. The parent AnalyticsAccountLink scope where
+                this property is in. Format:
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``analytics_account_link`` field
@@ -1660,8 +1650,9 @@ class MarketingplatformAdminServiceClient(
                 The request object. Request message for
                 ReportPropertyUsage RPC.
             organization (str):
-                Required. Specifies the organization
-                whose property usage will be listed.
+                Required. Specifies the organization whose property
+                usage will be listed.
+
                 Format: organizations/{org_id}
 
                 This corresponds to the ``organization`` field

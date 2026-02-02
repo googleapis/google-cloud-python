@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gdchardwaremanagement_v1alpha import gapic_version as package_version
 
@@ -61,14 +61,14 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
 
 from google.cloud.gdchardwaremanagement_v1alpha.services.gdc_hardware_management import (
     pagers,
@@ -89,9 +89,7 @@ class GDCHardwareManagementClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[GDCHardwareManagementTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[GDCHardwareManagementTransport]]
     _transport_registry["grpc"] = GDCHardwareManagementGrpcTransport
     _transport_registry["grpc_asyncio"] = GDCHardwareManagementGrpcAsyncIOTransport
     _transport_registry["rest"] = GDCHardwareManagementRestTransport
@@ -797,11 +795,9 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = GDCHardwareManagementClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            GDCHardwareManagementClient._read_environment_variables()
+        )
         self._client_cert_source = GDCHardwareManagementClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -836,8 +832,7 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(GDCHardwareManagementTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1348,14 +1343,12 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A mask to specify the fields
-                in the Order to overwrite with this
-                update. The fields specified in the
-                update_mask are relative to the order,
-                not the full request. A field will be
-                overwritten if it is in the mask. If you
-                don't provide a mask then all fields
-                will be overwritten.
+                Required. A mask to specify the fields in the Order to
+                overwrite with this update. The fields specified in the
+                update_mask are relative to the order, not the full
+                request. A field will be overwritten if it is in the
+                mask. If you don't provide a mask then all fields will
+                be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2250,14 +2243,12 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A mask to specify the fields
-                in the Site to overwrite with this
-                update. The fields specified in the
-                update_mask are relative to the site,
-                not the full request. A field will be
-                overwritten if it is in the mask. If you
-                don't provide a mask then all fields
-                will be overwritten.
+                Required. A mask to specify the fields in the Site to
+                overwrite with this update. The fields specified in the
+                update_mask are relative to the site, not the full
+                request. A field will be overwritten if it is in the
+                mask. If you don't provide a mask then all fields will
+                be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2912,14 +2903,12 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A mask to specify the fields
-                in the HardwareGroup to overwrite with
-                this update. The fields specified in the
-                update_mask are relative to the hardware
-                group, not the full request. A field
-                will be overwritten if it is in the
-                mask. If you don't provide a mask then
-                all fields will be overwritten.
+                Required. A mask to specify the fields in the
+                HardwareGroup to overwrite with this update. The fields
+                specified in the update_mask are relative to the
+                hardware group, not the full request. A field will be
+                overwritten if it is in the mask. If you don't provide a
+                mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3573,14 +3562,12 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A mask to specify the fields
-                in the Hardware to overwrite with this
-                update. The fields specified in the
-                update_mask are relative to the
-                hardware, not the full request. A field
-                will be overwritten if it is in the
-                mask. If you don't provide a mask then
-                all fields will be overwritten.
+                Required. A mask to specify the fields in the Hardware
+                to overwrite with this update. The fields specified in
+                the update_mask are relative to the hardware, not the
+                full request. A field will be overwritten if it is in
+                the mask. If you don't provide a mask then all fields
+                will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5192,14 +5179,12 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. A mask to specify the fields
-                in the Zone to overwrite with this
-                update. The fields specified in the
-                update_mask are relative to the zone,
-                not the full request. A field will be
-                overwritten if it is in the mask. If you
-                don't provide a mask then all fields
-                will be overwritten.
+                Required. A mask to specify the fields in the Zone to
+                overwrite with this update. The fields specified in the
+                update_mask are relative to the zone, not the full
+                request. A field will be overwritten if it is in the
+                mask. If you don't provide a mask then all fields will
+                be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5462,9 +5447,8 @@ class GDCHardwareManagementClient(metaclass=GDCHardwareManagementClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             state_signal (google.cloud.gdchardwaremanagement_v1alpha.types.SignalZoneStateRequest.StateSignal):
-                Optional. The state signal to send for
-                this zone. Either state_signal or
-                provisioning_state_signal must be set,
+                Optional. The state signal to send for this zone. Either
+                state_signal or provisioning_state_signal must be set,
                 but not both.
 
                 This corresponds to the ``state_signal`` field

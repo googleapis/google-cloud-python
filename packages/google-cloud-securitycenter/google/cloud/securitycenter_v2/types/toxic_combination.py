@@ -35,13 +35,11 @@ class ToxicCombination(proto.Message):
 
     Attributes:
         attack_exposure_score (float):
-            The
-            [Attack exposure
-            score](https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_exposure_scores)
-            of this toxic combination. The score is a
-            measure of how much this toxic combination
-            exposes one or more high-value resources to
-            potential attack.
+            The `Attack exposure
+            score <https://cloud.google.com/security-command-center/docs/attack-exposure-learn#attack_exposure_scores>`__
+            of this toxic combination. The score is a measure of how
+            much this toxic combination exposes one or more high-value
+            resources to potential attack.
         related_findings (MutableSequence[str]):
             List of resource names of findings associated with this
             toxic combination. For example,

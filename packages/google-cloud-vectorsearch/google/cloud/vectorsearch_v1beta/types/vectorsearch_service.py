@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vectorsearch_v1beta.types import common, embedding_config
@@ -71,8 +71,8 @@ class Collection(proto.Message):
         labels (MutableMapping[str, str]):
             Optional. Labels as key value pairs.
         schema (google.protobuf.struct_pb2.Struct):
-            Optional. Deprecated: JSON Schema for data.
-            Please use data_schema instead.
+            Optional. Deprecated: JSON Schema for data. Please use
+            data_schema instead.
         vector_schema (MutableMapping[str, google.cloud.vectorsearch_v1beta.types.VectorField]):
             Optional. Schema for vector fields. Only
             vector fields in this schema will be searchable.
@@ -457,8 +457,8 @@ class Index(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. [Output only] Update time stamp
         distance_metric (google.cloud.vectorsearch_v1beta.types.DistanceMetric):
-            Optional. Distance metric used for indexing. If
-            not specified, will default to DOT_PRODUCT.
+            Optional. Distance metric used for indexing. If not
+            specified, will default to DOT_PRODUCT.
         index_field (str):
             Required. The collection schema field to
             index.

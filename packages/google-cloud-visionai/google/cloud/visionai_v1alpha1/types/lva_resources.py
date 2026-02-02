@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.visionai_v1alpha1.types import lva
@@ -45,18 +45,16 @@ class Analysis(proto.Message):
         analysis_definition (google.cloud.visionai_v1alpha1.types.AnalysisDefinition):
             The definition of the analysis.
         input_streams_mapping (MutableMapping[str, str]):
-            Map from the input parameter in the definition
-            to the real stream. E.g., suppose you had a
-            stream source operator named "input-0" and you
-            try to receive from the real stream "stream-0".
-            You can add the following mapping: [input-0:
+            Map from the input parameter in the definition to the real
+            stream. E.g., suppose you had a stream source operator named
+            "input-0" and you try to receive from the real stream
+            "stream-0". You can add the following mapping: [input-0:
             stream-0].
         output_streams_mapping (MutableMapping[str, str]):
-            Map from the output parameter in the definition
-            to the real stream. E.g., suppose you had a
-            stream sink operator named "output-0" and you
-            try to send to the real stream "stream-0". You
-            can add the following mapping: [output-0:
+            Map from the output parameter in the definition to the real
+            stream. E.g., suppose you had a stream sink operator named
+            "output-0" and you try to send to the real stream
+            "stream-0". You can add the following mapping: [output-0:
             stream-0].
     """
 

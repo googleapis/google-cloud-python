@@ -118,11 +118,11 @@ class DisableServiceRequest(proto.Message):
                 If set, skip checking service usage when
                 disabling a service.
             CHECK (2):
-                If set, service usage is checked when disabling
-                the service. If a service, or its dependents,
-                has usage in the last 30 days, the request
-                returns a FAILED_PRECONDITION error.
+                If set, service usage is checked when disabling the service.
+                If a service, or its dependents, has usage in the last 30
+                days, the request returns a FAILED_PRECONDITION error.
         """
+
         CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED = 0
         SKIP = 1
         CHECK = 2
@@ -293,9 +293,9 @@ class BatchEnableServicesResponse(proto.Message):
         services (MutableSequence[google.cloud.service_usage_v1.types.Service]):
             The new state of the services after enabling.
         failures (MutableSequence[google.cloud.service_usage_v1.types.BatchEnableServicesResponse.EnableFailure]):
-            If allow_partial_success is true, and one or
-            more services could not be enabled, this field
-            contains the details about each failure.
+            If allow_partial_success is true, and one or more services
+            could not be enabled, this field contains the details about
+            each failure.
     """
 
     class EnableFailure(proto.Message):

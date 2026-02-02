@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import tool_call as gcdc_tool_call
@@ -153,10 +153,11 @@ class ResponseMessage(proto.Message):
                 in the page.
             HANDLER_PROMPT (3):
                 The response is from a [transition
-                route][google.cloud.dialogflow.cx.v3.TransitionRoute]
-                or an [event handler][EventHandler] in the page
-                or flow or transition route group.
+                route][google.cloud.dialogflow.cx.v3.TransitionRoute] or an
+                [event handler][EventHandler] in the page or flow or
+                transition route group.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         ENTRY_PROMPT = 1
         PARAMETER_PROMPT = 2
@@ -383,12 +384,12 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ResponseMessage.MixedAudio.Segment",
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ResponseMessage.MixedAudio.Segment",
+            )
         )
 
     class TelephonyTransferCall(proto.Message):

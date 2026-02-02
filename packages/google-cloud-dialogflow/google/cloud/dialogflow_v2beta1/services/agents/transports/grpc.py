@@ -16,24 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import agent
+from google.cloud.dialogflow_v2beta1.types import agent, validation_result
 from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
-from google.cloud.dialogflow_v2beta1.types import validation_result
 
 from .base import DEFAULT_CLIENT_INFO, AgentsTransport
 
@@ -374,9 +373,9 @@ class AgentsGrpcTransport(AgentsTransport):
 
         Creates/updates the specified agent.
 
-        Note: You should always train an agent prior to sending
-        it queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/es/docs/training).
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.SetAgentRequest],
@@ -426,13 +425,12 @@ class AgentsGrpcTransport(AgentsTransport):
     ) -> Callable[[agent.SearchAgentsRequest], agent.SearchAgentsResponse]:
         r"""Return a callable for the search agents method over gRPC.
 
-        Returns the list of agents.
-        Since there is at most one conversational agent per
-        project, this method is useful primarily for listing all
-        agents across projects the caller has access to. One can
-        achieve that with a wildcard project collection id "-".
-        Refer to [List
-        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
+        Returns the list of agents. Since there is at most one
+        conversational agent per project, this method is useful
+        primarily for listing all agents across projects the caller has
+        access to. One can achieve that with a wildcard project
+        collection id "-". Refer to `List
+        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         Returns:
             Callable[[~.SearchAgentsRequest],

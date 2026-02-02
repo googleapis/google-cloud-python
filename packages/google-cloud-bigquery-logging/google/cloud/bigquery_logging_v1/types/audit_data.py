@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -1016,8 +1016,8 @@ class JobConfiguration(proto.Message):
                 Result table encryption information. Set when
                 non-default encryption is used.
             statement_type (str):
-                Type of the statement (e.g. SELECT, INSERT,
-                CREATE_TABLE, CREATE_MODEL..)
+                Type of the statement (e.g. SELECT, INSERT, CREATE_TABLE,
+                CREATE_MODEL..)
         """
 
         query: str = proto.Field(
@@ -1295,23 +1295,21 @@ class JobStatistics(proto.Message):
             Reservation name or "unreserved" for
             on-demand resource usage.
         referenced_tables (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
-            The first N tables accessed by the query job.
-            Older queries that reference a large number of
-            tables may not have all of their tables in this
-            list. You can use the total_tables_processed
-            count to know how many total tables were read in
-            the query. For new queries, there is currently
+            The first N tables accessed by the query job. Older queries
+            that reference a large number of tables may not have all of
+            their tables in this list. You can use the
+            total_tables_processed count to know how many total tables
+            were read in the query. For new queries, there is currently
             no limit.
         total_tables_processed (int):
             Total number of unique tables referenced in
             the query.
         referenced_views (MutableSequence[google.cloud.bigquery_logging_v1.types.TableName]):
-            The first N views accessed by the query job.
-            Older queries that reference a large number of
-            views may not have all of their views in this
-            list. You can use the total_tables_processed
-            count to know how many total tables were read in
-            the query. For new queries, there is currently
+            The first N views accessed by the query job. Older queries
+            that reference a large number of views may not have all of
+            their views in this list. You can use the
+            total_tables_processed count to know how many total tables
+            were read in the query. For new queries, there is currently
             no limit.
         total_views_processed (int):
             Total number of unique views referenced in

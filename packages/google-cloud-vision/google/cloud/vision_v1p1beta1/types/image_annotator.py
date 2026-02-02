@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
 from google.cloud.vision_v1p1beta1.types import geometry, text_annotation
+from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p1beta1",
@@ -78,6 +78,7 @@ class Likelihood(proto.Enum):
             It is very likely that the image belongs to
             the specified vertical.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -123,9 +124,8 @@ class Feature(proto.Message):
             TEXT_DETECTION (5):
                 Run OCR.
             DOCUMENT_TEXT_DETECTION (11):
-                Run dense text document OCR. Takes precedence
-                when both DOCUMENT_TEXT_DETECTION and
-                TEXT_DETECTION are present.
+                Run dense text document OCR. Takes precedence when both
+                DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
             SAFE_SEARCH_DETECTION (6):
                 Run computer vision models to compute image
                 safe-search properties.
@@ -137,6 +137,7 @@ class Feature(proto.Message):
             WEB_DETECTION (10):
                 Run web detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -251,18 +252,16 @@ class FaceAnnotation(proto.Message):
             Detected face landmarks.
         roll_angle (float):
             Roll angle, which indicates the amount of
-            clockwise/anti-clockwise rotation of the face
-            relative to the image vertical about the axis
-            perpendicular to the face. Range [-180,180].
+            clockwise/anti-clockwise rotation of the face relative to
+            the image vertical about the axis perpendicular to the face.
+            Range [-180,180].
         pan_angle (float):
-            Yaw angle, which indicates the
-            leftward/rightward angle that the face is
-            pointing relative to the vertical plane
+            Yaw angle, which indicates the leftward/rightward angle that
+            the face is pointing relative to the vertical plane
             perpendicular to the image. Range [-180,180].
         tilt_angle (float):
-            Pitch angle, which indicates the
-            upwards/downwards angle that the face is
-            pointing relative to the image's horizontal
+            Pitch angle, which indicates the upwards/downwards angle
+            that the face is pointing relative to the image's horizontal
             plane. Range [-180,180].
         detection_confidence (float):
             Detection confidence. Range [0, 1].
@@ -373,6 +372,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2
@@ -538,9 +538,9 @@ class EntityAnnotation(proto.Message):
 
     Attributes:
         mid (str):
-            Opaque entity ID. Some IDs may be available in
-            [Google Knowledge Graph Search
-            API](https://developers.google.com/knowledge-graph/).
+            Opaque entity ID. Some IDs may be available in `Google
+            Knowledge Graph Search
+            API <https://developers.google.com/knowledge-graph/>`__.
         locale (str):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
@@ -550,20 +550,17 @@ class EntityAnnotation(proto.Message):
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
-            The accuracy of the entity detection in an
-            image. For example, for an image in which the
-            "Eiffel Tower" entity is detected, this field
-            represents the confidence that there is a tower
-            in the query image. Range [0, 1].
+            The accuracy of the entity detection in an image. For
+            example, for an image in which the "Eiffel Tower" entity is
+            detected, this field represents the confidence that there is
+            a tower in the query image. Range [0, 1].
         topicality (float):
-            The relevancy of the ICA (Image Content
-            Annotation) label to the image. For example, the
-            relevancy of "tower" is likely higher to an
-            image containing the detected "Eiffel Tower"
-            than to an image containing a detected distant
-            towering building, even though the confidence
-            that there is a tower in each image may be the
-            same. Range [0, 1].
+            The relevancy of the ICA (Image Content Annotation) label to
+            the image. For example, the relevancy of "tower" is likely
+            higher to an image containing the detected "Eiffel Tower"
+            than to an image containing a detected distant towering
+            building, even though the confidence that there is a tower
+            in each image may be the same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
             Image region to which this entity belongs. Not produced for
             ``LABEL_DETECTION`` features.
@@ -707,11 +704,10 @@ class ColorInfo(proto.Message):
         color (google.type.color_pb2.Color):
             RGB components of the color.
         score (float):
-            Image-specific score for this color. Value in
-            range [0, 1].
+            Image-specific score for this color. Value in range [0, 1].
         pixel_fraction (float):
-            The fraction of pixels the color occupies in the
-            image. Value in range [0, 1].
+            The fraction of pixels the color occupies in the image.
+            Value in range [0, 1].
     """
 
     color: color_pb2.Color = proto.Field(
@@ -771,8 +767,7 @@ class CropHint(proto.Message):
             the bounding box are in the original image's scale, as
             returned in ``ImageParams``.
         confidence (float):
-            Confidence of this being a salient region. Range
-            [0, 1].
+            Confidence of this being a salient region. Range [0, 1].
         importance_fraction (float):
             Fraction of importance of this salient region
             with respect to the original image.
@@ -851,10 +846,9 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes
-            confidence score for DOCUMENT_TEXT_DETECTION
-            result. Set the flag to true to include
-            confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes confidence score
+            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
+            include confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.

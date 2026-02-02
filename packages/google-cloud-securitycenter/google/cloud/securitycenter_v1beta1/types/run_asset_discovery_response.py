@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -55,6 +55,7 @@ class RunAssetDiscoveryResponse(proto.Message):
                 Asset discovery run was killed and
                 terminated.
         """
+
         STATE_UNSPECIFIED = 0
         COMPLETED = 1
         SUPERSEDED = 2

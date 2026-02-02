@@ -37,13 +37,12 @@ class ValuedResource(proto.Message):
             Valued resource name, for example, e.g.:
             ``organizations/123/simulations/456/valuedResources/789``
         resource (str):
-            The
-            [full resource
-            name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+            The `full resource
+            name <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__
             of the valued resource.
         resource_type (str):
-            The [resource
-            type](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+            The `resource
+            type <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             of the valued resource.
         display_name (str):
             Human-readable name of the valued resource.
@@ -72,6 +71,7 @@ class ValuedResource(proto.Message):
             RESOURCE_VALUE_HIGH (3):
                 This is a high-value resource.
         """
+
         RESOURCE_VALUE_UNSPECIFIED = 0
         RESOURCE_VALUE_LOW = 1
         RESOURCE_VALUE_MEDIUM = 2
@@ -102,12 +102,12 @@ class ValuedResource(proto.Message):
         proto.DOUBLE,
         number=6,
     )
-    resource_value_configs_used: MutableSequence[
-        "ResourceValueConfigMetadata"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="ResourceValueConfigMetadata",
+    resource_value_configs_used: MutableSequence["ResourceValueConfigMetadata"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="ResourceValueConfigMetadata",
+        )
     )
 
 

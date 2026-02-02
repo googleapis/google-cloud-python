@@ -17,19 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.databasecenter_v1beta.types import maintenance
 from google.cloud.databasecenter_v1beta.types import (
     operation_error_type as gcd_operation_error_type,
 )
+from google.cloud.databasecenter_v1beta.types import product as gcd_product
 from google.cloud.databasecenter_v1beta.types import (
     suspension_reason as gcd_suspension_reason,
 )
-from google.cloud.databasecenter_v1beta.types import maintenance
-from google.cloud.databasecenter_v1beta.types import product as gcd_product
 
 __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
@@ -76,6 +76,7 @@ class SignalStatus(proto.Enum):
         SIGNAL_STATUS_NOT_ENABLED (4):
             Signal is not enabled for the resource.
     """
+
     SIGNAL_STATUS_UNSPECIFIED = 0
     SIGNAL_STATUS_NOT_APPLICABLE = 1
     SIGNAL_STATUS_OK = 2
@@ -100,6 +101,7 @@ class SignalSource(proto.Enum):
             Signal comes from modern observability
             platform.
     """
+
     SIGNAL_SOURCE_UNSPECIFIED = 0
     SIGNAL_SOURCE_RESOURCE_METADATA = 1
     SIGNAL_SOURCE_SECURITY_FINDINGS = 2
@@ -125,6 +127,7 @@ class IssueSeverity(proto.Enum):
             Irrelevant severity. This means the issue
             should not be surfaced at all.
     """
+
     ISSUE_SEVERITY_UNSPECIFIED = 0
     ISSUE_SEVERITY_LOW = 1
     ISSUE_SEVERITY_MEDIUM = 2
@@ -208,63 +211,53 @@ class SignalType(proto.Enum):
         SIGNAL_TYPE_VIOLATES_SOC2_V2017 (75):
             Represents if a resource violates SOC2 v2017.
         SIGNAL_TYPE_LOGS_NOT_OPTIMIZED_FOR_TROUBLESHOOTING (16):
-            Represents if log_checkpoints database flag for
-            a Cloud SQL for PostgreSQL instance is not set
-            to on.
+            Represents if log_checkpoints database flag for a Cloud SQL
+            for PostgreSQL instance is not set to on.
         SIGNAL_TYPE_QUERY_DURATIONS_NOT_LOGGED (17):
-            Represents if the log_duration database flag for
-            a Cloud SQL for PostgreSQL instance is not set
-            to on.
+            Represents if the log_duration database flag for a Cloud SQL
+            for PostgreSQL instance is not set to on.
         SIGNAL_TYPE_VERBOSE_ERROR_LOGGING (18):
-            Represents if the log_error_verbosity database
-            flag for a Cloud SQL for PostgreSQL instance is
-            not set to default or stricter (default or
-            terse).
+            Represents if the log_error_verbosity database flag for a
+            Cloud SQL for PostgreSQL instance is not set to default or
+            stricter (default or terse).
         SIGNAL_TYPE_QUERY_LOCK_WAITS_NOT_LOGGED (19):
-            Represents if the log_lock_waits database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to on.
+            Represents if the log_lock_waits database flag for a Cloud
+            SQL for PostgreSQL instance is not set to on.
         SIGNAL_TYPE_LOGGING_MOST_ERRORS (20):
-            Represents if the log_min_error_statement
-            database flag for a Cloud SQL for PostgreSQL
-            instance is not set appropriately.
-        SIGNAL_TYPE_LOGGING_ONLY_CRITICAL_ERRORS (21):
-            Represents if the log_min_error_statement
-            database flag for a Cloud SQL for PostgreSQL
-            instance does not have an appropriate severity
-            level.
-        SIGNAL_TYPE_MINIMAL_ERROR_LOGGING (22):
-            Represents if the log_min_messages database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to warning or another recommended value.
-        SIGNAL_TYPE_QUERY_STATS_LOGGED (23):
-            Represents if the databaseFlags property of
-            instance metadata for the log_executor_status
-            field is set to on.
-        SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_CLIENT_HOSTNAME (24):
-            Represents if the log_hostname database flag for
+            Represents if the log_min_error_statement database flag for
             a Cloud SQL for PostgreSQL instance is not set
-            to off.
+            appropriately.
+        SIGNAL_TYPE_LOGGING_ONLY_CRITICAL_ERRORS (21):
+            Represents if the log_min_error_statement database flag for
+            a Cloud SQL for PostgreSQL instance does not have an
+            appropriate severity level.
+        SIGNAL_TYPE_MINIMAL_ERROR_LOGGING (22):
+            Represents if the log_min_messages database flag for a Cloud
+            SQL for PostgreSQL instance is not set to warning or another
+            recommended value.
+        SIGNAL_TYPE_QUERY_STATS_LOGGED (23):
+            Represents if the databaseFlags property of instance
+            metadata for the log_executor_status field is set to on.
+        SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_CLIENT_HOSTNAME (24):
+            Represents if the log_hostname database flag for a Cloud SQL
+            for PostgreSQL instance is not set to off.
         SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_PARSER_STATS (25):
-            Represents if the log_parser_stats database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to off.
+            Represents if the log_parser_stats database flag for a Cloud
+            SQL for PostgreSQL instance is not set to off.
         SIGNAL_TYPE_EXCESSIVE_LOGGING_OF_PLANNER_STATS (26):
-            Represents if the log_planner_stats database
-            flag for a Cloud SQL for PostgreSQL instance is
-            not set to off.
+            Represents if the log_planner_stats database flag for a
+            Cloud SQL for PostgreSQL instance is not set to off.
         SIGNAL_TYPE_NOT_LOGGING_ONLY_DDL_STATEMENTS (27):
-            Represents if the log_statement database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to DDL (all data definition statements).
+            Represents if the log_statement database flag for a Cloud
+            SQL for PostgreSQL instance is not set to DDL (all data
+            definition statements).
         SIGNAL_TYPE_LOGGING_QUERY_STATS (28):
-            Represents if the log_statement_stats database
-            flag for a Cloud SQL for PostgreSQL instance is
-            not set to off.
+            Represents if the log_statement_stats database flag for a
+            Cloud SQL for PostgreSQL instance is not set to off.
         SIGNAL_TYPE_NOT_LOGGING_TEMPORARY_FILES (29):
-            Represents if the log_temp_files database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to "0". (NOTE: 0 = ON)
+            Represents if the log_temp_files database flag for a Cloud
+            SQL for PostgreSQL instance is not set to "0". (NOTE: 0 =
+            ON)
         SIGNAL_TYPE_CONNECTION_MAX_NOT_CONFIGURED (30):
             Represents if the user connections database
             flag for a Cloud SQL for SQL Server instance is
@@ -298,29 +291,24 @@ class SignalType(proto.Enum):
             database flag for a Cloud SQL for SQL Server
             instance is not set to off.
         SIGNAL_TYPE_EXPOSED_TO_LOCAL_DATA_LOADS (40):
-            Represents if the local_infile database flag for
-            a Cloud SQL for MySQL instance is not set to
-            off.
+            Represents if the local_infile database flag for a Cloud SQL
+            for MySQL instance is not set to off.
         SIGNAL_TYPE_CONNECTION_ATTEMPTS_NOT_LOGGED (41):
-            Represents if the log_connections database flag
-            for a Cloud SQL for PostgreSQL instance is not
-            set to on.
+            Represents if the log_connections database flag for a Cloud
+            SQL for PostgreSQL instance is not set to on.
         SIGNAL_TYPE_DISCONNECTIONS_NOT_LOGGED (42):
-            Represents if the log_disconnections database
-            flag for a Cloud SQL for PostgreSQL instance is
-            not set to on.
+            Represents if the log_disconnections database flag for a
+            Cloud SQL for PostgreSQL instance is not set to on.
         SIGNAL_TYPE_LOGGING_EXCESSIVE_STATEMENT_INFO (43):
-            Represents if the log_min_duration_statement
-            database flag for a Cloud SQL for PostgreSQL
-            instance is not set to -1.
+            Represents if the log_min_duration_statement database flag
+            for a Cloud SQL for PostgreSQL instance is not set to -1.
         SIGNAL_TYPE_EXPOSED_TO_REMOTE_ACCESS (44):
             Represents if the remote access database flag
             for a Cloud SQL for SQL Server instance is not
             set to off.
         SIGNAL_TYPE_DATABASE_NAMES_EXPOSED (45):
-            Represents if the skip_show_database database
-            flag for a Cloud SQL for MySQL instance is not
-            set to on.
+            Represents if the skip_show_database database flag for a
+            Cloud SQL for MySQL instance is not set to on.
         SIGNAL_TYPE_SENSITIVE_TRACE_INFO_NOT_MASKED (46):
             Represents if the 3625 (trace flag) database
             flag for a Cloud SQL for SQL Server instance is
@@ -451,6 +439,7 @@ class SignalType(proto.Enum):
         SIGNAL_TYPE_EXTENDED_SUPPORT (102):
             Resource version is in extended support.
     """
+
     SIGNAL_TYPE_UNSPECIFIED = 0
     SIGNAL_TYPE_RESOURCE_FAILOVER_PROTECTED = 1
     SIGNAL_TYPE_GROUP_MULTIREGIONAL = 2
@@ -553,16 +542,15 @@ class SignalType(proto.Enum):
 
 
 class SignalTypeGroup(proto.Message):
-    r"""A group of signal types that specifies what the user is
-    interested in.
+    r"""A group of signal types that specifies what the user is interested
+    in.
+
     Used by QueryDatabaseResourceGroups API.
 
     Example:
 
-    signal_type_group {
-    name = "AVAILABILITY"
-    types = [SIGNAL_TYPE_NO_PROMOTABLE_REPLICA]
-    }
+    signal_type_group { name = "AVAILABILITY" types =
+    [SIGNAL_TYPE_NO_PROMOTABLE_REPLICA] }
 
     Attributes:
         display_name (str):
@@ -586,22 +574,16 @@ class SignalTypeGroup(proto.Message):
 class SignalFilter(proto.Message):
     r"""A filter for Signals.
 
-    If signal_type is left unset, all signals should be returned.
-    For example, the following filter returns all issues.
-    signal_filter: {
-    signal_status: SIGNAL_STATUS_ISSUE;
-    }
+    If signal_type is left unset, all signals should be returned. For
+    example, the following filter returns all issues. signal_filter: {
+    signal_status: SIGNAL_STATUS_ISSUE; }
 
-    Another example, the following filter returns issues of the
-    given type:
+    Another example, the following filter returns issues of the given
+    type: signal_filter: { type: SIGNAL_TYPE_NO_PROMOTABLE_REPLICA
+    signal_status: ISSUE }
 
-    signal_filter: {
-    type: SIGNAL_TYPE_NO_PROMOTABLE_REPLICA
-    signal_status: ISSUE
-    }
-
-    If signal_status is left unset or set to
-    SIGNAL_STATE_UNSPECIFIED, an error should be returned.
+    If signal_status is left unset or set to SIGNAL_STATE_UNSPECIFIED,
+    an error should be returned.
 
     Attributes:
         signal_type (google.cloud.databasecenter_v1beta.types.SignalType):
@@ -632,10 +614,9 @@ class SignalGroup(proto.Message):
             Title of a signal group corresponding to the
             request.
         issue_count (int):
-            When applied to a DatabaseResource represents
-            count of issues associated with the resource. A
-            signal is an issue when its SignalStatus field
-            is set to SIGNAL_STATUS_ISSUE.
+            When applied to a DatabaseResource represents count of
+            issues associated with the resource. A signal is an issue
+            when its SignalStatus field is set to SIGNAL_STATUS_ISSUE.
         signals (MutableSequence[google.cloud.databasecenter_v1beta.types.Signal]):
             List of signals present in the group and
             associated with the resource.
@@ -665,12 +646,10 @@ class IssueCount(proto.Message):
             Title of a signal group corresponding to the
             request.
         issue_count (int):
-            The count of the number of issues associated
-            with those resources that are explicitly
-            filtered in by the filters present in the
-            request. A signal is an issue when its
-            SignalStatus field is set to
-            SIGNAL_STATUS_ISSUE.
+            The count of the number of issues associated with those
+            resources that are explicitly filtered in by the filters
+            present in the request. A signal is an issue when its
+            SignalStatus field is set to SIGNAL_STATUS_ISSUE.
     """
 
     display_name: str = proto.Field(
@@ -695,14 +674,13 @@ class AdditionalDetail(proto.Message):
 
     Attributes:
         short_backup_retention_info (google.cloud.databasecenter_v1beta.types.RetentionSettingsInfo):
-            Short backup retention information applies to
-            signals with type
-            SIGNAL_TYPE_SHORT_BACKUP_RETENTION.
+            Short backup retention information applies to signals with
+            type SIGNAL_TYPE_SHORT_BACKUP_RETENTION.
 
             This field is a member of `oneof`_ ``detail``.
         backup_run_info (google.cloud.databasecenter_v1beta.types.BackupRunInfo):
-            Backup run information applies to signals with
-            types SIGNAL_TYPE_LAST_BACKUP_FAILED and
+            Backup run information applies to signals with types
+            SIGNAL_TYPE_LAST_BACKUP_FAILED and
             SIGNAL_TYPE_LAST_BACKUP_OLD.
 
             This field is a member of `oneof`_ ``detail``.
@@ -716,9 +694,8 @@ class AdditionalDetail(proto.Message):
 
             This field is a member of `oneof`_ ``detail``.
         automated_backup_policy_info (google.cloud.databasecenter_v1beta.types.AutomatedBackupPolicyInfo):
-            Automated backup policy information applies to
-            signals with type
-            SIGNAL_TYPE_NO_AUTOMATED_BACKUP_POLICY.
+            Automated backup policy information applies to signals with
+            type SIGNAL_TYPE_NO_AUTOMATED_BACKUP_POLICY.
 
             This field is a member of `oneof`_ ``detail``.
         deletion_protection_info (google.cloud.databasecenter_v1beta.types.DeletionProtectionInfo):
@@ -737,15 +714,13 @@ class AdditionalDetail(proto.Message):
 
             This field is a member of `oneof`_ ``detail``.
         outdated_minor_version_info (google.cloud.databasecenter_v1beta.types.OutdatedMinorVersionInfo):
-            Outdated minor version information applies to
-            signals with type
-            SIGNAL_TYPE_OUTDATED_MINOR_VERSION.
+            Outdated minor version information applies to signals with
+            type SIGNAL_TYPE_OUTDATED_MINOR_VERSION.
 
             This field is a member of `oneof`_ ``detail``.
         maintenance_recommendation_info (google.cloud.databasecenter_v1beta.types.MaintenanceRecommendationInfo):
-            Maintenance recommendation information applies
-            to signals with type
-            SIGNAL_TYPE_RECOMMENDED_MAINTENANCE_POLICIES.
+            Maintenance recommendation information applies to signals
+            with type SIGNAL_TYPE_RECOMMENDED_MAINTENANCE_POLICIES.
 
             This field is a member of `oneof`_ ``detail``.
         signal_source (google.cloud.databasecenter_v1beta.types.SignalSource):
@@ -1049,6 +1024,7 @@ class BackupRunInfo(proto.Message):
             FAILED (2):
                 The backup was unsuccessful.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

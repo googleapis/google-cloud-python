@@ -17,22 +17,22 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.iap_v1.types import service
 
@@ -340,11 +340,9 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
     ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
-        Sets the access control policy for an Identity-Aware
-        Proxy protected resource. Replaces any existing policy.
-        More information about managing access via IAP can be
-        found at:
-
+        Sets the access control policy for an Identity-Aware Proxy
+        protected resource. Replaces any existing policy. More
+        information about managing access via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:
@@ -371,11 +369,9 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
     ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
-        Gets the access control policy for an Identity-Aware
-        Proxy protected resource.
-        More information about managing access via IAP can be
-        found at:
-
+        Gets the access control policy for an Identity-Aware Proxy
+        protected resource. More information about managing access via
+        IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:
@@ -405,11 +401,9 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
-        Returns permissions that a caller has on the
-        Identity-Aware Proxy protected resource.
-        More information about managing access via IAP can be
-        found at:
-
+        Returns permissions that a caller has on the Identity-Aware
+        Proxy protected resource. More information about managing access
+        via IAP can be found at:
         https://cloud.google.com/iap/docs/managing-access#managing_access_via_the_api
 
         Returns:
@@ -508,12 +502,12 @@ class IdentityAwareProxyAdminServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_iap_attribute_expression" not in self._stubs:
-            self._stubs[
-                "validate_iap_attribute_expression"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
-                request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
-                response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+            self._stubs["validate_iap_attribute_expression"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ValidateIapAttributeExpression",
+                    request_serializer=service.ValidateIapAttributeExpressionRequest.serialize,
+                    response_deserializer=service.ValidateIapAttributeExpressionResponse.deserialize,
+                )
             )
         return self._stubs["validate_iap_attribute_expression"]
 

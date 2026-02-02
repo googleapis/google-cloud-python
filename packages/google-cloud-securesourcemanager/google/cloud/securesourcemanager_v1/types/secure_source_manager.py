@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -167,6 +167,7 @@ class Instance(proto.Message):
                 Instance is unknown, we are not sure if it's
                 functioning.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -179,15 +180,14 @@ class Instance(proto.Message):
 
         Values:
             STATE_NOTE_UNSPECIFIED (0):
-                STATE_NOTE_UNSPECIFIED as the first value of
-                State.
+                STATE_NOTE_UNSPECIFIED as the first value of State.
             PAUSED_CMEK_UNAVAILABLE (1):
                 CMEK access is unavailable.
             INSTANCE_RESUMING (2):
-                INSTANCE_RESUMING indicates that the instance
-                was previously paused and is under the process
-                of being brought back.
+                INSTANCE_RESUMING indicates that the instance was previously
+                paused and is under the process of being brought back.
         """
+
         STATE_NOTE_UNSPECIFIED = 0
         PAUSED_CMEK_UNAVAILABLE = 1
         INSTANCE_RESUMING = 2
@@ -384,8 +384,8 @@ class Repository(proto.Message):
                 Output only. HTML is the URI for user to view
                 the repository in a browser.
             git_https (str):
-                Output only. git_https is the git HTTPS URI for
-                git operations.
+                Output only. git_https is the git HTTPS URI for git
+                operations.
             api (str):
                 Output only. API is the URI for API access.
         """
@@ -717,6 +717,7 @@ class Hook(proto.Message):
                 Pull request events are triggered when a pull
                 request is opened, closed, reopened, or edited.
         """
+
         UNSPECIFIED = 0
         PUSH = 1
         PULL_REQUEST = 2
@@ -962,6 +963,7 @@ class PullRequest(proto.Message):
             MERGED (3):
                 A merged pull request.
         """
+
         STATE_UNSPECIFIED = 0
         OPEN = 1
         CLOSED = 2
@@ -1062,6 +1064,7 @@ class FileDiff(proto.Message):
             DELETED (3):
                 The file was deleted.
         """
+
         ACTION_UNSPECIFIED = 0
         ADDED = 1
         MODIFIED = 2
@@ -1127,6 +1130,7 @@ class Issue(proto.Message):
             CLOSED (2):
                 A closed issue.
         """
+
         STATE_UNSPECIFIED = 0
         OPEN = 1
         CLOSED = 2
@@ -1264,6 +1268,7 @@ class PullRequestComment(proto.Message):
                 APPROVED (3):
                     Change approved from this review.
             """
+
             ACTION_TYPE_UNSPECIFIED = 0
             COMMENT = 1
             CHANGE_REQUESTED = 2
@@ -1770,14 +1775,12 @@ class UpdateRepositoryRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the repository
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the repository resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         repository (google.cloud.securesourcemanager_v1.types.Repository):
             Required. The repository being updated.
         validate_only (bool):
@@ -2601,6 +2604,7 @@ class TreeEntry(proto.Message):
                 Represents a pointer to another repository
                 (submodule).
         """
+
         OBJECT_TYPE_UNSPECIFIED = 0
         TREE = 1
         BLOB = 2
@@ -2787,9 +2791,8 @@ class ListPullRequestCommentsResponse(proto.Message):
         pull_request_comments (MutableSequence[google.cloud.securesourcemanager_v1.types.PullRequestComment]):
             The list of pull request comments.
         next_page_token (str):
-            A token to set as page_token to retrieve the
-            next page. If this field is omitted, there are
-            no subsequent pages.
+            A token to set as page_token to retrieve the next page. If
+            this field is omitted, there are no subsequent pages.
     """
 
     @property

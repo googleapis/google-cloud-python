@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,6 +61,7 @@ class MaintenanceCategory(proto.Enum):
             these maintenance events using maintenance
             windows and/or deny maintenance features.
     """
+
     MAINTENANCE_CATEGORY_UNSPECIFIED = 0
     INFRASTRUCTURE = 1
     SERVICE_UPDATE = 3
@@ -78,9 +79,9 @@ class SummarizeMaintenancesRequest(proto.Message):
             to send per page. The default page size is 20
             and the maximum is 1000.
         page_token (str):
-            The page token: If the next_page_token from a
-            previous response is provided, this request will
-            send the subsequent page.
+            The page token: If the next_page_token from a previous
+            response is provided, this request will send the subsequent
+            page.
         filter (str):
             Filter the list as specified in https://google.aip.dev/160.
             Supported fields include:
@@ -215,12 +216,12 @@ class MaintenanceSummary(proto.Message):
             proto.STRING,
             number=1,
         )
-        aggregates: MutableSequence[
-            "MaintenanceSummary.Aggregate"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="MaintenanceSummary.Aggregate",
+        aggregates: MutableSequence["MaintenanceSummary.Aggregate"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="MaintenanceSummary.Aggregate",
+            )
         )
 
     class Aggregate(proto.Message):
@@ -395,6 +396,7 @@ class ResourceMaintenance(proto.Message):
             SUCCEEDED (4):
                 Successfully completed.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2
@@ -416,12 +418,11 @@ class ResourceMaintenance(proto.Message):
                 Output only. The location of the resource. Format:
                 ``us-central1``
             type_ (str):
-                Output only. The type of the resource.
-                Available values can be found here:
-
+                Output only. The type of the resource. Available values can
+                be found here:
                 https://cloud.google.com/asset-inventory/docs/asset-types#supported_resource_types
-                Please note that not all the resource types will
-                have their maintenances reported.
+                Please note that not all the resource types will have their
+                maintenances reported.
         """
 
         resource_name: str = proto.Field(
@@ -584,6 +585,7 @@ class MaintenanceControl(proto.Message):
             RESCHEDULE (3):
                 Reschedule control.
         """
+
         CONTROL_UNSPECIFIED = 0
         APPLY = 1
         MANAGE_POLICY = 2
@@ -616,9 +618,9 @@ class ListResourceMaintenancesRequest(proto.Message):
             The maximum number of resource maintenances
             to send per page.
         page_token (str):
-            The page token: If the next_page_token from a
-            previous response is provided, this request will
-            send the subsequent page.
+            The page token: If the next_page_token from a previous
+            response is provided, this request will send the subsequent
+            page.
         filter (str):
             Filter the list as specified in
             https://google.aip.dev/160.

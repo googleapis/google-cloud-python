@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.batch_v1alpha.types import notification
@@ -60,6 +60,7 @@ class CalendarPeriod(proto.Enum):
         DAY (5):
             The day starts at 12:00am.
     """
+
     CALENDAR_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     QUARTER = 2
@@ -79,6 +80,7 @@ class ResourceAllowanceState(proto.Enum):
         RESOURCE_ALLOWANCE_DEPLETED (2):
             ResourceAllowance limit is reached.
     """
+
     RESOURCE_ALLOWANCE_STATE_UNSPECIFIED = 0
     RESOURCE_ALLOWANCE_ACTIVE = 1
     RESOURCE_ALLOWANCE_DEPLETED = 2

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import (
@@ -143,14 +143,13 @@ class Fulfillment(proto.Message):
 
             Attributes:
                 condition (str):
-                    The condition to activate and select this case.
-                    Empty means the condition is always true. The
-                    condition is evaluated against [form
-                    parameters][Form.parameters] or [session
+                    The condition to activate and select this case. Empty means
+                    the condition is always true. The condition is evaluated
+                    against [form parameters][Form.parameters] or [session
                     parameters][SessionInfo.parameters].
 
-                    See the [conditions
-                    reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+                    See the `conditions
+                    reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
                 case_content (MutableSequence[google.cloud.dialogflowcx_v3.types.Fulfillment.ConditionalCases.Case.CaseContent]):
                     A list of case content.
             """
@@ -202,12 +201,12 @@ class Fulfillment(proto.Message):
                 message="Fulfillment.ConditionalCases.Case.CaseContent",
             )
 
-        cases: MutableSequence[
-            "Fulfillment.ConditionalCases.Case"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Fulfillment.ConditionalCases.Case",
+        cases: MutableSequence["Fulfillment.ConditionalCases.Case"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Fulfillment.ConditionalCases.Case",
+            )
         )
 
     class GeneratorSettings(proto.Message):

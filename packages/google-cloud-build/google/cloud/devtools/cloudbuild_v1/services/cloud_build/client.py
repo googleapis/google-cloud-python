@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.devtools.cloudbuild_v1 import gapic_version as package_version
 
@@ -61,12 +61,12 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build import pagers
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
@@ -899,11 +899,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CloudBuildClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CloudBuildClient._read_environment_variables()
+        )
         self._client_cert_source = CloudBuildClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -938,8 +936,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CloudBuildTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1884,8 +1881,7 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
                 The request object. Request to approve or reject a
                 pending build.
             name (str):
-                Required. Name of the target build.
-                For example:
+                Required. Name of the target build. For example:
                 "projects/{$project_id}/builds/{$build_id}"
 
                 This corresponds to the ``name`` field
@@ -2849,9 +2845,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
-        r"""ReceiveTriggerWebhook [Experimental] is called when the
-        API receives a webhook request targeted at a specific
-        trigger.
+        r"""ReceiveTriggerWebhook [Experimental] is called when the API
+        receives a webhook request targeted at a specific trigger.
 
         .. code-block:: python
 
@@ -2880,9 +2875,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         Args:
             request (Union[google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookRequest, dict]):
-                The request object. ReceiveTriggerWebhookRequest
-                [Experimental] is the request object
-                accepted by the ReceiveTriggerWebhook
+                The request object. ReceiveTriggerWebhookRequest [Experimental] is the
+                request object accepted by the ReceiveTriggerWebhook
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2894,9 +2888,8 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         Returns:
             google.cloud.devtools.cloudbuild_v1.types.ReceiveTriggerWebhookResponse:
-                ReceiveTriggerWebhookResponse
-                [Experimental] is the response object
-                for the ReceiveTriggerWebhook method.
+                ReceiveTriggerWebhookResponse [Experimental] is the response object for the
+                   ReceiveTriggerWebhook method.
 
         """
         # Create or coerce a protobuf request object.

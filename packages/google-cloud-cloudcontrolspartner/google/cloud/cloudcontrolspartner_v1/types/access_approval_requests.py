@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -134,12 +134,12 @@ class ListAccessApprovalRequestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    access_approval_requests: MutableSequence[
-        "AccessApprovalRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AccessApprovalRequest",
+    access_approval_requests: MutableSequence["AccessApprovalRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AccessApprovalRequest",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -200,13 +200,13 @@ class AccessReason(proto.Message):
                 services or a known outage.
             CLOUD_INITIATED_ACCESS (6):
                 Similar to 'GOOGLE_INITIATED_SERVICE' or
-                'GOOGLE_INITIATED_REVIEW', but with universe
-                agnostic naming. The principal accessed customer
-                data in order to diagnose or resolve a suspected
-                issue in services or a known outage, or for
-                security, fraud, abuse, or compliance review
+                'GOOGLE_INITIATED_REVIEW', but with universe agnostic
+                naming. The principal accessed customer data in order to
+                diagnose or resolve a suspected issue in services or a known
+                outage, or for security, fraud, abuse, or compliance review
                 purposes.
         """
+
         TYPE_UNSPECIFIED = 0
         CUSTOMER_INITIATED_SUPPORT = 1
         GOOGLE_INITIATED_SERVICE = 2

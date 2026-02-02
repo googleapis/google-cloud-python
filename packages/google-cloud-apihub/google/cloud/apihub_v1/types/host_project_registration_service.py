@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -42,10 +42,9 @@ class CreateHostProjectRegistrationRequest(proto.Message):
             Required. The parent resource for the host project. Format:
             ``projects/{project}/locations/{location}``
         host_project_registration_id (str):
-            Required. The ID to use for the Host Project
-            Registration, which will become the final
-            component of the host project registration's
-            resource name. The ID must be the same as the
+            Required. The ID to use for the Host Project Registration,
+            which will become the final component of the host project
+            registration's resource name. The ID must be the same as the
             Google cloud project specified in the
             host_project_registration.gcp_project field.
         host_project_registration (google.cloud.apihub_v1.types.HostProjectRegistration):
@@ -75,8 +74,7 @@ class GetHostProjectRegistrationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Host project registration resource
-            name.
+            Required. Host project registration resource name.
             projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration_id}
     """
 
@@ -173,12 +171,12 @@ class ListHostProjectRegistrationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    host_project_registrations: MutableSequence[
-        "HostProjectRegistration"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="HostProjectRegistration",
+    host_project_registrations: MutableSequence["HostProjectRegistration"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="HostProjectRegistration",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -196,9 +194,8 @@ class HostProjectRegistration(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the host project
-            registration. Format:
-
+            Identifier. The name of the host project registration.
+            Format:
             "projects/{project}/locations/{location}/hostProjectRegistrations/{host_project_registration}".
         gcp_project (str):
             Required. Immutable. Google cloud project

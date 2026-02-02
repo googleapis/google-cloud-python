@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.fleetengine_v1.types import fleetengine, traffic
@@ -67,6 +67,7 @@ class TripStatus(proto.Enum):
             The trip was canceled prior to pickup by the
             driver, rider, or rideshare provider.
     """
+
     UNKNOWN_TRIP_STATUS = 0
     NEW = 1
     ENROUTE_TO_PICKUP = 2
@@ -97,6 +98,7 @@ class BillingPlatformIdentifier(proto.Enum):
             Other platforms that are not listed in this
             enumeration.
     """
+
     BILLING_PLATFORM_IDENTIFIER_UNSPECIFIED = 0
     SERVER = 1
     WEB = 2
@@ -125,6 +127,7 @@ class TripView(proto.Enum):
             Sharing use case. This view is intended for
             server-to-server communications.
     """
+
     TRIP_VIEW_UNSPECIFIED = 0
     SDK = 1
     JOURNEY_SHARING_V1S = 2
@@ -220,10 +223,9 @@ class Trip(proto.Message):
             ``UpdateTrip`` and ``CreateTrip`` calls, NOT on ``GetTrip``
             calls.
         route (MutableSequence[google.type.latlng_pb2.LatLng]):
-            Output only. Anticipated route for this trip to
-            the first entry in remaining_waypoints. Note
-            that the first waypoint may belong to a
-            different trip.
+            Output only. Anticipated route for this trip to the first
+            entry in remaining_waypoints. Note that the first waypoint
+            may belong to a different trip.
         current_route_segment (str):
             Output only. An encoded path to the next
             waypoint.
@@ -336,12 +338,12 @@ class Trip(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    intermediate_destinations: MutableSequence[
-        fleetengine.TerminalLocation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message=fleetengine.TerminalLocation,
+    intermediate_destinations: MutableSequence[fleetengine.TerminalLocation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message=fleetengine.TerminalLocation,
+        )
     )
     intermediate_destinations_version: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -352,19 +354,19 @@ class Trip(proto.Message):
         proto.INT32,
         number=15,
     )
-    actual_intermediate_destination_arrival_points: MutableSequence[
-        "StopLocation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=33,
-        message="StopLocation",
+    actual_intermediate_destination_arrival_points: MutableSequence["StopLocation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=33,
+            message="StopLocation",
+        )
     )
-    actual_intermediate_destinations: MutableSequence[
-        "StopLocation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=34,
-        message="StopLocation",
+    actual_intermediate_destinations: MutableSequence["StopLocation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=34,
+            message="StopLocation",
+        )
     )
     dropoff_point: fleetengine.TerminalLocation = proto.Field(
         proto.MESSAGE,
@@ -381,12 +383,12 @@ class Trip(proto.Message):
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    remaining_waypoints: MutableSequence[
-        fleetengine.TripWaypoint
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=16,
-        message=fleetengine.TripWaypoint,
+    remaining_waypoints: MutableSequence[fleetengine.TripWaypoint] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=16,
+            message=fleetengine.TripWaypoint,
+        )
     )
     vehicle_waypoints: MutableSequence[fleetengine.TripWaypoint] = proto.RepeatedField(
         proto.MESSAGE,

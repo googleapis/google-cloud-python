@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 
@@ -61,20 +61,24 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1alpha1.services.organization_security_profile_group_service import (
     pagers,
 )
 from google.cloud.network_security_v1alpha1.types import (
+    common,
+    security_profile_group,
     security_profile_group_intercept,
     security_profile_group_mirroring,
     security_profile_group_service,
@@ -84,8 +88,6 @@ from google.cloud.network_security_v1alpha1.types import (
 from google.cloud.network_security_v1alpha1.types import (
     security_profile_group as gcn_security_profile_group,
 )
-from google.cloud.network_security_v1alpha1.types import common
-from google.cloud.network_security_v1alpha1.types import security_profile_group
 
 from .transports.base import (
     DEFAULT_CLIENT_INFO,
@@ -106,13 +108,11 @@ class OrganizationSecurityProfileGroupServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[OrganizationSecurityProfileGroupServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[OrganizationSecurityProfileGroupServiceTransport]]
     _transport_registry["grpc"] = OrganizationSecurityProfileGroupServiceGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = OrganizationSecurityProfileGroupServiceGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = (
+        OrganizationSecurityProfileGroupServiceGrpcAsyncIOTransport
+    )
     _transport_registry["rest"] = OrganizationSecurityProfileGroupServiceRestTransport
 
     def get_transport_class(
@@ -734,11 +734,9 @@ class OrganizationSecurityProfileGroupServiceClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = OrganizationSecurityProfileGroupServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            OrganizationSecurityProfileGroupServiceClient._read_environment_variables()
+        )
         self._client_cert_source = (
             OrganizationSecurityProfileGroupServiceClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -779,8 +777,7 @@ class OrganizationSecurityProfileGroupServiceClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(
                 OrganizationSecurityProfileGroupServiceTransport, transport
@@ -1179,12 +1176,10 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             security_profile_group_id (str):
-                Required. Short name of the
-                SecurityProfileGroup resource to be
-                created. This value should be 1-63
-                characters long, containing only
-                letters, numbers, hyphens, and
-                underscores, and should not start with a
+                Required. Short name of the SecurityProfileGroup
+                resource to be created. This value should be 1-63
+                characters long, containing only letters, numbers,
+                hyphens, and underscores, and should not start with a
                 number. E.g. "security_profile_group1".
 
                 This corresponds to the ``security_profile_group_id`` field
@@ -1330,14 +1325,11 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                SecurityProfileGroup resource by the
-                update. The fields specified in the
-                update_mask are relative to the
-                resource, not the full request. A field
-                will be overwritten if it is in the
-                mask.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the SecurityProfileGroup resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1876,12 +1868,10 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             security_profile_id (str):
-                Required. Short name of the
-                SecurityProfile resource to be created.
-                This value should be 1-63 characters
-                long, containing only letters, numbers,
-                hyphens, and underscores, and should not
-                start with a number. E.g.
+                Required. Short name of the SecurityProfile resource to
+                be created. This value should be 1-63 characters long,
+                containing only letters, numbers, hyphens, and
+                underscores, and should not start with a number. E.g.
                 "security_profile1".
 
                 This corresponds to the ``security_profile_id`` field
@@ -2020,13 +2010,11 @@ class OrganizationSecurityProfileGroupServiceClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                SecurityProfile resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the SecurityProfile resource by the
+                update. The fields specified in the update_mask are
+                relative to the resource, not the full request. A field
+                will be overwritten if it is in the mask.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

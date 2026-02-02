@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.backupdr_v1 import gapic_version as package_version
 
@@ -61,17 +61,19 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.cloud.backupdr_v1.services.backup_dr import pagers
 from google.cloud.backupdr_v1.types import (
@@ -895,11 +897,9 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = BackupDRClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            BackupDRClient._read_environment_variables()
+        )
         self._client_cert_source = BackupDRClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -934,8 +934,7 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(BackupDRTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1170,8 +1169,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 The request object. Request message for getting a
                 management server instance.
             name (str):
-                Required. Name of the management server
-                resource name, in the format
+                Required. Name of the management server resource name,
+                in the format
                 'projects/{project_id}/locations/{location}/managementServers/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -1574,9 +1573,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backup_vault_id (str):
-                Required. ID of the requesting object
-                If auto-generating ID server-side,
-                remove this field and backup_vault_id
+                Required. ID of the requesting object If auto-generating
+                ID server-side, remove this field and backup_vault_id
                 from the method_signature of Create RPC
 
                 This corresponds to the ``backup_vault_id`` field
@@ -1961,8 +1959,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 The request object. Request message for getting a
                 BackupVault.
             name (str):
-                Required. Name of the backupvault store
-                resource name, in the format
+                Required. Name of the backupvault store resource name,
+                in the format
                 'projects/{project_id}/locations/{location}/backupVaults/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -2079,15 +2077,12 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                BackupVault resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then the request will
-                fail.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the BackupVault resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then the request will fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2463,8 +2458,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 The request object. Request message for getting a
                 DataSource instance.
             name (str):
-                Required. Name of the data source
-                resource name, in the format
+                Required. Name of the data source resource name, in the
+                format
                 'projects/{project_id}/locations/{location}/backupVaults/{resource_name}/dataSource/{resource_name}'
 
                 This corresponds to the ``name`` field
@@ -2583,15 +2578,12 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                DataSource resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then the request will
-                fail.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the DataSource resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then the request will fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2979,8 +2971,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
             request (Union[google.cloud.backupdr_v1.types.GetBackupRequest, dict]):
                 The request object. Request message for getting a Backup.
             name (str):
-                Required. Name of the data source
-                resource name, in the format
+                Required. Name of the data source resource name, in the
+                format
                 'projects/{project_id}/locations/{location}/backupVaults/{backupVault}/dataSources/{datasource}/backups/{backup}'
 
                 This corresponds to the ``name`` field
@@ -3095,15 +3087,12 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. Field mask is used to specify
-                the fields to be overwritten in the
-                Backup resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then the request will
-                fail.
+                Required. Field mask is used to specify the fields to be
+                overwritten in the Backup resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then the request will fail.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3652,20 +3641,15 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to update.
-                Field mask is used to specify the fields
-                to be overwritten in the BackupPlan
-                resource by the update.
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
-                overwritten if it is in the mask. If the
-                user does not provide a mask then the
-                request will fail. Currently, these
-                fields are supported in update:
-                description, schedules, retention
-                period, adding and removing Backup
-                Rules.
+                Required. The list of fields to update. Field mask is
+                used to specify the fields to be overwritten in the
+                BackupPlan resource by the update. The fields specified
+                in the update_mask are relative to the resource, not the
+                full request. A field will be overwritten if it is in
+                the mask. If the user does not provide a mask then the
+                request will fail. Currently, these fields are supported
+                in update: description, schedules, retention period,
+                adding and removing Backup Rules.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4578,19 +4562,15 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                Required. The list of fields to update.
-                Field mask is used to specify the fields
-                to be overwritten in the
-                BackupPlanAssociation resource by the
-                update. The fields specified in the
-                update_mask are relative to the
-                resource, not the full request. A field
-                will be overwritten if it is in the
-                mask. If the user does not provide a
-                mask then the request will fail.
-                Currently
-                backup_plan_association.backup_plan is
-                the only supported field.
+                Required. The list of fields to update. Field mask is
+                used to specify the fields to be overwritten in the
+                BackupPlanAssociation resource by the update. The fields
+                specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then the request will fail. Currently
+                backup_plan_association.backup_plan is the only
+                supported field.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5276,8 +5256,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             rule_id (str):
-                Required. backup rule_id for which a
-                backup needs to be triggered.
+                Required. backup rule_id for which a backup needs to be
+                triggered.
 
                 This corresponds to the ``rule_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -5398,9 +5378,8 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
                 The request object. Request for the
                 GetDataSourceReference method.
             name (str):
-                Required. The name of the
-                DataSourceReference to retrieve. Format:
-
+                Required. The name of the DataSourceReference to
+                retrieve. Format:
                 projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}
 
                 This corresponds to the ``name`` field

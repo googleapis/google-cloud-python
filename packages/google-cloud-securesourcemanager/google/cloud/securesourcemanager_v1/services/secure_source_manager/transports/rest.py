@@ -16,19 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -3503,15 +3507,12 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_create_pull_request_comments(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_batch_create_pull_request_comments(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseBatchCreatePullRequestComments._get_transcoded_request(
                 http_options, request
@@ -3534,7 +3535,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3575,11 +3576,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             resp = self._interceptor.post_batch_create_pull_request_comments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_create_pull_request_comments_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_batch_create_pull_request_comments_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3663,9 +3663,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_close_issue(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCloseIssue._get_transcoded_request(
@@ -3689,7 +3687,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3816,9 +3814,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseClosePullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_close_pull_request(
                 request, metadata
@@ -3844,7 +3840,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3971,9 +3967,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateBranchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_create_branch_rule(
                 request, metadata
@@ -3999,7 +3993,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4126,9 +4120,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_http_options()
 
             request, metadata = self._interceptor.pre_create_hook(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateHook._get_transcoded_request(
@@ -4152,7 +4144,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4279,9 +4271,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateInstance._get_transcoded_request(
@@ -4305,7 +4295,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4431,9 +4421,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_create_issue(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseCreateIssue._get_transcoded_request(
@@ -4457,7 +4445,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4584,9 +4572,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateIssueComment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_issue_comment(
                 request, metadata
@@ -4612,7 +4598,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4741,9 +4727,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_create_pull_request(
                 request, metadata
@@ -4769,7 +4753,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4899,9 +4883,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreatePullRequestComment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_pull_request_comment(
                 request, metadata
@@ -4927,7 +4909,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5054,9 +5036,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCreateRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_create_repository(
                 request, metadata
@@ -5082,7 +5062,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5208,9 +5188,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteBranchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_branch_rule(
                 request, metadata
@@ -5232,7 +5210,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5357,9 +5335,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_hook(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteHook._get_transcoded_request(
@@ -5379,7 +5355,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5504,9 +5480,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
@@ -5526,7 +5500,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5650,9 +5624,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_issue(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseDeleteIssue._get_transcoded_request(
@@ -5672,7 +5644,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5797,9 +5769,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteIssueComment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_issue_comment(
                 request, metadata
@@ -5821,7 +5791,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5950,9 +5920,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeletePullRequestComment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_pull_request_comment(
                 request, metadata
@@ -5974,7 +5942,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6099,9 +6067,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_repository(
                 request, metadata
@@ -6123,7 +6089,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6549,9 +6515,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_branch_rule(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetBranchRule._get_transcoded_request(
@@ -6918,9 +6882,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicyRepo._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy_repo(
                 request, metadata
@@ -7068,9 +7030,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetInstance._get_transcoded_request(
@@ -7359,9 +7319,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetIssueComment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_issue_comment(
                 request, metadata
@@ -7513,9 +7471,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetPullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pull_request(
                 request, metadata
@@ -7665,9 +7621,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetPullRequestComment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pull_request_comment(
                 request, metadata
@@ -7819,9 +7773,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetRepository._get_transcoded_request(
@@ -7969,9 +7921,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListBranchRules._get_http_options()
 
             request, metadata = self._interceptor.pre_list_branch_rules(
                 request, metadata
@@ -8269,9 +8219,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListInstances._get_transcoded_request(
@@ -8416,9 +8364,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     The response to list issue comments.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListIssueComments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_issue_comments(
                 request, metadata
@@ -8569,9 +8515,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     The response to list issues.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListIssues._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_http_options()
 
             request, metadata = self._interceptor.pre_list_issues(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListIssues._get_transcoded_request(
@@ -8720,9 +8664,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequestComments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pull_request_comments(
                 request, metadata
@@ -8879,9 +8821,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequestFileDiffs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pull_request_file_diffs(
                 request, metadata
@@ -9033,9 +8973,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListPullRequests._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pull_requests(
                 request, metadata
@@ -9183,9 +9121,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListRepositories._get_http_options()
 
             request, metadata = self._interceptor.pre_list_repositories(
                 request, metadata
@@ -9337,9 +9273,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseMergePullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_merge_pull_request(
                 request, metadata
@@ -9365,7 +9299,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9517,7 +9451,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9644,9 +9578,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseOpenPullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_open_pull_request(
                 request, metadata
@@ -9672,7 +9604,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9800,9 +9732,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseResolvePullRequestComments._get_http_options()
 
             request, metadata = self._interceptor.pre_resolve_pull_request_comments(
                 request, metadata
@@ -9828,7 +9758,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -9869,11 +9799,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             resp = self._interceptor.post_resolve_pull_request_comments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_resolve_pull_request_comments_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_resolve_pull_request_comments_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -10029,9 +9958,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicyRepo._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy_repo(
                 request, metadata
@@ -10182,9 +10109,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissionsRepo._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions_repo(
                 request, metadata
@@ -10342,9 +10267,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUnresolvePullRequestComments._get_http_options()
 
             request, metadata = self._interceptor.pre_unresolve_pull_request_comments(
                 request, metadata
@@ -10370,7 +10293,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10411,11 +10334,10 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             resp = self._interceptor.post_unresolve_pull_request_comments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_unresolve_pull_request_comments_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_unresolve_pull_request_comments_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -10500,9 +10422,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateBranchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_update_branch_rule(
                 request, metadata
@@ -10528,7 +10448,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10655,9 +10575,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_http_options()
 
             request, metadata = self._interceptor.pre_update_hook(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateHook._get_transcoded_request(
@@ -10681,7 +10599,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10807,9 +10725,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_update_issue(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseUpdateIssue._get_transcoded_request(
@@ -10833,7 +10749,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10960,9 +10876,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateIssueComment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_issue_comment(
                 request, metadata
@@ -10988,7 +10902,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11117,9 +11031,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequest._get_http_options()
 
             request, metadata = self._interceptor.pre_update_pull_request(
                 request, metadata
@@ -11145,7 +11057,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11275,9 +11187,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdatePullRequestComment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_pull_request_comment(
                 request, metadata
@@ -11303,7 +11213,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11430,9 +11340,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseUpdateRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_update_repository(
                 request, metadata
@@ -11458,7 +11366,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11534,7 +11442,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreatePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreatePullRequestComments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def close_issue(
@@ -11619,7 +11529,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreatePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreatePullRequestComment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_repository(
@@ -11686,7 +11598,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeletePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeletePullRequestComment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_repository(
@@ -11870,7 +11784,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPullRequestComments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_pull_request_file_diffs(
@@ -11881,7 +11797,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPullRequestFileDiffs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPullRequestFileDiffs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_pull_requests(
@@ -11942,7 +11860,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ResolvePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ResolvePullRequestComments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_iam_policy_repo(
@@ -11961,7 +11881,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TestIamPermissionsRepo(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TestIamPermissionsRepo(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def unresolve_pull_request_comments(
@@ -11972,7 +11894,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UnresolvePullRequestComments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UnresolvePullRequestComments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_branch_rule(
@@ -12029,7 +11953,9 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdatePullRequestComment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdatePullRequestComment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_repository(
@@ -12099,9 +12025,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetLocation._get_transcoded_request(
@@ -12240,9 +12164,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListLocations._get_transcoded_request(
@@ -12381,9 +12303,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -12523,9 +12443,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -12670,9 +12588,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -12818,9 +12734,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -12938,9 +12852,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -13056,9 +12968,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseGetOperation._get_transcoded_request(
@@ -13197,9 +13107,7 @@ class SecureSourceManagerRestTransport(_BaseSecureSourceManagerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSecureSourceManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSecureSourceManagerRestTransport._BaseListOperations._get_transcoded_request(

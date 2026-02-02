@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
@@ -44,17 +44,16 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.agents import pagers
-from google.cloud.dialogflow_v2beta1.types import agent
+from google.cloud.dialogflow_v2beta1.types import agent, validation_result
 from google.cloud.dialogflow_v2beta1.types import agent as gcd_agent
-from google.cloud.dialogflow_v2beta1.types import validation_result
 
 from .client import AgentsClient
 from .transports.base import DEFAULT_CLIENT_INFO, AgentsTransport
@@ -114,7 +113,8 @@ class AgentsAsyncClient:
         Returns:
             AgentsAsyncClient: The constructed client.
         """
-        return AgentsClient.from_service_account_info.__func__(AgentsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AgentsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AgentsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -130,7 +130,8 @@ class AgentsAsyncClient:
         Returns:
             AgentsAsyncClient: The constructed client.
         """
-        return AgentsClient.from_service_account_file.__func__(AgentsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AgentsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(AgentsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -420,9 +421,9 @@ class AgentsAsyncClient:
     ) -> gcd_agent.Agent:
         r"""Creates/updates the specified agent.
 
-        Note: You should always train an agent prior to sending
-        it queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/es/docs/training).
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         .. code-block:: python
 
@@ -645,13 +646,12 @@ class AgentsAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchAgentsAsyncPager:
-        r"""Returns the list of agents.
-        Since there is at most one conversational agent per
-        project, this method is useful primarily for listing all
-        agents across projects the caller has access to. One can
-        achieve that with a wildcard project collection id "-".
-        Refer to [List
-        Sub-Collections](https://cloud.google.com/apis/design/design_patterns#list_sub-collections).
+        r"""Returns the list of agents. Since there is at most one
+        conversational agent per project, this method is useful
+        primarily for listing all agents across projects the caller has
+        access to. One can achieve that with a wildcard project
+        collection id "-". Refer to `List
+        Sub-Collections <https://cloud.google.com/apis/design/design_patterns#list_sub-collections>`__.
 
         .. code-block:: python
 

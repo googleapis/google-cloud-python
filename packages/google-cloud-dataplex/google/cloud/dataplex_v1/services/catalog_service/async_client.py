@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dataplex_v1 import gapic_version as package_version
 
@@ -44,15 +44,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.catalog_service import pagers
 from google.cloud.dataplex_v1.types import catalog, service
@@ -141,7 +143,8 @@ class CatalogServiceAsyncClient:
         Returns:
             CatalogServiceAsyncClient: The constructed client.
         """
-        return CatalogServiceClient.from_service_account_info.__func__(CatalogServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = CatalogServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(CatalogServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -157,7 +160,8 @@ class CatalogServiceAsyncClient:
         Returns:
             CatalogServiceAsyncClient: The constructed client.
         """
-        return CatalogServiceClient.from_service_account_file.__func__(CatalogServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = CatalogServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(CatalogServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -2465,13 +2469,11 @@ class CatalogServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Mask of fields to update. To
-                update Aspects, the update_mask must
-                contain the value "aspects".
+                Optional. Mask of fields to update. To update Aspects,
+                the update_mask must contain the value "aspects".
 
-                If the update_mask is empty, the service
-                will update all modifiable fields
-                present in the request.
+                If the update_mask is empty, the service will update all
+                modifiable fields present in the request.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2664,13 +2666,12 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEntriesAsyncPager:
-        r"""Lists Entries within an EntryGroup.
-        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored
-        in Dataplex Universal Catalog is changing. For more
-        information, see [Changes to metadata stored in Dataplex
-        Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        r"""Lists Entries within an EntryGroup. Caution: The Vertex AI,
+        Bigtable, Spanner, Pub/Sub, Dataform, and Dataproc Metastore
+        metadata that is stored in Dataplex Universal Catalog is
+        changing. For more information, see `Changes to metadata stored
+        in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 
@@ -2795,13 +2796,12 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Gets an Entry.
-        Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
-        Dataform, and Dataproc Metastore metadata that is stored
-        in Dataplex Universal Catalog is changing. For more
-        information, see [Changes to metadata stored in Dataplex
+        r"""Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
+        Pub/Sub, Dataform, and Dataproc Metastore metadata that is
+        stored in Dataplex Universal Catalog is changing. For more
+        information, see `Changes to metadata stored in Dataplex
         Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 
@@ -2911,13 +2911,12 @@ class CatalogServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> catalog.Entry:
-        r"""Looks up an entry by name using the permission on the
-        source system. Caution: The Vertex AI, Bigtable,
-        Spanner, Pub/Sub, Dataform, and Dataproc Metastore
-        metadata that is stored in Dataplex Universal Catalog is
-        changing. For more information, see [Changes to metadata
-        stored in Dataplex Universal
-        Catalog](https://cloud.google.com/dataplex/docs/metadata-changes).
+        r"""Looks up an entry by name using the permission on the source
+        system. Caution: The Vertex AI, Bigtable, Spanner, Pub/Sub,
+        Dataform, and Dataproc Metastore metadata that is stored in
+        Dataplex Universal Catalog is changing. For more information,
+        see `Changes to metadata stored in Dataplex Universal
+        Catalog <https://cloud.google.com/dataplex/docs/metadata-changes>`__.
 
         .. code-block:: python
 
@@ -3050,11 +3049,10 @@ class CatalogServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             query (:class:`str`):
-                Required. The query against which
-                entries in scope should be matched. The
-                query syntax is defined in [Search
-                syntax for Dataplex Universal
-                Catalog](https://cloud.google.com/dataplex/docs/search-syntax).
+                Required. The query against which entries in scope
+                should be matched. The query syntax is defined in
+                `Search syntax for Dataplex Universal
+                Catalog <https://cloud.google.com/dataplex/docs/search-syntax>`__.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this

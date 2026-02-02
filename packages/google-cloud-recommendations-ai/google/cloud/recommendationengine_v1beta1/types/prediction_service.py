@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
@@ -84,8 +84,7 @@ class PredictRequest(proto.Message):
             prediction results required. If zero, the
             service will choose a reasonable default.
         page_token (str):
-            Optional. The previous
-            PredictResponse.next_page_token.
+            Optional. The previous PredictResponse.next_page_token.
         filter (str):
             Optional. Filter for restricting prediction results. Accepts
             values for tags and the ``filterOutOfStockItems`` flag.
@@ -206,9 +205,8 @@ class PredictResponse(proto.Message):
             Additional domain specific prediction
             response metadata.
         next_page_token (str):
-            If empty, the list is complete. If nonempty, the
-            token to pass to the next request's
-            PredictRequest.page_token.
+            If empty, the list is complete. If nonempty, the token to
+            pass to the next request's PredictRequest.page_token.
     """
 
     class PredictionResult(proto.Message):

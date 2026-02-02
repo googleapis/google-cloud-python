@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import logging_config as gce_logging_config
@@ -85,18 +85,15 @@ class Pipeline(proto.Message):
             messages. It must match the pattern
             "projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}".
         input_payload_format (google.cloud.eventarc_v1.types.Pipeline.MessagePayloadFormat):
-            Optional. The payload format expected for the
-            messages received by the Pipeline. If
-            input_payload_format is set then any messages
-            not matching this format will be treated as
-            persistent errors. If input_payload_format is
-            not set, then the message data will be treated
-            as an opaque binary and no output format can be
-            set on the Pipeline through the
-            Pipeline.Destination.output_payload_format
-            field. Any Mediations on the Pipeline that
-            involve access to the data field will fail as
-            persistent errors.
+            Optional. The payload format expected for the messages
+            received by the Pipeline. If input_payload_format is set
+            then any messages not matching this format will be treated
+            as persistent errors. If input_payload_format is not set,
+            then the message data will be treated as an opaque binary
+            and no output format can be set on the Pipeline through the
+            Pipeline.Destination.output_payload_format field. Any
+            Mediations on the Pipeline that involve access to the data
+            field will fail as persistent errors.
         logging_config (google.cloud.eventarc_v1.types.LoggingConfig):
             Optional. Config to control Platform Logging
             for Pipelines.
@@ -206,13 +203,11 @@ class Pipeline(proto.Message):
                 how Pipeline resolves and connects to a
                 destination.
             http_endpoint (google.cloud.eventarc_v1.types.Pipeline.Destination.HttpEndpoint):
-                Optional. An HTTP endpoint destination described
-                by an URI. If a DNS FQDN is provided as the
-                endpoint, Pipeline will create a peering zone to
-                the consumer VPC and forward DNS requests to the
-                VPC specified by network config to resolve the
-                service endpoint. See:
-
+                Optional. An HTTP endpoint destination described by an URI.
+                If a DNS FQDN is provided as the endpoint, Pipeline will
+                create a peering zone to the consumer VPC and forward DNS
+                requests to the VPC specified by network config to resolve
+                the service endpoint. See:
                 https://cloud.google.com/dns/docs/zones/zones-overview#peering_zones
 
                 This field is a member of `oneof`_ ``destination_descriptor``.
@@ -246,12 +241,11 @@ class Pipeline(proto.Message):
                 field is optional and should be set only by
                 users interested in authenticated push.
             output_payload_format (google.cloud.eventarc_v1.types.Pipeline.MessagePayloadFormat):
-                Optional. The message format before it is
-                delivered to the destination. If not set, the
-                message will be delivered in the format it was
-                originally delivered to the Pipeline. This field
-                can only be set if Pipeline.input_payload_format
-                is also set.
+                Optional. The message format before it is delivered to the
+                destination. If not set, the message will be delivered in
+                the format it was originally delivered to the Pipeline. This
+                field can only be set if Pipeline.input_payload_format is
+                also set.
         """
 
         class NetworkConfig(proto.Message):
@@ -549,18 +543,15 @@ class Pipeline(proto.Message):
 
                 Attributes:
                     service_account (str):
-                        Required. Service account email used to generate
-                        the [OAuth
-                        token](https://developers.google.com/identity/protocols/OAuth2).
+                        Required. Service account email used to generate the `OAuth
+                        token <https://developers.google.com/identity/protocols/OAuth2>`__.
                         The principal who calls this API must have
-                        iam.serviceAccounts.actAs permission in the
-                        service account. See
+                        iam.serviceAccounts.actAs permission in the service account.
+                        See
                         https://cloud.google.com/iam/docs/understanding-service-accounts
-                        for more information. Eventarc service agents
-                        must have
-                        roles/roles/iam.serviceAccountTokenCreator role
-                        to allow Pipeline to create OAuth2 tokens for
-                        authenticated requests.
+                        for more information. Eventarc service agents must have
+                        roles/roles/iam.serviceAccountTokenCreator role to allow
+                        Pipeline to create OAuth2 tokens for authenticated requests.
                     scope (str):
                         Optional. OAuth scope to be used for
                         generating OAuth access token. If not specified,
@@ -746,16 +737,13 @@ class Pipeline(proto.Message):
 
     class RetryPolicy(proto.Message):
         r"""The retry policy configuration for the Pipeline. The pipeline
-        exponentially backs off in case the destination is non
-        responsive or returns a retryable error code. The default
-        semantics are as follows:
-
-        The backoff starts with a 5 second delay and doubles the delay
-        after each failed attempt (10 seconds, 20 seconds, 40 seconds,
-        etc.). The delay is capped at 60 seconds by default.
-        Please note that if you set the min_retry_delay and
-        max_retry_delay fields to the same value this will make the
-        duration between retries constant.
+        exponentially backs off in case the destination is non responsive or
+        returns a retryable error code. The default semantics are as
+        follows: The backoff starts with a 5 second delay and doubles the
+        delay after each failed attempt (10 seconds, 20 seconds, 40 seconds,
+        etc.). The delay is capped at 60 seconds by default. Please note
+        that if you set the min_retry_delay and max_retry_delay fields to
+        the same value this will make the duration between retries constant.
 
         Attributes:
             max_attempts (int):

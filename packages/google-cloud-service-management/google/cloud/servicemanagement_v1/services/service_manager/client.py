@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.servicemanagement_v1 import gapic_version as package_version
 
@@ -61,36 +61,38 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import auth_pb2  # type: ignore
-from google.api import backend_pb2  # type: ignore
-from google.api import billing_pb2  # type: ignore
-from google.api import client_pb2  # type: ignore
-from google.api import context_pb2  # type: ignore
-from google.api import control_pb2  # type: ignore
-from google.api import documentation_pb2  # type: ignore
-from google.api import endpoint_pb2  # type: ignore
-from google.api import http_pb2  # type: ignore
-from google.api import log_pb2  # type: ignore
-from google.api import logging_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
-from google.api import monitoring_pb2  # type: ignore
-from google.api import quota_pb2  # type: ignore
-from google.api import service_pb2  # type: ignore
-from google.api import source_info_pb2  # type: ignore
-from google.api import system_parameter_pb2  # type: ignore
-from google.api import usage_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.api.auth_pb2 as auth_pb2  # type: ignore
+import google.api.backend_pb2 as backend_pb2  # type: ignore
+import google.api.billing_pb2 as billing_pb2  # type: ignore
+import google.api.client_pb2 as client_pb2  # type: ignore
+import google.api.context_pb2 as context_pb2  # type: ignore
+import google.api.control_pb2 as control_pb2  # type: ignore
+import google.api.documentation_pb2 as documentation_pb2  # type: ignore
+import google.api.endpoint_pb2 as endpoint_pb2  # type: ignore
+import google.api.http_pb2 as http_pb2  # type: ignore
+import google.api.log_pb2 as log_pb2  # type: ignore
+import google.api.logging_pb2 as logging_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.api.monitoring_pb2 as monitoring_pb2  # type: ignore
+import google.api.quota_pb2 as quota_pb2  # type: ignore
+import google.api.service_pb2 as service_pb2  # type: ignore
+import google.api.source_info_pb2 as source_info_pb2  # type: ignore
+import google.api.system_parameter_pb2 as system_parameter_pb2  # type: ignore
+import google.api.usage_pb2 as usage_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.api_pb2 as api_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.type_pb2 as type_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import api_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import type_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.cloud.servicemanagement_v1.services.service_manager import pagers
 from google.cloud.servicemanagement_v1.types import resources, servicemanager
@@ -109,9 +111,7 @@ class ServiceManagerClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ServiceManagerTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ServiceManagerTransport]]
     _transport_registry["grpc"] = ServiceManagerGrpcTransport
     _transport_registry["grpc_asyncio"] = ServiceManagerGrpcAsyncIOTransport
     _transport_registry["rest"] = ServiceManagerRestTransport
@@ -139,8 +139,8 @@ class ServiceManagerClientMeta(type):
 
 
 class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
-    """[Google Service Management
-    API](https://cloud.google.com/service-infrastructure/docs/overview)
+    """`Google Service Management
+    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
     """
 
     @staticmethod
@@ -631,11 +631,9 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ServiceManagerClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ServiceManagerClient._read_environment_variables()
+        )
         self._client_cert_source = ServiceManagerClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -670,8 +668,7 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ServiceManagerTransport, transport)
             self._api_endpoint = self._transport.host
@@ -2447,19 +2444,18 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> servicemanager.GenerateConfigReportResponse:
-        r"""Generates and returns a report (errors, warnings and
-        changes from existing configurations) associated with
+        r"""Generates and returns a report (errors, warnings and changes
+        from existing configurations) associated with
         GenerateConfigReportRequest.new_value
 
         If GenerateConfigReportRequest.old_value is specified,
-        GenerateConfigReportRequest will contain a single
-        ChangeReport based on the comparison between
+        GenerateConfigReportRequest will contain a single ChangeReport
+        based on the comparison between
         GenerateConfigReportRequest.new_value and
-        GenerateConfigReportRequest.old_value.
-        If GenerateConfigReportRequest.old_value is not
-        specified, this method will compare
-        GenerateConfigReportRequest.new_value with the last
-        pushed service configuration.
+        GenerateConfigReportRequest.old_value. If
+        GenerateConfigReportRequest.old_value is not specified, this
+        method will compare GenerateConfigReportRequest.new_value with
+        the last pushed service configuration.
 
         .. code-block:: python
 

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.tasks_v2.types import target
@@ -187,6 +187,7 @@ class Queue(proto.Message):
                 To permanently delete this queue and all of its tasks, call
                 [DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue].
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -289,20 +290,19 @@ class RateLimits(proto.Message):
             [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second]
             is updated.
         max_concurrent_dispatches (int):
-            The maximum number of concurrent tasks that
-            Cloud Tasks allows to be dispatched for this
-            queue. After this threshold has been reached,
-            Cloud Tasks stops dispatching tasks until the
-            number of concurrent requests decreases.
+            The maximum number of concurrent tasks that Cloud Tasks
+            allows to be dispatched for this queue. After this threshold
+            has been reached, Cloud Tasks stops dispatching tasks until
+            the number of concurrent requests decreases.
 
-            If unspecified when the queue is created, Cloud
-            Tasks will pick the default.
+            If unspecified when the queue is created, Cloud Tasks will
+            pick the default.
 
             The maximum allowed value is 5,000.
 
-            This field has the same meaning as
-            [max_concurrent_requests in
-            queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests).
+            This field has the same meaning as `max_concurrent_requests
+            in
+            queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests>`__.
     """
 
     max_dispatches_per_second: float = proto.Field(

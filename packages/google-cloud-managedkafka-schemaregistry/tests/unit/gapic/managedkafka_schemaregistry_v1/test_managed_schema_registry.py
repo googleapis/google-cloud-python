@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,18 +43,23 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api import httpbody_pb2  # type: ignore
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
 
 from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry import (
     ManagedSchemaRegistryAsyncClient,
@@ -62,10 +67,12 @@ from google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registr
     transports,
 )
 from google.cloud.managedkafka_schemaregistry_v1.types import (
+    schema_registry,
+    schema_registry_resources,
+)
+from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -1001,10 +1008,9 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1049,10 +1055,9 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1088,10 +1093,9 @@ def test_managed_schema_registry_client_get_mtls_endpoint_and_cert_source(client
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1347,13 +1351,13 @@ def test_managed_schema_registry_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1468,9 +1472,9 @@ def test_get_schema_registry_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_registry] = (
+            mock_rpc
+        )
         request = {}
         client.get_schema_registry(request)
 
@@ -1810,9 +1814,9 @@ def test_list_schema_registries_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_registries
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_registries] = (
+            mock_rpc
+        )
         request = {}
         client.list_schema_registries(request)
 
@@ -2154,9 +2158,9 @@ def test_create_schema_registry_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_schema_registry] = (
+            mock_rpc
+        )
         request = {}
         client.create_schema_registry(request)
 
@@ -2506,9 +2510,9 @@ def test_delete_schema_registry_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_registry] = (
+            mock_rpc
+        )
         request = {}
         client.delete_schema_registry(request)
 
@@ -4153,9 +4157,9 @@ def test_list_schema_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_schema_versions(request)
 
@@ -4497,9 +4501,9 @@ def test_list_schema_types_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_types
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_types] = (
+            mock_rpc
+        )
         request = {}
         client.list_schema_types(request)
 
@@ -6578,9 +6582,9 @@ def test_get_raw_schema_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_raw_schema_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_raw_schema_version] = (
+            mock_rpc
+        )
         request = {}
         client.get_raw_schema_version(request)
 
@@ -8319,9 +8323,9 @@ def test_check_compatibility_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_compatibility] = (
+            mock_rpc
+        )
         request = {}
         client.check_compatibility(request)
 
@@ -8678,9 +8682,9 @@ def test_get_schema_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_config] = (
+            mock_rpc
+        )
         request = {}
         client.get_schema_config(request)
 
@@ -9033,9 +9037,9 @@ def test_update_schema_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_schema_config(request)
 
@@ -9399,9 +9403,9 @@ def test_delete_schema_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_schema_config(request)
 
@@ -10071,9 +10075,9 @@ def test_update_schema_mode_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_mode
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_mode] = (
+            mock_rpc
+        )
         request = {}
         client.update_schema_mode(request)
 
@@ -10423,9 +10427,9 @@ def test_delete_schema_mode_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_mode
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_mode] = (
+            mock_rpc
+        )
         request = {}
         client.delete_schema_mode(request)
 
@@ -10697,9 +10701,9 @@ def test_get_schema_registry_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_registry] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_schema_registry(request)
@@ -10882,9 +10886,9 @@ def test_list_schema_registries_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_registries
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_registries] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_schema_registries(request)
@@ -11065,9 +11069,9 @@ def test_create_schema_registry_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_schema_registry] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_schema_registry(request)
@@ -11264,9 +11268,9 @@ def test_delete_schema_registry_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_registry
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_registry] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_schema_registry(request)
@@ -12157,9 +12161,9 @@ def test_list_schema_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_schema_versions(request)
@@ -12350,9 +12354,9 @@ def test_list_schema_types_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_schema_types
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_schema_types] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_schema_types(request)
@@ -13481,9 +13485,9 @@ def test_get_raw_schema_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_raw_schema_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_raw_schema_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_raw_schema_version(request)
@@ -14409,9 +14413,9 @@ def test_check_compatibility_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.check_compatibility
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.check_compatibility] = (
+            mock_rpc
+        )
 
         request = {}
         client.check_compatibility(request)
@@ -14606,9 +14610,9 @@ def test_get_schema_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_schema_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_schema_config(request)
@@ -14792,9 +14796,9 @@ def test_update_schema_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_schema_config(request)
@@ -14987,9 +14991,9 @@ def test_delete_schema_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_schema_config(request)
@@ -15351,9 +15355,9 @@ def test_update_schema_mode_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_schema_mode
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_schema_mode] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_schema_mode(request)
@@ -15546,9 +15550,9 @@ def test_delete_schema_mode_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_schema_mode
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_schema_mode] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_schema_mode(request)
@@ -17227,8 +17231,9 @@ def test_get_schema_registry_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17295,18 +17300,20 @@ def test_get_schema_registry_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_registry"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_registry_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_registry"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_registry"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_schema_registry_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_registry"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17364,8 +17371,9 @@ def test_list_schema_registries_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17425,18 +17433,22 @@ def test_list_schema_registries_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_registries"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_registries_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_registries"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_schema_registries",
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_schema_registries_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_list_schema_registries",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17494,8 +17506,9 @@ def test_create_schema_registry_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17560,18 +17573,22 @@ def test_create_schema_registry_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_create_schema_registry"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_create_schema_registry_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_create_schema_registry"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_create_schema_registry",
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_create_schema_registry_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_create_schema_registry",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17631,8 +17648,9 @@ def test_delete_schema_registry_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17691,13 +17709,14 @@ def test_delete_schema_registry_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_registry"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_delete_schema_registry",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = schema_registry.DeleteSchemaRegistryRequest.pb(
             schema_registry.DeleteSchemaRegistryRequest()
@@ -17742,8 +17761,9 @@ def test_get_context_rest_bad_request(request_type=schema_registry.GetContextReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17810,18 +17830,20 @@ def test_get_context_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_context"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_context_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_context"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_context"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_context_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_context"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17878,8 +17900,9 @@ def test_list_contexts_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17943,18 +17966,20 @@ def test_list_contexts_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_contexts"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_contexts_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_contexts"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_list_contexts"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_contexts_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_list_contexts"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18007,8 +18032,9 @@ def test_get_schema_rest_bad_request(request_type=schema_registry.GetSchemaReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18075,17 +18101,20 @@ def test_get_schema_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_schema_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18140,8 +18169,9 @@ def test_get_raw_schema_rest_bad_request(request_type=schema_registry.GetSchemaR
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18205,18 +18235,20 @@ def test_get_raw_schema_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_raw_schema_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_raw_schema"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_raw_schema_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_raw_schema"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18271,8 +18303,9 @@ def test_list_schema_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18336,18 +18369,20 @@ def test_list_schema_versions_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_versions"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_versions"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_schema_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18402,8 +18437,9 @@ def test_list_schema_types_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18467,18 +18503,20 @@ def test_list_schema_types_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_types"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_schema_types_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_types"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_list_schema_types"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_schema_types_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_list_schema_types"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18533,8 +18571,9 @@ def test_list_subjects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18598,18 +18637,20 @@ def test_list_subjects_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_subjects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_list_subjects"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_subjects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_list_subjects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18664,8 +18705,9 @@ def test_list_subjects_by_schema_id_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18729,20 +18771,22 @@ def test_list_subjects_by_schema_id_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_by_schema_id",
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_subjects_by_schema_id_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "pre_list_subjects_by_schema_id",
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_subjects_by_schema_id",
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_subjects_by_schema_id_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_list_subjects_by_schema_id",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18797,8 +18841,9 @@ def test_delete_subject_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -18862,18 +18907,20 @@ def test_delete_subject_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_subject"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_subject_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_subject"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_delete_subject"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_delete_subject_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_subject"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -18928,8 +18975,9 @@ def test_lookup_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19002,18 +19050,20 @@ def test_lookup_version_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_lookup_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_lookup_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_lookup_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_lookup_version"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_lookup_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_lookup_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19071,8 +19121,9 @@ def test_get_version_rest_bad_request(request_type=schema_registry.GetVersionReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19145,18 +19196,20 @@ def test_get_version_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_version"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19216,8 +19269,9 @@ def test_get_raw_schema_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19281,18 +19335,22 @@ def test_get_raw_schema_version_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_raw_schema_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_raw_schema_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_raw_schema_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_raw_schema_version",
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_raw_schema_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_get_raw_schema_version",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19347,8 +19405,9 @@ def test_list_versions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19412,18 +19471,20 @@ def test_list_versions_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_versions"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_versions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_versions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_list_versions"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_versions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_list_versions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19478,8 +19539,9 @@ def test_create_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19544,18 +19606,20 @@ def test_create_version_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_create_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_create_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_create_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_create_version"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_create_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_create_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19615,8 +19679,9 @@ def test_delete_version_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19680,18 +19745,20 @@ def test_delete_version_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_version"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_version_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_version"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_delete_version"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_delete_version_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_version"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19746,8 +19813,9 @@ def test_list_referenced_schemas_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19811,18 +19879,22 @@ def test_list_referenced_schemas_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_list_referenced_schemas"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_list_referenced_schemas_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_list_referenced_schemas"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_referenced_schemas",
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_list_referenced_schemas_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "pre_list_referenced_schemas",
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -19877,8 +19949,9 @@ def test_check_compatibility_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -19945,18 +20018,20 @@ def test_check_compatibility_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_check_compatibility"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_check_compatibility_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_check_compatibility"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_check_compatibility"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_check_compatibility_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_check_compatibility"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20016,8 +20091,9 @@ def test_get_schema_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20089,18 +20165,20 @@ def test_get_schema_config_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_config"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_schema_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20160,8 +20238,9 @@ def test_update_schema_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20233,18 +20312,20 @@ def test_update_schema_config_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_update_schema_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_config"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_update_schema_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20304,8 +20385,9 @@ def test_delete_schema_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20377,18 +20459,20 @@ def test_delete_schema_config_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_config"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_schema_config_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_config"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_delete_schema_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20448,8 +20532,9 @@ def test_get_schema_mode_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20514,18 +20599,20 @@ def test_get_schema_mode_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_get_schema_mode_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_mode"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_get_schema_mode"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_get_schema_mode_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_get_schema_mode"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20585,8 +20672,9 @@ def test_update_schema_mode_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20651,18 +20739,20 @@ def test_update_schema_mode_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_update_schema_mode_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_mode"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_update_schema_mode"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_update_schema_mode_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_update_schema_mode"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20722,8 +20812,9 @@ def test_delete_schema_mode_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -20788,18 +20879,20 @@ def test_delete_schema_mode_rest_interceptors(null_interceptor):
     )
     client = ManagedSchemaRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_mode"
-    ) as post, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor,
-        "post_delete_schema_mode_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_mode"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "post_delete_schema_mode"
+        ) as post,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor,
+            "post_delete_schema_mode_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ManagedSchemaRegistryRestInterceptor, "pre_delete_schema_mode"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -20857,8 +20950,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -20917,8 +21011,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -20979,8 +21074,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -21041,8 +21137,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -21103,8 +21200,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -21165,8 +21263,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -21876,11 +21975,14 @@ def test_managed_schema_registry_base_transport():
 
 def test_managed_schema_registry_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ManagedSchemaRegistryTransport(
@@ -21897,9 +21999,12 @@ def test_managed_schema_registry_base_transport_with_credentials_file():
 
 def test_managed_schema_registry_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.managedkafka_schemaregistry_v1.services.managed_schema_registry.transports.ManagedSchemaRegistryTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ManagedSchemaRegistryTransport()
@@ -21973,11 +22078,12 @@ def test_managed_schema_registry_transport_create_channel(
 ):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

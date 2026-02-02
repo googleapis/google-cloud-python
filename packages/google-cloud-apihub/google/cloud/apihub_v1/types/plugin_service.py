@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import common_fields
@@ -70,6 +70,7 @@ class ActionType(proto.Enum):
         SYNC_RUNTIME_DATA (2):
             Action type for sync runtime data.
     """
+
     ACTION_TYPE_UNSPECIFIED = 0
     SYNC_METADATA = 1
     SYNC_RUNTIME_DATA = 2
@@ -98,6 +99,7 @@ class GatewayType(proto.Enum):
             The gateway type for any other types of
             gateways.
     """
+
     GATEWAY_TYPE_UNSPECIFIED = 0
     APIGEE_X_AND_HYBRID = 1
     APIGEE_EDGE_PUBLIC_CLOUD = 2
@@ -121,6 +123,7 @@ class CurationType(proto.Enum):
             Custom curation for API metadata will be
             used.
     """
+
     CURATION_TYPE_UNSPECIFIED = 0
     DEFAULT_CURATION_FOR_API_METADATA = 1
     CUSTOM_CURATION_FOR_API_METADATA = 2
@@ -155,8 +158,8 @@ class Plugin(proto.Message):
             plugins developed via plugin framework as the
             state will be managed at plugin instance level.
         ownership_type (google.cloud.apihub_v1.types.Plugin.OwnershipType):
-            Output only. The type of the plugin, indicating
-            whether it is 'SYSTEM_OWNED' or 'USER_OWNED'.
+            Output only. The type of the plugin, indicating whether it
+            is 'SYSTEM_OWNED' or 'USER_OWNED'.
         hosting_service (google.cloud.apihub_v1.types.Plugin.HostingService):
             Optional. This field is optional. It is used
             to notify the plugin hosting service for any
@@ -219,6 +222,7 @@ class Plugin(proto.Message):
             DISABLED (2):
                 The plugin is disabled.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -238,6 +242,7 @@ class Plugin(proto.Message):
                 [CreatePlugin][google.cloud.apihub.v1.ApiHubPlugin.CreatePlugin]
                 method.
         """
+
         OWNERSHIP_TYPE_UNSPECIFIED = 0
         SYSTEM_OWNED = 1
         USER_OWNED = 2
@@ -299,12 +304,12 @@ class Plugin(proto.Message):
                     the corresponding service account.
             """
 
-            supported_auth_types: MutableSequence[
-                common_fields.AuthType
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=1,
-                enum=common_fields.AuthType,
+            supported_auth_types: MutableSequence[common_fields.AuthType] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=1,
+                    enum=common_fields.AuthType,
+                )
             )
             service_account: common_fields.GoogleServiceAccountConfig = proto.Field(
                 proto.MESSAGE,
@@ -439,6 +444,7 @@ class PluginActionConfig(proto.Message):
                 service need not handle this action id as part
                 of the execute call.
         """
+
         TRIGGER_MODE_UNSPECIFIED = 0
         API_HUB_ON_DEMAND_TRIGGER = 1
         API_HUB_SCHEDULE_TRIGGER = 2
@@ -536,10 +542,9 @@ class PluginInstanceAction(proto.Message):
             Output only. The current state of the plugin
             action in the plugin instance.
         schedule_cron_expression (str):
-            Optional. The schedule for this plugin instance
-            action. This can only be set if the plugin
-            supports API_HUB_SCHEDULE_TRIGGER mode for this
-            action.
+            Optional. The schedule for this plugin instance action. This
+            can only be set if the plugin supports
+            API_HUB_SCHEDULE_TRIGGER mode for this action.
         curation_config (google.cloud.apihub_v1.types.CurationConfig):
             Optional. This configuration should be
             provided if the plugin action is publishing data
@@ -591,6 +596,7 @@ class PluginInstanceAction(proto.Message):
                 enable/disable on actions can only be triggered if plugin
                 instance is in Active state.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -677,13 +683,12 @@ class PluginInstance(proto.Message):
             Optional. The authentication information for
             this plugin instance.
         additional_config (MutableMapping[str, google.cloud.apihub_v1.types.ConfigVariable]):
-            Optional. The additional information for this
-            plugin instance corresponding to the additional
-            config template of the plugin. This information
-            will be sent to plugin hosting service on each
-            call to plugin hosted service. The key will be
-            the config_variable_template.display_name to
-            uniquely identify the config variable.
+            Optional. The additional information for this plugin
+            instance corresponding to the additional config template of
+            the plugin. This information will be sent to plugin hosting
+            service on each call to plugin hosted service. The key will
+            be the config_variable_template.display_name to uniquely
+            identify the config variable.
         state (google.cloud.apihub_v1.types.PluginInstance.State):
             Output only. The current state of the plugin
             instance (e.g., enabled, disabled,
@@ -752,6 +757,7 @@ class PluginInstance(proto.Message):
                 running on the plugin instance and plugin
                 instance action.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -773,13 +779,13 @@ class PluginInstance(proto.Message):
         number=3,
         message=common_fields.AuthConfig,
     )
-    additional_config: MutableMapping[
-        str, common_fields.ConfigVariable
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=4,
-        message=common_fields.ConfigVariable,
+    additional_config: MutableMapping[str, common_fields.ConfigVariable] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message=common_fields.ConfigVariable,
+        )
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -879,6 +885,7 @@ class ExecutionStatus(proto.Message):
                 The plugin instance is not running an
                 execution.
         """
+
         CURRENT_EXECUTION_STATE_UNSPECIFIED = 0
         RUNNING = 1
         NOT_RUNNING = 2
@@ -913,6 +920,7 @@ class ExecutionStatus(proto.Message):
                 FAILED (2):
                     The plugin instance execution failed.
             """
+
             RESULT_UNSPECIFIED = 0
             SUCCEEDED = 1
             FAILED = 2

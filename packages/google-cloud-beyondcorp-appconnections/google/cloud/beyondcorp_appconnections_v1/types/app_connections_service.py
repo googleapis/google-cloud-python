@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -55,16 +55,14 @@ class ListAppConnectionsRequest(proto.Message):
             [next_page_token][BeyondCorp.ListAppConnectionsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous ListAppConnectionsRequest, if
-            any.
+            Optional. The next_page_token value returned from a previous
+            ListAppConnectionsRequest, if any.
         filter (str):
             Optional. A filter specifying constraints of
             a list operation.
         order_by (str):
-            Optional. Specifies the ordering of results. See
-            [Sorting
-            order](https://cloud.google.com/apis/design/design_patterns#sorting_order)
+            Optional. Specifies the ordering of results. See `Sorting
+            order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__
             for more information.
     """
 
@@ -222,9 +220,8 @@ class UpdateAppConnectionRequest(proto.Message):
             - ``application_endpoint``
             - ``connectors``
         app_connection (google.cloud.beyondcorp_appconnections_v1.types.AppConnection):
-            Required. AppConnection message with updated
-            fields. Only supported fields specified in
-            update_mask are updated.
+            Required. AppConnection message with updated fields. Only
+            supported fields specified in update_mask are updated.
         request_id (str):
             Optional. An optional request ID to identify
             requests. Specify a unique request ID so that if
@@ -346,9 +343,8 @@ class ResolveAppConnectionsRequest(proto.Message):
             [next_page_token][BeyondCorp.ResolveAppConnectionsResponse.next_page_token]
             to determine if there are more instances left to be queried.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous ResolveAppConnectionsResponse,
-            if any.
+            Optional. The next_page_token value returned from a previous
+            ResolveAppConnectionsResponse, if any.
     """
 
     parent: str = proto.Field(
@@ -461,9 +457,8 @@ class AppConnection(proto.Message):
             endpoint for the BeyondCorp AppConnection.
         connectors (MutableSequence[str]):
             Optional. List of
-            [google.cloud.beyondcorp.v1main.Connector.name]
-            that are authorised to be associated with this
-            AppConnection.
+            [google.cloud.beyondcorp.v1main.Connector.name] that are
+            authorised to be associated with this AppConnection.
         state (google.cloud.beyondcorp_appconnections_v1.types.AppConnection.State):
             Output only. The current state of the
             AppConnection.
@@ -482,6 +477,7 @@ class AppConnection(proto.Message):
                 TCP Proxy based BeyondCorp AppConnection. API
                 will default to this if unset.
         """
+
         TYPE_UNSPECIFIED = 0
         TCP_PROXY = 1
 
@@ -505,6 +501,7 @@ class AppConnection(proto.Message):
                 the future. This happens when CCFE sends
                 ProjectState = OFF.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -563,6 +560,7 @@ class AppConnection(proto.Message):
                     Gateway hosted in a GCP regional managed
                     instance group.
             """
+
             TYPE_UNSPECIFIED = 0
             GCP_REGIONAL_MIG = 1
 

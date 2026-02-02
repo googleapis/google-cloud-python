@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,12 +27,11 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
 from google.cloud.dialogflow_v2beta1.types import fulfillment
+from google.cloud.dialogflow_v2beta1.types import fulfillment as gcd_fulfillment
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseFulfillmentsRestTransport
@@ -458,22 +458,18 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             Returns:
                 ~.fulfillment.Fulfillment:
-                    By default, your agent responds to a
-                matched intent with a static response.
-                As an alternative, you can provide a
-                more dynamic response by using
-                fulfillment. When you enable fulfillment
-                for an intent, Dialogflow responds to
-                that intent by calling a service that
-                you define. For example, if an end-user
-                wants to schedule a haircut on Friday,
-                your service can check your database and
-                respond to the end-user with
-                availability information for Friday.
+                    By default, your agent responds to a matched intent with
+                a static response. As an alternative, you can provide a
+                more dynamic response by using fulfillment. When you
+                enable fulfillment for an intent, Dialogflow responds to
+                that intent by calling a service that you define. For
+                example, if an end-user wants to schedule a haircut on
+                Friday, your service can check your database and respond
+                to the end-user with availability information for
+                Friday.
 
-                For more information, see the
-                [fulfillment
-                guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                For more information, see the `fulfillment
+                guide <https://cloud.google.com/dialogflow/docs/fulfillment-overview>`__.
 
             """
 
@@ -620,28 +616,22 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             Returns:
                 ~.gcd_fulfillment.Fulfillment:
-                    By default, your agent responds to a
-                matched intent with a static response.
-                As an alternative, you can provide a
-                more dynamic response by using
-                fulfillment. When you enable fulfillment
-                for an intent, Dialogflow responds to
-                that intent by calling a service that
-                you define. For example, if an end-user
-                wants to schedule a haircut on Friday,
-                your service can check your database and
-                respond to the end-user with
-                availability information for Friday.
+                    By default, your agent responds to a matched intent with
+                a static response. As an alternative, you can provide a
+                more dynamic response by using fulfillment. When you
+                enable fulfillment for an intent, Dialogflow responds to
+                that intent by calling a service that you define. For
+                example, if an end-user wants to schedule a haircut on
+                Friday, your service can check your database and respond
+                to the end-user with availability information for
+                Friday.
 
-                For more information, see the
-                [fulfillment
-                guide](https://cloud.google.com/dialogflow/docs/fulfillment-overview).
+                For more information, see the `fulfillment
+                guide <https://cloud.google.com/dialogflow/docs/fulfillment-overview>`__.
 
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_fulfillment(
                 request, metadata

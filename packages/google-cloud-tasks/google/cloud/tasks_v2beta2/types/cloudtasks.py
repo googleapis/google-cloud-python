@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import httpbody_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.tasks_v2beta2.types import queue as gct_queue
@@ -95,12 +95,10 @@ class ListQueuesRequest(proto.Message):
             [filter][google.cloud.tasks.v2beta2.ListQueuesRequest.filter]
             while iterating through pages.
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Read mask is used for a more granular
-            control over what the API returns. If the mask
-            is not present all fields will be returned
-            except [Queue.stats]. [Queue.stats] will be
-            returned only if it was explicitly specified in
-            the mask.
+            Optional. Read mask is used for a more granular control over
+            what the API returns. If the mask is not present all fields
+            will be returned except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in the mask.
     """
 
     parent: str = proto.Field(
@@ -170,12 +168,10 @@ class GetQueueRequest(proto.Message):
             Required. The resource name of the queue. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID``
         read_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Read mask is used for a more granular
-            control over what the API returns. If the mask
-            is not present all fields will be returned
-            except [Queue.stats]. [Queue.stats] will be
-            returned only if it was explicitly specified in
-            the mask.
+            Optional. Read mask is used for a more granular control over
+            what the API returns. If the mask is not present all fields
+            will be returned except [Queue.stats]. [Queue.stats] will be
+            returned only if it was explicitly specified in the mask.
     """
 
     name: str = proto.Field(

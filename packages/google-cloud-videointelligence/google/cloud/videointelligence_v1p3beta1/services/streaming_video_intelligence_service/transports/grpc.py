@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.videointelligence_v1p3beta1.types import video_intelligence
 
@@ -348,12 +348,12 @@ class StreamingVideoIntelligenceServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "streaming_annotate_video" not in self._stubs:
-            self._stubs[
-                "streaming_annotate_video"
-            ] = self._logged_channel.stream_stream(
-                "/google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService/StreamingAnnotateVideo",
-                request_serializer=video_intelligence.StreamingAnnotateVideoRequest.serialize,
-                response_deserializer=video_intelligence.StreamingAnnotateVideoResponse.deserialize,
+            self._stubs["streaming_annotate_video"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService/StreamingAnnotateVideo",
+                    request_serializer=video_intelligence.StreamingAnnotateVideoRequest.serialize,
+                    response_deserializer=video_intelligence.StreamingAnnotateVideoResponse.deserialize,
+                )
             )
         return self._stubs["streaming_annotate_video"]
 

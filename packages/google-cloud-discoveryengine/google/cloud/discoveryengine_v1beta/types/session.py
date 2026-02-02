@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import answer as gcd_answer
@@ -69,6 +69,7 @@ class Session(proto.Message):
             IN_PROGRESS (1):
                 The session is currently open.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
 

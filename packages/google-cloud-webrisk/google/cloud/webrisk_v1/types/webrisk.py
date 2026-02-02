@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -64,6 +64,7 @@ class ThreatType(proto.Enum):
             A list of extended coverage social
             engineering URIs targeting any platform.
     """
+
     THREAT_TYPE_UNSPECIFIED = 0
     MALWARE = 1
     SOCIAL_ENGINEERING = 2
@@ -82,6 +83,7 @@ class CompressionType(proto.Enum):
         RICE (2):
             Rice-Golomb encoded data.
     """
+
     COMPRESSION_TYPE_UNSPECIFIED = 0
     RAW = 1
     RICE = 2
@@ -137,12 +139,12 @@ class ComputeThreatListDiffRequest(proto.Message):
             proto.INT32,
             number=2,
         )
-        supported_compressions: MutableSequence[
-            "CompressionType"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=3,
-            enum="CompressionType",
+        supported_compressions: MutableSequence["CompressionType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="CompressionType",
+            )
         )
 
     threat_type: "ThreatType" = proto.Field(
@@ -176,11 +178,10 @@ class ComputeThreatListDiffResponse(proto.Message):
             A set of entries to remove from a local
             threat type's list. This field may be empty.
         new_version_token (bytes):
-            The new opaque client version token. This should
-            be retained by the client and passed into the
-            next call of ComputeThreatListDiff as
-            'version_token'. A separate version token should
-            be stored and used for each threatList.
+            The new opaque client version token. This should be retained
+            by the client and passed into the next call of
+            ComputeThreatListDiff as 'version_token'. A separate version
+            token should be stored and used for each threatList.
         checksum (google.cloud.webrisk_v1.types.ComputeThreatListDiffResponse.Checksum):
             The expected SHA256 hash of the client state;
             that is, of the sorted list of all hashes
@@ -212,6 +213,7 @@ class ComputeThreatListDiffResponse(proto.Message):
                 no state, was seriously out-of-date, or the
                 client is believed to be corrupt.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         DIFF = 1
         RESET = 2
@@ -419,11 +421,10 @@ class ThreatEntryAdditions(proto.Message):
             Repeated to allow returning sets of hashes with
             different prefix sizes.
         rice_hashes (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
-            The encoded 4-byte prefixes of SHA256-formatted
-            entries, using a Golomb-Rice encoding. The
-            hashes are converted to uint32, sorted in
-            ascending order, then delta encoded and stored
-            as encoded_data.
+            The encoded 4-byte prefixes of SHA256-formatted entries,
+            using a Golomb-Rice encoding. The hashes are converted to
+            uint32, sorted in ascending order, then delta encoded and
+            stored as encoded_data.
     """
 
     raw_hashes: MutableSequence["RawHashes"] = proto.RepeatedField(
@@ -445,11 +446,11 @@ class ThreatEntryRemovals(proto.Message):
         raw_indices (google.cloud.webrisk_v1.types.RawIndices):
             The raw removal indices for a local list.
         rice_indices (google.cloud.webrisk_v1.types.RiceDeltaEncoding):
-            The encoded local, lexicographically-sorted list
-            indices, using a Golomb-Rice encoding. Used for
-            sending compressed removal indices. The removal
-            indices (uint32) are sorted in ascending order,
-            then delta encoded and stored as encoded_data.
+            The encoded local, lexicographically-sorted list indices,
+            using a Golomb-Rice encoding. Used for sending compressed
+            removal indices. The removal indices (uint32) are sorted in
+            ascending order, then delta encoded and stored as
+            encoded_data.
     """
 
     raw_indices: "RawIndices" = proto.Field(
@@ -605,6 +606,7 @@ class ThreatInfo(proto.Message):
             UNWANTED_SOFTWARE (3):
                 The URI contains unwanted software.
         """
+
         ABUSE_TYPE_UNSPECIFIED = 0
         MALWARE = 1
         SOCIAL_ENGINEERING = 2
@@ -649,6 +651,7 @@ class ThreatInfo(proto.Message):
                     Greater than 80% confidence that the URI is
                     unsafe.
             """
+
             CONFIDENCE_LEVEL_UNSPECIFIED = 0
             LOW = 1
             MEDIUM = 2
@@ -693,17 +696,18 @@ class ThreatInfo(proto.Message):
                     The submitter received the submission from an
                     automated system.
             """
+
             JUSTIFICATION_LABEL_UNSPECIFIED = 0
             MANUAL_VERIFICATION = 1
             USER_REPORT = 2
             AUTOMATED_REPORT = 3
 
-        labels: MutableSequence[
-            "ThreatInfo.ThreatJustification.JustificationLabel"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=1,
-            enum="ThreatInfo.ThreatJustification.JustificationLabel",
+        labels: MutableSequence["ThreatInfo.ThreatJustification.JustificationLabel"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="ThreatInfo.ThreatJustification.JustificationLabel",
+            )
         )
         comments: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
@@ -754,6 +758,7 @@ class ThreatDiscovery(proto.Message):
             WINDOWS (4):
                 General Windows platform.
         """
+
         PLATFORM_UNSPECIFIED = 0
         ANDROID = 1
         IOS = 2
@@ -776,8 +781,8 @@ class CreateSubmissionRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project that is making
-            the submission. This string is in the format
+            Required. The name of the project that is making the
+            submission. This string is in the format
             "projects/{project_number}".
         submission (google.cloud.webrisk_v1.types.Submission):
             Required. The submission that contains the
@@ -800,8 +805,8 @@ class SubmitUriRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The name of the project that is making
-            the submission. This string is in the format
+            Required. The name of the project that is making the
+            submission. This string is in the format
             "projects/{project_number}".
         submission (google.cloud.webrisk_v1.types.Submission):
             Required. The submission that contains the
@@ -865,6 +870,7 @@ class SubmitUriMetadata(proto.Message):
                 The operation was closed with no action
                 taken.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

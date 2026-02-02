@@ -54,10 +54,9 @@ class NormalizedVertex(proto.Message):
 
 
 class BoundingPoly(proto.Message):
-    r"""A bounding polygon of a detected object on a plane.
-    On output both vertices and normalized_vertices are provided.
-    The polygon is formed by connecting vertices in the order they
-    are listed.
+    r"""A bounding polygon of a detected object on a plane. On output both
+    vertices and normalized_vertices are provided. The polygon is formed
+    by connecting vertices in the order they are listed.
 
     Attributes:
         normalized_vertices (MutableSequence[google.cloud.automl_v1.types.NormalizedVertex]):

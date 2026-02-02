@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import descriptor_pb2  # type: ignore
+import google.protobuf.descriptor_pb2 as descriptor_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,18 +35,16 @@ class ProtoSchema(proto.Message):
 
     Attributes:
         proto_descriptor (google.protobuf.descriptor_pb2.DescriptorProto):
-            Descriptor for input message. The provided
-            descriptor must be self contained, such that
-            data rows sent can be fully decoded using only
-            the single descriptor. For data rows that are
-            compositions of multiple independent messages,
-            this means the descriptor may need to be
-            transformed to only use nested types:
-
+            Descriptor for input message. The provided descriptor must
+            be self contained, such that data rows sent can be fully
+            decoded using only the single descriptor. For data rows that
+            are compositions of multiple independent messages, this
+            means the descriptor may need to be transformed to only use
+            nested types:
             https://developers.google.com/protocol-buffers/docs/proto#nested
 
-            For additional information for how proto types
-            and values map onto BigQuery see:
+            For additional information for how proto types and values
+            map onto BigQuery see:
             https://cloud.google.com/bigquery/docs/write-api#data_type_conversions
     """
 

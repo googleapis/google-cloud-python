@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1602,9 +1604,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseCreateWorkstation._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseCreateWorkstation._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workstation(
                 request, metadata
@@ -1630,7 +1630,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1758,9 +1758,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseCreateWorkstationCluster._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseCreateWorkstationCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workstation_cluster(
                 request, metadata
@@ -1786,7 +1784,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1915,9 +1913,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseCreateWorkstationConfig._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseCreateWorkstationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workstation_config(
                 request, metadata
@@ -1943,7 +1939,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2068,9 +2064,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseDeleteWorkstation._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseDeleteWorkstation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workstation(
                 request, metadata
@@ -2092,7 +2086,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2218,9 +2212,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseDeleteWorkstationCluster._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseDeleteWorkstationCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workstation_cluster(
                 request, metadata
@@ -2242,7 +2234,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2369,9 +2361,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseDeleteWorkstationConfig._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseDeleteWorkstationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workstation_config(
                 request, metadata
@@ -2393,7 +2383,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2517,9 +2507,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseGenerateAccessToken._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseGenerateAccessToken._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_access_token(
                 request, metadata
@@ -2823,9 +2811,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseGetWorkstationCluster._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseGetWorkstationCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workstation_cluster(
                 request, metadata
@@ -2967,27 +2953,23 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             Returns:
                 ~.workstations.WorkstationConfig:
-                    A workstation configuration resource in
-                the Cloud Workstations API.
-                Workstation configurations act as
-                templates for workstations. The
-                workstation configuration defines
-                details such as the workstation virtual
-                machine (VM) instance type, persistent
-                storage, container image defining
-                environment, which IDE or Code Editor to
-                use, and more. Administrators and
-                platform teams can also use [Identity
-                and Access Management
-                (IAM)](https://cloud.google.com/iam/docs/overview)
-                rules to grant access to teams or to
-                individual developers.
+                    A workstation configuration resource in the Cloud
+                Workstations API.
+
+                Workstation configurations act as templates for
+                workstations. The workstation configuration defines
+                details such as the workstation virtual machine (VM)
+                instance type, persistent storage, container image
+                defining environment, which IDE or Code Editor to use,
+                and more. Administrators and platform teams can also use
+                `Identity and Access Management
+                (IAM) <https://cloud.google.com/iam/docs/overview>`__
+                rules to grant access to teams or to individual
+                developers.
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseGetWorkstationConfig._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseGetWorkstationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workstation_config(
                 request, metadata
@@ -3136,9 +3118,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseListUsableWorkstationConfigs._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseListUsableWorkstationConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable_workstation_configs(
                 request, metadata
@@ -3204,11 +3184,10 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             resp = self._interceptor.post_list_usable_workstation_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_usable_workstation_configs_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_usable_workstation_configs_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3294,9 +3273,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseListUsableWorkstations._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseListUsableWorkstations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable_workstations(
                 request, metadata
@@ -3446,9 +3423,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseListWorkstationClusters._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseListWorkstationClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workstation_clusters(
                 request, metadata
@@ -3597,9 +3572,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseListWorkstationConfigs._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseListWorkstationConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workstation_configs(
                 request, metadata
@@ -3927,7 +3900,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4080,7 +4053,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4206,9 +4179,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseUpdateWorkstation._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseUpdateWorkstation._get_http_options()
 
             request, metadata = self._interceptor.pre_update_workstation(
                 request, metadata
@@ -4234,7 +4205,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4362,9 +4333,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseUpdateWorkstationCluster._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseUpdateWorkstationCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_workstation_cluster(
                 request, metadata
@@ -4390,7 +4359,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4519,9 +4488,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseUpdateWorkstationConfig._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseUpdateWorkstationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_workstation_config(
                 request, metadata
@@ -4547,7 +4514,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4630,7 +4597,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateWorkstationCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateWorkstationCluster(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_workstation_config(
@@ -4640,7 +4609,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateWorkstationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateWorkstationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_workstation(
@@ -4658,7 +4629,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteWorkstationCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteWorkstationCluster(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_workstation_config(
@@ -4668,7 +4641,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteWorkstationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteWorkstationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_access_token(
@@ -4718,7 +4693,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListUsableWorkstationConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListUsableWorkstationConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_usable_workstations(
@@ -4729,7 +4706,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListUsableWorkstations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListUsableWorkstations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_workstation_clusters(
@@ -4740,7 +4719,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListWorkstationClusters(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListWorkstationClusters(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_workstation_configs(
@@ -4751,7 +4732,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListWorkstationConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListWorkstationConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_workstations(
@@ -4795,7 +4778,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateWorkstationCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateWorkstationCluster(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_workstation_config(
@@ -4805,7 +4790,9 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateWorkstationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateWorkstationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_iam_policy(self):
@@ -5157,9 +5144,7 @@ class WorkstationsRestTransport(_BaseWorkstationsRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseWorkstationsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseWorkstationsRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

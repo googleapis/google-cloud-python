@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.area120.tables_v1alpha1.types import tables
 
@@ -339,8 +339,7 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
     def get_table(self) -> Callable[[tables.GetTableRequest], tables.Table]:
         r"""Return a callable for the get table method over gRPC.
 
-        Gets a table. Returns NOT_FOUND if the table does not
-        exist.
+        Gets a table. Returns NOT_FOUND if the table does not exist.
 
         Returns:
             Callable[[~.GetTableRequest],
@@ -390,8 +389,8 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
     def get_workspace(self) -> Callable[[tables.GetWorkspaceRequest], tables.Workspace]:
         r"""Return a callable for the get workspace method over gRPC.
 
-        Gets a workspace. Returns NOT_FOUND if the workspace
-        does not exist.
+        Gets a workspace. Returns NOT_FOUND if the workspace does not
+        exist.
 
         Returns:
             Callable[[~.GetWorkspaceRequest],
@@ -441,8 +440,8 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
     def get_row(self) -> Callable[[tables.GetRowRequest], tables.Row]:
         r"""Return a callable for the get row method over gRPC.
 
-        Gets a row. Returns NOT_FOUND if the row does not exist
-        in the table.
+        Gets a row. Returns NOT_FOUND if the row does not exist in the
+        table.
 
         Returns:
             Callable[[~.GetRowRequest],
@@ -466,8 +465,8 @@ class TablesServiceGrpcTransport(TablesServiceTransport):
     def list_rows(self) -> Callable[[tables.ListRowsRequest], tables.ListRowsResponse]:
         r"""Return a callable for the list rows method over gRPC.
 
-        Lists rows in a table. Returns NOT_FOUND if the table
-        does not exist.
+        Lists rows in a table. Returns NOT_FOUND if the table does not
+        exist.
 
         Returns:
             Callable[[~.ListRowsRequest],

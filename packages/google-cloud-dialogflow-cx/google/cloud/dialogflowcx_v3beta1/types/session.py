@@ -17,28 +17,26 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings as gcdc_advanced_settings,
+)
 from google.cloud.dialogflowcx_v3beta1.types import (
     audio_config,
     data_store_connection,
     example,
     flow,
     generative_settings,
-)
-from google.cloud.dialogflowcx_v3beta1.types import (
     page,
     response_message,
     session_entity_type,
     tool_call,
-)
-from google.cloud.dialogflowcx_v3beta1.types import (
-    advanced_settings as gcdc_advanced_settings,
 )
 from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
 
@@ -96,6 +94,7 @@ class DetectIntentResponseView(proto.Enum):
 
             [QueryResult.generative_info][google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info]
     """
+
     DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED = 0
     DETECT_INTENT_RESPONSE_VIEW_FULL = 1
     DETECT_INTENT_RESPONSE_VIEW_BASIC = 2
@@ -132,6 +131,7 @@ class AnswerFeedback(proto.Message):
             THUMBS_DOWN (2):
                 Thumbs down feedback from user.
         """
+
         RATING_UNSPECIFIED = 0
         THUMBS_UP = 1
         THUMBS_DOWN = 2
@@ -184,9 +184,8 @@ class SubmitAnswerFeedbackRequest(proto.Message):
             Required. The name of the session the
             feedback was sent to.
         response_id (str):
-            Required. ID of the response to update its
-            feedback. This is the same as
-            DetectIntentResponse.response_id.
+            Required. ID of the response to update its feedback. This is
+            the same as DetectIntentResponse.response_id.
         answer_feedback (google.cloud.dialogflowcx_v3beta1.types.AnswerFeedback):
             Required. Feedback provided for a bot answer.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -327,6 +326,7 @@ class DetectIntentResponse(proto.Message):
             FINAL (2):
                 Final response.
         """
+
         RESPONSE_TYPE_UNSPECIFIED = 0
         PARTIAL = 1
         FINAL = 2
@@ -494,9 +494,8 @@ class CloudConversationDebuggingInfo(proto.Message):
             Time offsets of the speech partial results
             relative to the beginning of the stream.
         speech_final_results_end_times (MutableSequence[google.protobuf.duration_pb2.Duration]):
-            Time offsets of the speech final results
-            (is_final=true) relative to the beginning of the
-            stream.
+            Time offsets of the speech final results (is_final=true)
+            relative to the beginning of the stream.
         partial_responses (int):
             Total number of partial responses.
         speaker_id_passive_latency_ms_offset (int):
@@ -552,19 +551,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=duration_pb2.Duration,
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=duration_pb2.Duration,
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
     )
     partial_responses: int = proto.Field(
         proto.INT32,
@@ -582,19 +581,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=duration_pb2.Duration,
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=duration_pb2.Duration,
+        )
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=duration_pb2.Duration,
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=duration_pb2.Duration,
+        )
     )
     single_utterance_end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -803,6 +802,7 @@ class StreamingRecognitionResult(proto.Message):
                 [``single_utterance``][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.single_utterance]
                 was set to ``true``, and is not used otherwise.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
@@ -828,12 +828,12 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=6,
     )
-    speech_word_info: MutableSequence[
-        audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=audio_config.SpeechWordInfo,
+    speech_word_info: MutableSequence[audio_config.SpeechWordInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=audio_config.SpeechWordInfo,
+        )
     )
     speech_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -851,12 +851,10 @@ class QueryParameters(proto.Message):
 
     Attributes:
         time_zone (str):
-            The time zone of this conversational query from
-            the [time zone
-            database](https://www.iana.org/time-zones),
-            e.g., America/New_York, Europe/Paris. If not
-            provided, the time zone specified in the agent
-            is used.
+            The time zone of this conversational query from the `time
+            zone database <https://www.iana.org/time-zones>`__, e.g.,
+            America/New_York, Europe/Paris. If not provided, the time
+            zone specified in the agent is used.
         geo_location (google.type.latlng_pb2.LatLng):
             The geo location of this conversational
             query.
@@ -904,14 +902,13 @@ class QueryParameters(proto.Message):
               entity then use map from composite entity property names
               to property values, otherwise, use parameter value.
         parameter_scope (str):
-            Scope for the parameters. If not specified,
-            parameters will be treated as session
-            parameters. Parameters with custom scope will
-            not be put into [session
+            Scope for the parameters. If not specified, parameters will
+            be treated as session parameters. Parameters with custom
+            scope will not be put into [session
             parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
 
-            You can reference the parameters with custom
-            scope in the agent with the following format:
+            You can reference the parameters with custom scope in the
+            agent with the following format:
             $parameter-scope.params.parameter-id.
         current_page (str):
             The unique identifier of the
@@ -1014,11 +1011,10 @@ class QueryParameters(proto.Message):
             Optional. Search configuration for UCS search
             queries.
         populate_data_store_connection_signals (bool):
-            Optional. If set to true and data stores are
-            involved in serving the request then
+            Optional. If set to true and data stores are involved in
+            serving the request then
             DetectIntentResponse.query_result.data_store_connection_signals
-            will be filled with data that can help
-            evaluations.
+            will be filled with data that can help evaluations.
     """
 
     time_zone: str = proto.Field(
@@ -1030,12 +1026,12 @@ class QueryParameters(proto.Message):
         number=2,
         message=latlng_pb2.LatLng,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=session_entity_type.SessionEntityType,
+        )
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
@@ -1172,28 +1168,24 @@ class BoostSpec(proto.Message):
                   - (id: ANY("doc_1", "doc_2")) AND (color:
                     ANY("Red","Blue"))
             boost (float):
-                Optional. Strength of the condition boost, which
-                should be in [-1, 1]. Negative boost means
-                demotion. Default is 0.0.
+                Optional. Strength of the condition boost, which should be
+                in [-1, 1]. Negative boost means demotion. Default is 0.0.
 
-                Setting to 1.0 gives the document a big
-                promotion. However, it does not necessarily mean
-                that the boosted document will be the top result
-                at all times, nor that other documents will be
-                excluded. Results could still be shown even when
-                none of them matches the condition. And results
-                that are significantly more relevant to the
-                search query can still trump your heavily
-                favored but irrelevant documents.
+                Setting to 1.0 gives the document a big promotion. However,
+                it does not necessarily mean that the boosted document will
+                be the top result at all times, nor that other documents
+                will be excluded. Results could still be shown even when
+                none of them matches the condition. And results that are
+                significantly more relevant to the search query can still
+                trump your heavily favored but irrelevant documents.
 
-                Setting to -1.0 gives the document a big
-                demotion. However, results that are deeply
-                relevant might still be shown. The document will
-                have an upstream battle to get a fairly high
+                Setting to -1.0 gives the document a big demotion. However,
+                results that are deeply relevant might still be shown. The
+                document will have an upstream battle to get a fairly high
                 ranking, but it is not blocked out completely.
 
-                Setting to 0.0 means no boost applied. The
-                boosting condition is ignored.
+                Setting to 0.0 means no boost applied. The boosting
+                condition is ignored.
             boost_control_spec (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec):
                 Optional. Complex specification for custom
                 ranking based on customer defined attribute
@@ -1210,23 +1202,20 @@ class BoostSpec(proto.Message):
                     Optional. The name of the field whose value
                     will be used to determine the boost amount.
                 attribute_type (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
-                    Optional. The attribute type to be used to
-                    determine the boost amount. The attribute value
-                    can be derived from the field value of the
-                    specified field_name. In the case of numerical
-                    it is straightforward i.e. attribute_value =
-                    numerical_field_value. In the case of freshness
-                    however, attribute_value = (time.now() -
-                    datetime_field_value).
+                    Optional. The attribute type to be used to determine the
+                    boost amount. The attribute value can be derived from the
+                    field value of the specified field_name. In the case of
+                    numerical it is straightforward i.e. attribute_value =
+                    numerical_field_value. In the case of freshness however,
+                    attribute_value = (time.now() - datetime_field_value).
                 interpolation_type (google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
                     Optional. The interpolation type to be
                     applied to connect the control points listed
                     below.
                 control_points (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
-                    Optional. The control points used to define the
-                    curve. The monotonic function (defined through
-                    the interpolation_type above) passes through the
-                    control points listed here.
+                    Optional. The control points used to define the curve. The
+                    monotonic function (defined through the interpolation_type
+                    above) passes through the control points listed here.
             """
 
             class AttributeType(proto.Enum):
@@ -1237,11 +1226,10 @@ class BoostSpec(proto.Message):
                     ATTRIBUTE_TYPE_UNSPECIFIED (0):
                         Unspecified AttributeType.
                     NUMERICAL (1):
-                        The value of the numerical field will be used to
-                        dynamically update the boost amount. In this
-                        case, the attribute_value (the x value) of the
-                        control point will be the actual value of the
-                        numerical field for which the boost_amount is
+                        The value of the numerical field will be used to dynamically
+                        update the boost amount. In this case, the attribute_value
+                        (the x value) of the control point will be the actual value
+                        of the numerical field for which the boost_amount is
                         specified.
                     FRESHNESS (2):
                         For the freshness use case the attribute value will be the
@@ -1252,6 +1240,7 @@ class BoostSpec(proto.Message):
                         ``[nD][T[nH][nM][nS]]``. E.g. ``5D``, ``3DT12H30M``,
                         ``T24H``.
                 """
+
                 ATTRIBUTE_TYPE_UNSPECIFIED = 0
                 NUMERICAL = 1
                 FRESHNESS = 2
@@ -1268,6 +1257,7 @@ class BoostSpec(proto.Message):
                         Piecewise linear interpolation will be
                         applied.
                 """
+
                 INTERPOLATION_TYPE_UNSPECIFIED = 0
                 LINEAR = 1
 
@@ -1286,9 +1276,9 @@ class BoostSpec(proto.Message):
                            restricted subset of an ISO 8601 duration value). The
                            pattern for this is: ``[nD][T[nH][nM][nS]]``.
                     boost_amount (float):
-                        Optional. The value between -1 to 1 by which to
-                        boost the score if the attribute_value evaluates
-                        to the value specified above.
+                        Optional. The value between -1 to 1 by which to boost the
+                        score if the attribute_value evaluates to the value
+                        specified above.
                 """
 
                 attribute_value: str = proto.Field(
@@ -1445,13 +1435,11 @@ class QueryInput(proto.Message):
 
             This field is a member of `oneof`_ ``input``.
         language_code (str):
-            Required. The language of the input. See
-            [Language
-            Support](https://cloud.google.com/dialogflow/cx/docs/reference/language)
-            for a list of the currently supported language
-            codes. Note that queries in the same session do
-            not necessarily need to specify the same
-            language.
+            Required. The language of the input. See `Language
+            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            for a list of the currently supported language codes. Note
+            that queries in the same session do not necessarily need to
+            specify the same language.
     """
 
     text: "TextInput" = proto.Field(
@@ -1550,9 +1538,9 @@ class QueryResult(proto.Message):
             This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput]
-            was provided as input, this field will contain
-            the transcript for the audio.
+            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
+            provided as input, this field will contain the transcript
+            for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
@@ -1568,11 +1556,10 @@ class QueryResult(proto.Message):
 
             This field is a member of `oneof`_ ``query``.
         language_code (str):
-            The language that was triggered during intent
-            detection. See [Language
-            Support](https://cloud.google.com/dialogflow/cx/docs/reference/language)
-            for a list of the currently supported language
-            codes.
+            The language that was triggered during intent detection. See
+            `Language
+            Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
+            for a list of the currently supported language codes.
         parameters (google.protobuf.struct_pb2.Struct):
             The collected [session
             parameters][google.cloud.dialogflow.cx.v3beta1.SessionInfo.parameters].
@@ -1731,12 +1718,12 @@ class QueryResult(proto.Message):
         number=3,
         message=struct_pb2.Struct,
     )
-    response_messages: MutableSequence[
-        response_message.ResponseMessage
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=response_message.ResponseMessage,
+    response_messages: MutableSequence[response_message.ResponseMessage] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=response_message.ResponseMessage,
+        )
     )
     webhook_ids: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1998,6 +1985,7 @@ class Match(proto.Message):
                 The query was handled by a
                 [``Playbook``][google.cloud.dialogflow.cx.v3beta1.Playbook].
         """
+
         MATCH_TYPE_UNSPECIFIED = 0
         INTENT = 1
         DIRECT_INTENT = 2
@@ -2111,9 +2099,9 @@ class MatchIntentResponse(proto.Message):
             This field is a member of `oneof`_ ``query``.
         transcript (str):
             If [natural language speech
-            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput]
-            was provided as input, this field will contain
-            the transcript for the audio.
+            audio][google.cloud.dialogflow.cx.v3beta1.AudioInput] was
+            provided as input, this field will contain the transcript
+            for the audio.
 
             This field is a member of `oneof`_ ``query``.
         trigger_event (str):
@@ -2255,10 +2243,9 @@ class SentimentAnalysisResult(proto.Message):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive  sentiment).
         magnitude (float):
-            A non-negative number in the [0, +inf) range,
-            which represents the absolute magnitude of
-            sentiment, regardless of score (positive or
-            negative).
+            A non-negative number in the [0, +inf) range, which
+            represents the absolute magnitude of sentiment, regardless
+            of score (positive or negative).
     """
 
     score: float = proto.Field(

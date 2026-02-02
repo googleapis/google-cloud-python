@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -95,6 +95,7 @@ class LoggingConfig(proto.Message):
             OFF (8):
                 Turn off log4j.
         """
+
         LEVEL_UNSPECIFIED = 0
         ALL = 1
         TRACE = 2
@@ -114,11 +115,10 @@ class LoggingConfig(proto.Message):
 
 
 class HadoopJob(proto.Message):
-    r"""A Dataproc job for running
-    [Apache Hadoop
-    MapReduce](https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html)
-    jobs on [Apache Hadoop
-    YARN](https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html).
+    r"""A Dataproc job for running `Apache Hadoop
+    MapReduce <https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html>`__
+    jobs on `Apache Hadoop
+    YARN <https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -229,10 +229,9 @@ class SparkJob(proto.Message):
 
             This field is a member of `oneof`_ ``driver``.
         main_class (str):
-            The name of the driver's main class. The jar
-            file that contains the class must be in the
-            default CLASSPATH or specified in
-            SparkJob.jar_file_uris.
+            The name of the driver's main class. The jar file that
+            contains the class must be in the default CLASSPATH or
+            specified in SparkJob.jar_file_uris.
 
             This field is a member of `oneof`_ ``driver``.
         args (MutableSequence[str]):
@@ -305,9 +304,8 @@ class SparkJob(proto.Message):
 
 
 class PySparkJob(proto.Message):
-    r"""A Dataproc job for running
-    [Apache
-    PySpark](https://spark.apache.org/docs/0.9.0/python-programming-guide.html)
+    r"""A Dataproc job for running `Apache
+    PySpark <https://spark.apache.org/docs/0.9.0/python-programming-guide.html>`__
     applications on YARN.
 
     Attributes:
@@ -390,22 +388,23 @@ class QueryList(proto.Message):
 
     Attributes:
         queries (MutableSequence[str]):
-            Required. The queries to execute. You do not
-            need to end a query expression with a semicolon.
-            Multiple queries can be specified in one string
-            by separating each with a semicolon. Here is an
-            example of a Dataproc API snippet that uses a
+            Required. The queries to execute. You do not need to end a
+            query expression with a semicolon. Multiple queries can be
+            specified in one string by separating each with a semicolon.
+            Here is an example of a Dataproc API snippet that uses a
             QueryList to specify a HiveJob:
 
-            "hiveJob": {
-            "queryList": {
-            "queries": [
-            "query1",
-            "query2",
-            "query3;query4",
-            ]
-            }
-            }
+            ::
+
+                "hiveJob": {
+                  "queryList": {
+                    "queries": [
+                      "query1",
+                      "query2",
+                      "query3;query4",
+                    ]
+                  }
+                }
     """
 
     queries: MutableSequence[str] = proto.RepeatedField(
@@ -487,8 +486,8 @@ class HiveJob(proto.Message):
 
 
 class SparkSqlJob(proto.Message):
-    r"""A Dataproc job for running [Apache Spark
-    SQL](https://spark.apache.org/sql/) queries.
+    r"""A Dataproc job for running `Apache Spark
+    SQL <https://spark.apache.org/sql/>`__ queries.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1023,6 +1022,7 @@ class JobStatus(proto.Message):
 
                 Applies to restartable jobs only.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SETUP_DONE = 8
@@ -1060,6 +1060,7 @@ class JobStatus(proto.Message):
 
                 Applies to RUNNING state.
         """
+
         UNSPECIFIED = 0
         SUBMITTED = 1
         QUEUED = 2
@@ -1165,6 +1166,7 @@ class YarnApplication(proto.Message):
             KILLED (8):
                 Status is KILLED.
         """
+
         STATE_UNSPECIFIED = 0
         NEW = 1
         NEW_SAVING = 2
@@ -1206,11 +1208,10 @@ class Job(proto.Message):
 
     Attributes:
         reference (google.cloud.dataproc_v1.types.JobReference):
-            Optional. The fully qualified reference to the
-            job, which can be used to obtain the equivalent
-            REST path of the job resource. If this property
-            is not specified when a job is created, the
-            server generates a <code>job_id</code>.
+            Optional. The fully qualified reference to the job, which
+            can be used to obtain the equivalent REST path of the job
+            resource. If this property is not specified when a job is
+            created, the server generates a job_id.
         placement (google.cloud.dataproc_v1.types.JobPlacement):
             Required. Job information, including how,
             when, and where to run the job.
@@ -1255,10 +1256,9 @@ class Job(proto.Message):
 
             This field is a member of `oneof`_ ``type_job``.
         status (google.cloud.dataproc_v1.types.JobStatus):
-            Output only. The job status. Additional
-            application-specific status information might be
-            contained in the <code>type_job</code> and
-            <code>yarn_applications</code> fields.
+            Output only. The job status. Additional application-specific
+            status information might be contained in the type_job and
+            yarn_applications fields.
         status_history (MutableSequence[google.cloud.dataproc_v1.types.JobStatus]):
             Output only. The previous job status.
         yarn_applications (MutableSequence[google.cloud.dataproc_v1.types.YarnApplication]):
@@ -1286,10 +1286,10 @@ class Job(proto.Message):
         scheduling (google.cloud.dataproc_v1.types.JobScheduling):
             Optional. Job scheduling configuration.
         job_uuid (str):
-            Output only. A UUID that uniquely identifies a
-            job within the project over time. This is in
-            contrast to a user-settable reference.job_id
-            that might be reused over time.
+            Output only. A UUID that uniquely identifies a job within
+            the project over time. This is in contrast to a
+            user-settable reference.job_id that might be reused over
+            time.
         done (bool):
             Output only. Indicates whether the job is completed. If the
             value is ``false``, the job is still in progress. If
@@ -1642,12 +1642,13 @@ class ListJobsRequest(proto.Message):
             ALL (0):
                 Match all jobs, regardless of state.
             ACTIVE (1):
-                Only match jobs in non-terminal states: PENDING,
-                RUNNING, or CANCEL_PENDING.
+                Only match jobs in non-terminal states: PENDING, RUNNING, or
+                CANCEL_PENDING.
             NON_ACTIVE (2):
                 Only match jobs in terminal states:
                 CANCELLED, DONE, or ERROR.
         """
+
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2

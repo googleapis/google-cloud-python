@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -93,8 +93,7 @@ class Collector(proto.Message):
             Output only. Reference to MC Source Guest Os
             Scan.
         vsphere_scan (google.cloud.rapidmigrationassessment_v1.types.VSphereScan):
-            Output only. Reference to MC Source
-            vsphere_scan.
+            Output only. Reference to MC Source vsphere_scan.
         collection_days (int):
             How many days to collect data.
         eula_uri (str):
@@ -103,12 +102,10 @@ class Collector(proto.Message):
     """
 
     class State(proto.Enum):
-        r"""-- Using suggestion from API Linter Analyzer for nesting enum --
-        -- https://linter.aip.dev/216/nesting --
-        State of a Collector (server_side).
-        States are used for internal purposes and named to keep
-        convention of legacy product:
-
+        r"""-- Using suggestion from API Linter Analyzer for nesting enum -- --
+        https://linter.aip.dev/216/nesting -- State of a Collector
+        (server_side). States are used for internal purposes and named to
+        keep convention of legacy product:
         https://cloud.google.com/migrate/stratozone/docs/about-stratoprobe.
 
         Values:
@@ -136,6 +133,7 @@ class Collector(proto.Message):
             STATE_ERROR (8):
                 Collector is in error state.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_INITIALIZING = 1
         STATE_READY_TO_USE = 2
@@ -243,6 +241,7 @@ class Annotation(proto.Message):
                 Indicates that this project is created by
                 Qwiklab.
         """
+
         TYPE_UNSPECIFIED = 0
         TYPE_LEGACY_EXPORT_CONSENT = 1
         TYPE_QWIKLAB = 2

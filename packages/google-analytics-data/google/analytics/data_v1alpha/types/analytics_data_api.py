@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.data_v1alpha.types import data
@@ -356,12 +356,12 @@ class ListRecurringAudienceListsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recurring_audience_lists: MutableSequence[
-        "RecurringAudienceList"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="RecurringAudienceList",
+    recurring_audience_lists: MutableSequence["RecurringAudienceList"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RecurringAudienceList",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -652,6 +652,7 @@ class AudienceList(proto.Message):
                 possible that re-requesting this audience list
                 will succeed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -962,9 +963,8 @@ class AudienceDimension(proto.Message):
 
     Attributes:
         dimension_name (str):
-            Optional. The API name of the dimension. See the
-            [API
-            Dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions)
+            Optional. The API name of the dimension. See the `API
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>`__
             for the list of dimension names.
     """
 
@@ -999,14 +999,12 @@ class RunFunnelReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            Optional. A Google Analytics property identifier
-            whose events are tracked. Specified in the URL
-            path and not the body. To learn more, see [where
-            to find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
-            Within a batch request, this property should
-            either be unspecified or consistent with the
-            batch-level property.
+            Optional. A Google Analytics property identifier whose
+            events are tracked. Specified in the URL path and not the
+            body. To learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            Within a batch request, this property should either be
+            unspecified or consistent with the batch-level property.
 
             Example: properties/1234
         date_ranges (MutableSequence[google.analytics.data_v1alpha.types.DateRange]):
@@ -1062,12 +1060,11 @@ class RunFunnelReportRequest(proto.Message):
             ``limit``, if there aren't as many dimension values as the
             ``limit``.
         dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
-            Optional. Dimension filters allow you to ask for
-            only specific dimension values in the report. To
-            learn more, see [Creating a Report: Dimension
-            Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
-            for examples. Metrics cannot be used in this
-            filter.
+            Optional. Dimension filters allow you to ask for only
+            specific dimension values in the report. To learn more, see
+            `Creating a Report: Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
         return_property_quota (bool):
             Optional. Toggles whether to return the current state of
             this Analytics Property's quota. Quota is returned in
@@ -1090,6 +1087,7 @@ class RunFunnelReportRequest(proto.Message):
                 visualization sub report in the response will
                 contain the date dimension.
         """
+
         FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED = 0
         STANDARD_FUNNEL = 1
         TRENDED_FUNNEL = 2
@@ -1204,8 +1202,8 @@ class ReportTask(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Identifier. The report task
-            resource name assigned during creation. Format:
+            Output only. Identifier. The report task resource name
+            assigned during creation. Format:
             "properties/{property}/reportTasks/{report_task}".
         report_definition (google.analytics.data_v1alpha.types.ReportTask.ReportDefinition):
             Optional. A report definition to fetch report
@@ -1242,12 +1240,11 @@ class ReportTask(proto.Message):
                 response rows for both date ranges. In a cohort request,
                 this ``dateRanges`` must be unspecified.
             dimension_filter (google.analytics.data_v1alpha.types.FilterExpression):
-                Optional. Dimension filters let you ask for only
-                specific dimension values in the report. To
-                learn more, see [Fundamentals of Dimension
-                Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
-                for examples. Metrics cannot be used in this
-                filter.
+                Optional. Dimension filters let you ask for only specific
+                dimension values in the report. To learn more, see
+                `Fundamentals of Dimension
+                Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+                for examples. Metrics cannot be used in this filter.
             metric_filter (google.analytics.data_v1alpha.types.FilterExpression):
                 Optional. The filter clause of metrics.
                 Applied after aggregating the report's rows,
@@ -1345,12 +1342,12 @@ class ReportTask(proto.Message):
             proto.INT64,
             number=8,
         )
-        metric_aggregations: MutableSequence[
-            data.MetricAggregation
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=9,
-            enum=data.MetricAggregation,
+        metric_aggregations: MutableSequence[data.MetricAggregation] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=9,
+                enum=data.MetricAggregation,
+            )
         )
         order_bys: MutableSequence[data.OrderBy] = proto.RepeatedField(
             proto.MESSAGE,
@@ -1450,6 +1447,7 @@ class ReportTask(proto.Message):
                 FAILED (3):
                     The report failed to be created.
             """
+
             STATE_UNSPECIFIED = 0
             CREATING = 1
             ACTIVE = 2

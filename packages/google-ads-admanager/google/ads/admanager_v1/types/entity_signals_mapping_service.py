@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import entity_signals_mapping_messages
@@ -233,12 +233,12 @@ class BatchCreateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "CreateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="CreateEntitySignalsMappingRequest",
+    requests: MutableSequence["CreateEntitySignalsMappingRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="CreateEntitySignalsMappingRequest",
+        )
     )
 
 
@@ -277,12 +277,12 @@ class BatchUpdateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UpdateEntitySignalsMappingRequest",
+    requests: MutableSequence["UpdateEntitySignalsMappingRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UpdateEntitySignalsMappingRequest",
+        )
     )
 
 

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,15 +35,12 @@ class AutonomousDatabaseBackup(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Autonomous Database
-            Backup resource with the format:
-
+            Identifier. The name of the Autonomous Database Backup
+            resource with the format:
             projects/{project}/locations/{region}/autonomousDatabaseBackups/{autonomous_database_backup}
         autonomous_database (str):
-            Required. The name of the Autonomous Database
-            resource for which the backup is being created.
-            Format:
-
+            Required. The name of the Autonomous Database resource for
+            which the backup is being created. Format:
             projects/{project}/locations/{region}/autonomousDatabases/{autonomous_database}
         display_name (str):
             Optional. User friendly name for the Backup.
@@ -176,6 +173,7 @@ class AutonomousDatabaseBackupProperties(proto.Message):
                 Indicates that the resource is in updating
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -197,6 +195,7 @@ class AutonomousDatabaseBackupProperties(proto.Message):
             LONG_TERM (3):
                 Long term backups.
         """
+
         TYPE_UNSPECIFIED = 0
         INCREMENTAL = 1
         FULL = 2

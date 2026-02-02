@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -74,27 +74,23 @@ class BackendAuthenticationConfig(proto.Message):
             resource.
         client_certificate (str):
             Optional. A reference to a
-            certificatemanager.googleapis.com.Certificate
-            resource. This is a relative resource path
-            following the form
+            certificatemanager.googleapis.com.Certificate resource. This
+            is a relative resource path following the form
             "projects/{project}/locations/{location}/certificates/{certificate}".
 
-            Used by a BackendService to negotiate mTLS when
-            the backend connection uses TLS and the backend
-            requests a client certificate. Must have a
-            CLIENT_AUTH scope.
+            Used by a BackendService to negotiate mTLS when the backend
+            connection uses TLS and the backend requests a client
+            certificate. Must have a CLIENT_AUTH scope.
         trust_config (str):
-            Optional. A reference to a TrustConfig resource
-            from the certificatemanager.googleapis.com
-            namespace. This is a relative resource path
-            following the form
+            Optional. A reference to a TrustConfig resource from the
+            certificatemanager.googleapis.com namespace. This is a
+            relative resource path following the form
             "projects/{project}/locations/{location}/trustConfigs/{trust_config}".
 
-            A BackendService uses the chain of trust
-            represented by this TrustConfig, if specified,
-            to validate the server certificates presented by
-            the backend. Required unless wellKnownRoots is
-            set to PUBLIC_ROOTS.
+            A BackendService uses the chain of trust represented by this
+            TrustConfig, if specified, to validate the server
+            certificates presented by the backend. Required unless
+            wellKnownRoots is set to PUBLIC_ROOTS.
         well_known_roots (google.cloud.network_security_v1alpha1.types.BackendAuthenticationConfig.WellKnownRoots):
             Well known roots to use for server
             certificate validation.
@@ -126,6 +122,7 @@ class BackendAuthenticationConfig(proto.Message):
                 managed by Google. CAs in this set can be added
                 or removed without notice.
         """
+
         WELL_KNOWN_ROOTS_UNSPECIFIED = 0
         NONE = 1
         PUBLIC_ROOTS = 2
@@ -226,12 +223,12 @@ class ListBackendAuthenticationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backend_authentication_configs: MutableSequence[
-        "BackendAuthenticationConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="BackendAuthenticationConfig",
+    backend_authentication_configs: MutableSequence["BackendAuthenticationConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="BackendAuthenticationConfig",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -299,14 +296,12 @@ class UpdateBackendAuthenticationConfigRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            BackendAuthenticationConfig resource by the
-            update. The fields specified in the update_mask
-            are relative to the resource, not the full
-            request. A field will be overwritten if it is in
-            the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the BackendAuthenticationConfig resource by
+            the update. The fields specified in the update_mask are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         backend_authentication_config (google.cloud.network_security_v1alpha1.types.BackendAuthenticationConfig):
             Required. Updated BackendAuthenticationConfig
             resource.

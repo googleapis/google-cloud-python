@@ -34,9 +34,19 @@ from .annotations import (
     VideoClassificationPredictionResult,
     VideoObjectTrackingPredictionResult,
 )
-from .common import Cluster, GcsSource, OperationMetadata
-from .lva import AnalysisDefinition, AnalyzerDefinition, AttributeValue
-from .lva_resources import Analysis
+from .common import (
+    Cluster,
+    GcsSource,
+    OperationMetadata,
+)
+from .lva import (
+    AnalysisDefinition,
+    AnalyzerDefinition,
+    AttributeValue,
+)
+from .lva_resources import (
+    Analysis,
+)
 from .lva_service import (
     CreateAnalysisRequest,
     DeleteAnalysisRequest,
@@ -147,7 +157,12 @@ from .streaming_service import (
     SendPacketsRequest,
     SendPacketsResponse,
 )
-from .streams_resources import Channel, Event, Series, Stream
+from .streams_resources import (
+    Channel,
+    Event,
+    Series,
+    Stream,
+)
 from .streams_service import (
     CreateClusterRequest,
     CreateEventRequest,

@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_backup_v1.types import common
@@ -118,21 +118,19 @@ class BackupPlan(proto.Message):
             perspective with 1 being no risk and 5 being
             highest risk.
         rpo_risk_reason (str):
-            Output only. Human-readable description of why
-            the BackupPlan is in the current rpo_risk_level
-            and action items if any.
+            Output only. Human-readable description of why the
+            BackupPlan is in the current rpo_risk_level and action items
+            if any.
         backup_channel (str):
             Output only. The fully qualified name of the BackupChannel
             to be used to create a backup. This field is set only if the
             cluster being backed up is in a different project.
             ``projects/*/locations/*/backupChannels/*``
         last_successful_backup_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Completion time of the last
-            successful Backup. This is sourced from a
-            successful Backup's complete_time field. This
-            field is added to maintain consistency with
-            BackupPlanBinding to display last successful
-            backup time.
+            Output only. Completion time of the last successful Backup.
+            This is sourced from a successful Backup's complete_time
+            field. This field is added to maintain consistency with
+            BackupPlanBinding to display last successful backup time.
     """
 
     class State(proto.Enum):
@@ -157,6 +155,7 @@ class BackupPlan(proto.Message):
                 The BackupPlan is in the process of being
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CLUSTER_PENDING = 1
         PROVISIONING = 2
@@ -171,15 +170,14 @@ class BackupPlan(proto.Message):
 
         Attributes:
             backup_delete_lock_days (int):
-                Optional. Minimum age for Backups created via
-                this BackupPlan (in days). This field MUST be an
-                integer value between 0-90 (inclusive). A Backup
-                created under this BackupPlan will NOT be
-                deletable until it reaches Backup's (create_time
-                + backup_delete_lock_days). Updating this field
-                of a BackupPlan does NOT affect existing Backups
-                under it. Backups created AFTER a successful
-                update will inherit the new value.
+                Optional. Minimum age for Backups created via this
+                BackupPlan (in days). This field MUST be an integer value
+                between 0-90 (inclusive). A Backup created under this
+                BackupPlan will NOT be deletable until it reaches Backup's
+                (create_time + backup_delete_lock_days). Updating this field
+                of a BackupPlan does NOT affect existing Backups under it.
+                Backups created AFTER a successful update will inherit the
+                new value.
 
                 Default: 0 (no delete blocking)
             backup_retain_days (int):
@@ -259,9 +257,8 @@ class BackupPlan(proto.Message):
 
                 Default (empty): no automatic backup creation will occur.
             next_scheduled_backup_time (google.protobuf.timestamp_pb2.Timestamp):
-                Output only. Start time of next scheduled backup
-                under this BackupPlan by either cron_schedule or
-                rpo config.
+                Output only. Start time of next scheduled backup under this
+                BackupPlan by either cron_schedule or rpo config.
         """
 
         cron_schedule: str = proto.Field(
@@ -471,19 +468,16 @@ class RpoConfig(proto.Message):
             this BackupPlan. This must be at least 60, i.e.,
             1 hour, and at most 86400, i.e., 60 days.
         exclusion_windows (MutableSequence[google.cloud.gke_backup_v1.types.ExclusionWindow]):
-            Optional. User specified time windows during
-            which backup can NOT happen for this BackupPlan
-            - backups should start and finish outside of any
-            given exclusion window. Note: backup jobs will
-            be scheduled to start and finish outside the
-            duration of the window as much as possible, but
-            running jobs will not get canceled when it runs
-            into the window. All the time and date values in
-            exclusion_windows entry in the API are in UTC.
-            We only allow <=1 recurrence (daily or weekly)
-            exclusion window for a BackupPlan while no
-            restriction on number of single occurrence
-            windows.
+            Optional. User specified time windows during which backup
+            can NOT happen for this BackupPlan - backups should start
+            and finish outside of any given exclusion window. Note:
+            backup jobs will be scheduled to start and finish outside
+            the duration of the window as much as possible, but running
+            jobs will not get canceled when it runs into the window. All
+            the time and date values in exclusion_windows entry in the
+            API are in UTC. We only allow <=1 recurrence (daily or
+            weekly) exclusion window for a BackupPlan while no
+            restriction on number of single occurrence windows.
     """
 
     target_rpo_minutes: int = proto.Field(

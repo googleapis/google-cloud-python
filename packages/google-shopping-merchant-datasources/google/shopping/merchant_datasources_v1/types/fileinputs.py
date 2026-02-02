@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -67,6 +67,7 @@ class FileInput(proto.Message):
                 through the Merchant Center, see `Add products to Merchant
                 Center <https://support.google.com/merchants/answer/12158053>`__.
         """
+
         FILE_INPUT_TYPE_UNSPECIFIED = 0
         UPLOAD = 1
         FETCH = 2
@@ -136,6 +137,7 @@ class FileInput(proto.Message):
                 FREQUENCY_MONTHLY (3):
                     The fetch happens every month.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             FREQUENCY_DAILY = 1
             FREQUENCY_WEEKLY = 2

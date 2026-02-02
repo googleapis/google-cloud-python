@@ -44,10 +44,9 @@ class RolloutUpdateEvent(proto.Message):
         release (str):
             The name of the ``Release``.
         rollout (str):
-            The name of the rollout.
-            rollout_uid is not in this log message because
-            we write some of these log messages at rollout
-            creation time, before we've generated the uid.
+            The name of the rollout. rollout_uid is not in this log
+            message because we write some of these log messages at
+            rollout creation time, before we've generated the uid.
         target_id (str):
             ID of the target.
         type_ (google.cloud.deploy_v1.types.Type):
@@ -90,6 +89,7 @@ class RolloutUpdateEvent(proto.Message):
             ADVANCED (13):
                 Rollout has been advanced.
         """
+
         ROLLOUT_UPDATE_TYPE_UNSPECIFIED = 0
         PENDING = 1
         PENDING_RELEASE = 2

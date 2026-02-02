@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.devicestreaming_v1 import gapic_version as package_version
 
@@ -47,9 +47,9 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.devicestreaming_v1.services.direct_access_service import pagers
 from google.cloud.devicestreaming_v1.types import adb_service, service
@@ -133,7 +133,8 @@ class DirectAccessServiceAsyncClient:
         Returns:
             DirectAccessServiceAsyncClient: The constructed client.
         """
-        return DirectAccessServiceClient.from_service_account_info.__func__(DirectAccessServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DirectAccessServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DirectAccessServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -149,7 +150,8 @@ class DirectAccessServiceAsyncClient:
         Returns:
             DirectAccessServiceAsyncClient: The constructed client.
         """
-        return DirectAccessServiceClient.from_service_account_file.__func__(DirectAccessServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DirectAccessServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DirectAccessServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -187,7 +189,9 @@ class DirectAccessServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return DirectAccessServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return DirectAccessServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> DirectAccessServiceTransport:
@@ -360,9 +364,8 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.CreateDeviceSession.
             parent (:class:`str`):
-                Required. The Compute Engine project
-                under which this device will be
-                allocated. "projects/{project_id}"
+                Required. The Compute Engine project under which this
+                device will be allocated. "projects/{project_id}"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -493,8 +496,8 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.ListDeviceSessions.
             parent (:class:`str`):
-                Required. The name of the parent to
-                request, e.g. "projects/{project_id}"
+                Required. The name of the parent to request, e.g.
+                "projects/{project_id}"
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -621,8 +624,7 @@ class DirectAccessServiceAsyncClient:
                 The request object. Request message for
                 DirectAccessService.GetDeviceSession.
             name (:class:`str`):
-                Required. Name of the DeviceSession,
-                e.g.
+                Required. Name of the DeviceSession, e.g.
                 "projects/{project_id}/deviceSessions/{session_id}"
 
                 This corresponds to the ``name`` field
@@ -780,8 +782,8 @@ class DirectAccessServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service.DeviceSession:
-        r"""Updates the current DeviceSession to the fields
-        described by the update_mask.
+        r"""Updates the current DeviceSession to the fields described by the
+        update_mask.
 
         .. code-block:: python
 

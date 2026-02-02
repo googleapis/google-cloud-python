@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vision_v1.types import geometry, product_search_service
@@ -148,8 +148,8 @@ class ProductSearchResults(proto.Message):
                 Object ID that should align with
                 EntityAnnotation mid.
             language_code (str):
-                The BCP-47 language code, such as "en-US" or
-                "sr-Latn". For more information, see
+                The BCP-47 language code, such as "en-US" or "sr-Latn". For
+                more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             name (str):
                 Object name, expressed in its ``language_code`` language.
@@ -199,12 +199,12 @@ class ProductSearchResults(proto.Message):
             number=2,
             message="ProductSearchResults.Result",
         )
-        object_annotations: MutableSequence[
-            "ProductSearchResults.ObjectAnnotation"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ProductSearchResults.ObjectAnnotation",
+        object_annotations: MutableSequence["ProductSearchResults.ObjectAnnotation"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ProductSearchResults.ObjectAnnotation",
+            )
         )
 
     index_time: timestamp_pb2.Timestamp = proto.Field(

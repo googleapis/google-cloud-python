@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.types import common
@@ -63,6 +63,7 @@ class ComplianceState(proto.Enum):
         AUDIT_NOT_SUPPORTED (5):
             The resource can't be audited.
     """
+
     COMPLIANCE_STATE_UNSPECIFIED = 0
     COMPLIANT = 1
     VIOLATION = 2
@@ -102,6 +103,7 @@ class GenerateFrameworkAuditScopeReportRequest(proto.Message):
                 The report format is the Open Document Format
                 (ODF).
         """
+
         FORMAT_UNSPECIFIED = 0
         ODF = 1
 
@@ -275,6 +277,7 @@ class BucketDestination(proto.Message):
                 The format for the framework audit report is
                 Open Document.
         """
+
         FORMAT_UNSPECIFIED = 0
         ODF = 1
 
@@ -347,6 +350,7 @@ class FrameworkAudit(proto.Message):
             SUCCEEDED (5):
                 The audit completed successfully.
         """
+
         STATE_UNSPECIFIED = 0
         SCHEDULED = 1
         RUNNING = 2
@@ -402,12 +406,12 @@ class FrameworkAudit(proto.Message):
         number=10,
         message="CloudControlGroupAuditDetails",
     )
-    cloud_control_audit_details: MutableSequence[
-        "CloudControlAuditDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message="CloudControlAuditDetails",
+    cloud_control_audit_details: MutableSequence["CloudControlAuditDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="CloudControlAuditDetails",
+        )
     )
     operation_id: str = proto.Field(
         proto.STRING,
@@ -605,12 +609,12 @@ class CloudControlGroupAuditDetails(proto.Message):
         number=11,
         message=common.ControlFamily,
     )
-    cloud_control_details: MutableSequence[
-        "CloudControlAuditDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message="CloudControlAuditDetails",
+    cloud_control_details: MutableSequence["CloudControlAuditDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message="CloudControlAuditDetails",
+        )
     )
     report_summary: "ReportSummary" = proto.Field(
         proto.MESSAGE,

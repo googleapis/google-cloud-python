@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4beta1 import gapic_version as package_version
 
@@ -44,16 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.services.job_service import pagers
-from google.cloud.talent_v4beta1.types import common
-from google.cloud.talent_v4beta1.types import job
+from google.cloud.talent_v4beta1.types import common, job, job_service
 from google.cloud.talent_v4beta1.types import job as gct_job
-from google.cloud.talent_v4beta1.types import job_service
 
 from .client import JobServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, JobServiceTransport
@@ -119,7 +117,8 @@ class JobServiceAsyncClient:
         Returns:
             JobServiceAsyncClient: The constructed client.
         """
-        return JobServiceClient.from_service_account_info.__func__(JobServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = JobServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(JobServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +134,8 @@ class JobServiceAsyncClient:
         Returns:
             JobServiceAsyncClient: The constructed client.
         """
-        return JobServiceClient.from_service_account_file.__func__(JobServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = JobServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(JobServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -345,13 +345,13 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.CreateJobRequest, dict]]):
                 The request object. Create job request.
             parent (:class:`str`):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -482,13 +482,13 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.BatchCreateJobsRequest, dict]]):
                 The request object. Request to create a batch of jobs.
             parent (:class:`str`):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -621,16 +621,14 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.GetJobRequest, dict]]):
                 The request object. Get job request.
             name (:class:`str`):
-                Required. The resource name of the job
-                to retrieve.
+                Required. The resource name of the job to retrieve.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example,
-                "projects/foo/tenants/bar/jobs/baz".
+                For example, "projects/foo/tenants/bar/jobs/baz".
 
-                If tenant id is unspecified, the default
-                tenant is used. For example,
-                "projects/foo/jobs/bar".
+                If tenant id is unspecified, the default tenant is used.
+                For example, "projects/foo/jobs/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -871,13 +869,13 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest, dict]]):
                 The request object. Request to update a batch of jobs.
             parent (:class:`str`):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -1009,16 +1007,14 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.DeleteJobRequest, dict]]):
                 The request object. Delete job request.
             name (:class:`str`):
-                Required. The resource name of the job
-                to be deleted.
+                Required. The resource name of the job to be deleted.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example,
-                "projects/foo/tenants/bar/jobs/baz".
+                For example, "projects/foo/tenants/bar/jobs/baz".
 
-                If tenant id is unspecified, the default
-                tenant is used. For example,
-                "projects/foo/jobs/bar".
+                If tenant id is unspecified, the default tenant is used.
+                For example, "projects/foo/jobs/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1118,13 +1114,13 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest, dict]]):
                 The request object. Batch delete jobs request.
             parent (:class:`str`):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -1247,13 +1243,13 @@ class JobServiceAsyncClient:
             request (Optional[Union[google.cloud.talent_v4beta1.types.ListJobsRequest, dict]]):
                 The request object. List jobs request.
             parent (:class:`str`):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field

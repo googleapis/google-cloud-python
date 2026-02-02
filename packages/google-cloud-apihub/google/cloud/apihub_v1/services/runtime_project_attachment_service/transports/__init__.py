@@ -25,13 +25,11 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RuntimeProjectAttachmentServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RuntimeProjectAttachmentServiceTransport]]
 _transport_registry["grpc"] = RuntimeProjectAttachmentServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = (
+    RuntimeProjectAttachmentServiceGrpcAsyncIOTransport
+)
 _transport_registry["rest"] = RuntimeProjectAttachmentServiceRestTransport
 
 __all__ = (

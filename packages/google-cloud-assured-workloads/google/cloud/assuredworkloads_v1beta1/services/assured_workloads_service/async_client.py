@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.assuredworkloads_v1beta1 import gapic_version as package_version
 
@@ -44,11 +44,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service import (
     pagers,
@@ -129,7 +129,8 @@ class AssuredWorkloadsServiceAsyncClient:
         Returns:
             AssuredWorkloadsServiceAsyncClient: The constructed client.
         """
-        return AssuredWorkloadsServiceClient.from_service_account_info.__func__(AssuredWorkloadsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = AssuredWorkloadsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(AssuredWorkloadsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -145,7 +146,10 @@ class AssuredWorkloadsServiceAsyncClient:
         Returns:
             AssuredWorkloadsServiceAsyncClient: The constructed client.
         """
-        return AssuredWorkloadsServiceClient.from_service_account_file.__func__(AssuredWorkloadsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = AssuredWorkloadsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(
+            AssuredWorkloadsServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -183,7 +187,9 @@ class AssuredWorkloadsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AssuredWorkloadsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AssuredWorkloadsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AssuredWorkloadsServiceTransport:
@@ -455,11 +461,10 @@ class AssuredWorkloadsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> assuredworkloads.Workload:
-        r"""Updates an existing workload.
-        Currently allows updating of workload display_name and
-        labels. For force updates don't set etag field in the
-        Workload. Only one update operation per workload can be
-        in progress.
+        r"""Updates an existing workload. Currently allows updating of
+        workload display_name and labels. For force updates don't set
+        etag field in the Workload. Only one update operation per
+        workload can be in progress.
 
         .. code-block:: python
 
@@ -676,13 +681,12 @@ class AssuredWorkloadsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes the workload. Make sure that workload's direct
-        children are already in a deleted state, otherwise the
-        request will fail with a FAILED_PRECONDITION error.
-        In addition to assuredworkloads.workload.delete
-        permission, the user should also have
-        orgpolicy.policy.set permission on the deleted folder to
-        remove Assured Workloads OrgPolicies.
+        r"""Deletes the workload. Make sure that workload's direct children
+        are already in a deleted state, otherwise the request will fail
+        with a FAILED_PRECONDITION error. In addition to
+        assuredworkloads.workload.delete permission, the user should
+        also have orgpolicy.policy.set permission on the deleted folder
+        to remove Assured Workloads OrgPolicies.
 
         .. code-block:: python
 
@@ -813,9 +817,8 @@ class AssuredWorkloadsServiceAsyncClient:
             request (Optional[Union[google.cloud.assuredworkloads_v1beta1.types.GetWorkloadRequest, dict]]):
                 The request object. Request for fetching a workload.
             name (:class:`str`):
-                Required. The resource name of the
-                Workload to fetch. This is the
-                workloads's relative path in the API,
+                Required. The resource name of the Workload to fetch.
+                This is the workloads's relative path in the API,
                 formatted as
                 "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
                 For example,
@@ -931,33 +934,24 @@ class AssuredWorkloadsServiceAsyncClient:
                 project-based workload to a target
                 (destination) folder-based workload.
             project (:class:`str`):
-                The source type is a project. Specify
-                the project's relative resource name,
-                formatted as either a project number or
-                a project ID:
-
-                "projects/{PROJECT_NUMBER}" or
+                The source type is a project. Specify the project's
+                relative resource name, formatted as either a project
+                number or a project ID: "projects/{PROJECT_NUMBER}" or
                 "projects/{PROJECT_ID}" For example:
-
-                "projects/951040570662" when specifying
-                a project number, or
-                "projects/my-project-123" when
-                specifying a project ID.
+                "projects/951040570662" when specifying a project
+                number, or "projects/my-project-123" when specifying a
+                project ID.
 
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target (:class:`str`):
-                Required. The resource ID of the
-                folder-based destination workload. This
-                workload is where the source project
-                will hypothetically be moved to. Specify
-                the workload's relative resource name,
-                formatted as:
-
+                Required. The resource ID of the folder-based
+                destination workload. This workload is where the source
+                project will hypothetically be moved to. Specify the
+                workload's relative resource name, formatted as:
                 "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
                 For example:
-
                 "organizations/123/locations/us-east1/workloads/assured-workload-2"
 
                 This corresponds to the ``target`` field

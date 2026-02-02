@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1 import gapic_version as package_version
 
@@ -44,22 +44,23 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1.services.organization_address_group_service import (
     pagers,
 )
+from google.cloud.network_security_v1.types import address_group, common
 from google.cloud.network_security_v1.types import address_group as gcn_address_group
-from google.cloud.network_security_v1.types import address_group
-from google.cloud.network_security_v1.types import common
 
 from .client import OrganizationAddressGroupServiceClient
 from .transports.base import (
@@ -145,7 +146,12 @@ class OrganizationAddressGroupServiceAsyncClient:
         Returns:
             OrganizationAddressGroupServiceAsyncClient: The constructed client.
         """
-        return OrganizationAddressGroupServiceClient.from_service_account_info.__func__(OrganizationAddressGroupServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            OrganizationAddressGroupServiceClient.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            OrganizationAddressGroupServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -161,7 +167,12 @@ class OrganizationAddressGroupServiceAsyncClient:
         Returns:
             OrganizationAddressGroupServiceAsyncClient: The constructed client.
         """
-        return OrganizationAddressGroupServiceClient.from_service_account_file.__func__(OrganizationAddressGroupServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            OrganizationAddressGroupServiceClient.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            OrganizationAddressGroupServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -199,7 +210,9 @@ class OrganizationAddressGroupServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return OrganizationAddressGroupServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return OrganizationAddressGroupServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> OrganizationAddressGroupServiceTransport:
@@ -635,12 +648,10 @@ class OrganizationAddressGroupServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             address_group_id (:class:`str`):
-                Required. Short name of the AddressGroup
-                resource to be created. This value
-                should be 1-63 characters long,
-                containing only letters, numbers,
-                hyphens, and underscores, and should not
-                start with a number. E.g.
+                Required. Short name of the AddressGroup resource to be
+                created. This value should be 1-63 characters long,
+                containing only letters, numbers, hyphens, and
+                underscores, and should not start with a number. E.g.
                 "authz_policy".
 
                 This corresponds to the ``address_group_id`` field
@@ -784,15 +795,12 @@ class OrganizationAddressGroupServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Optional. Field mask is used to specify
-                the fields to be overwritten in the
-                AddressGroup resource by the update. The
-                fields specified in the update_mask are
-                relative to the resource, not the full
-                request. A field will be overwritten if
-                it is in the mask. If the user does not
-                provide a mask then all fields will be
-                overwritten.
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the AddressGroup resource by the update.
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

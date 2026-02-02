@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import inline
@@ -58,6 +58,7 @@ class IntentView(proto.Enum):
         INTENT_VIEW_FULL (2):
             All fields are populated.
     """
+
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_PARTIAL = 1
     INTENT_VIEW_FULL = 2
@@ -224,13 +225,11 @@ class Intent(proto.Message):
                 Indicates whether the parameter represents a
                 list of values.
             redact (bool):
-                Indicates whether the parameter content should
-                be redacted in log. If redaction is enabled, the
-                parameter content will be replaced by parameter
-                name during logging.
-                Note: the parameter content is subject to
-                redaction if either parameter level redaction or
-                [entity type level
+                Indicates whether the parameter content should be redacted
+                in log. If redaction is enabled, the parameter content will
+                be replaced by parameter name during logging. Note: the
+                parameter content is subject to redaction if either
+                parameter level redaction or [entity type level
                 redaction][google.cloud.dialogflow.cx.v3.EntityType.redact]
                 is enabled.
         """
@@ -315,8 +314,8 @@ class ListIntentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -348,9 +347,8 @@ class ListIntentsResponse(proto.Message):
 
     Attributes:
         intents (MutableSequence[google.cloud.dialogflowcx_v3.types.Intent]):
-            The list of intents. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of intents. There will be a maximum number of items
+            returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -563,6 +561,7 @@ class ImportIntentsRequest(proto.Message):
                 conflicting new intent when display name
                 conflicts exist.
         """
+
         MERGE_OPTION_UNSPECIFIED = 0
         REJECT = 1
         REPLACE = 2
@@ -702,6 +701,7 @@ class ExportIntentsRequest(proto.Message):
             CSV (3):
                 Intents will be exported in CSV format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2

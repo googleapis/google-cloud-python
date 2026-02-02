@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.monitoring_v3 import gapic_version as package_version
 
@@ -44,13 +44,12 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.group_service import pagers
-from google.cloud.monitoring_v3.types import group
+from google.cloud.monitoring_v3.types import group, group_service
 from google.cloud.monitoring_v3.types import group as gm_group
-from google.cloud.monitoring_v3.types import group_service
 
 from .client import GroupServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, GroupServiceTransport
@@ -126,7 +125,8 @@ class GroupServiceAsyncClient:
         Returns:
             GroupServiceAsyncClient: The constructed client.
         """
-        return GroupServiceClient.from_service_account_info.__func__(GroupServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = GroupServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(GroupServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -142,7 +142,8 @@ class GroupServiceAsyncClient:
         Returns:
             GroupServiceAsyncClient: The constructed client.
         """
-        return GroupServiceClient.from_service_account_file.__func__(GroupServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = GroupServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(GroupServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -471,9 +472,11 @@ class GroupServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.GetGroupRequest, dict]]):
                 The request object. The ``GetGroup`` request.
             name (:class:`str`):
-                Required. The group to retrieve. The
-                format is:
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group to retrieve. The format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -912,9 +915,11 @@ class GroupServiceAsyncClient:
                 be able to delete a single group without any
                 descendants.
             name (:class:`str`):
-                Required. The group to delete. The
-                format is:
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group to delete. The format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1016,9 +1021,12 @@ class GroupServiceAsyncClient:
             request (Optional[Union[google.cloud.monitoring_v3.types.ListGroupMembersRequest, dict]]):
                 The request object. The ``ListGroupMembers`` request.
             name (:class:`str`):
-                Required. The group whose members are
-                listed. The format is:
-                projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
+                Required. The group whose members are listed. The format
+                is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

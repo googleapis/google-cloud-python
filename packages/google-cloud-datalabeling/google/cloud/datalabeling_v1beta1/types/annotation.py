@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
@@ -64,6 +64,7 @@ class AnnotationSource(proto.Enum):
         OPERATOR (3):
             Answer is provided by a human contributor.
     """
+
     ANNOTATION_SOURCE_UNSPECIFIED = 0
     OPERATOR = 3
 
@@ -81,6 +82,7 @@ class AnnotationSentiment(proto.Enum):
             This label describes positively about the
             data.
     """
+
     ANNOTATION_SENTIMENT_UNSPECIFIED = 0
     NEGATIVE = 1
     POSITIVE = 2
@@ -125,6 +127,7 @@ class AnnotationType(proto.Enum):
             General classification. Allowed for
             continuous evaluation.
     """
+
     ANNOTATION_TYPE_UNSPECIFIED = 0
     IMAGE_CLASSIFICATION_ANNOTATION = 1
     IMAGE_BOUNDING_BOX_ANNOTATION = 2
@@ -149,8 +152,8 @@ class Annotation(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Unique name of this annotation,
-            format is:
+            Output only. Unique name of this annotation, format is:
+
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/{annotated_dataset}/examples/{example_id}/annotations/{annotation_id}
         annotation_source (google.cloud.datalabeling_v1beta1.types.AnnotationSource):
             Output only. The source of the annotation.
@@ -521,13 +524,13 @@ class ImageSegmentationAnnotation(proto.Message):
             A byte string of a full image's color map.
     """
 
-    annotation_colors: MutableMapping[
-        str, annotation_spec_set.AnnotationSpec
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=1,
-        message=annotation_spec_set.AnnotationSpec,
+    annotation_colors: MutableMapping[str, annotation_spec_set.AnnotationSpec] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=1,
+            message=annotation_spec_set.AnnotationSpec,
+        )
     )
     mime_type: str = proto.Field(
         proto.STRING,
@@ -713,12 +716,12 @@ class VideoObjectTrackingAnnotation(proto.Message):
         number=2,
         message="TimeSegment",
     )
-    object_tracking_frames: MutableSequence[
-        "ObjectTrackingFrame"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="ObjectTrackingFrame",
+    object_tracking_frames: MutableSequence["ObjectTrackingFrame"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="ObjectTrackingFrame",
+        )
     )
 
 

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import data_store_connection
@@ -65,6 +65,7 @@ class OutputState(proto.Enum):
         OUTPUT_STATE_PENDING (5):
             Pending.
     """
+
     OUTPUT_STATE_UNSPECIFIED = 0
     OUTPUT_STATE_OK = 1
     OUTPUT_STATE_CANCELLED = 2
@@ -89,6 +90,7 @@ class RetrievalStrategy(proto.Enum):
             Example will never be inserted into the
             prompt.
     """
+
     RETRIEVAL_STRATEGY_UNSPECIFIED = 0
     DEFAULT = 1
     STATIC = 2
@@ -229,12 +231,12 @@ class Action(proto.Message):
                 message=struct_pb2.Struct,
             )
 
-        matched_intents: MutableSequence[
-            "Action.IntentMatch.MatchedIntent"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Action.IntentMatch.MatchedIntent",
+        matched_intents: MutableSequence["Action.IntentMatch.MatchedIntent"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Action.IntentMatch.MatchedIntent",
+            )
         )
 
     class FlowStateUpdate(proto.Message):
@@ -922,6 +924,7 @@ class PlaybookOutput(proto.Message):
             ESCALATED (4):
                 Playbook failed due to escalation.
         """
+
         _pb_options = {"deprecated": True}
         STATE_UNSPECIFIED = 0
         OK = 1
@@ -997,10 +1000,9 @@ class NamedMetric(proto.Message):
         value (google.protobuf.struct_pb2.Value):
             The value of the metric.
         unit (str):
-            The unit in which this metric is reported.
-            Follows [The Unified Code for Units of
-            Measure](https://unitsofmeasure.org/ucum.html)
-            standard.
+            The unit in which this metric is reported. Follows `The
+            Unified Code for Units of
+            Measure <https://unitsofmeasure.org/ucum.html>`__ standard.
     """
 
     name: str = proto.Field(

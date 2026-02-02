@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.channel_v1.types import common
@@ -37,8 +37,7 @@ class Customer(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of the customer.
-            Format:
+            Output only. Resource name of the customer. Format:
             accounts/{account_id}/customers/{customer_id}
         org_display_name (str):
             Required. Name of the organization that the
@@ -74,8 +73,8 @@ class Customer(proto.Message):
             Output only. The customer's Cloud Identity ID
             if the customer has a Cloud Identity resource.
         language_code (str):
-            Optional. The BCP-47 language code, such as
-            "en-US" or "sr-Latn". For more information, see
+            Optional. The BCP-47 language code, such as "en-US" or
+            "sr-Latn". For more information, see
             https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         cloud_identity_info (google.cloud.channel_v1.types.CloudIdentityInfo):
             Output only. Cloud Identity information for
@@ -112,6 +111,7 @@ class Customer(proto.Message):
                 information provided is correct. Contact
                 information of customer will be mandatory.
         """
+
         CUSTOMER_ATTESTATION_STATE_UNSPECIFIED = 0
         EXEMPT = 1
         NON_EXEMPT_AND_INFO_VERIFIED = 2

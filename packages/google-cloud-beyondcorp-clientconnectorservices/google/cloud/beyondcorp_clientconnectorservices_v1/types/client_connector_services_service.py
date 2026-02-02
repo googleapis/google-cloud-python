@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -86,6 +86,7 @@ class ClientConnectorService(proto.Message):
                 ClientConnectorService encountered an error
                 and is in an indeterministic state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -129,6 +130,7 @@ class ClientConnectorService(proto.Message):
                     TCP (1):
                         TCP protocol.
                 """
+
                 TRANSPORT_PROTOCOL_UNSPECIFIED = 0
                 TCP = 1
 
@@ -307,12 +309,12 @@ class ListClientConnectorServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    client_connector_services: MutableSequence[
-        "ClientConnectorService"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ClientConnectorService",
+    client_connector_services: MutableSequence["ClientConnectorService"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ClientConnectorService",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -411,14 +413,12 @@ class UpdateClientConnectorServiceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the
-            ClientConnectorService resource by the update.
-            The fields specified in the update_mask are
-            relative to the resource, not the full request.
-            A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then
-            all fields will be overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ClientConnectorService resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
 
             Mutable fields: display_name.
         client_connector_service (google.cloud.beyondcorp_clientconnectorservices_v1.types.ClientConnectorService):

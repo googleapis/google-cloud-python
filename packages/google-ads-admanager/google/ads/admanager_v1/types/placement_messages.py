@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import placement_enums
@@ -64,8 +64,8 @@ class Placement(proto.Message):
 
             This field is a member of `oneof`_ ``_status``.
         targeted_ad_units (MutableSequence[str]):
-            Optional. The resource names of AdUnits that
-            constitute the Placement. Format:
+            Optional. The resource names of AdUnits that constitute the
+            Placement. Format:
             "networks/{network_code}/adUnits/{ad_unit}".
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The instant this Placement was

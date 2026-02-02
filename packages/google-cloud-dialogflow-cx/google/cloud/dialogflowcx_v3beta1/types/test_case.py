@@ -17,20 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
+from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
+from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
 from google.cloud.dialogflowcx_v3beta1.types import (
     response_message,
     session,
     transition_route_group,
 )
-from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
-from google.cloud.dialogflowcx_v3beta1.types import page as gcdc_page
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -84,6 +84,7 @@ class TestResult(proto.Enum):
         FAILED (2):
             The test did not pass.
     """
+
     TEST_RESULT_UNSPECIFIED = 0
     PASSED = 1
     FAILED = 2
@@ -145,12 +146,12 @@ class TestCase(proto.Message):
         number=13,
         message="TestConfig",
     )
-    test_case_conversation_turns: MutableSequence[
-        "ConversationTurn"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="ConversationTurn",
+    test_case_conversation_turns: MutableSequence["ConversationTurn"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="ConversationTurn",
+        )
     )
     creation_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -312,11 +313,10 @@ class ConversationTurn(proto.Message):
                 The session parameters available to the bot
                 at this point.
             differences (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestRunDifference]):
-                Output only. If this is part of a [result
-                conversation
-                turn][TestCaseResult.conversation_turns], the
-                list of differences between the original run and
-                the replay for this output, if any.
+                Output only. If this is part of a [result conversation
+                turn][TestCaseResult.conversation_turns], the list of
+                differences between the original run and the replay for this
+                output, if any.
             diagnostic_info (google.protobuf.struct_pb2.Struct):
                 Required. Input only. The diagnostic
                 [info][Session.DetectIntentResponse.QueryResult.diagnostic_info]
@@ -364,12 +364,12 @@ class ConversationTurn(proto.Message):
             number=8,
             message=gcdc_page.Page,
         )
-        text_responses: MutableSequence[
-            response_message.ResponseMessage.Text
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message=response_message.ResponseMessage.Text,
+        text_responses: MutableSequence[response_message.ResponseMessage.Text] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message=response_message.ResponseMessage.Text,
+            )
         )
         status: status_pb2.Status = proto.Field(
             proto.MESSAGE,
@@ -418,6 +418,7 @@ class TestRunDifference(proto.Message):
             FLOW (5):
                 The flow.
         """
+
         DIFF_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE = 2
@@ -708,6 +709,7 @@ class CalculateCoverageRequest(proto.Message):
             TRANSITION_ROUTE_GROUP (3):
                 Transition route group coverage.
         """
+
         COVERAGE_TYPE_UNSPECIFIED = 0
         INTENT = 1
         PAGE_TRANSITION = 2
@@ -793,8 +795,8 @@ class ListTestCasesRequest(proto.Message):
             allowed is 20. When TestCaseView = BASIC, the
             maximum page size allowed is 500.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
         view (google.cloud.dialogflowcx_v3beta1.types.ListTestCasesRequest.TestCaseView):
             Specifies whether response should include all
             fields or just the metadata.
@@ -815,6 +817,7 @@ class ListTestCasesRequest(proto.Message):
             FULL (2):
                 Include everything.
         """
+
         TEST_CASE_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2
@@ -844,9 +847,8 @@ class ListTestCasesResponse(proto.Message):
 
     Attributes:
         test_cases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCase]):
-            The list of test cases. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of test cases. There will be a maximum number of
+            items returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -1042,8 +1044,7 @@ class BatchRunTestCasesResponse(proto.Message):
 
     Attributes:
         results (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.TestCaseResult]):
-            The test case results. The detailed
-            [conversation
+            The test case results. The detailed [conversation
             turns][google.cloud.dialogflow.cx.v3beta1.TestCaseResult.conversation_turns]
             are empty in this response.
     """
@@ -1257,6 +1258,7 @@ class ExportTestCasesRequest(proto.Message):
             JSON (2):
                 JSON format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2
@@ -1339,8 +1341,8 @@ class ListTestCaseResultsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 100 and at most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
         filter (str):
             The filter expression used to filter test case results. See
             `API Filtering <https://aip.dev/160>`__.

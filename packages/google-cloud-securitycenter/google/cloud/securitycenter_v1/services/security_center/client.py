@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.securitycenter_v1 import gapic_version as package_version
 
@@ -61,15 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
@@ -88,16 +88,11 @@ from google.cloud.securitycenter_v1.types import (
     database,
     effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
-)
-from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module,
     event_threat_detection_custom_module_validation_errors,
     exfiltration,
-)
-from google.cloud.securitycenter_v1.types import (
-    run_asset_discovery_response,
-    security_health_analytics_custom_config,
-)
-from google.cloud.securitycenter_v1.types import (
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -106,22 +101,32 @@ from google.cloud.securitycenter_v1.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v1.types import (
+    mute_config,
+    notebook,
+    notification_config,
+    org_policy,
+    organization_settings,
+    process,
+    resource,
+    resource_value_config,
+    run_asset_discovery_response,
+    security_health_analytics_custom_config,
+    security_health_analytics_custom_module,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v1.types import (
+    source,
     toxic_combination,
     valued_resource,
     vulnerability,
 )
-from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
 from google.cloud.securitycenter_v1.types import (
     event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
@@ -131,24 +136,10 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     resource_value_config as gcs_resource_value_config,
 )
-from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import file
-from google.cloud.securitycenter_v1.types import finding
-from google.cloud.securitycenter_v1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1.types import mute_config
-from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v1.types import notebook
-from google.cloud.securitycenter_v1.types import notification_config
-from google.cloud.securitycenter_v1.types import org_policy
-from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import process, resource
-from google.cloud.securitycenter_v1.types import resource_value_config
-from google.cloud.securitycenter_v1.types import security_marks
-from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
@@ -165,9 +156,7 @@ class SecurityCenterClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[SecurityCenterTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SecurityCenterTransport]]
     _transport_registry["grpc"] = SecurityCenterGrpcTransport
     _transport_registry["grpc_asyncio"] = SecurityCenterGrpcAsyncIOTransport
     _transport_registry["rest"] = SecurityCenterRestTransport
@@ -1111,11 +1100,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SecurityCenterClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SecurityCenterClient._read_environment_variables()
+        )
         self._client_cert_source = SecurityCenterClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -1150,8 +1137,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SecurityCenterTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1567,9 +1553,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             source (google.cloud.securitycenter_v1.types.Source):
-                Required. The Source being created, only
-                the display_name and description will be
-                used. All other fields will be ignored.
+                Required. The Source being created, only the
+                display_name and description will be used. All other
+                fields will be ignored.
 
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1706,10 +1692,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             finding (google.cloud.securitycenter_v1.types.Finding):
-                Required. The Finding being created. The
-                name and security_marks will be ignored
-                as they are both output only fields on
-                this resource.
+                Required. The Finding being created. The name and
+                security_marks will be ignored as they are both output
+                only fields on this resource.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2769,7 +2754,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -3252,9 +3237,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> (
-        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
-    ):
+    ) -> effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule:
         r"""Retrieves an
         EffectiveSecurityHealthAnalyticsCustomModule.
 
@@ -4408,12 +4391,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for listing
                 notification configs.
             parent (str):
-                Required. The name of the parent in
-                which to list the notification
-                configurations. Its format is
+                Required. The name of the parent in which to list the
+                notification configurations. Its format is
                 "organizations/[organization_id]",
-                "folders/[folder_id]", or
-                "projects/[project_id]".
+                "folders/[folder_id]", or "projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -4925,9 +4906,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         r"""Runs asset discovery. The discovery is tracked with a
         long-running operation.
 
-        This API can only be called with limited frequency for
-        an organization. If it is called too frequently the
-        caller will receive a TOO_MANY_REQUESTS error.
+        This API can only be called with limited frequency for an
+        organization. If it is called too frequently the caller will
+        receive a TOO_MANY_REQUESTS error.
 
         .. code-block:: python
 
@@ -5342,7 +5323,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
@@ -5483,7 +5464,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
@@ -5904,15 +5885,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for updating or
                 creating a finding.
             finding (google.cloud.securitycenter_v1.types.Finding):
-                Required. The finding resource to update
-                or create if it does not already exist.
-                parent, security_marks, and update_time
-                will be ignored.
+                Required. The finding resource to update or create if it
+                does not already exist. parent, security_marks, and
+                update_time will be ignored.
 
-                In the case of creation, the finding id
-                portion of the name must be alphanumeric
-                and less than or equal to 32 characters
-                and greater than 0 characters in length.
+                In the case of creation, the finding id portion of the
+                name must be alphanumeric and less than or equal to 32
+                characters and greater than 0 characters in length.
 
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -6128,9 +6107,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcs_notification_config.NotificationConfig:
-        r"""Updates a notification config. The following update
-        fields are allowed: description, pubsub_topic,
-        streaming_config.filter
+        r"""Updates a notification config. The following update fields are
+        allowed: description, pubsub_topic, streaming_config.filter
 
         .. code-block:: python
 
@@ -7321,8 +7299,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 should not be set.
             event_threat_detection_custom_module (google.cloud.securitycenter_v1.types.EventThreatDetectionCustomModule):
                 Required. The module to create. The
-                event_threat_detection_custom_module.name
-                will be ignored and server generated.
+                event_threat_detection_custom_module.name will be
+                ignored and server generated.
 
                 This corresponds to the ``event_threat_detection_custom_module`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -8215,9 +8193,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> (
-        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
-    ):
+    ) -> effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule:
         r"""Gets an effective Event Threat Detection custom
         module at the given level.
 

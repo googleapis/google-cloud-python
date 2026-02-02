@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.monitoring_v3 import gapic_version as package_version
 
@@ -61,16 +61,15 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import label_pb2  # type: ignore
-from google.api import launch_stage_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.label_pb2 as label_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.metric_service import pagers
-from google.cloud.monitoring_v3.types import common
+from google.cloud.monitoring_v3.types import common, metric_service
 from google.cloud.monitoring_v3.types import metric as gm_metric
-from google.cloud.monitoring_v3.types import metric_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, MetricServiceTransport
 from .transports.grpc import MetricServiceGrpcTransport
@@ -663,11 +662,9 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = MetricServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            MetricServiceClient._read_environment_variables()
+        )
         self._client_cert_source = MetricServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -702,8 +699,7 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(MetricServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1339,8 +1335,8 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             metric_descriptor (google.api.metric_pb2.MetricDescriptor):
-                Required. The new [custom
-                metric](https://cloud.google.com/monitoring/custom-metrics)
+                Required. The new `custom
+                metric <https://cloud.google.com/monitoring/custom-metrics>`__
                 descriptor.
 
                 This corresponds to the ``metric_descriptor`` field
@@ -1579,18 +1575,17 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (str):
-                Required. A [monitoring
-                filter](https://cloud.google.com/monitoring/api/v3/filters)
-                that specifies which time series should
-                be returned. The filter must specify a
-                single metric type, and can additionally
-                specify metric labels and other
+                Required. A `monitoring
+                filter <https://cloud.google.com/monitoring/api/v3/filters>`__
+                that specifies which time series should be returned. The
+                filter must specify a single metric type, and can
+                additionally specify metric labels and other
                 information. For example:
 
-                metric.type =
-                "compute.googleapis.com/instance/cpu/usage_time"
-                AND metric.labels.instance_name =
-                "my-instance-name"
+                ::
+
+                    metric.type = "compute.googleapis.com/instance/cpu/usage_time" AND
+                        metric.labels.instance_name = "my-instance-name"
 
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1701,14 +1696,12 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Creates or adds data to one or more time series.
-        The response is empty if all time series in the request
-        were written. If any time series could not be written, a
-        corresponding failure message is included in the error
-        response.
-        This method does not support
-        [resource locations constraint of an organization
-        policy](https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy).
+        r"""Creates or adds data to one or more time series. The response is
+        empty if all time series in the request were written. If any
+        time series could not be written, a corresponding failure
+        message is included in the error response. This method does not
+        support `resource locations constraint of an organization
+        policy <https://cloud.google.com/resource-manager/docs/organization-policy/defining-locations#setting_the_organization_policy>`__.
 
         .. code-block:: python
 

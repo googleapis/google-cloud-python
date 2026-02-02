@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -122,7 +122,8 @@ class SynonymSetServiceAsyncClient:
         Returns:
             SynonymSetServiceAsyncClient: The constructed client.
         """
-        return SynonymSetServiceClient.from_service_account_info.__func__(SynonymSetServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SynonymSetServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SynonymSetServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -138,7 +139,8 @@ class SynonymSetServiceAsyncClient:
         Returns:
             SynonymSetServiceAsyncClient: The constructed client.
         """
-        return SynonymSetServiceClient.from_service_account_file.__func__(SynonymSetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SynonymSetServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SynonymSetServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -312,9 +314,9 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Creates a SynonymSet for a single context.
-        Throws an ALREADY_EXISTS exception if a synonymset
-        already exists for the context.
+        r"""Creates a SynonymSet for a single context. Throws an
+        ALREADY_EXISTS exception if a synonymset already exists for the
+        context.
 
         .. code-block:: python
 
@@ -347,8 +349,7 @@ class SynonymSetServiceAsyncClient:
                 The request object. Request message for
                 SynonymSetService.CreateSynonymSet.
             parent (:class:`str`):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -444,9 +445,8 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Gets a SynonymSet for a particular context.
-        Throws a NOT_FOUND exception if the Synonymset
-        does not exist
+        r"""Gets a SynonymSet for a particular context. Throws a NOT_FOUND
+        exception if the Synonymset does not exist
 
         .. code-block:: python
 
@@ -480,9 +480,7 @@ class SynonymSetServiceAsyncClient:
                 SynonymSetService.GetSynonymSet. Will
                 return synonymSet for a certain context.
             name (:class:`str`):
-                Required. The name of the synonymSet to
-                retrieve Format:
-
+                Required. The name of the synonymSet to retrieve Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -570,10 +568,9 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> synonymset.SynonymSet:
-        r"""Remove the existing SynonymSet for the context and
-        replaces it with a new one.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        r"""Remove the existing SynonymSet for the context and replaces it
+        with a new one. Throws a NOT_FOUND exception if the SynonymSet
+        is not found.
 
         .. code-block:: python
 
@@ -609,9 +606,7 @@ class SynonymSetServiceAsyncClient:
                 context and replaces it with the
                 SynonymSet in this request.
             name (:class:`str`):
-                Required. The name of the synonymSet to
-                update Format:
-
+                Required. The name of the synonymSet to update Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -707,9 +702,8 @@ class SynonymSetServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a SynonymSet for a given context.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        r"""Deletes a SynonymSet for a given context. Throws a NOT_FOUND
+        exception if the SynonymSet is not found.
 
         .. code-block:: python
 
@@ -739,9 +733,7 @@ class SynonymSetServiceAsyncClient:
                 The request object. Request message for
                 SynonymSetService.DeleteSynonymSet.
             name (:class:`str`):
-                Required. The name of the synonymSet to
-                delete Format:
-
+                Required. The name of the synonymSet to delete Format:
                 projects/{project_number}/locations/{location}/synonymSets/{context}.
 
                 This corresponds to the ``name`` field
@@ -849,8 +841,7 @@ class SynonymSetServiceAsyncClient:
                 return all synonymSets belonging to the
                 customer project.
             parent (:class:`str`):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field

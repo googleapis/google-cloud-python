@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import date_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import report_value
@@ -46,16 +46,15 @@ class ReportDefinition(proto.Message):
         filters (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.Filter]):
             Optional. The filters for this report.
         time_zone_source (google.ads.admanager_v1.types.ReportDefinition.TimeZoneSource):
-            Optional. Where to get the time zone for this
-            report. Defaults to using the network time zone
-            setting (PUBLISHER). If source is PROVIDED, the
-            time_zone field in the report definition must
-            also set a time zone.
+            Optional. Where to get the time zone for this report.
+            Defaults to using the network time zone setting (PUBLISHER).
+            If source is PROVIDED, the time_zone field in the report
+            definition must also set a time zone.
         time_zone (str):
-            Optional. If time_zone_source is PROVIDED, this
-            is the time zone to use for this report. Leave
-            empty for any other time zone source. Time zone
-            in IANA format. For example, "America/New_York".
+            Optional. If time_zone_source is PROVIDED, this is the time
+            zone to use for this report. Leave empty for any other time
+            zone source. Time zone in IANA format. For example,
+            "America/New_York".
         currency_code (str):
             Optional. The ISO 4217 currency code for this
             report. Defaults to publisher currency code if
@@ -99,14 +98,12 @@ class ReportDefinition(proto.Message):
         report_type (google.ads.admanager_v1.types.ReportDefinition.ReportType):
             Required. The type of this report.
         time_period_column (google.ads.admanager_v1.types.ReportDefinition.TimePeriodColumn):
-            Optional. Include a time period column to
-            introduce comparison columns in the report for
-            each generated period. For example, set to
-            "QUARTERS" here to have a column for each
-            quarter present in the primary date range. If
-            "PREVIOUS PERIOD" is specified in
-            comparison_date_range, then each quarter column
-            will also include comparison values for its
+            Optional. Include a time period column to introduce
+            comparison columns in the report for each generated period.
+            For example, set to "QUARTERS" here to have a column for
+            each quarter present in the primary date range. If "PREVIOUS
+            PERIOD" is specified in comparison_date_range, then each
+            quarter column will also include comparison values for its
             relative previous quarter.
         flags (MutableSequence[google.ads.admanager_v1.types.ReportDefinition.Flag]):
             Optional. List of flags for this report. Used
@@ -136,6 +133,7 @@ class ReportDefinition(proto.Message):
             AD_SPEED (13):
                 Ad speed.
         """
+
         REPORT_TYPE_UNSPECIFIED = 0
         HISTORICAL = 1
         REACH = 5
@@ -5862,6 +5860,7 @@ class ReportDefinition(proto.Message):
                 equal to the ID in index 9 of
                 ``ReportDefinition.custom_dimension_key_ids``.
         """
+
         _pb_options = {"allow_alias": True}
         DIMENSION_UNSPECIFIED = 0
         ACTIVE_VIEW_MEASUREMENT_SOURCE = 575
@@ -11322,6 +11321,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``INTEGER``
         """
+
         _pb_options = {"allow_alias": True}
         METRIC_UNSPECIFIED = 0
         ACTIVE_USERS = 223
@@ -11838,6 +11838,7 @@ class ReportDefinition(proto.Message):
             TIME_PERIOD_COLUMN_QUARTER (4):
                 A column for each quarter in the report.
         """
+
         TIME_PERIOD_COLUMN_UNSPECIFIED = 0
         TIME_PERIOD_COLUMN_DATE = 1
         TIME_PERIOD_COLUMN_WEEK = 2
@@ -11851,8 +11852,8 @@ class ReportDefinition(proto.Message):
             PRIMARY (0):
                 The values for the primary date_range.
             PRIMARY_PERCENT_OF_TOTAL (1):
-                Each metrics' percent of the total for the
-                primary date_range.
+                Each metrics' percent of the total for the primary
+                date_range.
             COMPARISON (2):
                 The values for the comparison_date_range.
             COMPARISON_PERCENT_OF_TOTAL (3):
@@ -11865,6 +11866,7 @@ class ReportDefinition(proto.Message):
                 The relative change between the primary and
                 comparison date ranges.
         """
+
         PRIMARY = 0
         PRIMARY_PERCENT_OF_TOTAL = 1
         COMPARISON = 2
@@ -11890,13 +11892,12 @@ class ReportDefinition(proto.Message):
                 Only compatible with Revenue Verification
                 reports.
             PROVIDED (4):
-                Use the time zone provided in the
-                ReportDefinition.time_zone field. Has limited
-                dimension and metric compatibility compared with
-                PUBLISHER, and reports may take longer to run
-                since the dates are dynamically calculated at
-                request time.
+                Use the time zone provided in the ReportDefinition.time_zone
+                field. Has limited dimension and metric compatibility
+                compared with PUBLISHER, and reports may take longer to run
+                since the dates are dynamically calculated at request time.
         """
+
         TIME_ZONE_SOURCE_UNSPECIFIED = 0
         PUBLISHER = 1
         AD_EXCHANGE = 2
@@ -12078,52 +12079,43 @@ class ReportDefinition(proto.Message):
                     report is run, to the end of the calendar month
                     following the calendar month the report is run.
                 PREVIOUS_PERIOD (22):
-                    Only valid when used in the
-                    comparison_date_range field. The complete period
-                    preceding the date period provided in
+                    Only valid when used in the comparison_date_range field. The
+                    complete period preceding the date period provided in
                     date_range.
 
-                    In the case where date_range is a FixedDateRange
-                    of N days, this will be a period of N days where
-                    the end date is the date preceding the start
-                    date of the date_range.
+                    In the case where date_range is a FixedDateRange of N days,
+                    this will be a period of N days where the end date is the
+                    date preceding the start date of the date_range.
 
-                    In the case where date_range is a
-                    RelativeDateRange, this will be a period of the
-                    same timeframe preceding the date_range. In the
-                    case where the date_range does not capture the
-                    full period because a report is run in the
-                    middle of that period, this will still be the
-                    full preceding period. For example, if
-                    date_range is THIS_WEEK, but the report is run
-                    on a Wednesday, THIS_WEEK will be Monday -
-                    Wednesday, but PREVIOUS_PERIOD will be Monday -
-                    Sunday.
+                    In the case where date_range is a RelativeDateRange, this
+                    will be a period of the same timeframe preceding the
+                    date_range. In the case where the date_range does not
+                    capture the full period because a report is run in the
+                    middle of that period, this will still be the full preceding
+                    period. For example, if date_range is THIS_WEEK, but the
+                    report is run on a Wednesday, THIS_WEEK will be Monday -
+                    Wednesday, but PREVIOUS_PERIOD will be Monday - Sunday.
                 SAME_PERIOD_PREVIOUS_YEAR (24):
-                    Only valid when used in the
-                    comparison_date_range field. The period starting
-                    1 year prior to the date period provided in
+                    Only valid when used in the comparison_date_range field. The
+                    period starting 1 year prior to the date period provided in
                     date_range.
 
-                    In the case where date_range is a
-                    FixedDateRange, this will be a date range
-                    starting 1 year prior to the date_range start
-                    date and ending 1 year prior to the date_range
-                    end date.
+                    In the case where date_range is a FixedDateRange, this will
+                    be a date range starting 1 year prior to the date_range
+                    start date and ending 1 year prior to the date_range end
+                    date.
 
-                    In the case where date_range is a
-                    RelativeDateRange, this will be a period of the
-                    same timeframe exactly 1 year prior to the
-                    date_range. In the case where the date_range
-                    does not capture the full period because a
-                    report is run in the middle of that period, this
-                    will still be the full period 1 year prior. For
-                    example, if date range is THIS_WEEK, but the
-                    report is run on a Wednesday, THIS_WEEK will be
-                    Monday - Wednesday, but
-                    SAME_PERIOD_PREVIOUS_YEAR will be Monday -
+                    In the case where date_range is a RelativeDateRange, this
+                    will be a period of the same timeframe exactly 1 year prior
+                    to the date_range. In the case where the date_range does not
+                    capture the full period because a report is run in the
+                    middle of that period, this will still be the full period 1
+                    year prior. For example, if date range is THIS_WEEK, but the
+                    report is run on a Wednesday, THIS_WEEK will be Monday -
+                    Wednesday, but SAME_PERIOD_PREVIOUS_YEAR will be Monday -
                     Sunday.
             """
+
             RELATIVE_DATE_RANGE_UNSPECIFIED = 0
             TODAY = 1
             YESTERDAY = 2
@@ -12284,6 +12276,7 @@ class ReportDefinition(proto.Message):
                     expression or set of regular expressions (none
                     must match).
             """
+
             IN = 0
             NOT_IN = 1
             CONTAINS = 2

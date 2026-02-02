@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.scheduler_v1beta1.types import job as gcs_job
@@ -58,11 +58,10 @@ class ListJobsRequest(proto.Message):
         page_size (int):
             Requested page size.
 
-            The maximum page size is 500. If unspecified,
-            the page size will be the maximum. Fewer jobs
-            than requested might be returned, even if more
-            jobs exist; use next_page_token to determine if
-            more jobs exist.
+            The maximum page size is 500. If unspecified, the page size
+            will be the maximum. Fewer jobs than requested might be
+            returned, even if more jobs exist; use next_page_token to
+            determine if more jobs exist.
         page_token (str):
             A token identifying a page of results the server will
             return. To request the first page results, page_token must

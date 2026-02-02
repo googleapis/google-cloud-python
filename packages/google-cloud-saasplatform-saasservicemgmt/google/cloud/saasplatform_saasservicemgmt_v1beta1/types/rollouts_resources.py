@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import common
@@ -58,6 +58,7 @@ class RolloutAction(proto.Enum):
         ROLLOUT_ACTION_CANCEL (3):
             Cancel the Rollout permanently.
     """
+
     ROLLOUT_ACTION_UNSPECIFIED = 0
     ROLLOUT_ACTION_RUN = 1
     ROLLOUT_ACTION_PAUSE = 2
@@ -69,8 +70,8 @@ class Rollout(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name (full URI of the
-            resource) following the standard naming scheme:
+            Identifier. The resource name (full URI of the resource)
+            following the standard naming scheme:
 
             "projects/{project}/locations/{location}/rollout/{rollout_id}".
         release (str):
@@ -98,17 +99,15 @@ class Rollout(proto.Message):
             Optional. Output only. The time when the
             rollout transitioned into its current state.
         root_rollout (str):
-            Optional. Output only. The root rollout that
-            this rollout is stemming from. The resource name
-            (full URI of the resource) following the
-            standard naming scheme:
+            Optional. Output only. The root rollout that this rollout is
+            stemming from. The resource name (full URI of the resource)
+            following the standard naming scheme:
 
             "projects/{project}/locations/{location}/rollouts/{rollout_id}".
         parent_rollout (str):
-            Optional. Output only. The direct parent rollout
-            that this rollout is stemming from. The resource
-            name (full URI of the resource) following the
-            standard naming scheme:
+            Optional. Output only. The direct parent rollout that this
+            rollout is stemming from. The resource name (full URI of the
+            resource) following the standard naming scheme:
 
             "projects/{project}/locations/{location}/rollouts/{rollout_id}".
         rollout_orchestration_strategy (str):
@@ -127,14 +126,11 @@ class Rollout(proto.Message):
             will rollout across all locations defined in the
             targeted UnitKind's Saas Locations.
         unit_filter (str):
-            Optional.
-            CEL(https://github.com/google/cel-spec)
-            formatted filter string against Unit. The filter
-            will be applied to determine the eligible unit
-            population. This filter can only reduce, but not
-            expand the scope of the rollout. If not
-            provided, the unit_filter from the RolloutType
-            will be used.
+            Optional. CEL(https://github.com/google/cel-spec) formatted
+            filter string against Unit. The filter will be applied to
+            determine the eligible unit population. This filter can only
+            reduce, but not expand the scope of the rollout. If not
+            provided, the unit_filter from the RolloutType will be used.
         rollout_kind (str):
             Optional. Immutable. Name of the RolloutKind
             this rollout is stemming from and adhering to.
@@ -142,14 +138,12 @@ class Rollout(proto.Message):
             Optional. Output only. Details about the
             progress of the rollout.
         control (google.cloud.saasplatform_saasservicemgmt_v1beta1.types.RolloutControl):
-            Optional. Requested change to the execution of
-            this rollout. Default RolloutControl.action is
-            ROLLOUT_ACTION_RUN meaning the rollout will be
-            executed to completion while progressing through
-            all natural Rollout States (such as RUNNING ->
-            SUCCEEDED or RUNNING -> FAILED). Requests can
-            only be made when the Rollout is in a
-            non-terminal state.
+            Optional. Requested change to the execution of this rollout.
+            Default RolloutControl.action is ROLLOUT_ACTION_RUN meaning
+            the rollout will be executed to completion while progressing
+            through all natural Rollout States (such as RUNNING ->
+            SUCCEEDED or RUNNING -> FAILED). Requests can only be made
+            when the Rollout is in a non-terminal state.
         labels (MutableMapping[str, str]):
             Optional. The labels on the resource, which
             can be used for categorization. similar to
@@ -215,6 +209,7 @@ class Rollout(proto.Message):
             ROLLOUT_STATE_PAUSING (9):
                 Rollout is being paused.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         ROLLOUT_STATE_RUNNING = 1
         ROLLOUT_STATE_PAUSED = 2
@@ -328,8 +323,8 @@ class RolloutKind(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name (full URI of the
-            resource) following the standard naming scheme:
+            Identifier. The resource name (full URI of the resource)
+            following the standard naming scheme:
 
             "projects/{project}/locations/{location}/rolloutKinds/{rollout_kind_id}".
         unit_kind (str):
@@ -421,6 +416,7 @@ class RolloutKind(proto.Message):
             UPDATE_UNIT_KIND_STRATEGY_NEVER (2):
                 Never update the unit kind.
         """
+
         UPDATE_UNIT_KIND_STRATEGY_UNSPECIFIED = 0
         UPDATE_UNIT_KIND_STRATEGY_ON_START = 1
         UPDATE_UNIT_KIND_STRATEGY_NEVER = 2
@@ -493,9 +489,8 @@ class ErrorBudget(proto.Message):
             allowed in a location without pausing the
             rollout.
         allowed_percentage (int):
-            Optional. The maximum percentage of units
-            allowed to fail (0, 100] within a location
-            without pausing the rollout.
+            Optional. The maximum percentage of units allowed to fail
+            (0, 100] within a location without pausing the rollout.
     """
 
     allowed_count: int = proto.Field(

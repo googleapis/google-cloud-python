@@ -49,9 +49,8 @@ class DataDocumentationResult(proto.Message):
 
         Attributes:
             name (str):
-                Output only. The service-qualified full resource
-                name of the cloud resource. Ex:
-
+                Output only. The service-qualified full resource name of the
+                cloud resource. Ex:
                 //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID
             overview (str):
                 Output only. Generated description of the

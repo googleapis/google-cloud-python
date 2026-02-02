@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,10 +30,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.channel_v1.types import reports_service
 
@@ -120,13 +120,13 @@ class CloudChannelReportsServiceGrpcAsyncIOTransport(
     """gRPC AsyncIO backend transport for CloudChannelReportsService.
 
     CloudChannelReportsService lets Google Cloud resellers and
-    distributors retrieve and combine a variety of data in Cloud
-    Channel for multiple products (Google Cloud, Google Voice, and
-    Google Workspace.)
+    distributors retrieve and combine a variety of data in Cloud Channel
+    for multiple products (Google Cloud, Google Voice, and Google
+    Workspace.)
 
-    Deprecated: This service is being deprecated. Please use [Export
+    Deprecated: This service is being deprecated. Please use `Export
     Channel Services data to
-    BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+    BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
     instead.
 
     This class defines the same methods as the primary client, so the
@@ -457,12 +457,12 @@ class CloudChannelReportsServiceGrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the list reports method over gRPC.
 
-        Lists the reports that RunReportJob can run. These
-        reports include an ID, a description, and the list of
-        columns that will be in the result.
+        Lists the reports that RunReportJob can run. These reports
+        include an ID, a description, and the list of columns that will
+        be in the result.
 
-        Deprecated: Please use [Export Channel Services data to
-        BigQuery](https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery)
+        Deprecated: Please use `Export Channel Services data to
+        BigQuery <https://cloud.google.com/channel/docs/rebilling/export-data-to-bigquery>`__
         instead.
 
         Returns:

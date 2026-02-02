@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+import uuid
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -28,15 +29,14 @@ from typing import (
     Type,
     Union,
 )
-import uuid
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.storage_control_v2 import gapic_version as package_version
 
@@ -45,14 +45,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.storage_control_v2.services.storage_control import pagers
 from google.cloud.storage_control_v2.types import storage_control
@@ -143,7 +143,8 @@ class StorageControlAsyncClient:
         Returns:
             StorageControlAsyncClient: The constructed client.
         """
-        return StorageControlClient.from_service_account_info.__func__(StorageControlAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = StorageControlClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(StorageControlAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -159,7 +160,8 @@ class StorageControlAsyncClient:
         Returns:
             StorageControlAsyncClient: The constructed client.
         """
-        return StorageControlClient.from_service_account_file.__func__(StorageControlAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = StorageControlClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(StorageControlAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -382,14 +384,11 @@ class StorageControlAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             folder_id (:class:`str`):
-                Required. The full name of a folder,
-                including all its parent folders.
-                Folders use single '/' characters as a
-                delimiter. The folder_id must end with a
-                slash.
-                For example, the folder_id of
-                "books/biographies/" would create a new
-                "biographies/" folder under the "books/"
+                Required. The full name of a folder, including all its
+                parent folders. Folders use single '/' characters as a
+                delimiter. The folder_id must end with a slash. For
+                example, the folder_id of "books/biographies/" would
+                create a new "biographies/" folder under the "books/"
                 folder.
 
                 This corresponds to the ``folder_id`` field
@@ -3371,7 +3370,7 @@ class StorageControlAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_control_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_get_iam_policy():
                 # Create a client
@@ -3526,7 +3525,7 @@ class StorageControlAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_control_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_set_iam_policy():
                 # Create a client
@@ -3685,7 +3684,7 @@ class StorageControlAsyncClient:
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import storage_control_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             async def sample_test_iam_permissions():
                 # Create a client

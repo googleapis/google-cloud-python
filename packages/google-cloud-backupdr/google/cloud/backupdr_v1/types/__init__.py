@@ -98,7 +98,9 @@ from .backupvault import (
     UpdateBackupVaultRequest,
     UpdateDataSourceRequest,
 )
-from .backupvault_ba import BackupApplianceBackupProperties
+from .backupvault_ba import (
+    BackupApplianceBackupProperties,
+)
 from .backupvault_cloudsql import (
     CloudSqlInstanceBackupPlanAssociationProperties,
     CloudSqlInstanceBackupProperties,

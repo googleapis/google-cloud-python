@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.ads.marketingplatform_admin_v1alpha import gapic_version as package_version
 
@@ -146,7 +146,12 @@ class MarketingplatformAdminServiceAsyncClient:
         Returns:
             MarketingplatformAdminServiceAsyncClient: The constructed client.
         """
-        return MarketingplatformAdminServiceClient.from_service_account_info.__func__(MarketingplatformAdminServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            MarketingplatformAdminServiceClient.from_service_account_info.__func__
+        )  # type: ignore
+        return sa_info_func(
+            MarketingplatformAdminServiceAsyncClient, info, *args, **kwargs
+        )
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -162,7 +167,12 @@ class MarketingplatformAdminServiceAsyncClient:
         Returns:
             MarketingplatformAdminServiceAsyncClient: The constructed client.
         """
-        return MarketingplatformAdminServiceClient.from_service_account_file.__func__(MarketingplatformAdminServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            MarketingplatformAdminServiceClient.from_service_account_file.__func__
+        )  # type: ignore
+        return sa_file_func(
+            MarketingplatformAdminServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -200,7 +210,9 @@ class MarketingplatformAdminServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return MarketingplatformAdminServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return MarketingplatformAdminServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> MarketingplatformAdminServiceTransport:
@@ -368,9 +380,8 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for GetOrganization
                 RPC.
             name (:class:`str`):
-                Required. The name of the Organization
-                to retrieve. Format:
-                organizations/{org_id}
+                Required. The name of the Organization to retrieve.
+                Format: organizations/{org_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -678,9 +689,8 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for
                 ListAnalyticsAccountLinks RPC.
             parent (:class:`str`):
-                Required. The parent organization, which
-                owns this collection of Analytics
-                account links. Format:
+                Required. The parent organization, which owns this
+                collection of Analytics account links. Format:
                 organizations/{org_id}
 
                 This corresponds to the ``parent`` field
@@ -821,9 +831,9 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for
                 CreateAnalyticsAccountLink RPC.
             parent (:class:`str`):
-                Required. The parent resource where this
-                Analytics account link will be created.
-                Format: organizations/{org_id}
+                Required. The parent resource where this Analytics
+                account link will be created. Format:
+                organizations/{org_id}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -950,9 +960,8 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for
                 DeleteAnalyticsAccountLink RPC.
             name (:class:`str`):
-                Required. The name of the Analytics
-                account link to delete. Format:
-
+                Required. The name of the Analytics account link to
+                delete. Format:
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``name`` field
@@ -1060,10 +1069,8 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for
                 SetPropertyServiceLevel RPC.
             analytics_account_link (:class:`str`):
-                Required. The parent
-                AnalyticsAccountLink scope where this
-                property is in. Format:
-
+                Required. The parent AnalyticsAccountLink scope where
+                this property is in. Format:
                 organizations/{org_id}/analyticsAccountLinks/{analytics_account_link_id}
 
                 This corresponds to the ``analytics_account_link`` field
@@ -1192,8 +1199,9 @@ class MarketingplatformAdminServiceAsyncClient:
                 The request object. Request message for
                 ReportPropertyUsage RPC.
             organization (:class:`str`):
-                Required. Specifies the organization
-                whose property usage will be listed.
+                Required. Specifies the organization whose property
+                usage will be listed.
+
                 Format: organizations/{org_id}
 
                 This corresponds to the ``organization`` field

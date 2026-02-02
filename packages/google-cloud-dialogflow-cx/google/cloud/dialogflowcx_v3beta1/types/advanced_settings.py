@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import gcs
@@ -35,9 +35,9 @@ class AdvancedSettings(proto.Message):
     agent/flow/page/fulfillment/parameter. Settings exposed at lower
     level overrides the settings exposed at higher level. Overriding
     occurs at the sub-setting level. For example, the
-    playback_interruption_settings at fulfillment level only
-    overrides the playback_interruption_settings at the agent level,
-    leaving other settings at the agent level unchanged.
+    playback_interruption_settings at fulfillment level only overrides
+    the playback_interruption_settings at the agent level, leaving other
+    settings at the agent level unchanged.
 
     DTMF settings does not override each other. DTMF settings set at
     different levels define DTMF detections running in parallel.
@@ -92,12 +92,10 @@ class AdvancedSettings(proto.Message):
                 endpointer sensitivity as seconds of timeout
                 value.
             models (MutableMapping[str, str]):
-                Mapping from language to Speech-to-Text model.
-                The mapped Speech-to-Text model will be selected
-                for requests from its corresponding language.
-                For more information, see
-                [Speech
-                models](https://cloud.google.com/dialogflow/cx/docs/concept/speech-models).
+                Mapping from language to Speech-to-Text model. The mapped
+                Speech-to-Text model will be selected for requests from its
+                corresponding language. For more information, see `Speech
+                models <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
         """
 
         endpointer_sensitivity: int = proto.Field(

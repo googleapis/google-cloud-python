@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import interval_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -147,14 +147,11 @@ class DocumentQuery(proto.Message):
             If no value is specified, ALL files will be
             returned.
         folder_name_filter (str):
-            Search all the documents under this specified
-            folder. Format:
-
+            Search all the documents under this specified folder.
+            Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
         document_name_filter (MutableSequence[str]):
-            Search the documents in the list.
-            Format:
-
+            Search the documents in the list. Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
         query_context (MutableSequence[str]):
             For custom synonyms.
@@ -264,6 +261,7 @@ class TimeFilter(proto.Message):
             DISPOSITION_TIME (3):
                 Time when document becomes mutable again.
         """
+
         TIME_FIELD_UNSPECIFIED = 0
         CREATE_TIME = 1
         UPDATE_TIME = 2
@@ -373,6 +371,7 @@ class FileTypeFilter(proto.Message):
             ROOT_FOLDER (4):
                 Returns only root folders
         """
+
         FILE_TYPE_UNSPECIFIED = 0
         ALL = 1
         FOLDER = 2
@@ -396,12 +395,12 @@ class CustomWeightsMetadata(proto.Message):
             relevance boosting.
     """
 
-    weighted_schema_properties: MutableSequence[
-        "WeightedSchemaProperty"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="WeightedSchemaProperty",
+    weighted_schema_properties: MutableSequence["WeightedSchemaProperty"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="WeightedSchemaProperty",
+        )
     )
 
 

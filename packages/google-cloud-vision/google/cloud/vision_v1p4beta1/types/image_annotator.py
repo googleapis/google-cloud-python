@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vision_v1p4beta1.types import (
@@ -96,6 +96,7 @@ class Likelihood(proto.Enum):
         VERY_LIKELY (5):
             It is very likely.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -162,6 +163,7 @@ class Feature(proto.Message):
             OBJECT_LOCALIZATION (19):
                 Run localizer for object detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -287,18 +289,16 @@ class FaceAnnotation(proto.Message):
             Detected face landmarks.
         roll_angle (float):
             Roll angle, which indicates the amount of
-            clockwise/anti-clockwise rotation of the face
-            relative to the image vertical about the axis
-            perpendicular to the face. Range [-180,180].
+            clockwise/anti-clockwise rotation of the face relative to
+            the image vertical about the axis perpendicular to the face.
+            Range [-180,180].
         pan_angle (float):
-            Yaw angle, which indicates the
-            leftward/rightward angle that the face is
-            pointing relative to the vertical plane
+            Yaw angle, which indicates the leftward/rightward angle that
+            the face is pointing relative to the vertical plane
             perpendicular to the image. Range [-180,180].
         tilt_angle (float):
-            Pitch angle, which indicates the
-            upwards/downwards angle that the face is
-            pointing relative to the image's horizontal
+            Pitch angle, which indicates the upwards/downwards angle
+            that the face is pointing relative to the image's horizontal
             plane. Range [-180,180].
         detection_confidence (float):
             Detection confidence. Range [0, 1].
@@ -418,6 +418,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2
@@ -535,12 +536,12 @@ class FaceAnnotation(proto.Message):
         number=15,
         enum="Likelihood",
     )
-    recognition_result: MutableSequence[
-        face.FaceRecognitionResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=16,
-        message=face.FaceRecognitionResult,
+    recognition_result: MutableSequence[face.FaceRecognitionResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=16,
+            message=face.FaceRecognitionResult,
+        )
     )
 
 
@@ -590,9 +591,9 @@ class EntityAnnotation(proto.Message):
 
     Attributes:
         mid (str):
-            Opaque entity ID. Some IDs may be available in
-            [Google Knowledge Graph Search
-            API](https://developers.google.com/knowledge-graph/).
+            Opaque entity ID. Some IDs may be available in `Google
+            Knowledge Graph Search
+            API <https://developers.google.com/knowledge-graph/>`__.
         locale (str):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
@@ -608,14 +609,12 @@ class EntityAnnotation(proto.Message):
             represents the confidence that there is a tower in the query
             image. Range [0, 1].
         topicality (float):
-            The relevancy of the ICA (Image Content
-            Annotation) label to the image. For example, the
-            relevancy of "tower" is likely higher to an
-            image containing the detected "Eiffel Tower"
-            than to an image containing a detected distant
-            towering building, even though the confidence
-            that there is a tower in each image may be the
-            same. Range [0, 1].
+            The relevancy of the ICA (Image Content Annotation) label to
+            the image. For example, the relevancy of "tower" is likely
+            higher to an image containing the detected "Eiffel Tower"
+            than to an image containing a detected distant towering
+            building, even though the confidence that there is a tower
+            in each image may be the same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p4beta1.types.BoundingPoly):
             Image region to which this entity belongs. Not produced for
             ``LABEL_DETECTION`` features.
@@ -681,8 +680,8 @@ class LocalizedObjectAnnotation(proto.Message):
             Object ID that should align with
             EntityAnnotation mid.
         language_code (str):
-            The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see
+            The BCP-47 language code, such as "en-US" or "sr-Latn". For
+            more information, see
             http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         name (str):
             Object name, expressed in its ``language_code`` language.
@@ -802,11 +801,10 @@ class ColorInfo(proto.Message):
         color (google.type.color_pb2.Color):
             RGB components of the color.
         score (float):
-            Image-specific score for this color. Value in
-            range [0, 1].
+            Image-specific score for this color. Value in range [0, 1].
         pixel_fraction (float):
-            The fraction of pixels the color occupies in the
-            image. Value in range [0, 1].
+            The fraction of pixels the color occupies in the image.
+            Value in range [0, 1].
     """
 
     color: color_pb2.Color = proto.Field(
@@ -866,8 +864,7 @@ class CropHint(proto.Message):
             coordinates of the bounding box are in the
             original image's scale.
         confidence (float):
-            Confidence of this being a salient region. Range
-            [0, 1].
+            Confidence of this being a salient region. Range [0, 1].
         importance_fraction (float):
             Fraction of importance of this salient region
             with respect to the original image.
@@ -946,10 +943,9 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes
-            confidence score for DOCUMENT_TEXT_DETECTION
-            result. Set the flag to true to include
-            confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes confidence score
+            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
+            include confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.
@@ -1159,12 +1155,12 @@ class AnnotateImageResponse(proto.Message):
         number=4,
         message="EntityAnnotation",
     )
-    localized_object_annotations: MutableSequence[
-        "LocalizedObjectAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message="LocalizedObjectAnnotation",
+    localized_object_annotations: MutableSequence["LocalizedObjectAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message="LocalizedObjectAnnotation",
+        )
     )
     text_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1658,6 +1654,7 @@ class OperationMetadata(proto.Message):
             CANCELLED (4):
                 The batch processing was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2

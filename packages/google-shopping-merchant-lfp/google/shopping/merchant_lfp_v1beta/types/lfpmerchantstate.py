@@ -62,8 +62,8 @@ class LfpMerchantState(proto.Message):
             matching_state (google.shopping.merchant_lfp_v1beta.types.LfpMerchantState.LfpStoreState.StoreMatchingState):
                 Output only. The store matching state.
             matching_state_hint (str):
-                The hint of why the matching has failed (only
-                set if matching_state is FAILED).
+                The hint of why the matching has failed (only set if
+                matching_state is FAILED).
         """
 
         class StoreMatchingState(proto.Enum):
@@ -80,6 +80,7 @@ class LfpMerchantState(proto.Message):
                     The ``LfpStore`` is not matched with a Google Business
                     Profile store.
             """
+
             STORE_MATCHING_STATE_UNSPECIFIED = 0
             STORE_MATCHING_STATE_MATCHED = 1
             STORE_MATCHING_STATE_FAILED = 2
@@ -145,10 +146,9 @@ class LfpMerchantState(proto.Message):
 
         Attributes:
             region_code (str):
-                Required. The [CLDR territory
-                code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml)
-                for the country for which these settings are
-                defined.
+                Required. The `CLDR territory
+                code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__
+                for the country for which these settings are defined.
             free_local_listings_enabled (bool):
                 True if this merchant has enabled free local
                 listings in MC.
@@ -183,15 +183,16 @@ class LfpMerchantState(proto.Message):
                 VERIFICATION_STATE_APPROVED (3):
                     Verification state approved.
             """
+
             VERIFICATION_STATE_UNSPECIFIED = 0
             VERIFICATION_STATE_NOT_APPROVED = 1
             VERIFICATION_STATE_IN_PROGRESS = 2
             VERIFICATION_STATE_APPROVED = 3
 
         class ProductPageType(proto.Enum):
-            r"""The possible [product page
-            types](https://support.google.com/merchants/topic/15148370) for
-            a merchant.
+            r"""The possible `product page
+            types <https://support.google.com/merchants/topic/15148370>`__ for a
+            merchant.
 
             Values:
                 PRODUCT_PAGE_TYPE_UNSPECIFIED (0):
@@ -203,6 +204,7 @@ class LfpMerchantState(proto.Message):
                 MERCHANT_HOSTED_STORE_SPECIFIC (3):
                     Merchant hosted store specific product page.
             """
+
             PRODUCT_PAGE_TYPE_UNSPECIFIED = 0
             GOOGLE_HOSTED = 1
             MERCHANT_HOSTED = 2

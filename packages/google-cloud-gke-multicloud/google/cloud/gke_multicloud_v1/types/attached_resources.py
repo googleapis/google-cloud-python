@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import common_resources
@@ -71,8 +71,9 @@ class AttachedCluster(proto.Message):
             region by calling
             [GetAttachedServerConfig][google.cloud.gkemulticloud.v1.AttachedClusters.GetAttachedServerConfig].
         distribution (str):
-            Required. The Kubernetes distribution of the
-            underlying attached cluster.
+            Required. The Kubernetes distribution of the underlying
+            attached cluster.
+
             Supported values: ["eks", "aks", "generic"].
         cluster_region (str):
             Output only. The region where this cluster
@@ -189,6 +190,7 @@ class AttachedCluster(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -434,12 +436,12 @@ class AttachedServerConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    valid_versions: MutableSequence[
-        "AttachedPlatformVersionInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="AttachedPlatformVersionInfo",
+    valid_versions: MutableSequence["AttachedPlatformVersionInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AttachedPlatformVersionInfo",
+        )
     )
 
 
@@ -608,6 +610,7 @@ class Toleration(proto.Message):
             KEY_OPERATOR_EXISTS (2):
                 Operator maps to 'Exists'.
         """
+
         KEY_OPERATOR_UNSPECIFIED = 0
         KEY_OPERATOR_EQUAL = 1
         KEY_OPERATOR_EXISTS = 2
@@ -625,6 +628,7 @@ class Toleration(proto.Message):
             EFFECT_NO_EXECUTE (3):
                 Effect maps to 'NoExecute'.
         """
+
         EFFECT_UNSPECIFIED = 0
         EFFECT_NO_SCHEDULE = 1
         EFFECT_PREFER_NO_SCHEDULE = 2

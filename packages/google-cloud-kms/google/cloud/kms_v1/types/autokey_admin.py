@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -126,6 +126,7 @@ class AutokeyConfig(proto.Message):
                 has been reset to its default uninitialized
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         KEY_PROJECT_DELETED = 2

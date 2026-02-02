@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.channel_v1.types import common
@@ -47,6 +47,7 @@ class ChannelPartnerLinkView(proto.Enum):
         FULL (2):
             Includes all fields.
     """
+
     UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -71,6 +72,7 @@ class ChannelPartnerLinkState(proto.Enum):
             Status when the reseller is suspended by
             Google or distributor.
     """
+
     CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED = 0
     INVITED = 1
     ACTIVE = 2
@@ -84,9 +86,8 @@ class ChannelPartnerLink(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name for the channel
-            partner link, in the format
-            accounts/{account_id}/channelPartnerLinks/{id}.
+            Output only. Resource name for the channel partner link, in
+            the format accounts/{account_id}/channelPartnerLinks/{id}.
         reseller_cloud_identity_id (str):
             Required. Cloud Identity ID of the linked
             reseller.

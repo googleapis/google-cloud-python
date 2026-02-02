@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_products_v1.types import productinputs
 
@@ -330,21 +330,20 @@ class ProductInputsServiceGrpcTransport(ProductInputsServiceTransport):
     ]:
         r"""Return a callable for the insert product input method over gRPC.
 
-        [Uploads a product input to your Merchant Center
-        account](/merchant/api/guides/products/overview#upload-product-input).
-        You must have a products [data
-        source](/merchant/api/guides/data-sources/overview) to
-        be able to insert a product. The unique identifier of
-        the data source is passed as a query parameter in the
-        request URL.
+        `Uploads a product input to your Merchant Center
+        account </merchant/api/guides/products/overview#upload-product-input>`__.
+        You must have a products `data
+        source </merchant/api/guides/data-sources/overview>`__ to be
+        able to insert a product. The unique identifier of the data
+        source is passed as a query parameter in the request URL.
 
-        If a product input with the same contentLanguage,
-        offerId, and dataSource already exists, then the product
-        input inserted by this method replaces that entry.
+        If a product input with the same contentLanguage, offerId, and
+        dataSource already exists, then the product input inserted by
+        this method replaces that entry.
 
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the processed product
-        can be retrieved.
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the processed product can be
+        retrieved.
 
         Returns:
             Callable[[~.InsertProductInputRequest],

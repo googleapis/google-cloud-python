@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.cloudquotas_v1beta.types import resources
@@ -259,12 +259,12 @@ class CreateQuotaPreferenceRequest(proto.Message):
         number=3,
         message=resources.QuotaPreference,
     )
-    ignore_safety_checks: MutableSequence[
-        resources.QuotaSafetyCheck
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=4,
-        enum=resources.QuotaSafetyCheck,
+    ignore_safety_checks: MutableSequence[resources.QuotaSafetyCheck] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=4,
+            enum=resources.QuotaSafetyCheck,
+        )
     )
 
 
@@ -273,14 +273,12 @@ class UpdateQuotaPreferenceRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the QuotaPreference
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the QuotaPreference resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         quota_preference (google.cloud.cloudquotas_v1beta.types.QuotaPreference):
             Required. The resource being updated
         allow_missing (bool):
@@ -315,12 +313,12 @@ class UpdateQuotaPreferenceRequest(proto.Message):
         proto.BOOL,
         number=4,
     )
-    ignore_safety_checks: MutableSequence[
-        resources.QuotaSafetyCheck
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=5,
-        enum=resources.QuotaSafetyCheck,
+    ignore_safety_checks: MutableSequence[resources.QuotaSafetyCheck] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=5,
+            enum=resources.QuotaSafetyCheck,
+        )
     )
 
 

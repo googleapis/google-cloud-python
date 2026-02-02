@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import execution
@@ -51,17 +51,15 @@ class Schedule(proto.Message):
             ``0 0 * * WED`` = every Wednesday More examples:
             https://crontab.guru/examples.html
         time_zone (str):
-            Timezone on which the cron_schedule.
-            The value of this field must be a time zone name
-            from the tz database. TZ Database:
+            Timezone on which the cron_schedule. The value of this field
+            must be a time zone name from the tz database. TZ Database:
             https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
-            Note that some time zones include a provision
-            for daylight savings time. The rules for
-            daylight saving time are determined by the
-            chosen tz. For UTC use the string "utc". If a
-            time zone is not specified, the default will be
-            in UTC (also known as GMT).
+            Note that some time zones include a provision for daylight
+            savings time. The rules for daylight saving time are
+            determined by the chosen tz. For UTC use the string "utc".
+            If a time zone is not specified, the default will be in UTC
+            (also known as GMT).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the schedule was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -101,6 +99,7 @@ class Schedule(proto.Message):
             DELETING (6):
                 The schedule resource is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2

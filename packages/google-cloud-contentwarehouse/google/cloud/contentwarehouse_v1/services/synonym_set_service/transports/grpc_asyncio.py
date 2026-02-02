@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import (
     synonymset,
@@ -343,9 +343,9 @@ class SynonymSetServiceGrpcAsyncIOTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the create synonym set method over gRPC.
 
-        Creates a SynonymSet for a single context.
-        Throws an ALREADY_EXISTS exception if a synonymset
-        already exists for the context.
+        Creates a SynonymSet for a single context. Throws an
+        ALREADY_EXISTS exception if a synonymset already exists for the
+        context.
 
         Returns:
             Callable[[~.CreateSynonymSetRequest],
@@ -374,9 +374,8 @@ class SynonymSetServiceGrpcAsyncIOTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the get synonym set method over gRPC.
 
-        Gets a SynonymSet for a particular context.
-        Throws a NOT_FOUND exception if the Synonymset
-        does not exist
+        Gets a SynonymSet for a particular context. Throws a NOT_FOUND
+        exception if the Synonymset does not exist
 
         Returns:
             Callable[[~.GetSynonymSetRequest],
@@ -405,10 +404,9 @@ class SynonymSetServiceGrpcAsyncIOTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the update synonym set method over gRPC.
 
-        Remove the existing SynonymSet for the context and
-        replaces it with a new one.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        Remove the existing SynonymSet for the context and replaces it
+        with a new one. Throws a NOT_FOUND exception if the SynonymSet
+        is not found.
 
         Returns:
             Callable[[~.UpdateSynonymSetRequest],
@@ -436,9 +434,8 @@ class SynonymSetServiceGrpcAsyncIOTransport(SynonymSetServiceTransport):
     ]:
         r"""Return a callable for the delete synonym set method over gRPC.
 
-        Deletes a SynonymSet for a given context.
-        Throws a NOT_FOUND exception if the SynonymSet is not
-        found.
+        Deletes a SynonymSet for a given context. Throws a NOT_FOUND
+        exception if the SynonymSet is not found.
 
         Returns:
             Callable[[~.DeleteSynonymSetRequest],

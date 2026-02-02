@@ -17,13 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1alpha.types import answer as gcd_answer
-from google.cloud.discoveryengine_v1alpha.types import common
-from google.cloud.discoveryengine_v1alpha.types import search_service
+from google.cloud.discoveryengine_v1alpha.types import common, search_service
+from google.cloud.discoveryengine_v1alpha.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
 
 __protobuf__ = proto.module(
@@ -204,12 +203,12 @@ class ConverseConversationResponse(proto.Message):
         proto.STRING,
         number=6,
     )
-    search_results: MutableSequence[
-        search_service.SearchResponse.SearchResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=search_service.SearchResponse.SearchResult,
+    search_results: MutableSequence[search_service.SearchResponse.SearchResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=search_service.SearchResponse.SearchResult,
+        )
     )
 
 
@@ -310,12 +309,10 @@ class ListConversationsRequest(proto.Message):
             A page token, received from a previous ``ListConversations``
             call. Provide this to retrieve the subsequent page.
         filter (str):
-            A filter to apply on the list results. The
-            supported features are: user_pseudo_id, state.
+            A filter to apply on the list results. The supported
+            features are: user_pseudo_id, state.
 
-            Example:
-
-            "user_pseudo_id = some_id".
+            Example: "user_pseudo_id = some_id".
         order_by (str):
             A comma-separated list of fields to order by, sorted in
             ascending order. Use "desc" after a field name for
@@ -937,6 +934,7 @@ class AnswerQueryRequest(proto.Message):
                     JAIL_BREAKING_QUERY (3):
                         Jail-breaking query classification type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 ADVERSARIAL_QUERY = 1
                 NON_ANSWER_SEEKING_QUERY = 2

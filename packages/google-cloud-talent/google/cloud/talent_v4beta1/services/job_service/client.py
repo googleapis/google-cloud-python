@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4beta1 import gapic_version as package_version
 
@@ -61,16 +61,14 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.services.job_service import pagers
-from google.cloud.talent_v4beta1.types import common
-from google.cloud.talent_v4beta1.types import job
+from google.cloud.talent_v4beta1.types import common, job, job_service
 from google.cloud.talent_v4beta1.types import job as gct_job
-from google.cloud.talent_v4beta1.types import job_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, JobServiceTransport
 from .transports.grpc import JobServiceGrpcTransport
@@ -650,11 +648,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = JobServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            JobServiceClient._read_environment_variables()
+        )
         self._client_cert_source = JobServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -689,8 +685,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(JobServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -807,13 +802,13 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.CreateJobRequest, dict]):
                 The request object. Create job request.
             parent (str):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -941,13 +936,13 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.BatchCreateJobsRequest, dict]):
                 The request object. Request to create a batch of jobs.
             parent (str):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -1077,16 +1072,14 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.GetJobRequest, dict]):
                 The request object. Get job request.
             name (str):
-                Required. The resource name of the job
-                to retrieve.
+                Required. The resource name of the job to retrieve.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example,
-                "projects/foo/tenants/bar/jobs/baz".
+                For example, "projects/foo/tenants/bar/jobs/baz".
 
-                If tenant id is unspecified, the default
-                tenant is used. For example,
-                "projects/foo/jobs/bar".
+                If tenant id is unspecified, the default tenant is used.
+                For example, "projects/foo/jobs/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1323,13 +1316,13 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest, dict]):
                 The request object. Request to update a batch of jobs.
             parent (str):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -1458,16 +1451,14 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.DeleteJobRequest, dict]):
                 The request object. Delete job request.
             name (str):
-                Required. The resource name of the job
-                to be deleted.
+                Required. The resource name of the job to be deleted.
+
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
-                For example,
-                "projects/foo/tenants/bar/jobs/baz".
+                For example, "projects/foo/tenants/bar/jobs/baz".
 
-                If tenant id is unspecified, the default
-                tenant is used. For example,
-                "projects/foo/jobs/bar".
+                If tenant id is unspecified, the default tenant is used.
+                For example, "projects/foo/jobs/bar".
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1564,13 +1555,13 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest, dict]):
                 The request object. Batch delete jobs request.
             parent (str):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field
@@ -1690,13 +1681,13 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.ListJobsRequest, dict]):
                 The request object. List jobs request.
             parent (str):
-                Required. The resource name of the
-                tenant under which the job is created.
+                Required. The resource name of the tenant under which
+                the job is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}".
-                For example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created. For example,
+                "projects/{project_id}/tenants/{tenant_id}". For
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created. For example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field

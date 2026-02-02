@@ -16,37 +16,39 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.financialservices_v1.types import (
+    backtest_result,
+    dataset,
+    engine_config,
+    engine_version,
+    instance,
+    model,
+    prediction_result,
+)
 from google.cloud.financialservices_v1.types import (
     backtest_result as gcf_backtest_result,
 )
+from google.cloud.financialservices_v1.types import dataset as gcf_dataset
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
+from google.cloud.financialservices_v1.types import instance as gcf_instance
+from google.cloud.financialservices_v1.types import model as gcf_model
 from google.cloud.financialservices_v1.types import (
     prediction_result as gcf_prediction_result,
 )
-from google.cloud.financialservices_v1.types import backtest_result
-from google.cloud.financialservices_v1.types import dataset
-from google.cloud.financialservices_v1.types import dataset as gcf_dataset
-from google.cloud.financialservices_v1.types import engine_config
-from google.cloud.financialservices_v1.types import engine_version
-from google.cloud.financialservices_v1.types import instance
-from google.cloud.financialservices_v1.types import instance as gcf_instance
-from google.cloud.financialservices_v1.types import model
-from google.cloud.financialservices_v1.types import model as gcf_model
-from google.cloud.financialservices_v1.types import prediction_result
 
 from .base import DEFAULT_CLIENT_INFO, AMLTransport
 
@@ -493,11 +495,10 @@ class AMLGrpcTransport(AMLTransport):
     ) -> Callable[[instance.ImportRegisteredPartiesRequest], operations_pb2.Operation]:
         r"""Return a callable for the import registered parties method over gRPC.
 
-        Imports the list of registered parties. See
-        [Create and manage
-        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties)
-        for information on the input schema and response for
-        this method.
+        Imports the list of registered parties. See `Create and manage
+        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#import-registered-parties>`__
+        for information on the input schema and response for this
+        method.
 
         Returns:
             Callable[[~.ImportRegisteredPartiesRequest],
@@ -523,9 +524,8 @@ class AMLGrpcTransport(AMLTransport):
     ) -> Callable[[instance.ExportRegisteredPartiesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export registered parties method over gRPC.
 
-        Exports the list of registered parties. See
-        [Create and manage
-        instances](https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties)
+        Exports the list of registered parties. See `Create and manage
+        instances <https://cloud.google.com/financial-services/anti-money-laundering/docs/create-and-manage-instances#export-registered-parties>`__
         for information on the output schema for this method.
 
         Returns:
@@ -783,9 +783,8 @@ class AMLGrpcTransport(AMLTransport):
         r"""Return a callable for the export model metadata method over gRPC.
 
         Export governance information for a Model resource. For
-        information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model).
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#model>`__.
 
         Returns:
             Callable[[~.ExportModelMetadataRequest],
@@ -950,10 +949,9 @@ class AMLGrpcTransport(AMLTransport):
     ]:
         r"""Return a callable for the export engine config metadata method over gRPC.
 
-        Export governance information for an EngineConfig
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config).
+        Export governance information for an EngineConfig resource. For
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#engine-config>`__.
 
         Returns:
             Callable[[~.ExportEngineConfigMetadataRequest],
@@ -966,12 +964,12 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_engine_config_metadata" not in self._stubs:
-            self._stubs[
-                "export_engine_config_metadata"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.financialservices.v1.AML/ExportEngineConfigMetadata",
-                request_serializer=gcf_engine_config.ExportEngineConfigMetadataRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["export_engine_config_metadata"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.financialservices.v1.AML/ExportEngineConfigMetadata",
+                    request_serializer=gcf_engine_config.ExportEngineConfigMetadataRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["export_engine_config_metadata"]
 
@@ -1182,10 +1180,9 @@ class AMLGrpcTransport(AMLTransport):
         r"""Return a callable for the export prediction result
         metadata method over gRPC.
 
-        Export governance information for a PredictionResult
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results).
+        Export governance information for a PredictionResult resource.
+        For information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#prediction-results>`__.
 
         Returns:
             Callable[[~.ExportPredictionResultMetadataRequest],
@@ -1198,12 +1195,12 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_prediction_result_metadata" not in self._stubs:
-            self._stubs[
-                "export_prediction_result_metadata"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.financialservices.v1.AML/ExportPredictionResultMetadata",
-                request_serializer=gcf_prediction_result.ExportPredictionResultMetadataRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["export_prediction_result_metadata"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.financialservices.v1.AML/ExportPredictionResultMetadata",
+                    request_serializer=gcf_prediction_result.ExportPredictionResultMetadataRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["export_prediction_result_metadata"]
 
@@ -1358,10 +1355,9 @@ class AMLGrpcTransport(AMLTransport):
         r"""Return a callable for the export backtest result
         metadata method over gRPC.
 
-        Export governance information for a BacktestResult
-        resource. For information on the exported fields, see
-        [AML output data
-        model](https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results).
+        Export governance information for a BacktestResult resource. For
+        information on the exported fields, see `AML output data
+        model <https://cloud.google.com/financial-services/anti-money-laundering/docs/reference/schemas/aml-output-data-model#backtest-results>`__.
 
         Returns:
             Callable[[~.ExportBacktestResultMetadataRequest],
@@ -1374,12 +1370,12 @@ class AMLGrpcTransport(AMLTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_backtest_result_metadata" not in self._stubs:
-            self._stubs[
-                "export_backtest_result_metadata"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.financialservices.v1.AML/ExportBacktestResultMetadata",
-                request_serializer=gcf_backtest_result.ExportBacktestResultMetadataRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["export_backtest_result_metadata"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.financialservices.v1.AML/ExportBacktestResultMetadata",
+                    request_serializer=gcf_backtest_result.ExportBacktestResultMetadataRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["export_backtest_result_metadata"]
 

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -54,6 +54,7 @@ class AuthFailAction(proto.Enum):
             Rejects request with a ``401`` HTTP status code and an error
             message.
     """
+
     AUTH_FAIL_ACTION_UNSPECIFIED = 0
     AUTH_FAIL_ACTION_REDIRECT = 1
     AUTH_FAIL_ACTION_UNAUTHORIZED = 2
@@ -74,10 +75,10 @@ class LoginRequirement(proto.Enum):
             of ``auth_fail_action``. If the user is an administrator,
             the handler proceeds.
         LOGIN_REQUIRED (3):
-            If the user has signed in, the handler proceeds
-            normally. Otherwise, the auth_fail_action is
-            taken.
+            If the user has signed in, the handler proceeds normally.
+            Otherwise, the auth_fail_action is taken.
     """
+
     LOGIN_UNSPECIFIED = 0
     LOGIN_OPTIONAL = 1
     LOGIN_ADMIN = 2
@@ -111,6 +112,7 @@ class SecurityLevel(proto.Enum):
             redirected to the HTTPS URL with the same path.
             Query parameters are reserved for the redirect.
     """
+
     _pb_options = {"allow_alias": True}
     SECURE_UNSPECIFIED = 0
     SECURE_DEFAULT = 0
@@ -195,6 +197,7 @@ class ErrorHandler(proto.Message):
                 Deadline reached before the application
                 responds.
         """
+
         _pb_options = {"allow_alias": True}
         ERROR_CODE_UNSPECIFIED = 0
         ERROR_CODE_DEFAULT = 0
@@ -283,6 +286,7 @@ class UrlMap(proto.Message):
             REDIRECT_HTTP_RESPONSE_CODE_307 (4):
                 ``307 Temporary Redirect`` code.
         """
+
         REDIRECT_HTTP_RESPONSE_CODE_UNSPECIFIED = 0
         REDIRECT_HTTP_RESPONSE_CODE_301 = 1
         REDIRECT_HTTP_RESPONSE_CODE_302 = 2

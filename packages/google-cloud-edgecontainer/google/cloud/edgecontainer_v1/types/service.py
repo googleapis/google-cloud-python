@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.edgecontainer_v1.types import resources
@@ -100,6 +100,7 @@ class OperationMetadata(proto.Message):
             UPGRADE_PAUSED (1):
                 The cluster upgrade is currently paused.
         """
+
         STATUS_REASON_UNSPECIFIED = 0
         UPGRADE_PAUSED = 1
 
@@ -274,13 +275,12 @@ class UpdateClusterRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be
-            overwritten in the Cluster resource by the
-            update. The fields specified in the update_mask
-            are relative to the resource, not the full
-            request. A field will be overwritten if it is in
-            the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Field mask is used to specify the fields to be overwritten
+            in the Cluster resource by the update. The fields specified
+            in the update_mask are relative to the resource, not the
+            full request. A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then all fields
+            will be overwritten.
         cluster (google.cloud.edgecontainer_v1.types.Cluster):
             The updated cluster.
         request_id (str):
@@ -335,6 +335,7 @@ class UpgradeClusterRequest(proto.Message):
                 The cluster is going to be upgraded
                 immediately after receiving the request.
         """
+
         SCHEDULE_UNSPECIFIED = 0
         IMMEDIATELY = 1
 
@@ -595,13 +596,12 @@ class UpdateNodePoolRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Field mask is used to specify the fields to be
-            overwritten in the NodePool resource by the
-            update. The fields specified in the update_mask
-            are relative to the resource, not the full
-            request. A field will be overwritten if it is in
-            the mask. If the user does not provide a mask
-            then all fields will be overwritten.
+            Field mask is used to specify the fields to be overwritten
+            in the NodePool resource by the update. The fields specified
+            in the update_mask are relative to the resource, not the
+            full request. A field will be overwritten if it is in the
+            mask. If the user does not provide a mask then all fields
+            will be overwritten.
         node_pool (google.cloud.edgecontainer_v1.types.NodePool):
             The updated node pool.
         request_id (str):

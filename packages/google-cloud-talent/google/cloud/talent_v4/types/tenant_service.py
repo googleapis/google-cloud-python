@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.talent_v4.types import common
@@ -41,10 +41,11 @@ class CreateTenantRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the project under
-            which the tenant is created.
-            The format is "projects/{project_id}", for
-            example, "projects/foo".
+            Required. Resource name of the project under which the
+            tenant is created.
+
+            The format is "projects/{project_id}", for example,
+            "projects/foo".
         tenant (google.cloud.talent_v4.types.Tenant):
             Required. The tenant to be created.
     """
@@ -65,11 +66,10 @@ class GetTenantRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the tenant to be
-            retrieved.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant to be retrieved.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenants/bar".
     """
 
     name: str = proto.Field(
@@ -116,11 +116,10 @@ class DeleteTenantRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the tenant to be
-            deleted.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenants/bar".
+            Required. The resource name of the tenant to be deleted.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenants/bar".
     """
 
     name: str = proto.Field(
@@ -134,10 +133,11 @@ class ListTenantsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the project under
-            which the tenant is created.
-            The format is "projects/{project_id}", for
-            example, "projects/foo".
+            Required. Resource name of the project under which the
+            tenant is created.
+
+            The format is "projects/{project_id}", for example,
+            "projects/foo".
         page_token (str):
             The starting indicator from which to return
             results.

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -101,8 +101,8 @@ class PubSubSubscription(proto.Message):
             Defaults to 7 days. Cannot be more than 31 days or less than
             10 minutes.
         labels (MutableMapping[str, str]):
-            Optional. See [Creating and managing
-            labels](https://cloud.google.com/pubsub/docs/labels).
+            Optional. See `Creating and managing
+            labels <https://cloud.google.com/pubsub/docs/labels>`__.
         enable_message_ordering (bool):
             Optional. If true, messages published with the same
             ``ordering_key`` in ``PubsubMessage`` will be delivered to
@@ -128,16 +128,15 @@ class PubSubSubscription(proto.Message):
             this subscription. If empty, then no messages are filtered
             out.
         dead_letter_policy (google.cloud.bigquery_analyticshub_v1.types.DeadLetterPolicy):
-            Optional. A policy that specifies the conditions
-            for dead lettering messages in this
-            subscription. If dead_letter_policy is not set,
-            dead lettering is disabled.
+            Optional. A policy that specifies the conditions for dead
+            lettering messages in this subscription. If
+            dead_letter_policy is not set, dead lettering is disabled.
 
             The Pub/Sub service account associated with this
             subscriptions's parent project (i.e.,
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
-            must have permission to Acknowledge() messages
-            on this subscription.
+            must have permission to Acknowledge() messages on this
+            subscription.
         retry_policy (google.cloud.bigquery_analyticshub_v1.types.RetryPolicy):
             Optional. A policy that specifies how Pub/Sub
             retries message delivery for this subscription.
@@ -269,16 +268,15 @@ class RetryPolicy(proto.Message):
     r"""A policy that specifies how Pub/Sub retries message delivery.
 
     Retry delay will be exponential based on provided minimum and
-    maximum backoffs.
-    https://en.wikipedia.org/wiki/Exponential_backoff.
+    maximum backoffs. https://en.wikipedia.org/wiki/Exponential_backoff.
 
-    RetryPolicy will be triggered on NACKs or acknowledgement
-    deadline exceeded events for a given message.
+    RetryPolicy will be triggered on NACKs or acknowledgement deadline
+    exceeded events for a given message.
 
-    Retry Policy is implemented on a best effort basis. At times,
-    the delay between consecutive deliveries may not match the
-    configuration. That is, delay can be more or less than
-    configured backoff.
+    Retry Policy is implemented on a best effort basis. At times, the
+    delay between consecutive deliveries may not match the
+    configuration. That is, delay can be more or less than configured
+    backoff.
 
     Attributes:
         minimum_backoff (google.protobuf.duration_pb2.Duration):
@@ -328,24 +326,20 @@ class DeadLetterPolicy(proto.Message):
             topic since messages published to a topic with no
             subscriptions are lost.
         max_delivery_attempts (int):
-            Optional. The maximum number of delivery
-            attempts for any message. The value must be
-            between 5 and 100.
+            Optional. The maximum number of delivery attempts for any
+            message. The value must be between 5 and 100.
 
-            The number of delivery attempts is defined as 1
-            + (the sum of number of NACKs and number of
-            times the acknowledgement deadline has been
-            exceeded for the message).
+            The number of delivery attempts is defined as 1 + (the sum
+            of number of NACKs and number of times the acknowledgement
+            deadline has been exceeded for the message).
 
-            A NACK is any call to ModifyAckDeadline with a 0
-            deadline. Note that client libraries may
-            automatically extend ack_deadlines.
+            A NACK is any call to ModifyAckDeadline with a 0 deadline.
+            Note that client libraries may automatically extend
+            ack_deadlines.
 
-            This field will be honored on a best effort
-            basis.
+            This field will be honored on a best effort basis.
 
-            If this parameter is 0, a default value of 5 is
-            used.
+            If this parameter is 0, a default value of 5 is used.
     """
 
     dead_letter_topic: str = proto.Field(
@@ -442,9 +436,8 @@ class PushConfig(proto.Message):
     """
 
     class OidcToken(proto.Message):
-        r"""Contains information needed for generating an
-        [OpenID Connect
-        token](https://developers.google.com/identity/protocols/OpenIDConnect).
+        r"""Contains information needed for generating an `OpenID Connect
+        token <https://developers.google.com/identity/protocols/OpenIDConnect>`__.
 
         Attributes:
             service_account_email (str):
@@ -541,22 +534,19 @@ class BigQueryConfig(proto.Message):
             to write to in BigQuery, if it exists. ``use_topic_schema``
             and ``use_table_schema`` cannot be enabled at the same time.
         write_metadata (bool):
-            Optional. When true, write the subscription
-            name, message_id, publish_time, attributes, and
-            ordering_key to additional columns in the table.
-            The subscription name, message_id, and
-            publish_time fields are put in their own columns
-            while all other message properties (other than
-            data) are written to a JSON object in the
-            attributes column.
+            Optional. When true, write the subscription name,
+            message_id, publish_time, attributes, and ordering_key to
+            additional columns in the table. The subscription name,
+            message_id, and publish_time fields are put in their own
+            columns while all other message properties (other than data)
+            are written to a JSON object in the attributes column.
         drop_unknown_fields (bool):
-            Optional. When true and use_topic_schema is
-            true, any fields that are a part of the topic
-            schema that are not part of the BigQuery table
-            schema are dropped when writing to BigQuery.
-            Otherwise, the schemas must be kept in sync and
-            any messages with extra fields are not written
-            and remain in the subscription's backlog.
+            Optional. When true and use_topic_schema is true, any fields
+            that are a part of the topic schema that are not part of the
+            BigQuery table schema are dropped when writing to BigQuery.
+            Otherwise, the schemas must be kept in sync and any messages
+            with extra fields are not written and remain in the
+            subscription's backlog.
         use_table_schema (bool):
             Optional. When true, use the BigQuery table's schema as the
             columns to write to in BigQuery. ``use_table_schema`` and
@@ -619,45 +609,40 @@ class CloudStorageConfig(proto.Message):
 
             This field is a member of `oneof`_ ``output_format``.
         bucket (str):
-            Required. User-provided name for the Cloud
-            Storage bucket. The bucket must be created by
-            the user. The bucket name must be without any
-            prefix like "gs://". See the [bucket naming
+            Required. User-provided name for the Cloud Storage bucket.
+            The bucket must be created by the user. The bucket name must
+            be without any prefix like "gs://". See the [bucket naming
             requirements]
             (https://cloud.google.com/storage/docs/buckets#naming).
         filename_prefix (str):
-            Optional. User-provided prefix for Cloud Storage
-            filename. See the [object naming
-            requirements](https://cloud.google.com/storage/docs/objects#naming).
+            Optional. User-provided prefix for Cloud Storage filename.
+            See the `object naming
+            requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
         filename_suffix (str):
-            Optional. User-provided suffix for Cloud Storage
-            filename. See the [object naming
-            requirements](https://cloud.google.com/storage/docs/objects#naming).
+            Optional. User-provided suffix for Cloud Storage filename.
+            See the `object naming
+            requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
             Must not end in "/".
         filename_datetime_format (str):
-            Optional. User-provided format string specifying
-            how to represent datetimes in Cloud Storage
-            filenames. See the [datetime format
-            guidance](https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names).
+            Optional. User-provided format string specifying how to
+            represent datetimes in Cloud Storage filenames. See the
+            `datetime format
+            guidance <https://cloud.google.com/pubsub/docs/create-cloudstorage-subscription#file_names>`__.
         max_duration (google.protobuf.duration_pb2.Duration):
-            Optional. File batching settings.
-            If no max_duration setting is specified, a
-            max_duration of 5 minutes will be set by
-            default. max_duration is required regardless of
-            whether other file batching settings are
-            specified.
+            Optional. File batching settings. If no max_duration setting
+            is specified, a max_duration of 5 minutes will be set by
+            default. max_duration is required regardless of whether
+            other file batching settings are specified.
 
-            The maximum duration that can elapse before a
-            new Cloud Storage file is created. Min 1 minute,
-            max 10 minutes, default 5 minutes. May not
-            exceed the subscription's acknowledgement
-            deadline.
+            The maximum duration that can elapse before a new Cloud
+            Storage file is created. Min 1 minute, max 10 minutes,
+            default 5 minutes. May not exceed the subscription's
+            acknowledgement deadline.
         max_bytes (int):
-            Optional. The maximum bytes that can be written
-            to a Cloud Storage file before a new file is
-            created. Min 1 KB, max 10 GiB. The max_bytes
-            limit may be exceeded in cases where messages
-            are larger than the limit.
+            Optional. The maximum bytes that can be written to a Cloud
+            Storage file before a new file is created. Min 1 KB, max 10
+            GiB. The max_bytes limit may be exceeded in cases where
+            messages are larger than the limit.
         max_messages (int):
             Optional. The maximum number of messages that
             can be written to a Cloud Storage file before a
@@ -687,14 +672,13 @@ class CloudStorageConfig(proto.Message):
 
         Attributes:
             write_metadata (bool):
-                Optional. When true, write the subscription
-                name, message_id, publish_time, attributes, and
-                ordering_key as additional fields in the output.
-                The subscription name, message_id, and
-                publish_time fields are put in their own fields
-                while all other message properties other than
-                data (for example, an ordering_key, if present)
-                are added as entries in the attributes map.
+                Optional. When true, write the subscription name,
+                message_id, publish_time, attributes, and ordering_key as
+                additional fields in the output. The subscription name,
+                message_id, and publish_time fields are put in their own
+                fields while all other message properties other than data
+                (for example, an ordering_key, if present) are added as
+                entries in the attributes map.
             use_topic_schema (bool):
                 Optional. When true, the output Cloud Storage
                 file will be serialized using the topic schema,

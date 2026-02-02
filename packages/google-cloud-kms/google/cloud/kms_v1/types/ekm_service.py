@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -62,16 +62,15 @@ class ListEkmConnectionsRequest(proto.Message):
             Optional. Optional pagination token, returned earlier via
             [ListEkmConnectionsResponse.next_page_token][google.cloud.kms.v1.ListEkmConnectionsResponse.next_page_token].
         filter (str):
-            Optional. Only include resources that match the
-            filter in the response. For more information,
-            see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Only include resources that match the filter in
+            the response. For more information, see `Sorting and
+            filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
         order_by (str):
-            Optional. Specify how the results should be
-            sorted. If not specified, the results will be
-            sorted in the default order. For more
-            information, see [Sorting and filtering list
-            results](https://cloud.google.com/kms/docs/sorting-and-filtering).
+            Optional. Specify how the results should be sorted. If not
+            specified, the results will be sorted in the default order.
+            For more information, see `Sorting and filtering list
+            results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
     parent: str = proto.Field(
@@ -420,6 +419,7 @@ class EkmConnection(proto.Message):
                   [DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
                 - Automatic rotation of key material is supported.
         """
+
         KEY_MANAGEMENT_MODE_UNSPECIFIED = 0
         MANUAL = 1
         CLOUD_KMS = 2

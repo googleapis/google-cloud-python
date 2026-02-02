@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -70,6 +70,7 @@ class RunFrequency(proto.Enum):
         DAILY (3):
             Executes once per day.
     """
+
     RUN_FREQUENCY_UNSPECIFIED = 0
     LIVE = 1
     HOURLY = 2
@@ -90,6 +91,7 @@ class RuleType(proto.Enum):
             Rule checks for correlation between multiple
             events
     """
+
     RULE_TYPE_UNSPECIFIED = 0
     SINGLE_EVENT = 1
     MULTI_EVENT = 2
@@ -106,21 +108,21 @@ class RuleView(proto.Enum):
             ListRules/ListRuleRevisions. The API will
             default to the FULL view for GetRule.
         BASIC (1):
-            Include basic metadata about the rule, but not
-            the full contents. Returned fields include:
-            revision_id, revision_create_time, display_name,
-            author, severity, type, allowed_run_frequency,
-            near_real_time_live_rule_eligible, etag, and
-            scope. This is the default value for ListRules
-            and ListRuleRevisions.
+            Include basic metadata about the rule, but not the full
+            contents. Returned fields include: revision_id,
+            revision_create_time, display_name, author, severity, type,
+            allowed_run_frequency, near_real_time_live_rule_eligible,
+            etag, and scope. This is the default value for ListRules and
+            ListRuleRevisions.
         FULL (2):
             Include all fields.
             This is the default value for GetRule.
         REVISION_METADATA_ONLY (3):
-            Include basic metadata about the rule's revision
-            only. Returned fields include: revision_id and
+            Include basic metadata about the rule's revision only.
+            Returned fields include: revision_id and
             revision_create_time.
     """
+
     RULE_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -162,9 +164,8 @@ class Rule(proto.Message):
             Output only. The timestamp of when the rule
             was created. Populated in FULL view.
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp of when the rule
-            revision was created. Populated in FULL,
-            REVISION_METADATA_ONLY views.
+            Output only. The timestamp of when the rule revision was
+            created. Populated in FULL, REVISION_METADATA_ONLY views.
         compilation_state (google.cloud.chronicle_v1.types.Rule.CompilationState):
             Output only. The current compilation state of
             the rule. Populated in FULL view.
@@ -205,10 +206,9 @@ class Rule(proto.Message):
             rule uses the near real time live rule when the
             run frequency is set to LIVE.
         inputs_used (google.cloud.chronicle_v1.types.InputsUsed):
-            Output only. The set of inputs used in the rule.
-            For example, if the rule uses
-            $e.principal.hostname, then the uses_udm field
-            will be true.
+            Output only. The set of inputs used in the rule. For
+            example, if the rule uses $e.principal.hostname, then the
+            uses_udm field will be true.
     """
 
     class CompilationState(proto.Enum):
@@ -224,6 +224,7 @@ class Rule(proto.Message):
                 This is possible if a backwards-incompatible
                 change was made to the compiler.
         """
+
         COMPILATION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -295,12 +296,12 @@ class Rule(proto.Message):
         proto.STRING,
         number=16,
     )
-    compilation_diagnostics: MutableSequence[
-        "CompilationDiagnostic"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=17,
-        message="CompilationDiagnostic",
+    compilation_diagnostics: MutableSequence["CompilationDiagnostic"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=17,
+            message="CompilationDiagnostic",
+        )
     )
     near_real_time_live_rule_eligible: bool = proto.Field(
         proto.BOOL,
@@ -331,12 +332,11 @@ class RuleDeployment(proto.Message):
             Whether detections resulting from this
             deployment should be considered alerts.
         archived (bool):
-            The archive state of the rule deployment.
-            Cannot be set to true unless enabled is set to
-            false. If set to true, alerting will
-            automatically be set to false. If currently set
-            to true, enabled, alerting, and run_frequency
-            cannot be updated.
+            The archive state of the rule deployment. Cannot be set to
+            true unless enabled is set to false. If set to true,
+            alerting will automatically be set to false. If currently
+            set to true, enabled, alerting, and run_frequency cannot be
+            updated.
         archive_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the rule
             deployment archive state was last set to true.
@@ -380,6 +380,7 @@ class RuleDeployment(proto.Message):
             PAUSED (3):
                 Paused rules are not executed at all.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         DEFAULT = 1
         LIMITED = 2
@@ -472,6 +473,7 @@ class Retrohunt(proto.Message):
             FAILED (4):
                 Failed state.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -577,7 +579,6 @@ class ListRulesRequest(proto.Message):
             unspecified, defaults to BASIC.
         filter (str):
             Only the following filters are allowed:
-
             "reference_lists:{reference_list_name}"
             "data_tables:{data_table_name}"
             "display_name:{display_name}".
@@ -1061,6 +1062,7 @@ class CompilationDiagnostic(proto.Message):
             ERROR (2):
                 A compilation error.
         """
+
         SEVERITY_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

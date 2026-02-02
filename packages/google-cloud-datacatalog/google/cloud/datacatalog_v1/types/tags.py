@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,10 +37,9 @@ class Tag(proto.Message):
     resources. Tags conform with the specification of their tag
     template.
 
-    See [Data Catalog
-    IAM](https://cloud.google.com/data-catalog/docs/concepts/iam)
-    for information on the permissions needed to create or view
-    tags.
+    See `Data Catalog
+    IAM <https://cloud.google.com/data-catalog/docs/concepts/iam>`__ for
+    information on the permissions needed to create or view tags.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -303,6 +302,7 @@ class TagTemplate(proto.Message):
                 Dataplex service. Visible in both services.
                 Editable in Dataplex, read-only in DataCatalog.
         """
+
         DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
         MIGRATED = 1
         TRANSFERRED = 2
@@ -441,6 +441,7 @@ class FieldType(proto.Message):
             RICHTEXT (5):
                 A Richtext description.
         """
+
         PRIMITIVE_TYPE_UNSPECIFIED = 0
         DOUBLE = 1
         STRING = 2
@@ -484,12 +485,12 @@ class FieldType(proto.Message):
                 number=1,
             )
 
-        allowed_values: MutableSequence[
-            "FieldType.EnumType.EnumValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="FieldType.EnumType.EnumValue",
+        allowed_values: MutableSequence["FieldType.EnumType.EnumValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="FieldType.EnumType.EnumValue",
+            )
         )
 
     primitive_type: PrimitiveType = proto.Field(

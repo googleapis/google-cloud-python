@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.gke_backup_v1 import gapic_version as package_version
 
@@ -61,31 +61,38 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_backup_v1.services.backup_for_gke import pagers
-from google.cloud.gke_backup_v1.types import backup_plan_binding, common, gkebackup
-from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
-from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
-from google.cloud.gke_backup_v1.types import backup
+from google.cloud.gke_backup_v1.types import (
+    backup,
+    backup_channel,
+    backup_plan,
+    backup_plan_binding,
+    common,
+    gkebackup,
+    restore,
+    restore_channel,
+    restore_plan,
+    restore_plan_binding,
+    volume,
+)
 from google.cloud.gke_backup_v1.types import backup as gcg_backup
-from google.cloud.gke_backup_v1.types import backup_channel
-from google.cloud.gke_backup_v1.types import backup_plan
+from google.cloud.gke_backup_v1.types import backup_channel as gcg_backup_channel
 from google.cloud.gke_backup_v1.types import backup_plan as gcg_backup_plan
-from google.cloud.gke_backup_v1.types import restore
 from google.cloud.gke_backup_v1.types import restore as gcg_restore
-from google.cloud.gke_backup_v1.types import restore_channel
-from google.cloud.gke_backup_v1.types import restore_plan
+from google.cloud.gke_backup_v1.types import restore_channel as gcg_restore_channel
 from google.cloud.gke_backup_v1.types import restore_plan as gcg_restore_plan
-from google.cloud.gke_backup_v1.types import restore_plan_binding, volume
 
 from .transports.base import DEFAULT_CLIENT_INFO, BackupForGKETransport
 from .transports.grpc import BackupForGKEGrpcTransport
@@ -906,11 +913,9 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = BackupForGKEClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            BackupForGKEClient._read_environment_variables()
+        )
         self._client_cert_source = BackupForGKEClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -945,8 +950,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(BackupForGKETransport, transport)
             self._api_endpoint = self._transport.host
@@ -2016,13 +2020,10 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
 
         Returns:
             google.cloud.gke_backup_v1.types.BackupChannel:
-                A BackupChannel imposes constraints on
-                where clusters can be backed up. The
-                BackupChannel should be in the same
-                project and region as the cluster being
-                backed up.
-                The backup can be created only in
-                destination_project.
+                A BackupChannel imposes constraints on where clusters can be backed up.
+                   The BackupChannel should be in the same project and
+                   region as the cluster being backed up. The backup can
+                   be created only in destination_project.
 
         """
         # Create or coerce a protobuf request object.
@@ -6011,9 +6012,7 @@ class BackupForGKEClient(metaclass=BackupForGKEClientMeta):
                 The request object. Request message for
                 GetBackupIndexDownloadUrl.
             backup (str):
-                Required. Full name of Backup resource.
-                Format:
-
+                Required. Full name of Backup resource. Format:
                 projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}
 
                 This corresponds to the ``backup`` field

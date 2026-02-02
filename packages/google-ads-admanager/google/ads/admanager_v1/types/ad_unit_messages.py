@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import (
@@ -52,10 +52,9 @@ class AdUnit(proto.Message):
         ad_unit_id (int):
             Output only. AdUnit ID.
         parent_ad_unit (str):
-            Required. Immutable. The AdUnit's parent. Every
-            ad unit has a parent except for the root ad
-            unit, which is created by Google. Format:
-
+            Required. Immutable. The AdUnit's parent. Every ad unit has
+            a parent except for the root ad unit, which is created by
+            Google. Format:
             "networks/{network_code}/adUnits/{ad_unit_id}".
 
             This field is a member of `oneof`_ ``_parent_ad_unit``.
@@ -98,15 +97,13 @@ class AdUnit(proto.Message):
 
             This field is a member of `oneof`_ ``_effective_target_window``.
         applied_teams (MutableSequence[str]):
-            Optional. The resource names of Teams directly
-            applied to this AdUnit. Format:
+            Optional. The resource names of Teams directly applied to
+            this AdUnit. Format:
             "networks/{network_code}/teams/{team_id}".
         teams (MutableSequence[str]):
-            Output only. The resource names of all Teams
-            that this AdUnit is on as well as those
-            inherited from parent AdUnits. Format:
-
-            "networks/{network_code}/teams/{team_id}".
+            Output only. The resource names of all Teams that this
+            AdUnit is on as well as those inherited from parent AdUnits.
+            Format: "networks/{network_code}/teams/{team_id}".
         description (str):
             Optional. A description of the ad unit. The
             maximum length is 65,535 characters.
@@ -285,26 +282,26 @@ class AdUnit(proto.Message):
         number=21,
         message=applied_label.AppliedLabel,
     )
-    effective_applied_labels: MutableSequence[
-        applied_label.AppliedLabel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message=applied_label.AppliedLabel,
+    effective_applied_labels: MutableSequence[applied_label.AppliedLabel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message=applied_label.AppliedLabel,
+        )
     )
-    applied_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=23,
-        message="LabelFrequencyCap",
+    applied_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=23,
+            message="LabelFrequencyCap",
+        )
     )
-    effective_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=24,
-        message="LabelFrequencyCap",
+    effective_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=24,
+            message="LabelFrequencyCap",
+        )
     )
     smart_size_mode: ad_unit_enums.SmartSizeModeEnum.SmartSizeMode = proto.Field(
         proto.ENUM,
@@ -415,8 +412,7 @@ class LabelFrequencyCap(proto.Message):
 
     Attributes:
         label (str):
-            Required. The label to used for frequency
-            capping. Format:
+            Required. The label to used for frequency capping. Format:
             "networks/{network_code}/labels/{label_id}".
 
             This field is a member of `oneof`_ ``_label``.

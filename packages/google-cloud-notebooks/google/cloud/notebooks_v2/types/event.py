@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -68,6 +68,7 @@ class Event(proto.Message):
                 This event indicates that the instance had
                 metadata that needs to be modified.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
         HEARTBEAT = 2

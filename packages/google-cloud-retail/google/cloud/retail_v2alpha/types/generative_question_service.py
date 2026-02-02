@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import generative_question
@@ -157,12 +157,12 @@ class BatchUpdateGenerativeQuestionConfigsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateGenerativeQuestionConfigRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UpdateGenerativeQuestionConfigRequest",
+    requests: MutableSequence["UpdateGenerativeQuestionConfigRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UpdateGenerativeQuestionConfigRequest",
+        )
     )
 
 

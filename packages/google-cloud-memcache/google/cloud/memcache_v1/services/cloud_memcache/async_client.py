@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.memcache_v1 import gapic_version as package_version
 
@@ -44,13 +44,13 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.memcache_v1.services.cloud_memcache import pagers
 from google.cloud.memcache_v1.types import cloud_memcache
@@ -140,7 +140,8 @@ class CloudMemcacheAsyncClient:
         Returns:
             CloudMemcacheAsyncClient: The constructed client.
         """
-        return CloudMemcacheClient.from_service_account_info.__func__(CloudMemcacheAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = CloudMemcacheClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(CloudMemcacheAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -156,7 +157,8 @@ class CloudMemcacheAsyncClient:
         Returns:
             CloudMemcacheAsyncClient: The constructed client.
         """
-        return CloudMemcacheClient.from_service_account_file.__func__(CloudMemcacheAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = CloudMemcacheClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(CloudMemcacheAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -771,9 +773,8 @@ class CloudMemcacheAsyncClient:
                 The request object. Request for
                 [UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance].
             instance (:class:`google.cloud.memcache_v1.types.Instance`):
-                Required. A Memcached Instance.
-                Only fields specified in update_mask are
-                updated.
+                Required. A Memcached Instance. Only fields specified in
+                update_mask are updated.
 
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1360,9 +1361,8 @@ class CloudMemcacheAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (:class:`google.cloud.memcache_v1.types.RescheduleMaintenanceRequest.RescheduleType`):
-                Required. If reschedule type is
-                SPECIFIC_TIME, must set up schedule_time
-                as well.
+                Required. If reschedule type is SPECIFIC_TIME, must set
+                up schedule_time as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this

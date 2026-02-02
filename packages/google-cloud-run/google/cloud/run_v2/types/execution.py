@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import launch_stage_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.run_v2.types import condition, task_template
@@ -98,9 +98,8 @@ class ListExecutionsResponse(proto.Message):
         executions (MutableSequence[google.cloud.run_v2.types.Execution]):
             The resulting list of Executions.
         next_page_token (str):
-            A token indicating there are more items than
-            page_size. Use it in the next ListExecutions
-            request to continue.
+            A token indicating there are more items than page_size. Use
+            it in the next ListExecutions request to continue.
     """
 
     @property
@@ -258,14 +257,12 @@ class Execution(proto.Message):
         job (str):
             Output only. The name of the parent Job.
         parallelism (int):
-            Output only. Specifies the maximum desired
-            number of tasks the execution should run at any
-            given time. Must be <= task_count. The actual
-            number of tasks running in steady state will be
-            less than this number when ((.spec.task_count -
-            .status.successful) < .spec.parallelism), i.e.
-            when the work left to do is less than max
-            parallelism.
+            Output only. Specifies the maximum desired number of tasks
+            the execution should run at any given time. Must be <=
+            task_count. The actual number of tasks running in steady
+            state will be less than this number when ((.spec.task_count
+            - .status.successful) < .spec.parallelism), i.e. when the
+            work left to do is less than max parallelism.
         task_count (int):
             Output only. Specifies the desired number of
             tasks the execution should run. Setting to 1

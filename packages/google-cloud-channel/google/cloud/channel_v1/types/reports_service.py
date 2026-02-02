@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import decimal_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.decimal_pb2 as decimal_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -217,9 +217,9 @@ class ListReportsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the partner
-            account to list available reports for. Parent
-            uses the format: accounts/{account_id}
+            Required. The resource name of the partner account to list
+            available reports for. Parent uses the format:
+            accounts/{account_id}
         page_size (int):
             Optional. Requested page size of the report.
             The server might return fewer results than
@@ -380,23 +380,19 @@ class Column(proto.Message):
             DATA_TYPE_UNSPECIFIED (0):
                 Not used.
             STRING (1):
-                ReportValues for this column will use
-                string_value.
+                ReportValues for this column will use string_value.
             INT (2):
                 ReportValues for this column will use int_value.
             DECIMAL (3):
-                ReportValues for this column will use
-                decimal_value.
+                ReportValues for this column will use decimal_value.
             MONEY (4):
-                ReportValues for this column will use
-                money_value.
+                ReportValues for this column will use money_value.
             DATE (5):
-                ReportValues for this column will use
-                date_value.
+                ReportValues for this column will use date_value.
             DATE_TIME (6):
-                ReportValues for this column will use
-                date_time_value.
+                ReportValues for this column will use date_time_value.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         STRING = 1
         INT = 2
@@ -604,6 +600,7 @@ class ReportStatus(proto.Message):
             FAILED (4):
                 Report failed.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         WRITING = 2

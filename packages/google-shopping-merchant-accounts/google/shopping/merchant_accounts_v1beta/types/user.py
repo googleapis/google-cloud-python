@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta.types import accessright
@@ -49,8 +49,8 @@ class User(proto.Message):
         state (google.shopping.merchant_accounts_v1beta.types.User.State):
             Output only. The state of the user.
         access_rights (MutableSequence[google.shopping.merchant_accounts_v1beta.types.AccessRight]):
-            Optional. The [access
-            rights](https://support.google.com/merchants/answer/12160472?sjid=6789834943175119429-EU#accesstypes)
+            Optional. The `access
+            rights <https://support.google.com/merchants/answer/12160472?sjid=6789834943175119429-EU#accesstypes>`__
             the user has.
     """
 
@@ -67,6 +67,7 @@ class User(proto.Message):
             VERIFIED (2):
                 The user is verified.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         VERIFIED = 2

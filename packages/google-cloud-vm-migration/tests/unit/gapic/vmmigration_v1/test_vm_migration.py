@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,17 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.error_details_pb2 as error_details_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,23 +62,13 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import error_details_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.vmmigration_v1.services.vm_migration import (
     VmMigrationAsyncClient,
@@ -940,10 +940,9 @@ def test_vm_migration_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -988,10 +987,9 @@ def test_vm_migration_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1027,10 +1025,9 @@ def test_vm_migration_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1259,13 +1256,13 @@ def test_vm_migration_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -4707,9 +4704,9 @@ def test_get_utilization_report_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_utilization_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_utilization_report] = (
+            mock_rpc
+        )
         request = {}
         client.get_utilization_report(request)
 
@@ -7440,9 +7437,9 @@ def test_upgrade_appliance_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.upgrade_appliance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.upgrade_appliance] = (
+            mock_rpc
+        )
         request = {}
         client.upgrade_appliance(request)
 
@@ -7703,9 +7700,9 @@ def test_create_migrating_vm_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_migrating_vm] = (
+            mock_rpc
+        )
         request = {}
         client.create_migrating_vm(request)
 
@@ -8103,9 +8100,9 @@ def test_list_migrating_vms_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_migrating_vms
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_migrating_vms] = (
+            mock_rpc
+        )
         request = {}
         client.list_migrating_vms(request)
 
@@ -8652,9 +8649,9 @@ def test_get_migrating_vm_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_migrating_vm] = (
+            mock_rpc
+        )
         request = {}
         client.get_migrating_vm(request)
 
@@ -8990,9 +8987,9 @@ def test_update_migrating_vm_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_migrating_vm] = (
+            mock_rpc
+        )
         request = {}
         client.update_migrating_vm(request)
 
@@ -9369,9 +9366,9 @@ def test_delete_migrating_vm_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_migrating_vm] = (
+            mock_rpc
+        )
         request = {}
         client.delete_migrating_vm(request)
 
@@ -10035,9 +10032,9 @@ def test_resume_migration_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.resume_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.resume_migration] = (
+            mock_rpc
+        )
         request = {}
         client.resume_migration(request)
 
@@ -10533,9 +10530,9 @@ def test_finalize_migration_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.finalize_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.finalize_migration] = (
+            mock_rpc
+        )
         request = {}
         client.finalize_migration(request)
 
@@ -10872,9 +10869,9 @@ def test_extend_migration_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.extend_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.extend_migration] = (
+            mock_rpc
+        )
         request = {}
         client.extend_migration(request)
 
@@ -11123,9 +11120,9 @@ def test_create_clone_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_clone_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_clone_job] = (
+            mock_rpc
+        )
         request = {}
         client.create_clone_job(request)
 
@@ -11496,9 +11493,9 @@ def test_cancel_clone_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.cancel_clone_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.cancel_clone_job] = (
+            mock_rpc
+        )
         request = {}
         client.cancel_clone_job(request)
 
@@ -12689,9 +12686,9 @@ def test_create_cutover_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_cutover_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_cutover_job] = (
+            mock_rpc
+        )
         request = {}
         client.create_cutover_job(request)
 
@@ -13078,9 +13075,9 @@ def test_cancel_cutover_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.cancel_cutover_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.cancel_cutover_job] = (
+            mock_rpc
+        )
         request = {}
         client.cancel_cutover_job(request)
 
@@ -13432,9 +13429,9 @@ def test_list_cutover_jobs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_cutover_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_cutover_jobs] = (
+            mock_rpc
+        )
         request = {}
         client.list_cutover_jobs(request)
 
@@ -16190,9 +16187,9 @@ def test_add_group_migration_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_group_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_group_migration] = (
+            mock_rpc
+        )
         request = {}
         client.add_group_migration(request)
 
@@ -16538,9 +16535,9 @@ def test_remove_group_migration_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.remove_group_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.remove_group_migration] = (
+            mock_rpc
+        )
         request = {}
         client.remove_group_migration(request)
 
@@ -16895,9 +16892,9 @@ def test_list_target_projects_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_target_projects
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_target_projects] = (
+            mock_rpc
+        )
         request = {}
         client.list_target_projects(request)
 
@@ -17444,9 +17441,9 @@ def test_get_target_project_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_target_project] = (
+            mock_rpc
+        )
         request = {}
         client.get_target_project(request)
 
@@ -17791,9 +17788,9 @@ def test_create_target_project_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_target_project] = (
+            mock_rpc
+        )
         request = {}
         client.create_target_project(request)
 
@@ -18157,9 +18154,9 @@ def test_update_target_project_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_target_project] = (
+            mock_rpc
+        )
         request = {}
         client.update_target_project(request)
 
@@ -18515,9 +18512,9 @@ def test_delete_target_project_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_target_project] = (
+            mock_rpc
+        )
         request = {}
         client.delete_target_project(request)
 
@@ -19425,9 +19422,9 @@ def test_get_replication_cycle_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_replication_cycle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_replication_cycle] = (
+            mock_rpc
+        )
         request = {}
         client.get_replication_cycle(request)
 
@@ -19780,9 +19777,9 @@ def test_list_image_imports_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_image_imports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_image_imports] = (
+            mock_rpc
+        )
         request = {}
         client.list_image_imports(request)
 
@@ -20320,9 +20317,9 @@ def test_get_image_import_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_image_import] = (
+            mock_rpc
+        )
         request = {}
         client.get_image_import(request)
 
@@ -20652,9 +20649,9 @@ def test_create_image_import_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_image_import] = (
+            mock_rpc
+        )
         request = {}
         client.create_image_import(request)
 
@@ -21027,9 +21024,9 @@ def test_delete_image_import_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_image_import] = (
+            mock_rpc
+        )
         request = {}
         client.delete_image_import(request)
 
@@ -21384,9 +21381,9 @@ def test_list_image_import_jobs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_image_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_image_import_jobs] = (
+            mock_rpc
+        )
         request = {}
         client.list_image_import_jobs(request)
 
@@ -21934,9 +21931,9 @@ def test_get_image_import_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_image_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_image_import_job] = (
+            mock_rpc
+        )
         request = {}
         client.get_image_import_job(request)
 
@@ -23579,9 +23576,9 @@ def test_get_disk_migration_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_disk_migration_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_disk_migration_job] = (
+            mock_rpc
+        )
         request = {}
         client.get_disk_migration_job(request)
 
@@ -24644,9 +24641,9 @@ def test_run_disk_migration_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_disk_migration_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_disk_migration_job] = (
+            mock_rpc
+        )
         request = {}
         client.run_disk_migration_job(request)
 
@@ -26974,9 +26971,9 @@ def test_get_utilization_report_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_utilization_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_utilization_report] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_utilization_report(request)
@@ -28458,9 +28455,9 @@ def test_upgrade_appliance_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.upgrade_appliance
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.upgrade_appliance] = (
+            mock_rpc
+        )
 
         request = {}
         client.upgrade_appliance(request)
@@ -28584,9 +28581,9 @@ def test_create_migrating_vm_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_migrating_vm] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_migrating_vm(request)
@@ -28814,9 +28811,9 @@ def test_list_migrating_vms_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_migrating_vms
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_migrating_vms] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_migrating_vms(request)
@@ -29100,9 +29097,9 @@ def test_get_migrating_vm_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_migrating_vm] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_migrating_vm(request)
@@ -29286,9 +29283,9 @@ def test_update_migrating_vm_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_migrating_vm] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_migrating_vm(request)
@@ -29492,9 +29489,9 @@ def test_delete_migrating_vm_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_migrating_vm
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_migrating_vm] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_migrating_vm(request)
@@ -29853,9 +29850,9 @@ def test_resume_migration_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.resume_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.resume_migration] = (
+            mock_rpc
+        )
 
         request = {}
         client.resume_migration(request)
@@ -30101,9 +30098,9 @@ def test_finalize_migration_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.finalize_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.finalize_migration] = (
+            mock_rpc
+        )
 
         request = {}
         client.finalize_migration(request)
@@ -30283,9 +30280,9 @@ def test_extend_migration_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.extend_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.extend_migration] = (
+            mock_rpc
+        )
 
         request = {}
         client.extend_migration(request)
@@ -30407,9 +30404,9 @@ def test_create_clone_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_clone_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_clone_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_clone_job(request)
@@ -30635,9 +30632,9 @@ def test_cancel_clone_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.cancel_clone_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.cancel_clone_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.cancel_clone_job(request)
@@ -31279,9 +31276,9 @@ def test_create_cutover_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_cutover_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_cutover_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_cutover_job(request)
@@ -31509,9 +31506,9 @@ def test_cancel_cutover_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.cancel_cutover_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.cancel_cutover_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.cancel_cutover_job(request)
@@ -31691,9 +31688,9 @@ def test_list_cutover_jobs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_cutover_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_cutover_jobs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_cutover_jobs(request)
@@ -33184,9 +33181,9 @@ def test_add_group_migration_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.add_group_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.add_group_migration] = (
+            mock_rpc
+        )
 
         request = {}
         client.add_group_migration(request)
@@ -33367,9 +33364,9 @@ def test_remove_group_migration_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.remove_group_migration
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.remove_group_migration] = (
+            mock_rpc
+        )
 
         request = {}
         client.remove_group_migration(request)
@@ -33549,9 +33546,9 @@ def test_list_target_projects_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_target_projects
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_target_projects] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_target_projects(request)
@@ -33831,9 +33828,9 @@ def test_get_target_project_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_target_project] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_target_project(request)
@@ -34016,9 +34013,9 @@ def test_create_target_project_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_target_project] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_target_project(request)
@@ -34237,9 +34234,9 @@ def test_update_target_project_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_target_project] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_target_project(request)
@@ -34436,9 +34433,9 @@ def test_delete_target_project_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_target_project
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_target_project] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_target_project(request)
@@ -34909,9 +34906,9 @@ def test_get_replication_cycle_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_replication_cycle
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_replication_cycle] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_replication_cycle(request)
@@ -35093,9 +35090,9 @@ def test_list_image_imports_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_image_imports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_image_imports] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_image_imports(request)
@@ -35355,9 +35352,9 @@ def test_get_image_import_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_image_import] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_image_import(request)
@@ -35539,9 +35536,9 @@ def test_create_image_import_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_image_import] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_image_import(request)
@@ -35763,9 +35760,9 @@ def test_delete_image_import_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_image_import
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_image_import] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_image_import(request)
@@ -35949,9 +35946,9 @@ def test_list_image_import_jobs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_image_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_image_import_jobs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_image_import_jobs(request)
@@ -36217,9 +36214,9 @@ def test_get_image_import_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_image_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_image_import_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_image_import_job(request)
@@ -37089,9 +37086,9 @@ def test_get_disk_migration_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_disk_migration_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_disk_migration_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_disk_migration_job(request)
@@ -37665,9 +37662,9 @@ def test_run_disk_migration_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_disk_migration_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_disk_migration_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_disk_migration_job(request)
@@ -41195,8 +41192,9 @@ def test_list_sources_rest_bad_request(request_type=vmmigration.ListSourcesReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41261,17 +41259,19 @@ def test_list_sources_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_sources"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_sources_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_sources"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_sources"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_sources_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_sources"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41322,8 +41322,9 @@ def test_get_source_rest_bad_request(request_type=vmmigration.GetSourceRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41388,17 +41389,19 @@ def test_get_source_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_source"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_source"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41447,8 +41450,9 @@ def test_create_source_rest_bad_request(request_type=vmmigration.CreateSourceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41626,19 +41630,20 @@ def test_create_source_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_source"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_source"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41691,8 +41696,9 @@ def test_update_source_rest_bad_request(request_type=vmmigration.UpdateSourceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41872,19 +41878,20 @@ def test_update_source_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_source"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_update_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_source"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_update_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -41935,8 +41942,9 @@ def test_delete_source_rest_bad_request(request_type=vmmigration.DeleteSourceReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -41993,19 +42001,20 @@ def test_delete_source_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_source"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_source_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_source"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_source"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_source_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_source"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42058,8 +42067,9 @@ def test_fetch_inventory_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42119,17 +42129,19 @@ def test_fetch_inventory_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_fetch_inventory"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_fetch_inventory_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_fetch_inventory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_fetch_inventory"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_fetch_inventory_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_fetch_inventory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42184,8 +42196,9 @@ def test_fetch_storage_inventory_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42248,18 +42261,20 @@ def test_fetch_storage_inventory_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_fetch_storage_inventory"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_fetch_storage_inventory_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_fetch_storage_inventory"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_fetch_storage_inventory"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_fetch_storage_inventory_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_fetch_storage_inventory"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42317,8 +42332,9 @@ def test_list_utilization_reports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42383,18 +42399,20 @@ def test_list_utilization_reports_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_utilization_reports"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_list_utilization_reports_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_utilization_reports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_utilization_reports"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_utilization_reports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_utilization_reports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42454,8 +42472,9 @@ def test_get_utilization_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42528,18 +42547,20 @@ def test_get_utilization_report_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_utilization_report"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_get_utilization_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_utilization_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_utilization_report"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_utilization_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_utilization_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42594,8 +42615,9 @@ def test_create_utilization_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42771,20 +42793,21 @@ def test_create_utilization_report_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_utilization_report"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_create_utilization_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_utilization_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_utilization_report"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_utilization_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_utilization_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42839,8 +42862,9 @@ def test_delete_utilization_report_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -42899,20 +42923,21 @@ def test_delete_utilization_report_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_utilization_report"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_delete_utilization_report_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_utilization_report"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_utilization_report"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_utilization_report_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_utilization_report"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -42965,8 +42990,9 @@ def test_list_datacenter_connectors_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43031,18 +43057,20 @@ def test_list_datacenter_connectors_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_datacenter_connectors"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_list_datacenter_connectors_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_datacenter_connectors"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_datacenter_connectors"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_datacenter_connectors_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_datacenter_connectors"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43102,8 +43130,9 @@ def test_get_datacenter_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43185,18 +43214,20 @@ def test_get_datacenter_connector_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_datacenter_connector"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_get_datacenter_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_datacenter_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_datacenter_connector"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_datacenter_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_datacenter_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43251,8 +43282,9 @@ def test_create_datacenter_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43419,20 +43451,21 @@ def test_create_datacenter_connector_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_datacenter_connector"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_create_datacenter_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_datacenter_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_datacenter_connector"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_datacenter_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_datacenter_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43487,8 +43520,9 @@ def test_delete_datacenter_connector_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43547,20 +43581,21 @@ def test_delete_datacenter_connector_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_datacenter_connector"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_delete_datacenter_connector_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_datacenter_connector"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_datacenter_connector"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_datacenter_connector_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_datacenter_connector"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43615,8 +43650,9 @@ def test_upgrade_appliance_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -43675,19 +43711,21 @@ def test_upgrade_appliance_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_upgrade_appliance"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_upgrade_appliance_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_upgrade_appliance"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_upgrade_appliance"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_upgrade_appliance_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_upgrade_appliance"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -43740,8 +43778,9 @@ def test_create_migrating_vm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44141,19 +44180,21 @@ def test_create_migrating_vm_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_migrating_vm"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_migrating_vm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_migrating_vm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_migrating_vm"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_migrating_vm_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_migrating_vm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44206,8 +44247,9 @@ def test_list_migrating_vms_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44272,17 +44314,20 @@ def test_list_migrating_vms_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_migrating_vms"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_migrating_vms_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_migrating_vms"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_migrating_vms"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_migrating_vms_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_migrating_vms"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44342,8 +44387,9 @@ def test_get_migrating_vm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44418,17 +44464,19 @@ def test_get_migrating_vm_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_migrating_vm"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_migrating_vm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_migrating_vm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_migrating_vm"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_migrating_vm_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_migrating_vm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44485,8 +44533,9 @@ def test_update_migrating_vm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -44890,19 +44939,21 @@ def test_update_migrating_vm_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_migrating_vm"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_migrating_vm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_update_migrating_vm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_migrating_vm"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_update_migrating_vm_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_update_migrating_vm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -44957,8 +45008,9 @@ def test_delete_migrating_vm_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45017,19 +45069,21 @@ def test_delete_migrating_vm_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_migrating_vm"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_migrating_vm_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_migrating_vm"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_migrating_vm"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_migrating_vm_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_migrating_vm"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45084,8 +45138,9 @@ def test_start_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45144,19 +45199,20 @@ def test_start_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_start_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_start_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_start_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_start_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_start_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_start_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45211,8 +45267,9 @@ def test_resume_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45271,19 +45328,20 @@ def test_resume_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_resume_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_resume_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_resume_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_resume_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_resume_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_resume_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45338,8 +45396,9 @@ def test_pause_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45398,19 +45457,20 @@ def test_pause_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_pause_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_pause_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_pause_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_pause_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_pause_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_pause_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45465,8 +45525,9 @@ def test_finalize_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45525,19 +45586,21 @@ def test_finalize_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_finalize_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_finalize_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_finalize_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_finalize_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_finalize_migration_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_finalize_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45592,8 +45655,9 @@ def test_extend_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45652,19 +45716,20 @@ def test_extend_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_extend_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_extend_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_extend_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_extend_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_extend_migration_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_extend_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45719,8 +45784,9 @@ def test_create_clone_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -45931,19 +45997,20 @@ def test_create_clone_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_clone_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_clone_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_clone_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_clone_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_clone_job_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_clone_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -45998,8 +46065,9 @@ def test_cancel_clone_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46058,19 +46126,20 @@ def test_cancel_clone_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_clone_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_clone_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_cancel_clone_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_cancel_clone_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_cancel_clone_job_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_cancel_clone_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46125,8 +46194,9 @@ def test_list_clone_jobs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46193,17 +46263,19 @@ def test_list_clone_jobs_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_clone_jobs"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_clone_jobs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_clone_jobs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_clone_jobs"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_clone_jobs_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_clone_jobs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46258,8 +46330,9 @@ def test_get_clone_job_rest_bad_request(request_type=vmmigration.GetCloneJobRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46326,17 +46399,19 @@ def test_get_clone_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_clone_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_clone_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_clone_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_clone_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_clone_job_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_clone_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46389,8 +46464,9 @@ def test_create_cutover_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46642,19 +46718,21 @@ def test_create_cutover_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_cutover_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_cutover_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_cutover_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_cutover_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_cutover_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_cutover_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46709,8 +46787,9 @@ def test_cancel_cutover_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46769,19 +46848,21 @@ def test_cancel_cutover_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_cutover_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_cutover_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_cancel_cutover_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_cancel_cutover_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_cancel_cutover_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_cancel_cutover_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46836,8 +46917,9 @@ def test_list_cutover_jobs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -46904,17 +46986,20 @@ def test_list_cutover_jobs_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_cutover_jobs"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_cutover_jobs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_cutover_jobs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_cutover_jobs"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_cutover_jobs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_cutover_jobs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -46974,8 +47059,9 @@ def test_get_cutover_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47046,17 +47132,19 @@ def test_get_cutover_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_cutover_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_cutover_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_cutover_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_cutover_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_cutover_job_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_cutover_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47107,8 +47195,9 @@ def test_list_groups_rest_bad_request(request_type=vmmigration.ListGroupsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47173,17 +47262,19 @@ def test_list_groups_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_groups"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_groups_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_groups"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_groups"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_groups_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_groups"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47234,8 +47325,9 @@ def test_get_group_rest_bad_request(request_type=vmmigration.GetGroupRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47307,17 +47399,19 @@ def test_get_group_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_group"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_group_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_group"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_group_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47366,8 +47460,9 @@ def test_create_group_rest_bad_request(request_type=vmmigration.CreateGroupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47499,19 +47594,20 @@ def test_create_group_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_group"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_group_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_group"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_group_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47562,8 +47658,9 @@ def test_update_group_rest_bad_request(request_type=vmmigration.UpdateGroupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47697,19 +47794,20 @@ def test_update_group_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_group"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_group_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_update_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_group"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_group_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_update_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47758,8 +47856,9 @@ def test_delete_group_rest_bad_request(request_type=vmmigration.DeleteGroupReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47816,19 +47915,20 @@ def test_delete_group_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_group"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_group_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_group"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_group"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_group_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_group"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -47879,8 +47979,9 @@ def test_add_group_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -47937,19 +48038,21 @@ def test_add_group_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_add_group_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_add_group_migration_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_add_group_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_add_group_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_add_group_migration_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_add_group_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48002,8 +48105,9 @@ def test_remove_group_migration_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48060,20 +48164,21 @@ def test_remove_group_migration_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_remove_group_migration"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_remove_group_migration_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_remove_group_migration"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_remove_group_migration"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_remove_group_migration_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_remove_group_migration"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48126,8 +48231,9 @@ def test_list_target_projects_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48192,17 +48298,20 @@ def test_list_target_projects_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_target_projects"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_target_projects_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_target_projects"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_target_projects"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_target_projects_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_target_projects"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48260,8 +48369,9 @@ def test_get_target_project_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48328,17 +48438,20 @@ def test_get_target_project_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_target_project"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_target_project_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_target_project"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_target_project"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_target_project_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_target_project"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48391,8 +48504,9 @@ def test_create_target_project_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48523,20 +48637,21 @@ def test_create_target_project_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_target_project"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_create_target_project_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_target_project"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_target_project"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_target_project_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_target_project"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48593,8 +48708,9 @@ def test_update_target_project_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48729,20 +48845,21 @@ def test_update_target_project_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_target_project"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_update_target_project_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_update_target_project"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_target_project"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_update_target_project_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_update_target_project"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48795,8 +48912,9 @@ def test_delete_target_project_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48853,20 +48971,21 @@ def test_delete_target_project_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_target_project"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_delete_target_project_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_target_project"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_target_project"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_target_project_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_target_project"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -48921,8 +49040,9 @@ def test_list_replication_cycles_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -48989,18 +49109,20 @@ def test_list_replication_cycles_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_replication_cycles"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_list_replication_cycles_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_replication_cycles"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_replication_cycles"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_replication_cycles_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_replication_cycles"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49060,8 +49182,9 @@ def test_get_replication_cycle_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49132,18 +49255,20 @@ def test_get_replication_cycle_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_replication_cycle"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_get_replication_cycle_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_replication_cycle"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_replication_cycle"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_replication_cycle_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_replication_cycle"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49198,8 +49323,9 @@ def test_list_image_imports_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49264,17 +49390,20 @@ def test_list_image_imports_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_image_imports"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_image_imports_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_image_imports"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_image_imports"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_image_imports_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_image_imports"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49332,8 +49461,9 @@ def test_get_image_import_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49397,17 +49527,19 @@ def test_get_image_import_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_image_import"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_image_import_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_image_import"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_image_import"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_image_import_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_image_import"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49460,8 +49592,9 @@ def test_create_image_import_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49705,19 +49838,21 @@ def test_create_image_import_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_image_import"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_image_import_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_image_import"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_image_import"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_image_import_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_image_import"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49770,8 +49905,9 @@ def test_delete_image_import_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49828,19 +49964,21 @@ def test_delete_image_import_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_image_import"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_image_import_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_image_import"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_image_import"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_image_import_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_image_import"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -49893,8 +50031,9 @@ def test_list_image_import_jobs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -49959,18 +50098,20 @@ def test_list_image_import_jobs_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_image_import_jobs"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_list_image_import_jobs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_image_import_jobs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_image_import_jobs"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_image_import_jobs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_image_import_jobs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50030,8 +50171,9 @@ def test_get_image_import_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50101,17 +50243,20 @@ def test_get_image_import_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_image_import_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_image_import_job_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_image_import_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_image_import_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_image_import_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_image_import_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50166,8 +50311,9 @@ def test_cancel_image_import_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50226,20 +50372,21 @@ def test_cancel_image_import_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_image_import_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_cancel_image_import_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_cancel_image_import_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_cancel_image_import_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_cancel_image_import_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_cancel_image_import_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50292,8 +50439,9 @@ def test_create_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50463,20 +50611,21 @@ def test_create_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_create_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_create_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_create_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_create_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_create_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_create_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50529,8 +50678,9 @@ def test_list_disk_migration_jobs_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50595,18 +50745,20 @@ def test_list_disk_migration_jobs_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_list_disk_migration_jobs"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_list_disk_migration_jobs_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_list_disk_migration_jobs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_list_disk_migration_jobs"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_list_disk_migration_jobs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_list_disk_migration_jobs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50666,8 +50818,9 @@ def test_get_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50734,18 +50887,20 @@ def test_get_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_get_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_get_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_get_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_get_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_get_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_get_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -50804,8 +50959,9 @@ def test_update_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -50979,20 +51135,21 @@ def test_update_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_update_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_update_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_update_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_update_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_update_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_update_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51047,8 +51204,9 @@ def test_delete_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51107,20 +51265,21 @@ def test_delete_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_delete_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_delete_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_delete_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_delete_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_delete_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_delete_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51175,8 +51334,9 @@ def test_run_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51235,20 +51395,21 @@ def test_run_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_run_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_run_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_run_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_run_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_run_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_run_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51303,8 +51464,9 @@ def test_cancel_disk_migration_job_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -51363,20 +51525,21 @@ def test_cancel_disk_migration_job_rest_interceptors(null_interceptor):
     )
     client = VmMigrationClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.VmMigrationRestInterceptor, "post_cancel_disk_migration_job"
-    ) as post, mock.patch.object(
-        transports.VmMigrationRestInterceptor,
-        "post_cancel_disk_migration_job_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.VmMigrationRestInterceptor, "pre_cancel_disk_migration_job"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "post_cancel_disk_migration_job"
+        ) as post,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor,
+            "post_cancel_disk_migration_job_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.VmMigrationRestInterceptor, "pre_cancel_disk_migration_job"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -51429,8 +51592,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51489,8 +51653,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51551,8 +51716,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51613,8 +51779,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51675,8 +51842,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -51737,8 +51905,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -53255,11 +53424,14 @@ def test_vm_migration_base_transport():
 
 def test_vm_migration_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.vmmigration_v1.services.vm_migration.transports.VmMigrationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.vmmigration_v1.services.vm_migration.transports.VmMigrationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VmMigrationTransport(
@@ -53276,9 +53448,12 @@ def test_vm_migration_base_transport_with_credentials_file():
 
 def test_vm_migration_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.vmmigration_v1.services.vm_migration.transports.VmMigrationTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.vmmigration_v1.services.vm_migration.transports.VmMigrationTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VmMigrationTransport()
@@ -53350,11 +53525,12 @@ def test_vm_migration_transport_auth_gdch_credentials(transport_class):
 def test_vm_migration_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

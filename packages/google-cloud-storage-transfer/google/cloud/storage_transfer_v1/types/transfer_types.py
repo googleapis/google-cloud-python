@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -115,10 +115,9 @@ class AzureCredentials(proto.Message):
         sas_token (str):
             Required. Azure shared access signature (SAS).
 
-            For more information about SAS, see
-            [Grant limited access to Azure Storage resources
-            using shared access signatures
-            (SAS)](https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview).
+            For more information about SAS, see `Grant limited access to
+            Azure Storage resources using shared access signatures
+            (SAS) <https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview>`__.
     """
 
     sas_token: str = proto.Field(
@@ -355,9 +354,8 @@ class AwsS3Data(proto.Message):
 
     Attributes:
         bucket_name (str):
-            Required. S3 Bucket name (see
-            [Creating a
-            bucket](https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html)).
+            Required. S3 Bucket name (see `Creating a
+            bucket <https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html>`__).
         aws_access_key (google.cloud.storage_transfer_v1.types.AwsAccessKey):
             Input only. AWS access key used to sign the API requests to
             the AWS S3 bucket. Permissions on the bucket must be granted
@@ -460,11 +458,11 @@ class AwsS3Data(proto.Message):
 class AzureBlobStorageData(proto.Message):
     r"""An AzureBlobStorageData resource can be a data source, but not a
     data sink. An AzureBlobStorageData resource represents one Azure
-    container. The storage account determines the [Azure
-    endpoint](https://docs.microsoft.com/en-us/azure/storage/common/storage-create-storage-account#storage-account-endpoints).
-    In an AzureBlobStorageData resource, a blobs's name is the
-    [Azure Blob Storage blob's key
-    name](https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names).
+    container. The storage account determines the `Azure
+    endpoint <https://docs.microsoft.com/en-us/azure/storage/common/storage-create-storage-account#storage-account-endpoints>`__.
+    In an AzureBlobStorageData resource, a blobs's name is the `Azure
+    Blob Storage blob's key
+    name <https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names>`__.
 
     Attributes:
         storage_account (str):
@@ -520,17 +518,17 @@ class AzureBlobStorageData(proto.Message):
     """
 
     class FederatedIdentityConfig(proto.Message):
-        r"""The identity of an Azure application through which Storage
-        Transfer Service can authenticate requests using Azure workload
-        identity federation.
+        r"""The identity of an Azure application through which Storage Transfer
+        Service can authenticate requests using Azure workload identity
+        federation.
 
-        Storage Transfer Service can issue requests to Azure Storage
-        through registered Azure applications, eliminating the need to
-        pass credentials to Storage Transfer Service directly.
+        Storage Transfer Service can issue requests to Azure Storage through
+        registered Azure applications, eliminating the need to pass
+        credentials to Storage Transfer Service directly.
 
-        To configure federated identity, see
-        [Configure access to Microsoft Azure
-        Storage](https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity).
+        To configure federated identity, see `Configure access to Microsoft
+        Azure
+        Storage <https://cloud.google.com/storage-transfer/docs/source-microsoft-azure#option_3_authenticate_using_federated_identity>`__.
 
         Attributes:
             client_id (str):
@@ -731,14 +729,13 @@ class S3CompatibleMetadata(proto.Message):
             will attempt to determine right auth method to
             use.
         request_model (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.RequestModel):
-            Specifies the API request model used to call the
-            storage service. When not specified, the default
-            value of RequestModel
-            REQUEST_MODEL_VIRTUAL_HOSTED_STYLE is used.
+            Specifies the API request model used to call the storage
+            service. When not specified, the default value of
+            RequestModel REQUEST_MODEL_VIRTUAL_HOSTED_STYLE is used.
         protocol (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.NetworkProtocol):
-            Specifies the network protocol of the agent.
-            When not specified, the default value of
-            NetworkProtocol NETWORK_PROTOCOL_HTTPS is used.
+            Specifies the network protocol of the agent. When not
+            specified, the default value of NetworkProtocol
+            NETWORK_PROTOCOL_HTTPS is used.
         list_api (google.cloud.storage_transfer_v1.types.S3CompatibleMetadata.ListApi):
             The Listing API to use for discovering
             objects. When not specified, Transfer Service
@@ -757,6 +754,7 @@ class S3CompatibleMetadata(proto.Message):
             AUTH_METHOD_AWS_SIGNATURE_V2 (2):
                 Auth requests with AWS SigV2.
         """
+
         AUTH_METHOD_UNSPECIFIED = 0
         AUTH_METHOD_AWS_SIGNATURE_V4 = 1
         AUTH_METHOD_AWS_SIGNATURE_V2 = 2
@@ -776,6 +774,7 @@ class S3CompatibleMetadata(proto.Message):
                 Example:
                 https://s3.region.amazonaws.com/bucket-name/key-name
         """
+
         REQUEST_MODEL_UNSPECIFIED = 0
         REQUEST_MODEL_VIRTUAL_HOSTED_STYLE = 1
         REQUEST_MODEL_PATH_STYLE = 2
@@ -794,6 +793,7 @@ class S3CompatibleMetadata(proto.Message):
                 closed network or for publicly available data.
                 Perform requests using HTTP.
         """
+
         NETWORK_PROTOCOL_UNSPECIFIED = 0
         NETWORK_PROTOCOL_HTTPS = 1
         NETWORK_PROTOCOL_HTTP = 2
@@ -809,6 +809,7 @@ class S3CompatibleMetadata(proto.Message):
             LIST_OBJECTS (2):
                 Legacy ListObjects API.
         """
+
         LIST_API_UNSPECIFIED = 0
         LIST_OBJECTS_V2 = 1
         LIST_OBJECTS = 2
@@ -876,6 +877,7 @@ class AgentPool(proto.Message):
                 been initiated, and all the resources are
                 scheduled to be cleaned up and freed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -971,6 +973,7 @@ class TransferOptions(proto.Message):
                 the source object, even if the HTTP Etags or
                 checksum values are the same.
         """
+
         OVERWRITE_WHEN_UNSPECIFIED = 0
         DIFFERENT = 1
         NEVER = 2
@@ -1048,13 +1051,12 @@ class TransferSpec(proto.Message):
 
             This field is a member of `oneof`_ ``data_source``.
         gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
-            For transfers between file systems, specifies a
-            Cloud Storage bucket to be used as an
-            intermediate location through which to transfer
-            data.
+            For transfers between file systems, specifies a Cloud
+            Storage bucket to be used as an intermediate location
+            through which to transfer data.
 
-            See [Transfer data between file
-            systems](https://cloud.google.com/storage-transfer/docs/file-to-file)
+            See `Transfer data between file
+            systems <https://cloud.google.com/storage-transfer/docs/file-to-file>`__
             for more information.
 
             This field is a member of `oneof`_ ``intermediate_data_location``.
@@ -1256,10 +1258,9 @@ class MetadataOptions(proto.Message):
             to transfers involving POSIX file systems, and
             ignored for other transfers.
         acl (google.cloud.storage_transfer_v1.types.MetadataOptions.Acl):
-            Specifies how each object's ACLs should be
-            preserved for transfers between Google Cloud
-            Storage buckets. If unspecified, the default
-            behavior is the same as
+            Specifies how each object's ACLs should be preserved for
+            transfers between Google Cloud Storage buckets. If
+            unspecified, the default behavior is the same as
             ACL_DESTINATION_BUCKET_DEFAULT.
         storage_class (google.cloud.storage_transfer_v1.types.MetadataOptions.StorageClass):
             Specifies the storage class to set on objects being
@@ -1300,6 +1301,7 @@ class MetadataOptions(proto.Message):
             SYMLINK_PRESERVE (2):
                 Preserve symlinks during a transfer job.
         """
+
         SYMLINK_UNSPECIFIED = 0
         SYMLINK_SKIP = 1
         SYMLINK_PRESERVE = 2
@@ -1315,6 +1317,7 @@ class MetadataOptions(proto.Message):
             MODE_PRESERVE (2):
                 Preserve mode during a transfer job.
         """
+
         MODE_UNSPECIFIED = 0
         MODE_SKIP = 1
         MODE_PRESERVE = 2
@@ -1330,6 +1333,7 @@ class MetadataOptions(proto.Message):
             GID_NUMBER (2):
                 Preserve GID during a transfer job.
         """
+
         GID_UNSPECIFIED = 0
         GID_SKIP = 1
         GID_NUMBER = 2
@@ -1345,6 +1349,7 @@ class MetadataOptions(proto.Message):
             UID_NUMBER (2):
                 Preserve UID during a transfer job.
         """
+
         UID_UNSPECIFIED = 0
         UID_SKIP = 1
         UID_NUMBER = 2
@@ -1366,6 +1371,7 @@ class MetadataOptions(proto.Message):
                 must not be enabled on either the source or destination
                 buckets.
         """
+
         ACL_UNSPECIFIED = 0
         ACL_DESTINATION_BUCKET_DEFAULT = 1
         ACL_PRESERVE = 2
@@ -1381,12 +1387,11 @@ class MetadataOptions(proto.Message):
                 Use the destination bucket's default storage
                 class.
             STORAGE_CLASS_PRESERVE (2):
-                Preserve the object's original storage class.
-                This is only supported for transfers from Google
-                Cloud Storage buckets. REGIONAL and
-                MULTI_REGIONAL storage classes will be mapped to
-                STANDARD to ensure they can be written to the
-                destination bucket.
+                Preserve the object's original storage class. This is only
+                supported for transfers from Google Cloud Storage buckets.
+                REGIONAL and MULTI_REGIONAL storage classes will be mapped
+                to STANDARD to ensure they can be written to the destination
+                bucket.
             STORAGE_CLASS_STANDARD (3):
                 Set the storage class to STANDARD.
             STORAGE_CLASS_NEARLINE (4):
@@ -1396,6 +1401,7 @@ class MetadataOptions(proto.Message):
             STORAGE_CLASS_ARCHIVE (6):
                 Set the storage class to ARCHIVE.
         """
+
         STORAGE_CLASS_UNSPECIFIED = 0
         STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT = 1
         STORAGE_CLASS_PRESERVE = 2
@@ -1418,6 +1424,7 @@ class MetadataOptions(proto.Message):
                 Preserve the object's original temporary hold
                 status.
         """
+
         TEMPORARY_HOLD_UNSPECIFIED = 0
         TEMPORARY_HOLD_SKIP = 1
         TEMPORARY_HOLD_PRESERVE = 2
@@ -1439,6 +1446,7 @@ class MetadataOptions(proto.Message):
                 encryption key will be encrypted using the
                 destination bucket's encryption settings.
         """
+
         KMS_KEY_UNSPECIFIED = 0
         KMS_KEY_DESTINATION_BUCKET_DEFAULT = 1
         KMS_KEY_PRESERVE = 2
@@ -1460,6 +1468,7 @@ class MetadataOptions(proto.Message):
                 object's ``customTime`` field will not be propagated to the
                 destination object.
         """
+
         TIME_CREATED_UNSPECIFIED = 0
         TIME_CREATED_SKIP = 1
         TIME_CREATED_PRESERVE_AS_CUSTOM_TIME = 2
@@ -1642,10 +1651,10 @@ class EventStream(proto.Message):
 
     Attributes:
         name (str):
-            Required. Specifies a unique name of the
-            resource such as AWS SQS ARN in the form
-            'arn:aws:sqs:region:account_id:queue_name', or
-            Pub/Sub subscription resource name in the form
+            Required. Specifies a unique name of the resource such as
+            AWS SQS ARN in the form
+            'arn:aws:sqs:region:account_id:queue_name', or Pub/Sub
+            subscription resource name in the form
             'projects/{project}/subscriptions/{sub}'.
         event_stream_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Specifies the date and time that Storage
@@ -1800,6 +1809,7 @@ class TransferJob(proto.Message):
                 for garbage collection 30 days after their status is set to
                 ``DELETED``.
         """
+
         STATUS_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -2167,6 +2177,7 @@ class NotificationConfig(proto.Message):
                 ``TransferOperation`` completed with status
                 [ABORTED][google.storagetransfer.v1.TransferOperation.Status.ABORTED].
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         TRANSFER_OPERATION_SUCCESS = 1
         TRANSFER_OPERATION_FAILED = 2
@@ -2186,6 +2197,7 @@ class NotificationConfig(proto.Message):
                 response <https://developers.google.com/protocol-buffers/docs/proto3#json>`__,
                 in application/json.
         """
+
         PAYLOAD_FORMAT_UNSPECIFIED = 0
         NONE = 1
         JSON = 2
@@ -2209,9 +2221,9 @@ class NotificationConfig(proto.Message):
 class LoggingConfig(proto.Message):
     r"""Specifies the logging behavior for transfer operations.
 
-    Logs can be sent to Cloud Logging for all transfer types. See
-    [Read transfer
-    logs](https://cloud.google.com/storage-transfer/docs/read-transfer-logs)
+    Logs can be sent to Cloud Logging for all transfer types. See `Read
+    transfer
+    logs <https://cloud.google.com/storage-transfer/docs/read-transfer-logs>`__
     for details.
 
     Attributes:
@@ -2222,14 +2234,13 @@ class LoggingConfig(proto.Message):
             States in which ``log_actions`` are logged. If empty, no
             logs are generated.
         enable_onprem_gcs_transfer_logs (bool):
-            For PosixFilesystem transfers, enables
-            [file system transfer
-            logs](https://cloud.google.com/storage-transfer/docs/on-prem-transfer-log-format)
+            For PosixFilesystem transfers, enables `file system transfer
+            logs <https://cloud.google.com/storage-transfer/docs/on-prem-transfer-log-format>`__
             instead of, or in addition to, Cloud Logging.
 
             This option ignores [LoggableAction] and
-            [LoggableActionState]. If these are set, Cloud
-            Logging will also be enabled for this transfer.
+            [LoggableActionState]. If these are set, Cloud Logging will
+            also be enabled for this transfer.
     """
 
     class LoggableAction(proto.Enum):
@@ -2246,6 +2257,7 @@ class LoggingConfig(proto.Message):
             COPY (3):
                 Copying objects to the destination.
         """
+
         LOGGABLE_ACTION_UNSPECIFIED = 0
         FIND = 1
         DELETE = 2
@@ -2270,6 +2282,7 @@ class LoggingConfig(proto.Message):
                 supported for agent-based transfers. ``SKIPPED`` actions are
                 logged as [INFO][google.logging.type.LogSeverity.INFO].
         """
+
         LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -2346,6 +2359,7 @@ class TransferOperation(proto.Message):
                 The operation is suspending and draining the
                 ongoing work to completion.
         """
+
         STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         PAUSED = 2

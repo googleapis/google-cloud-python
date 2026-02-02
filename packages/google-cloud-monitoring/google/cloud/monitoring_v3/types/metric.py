@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import label_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.label_pb2 as label_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import common
@@ -82,11 +82,11 @@ class TimeSeries(proto.Message):
             The associated metric. A fully-specified
             metric used to identify the time series.
         resource (google.api.monitored_resource_pb2.MonitoredResource):
-            The associated monitored resource. Custom
-            metrics can use only certain monitored resource
-            types in their time series data. For more
-            information, see [Monitored resources for custom
-            metrics](https://cloud.google.com/monitoring/custom-metrics/creating-metrics#custom-metric-resources).
+            The associated monitored resource. Custom metrics can use
+            only certain monitored resource types in their time series
+            data. For more information, see `Monitored resources for
+            custom
+            metrics <https://cloud.google.com/monitoring/custom-metrics/creating-metrics#custom-metric-resources>`__.
         metadata (google.api.monitored_resource_pb2.MonitoredResourceMetadata):
             Output only. The associated monitored
             resource metadata. When reading a time series,
@@ -369,17 +369,14 @@ class TextLocator(proto.Message):
 
     Attributes:
         source (str):
-            The source of the text. The source may be a
-            field in the request, in which case its format
-            is the format of the
-            google.rpc.BadRequest.FieldViolation.field field
-            in
+            The source of the text. The source may be a field in the
+            request, in which case its format is the format of the
+            google.rpc.BadRequest.FieldViolation.field field in
             https://cloud.google.com/apis/design/errors#error_details.
-            It may also be be a source other than the
-            request field (e.g. a macro definition
-            referenced in the text of the query), in which
-            case this is the name of the source (e.g. the
-            macro name).
+            It may also be be a source other than the request field
+            (e.g. a macro definition referenced in the text of the
+            query), in which case this is the name of the source (e.g.
+            the macro name).
         start_position (google.cloud.monitoring_v3.types.TextLocator.Position):
             The position of the first byte within the
             text.

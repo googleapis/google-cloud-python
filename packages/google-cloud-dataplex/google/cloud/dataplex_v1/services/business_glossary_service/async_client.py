@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dataplex_v1 import gapic_version as package_version
 
@@ -44,15 +44,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dataplex_v1.services.business_glossary_service import pagers
 from google.cloud.dataplex_v1.types import business_glossary, service
@@ -148,7 +150,8 @@ class BusinessGlossaryServiceAsyncClient:
         Returns:
             BusinessGlossaryServiceAsyncClient: The constructed client.
         """
-        return BusinessGlossaryServiceClient.from_service_account_info.__func__(BusinessGlossaryServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BusinessGlossaryServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BusinessGlossaryServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -164,7 +167,10 @@ class BusinessGlossaryServiceAsyncClient:
         Returns:
             BusinessGlossaryServiceAsyncClient: The constructed client.
         """
-        return BusinessGlossaryServiceClient.from_service_account_file.__func__(BusinessGlossaryServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BusinessGlossaryServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(
+            BusinessGlossaryServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -202,7 +208,9 @@ class BusinessGlossaryServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return BusinessGlossaryServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return BusinessGlossaryServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> BusinessGlossaryServiceTransport:
@@ -659,9 +667,7 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryRequest, dict]]):
                 The request object. Delete Glossary Request
             name (:class:`str`):
-                Required. The name of the Glossary to
-                delete. Format:
-
+                Required. The name of the Glossary to delete. Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
@@ -789,9 +795,7 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryRequest, dict]]):
                 The request object. Get Glossary Request
             name (:class:`str`):
-                Required. The name of the Glossary to
-                retrieve. Format:
-
+                Required. The name of the Glossary to retrieve. Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
 
                 This corresponds to the ``name`` field
@@ -1308,9 +1312,8 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryCategoryRequest, dict]]):
                 The request object. Delete GlossaryCategory Request
             name (:class:`str`):
-                Required. The name of the
-                GlossaryCategory to delete. Format:
-
+                Required. The name of the GlossaryCategory to delete.
+                Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
@@ -1413,9 +1416,8 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryCategoryRequest, dict]]):
                 The request object. Get GlossaryCategory Request
             name (:class:`str`):
-                Required. The name of the
-                GlossaryCategory to retrieve. Format:
-
+                Required. The name of the GlossaryCategory to retrieve.
+                Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/categories/{category_id}
 
                 This corresponds to the ``name`` field
@@ -1530,10 +1532,8 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.ListGlossaryCategoriesRequest, dict]]):
                 The request object. List GlossaryCategories Request
             parent (:class:`str`):
-                Required. The parent, which has this
-                collection of GlossaryCategories.
-                Format:
-
+                Required. The parent, which has this collection of
+                GlossaryCategories. Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}
                 Location is the Google Cloud region.
 
@@ -1928,9 +1928,8 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.DeleteGlossaryTermRequest, dict]]):
                 The request object. Delete GlossaryTerm Request
             name (:class:`str`):
-                Required. The name of the GlossaryTerm
-                to delete. Format:
-
+                Required. The name of the GlossaryTerm to delete.
+                Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
                 This corresponds to the ``name`` field
@@ -2031,9 +2030,8 @@ class BusinessGlossaryServiceAsyncClient:
             request (Optional[Union[google.cloud.dataplex_v1.types.GetGlossaryTermRequest, dict]]):
                 The request object. Get GlossaryTerm Request
             name (:class:`str`):
-                Required. The name of the GlossaryTerm
-                to retrieve. Format:
-
+                Required. The name of the GlossaryTerm to retrieve.
+                Format:
                 projects/{project_id_or_number}/locations/{location_id}/glossaries/{glossary_id}/terms/{term_id}
 
                 This corresponds to the ``name`` field

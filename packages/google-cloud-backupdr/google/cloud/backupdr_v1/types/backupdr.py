@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import backupvault_cloudsql
@@ -52,9 +52,9 @@ class NetworkConfig(proto.Message):
             Compute Engine VPC network to which the
             ManagementServer instance is connected.
         peering_mode (google.cloud.backupdr_v1.types.NetworkConfig.PeeringMode):
-            Optional. The network connect mode of the
-            ManagementServer instance. For this version,
-            only PRIVATE_SERVICE_ACCESS is supported.
+            Optional. The network connect mode of the ManagementServer
+            instance. For this version, only PRIVATE_SERVICE_ACCESS is
+            supported.
     """
 
     class PeeringMode(proto.Enum):
@@ -69,6 +69,7 @@ class NetworkConfig(proto.Message):
                 provides an IP address range for multiple Google
                 Cloud services, including Cloud BackupDR.
         """
+
         PEERING_MODE_UNSPECIFIED = 0
         PRIVATE_SERVICE_ACCESS = 1
 
@@ -199,11 +200,10 @@ class ManagementServer(proto.Message):
             ManagementServer resource to prevent
             simultaneous updates from overwiting each other.
         oauth2_client_id (str):
-            Output only. The OAuth 2.0 client id is required
-            to make API calls to the BackupDR instance API
-            of this ManagementServer. This is the value that
-            should be provided in the 'aud' field of the
-            OIDC ID Token (see openid specification
+            Output only. The OAuth 2.0 client id is required to make API
+            calls to the BackupDR instance API of this ManagementServer.
+            This is the value that should be provided in the 'aud' field
+            of the OIDC ID Token (see openid specification
             https://openid.net/specs/openid-connect-core-1_0.html#IDToken).
         workforce_identity_based_oauth2_client_id (google.cloud.backupdr_v1.types.WorkforceIdentityBasedOAuth2ClientID):
             Output only. The OAuth client IDs for both
@@ -228,6 +228,7 @@ class ManagementServer(proto.Message):
                 Instance for backup and restore management
                 (i.e., AGM).
         """
+
         INSTANCE_TYPE_UNSPECIFIED = 0
         BACKUP_RESTORE = 1
 
@@ -261,6 +262,7 @@ class ManagementServer(proto.Message):
                 from the statusMessage field of Instance
                 resource.
         """
+
         INSTANCE_STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -449,8 +451,8 @@ class GetManagementServerRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the management server resource
-            name, in the format
+            Required. Name of the management server resource name, in
+            the format
             'projects/{project_id}/locations/{location}/managementServers/{resource_name}'
     """
 

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -58,6 +58,7 @@ class CalendarPeriod(proto.Enum):
         YEAR (3):
             A year. Year starts on January 1.
     """
+
     CALENDAR_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     QUARTER = 2
@@ -225,9 +226,9 @@ class ThresholdRule(proto.Message):
             is exceeded. This is a 1.0-based percentage, so
             0.5 = 50%. Validation: non-negative number.
         spend_basis (google.cloud.billing.budgets_v1beta1.types.ThresholdRule.Basis):
-            Optional. The type of basis used to determine if
-            spend has passed the threshold. Behavior
-            defaults to CURRENT_SPEND if not set.
+            Optional. The type of basis used to determine if spend has
+            passed the threshold. Behavior defaults to CURRENT_SPEND if
+            not set.
     """
 
     class Basis(proto.Enum):
@@ -248,6 +249,7 @@ class ThresholdRule(proto.Message):
                 It cannot be set in combination with
                 [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
         """
+
         BASIS_UNSPECIFIED = 0
         CURRENT_SPEND = 1
         FORECASTED_SPEND = 2
@@ -430,9 +432,9 @@ class Filter(proto.Message):
     class CreditTypesTreatment(proto.Enum):
         r"""Specifies how credits are applied when determining the spend for
         threshold calculations. Budgets track the total cost minus any
-        applicable selected credits.
-        [See the documentation for a list of credit
-        types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
+        applicable selected credits. `See the documentation for a list of
+        credit
+        types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
 
         Values:
             CREDIT_TYPES_TREATMENT_UNSPECIFIED (0):
@@ -446,12 +448,13 @@ class Filter(proto.Message):
                 to determine the spend for threshold
                 calculations.
             INCLUDE_SPECIFIED_CREDITS (3):
-                [Credit
-                types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type)
-                specified in the credit_types field are
-                subtracted from the gross cost to determine the
-                spend for threshold calculations.
+                `Credit
+                types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__
+                specified in the credit_types field are subtracted from the
+                gross cost to determine the spend for threshold
+                calculations.
         """
+
         CREDIT_TYPES_TREATMENT_UNSPECIFIED = 0
         INCLUDE_ALL_CREDITS = 1
         EXCLUDE_ALL_CREDITS = 2
@@ -511,10 +514,9 @@ class CustomPeriod(proto.Message):
             Required. The start date must be after
             January 1, 2017.
         end_date (google.type.date_pb2.Date):
-            Optional. The end date of the time period.
-            Budgets with elapsed end date won't be
-            processed. If unset, specifies to track all
-            usage incurred since the start_date.
+            Optional. The end date of the time period. Budgets with
+            elapsed end date won't be processed. If unset, specifies to
+            track all usage incurred since the start_date.
     """
 
     start_date: date_pb2.Date = proto.Field(

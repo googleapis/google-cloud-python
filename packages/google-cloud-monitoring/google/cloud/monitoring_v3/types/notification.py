@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import label_pb2  # type: ignore
-from google.api import launch_stage_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.api.label_pb2 as label_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import common, mutation_record
@@ -50,10 +50,9 @@ class NotificationChannelDescriptor(proto.Message):
 
             In the above, ``[TYPE]`` is the value of the ``type`` field.
         type_ (str):
-            The type of notification channel, such as
-            "email" and "sms". To view the full list of
-            channels, see [Channel
-            descriptors](https://cloud.google.com/monitoring/alerts/using-channels-api#ncd).
+            The type of notification channel, such as "email" and "sms".
+            To view the full list of channels, see `Channel
+            descriptors <https://cloud.google.com/monitoring/alerts/using-channels-api#ncd>`__.
             Notification channel types are globally unique.
         display_name (str):
             A human-readable name for the notification
@@ -71,9 +70,8 @@ class NotificationChannelDescriptor(proto.Message):
             description for how that field should be
             populated.
         supported_tiers (MutableSequence[google.cloud.monitoring_v3.types.ServiceTier]):
-            The tiers that support this notification
-            channel; the project service tier must be one of
-            the supported_tiers.
+            The tiers that support this notification channel; the
+            project service tier must be one of the supported_tiers.
         launch_stage (google.api.launch_stage_pb2.LaunchStage):
             The product launch stage for channels of this
             type.
@@ -236,6 +234,7 @@ class NotificationChannel(proto.Message):
                 someone on the project has access to messages
                 that are delivered to that channel.
         """
+
         VERIFICATION_STATUS_UNSPECIFIED = 0
         UNVERIFIED = 1
         VERIFIED = 2
@@ -281,12 +280,12 @@ class NotificationChannel(proto.Message):
         number=12,
         message=mutation_record.MutationRecord,
     )
-    mutation_records: MutableSequence[
-        mutation_record.MutationRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=mutation_record.MutationRecord,
+    mutation_records: MutableSequence[mutation_record.MutationRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=mutation_record.MutationRecord,
+        )
     )
 
 

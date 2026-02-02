@@ -39,9 +39,9 @@ class ImageObjectDetectionAnnotation(proto.Message):
             Output only. The rectangle representing the
             object location.
         score (float):
-            Output only. The confidence that this annotation
-            is positive for the parent example, value in [0,
-            1], higher means higher positivity confidence.
+            Output only. The confidence that this annotation is positive
+            for the parent example, value in [0, 1], higher means higher
+            positivity confidence.
     """
 
     bounding_box: geometry.BoundingPoly = proto.Field(
@@ -66,13 +66,13 @@ class BoundingBoxMetricsEntry(proto.Message):
             threshold value used to compute this metrics
             entry.
         mean_average_precision (float):
-            Output only. The mean average precision, most
-            often close to au_prc.
+            Output only. The mean average precision, most often close to
+            au_prc.
         confidence_metrics_entries (MutableSequence[google.cloud.automl_v1.types.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
             Output only. Metrics for each label-match
             confidence_threshold from
-            0.05,0.10,...,0.95,0.96,0.97,0.98,0.99.
-            Precision-recall curve is derived from them.
+            0.05,0.10,...,0.95,0.96,0.97,0.98,0.99. Precision-recall
+            curve is derived from them.
     """
 
     class ConfidenceMetricsEntry(proto.Message):
@@ -118,12 +118,12 @@ class BoundingBoxMetricsEntry(proto.Message):
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries: MutableSequence[
-        ConfidenceMetricsEntry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ConfidenceMetricsEntry,
+    confidence_metrics_entries: MutableSequence[ConfidenceMetricsEntry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ConfidenceMetricsEntry,
+        )
     )
 
 
@@ -143,21 +143,21 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             label confidence threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 pair.
         bounding_box_mean_average_precision (float):
-            Output only. The single metric for bounding
-            boxes evaluation: the mean_average_precision
-            averaged over all bounding_box_metrics_entries.
+            Output only. The single metric for bounding boxes
+            evaluation: the mean_average_precision averaged over all
+            bounding_box_metrics_entries.
     """
 
     evaluated_bounding_box_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    bounding_box_metrics_entries: MutableSequence[
-        "BoundingBoxMetricsEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="BoundingBoxMetricsEntry",
+    bounding_box_metrics_entries: MutableSequence["BoundingBoxMetricsEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BoundingBoxMetricsEntry",
+        )
     )
     bounding_box_mean_average_precision: float = proto.Field(
         proto.FLOAT,

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -128,6 +128,7 @@ class AuthzPolicy(proto.Message):
                 Signifies that this is used for Cloud Service
                 Mesh. Meant for use by CSM GKE controller only.
         """
+
         LOAD_BALANCING_SCHEME_UNSPECIFIED = 0
         INTERNAL_MANAGED = 1
         EXTERNAL_MANAGED = 2
@@ -149,6 +150,7 @@ class AuthzPolicy(proto.Message):
                 Delegate the authorization decision to an
                 external authorization engine.
         """
+
         AUTHZ_ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -376,17 +378,14 @@ class AuthzPolicy(proto.Message):
 
             Attributes:
                 principal_selector (google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.Principal.PrincipalSelector):
-                    Optional. An enum to decide what principal value
-                    the principal rule will match against. If not
-                    specified, the PrincipalSelector is
-                    CLIENT_CERT_URI_SAN.
+                    Optional. An enum to decide what principal value the
+                    principal rule will match against. If not specified, the
+                    PrincipalSelector is CLIENT_CERT_URI_SAN.
                 principal (google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.StringMatch):
-                    Required. A non-empty string whose value is
-                    matched against the principal value based on the
-                    principal_selector. Only exact match can be
-                    applied for CLIENT_CERT_URI_SAN,
-                    CLIENT_CERT_DNS_NAME_SAN,
-                    CLIENT_CERT_COMMON_NAME selectors.
+                    Required. A non-empty string whose value is matched against
+                    the principal value based on the principal_selector. Only
+                    exact match can be applied for CLIENT_CERT_URI_SAN,
+                    CLIENT_CERT_DNS_NAME_SAN, CLIENT_CERT_COMMON_NAME selectors.
             """
 
             class PrincipalSelector(proto.Enum):
@@ -394,8 +393,8 @@ class AuthzPolicy(proto.Message):
 
                 Values:
                     PRINCIPAL_SELECTOR_UNSPECIFIED (0):
-                        Unspecified principal selector. It will be
-                        treated as CLIENT_CERT_URI_SAN by default.
+                        Unspecified principal selector. It will be treated as
+                        CLIENT_CERT_URI_SAN by default.
                     CLIENT_CERT_URI_SAN (1):
                         The principal rule is matched against a list
                         of URI SANs in the validated client's
@@ -403,31 +402,27 @@ class AuthzPolicy(proto.Message):
                         exact URI SAN value match. This is the default
                         principal selector.
                     CLIENT_CERT_DNS_NAME_SAN (2):
-                        The principal rule is matched against a list of
-                        DNS Name SANs in the validated client's
-                        certificate. A match happens when there is any
-                        exact DNS Name SAN value match.
-                        This is only applicable for Application Load
-                        Balancers except for classic Global External
-                        Application load balancer.
+                        The principal rule is matched against a list of DNS Name
+                        SANs in the validated client's certificate. A match happens
+                        when there is any exact DNS Name SAN value match. This is
+                        only applicable for Application Load Balancers except for
+                        classic Global External Application load balancer.
                         CLIENT_CERT_DNS_NAME_SAN is not supported for
                         INTERNAL_SELF_MANAGED load balancing scheme.
                     CLIENT_CERT_COMMON_NAME (3):
-                        The principal rule is matched against the common
-                        name in the client's certificate. Authorization
-                        against multiple common names in the client
-                        certificate is not supported. Requests with
-                        multiple common names in the client certificate
-                        will be rejected if CLIENT_CERT_COMMON_NAME is
-                        set as the principal selector. A match happens
-                        when there is an exact common name value match.
-                        This is only applicable for Application Load
-                        Balancers except for global external Application
-                        Load Balancer and classic Application Load
-                        Balancer.
+                        The principal rule is matched against the common name in the
+                        client's certificate. Authorization against multiple common
+                        names in the client certificate is not supported. Requests
+                        with multiple common names in the client certificate will be
+                        rejected if CLIENT_CERT_COMMON_NAME is set as the principal
+                        selector. A match happens when there is an exact common name
+                        value match. This is only applicable for Application Load
+                        Balancers except for global external Application Load
+                        Balancer and classic Application Load Balancer.
                         CLIENT_CERT_COMMON_NAME is not supported for
                         INTERNAL_SELF_MANAGED load balancing scheme.
                 """
+
                 PRINCIPAL_SELECTOR_UNSPECIFIED = 0
                 CLIENT_CERT_URI_SAN = 1
                 CLIENT_CERT_DNS_NAME_SAN = 2
@@ -491,10 +486,9 @@ class AuthzPolicy(proto.Message):
                         Service Mesh. This field is not supported for
                         global external Application Load Balancers.
                     ip_blocks (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.IpBlock]):
-                        Optional. A list of IP addresses or IP address
-                        ranges to match against the source IP address of
-                        the request. Limited to 10 ip_blocks per
-                        Authorization Policy
+                        Optional. A list of IP addresses or IP address ranges to
+                        match against the source IP address of the request. Limited
+                        to 10 ip_blocks per Authorization Policy
                     resources (MutableSequence[google.cloud.network_security_v1alpha1.types.AuthzPolicy.AuthzRule.RequestResource]):
                         Optional. A list of resources to match
                         against the resource of the source VM of a
@@ -502,41 +496,41 @@ class AuthzPolicy(proto.Message):
                         Authorization Policy.
                 """
 
-                principals: MutableSequence[
-                    "AuthzPolicy.AuthzRule.Principal"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=1,
-                    message="AuthzPolicy.AuthzRule.Principal",
+                principals: MutableSequence["AuthzPolicy.AuthzRule.Principal"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=1,
+                        message="AuthzPolicy.AuthzRule.Principal",
+                    )
                 )
-                ip_blocks: MutableSequence[
-                    "AuthzPolicy.AuthzRule.IpBlock"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=2,
-                    message="AuthzPolicy.AuthzRule.IpBlock",
+                ip_blocks: MutableSequence["AuthzPolicy.AuthzRule.IpBlock"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=2,
+                        message="AuthzPolicy.AuthzRule.IpBlock",
+                    )
                 )
-                resources: MutableSequence[
-                    "AuthzPolicy.AuthzRule.RequestResource"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=3,
-                    message="AuthzPolicy.AuthzRule.RequestResource",
+                resources: MutableSequence["AuthzPolicy.AuthzRule.RequestResource"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=3,
+                        message="AuthzPolicy.AuthzRule.RequestResource",
+                    )
                 )
 
-            sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="AuthzPolicy.AuthzRule.From.RequestSource",
+            sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AuthzPolicy.AuthzRule.From.RequestSource",
+                )
             )
-            not_sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="AuthzPolicy.AuthzRule.From.RequestSource",
+            not_sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="AuthzPolicy.AuthzRule.From.RequestSource",
+                )
             )
 
         class To(proto.Message):
@@ -609,12 +603,12 @@ class AuthzPolicy(proto.Message):
                             to 10 headers per Authorization Policy.
                     """
 
-                    headers: MutableSequence[
-                        "AuthzPolicy.AuthzRule.HeaderMatch"
-                    ] = proto.RepeatedField(
-                        proto.MESSAGE,
-                        number=1,
-                        message="AuthzPolicy.AuthzRule.HeaderMatch",
+                    headers: MutableSequence["AuthzPolicy.AuthzRule.HeaderMatch"] = (
+                        proto.RepeatedField(
+                            proto.MESSAGE,
+                            number=1,
+                            message="AuthzPolicy.AuthzRule.HeaderMatch",
+                        )
                     )
 
                 header_set: "AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet" = (
@@ -624,31 +618,31 @@ class AuthzPolicy(proto.Message):
                         message="AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet",
                     )
                 )
-                hosts: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=2,
-                    message="AuthzPolicy.AuthzRule.StringMatch",
+                hosts: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=2,
+                        message="AuthzPolicy.AuthzRule.StringMatch",
+                    )
                 )
-                paths: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=3,
-                    message="AuthzPolicy.AuthzRule.StringMatch",
+                paths: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=3,
+                        message="AuthzPolicy.AuthzRule.StringMatch",
+                    )
                 )
                 methods: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=4,
                 )
 
-            operations: MutableSequence[
-                "AuthzPolicy.AuthzRule.To.RequestOperation"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="AuthzPolicy.AuthzRule.To.RequestOperation",
+            operations: MutableSequence["AuthzPolicy.AuthzRule.To.RequestOperation"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AuthzPolicy.AuthzRule.To.RequestOperation",
+                )
             )
             not_operations: MutableSequence[
                 "AuthzPolicy.AuthzRule.To.RequestOperation"

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import color_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -174,12 +174,11 @@ class Card(proto.Message):
             contains a leading image and a title. Headers
             always appear at the top of a card.
         sections (MutableSequence[google.apps.card_v1.types.Card.Section]):
-            Contains a collection of widgets. Each section
-            has its own, optional header. Sections are
-            visually separated by a line divider. For an
-            example in Google Chat apps, see [Define a
+            Contains a collection of widgets. Each section has its own,
+            optional header. Sections are visually separated by a line
+            divider. For an example in Google Chat apps, see `Define a
             section of a
-            card](https://developers.google.com/workspace/chat/design-components-card-dialog#define_a_section_of_a_card).
+            card <https://developers.google.com/workspace/chat/design-components-card-dialog#define_a_section_of_a_card>`__.
         section_divider_style (google.apps.card_v1.types.Card.DividerStyle):
             The divider style between the header,
             sections and footer.
@@ -221,10 +220,11 @@ class Card(proto.Message):
                  }
                ]
         name (str):
-            Name of the card. Used as a card identifier in
-            card navigation.
-            [Google Workspace
-            add-ons](https://developers.google.com/workspace/add-ons):
+            Name of the card. Used as a card identifier in card
+            navigation.
+
+            `Google Workspace
+            add-ons <https://developers.google.com/workspace/add-ons>`__:
         fixed_footer (google.apps.card_v1.types.Card.CardFixedFooter):
             The fixed footer shown at the bottom of this card.
 
@@ -244,21 +244,20 @@ class Card(proto.Message):
             `Google Workspace
             add-ons <https://developers.google.com/workspace/add-ons>`__:
         peek_card_header (google.apps.card_v1.types.Card.CardHeader):
-            When displaying contextual content, the peek
-            card header acts as a placeholder so that the
-            user can navigate forward between the homepage
-            cards and the contextual cards.
+            When displaying contextual content, the peek card header
+            acts as a placeholder so that the user can navigate forward
+            between the homepage cards and the contextual cards.
 
-            [Google Workspace
-            add-ons](https://developers.google.com/workspace/add-ons):
+            `Google Workspace
+            add-ons <https://developers.google.com/workspace/add-ons>`__:
     """
 
     class DividerStyle(proto.Enum):
         r"""The divider style of a card. Currently only used for dividers
         betweens card sections.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             DIVIDER_STYLE_UNSPECIFIED (0):
@@ -271,16 +270,16 @@ class Card(proto.Message):
                 The result is equivalent to not adding a divider
                 at all.
         """
+
         DIVIDER_STYLE_UNSPECIFIED = 0
         SOLID_DIVIDER = 1
         NO_DIVIDER = 2
 
     class DisplayStyle(proto.Enum):
-        r"""In Google Workspace add-ons,
-        determines how a card is displayed.
+        r"""In Google Workspace add-ons, determines how a card is displayed.
 
-        [Google Workspace
-        add-ons](https://developers.google.com/workspace/add-ons):
+        `Google Workspace
+        add-ons <https://developers.google.com/workspace/add-ons>`__:
 
         Values:
             DISPLAY_STYLE_UNSPECIFIED (0):
@@ -295,17 +294,18 @@ class Card(proto.Message):
                 Default value. The card is shown by replacing
                 the view of the top card in the card stack.
         """
+
         DISPLAY_STYLE_UNSPECIFIED = 0
         PEEK = 1
         REPLACE = 2
 
     class CardHeader(proto.Message):
-        r"""Represents a card header. For an example in Google Chat apps,
-        see [Add a
-        header](https://developers.google.com/workspace/chat/design-components-card-dialog#add_a_header).
+        r"""Represents a card header. For an example in Google Chat apps, see
+        `Add a
+        header <https://developers.google.com/workspace/chat/design-components-card-dialog#add_a_header>`__.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Attributes:
             title (str):
@@ -320,8 +320,8 @@ class Card(proto.Message):
             image_type (google.apps.card_v1.types.Widget.ImageType):
                 The shape used to crop the image.
 
-                [Google Workspace add-ons and Chat
-                apps](https://developers.google.com/workspace/extend):
+                `Google Workspace add-ons and Chat
+                apps <https://developers.google.com/workspace/extend>`__:
             image_url (str):
                 The HTTPS URL of the image in the card
                 header.
@@ -356,20 +356,17 @@ class Card(proto.Message):
         r"""A section contains a collection of widgets that are rendered
         vertically in the order that they're specified.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Attributes:
             header (str):
-                Text that appears at the top of a section.
-                Supports simple HTML formatted text. For more
-                information about formatting text, see
-                [Formatting text in Google Chat
-                apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
-                and
-                [Formatting
-                text in Google Workspace
-                add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
+                Text that appears at the top of a section. Supports simple
+                HTML formatted text. For more information about formatting
+                text, see `Formatting text in Google Chat
+                apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
+                and `Formatting text in Google Workspace
+                add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
             widgets (MutableSequence[google.apps.card_v1.types.Widget]):
                 All the widgets in the section.
                 Must contain at least one widget.
@@ -423,12 +420,12 @@ class Card(proto.Message):
         )
 
     class CardAction(proto.Message):
-        r"""A card action is the action associated with the card. For
-        example, an invoice card might include actions such as delete
-        invoice, email invoice, or open the invoice in a browser.
+        r"""A card action is the action associated with the card. For example,
+        an invoice card might include actions such as delete invoice, email
+        invoice, or open the invoice in a browser.
 
-        [Google Workspace
-        add-ons](https://developers.google.com/workspace/add-ons):
+        `Google Workspace
+        add-ons <https://developers.google.com/workspace/add-ons>`__:
 
         Attributes:
             action_label (str):
@@ -935,8 +932,8 @@ class Widget(proto.Message):
     class ImageType(proto.Enum):
         r"""The shape used to crop the image.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             SQUARE (0):
@@ -947,6 +944,7 @@ class Widget(proto.Message):
                 example, a 4x3 image becomes a circle with a
                 diameter of 3.
         """
+
         SQUARE = 0
         CIRCLE = 1
 
@@ -972,6 +970,7 @@ class Widget(proto.Message):
                 widgets to the right. For right-to-left layouts,
                 aligns widgets to the left.
         """
+
         HORIZONTAL_ALIGNMENT_UNSPECIFIED = 0
         START = 1
         CENTER = 2
@@ -990,6 +989,7 @@ class Widget(proto.Message):
             BOTTOM (3):
                 Alignment to the bottom position.
         """
+
         VERTICAL_ALIGNMENT_UNSPECIFIED = 0
         TOP = 1
         MIDDLE = 2
@@ -1076,19 +1076,16 @@ class Widget(proto.Message):
 
 class TextParagraph(proto.Message):
     r"""A paragraph of text that supports formatting. For an example in
-    Google Chat apps, see [Add a paragraph of formatted
-    text](https://developers.google.com/workspace/chat/add-text-image-card-dialog#add_a_paragraph_of_formatted_text).
-    For more information
-    about formatting text, see
-    [Formatting text in Google Chat
-    apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
-    and
-    [Formatting
-    text in Google Workspace
-    add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
+    Google Chat apps, see `Add a paragraph of formatted
+    text <https://developers.google.com/workspace/chat/add-text-image-card-dialog#add_a_paragraph_of_formatted_text>`__.
+    For more information about formatting text, see `Formatting text in
+    Google Chat
+    apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
+    and `Formatting text in Google Workspace
+    add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
 
-    [Google Workspace add-ons and
-    Chat apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         text (str):
@@ -1125,6 +1122,7 @@ class TextParagraph(proto.Message):
             MARKDOWN (2):
                 The text is rendered as Markdown.
         """
+
         TEXT_SYNTAX_UNSPECIFIED = 0
         HTML = 1
         MARKDOWN = 2
@@ -1205,11 +1203,11 @@ class DecoratedText(proto.Message):
     r"""A widget that displays text with optional decorations such as a
     label above or below the text, an icon in front of the text, a
     selection widget, or a button after the text. For an example in
-    Google Chat apps, see [Display text with decorative
-    text](https://developers.google.com/workspace/chat/add-text-image-card-dialog#display_text_with_decorative_elements).
+    Google Chat apps, see `Display text with decorative
+    text <https://developers.google.com/workspace/chat/add-text-image-card-dialog#display_text_with_decorative_elements>`__.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1241,14 +1239,11 @@ class DecoratedText(proto.Message):
         text (str):
             Required. The primary text.
 
-            Supports simple formatting. For more information
-            about formatting text, see
-            [Formatting text in Google Chat
-            apps](https://developers.google.com/workspace/chat/format-messages#card-formatting)
-            and
-            [Formatting
-            text in Google Workspace
-            add-ons](https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting).
+            Supports simple formatting. For more information about
+            formatting text, see `Formatting text in Google Chat
+            apps <https://developers.google.com/workspace/chat/format-messages#card-formatting>`__
+            and `Formatting text in Google Workspace
+            add-ons <https://developers.google.com/apps-script/add-ons/concepts/widgets#text_formatting>`__.
         content_text (google.apps.card_v1.types.TextParagraph):
             ``TextParagraph`` equivalent of ``text``. Allows for more
             complex formatting than ``text``.
@@ -1307,17 +1302,19 @@ class DecoratedText(proto.Message):
 
         Attributes:
             name (str):
-                The name by which the switch widget is
-                identified in a form input event.
-                For details about working with form inputs, see
-                [Receive form
-                data](https://developers.google.com/workspace/chat/read-form-data).
+                The name by which the switch widget is identified in a form
+                input event.
+
+                For details about working with form inputs, see `Receive
+                form
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             value (str):
-                The value entered by a user, returned as part of
-                a form input event.
-                For details about working with form inputs, see
-                [Receive form
-                data](https://developers.google.com/workspace/chat/read-form-data).
+                The value entered by a user, returned as part of a form
+                input event.
+
+                For details about working with form inputs, see `Receive
+                form
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             selected (bool):
                 When ``true``, the switch is selected.
             on_change_action (google.apps.card_v1.types.Action):
@@ -1326,16 +1323,15 @@ class DecoratedText(proto.Message):
             control_type (google.apps.card_v1.types.DecoratedText.SwitchControl.ControlType):
                 How the switch appears in the user interface.
 
-                [Google Workspace add-ons
-                and Chat
-                apps](https://developers.google.com/workspace/extend):
+                `Google Workspace add-ons and Chat
+                apps <https://developers.google.com/workspace/extend>`__:
         """
 
         class ControlType(proto.Enum):
             r"""How the switch appears in the user interface.
 
-            [Google Workspace add-ons
-            and Chat apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
 
             Values:
                 SWITCH (0):
@@ -1345,6 +1341,7 @@ class DecoratedText(proto.Message):
                 CHECK_BOX (2):
                     A checkbox.
             """
+
             SWITCH = 0
             CHECKBOX = 1
             CHECK_BOX = 2
@@ -1466,11 +1463,12 @@ class TextInput(proto.Message):
 
     Attributes:
         name (str):
-            The name by which the text input is identified
-            in a form input event.
-            For details about working with form inputs, see
-            [Receive form
-            data](https://developers.google.com/workspace/chat/read-form-data).
+            The name by which the text input is identified in a form
+            input event.
+
+            For details about working with form inputs, see `Receive
+            form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         label (str):
             The text that appears above the text input field in the user
             interface.
@@ -1489,11 +1487,12 @@ class TextInput(proto.Message):
 
             Required if ``label`` is unspecified. Otherwise, optional.
         value (str):
-            The value entered by a user, returned as part of
-            a form input event.
-            For details about working with form inputs, see
-            [Receive form
-            data](https://developers.google.com/workspace/chat/read-form-data).
+            The value entered by a user, returned as part of a form
+            input event.
+
+            For details about working with form inputs, see `Receive
+            form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         type_ (google.apps.card_v1.types.TextInput.Type):
             How a text input field appears in the user
             interface. For example, whether the field is
@@ -1541,10 +1540,11 @@ class TextInput(proto.Message):
             `Google Workspace
             add-ons <https://developers.google.com/workspace/add-ons>`__:
         validation (google.apps.card_v1.types.Validation):
-            Specify the input format validation necessary
-            for this text field.
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            Specify the input format validation necessary for this text
+            field.
+
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
         placeholder_text (str):
             Text that appears in the text input field when the field is
             empty. Use this text to prompt users to enter a value. For
@@ -1571,6 +1571,7 @@ class TextInput(proto.Message):
                 The text input field has a fixed height of
                 multiple lines.
         """
+
         SINGLE_LINE = 0
         MULTIPLE_LINE = 1
 
@@ -1652,8 +1653,8 @@ class Suggestions(proto.Message):
     class SuggestionItem(proto.Message):
         r"""One suggested value that users can enter in a text input field.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1681,13 +1682,12 @@ class Suggestions(proto.Message):
 
 
 class ButtonList(proto.Message):
-    r"""A list of buttons layed out horizontally. For an example in
-    Google Chat apps, see
-    [Add a
-    button](https://developers.google.com/workspace/chat/design-interactive-card-dialog#add_a_button).
+    r"""A list of buttons layed out horizontally. For an example in Google
+    Chat apps, see `Add a
+    button <https://developers.google.com/workspace/chat/design-interactive-card-dialog#add_a_button>`__.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         buttons (MutableSequence[google.apps.card_v1.types.Button]):
@@ -1732,12 +1732,12 @@ class SelectionInput(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name that identifies the selection
-            input in a form input event.
+            Required. The name that identifies the selection input in a
+            form input event.
 
-            For details about working with form inputs, see
-            [Receive form
-            data](https://developers.google.com/workspace/chat/read-form-data).
+            For details about working with form inputs, see `Receive
+            form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         label (str):
             The text that appears above the selection
             input field in the user interface.
@@ -1758,13 +1758,13 @@ class SelectionInput(proto.Message):
             array of radio buttons or checkboxes. Supports
             up to 100 items.
         on_change_action (google.apps.card_v1.types.Action):
-            If specified, the form is submitted when the
-            selection changes. If not specified, you must
-            specify a separate button that submits the form.
+            If specified, the form is submitted when the selection
+            changes. If not specified, you must specify a separate
+            button that submits the form.
 
-            For details about working with form inputs, see
-            [Receive form
-            data](https://developers.google.com/workspace/chat/read-form-data).
+            For details about working with form inputs, see `Receive
+            form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         multi_select_max_selected_items (int):
             For multiselect menus, the maximum number of
             items that a user can select. Minimum value is 1
@@ -1797,16 +1797,16 @@ class SelectionInput(proto.Message):
     """
 
     class SelectionType(proto.Enum):
-        r"""The format for the items that users can select. Different
-        options support different types of interactions. For example,
-        users can select multiple checkboxes, but can only select one
-        item from a dropdown menu.
+        r"""The format for the items that users can select. Different options
+        support different types of interactions. For example, users can
+        select multiple checkboxes, but can only select one item from a
+        dropdown menu.
 
         Each selection input supports one type of selection. Mixing
         checkboxes and switches, for example, isn't supported.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             CHECK_BOX (0):
@@ -1846,6 +1846,7 @@ class SelectionInput(proto.Message):
                 `Google Workspace add-ons and Chat
                 apps <https://developers.google.com/workspace/extend>`__:
         """
+
         CHECK_BOX = 0
         RADIO_BUTTON = 1
         SWITCH = 2
@@ -1856,8 +1857,8 @@ class SelectionInput(proto.Message):
         r"""An item that users can select in a selection input, such as a
         checkbox or switch. Supports up to 100 items.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1867,12 +1868,12 @@ class SelectionInput(proto.Message):
                 The text that identifies or describes the
                 item to users.
             value (str):
-                The value associated with this item. The client
-                should use this as a form input value.
+                The value associated with this item. The client should use
+                this as a form input value.
 
-                For details about working with form inputs, see
-                [Receive form
-                data](https://developers.google.com/workspace/chat/read-form-data).
+                For details about working with form inputs, see `Receive
+                form
+                data <https://developers.google.com/workspace/chat/read-form-data>`__.
             selected (bool):
                 Whether the item is selected by default. If
                 the selection input only accepts one value (such
@@ -1941,6 +1942,7 @@ class SelectionInput(proto.Message):
                     view and select users from their Google
                     Workspace organization.
             """
+
             UNKNOWN = 0
             USER = 1
 
@@ -2078,6 +2080,7 @@ class DateTimePicker(proto.Message):
             TIME_ONLY (2):
                 Users input a time.
         """
+
         DATE_AND_TIME = 0
         DATE_ONLY = 1
         TIME_ONLY = 2
@@ -2129,8 +2132,8 @@ class OverflowMenu(proto.Message):
     class OverflowMenuItem(proto.Message):
         r"""An option that users can invoke in an overflow menu.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Attributes:
             start_icon (google.apps.card_v1.types.Icon):
@@ -2275,6 +2278,7 @@ class Button(proto.Message):
                 lowest priority actions, especially when
                 presenting multiple options.
         """
+
         TYPE_UNSPECIFIED = 0
         OUTLINED = 1
         FILLED = 2
@@ -2529,8 +2533,8 @@ class ImageCropStyle(proto.Message):
     class ImageCropType(proto.Enum):
         r"""Represents the crop style applied to an image.
 
-        [Google Workspace add-ons
-        and Chat apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             IMAGE_CROP_TYPE_UNSPECIFIED (0):
@@ -2546,6 +2550,7 @@ class ImageCropStyle(proto.Message):
                 Applies a rectangular crop with a 4:3 aspect
                 ratio.
         """
+
         IMAGE_CROP_TYPE_UNSPECIFIED = 0
         SQUARE = 1
         CIRCLE = 2
@@ -2564,11 +2569,11 @@ class ImageCropStyle(proto.Message):
 
 
 class BorderStyle(proto.Message):
-    r"""The style options for the border of a card or widget, including
-    the border type and color.
+    r"""The style options for the border of a card or widget, including the
+    border type and color.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         type_ (google.apps.card_v1.types.BorderStyle.BorderType):
@@ -2602,8 +2607,8 @@ class BorderStyle(proto.Message):
     class BorderType(proto.Enum):
         r"""Represents the border types applied to widgets.
 
-        [Google Workspace add-ons
-        and Chat apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             BORDER_TYPE_UNSPECIFIED (0):
@@ -2613,6 +2618,7 @@ class BorderStyle(proto.Message):
             STROKE (2):
                 Default value. Outline.
         """
+
         BORDER_TYPE_UNSPECIFIED = 0
         NO_BORDER = 1
         STROKE = 2
@@ -2636,8 +2642,8 @@ class BorderStyle(proto.Message):
 class ImageComponent(proto.Message):
     r"""Represents an image.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         image_uri (str):
@@ -2743,8 +2749,8 @@ class Grid(proto.Message):
         r"""Represents an item in a grid layout. Items can contain text, an
         image, or both text and an image.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Attributes:
             id (str):
@@ -2764,8 +2770,8 @@ class Grid(proto.Message):
         class GridItemLayout(proto.Enum):
             r"""Represents the various layout options available for a grid item.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
 
             Values:
                 GRID_ITEM_LAYOUT_UNSPECIFIED (0):
@@ -2777,6 +2783,7 @@ class Grid(proto.Message):
                     The title and subtitle are shown above the
                     grid item's image.
             """
+
             GRID_ITEM_LAYOUT_UNSPECIFIED = 0
             TEXT_BELOW = 1
             TEXT_ABOVE = 2
@@ -2874,8 +2881,8 @@ class Columns(proto.Message):
     class Column(proto.Message):
         r"""A column.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend)
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__
 
         Attributes:
             horizontal_size_style (google.apps.card_v1.types.Columns.Column.HorizontalSizeStyle):
@@ -2914,16 +2921,17 @@ class Columns(proto.Message):
                     possible and no more than 30% of the card's
                     width.
             """
+
             HORIZONTAL_SIZE_STYLE_UNSPECIFIED = 0
             FILL_AVAILABLE_SPACE = 1
             FILL_MINIMUM_SPACE = 2
 
         class VerticalAlignment(proto.Enum):
-            r"""Specifies whether widgets align to the top, bottom, or center of
-            a column.
+            r"""Specifies whether widgets align to the top, bottom, or center of a
+            column.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend)
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__
 
             Values:
                 VERTICAL_ALIGNMENT_UNSPECIFIED (0):
@@ -2936,6 +2944,7 @@ class Columns(proto.Message):
                 BOTTOM (3):
                     Aligns widgets to the bottom of a column.
             """
+
             VERTICAL_ALIGNMENT_UNSPECIFIED = 0
             CENTER = 1
             TOP = 2
@@ -2944,8 +2953,8 @@ class Columns(proto.Message):
         class Widgets(proto.Message):
             r"""The supported widgets that you can include in a column.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend)
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__
 
             This message has `oneof`_ fields (mutually exclusive fields).
             For each oneof, at most one member field can be set at the same time.
@@ -3151,27 +3160,23 @@ class Carousel(proto.Message):
 class CollapseControl(proto.Message):
     r"""Represent an expand and collapse control.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         horizontal_alignment (google.apps.card_v1.types.Widget.HorizontalAlignment):
             The horizontal alignment of the expand and
             collapse button.
         expand_button (google.apps.card_v1.types.Button):
-            Optional. Define a customizable button to expand
-            the section. Both expand_button and
-            collapse_button field must be set. Only one
-            field set will not take into effect.
-            If this field isn't set, the default button is
-            used.
+            Optional. Define a customizable button to expand the
+            section. Both expand_button and collapse_button field must
+            be set. Only one field set will not take into effect. If
+            this field isn't set, the default button is used.
         collapse_button (google.apps.card_v1.types.Button):
-            Optional. Define a customizable button to
-            collapse the section. Both expand_button and
-            collapse_button field must be set. Only one
-            field set will not take into effect.
-            If this field isn't set, the default button is
-            used.
+            Optional. Define a customizable button to collapse the
+            section. Both expand_button and collapse_button field must
+            be set. Only one field set will not take into effect. If
+            this field isn't set, the default button is used.
     """
 
     horizontal_alignment: "Widget.HorizontalAlignment" = proto.Field(
@@ -3192,11 +3197,11 @@ class CollapseControl(proto.Message):
 
 
 class OnClick(proto.Message):
-    r"""Represents how to respond when users click an interactive
-    element on a card, such as a button.
+    r"""Represents how to respond when users click an interactive element on
+    a card, such as a button.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -3226,10 +3231,11 @@ class OnClick(proto.Message):
 
             This field is a member of `oneof`_ ``data``.
         card (google.apps.card_v1.types.Card):
-            A new card is pushed to the card stack after
-            clicking if specified.
-            [Google Workspace
-            add-ons](https://developers.google.com/workspace/add-ons):
+            A new card is pushed to the card stack after clicking if
+            specified.
+
+            `Google Workspace
+            add-ons <https://developers.google.com/workspace/add-ons>`__:
 
             This field is a member of `oneof`_ ``data``.
         overflow_menu (google.apps.card_v1.types.OverflowMenu):
@@ -3282,15 +3288,14 @@ class OpenLink(proto.Message):
         open_as (google.apps.card_v1.types.OpenLink.OpenAs):
             How to open a link.
 
-            [Google Workspace
-            add-ons](https://developers.google.com/workspace/add-ons):
+            `Google Workspace
+            add-ons <https://developers.google.com/workspace/add-ons>`__:
         on_close (google.apps.card_v1.types.OpenLink.OnClose):
-            Whether the client forgets about a link after
-            opening it, or observes it until the window
-            closes.
+            Whether the client forgets about a link after opening it, or
+            observes it until the window closes.
 
-            [Google Workspace
-            add-ons](https://developers.google.com/workspace/add-ons):
+            `Google Workspace
+            add-ons <https://developers.google.com/workspace/add-ons>`__:
     """
 
     class OpenAs(proto.Enum):
@@ -3312,6 +3317,7 @@ class OpenLink(proto.Message):
                 The link opens as an overlay, such as a
                 pop-up.
         """
+
         FULL_SIZE = 0
         OVERLAY = 1
 
@@ -3341,6 +3347,7 @@ class OpenLink(proto.Message):
                 the child window acts as a modal dialog and the parent card
                 is blocked until the child window closes.
         """
+
         NOTHING = 0
         RELOAD = 1
 
@@ -3361,21 +3368,21 @@ class OpenLink(proto.Message):
 
 
 class Action(proto.Message):
-    r"""An action that describes the behavior when the form is
-    submitted. For example, you can invoke an Apps Script script to
-    handle the form. If the action is triggered, the form values are
-    sent to the server.
+    r"""An action that describes the behavior when the form is submitted.
+    For example, you can invoke an Apps Script script to handle the
+    form. If the action is triggered, the form values are sent to the
+    server.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         function (str):
-            A custom function to invoke when the containing
-            element is clicked or otherwise activated.
+            A custom function to invoke when the containing element is
+            clicked or otherwise activated.
 
-            For example usage, see [Read form
-            data](https://developers.google.com/workspace/chat/read-form-data).
+            For example usage, see `Read form
+            data <https://developers.google.com/workspace/chat/read-form-data>`__.
         parameters (MutableSequence[google.apps.card_v1.types.Action.ActionParameter]):
             List of action parameters.
         load_indicator (google.apps.card_v1.types.Action.LoadIndicator):
@@ -3425,30 +3432,28 @@ class Action(proto.Message):
             `Google Chat
             apps <https://developers.google.com/workspace/chat>`__:
         required_widgets (MutableSequence[str]):
-            Optional. Fill this list with the names of
-            widgets that this Action needs for a valid
-            submission.
+            Optional. Fill this list with the names of widgets that this
+            Action needs for a valid submission.
 
-            If the widgets listed here don't have a value
-            when this Action is invoked, the form submission
-            is aborted.
+            If the widgets listed here don't have a value when this
+            Action is invoked, the form submission is aborted.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
         all_widgets_are_required (bool):
-            Optional. If this is true, then all widgets are
-            considered required by this action.
+            Optional. If this is true, then all widgets are considered
+            required by this action.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
     """
 
     class LoadIndicator(proto.Enum):
         r"""Specifies the loading indicator that the action displays while
         making the call to the action.
 
-        [Google Workspace add-ons and Chat
-        apps](https://developers.google.com/workspace/extend):
+        `Google Workspace add-ons and Chat
+        apps <https://developers.google.com/workspace/extend>`__:
 
         Values:
             SPINNER (0):
@@ -3457,6 +3462,7 @@ class Action(proto.Message):
             NONE (1):
                 Nothing is displayed.
         """
+
         SPINNER = 0
         NONE = 1
 
@@ -3497,6 +3503,7 @@ class Action(proto.Message):
                 `Google Chat
                 apps <https://developers.google.com/workspace/chat>`__:
         """
+
         INTERACTION_UNSPECIFIED = 0
         OPEN_DIALOG = 1
 
@@ -3566,22 +3573,23 @@ class Action(proto.Message):
 class Validation(proto.Message):
     r"""Represents the necessary data for validating the widget it's
     attached to.
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         character_limit (int):
-            Specify the character limit for text input
-            widgets. Note that this is only used for text
-            input and is ignored for other widgets.
+            Specify the character limit for text input widgets. Note
+            that this is only used for text input and is ignored for
+            other widgets.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
         input_type (google.apps.card_v1.types.Validation.InputType):
             Specify the type of the input widgets.
 
-            [Google Workspace add-ons and Chat
-            apps](https://developers.google.com/workspace/extend):
+            `Google Workspace add-ons and Chat
+            apps <https://developers.google.com/workspace/extend>`__:
     """
 
     class InputType(proto.Enum):
@@ -3602,6 +3610,7 @@ class Validation(proto.Message):
                 A emoji selected from system-provided emoji
                 picker.
         """
+
         INPUT_TYPE_UNSPECIFIED = 0
         TEXT = 1
         INTEGER = 2
@@ -3624,8 +3633,8 @@ class ChipList(proto.Message):
     r"""A list of chips layed out horizontally, which can either scroll
     horizontally or wrap to the next line.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         layout (google.apps.card_v1.types.ChipList.Layout):
@@ -3648,6 +3657,7 @@ class ChipList(proto.Message):
                 The chips scroll horizontally if they don't
                 fit in the available space.
         """
+
         LAYOUT_UNSPECIFIED = 0
         WRAPPED = 1
         HORIZONTAL_SCROLLABLE = 2
@@ -3667,8 +3677,8 @@ class ChipList(proto.Message):
 class Chip(proto.Message):
     r"""A text, icon, or text and icon chip that users can click.
 
-    [Google Workspace add-ons and Chat
-    apps](https://developers.google.com/workspace/extend):
+    `Google Workspace add-ons and Chat
+    apps <https://developers.google.com/workspace/extend>`__:
 
     Attributes:
         icon (google.apps.card_v1.types.Icon):

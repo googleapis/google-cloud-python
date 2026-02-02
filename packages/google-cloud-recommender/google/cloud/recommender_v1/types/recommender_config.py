@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -35,8 +35,7 @@ class RecommenderConfig(proto.Message):
 
     Attributes:
         name (str):
-            Name of recommender config.
-            Eg,
+            Name of recommender config. Eg,
             projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/config
         recommender_generation_config (google.cloud.recommender_v1.types.RecommenderGenerationConfig):
             RecommenderGenerationConfig which configures

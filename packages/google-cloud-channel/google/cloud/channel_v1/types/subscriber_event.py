@@ -35,8 +35,7 @@ class CustomerEvent(proto.Message):
 
     Attributes:
         customer (str):
-            Resource name of the customer.
-            Format:
+            Resource name of the customer. Format:
             accounts/{account_id}/customers/{customer_id}
         event_type (google.cloud.channel_v1.types.CustomerEvent.Type):
             Type of event which happened for the
@@ -55,6 +54,7 @@ class CustomerEvent(proto.Message):
                 Primary domain of the customer has been
                 verified.
         """
+
         TYPE_UNSPECIFIED = 0
         PRIMARY_DOMAIN_CHANGED = 1
         PRIMARY_DOMAIN_VERIFIED = 2
@@ -77,7 +77,6 @@ class EntitlementEvent(proto.Message):
     Attributes:
         entitlement (str):
             Resource name of an entitlement of the form:
-
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         event_type (google.cloud.channel_v1.types.EntitlementEvent.Type):
             Type of event which happened for the
@@ -124,6 +123,7 @@ class EntitlementEvent(proto.Message):
             LICENSE_CAP_CHANGED (13):
                 License cap was changed for the entitlement.
         """
+
         TYPE_UNSPECIFIED = 0
         CREATED = 1
         PRICE_PLAN_SWITCHED = 3

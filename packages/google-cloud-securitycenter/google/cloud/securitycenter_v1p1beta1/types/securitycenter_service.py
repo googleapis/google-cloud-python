@@ -17,12 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1p1beta1.types import asset as gcs_asset
+from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1p1beta1.types import folder
 from google.cloud.securitycenter_v1p1beta1.types import (
     notification_config as gcs_notification_config,
 )
@@ -32,9 +35,6 @@ from google.cloud.securitycenter_v1p1beta1.types import (
 from google.cloud.securitycenter_v1p1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.cloud.securitycenter_v1p1beta1.types import asset as gcs_asset
-from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1p1beta1.types import folder
 from google.cloud.securitycenter_v1p1beta1.types import source as gcs_source
 
 __protobuf__ = proto.module(
@@ -76,16 +76,16 @@ class CreateFindingRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new finding's
-            parent. Its format should be
+            Required. Resource name of the new finding's parent. Its
+            format should be
             "organizations/[organization_id]/sources/[source_id]".
         finding_id (str):
             Required. Unique identifier provided by the
             client within the parent scope.
         finding (google.cloud.securitycenter_v1p1beta1.types.Finding):
-            Required. The Finding being created. The name
-            and security_marks will be ignored as they are
-            both output only fields on this resource.
+            Required. The Finding being created. The name and
+            security_marks will be ignored as they are both output only
+            fields on this resource.
     """
 
     parent: str = proto.Field(
@@ -108,9 +108,8 @@ class CreateNotificationConfigRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new notification
-            config's parent. Its format is
-            "organizations/[organization_id]".
+            Required. Resource name of the new notification config's
+            parent. Its format is "organizations/[organization_id]".
         config_id (str):
             Required. Unique identifier provided by the
             client within the parent scope. It must be
@@ -144,13 +143,12 @@ class CreateSourceRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the new source's
-            parent. Its format should be
-            "organizations/[organization_id]".
+            Required. Resource name of the new source's parent. Its
+            format should be "organizations/[organization_id]".
         source (google.cloud.securitycenter_v1p1beta1.types.Source):
-            Required. The Source being created, only the
-            display_name and description will be used. All
-            other fields will be ignored.
+            Required. The Source being created, only the display_name
+            and description will be used. All other fields will be
+            ignored.
     """
 
     parent: str = proto.Field(
@@ -169,8 +167,8 @@ class DeleteNotificationConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the notification config to
-            delete. Its format is
+            Required. Name of the notification config to delete. Its
+            format is
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
@@ -185,8 +183,8 @@ class GetNotificationConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the notification config to
-            get. Its format is
+            Required. Name of the notification config to get. Its format
+            is
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
@@ -201,8 +199,8 @@ class GetOrganizationSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the organization to get
-            organization settings for. Its format is
+            Required. Name of the organization to get organization
+            settings for. Its format is
             "organizations/[organization_id]/organizationSettings".
     """
 
@@ -217,9 +215,8 @@ class GetSourceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. Relative resource name of the source.
-            Its format is
-            "organizations/[organization_id]/source/[source_id]".
+            Required. Relative resource name of the source. Its format
+            is "organizations/[organization_id]/source/[source_id]".
     """
 
     name: str = proto.Field(
@@ -233,9 +230,9 @@ class GroupAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to groupBy.
-            Its format is "organizations/[organization_id],
-            folders/[folder_id], or projects/[project_id]".
+            Required. Name of the organization to groupBy. Its format is
+            "organizations/[organization_id], folders/[folder_id], or
+            projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
             The expression is a list of zero or more restrictions
@@ -719,9 +716,8 @@ class ListNotificationConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to list
-            notification configs. Its format is
-            "organizations/[organization_id]".
+            Required. Name of the organization to list notification
+            configs. Its format is "organizations/[organization_id]".
         page_token (str):
             The value returned by the last
             ``ListNotificationConfigsResponse``; indicates that this is
@@ -781,9 +777,8 @@ class ListSourcesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the parent of sources
-            to list. Its format should be
-            "organizations/[organization_id],
+            Required. Resource name of the parent of sources to list.
+            Its format should be "organizations/[organization_id],
             folders/[folder_id], or projects/[project_id]".
         page_token (str):
             The value returned by the last ``ListSourcesResponse``;
@@ -841,9 +836,8 @@ class ListAssetsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization assets should
-            belong to. Its format is
-            "organizations/[organization_id],
+            Required. Name of the organization assets should belong to.
+            Its format is "organizations/[organization_id],
             folders/[folder_id], or projects/[project_id]".
         filter (str):
             Expression that defines the filter to apply across assets.
@@ -929,27 +923,19 @@ class ListAssetsRequest(proto.Message):
             based on a property not existing:
             ``-resource_properties.my_property : ""``
         order_by (str):
-            Expression that defines what fields and order to
-            use for sorting. The string value should follow
-            SQL syntax: comma separated list of fields. For
-            example: "name,resource_properties.a_property".
-            The default sorting order is ascending. To
-            specify descending order for a field, a suffix "
-            desc" should be appended to the field name. For
-            example: "name
-            desc,resource_properties.a_property". Redundant
-            space characters in the syntax are
-            insignificant. "name
-            desc,resource_properties.a_property" and " name
-            desc , resource_properties.a_property " are
-            equivalent.
+            Expression that defines what fields and order to use for
+            sorting. The string value should follow SQL syntax: comma
+            separated list of fields. For example:
+            "name,resource_properties.a_property". The default sorting
+            order is ascending. To specify descending order for a field,
+            a suffix " desc" should be appended to the field name. For
+            example: "name desc,resource_properties.a_property".
+            Redundant space characters in the syntax are insignificant.
+            "name desc,resource_properties.a_property" and " name desc ,
+            resource_properties.a_property " are equivalent.
 
-            The following fields are supported:
-
-            name
-            update_time
-            resource_properties
-            security_marks.marks
+            The following fields are supported: name update_time
+            resource_properties security_marks.marks
             security_center_properties.resource_name
             security_center_properties.resource_display_name
             security_center_properties.resource_parent
@@ -1073,10 +1059,10 @@ class ListAssetsResponse(proto.Message):
         class StateChange(proto.Enum):
             r"""The change in state of the asset.
 
-            When querying across two points in time this describes the
-            change between the two points: ADDED, REMOVED, or ACTIVE. If
-            there was no compare_duration supplied in the request the state
-            change will be: UNUSED
+            When querying across two points in time this describes the change
+            between the two points: ADDED, REMOVED, or ACTIVE. If there was no
+            compare_duration supplied in the request the state change will be:
+            UNUSED
 
             Values:
                 UNUSED (0):
@@ -1089,6 +1075,7 @@ class ListAssetsResponse(proto.Message):
                 ACTIVE (3):
                     Asset was present at both point(s) in time.
             """
+
             UNUSED = 0
             ADDED = 1
             REMOVED = 2
@@ -1206,30 +1193,19 @@ class ListFindingsRequest(proto.Message):
             based on a property not existing:
             ``-source_properties.my_property : ""``
         order_by (str):
-            Expression that defines what fields and order to
-            use for sorting. The string value should follow
-            SQL syntax: comma separated list of fields. For
-            example: "name,resource_properties.a_property".
-            The default sorting order is ascending. To
-            specify descending order for a field, a suffix "
-            desc" should be appended to the field name. For
-            example: "name
-            desc,source_properties.a_property". Redundant
-            space characters in the syntax are
-            insignificant. "name
-            desc,source_properties.a_property" and " name
-            desc , source_properties.a_property " are
-            equivalent.
+            Expression that defines what fields and order to use for
+            sorting. The string value should follow SQL syntax: comma
+            separated list of fields. For example:
+            "name,resource_properties.a_property". The default sorting
+            order is ascending. To specify descending order for a field,
+            a suffix " desc" should be appended to the field name. For
+            example: "name desc,source_properties.a_property". Redundant
+            space characters in the syntax are insignificant. "name
+            desc,source_properties.a_property" and " name desc ,
+            source_properties.a_property " are equivalent.
 
-            The following fields are supported:
-
-            name
-            parent
-            state
-            category
-            resource_name
-            event_time
-            source_properties
+            The following fields are supported: name parent state
+            category resource_name event_time source_properties
             security_marks.marks
         read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
@@ -1356,13 +1332,12 @@ class ListFindingsResponse(proto.Message):
         class StateChange(proto.Enum):
             r"""The change in state of the finding.
 
-            When querying across two points in time this describes the
-            change in the finding between the two points: CHANGED,
-            UNCHANGED, ADDED, or REMOVED. Findings can not be deleted, so
-            REMOVED implies that the finding at timestamp does not match the
-            filter specified, but it did at timestamp - compare_duration. If
-            there was no compare_duration supplied in the request the state
-            change will be: UNUSED
+            When querying across two points in time this describes the change in
+            the finding between the two points: CHANGED, UNCHANGED, ADDED, or
+            REMOVED. Findings can not be deleted, so REMOVED implies that the
+            finding at timestamp does not match the filter specified, but it did
+            at timestamp - compare_duration. If there was no compare_duration
+            supplied in the request the state change will be: UNUSED
 
             Values:
                 UNUSED (0):
@@ -1379,10 +1354,10 @@ class ListFindingsResponse(proto.Message):
                     The finding was created between the points in
                     time.
                 REMOVED (4):
-                    The finding at timestamp does not match the
-                    filter specified, but it did at timestamp -
-                    compare_duration.
+                    The finding at timestamp does not match the filter
+                    specified, but it did at timestamp - compare_duration.
             """
+
             UNUSED = 0
             CHANGED = 1
             UNCHANGED = 2
@@ -1396,7 +1371,6 @@ class ListFindingsResponse(proto.Message):
             Attributes:
                 name (str):
                     The full resource name of the resource. See:
-
                     https://cloud.google.com/apis/design/resource_names#full_resource_name
                 project_name (str):
                     The full resource name of project that the
@@ -1488,11 +1462,9 @@ class SetFindingStateRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The relative resource name of the
-            finding. See:
+            Required. The relative resource name of the finding. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
-
             "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
         state (google.cloud.securitycenter_v1p1beta1.types.Finding.State):
             Required. The desired State of the finding.
@@ -1523,9 +1495,8 @@ class RunAssetDiscoveryRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of the organization to run asset
-            discovery for. Its format is
-            "organizations/[organization_id]".
+            Required. Name of the organization to run asset discovery
+            for. Its format is "organizations/[organization_id]".
     """
 
     parent: str = proto.Field(
@@ -1539,25 +1510,21 @@ class UpdateFindingRequest(proto.Message):
 
     Attributes:
         finding (google.cloud.securitycenter_v1p1beta1.types.Finding):
-            Required. The finding resource to update or
-            create if it does not already exist. parent,
-            security_marks, and update_time will be ignored.
+            Required. The finding resource to update or create if it
+            does not already exist. parent, security_marks, and
+            update_time will be ignored.
 
-            In the case of creation, the finding id portion
-            of the name must be alphanumeric and less than
-            or equal to 32 characters and greater than 0
-            characters in length.
+            In the case of creation, the finding id portion of the name
+            must be alphanumeric and less than or equal to 32 characters
+            and greater than 0 characters in length.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The FieldMask to use when updating the finding
-            resource. This field should not be specified
-            when creating a finding.
+            The FieldMask to use when updating the finding resource.
+            This field should not be specified when creating a finding.
 
-            When updating a finding, an empty mask is
-            treated as updating all mutable fields and
-            replacing source_properties. Individual
-            source_properties can be added/updated by using
-            "source_properties.<property key>" in the field
-            mask.
+            When updating a finding, an empty mask is treated as
+            updating all mutable fields and replacing source_properties.
+            Individual source_properties can be added/updated by using
+            "source_properties." in the field mask.
     """
 
     finding: gcs_finding.Finding = proto.Field(
@@ -1653,12 +1620,12 @@ class UpdateSecurityMarksRequest(proto.Message):
             Required. The security marks resource to
             update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The FieldMask to use when updating the security
-            marks resource.
-            The field mask must not contain duplicate
-            fields. If empty or set to "marks", all marks
-            will be replaced. Individual marks can be
-            updated using "marks.<mark_key>".
+            The FieldMask to use when updating the security marks
+            resource.
+
+            The field mask must not contain duplicate fields. If empty
+            or set to "marks", all marks will be replaced. Individual
+            marks can be updated using "marks.<mark_key>".
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the updated SecurityMarks
             take effect. If not set uses current server

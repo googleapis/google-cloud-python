@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.chat_v1.types import history_state
@@ -236,6 +236,7 @@ class Space(proto.Message):
                 doesn't include direct messages between two
                 humans.
         """
+
         TYPE_UNSPECIFIED = 0
         ROOM = 1
         DM = 2
@@ -257,6 +258,7 @@ class Space(proto.Message):
                 1:1 messages between two humans or a human
                 and a Chat app.
         """
+
         SPACE_TYPE_UNSPECIFIED = 0
         SPACE = 1
         GROUP_CHAT = 2
@@ -281,6 +283,7 @@ class Space(proto.Message):
                 Direct messages (DMs) between two people and
                 group conversations between 3 or more people.
         """
+
         SPACE_THREADING_STATE_UNSPECIFIED = 0
         THREADED_MESSAGES = 2
         GROUPED_MESSAGES = 3
@@ -288,10 +291,9 @@ class Space(proto.Message):
 
     class PredefinedPermissionSettings(proto.Enum):
         r"""Predefined permission settings that you can only specify when
-        creating a named space. More settings might be added in the
-        future. For details about permission settings for named spaces,
-        see [Learn about
-        spaces](https://support.google.com/chat/answer/7659784).
+        creating a named space. More settings might be added in the future.
+        For details about permission settings for named spaces, see `Learn
+        about spaces <https://support.google.com/chat/answer/7659784>`__.
 
         Values:
             PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED (0):
@@ -304,6 +306,7 @@ class Space(proto.Message):
                 space where only space managers can post
                 messages.
         """
+
         PREDEFINED_PERMISSION_SETTINGS_UNSPECIFIED = 0
         COLLABORATION_SPACE = 1
         ANNOUNCEMENT_SPACE = 2
@@ -357,8 +360,8 @@ class Space(proto.Message):
         )
 
     class AccessSettings(proto.Message):
-        r"""Represents the [access
-        setting](https://support.google.com/chat/answer/11971020) of the
+        r"""Represents the `access
+        setting <https://support.google.com/chat/answer/11971020>`__ of the
         space.
 
         Attributes:
@@ -412,17 +415,17 @@ class Space(proto.Message):
                     Google Workspace administrators can discover and
                     access the space.
                 DISCOVERABLE (2):
-                    A space manager has granted a target audience
-                    access to the space. Users or Google Groups that
-                    have been individually added or invited to the
-                    space can also discover and access the space. To
-                    learn more, see [Make a space discoverable to
+                    A space manager has granted a target audience access to the
+                    space. Users or Google Groups that have been individually
+                    added or invited to the space can also discover and access
+                    the space. To learn more, see `Make a space discoverable to
                     specific
-                    users](https://developers.google.com/workspace/chat/space-target-audience).
+                    users <https://developers.google.com/workspace/chat/space-target-audience>`__.
 
-                    Creating discoverable spaces requires [user
-                    authentication](https://developers.google.com/workspace/chat/authenticate-authorize-chat-user).
+                    Creating discoverable spaces requires `user
+                    authentication <https://developers.google.com/workspace/chat/authenticate-authorize-chat-user>`__.
             """
+
             ACCESS_STATE_UNSPECIFIED = 0
             PRIVATE = 1
             DISCOVERABLE = 2

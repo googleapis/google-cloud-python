@@ -31,8 +31,7 @@ __protobuf__ = proto.module(
 
 class AutomationRunEvent(proto.Message):
     r"""Payload proto for "clouddeploy.googleapis.com/automation_run"
-    Platform Log event that describes the AutomationRun related
-    events.
+    Platform Log event that describes the AutomationRun related events.
 
     Attributes:
         message (str):

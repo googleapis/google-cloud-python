@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -586,9 +586,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Response message for the ``BatchCreateRegions`` method.
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseBatchCreateRegions._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_regions(
                 request, metadata
@@ -736,9 +734,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseBatchDeleteRegions._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_delete_regions(
                 request, metadata
@@ -764,7 +760,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -854,9 +850,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Response message for the ``BatchUpdateRegions`` method.
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseBatchUpdateRegions._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_regions(
                 request, metadata
@@ -1183,7 +1177,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {

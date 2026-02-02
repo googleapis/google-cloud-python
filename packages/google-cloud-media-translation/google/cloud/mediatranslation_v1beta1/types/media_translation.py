@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -271,9 +271,8 @@ class StreamingTranslateSpeechResponse(proto.Message):
             [google.rpc.Status][google.rpc.Status] message that
             specifies the error for the operation.
         result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult):
-            Output only. The translation result that is
-            currently being processed (is_final could be
-            true or false).
+            Output only. The translation result that is currently being
+            processed (is_final could be true or false).
         speech_event_type (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse.SpeechEventType):
             Output only. Indicates the type of speech
             event.
@@ -300,6 +299,7 @@ class StreamingTranslateSpeechResponse(proto.Message):
                 ``single_utterance`` was set to ``true``, and is not used
                 otherwise.
         """
+
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 

@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.geminidataanalytics_v1alpha.types import agent_context
 from google.cloud.geminidataanalytics_v1alpha.types import (
     credentials as gcg_credentials,
 )
-from google.cloud.geminidataanalytics_v1alpha.types import agent_context
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
@@ -52,8 +52,7 @@ __protobuf__ = proto.module(
 
 
 class DataFilterType(proto.Enum):
-    r"""The type of filter present on a datasource, such as
-    ALWAYS_FILTER.
+    r"""The type of filter present on a datasource, such as ALWAYS_FILTER.
 
     Values:
         DATA_FILTER_TYPE_UNSPECIFIED (0):
@@ -64,6 +63,7 @@ class DataFilterType(proto.Enum):
             filter by default. Currently only used for
             Looker data sources.
     """
+
     DATA_FILTER_TYPE_UNSPECIFIED = 0
     ALWAYS_FILTER = 1
 
@@ -206,12 +206,12 @@ class StudioDatasourceReferences(proto.Message):
             The references to the studio datasources.
     """
 
-    studio_references: MutableSequence[
-        "StudioDatasourceReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="StudioDatasourceReference",
+    studio_references: MutableSequence["StudioDatasourceReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="StudioDatasourceReference",
+        )
     )
 
 
@@ -359,6 +359,7 @@ class SpannerDatabaseReference(proto.Message):
             POSTGRESQL (2):
                 PostgreSQL
         """
+
         ENGINE_UNSPECIFIED = 0
         GOOGLE_SQL = 1
         POSTGRESQL = 2
@@ -448,6 +449,7 @@ class CloudSqlDatabaseReference(proto.Message):
             MYSQL (2):
                 MySQL
         """
+
         ENGINE_UNSPECIFIED = 0
         POSTGRESQL = 1
         MYSQL = 2
@@ -486,12 +488,12 @@ class LookerExploreReferences(proto.Message):
         explore_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerExploreReference]):
             Required. References to Looker explores.
         credentials (google.cloud.geminidataanalytics_v1alpha.types.Credentials):
-            Optional. The credentials to use when calling
-            the Looker API.
-            Currently supports both OAuth token and API
-            key-based credentials, as described in
-            [Authentication with an
-            SDK](https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk).
+            Optional. The credentials to use when calling the Looker
+            API.
+
+            Currently supports both OAuth token and API key-based
+            credentials, as described in `Authentication with an
+            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
     """
 
     explore_references: MutableSequence["LookerExploreReference"] = proto.RepeatedField(
@@ -527,14 +529,12 @@ class LookerExploreReference(proto.Message):
 
             This field is a member of `oneof`_ ``instance``.
         lookml_model (str):
-            Required. Looker model, as outlined in
-            [Major LookML
-            structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+            Required. Looker model, as outlined in `Major LookML
+            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
             Name of the LookML model.
         explore (str):
-            Required. Looker Explore, as outlined in
-            [Major LookML
-            structures](https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures).
+            Required. Looker Explore, as outlined in `Major LookML
+            structures <https://cloud.google.com/looker/docs/lookml-terms-and-concepts#major_lookml_structures>`__.
             Name of the LookML Explore.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
             Optional. The schema of the datasource.
@@ -695,21 +695,19 @@ class Schema(proto.Message):
             our e-commerce store." Currently only used for
             BigQuery data sources.
         synonyms (MutableSequence[str]):
-            Optional. A list of alternative names or
-            synonyms that can be used to refer to the table.
-            For example: ["sales", "orders", "purchases"].
-            Currently only used for BigQuery data sources.
+            Optional. A list of alternative names or synonyms that can
+            be used to refer to the table. For example: ["sales",
+            "orders", "purchases"]. Currently only used for BigQuery
+            data sources.
         tags (MutableSequence[str]):
-            Optional. A list of tags or keywords associated
-            with the table, used for categorization. For
-            example: ["transaction", "revenue",
-            "customer_data"]. Currently only used for
+            Optional. A list of tags or keywords associated with the
+            table, used for categorization. For example: ["transaction",
+            "revenue", "customer_data"]. Currently only used for
             BigQuery data sources.
         display_name (str):
             Optional. Table display_name (same as label in
             cloud/data_analytics/anarres/data/looker/proto/model_explore.proto),
-            not required, currently only Looker has this
-            field.
+            not required, currently only Looker has this field.
         filters (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.DataFilter]):
             Optional. The filters on the datasource's
             underlying data. Currently only used for Looker
@@ -758,16 +756,15 @@ class Field(proto.Message):
             Optional. The mode of the field (e.g.,
             NULLABLE, REPEATED).
         synonyms (MutableSequence[str]):
-            Optional. A list of alternative names or
-            synonyms that can be used to refer to this
-            field. For example: ["id", "customerid",
-            "cust_id"]. Currently only used for BigQuery
+            Optional. A list of alternative names or synonyms that can
+            be used to refer to this field. For example: ["id",
+            "customerid", "cust_id"]. Currently only used for BigQuery
             data sources.
         tags (MutableSequence[str]):
-            Optional. A list of tags or keywords associated
-            with the field, used for categorization. For
-            example: ["identifier", "customer", "pii"].
-            Currently only used for BigQuery data sources.
+            Optional. A list of tags or keywords associated with the
+            field, used for categorization. For example: ["identifier",
+            "customer", "pii"]. Currently only used for BigQuery data
+            sources.
         display_name (str):
             Optional. Field display_name (same as label in
         subfields (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.Field]):
@@ -836,15 +833,14 @@ class DataFilter(proto.Message):
     Attributes:
         field (str):
             Optional. The field to filter on. For example:
-            ["event_date", "customer_id",
-            "product_category"]
+            ["event_date", "customer_id", "product_category"]
         value (str):
-            Optional. The default value used for this filter
-            if the filter is not overridden in a query. For
-            example: ["after 2024-01-01", "123", "-fashion"]
+            Optional. The default value used for this filter if the
+            filter is not overridden in a query. For example: ["after
+            2024-01-01", "123", "-fashion"]
         type_ (google.cloud.geminidataanalytics_v1alpha.types.DataFilterType):
-            Optional. The type of filter present on a
-            datasource, such as ALWAYS_FILTER.
+            Optional. The type of filter present on a datasource, such
+            as ALWAYS_FILTER.
     """
 
     field: str = proto.Field(

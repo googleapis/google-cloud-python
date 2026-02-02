@@ -23,17 +23,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -44,7 +44,16 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -53,22 +62,13 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.edgecontainer_v1.services.edge_container import (
     EdgeContainerAsyncClient,
@@ -959,10 +959,9 @@ def test_edge_container_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1007,10 +1006,9 @@ def test_edge_container_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1046,10 +1044,9 @@ def test_edge_container_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1292,13 +1289,13 @@ def test_edge_container_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3686,9 +3683,9 @@ def test_generate_access_token_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_access_token
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_access_token] = (
+            mock_rpc
+        )
         request = {}
         client.generate_access_token(request)
 
@@ -5235,9 +5232,9 @@ def test_create_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.create_node_pool(request)
 
@@ -5584,9 +5581,9 @@ def test_update_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.update_node_pool(request)
 
@@ -5925,9 +5922,9 @@ def test_delete_node_pool_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_node_pool] = (
+            mock_rpc
+        )
         request = {}
         client.delete_node_pool(request)
 
@@ -7133,9 +7130,9 @@ def test_list_vpn_connections_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_vpn_connections
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_vpn_connections] = (
+            mock_rpc
+        )
         request = {}
         client.list_vpn_connections(request)
 
@@ -7690,9 +7687,9 @@ def test_get_vpn_connection_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vpn_connection] = (
+            mock_rpc
+        )
         request = {}
         client.get_vpn_connection(request)
 
@@ -8045,9 +8042,9 @@ def test_create_vpn_connection_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vpn_connection] = (
+            mock_rpc
+        )
         request = {}
         client.create_vpn_connection(request)
 
@@ -8413,9 +8410,9 @@ def test_delete_vpn_connection_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_vpn_connection] = (
+            mock_rpc
+        )
         request = {}
         client.delete_vpn_connection(request)
 
@@ -8759,9 +8756,9 @@ def test_get_server_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_server_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_server_config] = (
+            mock_rpc
+        )
         request = {}
         client.get_server_config(request)
 
@@ -10146,9 +10143,9 @@ def test_generate_access_token_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_access_token
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_access_token] = (
+            mock_rpc
+        )
 
         request = {}
         client.generate_access_token(request)
@@ -10953,9 +10950,9 @@ def test_create_node_pool_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_node_pool] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_node_pool(request)
@@ -11173,9 +11170,9 @@ def test_update_node_pool_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_node_pool] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_node_pool(request)
@@ -11277,9 +11274,9 @@ def test_delete_node_pool_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_node_pool
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_node_pool] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_node_pool(request)
@@ -11892,9 +11889,9 @@ def test_list_vpn_connections_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_vpn_connections
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_vpn_connections] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_vpn_connections(request)
@@ -12156,9 +12153,9 @@ def test_get_vpn_connection_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_vpn_connection] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_vpn_connection(request)
@@ -12341,9 +12338,9 @@ def test_create_vpn_connection_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_vpn_connection] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_vpn_connection(request)
@@ -12562,9 +12559,9 @@ def test_delete_vpn_connection_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_vpn_connection
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_vpn_connection] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_vpn_connection(request)
@@ -12745,9 +12742,9 @@ def test_get_server_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_server_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_server_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_server_config(request)
@@ -14044,8 +14041,9 @@ def test_list_clusters_rest_bad_request(request_type=service.ListClustersRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14110,17 +14108,19 @@ def test_list_clusters_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_clusters"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_clusters_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_list_clusters"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_clusters"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_clusters_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_list_clusters"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14171,8 +14171,9 @@ def test_get_cluster_rest_bad_request(request_type=service.GetClusterRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14265,17 +14266,19 @@ def test_get_cluster_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_cluster"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_get_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_get_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14324,8 +14327,9 @@ def test_create_cluster_rest_bad_request(request_type=service.CreateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14539,19 +14543,20 @@ def test_create_cluster_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_create_cluster"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_create_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_create_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_create_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_create_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_create_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14602,8 +14607,9 @@ def test_update_cluster_rest_bad_request(request_type=service.UpdateClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14819,19 +14825,20 @@ def test_update_cluster_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_update_cluster"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_update_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_update_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_update_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_update_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_update_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14880,8 +14887,9 @@ def test_upgrade_cluster_rest_bad_request(request_type=service.UpgradeClusterReq
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14938,19 +14946,21 @@ def test_upgrade_cluster_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_upgrade_cluster"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_upgrade_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_upgrade_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_upgrade_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_upgrade_cluster_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_upgrade_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14999,8 +15009,9 @@ def test_delete_cluster_rest_bad_request(request_type=service.DeleteClusterReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15057,19 +15068,20 @@ def test_delete_cluster_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_delete_cluster"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_delete_cluster_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_delete_cluster"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_delete_cluster"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_delete_cluster_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_delete_cluster"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15120,8 +15132,9 @@ def test_generate_access_token_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15184,18 +15197,20 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_generate_access_token"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor,
-        "post_generate_access_token_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_generate_access_token"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_generate_access_token"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_generate_access_token_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_generate_access_token"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15253,8 +15268,9 @@ def test_generate_offline_credential_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15321,18 +15337,20 @@ def test_generate_offline_credential_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_generate_offline_credential"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor,
-        "post_generate_offline_credential_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_generate_offline_credential"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_generate_offline_credential"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_generate_offline_credential_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_generate_offline_credential"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15388,8 +15406,9 @@ def test_list_node_pools_rest_bad_request(request_type=service.ListNodePoolsRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15454,17 +15473,20 @@ def test_list_node_pools_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_node_pools"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_node_pools_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_list_node_pools"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_node_pools"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_list_node_pools_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_list_node_pools"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15517,8 +15539,9 @@ def test_get_node_pool_rest_bad_request(request_type=service.GetNodePoolRequest)
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15591,17 +15614,19 @@ def test_get_node_pool_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_node_pool"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_node_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_get_node_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_node_pool"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_node_pool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_get_node_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15650,8 +15675,9 @@ def test_create_node_pool_rest_bad_request(request_type=service.CreateNodePoolRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15805,19 +15831,21 @@ def test_create_node_pool_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_create_node_pool"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_create_node_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_create_node_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_create_node_pool"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_create_node_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_create_node_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15870,8 +15898,9 @@ def test_update_node_pool_rest_bad_request(request_type=service.UpdateNodePoolRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16029,19 +16058,21 @@ def test_update_node_pool_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_update_node_pool"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_update_node_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_update_node_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_update_node_pool"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_update_node_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_update_node_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16092,8 +16123,9 @@ def test_delete_node_pool_rest_bad_request(request_type=service.DeleteNodePoolRe
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16152,19 +16184,21 @@ def test_delete_node_pool_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_delete_node_pool"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_delete_node_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_delete_node_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_delete_node_pool"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_delete_node_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_delete_node_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16213,8 +16247,9 @@ def test_list_machines_rest_bad_request(request_type=service.ListMachinesRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16279,17 +16314,19 @@ def test_list_machines_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_machines"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_machines_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_list_machines"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_machines"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_machines_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_list_machines"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16340,8 +16377,9 @@ def test_get_machine_rest_bad_request(request_type=service.GetMachineRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16412,17 +16450,19 @@ def test_get_machine_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_machine"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_machine_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_get_machine"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_machine"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_machine_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_get_machine"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16473,8 +16513,9 @@ def test_list_vpn_connections_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16539,18 +16580,20 @@ def test_list_vpn_connections_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_list_vpn_connections"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor,
-        "post_list_vpn_connections_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_list_vpn_connections"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_list_vpn_connections"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_list_vpn_connections_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_list_vpn_connections"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16605,8 +16648,9 @@ def test_get_vpn_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16681,17 +16725,20 @@ def test_get_vpn_connection_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_vpn_connection"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_vpn_connection_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_get_vpn_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_vpn_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_get_vpn_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_get_vpn_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16744,8 +16791,9 @@ def test_create_vpn_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -16891,20 +16939,21 @@ def test_create_vpn_connection_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_create_vpn_connection"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor,
-        "post_create_vpn_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_create_vpn_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_create_vpn_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_create_vpn_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_create_vpn_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16957,8 +17006,9 @@ def test_delete_vpn_connection_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17015,20 +17065,21 @@ def test_delete_vpn_connection_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_delete_vpn_connection"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor,
-        "post_delete_vpn_connection_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_delete_vpn_connection"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_delete_vpn_connection"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_delete_vpn_connection_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_delete_vpn_connection"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17081,8 +17132,9 @@ def test_get_server_config_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -17145,17 +17197,20 @@ def test_get_server_config_rest_interceptors(null_interceptor):
     )
     client = EdgeContainerClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_server_config"
-    ) as post, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "post_get_server_config_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.EdgeContainerRestInterceptor, "pre_get_server_config"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "post_get_server_config"
+        ) as post,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor,
+            "post_get_server_config_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.EdgeContainerRestInterceptor, "pre_get_server_config"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -17206,8 +17261,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -17266,8 +17322,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -17328,8 +17385,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -17390,8 +17448,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -17452,8 +17511,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -17514,8 +17574,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -18084,11 +18145,14 @@ def test_edge_container_base_transport():
 
 def test_edge_container_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.edgecontainer_v1.services.edge_container.transports.EdgeContainerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.edgecontainer_v1.services.edge_container.transports.EdgeContainerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EdgeContainerTransport(
@@ -18105,9 +18169,12 @@ def test_edge_container_base_transport_with_credentials_file():
 
 def test_edge_container_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.edgecontainer_v1.services.edge_container.transports.EdgeContainerTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.edgecontainer_v1.services.edge_container.transports.EdgeContainerTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EdgeContainerTransport()
@@ -18179,11 +18246,12 @@ def test_edge_container_transport_auth_gdch_credentials(transport_class):
 def test_edge_container_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataproc_v1.types import shared
@@ -95,8 +95,8 @@ class GetBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the batch
-            to retrieve in the format
+            Required. The fully qualified name of the batch to retrieve
+            in the format
             "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
@@ -214,8 +214,8 @@ class DeleteBatchRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified name of the batch
-            to retrieve in the format
+            Required. The fully qualified name of the batch to retrieve
+            in the format
             "projects/PROJECT_ID/locations/DATAPROC_REGION/batches/BATCH_ID".
     """
 
@@ -317,6 +317,7 @@ class Batch(proto.Message):
                 The batch is no longer running due to an
                 error.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -442,9 +443,8 @@ class Batch(proto.Message):
 
 
 class PySparkBatch(proto.Message):
-    r"""A configuration for running an
-    [Apache
-    PySpark](https://spark.apache.org/docs/latest/api/python/getting_started/quickstart.html)
+    r"""A configuration for running an `Apache
+    PySpark <https://spark.apache.org/docs/latest/api/python/getting_started/quickstart.html>`__
     batch workload.
 
     Attributes:

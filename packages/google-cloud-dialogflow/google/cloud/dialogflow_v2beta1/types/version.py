@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -94,6 +94,7 @@ class Version(proto.Message):
             FAILED (3):
                 Version training failed.
         """
+
         VERSION_STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         READY = 2
@@ -139,8 +140,8 @@ class ListVersionsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -163,9 +164,9 @@ class ListVersionsResponse(proto.Message):
 
     Attributes:
         versions (MutableSequence[google.cloud.dialogflow_v2beta1.types.Version]):
-            The list of agent versions. There will be a
-            maximum number of items returned based on the
-            page_size field in the request.
+            The list of agent versions. There will be a maximum number
+            of items returned based on the page_size field in the
+            request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

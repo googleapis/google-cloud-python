@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,17 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,23 +62,13 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
 
 from google.cloud.video.live_stream_v1.services.livestream_service import (
     LivestreamServiceAsyncClient,
@@ -996,10 +996,9 @@ def test_livestream_service_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1044,10 +1043,9 @@ def test_livestream_service_client_get_mtls_endpoint_and_cert_source(client_clas
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1083,10 +1081,9 @@ def test_livestream_service_client_get_mtls_endpoint_and_cert_source(client_clas
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1334,13 +1331,13 @@ def test_livestream_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3979,9 +3976,9 @@ def test_start_distribution_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.start_distribution
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.start_distribution] = (
+            mock_rpc
+        )
         request = {}
         client.start_distribution(request)
 
@@ -4332,9 +4329,9 @@ def test_stop_distribution_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.stop_distribution
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.stop_distribution] = (
+            mock_rpc
+        )
         request = {}
         client.stop_distribution(request)
 
@@ -9937,9 +9934,9 @@ def test_create_dvr_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_dvr_session] = (
+            mock_rpc
+        )
         request = {}
         client.create_dvr_session(request)
 
@@ -10311,9 +10308,9 @@ def test_list_dvr_sessions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_dvr_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_dvr_sessions] = (
+            mock_rpc
+        )
         request = {}
         client.list_dvr_sessions(request)
 
@@ -11180,9 +11177,9 @@ def test_delete_dvr_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_dvr_session] = (
+            mock_rpc
+        )
         request = {}
         client.delete_dvr_session(request)
 
@@ -11521,9 +11518,9 @@ def test_update_dvr_session_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_dvr_session] = (
+            mock_rpc
+        )
         request = {}
         client.update_dvr_session(request)
 
@@ -15371,9 +15368,9 @@ def test_start_distribution_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.start_distribution
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.start_distribution] = (
+            mock_rpc
+        )
 
         request = {}
         client.start_distribution(request)
@@ -15553,9 +15550,9 @@ def test_stop_distribution_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.stop_distribution
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.stop_distribution] = (
+            mock_rpc
+        )
 
         request = {}
         client.stop_distribution(request)
@@ -18586,9 +18583,9 @@ def test_create_dvr_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_dvr_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_dvr_session(request)
@@ -18806,9 +18803,9 @@ def test_list_dvr_sessions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_dvr_sessions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_dvr_sessions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_dvr_sessions(request)
@@ -19252,9 +19249,9 @@ def test_delete_dvr_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_dvr_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_dvr_session(request)
@@ -19437,9 +19434,9 @@ def test_update_dvr_session_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_dvr_session
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_dvr_session] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_dvr_session(request)
@@ -22574,8 +22571,9 @@ def test_create_channel_rest_bad_request(request_type=service.CreateChannelReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -22888,19 +22886,21 @@ def test_create_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -22949,8 +22949,9 @@ def test_list_channels_rest_bad_request(request_type=service.ListChannelsRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23015,17 +23016,20 @@ def test_list_channels_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_channels"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_channels_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_channels"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_channels"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_list_channels_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_channels"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23076,8 +23080,9 @@ def test_get_channel_rest_bad_request(request_type=service.GetChannelRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23144,17 +23149,20 @@ def test_get_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_get_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23203,8 +23211,9 @@ def test_delete_channel_rest_bad_request(request_type=service.DeleteChannelReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23261,19 +23270,21 @@ def test_delete_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_delete_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_delete_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23324,8 +23335,9 @@ def test_update_channel_rest_bad_request(request_type=service.UpdateChannelReque
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23640,19 +23652,21 @@ def test_update_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_update_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_update_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_update_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_update_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23701,8 +23715,9 @@ def test_start_channel_rest_bad_request(request_type=service.StartChannelRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23759,19 +23774,21 @@ def test_start_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_start_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_start_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_start_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_start_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_start_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_start_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23820,8 +23837,9 @@ def test_stop_channel_rest_bad_request(request_type=service.StopChannelRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23878,19 +23896,21 @@ def test_stop_channel_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_stop_channel"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_stop_channel_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_stop_channel"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_stop_channel"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_stop_channel_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_stop_channel"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -23941,8 +23961,9 @@ def test_start_distribution_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -23999,20 +24020,21 @@ def test_start_distribution_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_start_distribution"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_start_distribution_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_start_distribution"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_start_distribution"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_start_distribution_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_start_distribution"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24065,8 +24087,9 @@ def test_stop_distribution_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24123,20 +24146,21 @@ def test_stop_distribution_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_stop_distribution"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_stop_distribution_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_stop_distribution"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_stop_distribution"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_stop_distribution_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_stop_distribution"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24187,8 +24211,9 @@ def test_create_input_rest_bad_request(request_type=service.CreateInputRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24364,19 +24389,21 @@ def test_create_input_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_input"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_input_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_input"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24425,8 +24452,9 @@ def test_list_inputs_rest_bad_request(request_type=service.ListInputsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24491,17 +24519,20 @@ def test_list_inputs_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_inputs"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_inputs_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_inputs"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_inputs"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_list_inputs_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_inputs"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24550,8 +24581,9 @@ def test_get_input_rest_bad_request(request_type=service.GetInputRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24620,17 +24652,19 @@ def test_get_input_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_input"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_input_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_input"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_input_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24679,8 +24713,9 @@ def test_delete_input_rest_bad_request(request_type=service.DeleteInputRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24737,19 +24772,21 @@ def test_delete_input_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_input"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_input_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_delete_input"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_delete_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -24800,8 +24837,9 @@ def test_update_input_rest_bad_request(request_type=service.UpdateInputRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -24979,19 +25017,21 @@ def test_update_input_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_input"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_input_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_update_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_update_input"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_update_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_update_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25040,8 +25080,9 @@ def test_preview_input_rest_bad_request(request_type=service.PreviewInputRequest
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25106,17 +25147,20 @@ def test_preview_input_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_preview_input"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_preview_input_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_preview_input"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_preview_input"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_preview_input_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_preview_input"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25167,8 +25211,9 @@ def test_create_event_rest_bad_request(request_type=service.CreateEventRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25337,17 +25382,20 @@ def test_create_event_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_event"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_event_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_event"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_event_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25396,8 +25444,9 @@ def test_list_events_rest_bad_request(request_type=service.ListEventsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25462,17 +25511,20 @@ def test_list_events_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_events"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_events_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_events"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_events"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_list_events_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_events"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25523,8 +25575,9 @@ def test_get_event_rest_bad_request(request_type=service.GetEventRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25593,17 +25646,19 @@ def test_get_event_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_event"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_event_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_event"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_event_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25654,8 +25709,9 @@ def test_delete_event_rest_bad_request(request_type=service.DeleteEventRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25714,13 +25770,13 @@ def test_delete_event_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_event"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_event"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = service.DeleteEventRequest.pb(service.DeleteEventRequest())
         transcode.return_value = {
@@ -25761,8 +25817,9 @@ def test_list_clips_rest_bad_request(request_type=service.ListClipsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25827,17 +25884,19 @@ def test_list_clips_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_clips"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_clips_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_clips"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_clips"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_clips_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_clips"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -25888,8 +25947,9 @@ def test_get_clip_rest_bad_request(request_type=service.GetClipRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -25960,17 +26020,19 @@ def test_get_clip_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_clip"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_clip_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_clip"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_clip"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_clip_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_clip"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26019,8 +26081,9 @@ def test_create_clip_rest_bad_request(request_type=service.CreateClipRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26168,19 +26231,21 @@ def test_create_clip_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_clip"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_clip_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_clip"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_clip"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_clip_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_clip"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26231,8 +26296,9 @@ def test_delete_clip_rest_bad_request(request_type=service.DeleteClipRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26291,19 +26357,21 @@ def test_delete_clip_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_clip"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_clip_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_clip"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_delete_clip"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_delete_clip_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_clip"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26354,8 +26422,9 @@ def test_create_dvr_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26500,20 +26569,21 @@ def test_create_dvr_session_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_dvr_session"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_create_dvr_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_dvr_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_dvr_session"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_dvr_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_dvr_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26566,8 +26636,9 @@ def test_list_dvr_sessions_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26632,18 +26703,20 @@ def test_list_dvr_sessions_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_dvr_sessions"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_list_dvr_sessions_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_dvr_sessions"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_dvr_sessions"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_list_dvr_sessions_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_dvr_sessions"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26696,8 +26769,9 @@ def test_get_dvr_session_rest_bad_request(request_type=service.GetDvrSessionRequ
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26764,18 +26838,20 @@ def test_get_dvr_session_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_dvr_session"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_get_dvr_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_dvr_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_dvr_session"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_get_dvr_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_dvr_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26828,8 +26904,9 @@ def test_delete_dvr_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -26888,20 +26965,21 @@ def test_delete_dvr_session_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_dvr_session"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_delete_dvr_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_dvr_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_delete_dvr_session"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_delete_dvr_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_dvr_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -26958,8 +27036,9 @@ def test_update_dvr_session_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27108,20 +27187,21 @@ def test_update_dvr_session_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_dvr_session"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor,
-        "post_update_dvr_session_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_update_dvr_session"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_update_dvr_session"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_update_dvr_session_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_update_dvr_session"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27172,8 +27252,9 @@ def test_create_asset_rest_bad_request(request_type=service.CreateAssetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27317,19 +27398,21 @@ def test_create_asset_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_asset"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_create_asset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_create_asset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_create_asset"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_create_asset_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_create_asset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27378,8 +27461,9 @@ def test_delete_asset_rest_bad_request(request_type=service.DeleteAssetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27436,19 +27520,21 @@ def test_delete_asset_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_asset"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_delete_asset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_delete_asset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_delete_asset"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_delete_asset_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_delete_asset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27497,8 +27583,9 @@ def test_get_asset_rest_bad_request(request_type=service.GetAssetRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27565,17 +27652,19 @@ def test_get_asset_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_asset"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_asset_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_asset"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_asset"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_asset_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_asset"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27624,8 +27713,9 @@ def test_list_assets_rest_bad_request(request_type=service.ListAssetsRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27690,17 +27780,20 @@ def test_list_assets_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_assets"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_list_assets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_list_assets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_list_assets"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_list_assets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_list_assets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27749,8 +27842,9 @@ def test_get_pool_rest_bad_request(request_type=service.GetPoolRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -27813,17 +27907,19 @@ def test_get_pool_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_pool"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_get_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_get_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_pool"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_get_pool_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_get_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -27874,8 +27970,9 @@ def test_update_pool_rest_bad_request(request_type=service.UpdatePoolRequest):
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -28008,19 +28105,21 @@ def test_update_pool_rest_interceptors(null_interceptor):
     )
     client = LivestreamServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_pool"
-    ) as post, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "post_update_pool_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.LivestreamServiceRestInterceptor, "pre_update_pool"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "post_update_pool"
+        ) as post,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor,
+            "post_update_pool_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.LivestreamServiceRestInterceptor, "pre_update_pool"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -28071,8 +28170,9 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28131,8 +28231,9 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28193,8 +28294,9 @@ def test_cancel_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28255,8 +28357,9 @@ def test_delete_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28317,8 +28420,9 @@ def test_get_operation_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -28379,8 +28483,9 @@ def test_list_operations_rest_bad_request(
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -29241,11 +29346,14 @@ def test_livestream_service_base_transport():
 
 def test_livestream_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.video.live_stream_v1.services.livestream_service.transports.LivestreamServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.video.live_stream_v1.services.livestream_service.transports.LivestreamServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.LivestreamServiceTransport(
@@ -29262,9 +29370,12 @@ def test_livestream_service_base_transport_with_credentials_file():
 
 def test_livestream_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.video.live_stream_v1.services.livestream_service.transports.LivestreamServiceTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.video.live_stream_v1.services.livestream_service.transports.LivestreamServiceTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.LivestreamServiceTransport()
@@ -29336,11 +29447,12 @@ def test_livestream_service_transport_auth_gdch_credentials(transport_class):
 def test_livestream_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

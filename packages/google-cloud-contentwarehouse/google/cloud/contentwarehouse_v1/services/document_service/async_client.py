@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.contentwarehouse_v1 import gapic_version as package_version
 
@@ -44,18 +44,19 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.documentai_v1.types import document as gcd_document
-from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_service import pagers
 from google.cloud.contentwarehouse_v1.types import (
+    common,
     document_service,
     document_service_request,
     rule_engine,
 )
-from google.cloud.contentwarehouse_v1.types import common
 from google.cloud.contentwarehouse_v1.types import document as gcc_document
 
 from .client import DocumentServiceClient
@@ -130,7 +131,8 @@ class DocumentServiceAsyncClient:
         Returns:
             DocumentServiceAsyncClient: The constructed client.
         """
-        return DocumentServiceClient.from_service_account_info.__func__(DocumentServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = DocumentServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(DocumentServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -146,7 +148,8 @@ class DocumentServiceAsyncClient:
         Returns:
             DocumentServiceAsyncClient: The constructed client.
         """
-        return DocumentServiceClient.from_service_account_file.__func__(DocumentServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = DocumentServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(DocumentServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -357,8 +360,7 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.CreateDocument.
             parent (:class:`str`):
-                Required. The parent name.
-                Format:
+                Required. The parent name. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -445,8 +447,8 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcc_document.Document:
-        r"""Gets a document. Returns NOT_FOUND if the document does
-        not exist.
+        r"""Gets a document. Returns NOT_FOUND if the document does not
+        exist.
 
         .. code-block:: python
 
@@ -479,9 +481,7 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.GetDocument.
             name (:class:`str`):
-                Required. The name of the document to
-                retrieve. Format:
-
+                Required. The name of the document to retrieve. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -564,9 +564,8 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.UpdateDocumentResponse:
-        r"""Updates a document. Returns INVALID_ARGUMENT if the name
-        of the document is non-empty and does not equal the
-        existing name.
+        r"""Updates a document. Returns INVALID_ARGUMENT if the name of the
+        document is non-empty and does not equal the existing name.
 
         .. code-block:: python
 
@@ -605,9 +604,7 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.UpdateDocument.
             name (:class:`str`):
-                Required. The name of the document to
-                update. Format:
-
+                Required. The name of the document to update. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -696,8 +693,8 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a document. Returns NOT_FOUND if the document
-        does not exist.
+        r"""Deletes a document. Returns NOT_FOUND if the document does not
+        exist.
 
         .. code-block:: python
 
@@ -727,9 +724,7 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.DeleteDocument.
             name (:class:`str`):
-                Required. The name of the document to
-                delete. Format:
-
+                Required. The name of the document to delete. Format:
                 projects/{project_number}/locations/{location}/documents/{document_id}
                 or
                 projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
@@ -839,8 +834,8 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.SearchDocuments.
             parent (:class:`str`):
-                Required. The parent, which owns this
-                collection of documents. Format:
+                Required. The parent, which owns this collection of
+                documents. Format:
                 projects/{project_number}/locations/{location}.
 
                 This corresponds to the ``parent`` field
@@ -968,9 +963,7 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.LockDocument.
             name (:class:`str`):
-                Required. The name of the document to
-                lock. Format:
-
+                Required. The name of the document to lock. Format:
                 projects/{project_number}/locations/{location}/documents/{document}.
 
                 This corresponds to the ``name`` field
@@ -1048,10 +1041,9 @@ class DocumentServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_service.FetchAclResponse:
-        r"""Gets the access control policy for a resource. Returns
-        NOT_FOUND error if the resource does not exist. Returns
-        an empty policy if the resource exists but does not have
-        a policy set.
+        r"""Gets the access control policy for a resource. Returns NOT_FOUND
+        error if the resource does not exist. Returns an empty policy if
+        the resource exists but does not have a policy set.
 
         .. code-block:: python
 
@@ -1084,16 +1076,12 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.FetchAcl
             resource (:class:`str`):
-                Required. REQUIRED: The resource for
-                which the policy is being requested.
-                Format for document:
-
+                Required. REQUIRED: The resource for which the policy is
+                being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
-
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project:
-                projects/{project_number}.
+                Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1205,16 +1193,12 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 DocumentService.SetAcl.
             resource (:class:`str`):
-                Required. REQUIRED: The resource for
-                which the policy is being requested.
-                Format for document:
-
+                Required. REQUIRED: The resource for which the policy is
+                being requested. Format for document:
                 projects/{project_number}/locations/{location}/documents/{document_id}.
                 Format for collection:
-
                 projects/{project_number}/locations/{location}/collections/{collection_id}.
-                Format for project:
-                projects/{project_number}.
+                Format for project: projects/{project_number}.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this

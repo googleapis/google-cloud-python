@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.talent_v4beta1 import gapic_version as package_version
 
@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.talent_v4beta1.types import event, event_service
 
@@ -620,11 +620,9 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = EventServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            EventServiceClient._read_environment_variables()
+        )
         self._client_cert_source = EventServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -659,8 +657,7 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(EventServiceTransport, transport)
             self._api_endpoint = self._transport.host
@@ -735,12 +732,12 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> event.ClientEvent:
-        r"""Report events issued when end user interacts with
-        customer's application that uses Cloud Talent Solution.
-        You may inspect the created events in [self service
-        tools](https://console.cloud.google.com/talent-solution/overview).
-        [Learn
-        more](https://cloud.google.com/talent-solution/docs/management-tools)
+        r"""Report events issued when end user interacts with customer's
+        application that uses Cloud Talent Solution. You may inspect the
+        created events in `self service
+        tools <https://console.cloud.google.com/talent-solution/overview>`__.
+        `Learn
+        more <https://cloud.google.com/talent-solution/docs/management-tools>`__
         about self service tools.
 
         .. code-block:: python
@@ -779,13 +776,13 @@ class EventServiceClient(metaclass=EventServiceClientMeta):
             request (Union[google.cloud.talent_v4beta1.types.CreateClientEventRequest, dict]):
                 The request object. The report event request.
             parent (str):
-                Required. Resource name of the tenant
-                under which the event is created.
+                Required. Resource name of the tenant under which the
+                event is created.
+
                 The format is
-                "projects/{project_id}/tenants/{tenant_id}",
-                for example, "projects/foo/tenant/bar".
-                If tenant id is unspecified, a default
-                tenant is created, for example,
+                "projects/{project_id}/tenants/{tenant_id}", for
+                example, "projects/foo/tenant/bar". If tenant id is
+                unspecified, a default tenant is created, for example,
                 "projects/foo".
 
                 This corresponds to the ``parent`` field

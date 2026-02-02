@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -164,14 +164,12 @@ class UpdateQuotaRuleRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the Quota Rule
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the Quota Rule resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         quota_rule (google.cloud.netapp_v1.types.QuotaRule):
             Required. The quota rule being updated
     """
@@ -247,6 +245,7 @@ class QuotaRule(proto.Message):
             DEFAULT_GROUP_QUOTA (4):
                 Default group quota rule
         """
+
         TYPE_UNSPECIFIED = 0
         INDIVIDUAL_USER_QUOTA = 1
         INDIVIDUAL_GROUP_QUOTA = 2
@@ -270,6 +269,7 @@ class QuotaRule(proto.Message):
             ERROR (5):
                 Quota rule is in error state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2

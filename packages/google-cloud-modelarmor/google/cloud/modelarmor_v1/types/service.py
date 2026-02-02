@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -85,6 +85,7 @@ class FilterMatchState(proto.Enum):
         MATCH_FOUND (2):
             Matching criteria is achieved for the filter.
     """
+
     FILTER_MATCH_STATE_UNSPECIFIED = 0
     NO_MATCH_FOUND = 1
     MATCH_FOUND = 2
@@ -103,6 +104,7 @@ class FilterExecutionState(proto.Enum):
             Filter execution was skipped. This can happen
             due to server-side error or permission issue.
     """
+
     FILTER_EXECUTION_STATE_UNSPECIFIED = 0
     EXECUTION_SUCCESS = 1
     EXECUTION_SKIPPED = 2
@@ -123,6 +125,7 @@ class RaiFilterType(proto.Enum):
         DANGEROUS (17):
             Danger
     """
+
     RAI_FILTER_TYPE_UNSPECIFIED = 0
     SEXUALLY_EXPLICIT = 2
     HATE_SPEECH = 3
@@ -145,6 +148,7 @@ class DetectionConfidenceLevel(proto.Enum):
         HIGH (3):
             Low chance of false positives.
     """
+
     DETECTION_CONFIDENCE_LEVEL_UNSPECIFIED = 0
     LOW_AND_ABOVE = 1
     MEDIUM_AND_ABOVE = 2
@@ -171,6 +175,7 @@ class SdpFindingLikelihood(proto.Enum):
             Confidence level is high. Lowest chance of a
             false positive.
     """
+
     SDP_FINDING_LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -193,6 +198,7 @@ class InvocationResult(proto.Enum):
         FAILURE (3):
             All filters were skipped or failed.
     """
+
     INVOCATION_RESULT_UNSPECIFIED = 0
     SUCCESS = 1
     PARTIAL = 2
@@ -269,6 +275,7 @@ class Template(proto.Message):
                     block mode. Requests that trip Model Armor
                     filters will be blocked.
             """
+
             ENFORCEMENT_TYPE_UNSPECIFIED = 0
             INSPECT_ONLY = 1
             INSPECT_AND_BLOCK = 2
@@ -397,6 +404,7 @@ class FloorSetting(proto.Message):
             AI_PLATFORM (1):
                 AI Platform.
         """
+
         INTEGRATED_SERVICE_UNSPECIFIED = 0
         AI_PLATFORM = 1
 
@@ -612,10 +620,9 @@ class CreateTemplateRequest(proto.Message):
         parent (str):
             Required. Value for parent.
         template_id (str):
-            Required. Id of the requesting object
-            If auto-generating Id server-side, remove this
-            field and template_id from the method_signature
-            of Create RPC
+            Required. Id of the requesting object If auto-generating Id
+            server-side, remove this field and template_id from the
+            method_signature of Create RPC
         template (google.cloud.modelarmor_v1.types.Template):
             Required. The resource being created
         request_id (str):
@@ -664,14 +671,12 @@ class UpdateTemplateRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Template
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Template resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         template (google.cloud.modelarmor_v1.types.Template):
             Required. The resource being updated
         request_id (str):
@@ -772,14 +777,12 @@ class UpdateFloorSettingRequest(proto.Message):
         floor_setting (google.cloud.modelarmor_v1.types.FloorSetting):
             Required. The floor setting being updated.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the FloorSetting
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the FloorSetting resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
     """
 
     floor_setting: "FloorSetting" = proto.Field(
@@ -860,6 +863,7 @@ class PiAndJailbreakFilterSettings(proto.Message):
             DISABLED (2):
                 Enabled
         """
+
         PI_AND_JAILBREAK_FILTER_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -897,6 +901,7 @@ class MaliciousUriFilterSettings(proto.Message):
             DISABLED (2):
                 Disabled
         """
+
         MALICIOUS_URI_FILTER_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1016,6 +1021,7 @@ class SdpBasicConfig(proto.Message):
             DISABLED (2):
                 Disabled
         """
+
         SDP_BASIC_CONFIG_ENFORCEMENT_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1172,22 +1178,20 @@ class SanitizationResult(proto.Message):
 
     Attributes:
         filter_match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Overall filter match state for
-            Sanitization. The state can have below two
-            values.
+            Output only. Overall filter match state for Sanitization.
+            The state can have below two values.
 
-            1) NO_MATCH_FOUND: No filters in configuration
-            satisfy matching criteria. In other words, input
-            passed all filters.
+            1) NO_MATCH_FOUND: No filters in configuration satisfy
+               matching criteria. In other words, input passed all
+               filters.
 
-            2) MATCH_FOUND: At least one filter in
-            configuration satisfies matching. In other
-            words, input did not pass one or more filters.
+            2) MATCH_FOUND: At least one filter in configuration
+               satisfies matching. In other words, input did not pass
+               one or more filters.
         filter_results (MutableMapping[str, google.cloud.modelarmor_v1.types.FilterResult]):
-            Output only. Results for all filters where the
-            key is the filter name - either of "csam",
-            "malicious_uris", "rai", "pi_and_jailbreak"
-            ,"sdp".
+            Output only. Results for all filters where the key is the
+            filter name - either of "csam", "malicious_uris", "rai",
+            "pi_and_jailbreak" ,"sdp".
         invocation_result (google.cloud.modelarmor_v1.types.InvocationResult):
             Output only. A field indicating the outcome
             of the invocation, irrespective of match status.
@@ -1366,14 +1370,14 @@ class RaiFilterResult(proto.Message):
             skipped then this field provides related
             reason/explanation.
         match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Overall filter match state for RAI.
-            Value is MATCH_FOUND if at least one RAI filter
-            confidence level is equal to or higher than the
-            confidence level defined in configuration.
+            Output only. Overall filter match state for RAI. Value is
+            MATCH_FOUND if at least one RAI filter confidence level is
+            equal to or higher than the confidence level defined in
+            configuration.
         rai_filter_type_results (MutableMapping[str, google.cloud.modelarmor_v1.types.RaiFilterResult.RaiFilterTypeResult]):
-            The map of RAI filter results where key is RAI
-            filter type - either of "sexually_explicit",
-            "hate_speech", "harassment", "dangerous".
+            The map of RAI filter results where key is RAI filter type -
+            either of "sexually_explicit", "hate_speech", "harassment",
+            "dangerous".
     """
 
     class RaiFilterTypeResult(proto.Message):
@@ -1481,9 +1485,9 @@ class SdpInspectResult(proto.Message):
             skipped then this field provides related
             reason/explanation.
         match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Match state for SDP Inspection.
-            Value is MATCH_FOUND if at least one Sensitive
-            Data Protection finding is identified.
+            Output only. Match state for SDP Inspection. Value is
+            MATCH_FOUND if at least one Sensitive Data Protection
+            finding is identified.
         findings (MutableSequence[google.cloud.modelarmor_v1.types.SdpFinding]):
             List of Sensitive Data Protection findings.
         findings_truncated (bool):
@@ -1587,6 +1591,7 @@ class ByteDataItem(proto.Message):
             CSV (7):
                 CSV
         """
+
         BYTE_ITEM_TYPE_UNSPECIFIED = 0
         PLAINTEXT_UTF8 = 1
         PDF = 2
@@ -1622,9 +1627,9 @@ class SdpDeidentifyResult(proto.Message):
             skipped then this field provides related
             reason/explanation.
         match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Match state for Sensitive Data
-            Protection Deidentification. Value is
-            MATCH_FOUND if content is de-identified.
+            Output only. Match state for Sensitive Data Protection
+            Deidentification. Value is MATCH_FOUND if content is
+            de-identified.
         data (google.cloud.modelarmor_v1.types.DataItem):
             De-identified data.
         transformed_bytes (int):
@@ -1781,9 +1786,8 @@ class MaliciousUriFilterResult(proto.Message):
             skipped then this field provides related
             reason/explanation.
         match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Match state for this Malicious URI.
-            Value is MATCH_FOUND if at least one Malicious
-            URI is found.
+            Output only. Match state for this Malicious URI. Value is
+            MATCH_FOUND if at least one Malicious URI is found.
         malicious_uri_matched_items (MutableSequence[google.cloud.modelarmor_v1.types.MaliciousUriFilterResult.MaliciousUriMatchedItem]):
             List of Malicious URIs found in data.
     """
@@ -1826,12 +1830,12 @@ class MaliciousUriFilterResult(proto.Message):
         number=3,
         enum="FilterMatchState",
     )
-    malicious_uri_matched_items: MutableSequence[
-        MaliciousUriMatchedItem
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=MaliciousUriMatchedItem,
+    malicious_uri_matched_items: MutableSequence[MaliciousUriMatchedItem] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=MaliciousUriMatchedItem,
+        )
     )
 
 
@@ -1851,9 +1855,8 @@ class VirusScanFilterResult(proto.Message):
             skipped then this field provides related
             reason/explanation.
         match_state (google.cloud.modelarmor_v1.types.FilterMatchState):
-            Output only. Match status for Virus.
-            Value is MATCH_FOUND if the data is infected
-            with a virus.
+            Output only. Match status for Virus. Value is MATCH_FOUND if
+            the data is infected with a virus.
         scanned_content_type (google.cloud.modelarmor_v1.types.VirusScanFilterResult.ScannedContentType):
             Type of content scanned.
         scanned_size (int):
@@ -1880,6 +1883,7 @@ class VirusScanFilterResult(proto.Message):
                 PDF
                 Scanning for only PDF is supported.
         """
+
         SCANNED_CONTENT_TYPE_UNSPECIFIED = 0
         UNKNOWN = 1
         PLAINTEXT = 2
@@ -1948,6 +1952,7 @@ class VirusDetail(proto.Message):
             POTENTIALLY_UNWANTED_CONTENT (5):
                 Potentially unwanted content. E.g. Adware.
         """
+
         THREAT_TYPE_UNSPECIFIED = 0
         UNKNOWN = 1
         VIRUS_OR_WORM = 2
@@ -2028,6 +2033,7 @@ class MessageItem(proto.Message):
             ERROR (3):
                 Error message.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

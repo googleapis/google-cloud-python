@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.translate_v3.types import common
@@ -258,10 +258,10 @@ class AdaptiveMtTranslateRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_reference_sentence_config``.
         glossary_config (google.cloud.translate_v3.types.AdaptiveMtTranslateRequest.GlossaryConfig):
-            Optional. Glossary to be applied. The glossary
-            must be within the same region (have the same
-            location-id) as the model, otherwise an
-            INVALID_ARGUMENT (400) error is returned.
+            Optional. Glossary to be applied. The glossary must be
+            within the same region (have the same location-id) as the
+            model, otherwise an INVALID_ARGUMENT (400) error is
+            returned.
 
             This field is a member of `oneof`_ ``_glossary_config``.
     """
@@ -433,12 +433,12 @@ class AdaptiveMtTranslateResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    glossary_translations: MutableSequence[
-        "AdaptiveMtTranslation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AdaptiveMtTranslation",
+    glossary_translations: MutableSequence["AdaptiveMtTranslation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AdaptiveMtTranslation",
+        )
     )
 
 

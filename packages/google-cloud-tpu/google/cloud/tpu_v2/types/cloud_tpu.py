@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -149,9 +149,8 @@ class AttachedDisk(proto.Message):
             For example:
             "projects/my-project/zones/us-central1-c/disks/my-disk".
         mode (google.cloud.tpu_v2.types.AttachedDisk.DiskMode):
-            The mode in which to attach this disk.
-            If not specified, the default is READ_WRITE
-            mode. Only applicable to data_disks.
+            The mode in which to attach this disk. If not specified, the
+            default is READ_WRITE mode. Only applicable to data_disks.
     """
 
     class DiskMode(proto.Enum):
@@ -169,6 +168,7 @@ class AttachedDisk(proto.Message):
                 TPU nodes can attach a disk in read-only mode at
                 a time.
         """
+
         DISK_MODE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
@@ -353,16 +353,15 @@ class Node(proto.Message):
             Required. The runtime version running in the
             Node.
         network_config (google.cloud.tpu_v2.types.NetworkConfig):
-            Network configurations for the TPU node.
-            network_config and network_configs are mutually
-            exclusive, you can only specify one of them. If
-            both are specified, an error will be returned.
+            Network configurations for the TPU node. network_config and
+            network_configs are mutually exclusive, you can only specify
+            one of them. If both are specified, an error will be
+            returned.
         network_configs (MutableSequence[google.cloud.tpu_v2.types.NetworkConfig]):
-            Optional. Repeated network configurations for
-            the TPU node. This field is used to specify
-            multiple networks configs for the TPU node.
-            network_config and network_configs are mutually
-            exclusive, you can only specify one of them. If
+            Optional. Repeated network configurations for the TPU node.
+            This field is used to specify multiple networks configs for
+            the TPU node. network_config and network_configs are
+            mutually exclusive, you can only specify one of them. If
             both are specified, an error will be returned.
         cidr_block (str):
             The CIDR block that the TPU node will use
@@ -444,9 +443,8 @@ class Node(proto.Message):
             DELETING (5):
                 TPU node is being deleted.
             REPAIRING (6):
-                TPU node is being repaired and may be unusable.
-                Details can be found in the 'help_description'
-                field.
+                TPU node is being repaired and may be unusable. Details can
+                be found in the 'help_description' field.
             STOPPED (8):
                 TPU node is stopped.
             STOPPING (9):
@@ -470,6 +468,7 @@ class Node(proto.Message):
                 TPU node has unknown state after a failed
                 repair.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -506,6 +505,7 @@ class Node(proto.Message):
                 caused rescheduling and will resume running once
                 rescheduled.
         """
+
         HEALTH_UNSPECIFIED = 0
         HEALTHY = 1
         TIMEOUT = 3
@@ -527,6 +527,7 @@ class Node(proto.Message):
             V2 (4):
                 TPU API V2 version.
         """
+
         API_VERSION_UNSPECIFIED = 0
         V1_ALPHA1 = 1
         V1 = 2
@@ -735,16 +736,15 @@ class QueuedResource(proto.Message):
             """
 
             class MultisliceParams(proto.Message):
-                r"""Parameters to specify for multislice QueuedResource requests.
-                This message must be populated in case of multislice requests
-                instead of node_id.
+                r"""Parameters to specify for multislice QueuedResource requests. This
+                message must be populated in case of multislice requests instead of
+                node_id.
 
                 Attributes:
                     node_count (int):
-                        Required. Number of nodes with this spec. The
-                        system will attempt to provision "node_count"
-                        nodes as part of the request. This needs to be >
-                        1.
+                        Required. Number of nodes with this spec. The system will
+                        attempt to provision "node_count" nodes as part of the
+                        request. This needs to be > 1.
                     node_id_prefix (str):
                         Optional. Prefix of node_ids in case of multislice request.
                         Should follow the ``^[A-Za-z0-9_.~+%-]+$`` regex format. If
@@ -1031,19 +1031,18 @@ class QueuedResourceState(proto.Message):
                 The resources specified in the QueuedResource
                 request have been deleted.
             WAITING_FOR_RESOURCES (9):
-                The QueuedResource request has passed initial
-                validation and has been persisted in the queue.
-                It will remain in this state until there are
-                sufficient free resources to begin provisioning
-                your request. Wait times will vary significantly
-                depending on demand levels. When demand is high,
-                not all requests can be immediately provisioned.
-                If you need more reliable obtainability of TPUs
-                consider purchasing a reservation. To put a
-                limit on how long you are willing to wait, use
-                [timing
-                constraints](https://cloud.google.com/tpu/docs/queued-resources#request_a_queued_resource_before_a_specified_time).
+                The QueuedResource request has passed initial validation and
+                has been persisted in the queue. It will remain in this
+                state until there are sufficient free resources to begin
+                provisioning your request. Wait times will vary
+                significantly depending on demand levels. When demand is
+                high, not all requests can be immediately provisioned. If
+                you need more reliable obtainability of TPUs consider
+                purchasing a reservation. To put a limit on how long you are
+                willing to wait, use `timing
+                constraints <https://cloud.google.com/tpu/docs/queued-resources#request_a_queued_resource_before_a_specified_time>`__.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACCEPTED = 2
@@ -1069,6 +1068,7 @@ class QueuedResourceState(proto.Message):
                 The current QueuedResource state was
                 initiated by the service.
         """
+
         STATE_INITIATOR_UNSPECIFIED = 0
         USER = 1
         SERVICE = 2
@@ -1178,8 +1178,8 @@ class ListNodesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -1319,8 +1319,8 @@ class UpdateNodeRequest(proto.Message):
             Supported fields: [description, tags, labels, metadata,
             network_config.enable_external_ips].
         node (google.cloud.tpu_v2.types.Node):
-            Required. The node. Only fields specified in
-            update_mask are updated.
+            Required. The node. Only fields specified in update_mask are
+            updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(
@@ -1346,8 +1346,8 @@ class ListQueuedResourcesRequest(proto.Message):
             Optional. The maximum number of items to
             return.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous List request, if any.
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -1594,8 +1594,8 @@ class ListAcceleratorTypesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
         filter (str):
             List filter.
         order_by (str):
@@ -1701,8 +1701,8 @@ class ListRuntimeVersionsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
         filter (str):
             List filter.
         order_by (str):
@@ -1855,6 +1855,7 @@ class Symptom(proto.Message):
                 Abusive behaviors have been identified on the
                 current project.
         """
+
         SYMPTOM_TYPE_UNSPECIFIED = 0
         LOW_MEMORY = 1
         OUT_OF_MEMORY = 2
@@ -1956,6 +1957,7 @@ class AcceleratorConfig(proto.Message):
             V6E (11):
                 TPU v6e.
         """
+
         TYPE_UNSPECIFIED = 0
         V2 = 2
         V3 = 4

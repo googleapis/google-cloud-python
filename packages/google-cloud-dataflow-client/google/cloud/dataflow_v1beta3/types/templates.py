@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataflow_v1beta3.types import environment as gd_environment
@@ -118,6 +118,7 @@ class ParameterType(proto.Enum):
             for a new Google Managed Kafka topic, or an
             existing non-managed Kafka topic.
     """
+
     DEFAULT = 0
     TEXT = 1
     GCS_READ_BUCKET = 2
@@ -243,8 +244,7 @@ class LaunchFlexTemplateParameter(proto.Message):
 
             This field is a member of `oneof`_ ``template``.
         parameters (MutableMapping[str, str]):
-            The parameters for FlexTemplate.
-            Ex. {"num_workers":"5"}
+            The parameters for FlexTemplate. Ex. {"num_workers":"5"}
         launch_options (MutableMapping[str, str]):
             Launch options for this flex template job.
             This is a common set of options across languages
@@ -258,9 +258,8 @@ class LaunchFlexTemplateParameter(proto.Message):
             to update a running streaming job. When set, the
             job name should be the same as the running job.
         transform_name_mappings (MutableMapping[str, str]):
-            Use this to pass transform_name_mappings for
-            streaming update jobs.
-            Ex:{"oldTransformName":"newTransformName",...}'
+            Use this to pass transform_name_mappings for streaming
+            update jobs. Ex:{"oldTransformName":"newTransformName",...}'
     """
 
     job_name: str = proto.Field(
@@ -320,11 +319,10 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             instances to be made available to your pipeline
             during execution, from 1 to 1000.
         zone (str):
-            The Compute Engine [availability
-            zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            for launching worker instances to run your
-            pipeline. In the future, worker_zone will take
-            precedence.
+            The Compute Engine `availability
+            zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones>`__
+            for launching worker instances to run your pipeline. In the
+            future, worker_zone will take precedence.
         service_account_email (str):
             The email address of the service account to
             run the job as.
@@ -341,23 +339,20 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             empty or unspecified, the service will use the
             network "default".
         subnetwork (str):
-            Subnetwork to which VMs will be assigned, if
-            desired. You can specify a subnetwork using
-            either a complete URL or an abbreviated path.
-            Expected to be of the form
+            Subnetwork to which VMs will be assigned, if desired. You
+            can specify a subnetwork using either a complete URL or an
+            abbreviated path. Expected to be of the form
             "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
-            or "regions/REGION/subnetworks/SUBNETWORK". If
-            the subnetwork is located in a Shared VPC
-            network, you must use the complete URL.
+            or "regions/REGION/subnetworks/SUBNETWORK". If the
+            subnetwork is located in a Shared VPC network, you must use
+            the complete URL.
         additional_user_labels (MutableMapping[str, str]):
-            Additional user labels to be specified for the
-            job. Keys and values must follow the
-            restrictions specified in the [labeling
-            restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
-            page.
-            An object containing a list of "key": value
-            pairs. Example: { "name": "wrench", "mass":
-            "1kg", "count": "3" }.
+            Additional user labels to be specified for the job. Keys and
+            values must follow the restrictions specified in the
+            `labeling
+            restrictions <https://cloud.google.com/compute/docs/labeling-resources#restrictions>`__
+            page. An object containing a list of "key": value pairs.
+            Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
         kms_key_name (str):
             Name for the Cloud KMS key for the job.
             Key format is:
@@ -368,11 +363,10 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
         worker_region (str):
             The Compute Engine region
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            in which worker processing should occur, e.g.
-            "us-west1". Mutually exclusive with worker_zone.
-            If neither worker_region nor worker_zone is
-            specified, default to the control plane's
-            region.
+            in which worker processing should occur, e.g. "us-west1".
+            Mutually exclusive with worker_zone. If neither
+            worker_region nor worker_zone is specified, default to the
+            control plane's region.
         worker_zone (str):
             The Compute Engine zone
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
@@ -422,16 +416,14 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             If true serial port logging will be enabled
             for the launcher VM.
         streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
-            Optional. Specifies the Streaming Engine message
-            processing guarantees. Reduces cost and latency
-            but might result in duplicate messages committed
-            to storage. Designed to run simple mapping
-            streaming ETL jobs at the lowest cost. For
-            example, Change Data Capture (CDC) to BigQuery
-            is a canonical use case. For more information,
-            see
-            [Set the pipeline streaming
-            mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
 
             This field is a member of `oneof`_ ``_streaming_mode``.
     """
@@ -598,11 +590,10 @@ class RuntimeEnvironment(proto.Message):
             your pipeline during execution, from 1 to 1000.
             The default value is 1.
         zone (str):
-            Optional. The Compute Engine [availability
-            zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            for launching worker instances to run your
-            pipeline. In the future, worker_zone will take
-            precedence.
+            Optional. The Compute Engine `availability
+            zone <https://cloud.google.com/compute/docs/regions-zones/regions-zones>`__
+            for launching worker instances to run your pipeline. In the
+            future, worker_zone will take precedence.
         service_account_email (str):
             Optional. The email address of the service
             account to run the job as.
@@ -625,23 +616,21 @@ class RuntimeEnvironment(proto.Message):
             assigned.  If empty or unspecified, the service
             will use the network "default".
         subnetwork (str):
-            Optional. Subnetwork to which VMs will be
-            assigned, if desired. You can specify a
-            subnetwork using either a complete URL or an
-            abbreviated path. Expected to be of the form
+            Optional. Subnetwork to which VMs will be assigned, if
+            desired. You can specify a subnetwork using either a
+            complete URL or an abbreviated path. Expected to be of the
+            form
             "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
-            or "regions/REGION/subnetworks/SUBNETWORK". If
-            the subnetwork is located in a Shared VPC
-            network, you must use the complete URL.
+            or "regions/REGION/subnetworks/SUBNETWORK". If the
+            subnetwork is located in a Shared VPC network, you must use
+            the complete URL.
         additional_user_labels (MutableMapping[str, str]):
-            Optional. Additional user labels to be specified
-            for the job. Keys and values should follow the
-            restrictions specified in the [labeling
-            restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
-            page.
-            An object containing a list of "key": value
-            pairs. Example: { "name": "wrench", "mass":
-            "1kg", "count": "3" }.
+            Optional. Additional user labels to be specified for the
+            job. Keys and values should follow the restrictions
+            specified in the `labeling
+            restrictions <https://cloud.google.com/compute/docs/labeling-resources#restrictions>`__
+            page. An object containing a list of "key": value pairs.
+            Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
         kms_key_name (str):
             Optional. Name for the Cloud KMS key for the
             job. Key format is:
@@ -652,11 +641,10 @@ class RuntimeEnvironment(proto.Message):
         worker_region (str):
             Required. The Compute Engine region
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
-            in which worker processing should occur, e.g.
-            "us-west1". Mutually exclusive with worker_zone.
-            If neither worker_region nor worker_zone is
-            specified, default to the control plane's
-            region.
+            in which worker processing should occur, e.g. "us-west1".
+            Mutually exclusive with worker_zone. If neither
+            worker_region nor worker_zone is specified, default to the
+            control plane's region.
         worker_zone (str):
             Optional. The Compute Engine zone
             (https://cloud.google.com/compute/docs/regions-zones/regions-zones)
@@ -673,16 +661,14 @@ class RuntimeEnvironment(proto.Message):
             Optional. The disk size, in gigabytes, to use
             on each remote Compute Engine worker instance.
         streaming_mode (google.cloud.dataflow_v1beta3.types.StreamingMode):
-            Optional. Specifies the Streaming Engine message
-            processing guarantees. Reduces cost and latency
-            but might result in duplicate messages committed
-            to storage. Designed to run simple mapping
-            streaming ETL jobs at the lowest cost. For
-            example, Change Data Capture (CDC) to BigQuery
-            is a canonical use case. For more information,
-            see
-            [Set the pipeline streaming
-            mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
+            Optional. Specifies the Streaming Engine message processing
+            guarantees. Reduces cost and latency but might result in
+            duplicate messages committed to storage. Designed to run
+            simple mapping streaming ETL jobs at the lowest cost. For
+            example, Change Data Capture (CDC) to BigQuery is a
+            canonical use case. For more information, see `Set the
+            pipeline streaming
+            mode <https://cloud.google.com/dataflow/docs/guides/streaming-modes>`__.
 
             This field is a member of `oneof`_ ``_streaming_mode``.
     """
@@ -819,35 +805,29 @@ class ParameterMetadata(proto.Message):
             Optional. Additional metadata for describing
             this parameter.
         group_name (str):
-            Optional. Specifies a group name for this
-            parameter to be rendered under. Group header
-            text will be rendered exactly as specified in
-            this field. Only considered when parent_name is
-            NOT provided.
+            Optional. Specifies a group name for this parameter to be
+            rendered under. Group header text will be rendered exactly
+            as specified in this field. Only considered when parent_name
+            is NOT provided.
         parent_name (str):
-            Optional. Specifies the name of the parent
-            parameter. Used in conjunction with
-            'parent_trigger_values' to make this parameter
-            conditional (will only be rendered
-            conditionally). Should be mappable to a
-            ParameterMetadata.name field.
+            Optional. Specifies the name of the parent parameter. Used
+            in conjunction with 'parent_trigger_values' to make this
+            parameter conditional (will only be rendered conditionally).
+            Should be mappable to a ParameterMetadata.name field.
         parent_trigger_values (MutableSequence[str]):
-            Optional. The value(s) of the 'parent_name'
-            parameter which will trigger this parameter to
-            be shown. If left empty, ANY non-empty value in
-            parent_name will trigger this parameter to be
-            shown. Only considered when this parameter is
-            conditional (when 'parent_name' has been
-            provided).
+            Optional. The value(s) of the 'parent_name' parameter which
+            will trigger this parameter to be shown. If left empty, ANY
+            non-empty value in parent_name will trigger this parameter
+            to be shown. Only considered when this parameter is
+            conditional (when 'parent_name' has been provided).
         enum_options (MutableSequence[google.cloud.dataflow_v1beta3.types.ParameterMetadataEnumOption]):
             Optional. The options shown when ENUM
             ParameterType is specified.
         default_value (str):
-            Optional. The default values will pre-populate
-            the parameter with the given value from the
-            proto. If default_value is left empty, the
-            parameter will be populated with a default of
-            the relevant type, e.g. false for a boolean.
+            Optional. The default values will pre-populate the parameter
+            with the given value from the proto. If default_value is
+            left empty, the parameter will be populated with a default
+            of the relevant type, e.g. false for a boolean.
         hidden_ui (bool):
             Optional. Whether the parameter should be
             hidden in the UI.
@@ -930,11 +910,10 @@ class TemplateMetadata(proto.Message):
             Optional. Indicates if the streaming template
             supports exactly once mode.
         default_streaming_mode (str):
-            Optional. Indicates the default streaming mode
-            for a streaming template. Only valid if both
-            supports_at_least_once and supports_exactly_once
-            are true. Possible values: UNSPECIFIED,
-            EXACTLY_ONCE and AT_LEAST_ONCE
+            Optional. Indicates the default streaming mode for a
+            streaming template. Only valid if both
+            supports_at_least_once and supports_exactly_once are true.
+            Possible values: UNSPECIFIED, EXACTLY_ONCE and AT_LEAST_ONCE
     """
 
     name: str = proto.Field(
@@ -991,6 +970,7 @@ class SDKInfo(proto.Message):
             GO (3):
                 Go.
         """
+
         UNKNOWN = 0
         JAVA = 1
         PYTHON = 2
@@ -1118,6 +1098,7 @@ class GetTemplateRequest(proto.Message):
                 Template view that retrieves only the
                 metadata associated with the template.
         """
+
         METADATA_ONLY = 0
 
     project_id: str = proto.Field(
@@ -1145,9 +1126,8 @@ class GetTemplateResponse(proto.Message):
 
     Attributes:
         status (google.rpc.status_pb2.Status):
-            The status of the get template request. Any
-            problems with the request will be indicated in
-            the error_details.
+            The status of the get template request. Any problems with
+            the request will be indicated in the error_details.
         metadata (google.cloud.dataflow_v1beta3.types.TemplateMetadata):
             The template metadata describing the template
             name, available parameters, etc.
@@ -1169,6 +1149,7 @@ class GetTemplateResponse(proto.Message):
             FLEX (2):
                 Flex Template.
         """
+
         UNKNOWN = 0
         LEGACY = 1
         FLEX = 2
@@ -1331,8 +1312,8 @@ class LaunchTemplateResponse(proto.Message):
 
 
 class InvalidTemplateParameters(proto.Message):
-    r"""Used in the error_details field of a google.rpc.Status message,
-    this indicates problems with the template parameter.
+    r"""Used in the error_details field of a google.rpc.Status message, this
+    indicates problems with the template parameter.
 
     Attributes:
         parameter_violations (MutableSequence[google.cloud.dataflow_v1beta3.types.InvalidTemplateParameters.ParameterViolation]):

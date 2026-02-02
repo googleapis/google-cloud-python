@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import geometry
@@ -42,9 +42,9 @@ class ImageObjectDetectionAnnotation(proto.Message):
             Output only. The rectangle representing the
             object location.
         score (float):
-            Output only. The confidence that this annotation
-            is positive for the parent example, value in [0,
-            1], higher means higher positivity confidence.
+            Output only. The confidence that this annotation is positive
+            for the parent example, value in [0, 1], higher means higher
+            positivity confidence.
     """
 
     bounding_box: geometry.BoundingPoly = proto.Field(
@@ -78,17 +78,15 @@ class VideoObjectTrackingAnnotation(proto.Message):
             this annotation pertains. Represented as the
             duration since the video's start.
         bounding_box (google.cloud.automl_v1beta1.types.BoundingPoly):
-            Required. The rectangle representing the object
-            location on the frame (i.e. at the time_offset
-            of the video).
+            Required. The rectangle representing the object location on
+            the frame (i.e. at the time_offset of the video).
         score (float):
-            Output only. The confidence that this annotation
-            is positive for the video at the time_offset,
-            value in [0, 1], higher means higher positivity
-            confidence. For annotations created by the user
-            the score is 1. When user approves an
-            annotation, the original float score is kept
-            (and not changed to 1).
+            Output only. The confidence that this annotation is positive
+            for the video at the time_offset, value in [0, 1], higher
+            means higher positivity confidence. For annotations created
+            by the user the score is 1. When user approves an
+            annotation, the original float score is kept (and not
+            changed to 1).
     """
 
     instance_id: str = proto.Field(
@@ -122,13 +120,13 @@ class BoundingBoxMetricsEntry(proto.Message):
             threshold value used to compute this metrics
             entry.
         mean_average_precision (float):
-            Output only. The mean average precision, most
-            often close to au_prc.
+            Output only. The mean average precision, most often close to
+            au_prc.
         confidence_metrics_entries (MutableSequence[google.cloud.automl_v1beta1.types.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
             Output only. Metrics for each label-match
             confidence_threshold from
-            0.05,0.10,...,0.95,0.96,0.97,0.98,0.99.
-            Precision-recall curve is derived from them.
+            0.05,0.10,...,0.95,0.96,0.97,0.98,0.99. Precision-recall
+            curve is derived from them.
     """
 
     class ConfidenceMetricsEntry(proto.Message):
@@ -174,12 +172,12 @@ class BoundingBoxMetricsEntry(proto.Message):
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries: MutableSequence[
-        ConfidenceMetricsEntry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ConfidenceMetricsEntry,
+    confidence_metrics_entries: MutableSequence[ConfidenceMetricsEntry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ConfidenceMetricsEntry,
+        )
     )
 
 
@@ -199,21 +197,21 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             label confidence threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 pair.
         bounding_box_mean_average_precision (float):
-            Output only. The single metric for bounding
-            boxes evaluation: the mean_average_precision
-            averaged over all bounding_box_metrics_entries.
+            Output only. The single metric for bounding boxes
+            evaluation: the mean_average_precision averaged over all
+            bounding_box_metrics_entries.
     """
 
     evaluated_bounding_box_count: int = proto.Field(
         proto.INT32,
         number=1,
     )
-    bounding_box_metrics_entries: MutableSequence[
-        "BoundingBoxMetricsEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="BoundingBoxMetricsEntry",
+    bounding_box_metrics_entries: MutableSequence["BoundingBoxMetricsEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BoundingBoxMetricsEntry",
+        )
     )
     bounding_box_mean_average_precision: float = proto.Field(
         proto.FLOAT,
@@ -242,9 +240,9 @@ class VideoObjectTrackingEvaluationMetrics(proto.Message):
             label confidence threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 pair.
         bounding_box_mean_average_precision (float):
-            Output only. The single metric for bounding
-            boxes evaluation: the mean_average_precision
-            averaged over all bounding_box_metrics_entries.
+            Output only. The single metric for bounding boxes
+            evaluation: the mean_average_precision averaged over all
+            bounding_box_metrics_entries.
     """
 
     evaluated_frame_count: int = proto.Field(
@@ -255,12 +253,12 @@ class VideoObjectTrackingEvaluationMetrics(proto.Message):
         proto.INT32,
         number=2,
     )
-    bounding_box_metrics_entries: MutableSequence[
-        "BoundingBoxMetricsEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="BoundingBoxMetricsEntry",
+    bounding_box_metrics_entries: MutableSequence["BoundingBoxMetricsEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="BoundingBoxMetricsEntry",
+        )
     )
     bounding_box_mean_average_precision: float = proto.Field(
         proto.FLOAT,

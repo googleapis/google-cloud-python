@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_lfp_v1beta import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.shopping.type.types import types
 
 from google.shopping.merchant_lfp_v1beta.types import lfpsale
@@ -64,8 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class LfpSaleServiceAsyncClient:
-    """Service for a [LFP
-    partner](https://support.google.com/merchants/answer/7676652) to
+    """Service for a `LFP
+    partner <https://support.google.com/merchants/answer/7676652>`__ to
     submit sales data for a merchant.
     """
 
@@ -118,7 +118,8 @@ class LfpSaleServiceAsyncClient:
         Returns:
             LfpSaleServiceAsyncClient: The constructed client.
         """
-        return LfpSaleServiceClient.from_service_account_info.__func__(LfpSaleServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = LfpSaleServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(LfpSaleServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -134,7 +135,8 @@ class LfpSaleServiceAsyncClient:
         Returns:
             LfpSaleServiceAsyncClient: The constructed client.
         """
-        return LfpSaleServiceClient.from_service_account_file.__func__(LfpSaleServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = LfpSaleServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(LfpSaleServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

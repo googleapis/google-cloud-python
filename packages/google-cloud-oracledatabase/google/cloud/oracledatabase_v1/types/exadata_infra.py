@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import month_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.month_pb2 as month_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import common
@@ -40,9 +40,8 @@ class CloudExadataInfrastructure(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Exadata
-            Infrastructure resource with the format:
-
+            Identifier. The name of the Exadata Infrastructure resource
+            with the format:
             projects/{project}/locations/{region}/cloudExadataInfrastructures/{cloud_exadata_infrastructure}
         display_name (str):
             Optional. User friendly name for this
@@ -226,6 +225,7 @@ class CloudExadataInfrastructureProperties(proto.Message):
             MAINTENANCE_IN_PROGRESS (7):
                 The Exadata Infrastructure is in maintenance.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -427,6 +427,7 @@ class MaintenanceWindow(proto.Message):
             NO_PREFERENCE (2):
                 No preference.
         """
+
         MAINTENANCE_WINDOW_PREFERENCE_UNSPECIFIED = 0
         CUSTOM_PREFERENCE = 1
         NO_PREFERENCE = 2
@@ -445,6 +446,7 @@ class MaintenanceWindow(proto.Message):
                 updates your storage servers at the same time,
                 then your database servers at the same time.
         """
+
         PATCHING_MODE_UNSPECIFIED = 0
         ROLLING = 1
         NON_ROLLING = 2

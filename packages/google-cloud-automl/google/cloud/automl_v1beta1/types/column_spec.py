@@ -52,12 +52,10 @@ class ColumnSpec(proto.Message):
             digits 0-9, underscores(\_), and forward slashes(/), and
             must start with a letter or a digit.
         data_stats (google.cloud.automl_v1beta1.types.DataStats):
-            Output only. Stats of the series of values in
-            the column. This field may be stale, see the
-            ancestor's
-            Dataset.tables_dataset_metadata.stats_update_time
-            field for the timestamp at which these stats
-            were last updated.
+            Output only. Stats of the series of values in the column.
+            This field may be stale, see the ancestor's
+            Dataset.tables_dataset_metadata.stats_update_time field for
+            the timestamp at which these stats were last updated.
         top_correlated_columns (MutableSequence[google.cloud.automl_v1beta1.types.ColumnSpec.CorrelatedColumn]):
             Deprecated.
         etag (str):
@@ -72,9 +70,8 @@ class ColumnSpec(proto.Message):
 
         Attributes:
             column_spec_id (str):
-                The column_spec_id of the correlated column,
-                which belongs to the same table as the
-                in-context column.
+                The column_spec_id of the correlated column, which belongs
+                to the same table as the in-context column.
             correlation_stats (google.cloud.automl_v1beta1.types.CorrelationStats):
                 Correlation between this and the in-context
                 column.

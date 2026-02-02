@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -53,6 +53,7 @@ class LineItemChangeType(proto.Enum):
         LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION (4):
             The change is to revert a cancellation.
     """
+
     LINE_ITEM_CHANGE_TYPE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_TYPE_CREATE = 1
     LINE_ITEM_CHANGE_TYPE_UPDATE = 2
@@ -92,6 +93,7 @@ class LineItemChangeState(proto.Enum):
             be overwritten or cancelled when it's in this
             state.
     """
+
     LINE_ITEM_CHANGE_STATE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL = 1
     LINE_ITEM_CHANGE_STATE_APPROVED = 2
@@ -118,6 +120,7 @@ class LineItemChangeStateReasonType(proto.Enum):
             Change is in current state due to
             system-initiated cancellation.
     """
+
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED = 1
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED = 2
@@ -240,9 +243,8 @@ class LineItemChange(proto.Message):
 
     Attributes:
         change_id (str):
-            Output only. Change ID.
-            All changes made within one order update
-            operation have the same change_id.
+            Output only. Change ID. All changes made within one order
+            update operation have the same change_id.
         change_type (google.cloud.commerce_consumer_procurement_v1alpha1.types.LineItemChangeType):
             Required. Type of the change to make.
         old_line_item_info (google.cloud.commerce_consumer_procurement_v1alpha1.types.LineItemInfo):
@@ -333,9 +335,8 @@ class LineItemInfo(proto.Message):
 
     Attributes:
         offer (str):
-            Optional. The name of the offer can have either
-            of these formats:
-            'billingAccounts/{billing_account}/offers/{offer}',
+            Optional. The name of the offer can have either of these
+            formats: 'billingAccounts/{billing_account}/offers/{offer}',
             or 'services/{service}/standardOffers/{offer}'.
         parameters (MutableSequence[google.cloud.commerce_consumer_procurement_v1alpha1.types.Parameter]):
             Optional. User-provided parameters.

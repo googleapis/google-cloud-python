@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -56,6 +56,7 @@ class TransferType(proto.Enum):
             source currently doesn't support multiple
             transfer configs per project.
     """
+
     _pb_options = {"deprecated": True}
     TRANSFER_TYPE_UNSPECIFIED = 0
     BATCH = 1
@@ -80,6 +81,7 @@ class TransferState(proto.Enum):
         CANCELLED (6):
             Data transfer is cancelled (6).
     """
+
     TRANSFER_STATE_UNSPECIFIED = 0
     PENDING = 2
     RUNNING = 3
@@ -169,9 +171,8 @@ class ScheduleOptionsV2(proto.Message):
 
             This field is a member of `oneof`_ ``schedule``.
         manual_schedule (google.cloud.bigquery_datatransfer_v1.types.ManualSchedule):
-            Manual transfer schedule. If set, the transfer
-            run will not be auto-scheduled by the system,
-            unless the client invokes
+            Manual transfer schedule. If set, the transfer run will not
+            be auto-scheduled by the system, unless the client invokes
             StartManualTransferRuns. This is equivalent to
             disable_auto_scheduling = true.
 
@@ -352,11 +353,10 @@ class TransferConfig(proto.Message):
             Options customizing the data transfer
             schedule.
         schedule_options_v2 (google.cloud.bigquery_datatransfer_v1.types.ScheduleOptionsV2):
-            Options customizing different types of data
-            transfer schedule. This field replaces
-            "schedule" and "schedule_options" fields.
-            ScheduleOptionsV2 cannot be used together with
-            ScheduleOptions/Schedule.
+            Options customizing different types of data transfer
+            schedule. This field replaces "schedule" and
+            "schedule_options" fields. ScheduleOptionsV2 cannot be used
+            together with ScheduleOptions/Schedule.
         data_refresh_window_days (int):
             The number of days to look back to automatically refresh the
             data. For example, if ``data_refresh_window_days = 10``,
@@ -692,6 +692,7 @@ class TransferMessage(proto.Message):
             ERROR (3):
                 Error message.
         """
+
         MESSAGE_SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

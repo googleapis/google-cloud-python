@@ -40,9 +40,8 @@ class CustomClass(proto.Message):
         name (str):
             The resource name of the custom class.
         custom_class_id (str):
-            If this custom class is a resource, the
-            custom_class_id is the resource id of the
-            CustomClass. Case sensitive.
+            If this custom class is a resource, the custom_class_id is
+            the resource id of the CustomClass. Case sensitive.
         items (MutableSequence[google.cloud.speech_v1.types.CustomClass.ClassItem]):
             A collection of class items.
     """
@@ -239,11 +238,10 @@ class TranscriptNormalization(proto.Message):
 
     Attributes:
         entries (MutableSequence[google.cloud.speech_v1.types.TranscriptNormalization.Entry]):
-            A list of replacement entries. We will perform
-            replacement with one entry at a time. For
-            example, the second entry in ["cat" => "dog",
-            "mountain cat" => "mountain dog"] will never be
-            applied because we will always process the first
+            A list of replacement entries. We will perform replacement
+            with one entry at a time. For example, the second entry in
+            ["cat" => "dog", "mountain cat" => "mountain dog"] will
+            never be applied because we will always process the first
             entry before it. At most 100 entries.
     """
 

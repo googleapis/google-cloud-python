@@ -61,6 +61,7 @@ class TranslationReportRecord(proto.Message):
             ERROR (3):
                 ERROR type. Translation failed.
         """
+
         SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

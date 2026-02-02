@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -114,13 +114,12 @@ class ListDataAccessLabelsRequest(proto.Message):
             ``ListDataAccessLabelsRequest`` call. Provide this to
             retrieve the subsequent page.
         filter (str):
-            Optional. A filter which should follow the
-            guidelines of AIP-160. Supports filtering on all
-            fieds of DataAccessLabel and all operations as
-            mentioned in https://google.aip.dev/160.
-            example filter: "create_time greater than
-            \"2023-04-21T11:30:00-04:00\" OR
-            display_name:\"-21-1\"".
+            Optional. A filter which should follow the guidelines of
+            AIP-160. Supports filtering on all fieds of DataAccessLabel
+            and all operations as mentioned in
+            https://google.aip.dev/160. example filter: "create_time
+            greater than "2023-04-21T11:30:00-04:00" OR
+            display_name:"-21-1"".
     """
 
     parent: str = proto.Field(
@@ -179,11 +178,10 @@ class UpdateDataAccessLabelRequest(proto.Message):
             update. Format:
             ``projects/{project}/locations/{location}/instances/{instance}/dataAccessLabels/{data_access_label}``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update. If not included,
-            all fields with a non-empty value will be
-            overwritten. Currently, only the description and
-            definition fields are supported for update; an
-            update call that attempts to update any other
+            The list of fields to update. If not included, all fields
+            with a non-empty value will be overwritten. Currently, only
+            the description and definition fields are supported for
+            update; an update call that attempts to update any other
             fields will return INVALID_ARGUMENT.
     """
 
@@ -281,13 +279,12 @@ class ListDataAccessScopesRequest(proto.Message):
             ``ListDataAccessScopesRequest`` call. Provide this to
             retrieve the subsequent page.
         filter (str):
-            Optional. A filter which should follow the
-            guidelines of AIP-160. Supports filtering on all
-            fieds of DataAccessScope and all operations as
-            mentioned in https://google.aip.dev/160.
-            example filter: "create_time greater than
-            \"2023-04-21T11:30:00-04:00\" OR
-            display_name:\"-21-1\"".
+            Optional. A filter which should follow the guidelines of
+            AIP-160. Supports filtering on all fieds of DataAccessScope
+            and all operations as mentioned in
+            https://google.aip.dev/160. example filter: "create_time
+            greater than "2023-04-21T11:30:00-04:00" OR
+            display_name:"-21-1"".
     """
 
     parent: str = proto.Field(
@@ -358,13 +355,11 @@ class UpdateDataAccessScopeRequest(proto.Message):
             update. Format:
             ``projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{data_access_scope}``
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update. If not included,
-            all fields with a non-empty value will be
-            overwritten. Currently, only the description,
-            the allowed and denied labels list fields are
-            supported for update; an update call that
-            attempts to update any
-            other fields will return INVALID_ARGUMENT.
+            The list of fields to update. If not included, all fields
+            with a non-empty value will be overwritten. Currently, only
+            the description, the allowed and denied labels list fields
+            are supported for update; an update call that attempts to
+            update any other fields will return INVALID_ARGUMENT.
     """
 
     data_access_scope: "DataAccessScope" = proto.Field(
@@ -476,16 +471,13 @@ class DataAccessScope(proto.Message):
             access scope. The name should comply with
             https://google.aip.dev/122 standards.
         allowed_data_access_labels (MutableSequence[google.cloud.chronicle_v1.types.DataAccessLabelReference]):
-            Optional. The allowed labels for the scope.
-            Either allow_all or allowed_data_access_labels
-            needs to be provided. When provided, there has
-            to be at least one label allowed for the scope
-            to be valid.
-            The logical operator for evaluation of the
-            allowed labels is OR. E.g.: A customer with
-            scope with allowed labels A and B will be able
-            to see data with labeled with A or B or (A and
-            B).
+            Optional. The allowed labels for the scope. Either allow_all
+            or allowed_data_access_labels needs to be provided. When
+            provided, there has to be at least one label allowed for the
+            scope to be valid. The logical operator for evaluation of
+            the allowed labels is OR. E.g.: A customer with scope with
+            allowed labels A and B will be able to see data with labeled
+            with A or B or (A and B).
         denied_data_access_labels (MutableSequence[google.cloud.chronicle_v1.types.DataAccessLabelReference]):
             Optional. The denied labels for the scope.
             The logical operator for evaluation of the
@@ -512,38 +504,35 @@ class DataAccessScope(proto.Message):
             Optional. A description of the data access
             scope for a human reader.
         allow_all (bool):
-            Optional. Whether or not the scope allows all
-            labels, allow_all and allowed_data_access_labels
-            are mutually exclusive and one of them must be
-            present. denied_data_access_labels can still be
-            used along with allow_all. When combined with
-            denied_data_access_labels, access will be
-            granted to all data that doesn't have labels
-            mentioned in denied_data_access_labels. E.g.:
-
-            A customer with scope with denied labels A and B
-            and allow_all will be able to see all data
-            except data labeled with A and data labeled with
-            B and data with labels A and B.
+            Optional. Whether or not the scope allows all labels,
+            allow_all and allowed_data_access_labels are mutually
+            exclusive and one of them must be present.
+            denied_data_access_labels can still be used along with
+            allow_all. When combined with denied_data_access_labels,
+            access will be granted to all data that doesn't have labels
+            mentioned in denied_data_access_labels. E.g.: A customer
+            with scope with denied labels A and B and allow_all will be
+            able to see all data except data labeled with A and data
+            labeled with B and data with labels A and B.
     """
 
     name: str = proto.Field(
         proto.STRING,
         number=1,
     )
-    allowed_data_access_labels: MutableSequence[
-        "DataAccessLabelReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="DataAccessLabelReference",
+    allowed_data_access_labels: MutableSequence["DataAccessLabelReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="DataAccessLabelReference",
+        )
     )
-    denied_data_access_labels: MutableSequence[
-        "DataAccessLabelReference"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="DataAccessLabelReference",
+    denied_data_access_labels: MutableSequence["DataAccessLabelReference"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="DataAccessLabelReference",
+        )
     )
     display_name: str = proto.Field(
         proto.STRING,

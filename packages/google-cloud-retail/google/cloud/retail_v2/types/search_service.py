@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import common
@@ -231,10 +231,11 @@ class SearchRequest(proto.Message):
             If this field is unrecognizable, an INVALID_ARGUMENT is
             returned.
         facet_specs (MutableSequence[google.cloud.retail_v2.types.SearchRequest.FacetSpec]):
-            Facet specifications for faceted search. If
-            empty, no facets are returned.
-            A maximum of 200 values are allowed. Otherwise,
-            an INVALID_ARGUMENT error is returned.
+            Facet specifications for faceted search. If empty, no facets
+            are returned.
+
+            A maximum of 200 values are allowed. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         dynamic_facet_spec (google.cloud.retail_v2.types.SearchRequest.DynamicFacetSpec):
             Deprecated. Refer to
             https://cloud.google.com/retail/docs/configs#dynamic
@@ -257,10 +258,10 @@ class SearchRequest(proto.Message):
             conditions, the final boost score is equal to the sum of the
             boost scores from all matched boost conditions.
         query_expansion_spec (google.cloud.retail_v2.types.SearchRequest.QueryExpansionSpec):
-            The query expansion specification that specifies
-            the conditions under which query expansion
-            occurs. For more information, see [Query
-            expansion](https://cloud.google.com/retail/docs/result-size#query_expansion).
+            The query expansion specification that specifies the
+            conditions under which query expansion occurs. For more
+            information, see `Query
+            expansion <https://cloud.google.com/retail/docs/result-size#query_expansion>`__.
         variant_rollup_keys (MutableSequence[str]):
             The keys to fetch and rollup the matching
             [variant][google.cloud.retail.v2.Product.Type.VARIANT]
@@ -491,6 +492,7 @@ class SearchRequest(proto.Message):
                 [SearchResponse.SearchResult][google.cloud.retail.v2.SearchResponse.SearchResult]
                 will not be returned.
         """
+
         SEARCH_MODE_UNSPECIFIED = 0
         PRODUCT_SEARCH_ONLY = 1
         FACETED_SEARCH_ONLY = 2
@@ -502,13 +504,11 @@ class SearchRequest(proto.Message):
             facet_key (google.cloud.retail_v2.types.SearchRequest.FacetSpec.FacetKey):
                 Required. The facet key specification.
             limit (int):
-                Maximum of facet values that should be returned
-                for this facet. If unspecified, defaults to 50.
-                The maximum allowed value is 300. Values above
-                300 will be coerced to 300.
+                Maximum of facet values that should be returned for this
+                facet. If unspecified, defaults to 50. The maximum allowed
+                value is 300. Values above 300 will be coerced to 300.
 
-                If this field is negative, an INVALID_ARGUMENT
-                is returned.
+                If this field is negative, an INVALID_ARGUMENT is returned.
             excluded_filter_keys (MutableSequence[str]):
                 List of keys to exclude when faceting.
 
@@ -819,6 +819,7 @@ class SearchRequest(proto.Message):
                 ENABLED (2):
                     Automatic mode built by Google Retail Search.
             """
+
             MODE_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -872,28 +873,24 @@ class SearchRequest(proto.Message):
                       - (id: ANY("product_1", "product_2")) AND (colorFamilies:
                         ANY("Red","Blue"))
                 boost (float):
-                    Strength of the condition boost, which should be
-                    in [-1, 1]. Negative boost means demotion.
-                    Default is 0.0.
+                    Strength of the condition boost, which should be in [-1, 1].
+                    Negative boost means demotion. Default is 0.0.
 
-                    Setting to 1.0 gives the item a big promotion.
-                    However, it does not necessarily mean that the
-                    boosted item will be the top result at all
-                    times, nor that other items will be excluded.
-                    Results could still be shown even when none of
+                    Setting to 1.0 gives the item a big promotion. However, it
+                    does not necessarily mean that the boosted item will be the
+                    top result at all times, nor that other items will be
+                    excluded. Results could still be shown even when none of
                     them matches the condition. And results that are
-                    significantly more relevant to the search query
-                    can still trump your heavily favored but
-                    irrelevant items.
+                    significantly more relevant to the search query can still
+                    trump your heavily favored but irrelevant items.
 
-                    Setting to -1.0 gives the item a big demotion.
-                    However, results that are deeply relevant might
-                    still be shown. The item will have an upstream
-                    battle to get a fairly high ranking, but it is
-                    not blocked out completely.
+                    Setting to -1.0 gives the item a big demotion. However,
+                    results that are deeply relevant might still be shown. The
+                    item will have an upstream battle to get a fairly high
+                    ranking, but it is not blocked out completely.
 
-                    Setting to 0.0 means no boost applied. The
-                    boosting condition is ignored.
+                    Setting to 0.0 means no boost applied. The boosting
+                    condition is ignored.
             """
 
             condition: str = proto.Field(
@@ -953,6 +950,7 @@ class SearchRequest(proto.Message):
                     Automatic query expansion built by Google
                     Retail Search.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             AUTO = 3
@@ -989,6 +987,7 @@ class SearchRequest(proto.Message):
                 DISABLED (2):
                     Disable personalization.
             """
+
             MODE_UNSPECIFIED = 0
             AUTO = 1
             DISABLED = 2
@@ -1028,6 +1027,7 @@ class SearchRequest(proto.Message):
                     Retail Search. Search will be based on the
                     corrected query if found.
             """
+
             MODE_UNSPECIFIED = 0
             SUGGESTION_ONLY = 1
             AUTO = 2
@@ -1103,12 +1103,12 @@ class SearchRequest(proto.Message):
                         which is a attribute key-value.
                 """
 
-                product_attribute_values: MutableSequence[
-                    "ProductAttributeValue"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=1,
-                    message="ProductAttributeValue",
+                product_attribute_values: MutableSequence["ProductAttributeValue"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=1,
+                        message="ProductAttributeValue",
+                    )
                 )
                 product_attribute_value: "ProductAttributeValue" = proto.Field(
                     proto.MESSAGE,
@@ -1320,10 +1320,10 @@ class SearchResponse(proto.Message):
             [total_size][google.cloud.retail.v2.SearchResponse.total_size]
             that matches.
         corrected_query (str):
-            Contains the spell corrected query, if found. If
-            the spell correction type is AUTOMATIC, then the
-            search results are based on corrected_query.
-            Otherwise the original query is used for search.
+            Contains the spell corrected query, if found. If the spell
+            correction type is AUTOMATIC, then the search results are
+            based on corrected_query. Otherwise the original query is
+            used for search.
         attribution_token (str):
             A unique search token. This should be included in the
             [UserEvent][google.cloud.retail.v2.UserEvent] logs resulting
@@ -1487,13 +1487,13 @@ class SearchResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        matching_variant_fields: MutableMapping[
-            str, field_mask_pb2.FieldMask
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=4,
-            message=field_mask_pb2.FieldMask,
+        matching_variant_fields: MutableMapping[str, field_mask_pb2.FieldMask] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=4,
+                message=field_mask_pb2.FieldMask,
+            )
         )
         variant_rollup_values: MutableMapping[str, struct_pb2.Value] = proto.MapField(
             proto.STRING,
@@ -1542,8 +1542,8 @@ class SearchResponse(proto.Message):
 
                     This field is a member of `oneof`_ ``facet_value``.
                 interval (google.cloud.retail_v2.types.Interval):
-                    Interval value for a facet, such as [10, 20) for
-                    facet "price".
+                    Interval value for a facet, such as [10, 20) for facet
+                    "price".
 
                     This field is a member of `oneof`_ ``facet_value``.
                 count (int):
@@ -1590,12 +1590,12 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="SearchResponse.Facet.FacetValue",
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Facet.FacetValue",
+            )
         )
         dynamic_facet: bool = proto.Field(
             proto.BOOL,

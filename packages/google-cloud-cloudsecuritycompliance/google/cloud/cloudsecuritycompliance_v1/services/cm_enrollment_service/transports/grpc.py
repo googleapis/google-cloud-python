@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.types import cm_enrollment_service
 
@@ -384,12 +384,12 @@ class CmEnrollmentServiceGrpcTransport(CmEnrollmentServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "calculate_effective_cm_enrollment" not in self._stubs:
-            self._stubs[
-                "calculate_effective_cm_enrollment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.cloudsecuritycompliance.v1.CmEnrollmentService/CalculateEffectiveCmEnrollment",
-                request_serializer=cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest.serialize,
-                response_deserializer=cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.deserialize,
+            self._stubs["calculate_effective_cm_enrollment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.cloudsecuritycompliance.v1.CmEnrollmentService/CalculateEffectiveCmEnrollment",
+                    request_serializer=cm_enrollment_service.CalculateEffectiveCmEnrollmentRequest.serialize,
+                    response_deserializer=cm_enrollment_service.CalculateEffectiveCmEnrollmentResponse.deserialize,
+                )
             )
         return self._stubs["calculate_effective_cm_enrollment"]
 

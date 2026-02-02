@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataflow_v1beta3.types import environment as gd_environment
@@ -89,6 +89,7 @@ class KindType(proto.Enum):
             Opening or closing a shuffle session, often
             as part of a GroupByKey.
     """
+
     UNKNOWN_KIND = 0
     PAR_DO_KIND = 1
     GROUP_BY_KEY_KIND = 2
@@ -177,6 +178,7 @@ class JobState(proto.Enum):
             feature, please reach out to Cloud support team if you are
             interested.
     """
+
     JOB_STATE_UNKNOWN = 0
     JOB_STATE_STOPPED = 1
     JOB_STATE_RUNNING = 2
@@ -219,6 +221,7 @@ class JobView(proto.Enum):
             description data for steps, labels and
             environment.
     """
+
     JOB_VIEW_UNKNOWN = 0
     JOB_VIEW_SUMMARY = 1
     JOB_VIEW_ALL = 2
@@ -259,10 +262,10 @@ class Job(proto.Message):
         environment (google.cloud.dataflow_v1beta3.types.Environment):
             Optional. The environment for the job.
         steps (MutableSequence[google.cloud.dataflow_v1beta3.types.Step]):
-            Exactly one of step or steps_location should be
-            specified.
-            The top-level steps that constitute the entire
-            job. Only retrieved with JOB_VIEW_ALL.
+            Exactly one of step or steps_location should be specified.
+
+            The top-level steps that constitute the entire job. Only
+            retrieved with JOB_VIEW_ALL.
         steps_location (str):
             The Cloud Storage location where the steps
             are stored.
@@ -358,12 +361,10 @@ class Job(proto.Message):
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that contains this job.
         pipeline_description (google.cloud.dataflow_v1beta3.types.PipelineDescription):
-            Preliminary field: The format of this data may
-            change at any time. A description of the user
-            pipeline and stages through which it is
-            executed. Created by Cloud Dataflow service.
-            Only retrieved with JOB_VIEW_DESCRIPTION or
-            JOB_VIEW_ALL.
+            Preliminary field: The format of this data may change at any
+            time. A description of the user pipeline and stages through
+            which it is executed. Created by Cloud Dataflow service.
+            Only retrieved with JOB_VIEW_DESCRIPTION or JOB_VIEW_ALL.
         stage_states (MutableSequence[google.cloud.dataflow_v1beta3.types.ExecutionStageState]):
             This field may be mutated by the Cloud
             Dataflow service; callers cannot mutate it.
@@ -374,15 +375,13 @@ class Job(proto.Message):
             ListJobs and all GetJob views SUMMARY and
             higher.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            The timestamp when the job was started
-            (transitioned to JOB_STATE_PENDING). Flexible
-            resource scheduling jobs are started with some
-            delay after job creation, so start_time is unset
-            before start and is updated when the job is
-            started by the Cloud Dataflow service. For other
-            jobs, start_time always equals to create_time
-            and is immutable and set by the Cloud Dataflow
-            service.
+            The timestamp when the job was started (transitioned to
+            JOB_STATE_PENDING). Flexible resource scheduling jobs are
+            started with some delay after job creation, so start_time is
+            unset before start and is updated when the job is started by
+            the Cloud Dataflow service. For other jobs, start_time
+            always equals to create_time and is immutable and set by the
+            Cloud Dataflow service.
         created_from_snapshot_id (str):
             If this is specified, the job's initial state
             is populated from the given snapshot.
@@ -581,14 +580,11 @@ class RuntimeUpdatableParams(proto.Message):
 
             This field is a member of `oneof`_ ``_min_num_workers``.
         worker_utilization_hint (float):
-            Target worker utilization, compared against the
-            aggregate utilization of the worker pool by
-            autoscaler, to determine upscaling and
-            downscaling when absent other constraints such
-            as backlog.
-            For more information, see
-            [Update an existing
-            pipeline](https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline).
+            Target worker utilization, compared against the aggregate
+            utilization of the worker pool by autoscaler, to determine
+            upscaling and downscaling when absent other constraints such
+            as backlog. For more information, see `Update an existing
+            pipeline <https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline>`__.
 
             This field is a member of `oneof`_ ``_worker_utilization_hint``.
     """
@@ -784,6 +780,7 @@ class SdkVersion(proto.Message):
                 Support for this SDK version has ended and it
                 should no longer be used.
         """
+
         UNKNOWN = 0
         SUPPORTED = 1
         STALE = 2
@@ -841,6 +838,7 @@ class SdkBug(proto.Message):
                 Using this version of the SDK may cause data
                 loss.
         """
+
         TYPE_UNSPECIFIED = 0
         GENERAL = 1
         PERFORMANCE = 2
@@ -867,6 +865,7 @@ class SdkBug(proto.Message):
                 severely degraded, and data loss may be very
                 likely.
         """
+
         SEVERITY_UNSPECIFIED = 0
         NOTICE = 1
         WARNING = 2
@@ -1011,19 +1010,19 @@ class PipelineDescription(proto.Message):
             portable graph step names if exists.
     """
 
-    original_pipeline_transform: MutableSequence[
-        "TransformSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="TransformSummary",
+    original_pipeline_transform: MutableSequence["TransformSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="TransformSummary",
+        )
     )
-    execution_pipeline_stage: MutableSequence[
-        "ExecutionStageSummary"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="ExecutionStageSummary",
+    execution_pipeline_stage: MutableSequence["ExecutionStageSummary"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ExecutionStageSummary",
+        )
     )
     display_data: MutableSequence["DisplayData"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1306,13 +1305,12 @@ class DisplayData(proto.Message):
 
             This field is a member of `oneof`_ ``Value``.
         short_str_value (str):
-            A possible additional shorter value to display.
-            For example a java_class_name_value of
-            com.mypackage.MyDoFn will be stored with MyDoFn
-            as the short_str_value and com.mypackage.MyDoFn
-            as the java_class_name value. short_str_value
-            can be displayed and java_class_name_value will
-            be displayed as a tooltip.
+            A possible additional shorter value to display. For example
+            a java_class_name_value of com.mypackage.MyDoFn will be
+            stored with MyDoFn as the short_str_value and
+            com.mypackage.MyDoFn as the java_class_name value.
+            short_str_value can be displayed and java_class_name_value
+            will be displayed as a tooltip.
         url (str):
             An optional full URL.
         label (str):
@@ -1417,10 +1415,9 @@ class Step(proto.Message):
             be unique for each step with respect to all
             other steps in the Cloud Dataflow job.
         properties (google.protobuf.struct_pb2.Struct):
-            Named properties associated with the step. Each
-            kind of predefined step has its own required set
-            of properties. Must be provided on Create. Only
-            retrieved with JOB_VIEW_ALL.
+            Named properties associated with the step. Each kind of
+            predefined step has its own required set of properties. Must
+            be provided on Create. Only retrieved with JOB_VIEW_ALL.
     """
 
     kind: str = proto.Field(
@@ -1577,15 +1574,13 @@ class UpdateJobRequest(proto.Message):
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
             that contains this job.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The list of fields to update relative to Job. If
-            empty, only RequestedJobState will be considered
-            for update. If the FieldMask is not empty and
-            RequestedJobState is none/empty, The fields
-            specified in the update mask will be the only
-            ones considered for update. If both
-            RequestedJobState and update_mask are specified,
-            an error will be returned as we cannot update
-            both state and mask.
+            The list of fields to update relative to Job. If empty, only
+            RequestedJobState will be considered for update. If the
+            FieldMask is not empty and RequestedJobState is none/empty,
+            The fields specified in the update mask will be the only
+            ones considered for update. If both RequestedJobState and
+            update_mask are specified, an error will be returned as we
+            cannot update both state and mask.
 
             This field is a member of `oneof`_ ``_update_mask``.
     """
@@ -1629,14 +1624,12 @@ class ListJobsRequest(proto.Message):
             Deprecated. ListJobs always returns summaries
             now. Use GetJob for other JobViews.
         page_size (int):
-            If there are many jobs, limit response to at
-            most this many. The actual number of jobs
-            returned will be the lesser of max_responses and
-            an unspecified server-defined limit.
+            If there are many jobs, limit response to at most this many.
+            The actual number of jobs returned will be the lesser of
+            max_responses and an unspecified server-defined limit.
         page_token (str):
-            Set this to the 'next_page_token' field of a
-            previous response to request additional results
-            in a long list.
+            Set this to the 'next_page_token' field of a previous
+            response to request additional results in a long list.
         location (str):
             The [regional endpoint]
             (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
@@ -1669,6 +1662,7 @@ class ListJobsRequest(proto.Message):
                 Filters the jobs that are running ordered on
                 the creation timestamp.
         """
+
         UNKNOWN = 0
         ALL = 1
         TERMINATED = 2

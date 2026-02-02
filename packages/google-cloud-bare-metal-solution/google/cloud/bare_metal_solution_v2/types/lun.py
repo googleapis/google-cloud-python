@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,9 +61,8 @@ class Lun(proto.Message):
         wwid (str):
             The WWID for this LUN.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Time after which LUN will be fully
-            deleted. It is filled only for LUNs in COOL_OFF
-            state.
+            Output only. Time after which LUN will be fully deleted. It
+            is filled only for LUNs in COOL_OFF state.
         instances (MutableSequence[str]):
             Output only. Instances this Lun is attached
             to.
@@ -87,6 +86,7 @@ class Lun(proto.Message):
                 The LUN is in cool off state. It will be deleted after
                 ``expire_time``.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -104,6 +104,7 @@ class Lun(proto.Message):
             LINUX (1):
                 Server with Linux OS.
         """
+
         MULTIPROTOCOL_TYPE_UNSPECIFIED = 0
         LINUX = 1
 
@@ -118,6 +119,7 @@ class Lun(proto.Message):
             HDD (2):
                 This storage type for this LUN is HDD.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2

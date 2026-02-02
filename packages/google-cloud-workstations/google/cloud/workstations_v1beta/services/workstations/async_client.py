@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.workstations_v1beta import gapic_version as package_version
 
@@ -44,16 +44,18 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 
 from google.cloud.workstations_v1beta.services.workstations import pagers
 from google.cloud.workstations_v1beta.types import workstations
@@ -128,7 +130,8 @@ class WorkstationsAsyncClient:
         Returns:
             WorkstationsAsyncClient: The constructed client.
         """
-        return WorkstationsClient.from_service_account_info.__func__(WorkstationsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = WorkstationsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(WorkstationsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -144,7 +147,8 @@ class WorkstationsAsyncClient:
         Returns:
             WorkstationsAsyncClient: The constructed client.
         """
-        return WorkstationsClient.from_service_account_file.__func__(WorkstationsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = WorkstationsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(WorkstationsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -1030,21 +1034,19 @@ class WorkstationsAsyncClient:
 
         Returns:
             google.cloud.workstations_v1beta.types.WorkstationConfig:
-                A workstation configuration resource in
-                the Cloud Workstations API.
-                Workstation configurations act as
-                templates for workstations. The
-                workstation configuration defines
-                details such as the workstation virtual
-                machine (VM) instance type, persistent
-                storage, container image defining
-                environment, which IDE or Code Editor to
-                use, and more. Administrators and
-                platform teams can also use [Identity
-                and Access Management
-                (IAM)](https://cloud.google.com/iam/docs/overview)
-                rules to grant access to teams or to
-                individual developers.
+                A workstation configuration resource in the Cloud
+                Workstations API.
+
+                   Workstation configurations act as templates for
+                   workstations. The workstation configuration defines
+                   details such as the workstation virtual machine (VM)
+                   instance type, persistent storage, container image
+                   defining environment, which IDE or Code Editor to
+                   use, and more. Administrators and platform teams can
+                   also use [Identity and Access Management
+                   (IAM)](https://cloud.google.com/iam/docs/overview)
+                   rules to grant access to teams or to individual
+                   developers.
 
         """
         # Create or coerce a protobuf request object.

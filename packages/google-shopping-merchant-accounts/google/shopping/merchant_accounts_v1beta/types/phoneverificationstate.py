@@ -38,6 +38,7 @@ class PhoneVerificationState(proto.Enum):
         PHONE_VERIFICATION_STATE_UNVERIFIED (2):
             The phone is unverified
     """
+
     PHONE_VERIFICATION_STATE_UNSPECIFIED = 0
     PHONE_VERIFICATION_STATE_VERIFIED = 1
     PHONE_VERIFICATION_STATE_UNVERIFIED = 2

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -156,6 +156,7 @@ class CmekConfig(proto.Message):
                 The KMS key is soft deleted. Some cleanup
                 policy will eventually be applied.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -179,6 +180,7 @@ class CmekConfig(proto.Message):
             NOTEBOOK_LM_NOT_ENABLED (3):
                 The NotebookLM is not enabled.
         """
+
         NOTEBOOK_LM_STATE_UNSPECIFIED = 0
         NOTEBOOK_LM_NOT_READY = 1
         NOTEBOOK_LM_READY = 2

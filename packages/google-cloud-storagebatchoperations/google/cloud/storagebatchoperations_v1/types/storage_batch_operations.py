@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.storagebatchoperations_v1.types import storage_batch_operations_types
@@ -42,8 +42,7 @@ class ListJobsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Format:
-            projects/{project_id}/locations/global.
+            Required. Format: projects/{project_id}/locations/global.
         filter (str):
             Optional. Filters results as defined by
             https://google.aip.dev/160.
@@ -53,8 +52,8 @@ class ListJobsRequest(proto.Message):
         page_token (str):
             Optional. The list page token.
         order_by (str):
-            Optional. Field to sort by. Supported fields are
-            name, create_time.
+            Optional. Field to sort by. Supported fields are name,
+            create_time.
     """
 
     parent: str = proto.Field(

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataqna_v1alpha.types import annotated_string
@@ -52,6 +52,7 @@ class InterpretEntity(proto.Enum):
         METRIC (2):
             A metric entity.
     """
+
     INTERPRET_ENTITY_UNSPECIFIED = 0
     DIMENSION = 1
     METRIC = 2
@@ -195,6 +196,7 @@ class InterpretError(proto.Message):
                 answer. For example, because a requested
                 operation is not supported.
         """
+
         INTERPRET_ERROR_CODE_UNSPECIFIED = 0
         INVALID_QUERY = 1
         FAILED_TO_UNDERSTAND = 2
@@ -321,6 +323,7 @@ class ExecutionInfo(proto.Message):
             FAILED (4):
                 The job completed unsuccessfully.
         """
+
         JOB_EXECUTION_STATE_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         RUNNING = 2
@@ -385,10 +388,9 @@ class Interpretation(proto.Message):
             List of data sources used in the current
             understanding.
         confidence (float):
-            The level of confidence that one of the
-            interpretations is correct. This is a value in
-            the range [0, 1] where a value of 0.5 or below
-            is to be considered a low confidence.
+            The level of confidence that one of the interpretations is
+            correct. This is a value in the range [0, 1] where a value
+            of 0.5 or below is to be considered a low confidence.
         unused_phrases (MutableSequence[str]):
             A list of unused phrases. Clients should
             display a Did You Mean (DYM)  dialog if this is
@@ -511,29 +513,29 @@ class InterpretationStructure(proto.Message):
             TABLE (1):
                 Show a table.
             BAR_CHART (2):
-                Show a [bar
-                chart](https://developers.google.com/chart/interactive/docs/gallery/barchart).
+                Show a `bar
+                chart <https://developers.google.com/chart/interactive/docs/gallery/barchart>`__.
             COLUMN_CHART (3):
-                Show a [column
-                chart](https://developers.google.com/chart/interactive/docs/gallery/columnchart).
+                Show a `column
+                chart <https://developers.google.com/chart/interactive/docs/gallery/columnchart>`__.
             TIMELINE (4):
                 Show a
                 `timeline <https://developers.google.com/chart/interactive/docs/gallery/timeline>`__.
             SCATTER_PLOT (5):
-                Show a [scatter
-                plot](https://developers.google.com/chart/interactive/docs/gallery/scatterchart).
+                Show a `scatter
+                plot <https://developers.google.com/chart/interactive/docs/gallery/scatterchart>`__.
             PIE_CHART (6):
-                Show a [pie
-                chart](https://developers.google.com/chart/interactive/docs/gallery/piechart).
+                Show a `pie
+                chart <https://developers.google.com/chart/interactive/docs/gallery/piechart>`__.
             LINE_CHART (7):
-                Show a [line
-                chart](https://developers.google.com/chart/interactive/docs/gallery/linechart).
+                Show a `line
+                chart <https://developers.google.com/chart/interactive/docs/gallery/linechart>`__.
             AREA_CHART (8):
-                Show an [area
-                chart](https://developers.google.com/chart/interactive/docs/gallery/areachart).
+                Show an `area
+                chart <https://developers.google.com/chart/interactive/docs/gallery/areachart>`__.
             COMBO_CHART (9):
-                Show a [combo
-                chart](https://developers.google.com/chart/interactive/docs/gallery/combochart).
+                Show a `combo
+                chart <https://developers.google.com/chart/interactive/docs/gallery/combochart>`__.
             HISTOGRAM (10):
                 Show a
                 `histogram <https://developers.google.com/chart/interactive/docs/gallery/histogram>`__.
@@ -551,6 +553,7 @@ class InterpretationStructure(proto.Message):
                 may give a hint to the user that the requested
                 type was not understood.
         """
+
         VISUALIZATION_TYPE_UNSPECIFIED = 0
         TABLE = 1
         BAR_CHART = 2
@@ -614,11 +617,10 @@ class DebugFlags(proto.Message):
         include_aqua_debug_response (bool):
             Whether to include the Aqua debug response.
         time_override (int):
-            The time in milliseconds from Unix epoch to be
-            used to process the query. This is useful for
-            testing the queries at different time period.
-            If not set or time_override <= 0, then the
-            current time is used.
+            The time in milliseconds from Unix epoch to be used to
+            process the query. This is useful for testing the queries at
+            different time period. If not set or time_override <= 0,
+            then the current time is used.
         is_internal_google_user (bool):
             Set to true if request is initiated by an
             internal Google user.

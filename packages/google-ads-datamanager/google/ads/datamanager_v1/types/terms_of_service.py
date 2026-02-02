@@ -42,6 +42,7 @@ class TermsOfServiceStatus(proto.Enum):
             Status indicating the caller has chosen to
             reject the terms of service.
     """
+
     TERMS_OF_SERVICE_STATUS_UNSPECIFIED = 0
     ACCEPTED = 1
     REJECTED = 2

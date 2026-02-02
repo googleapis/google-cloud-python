@@ -17,15 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import date_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.databasecenter_v1beta.types import (
     machine_config as gcd_machine_config,
 )
-from google.cloud.databasecenter_v1beta.types import maintenance, metric_data
+from google.cloud.databasecenter_v1beta.types import maintenance, metric_data, signals
 from google.cloud.databasecenter_v1beta.types import product as gcd_product
-from google.cloud.databasecenter_v1beta.types import signals
 
 __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
@@ -71,6 +70,7 @@ class ResourceCategory(proto.Enum):
         DATABASE (3):
             A resource that is a Database.
     """
+
     RESOURCE_CATEGORY_UNSPECIFIED = 0
     INSTANCE = 1
     CLUSTER = 2
@@ -92,6 +92,7 @@ class Edition(proto.Enum):
         EDITION_STANDARD (3):
             Represents the standard edition.
     """
+
     EDITION_UNSPECIFIED = 0
     EDITION_ENTERPRISE = 1
     EDITION_ENTERPRISE_PLUS = 2
@@ -115,6 +116,7 @@ class SubResourceType(proto.Enum):
         SUB_RESOURCE_TYPE_OTHER (4):
             For the rest of the categories.
     """
+
     SUB_RESOURCE_TYPE_UNSPECIFIED = 0
     SUB_RESOURCE_TYPE_PRIMARY = 1
     SUB_RESOURCE_TYPE_SECONDARY = 2
@@ -134,6 +136,7 @@ class ManagementType(proto.Enum):
         MANAGEMENT_TYPE_SELF_MANAGED (2):
             Self-managed resource.
     """
+
     MANAGEMENT_TYPE_UNSPECIFIED = 0
     MANAGEMENT_TYPE_GCP_MANAGED = 1
     MANAGEMENT_TYPE_SELF_MANAGED = 2
@@ -734,10 +737,9 @@ class IssueGroupStats(proto.Message):
             groups as defined above that are healthy with
             respect to all of the specified issues.
         healthy_resources_count (int):
-            The number of resources from the total defined
-            above in field total_resources_count that are
-            healthy with respect to all of the specified
-            issues.
+            The number of resources from the total defined above in
+            field total_resources_count that are healthy with respect to
+            all of the specified issues.
         issue_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.IssueStats]):
             List of issues stats containing count of
             resources having particular issue category.
@@ -1299,13 +1301,10 @@ class Tag(proto.Message):
         source (str):
             The source of the tag. According to
             https://cloud.google.com/resource-manager/docs/tags/tags-overview#tags_and_labels,
-            tags can be created only at the project or
-            organization level. Tags can be inherited from
-            different project as well not just the current
-            project where the database resource is present.
-            Format:
-
-            "projects/{PROJECT_ID}",
+            tags can be created only at the project or organization
+            level. Tags can be inherited from different project as well
+            not just the current project where the database resource is
+            present. Format: "projects/{PROJECT_ID}",
             "projects/{PROJECT_NUMBER}",
             "organizations/{ORGANIZATION_ID}".
         inherited (bool):

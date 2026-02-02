@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -70,6 +70,7 @@ class Rule(proto.Message):
             DENY (2):
                 Deny the operation.
         """
+
         ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -83,6 +84,7 @@ class Rule(proto.Message):
             DOWNLOAD (1):
                 Download operation.
         """
+
         OPERATION_UNSPECIFIED = 0
         DOWNLOAD = 1
 
@@ -123,8 +125,8 @@ class ListRulesRequest(proto.Message):
             The maximum number of rules to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(

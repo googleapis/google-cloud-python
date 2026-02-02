@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -46,13 +46,11 @@ class CreateRuntimeProjectAttachmentRequest(proto.Message):
             Attachment. Format:
             ``projects/{project}/locations/{location}``
         runtime_project_attachment_id (str):
-            Required. The ID to use for the Runtime Project
-            Attachment, which will become the final
-            component of the Runtime Project Attachment's
-            name. The ID must be the same as the project ID
+            Required. The ID to use for the Runtime Project Attachment,
+            which will become the final component of the Runtime Project
+            Attachment's name. The ID must be the same as the project ID
             of the Google cloud project specified in the
-            runtime_project_attachment.runtime_project
-            field.
+            runtime_project_attachment.runtime_project field.
         runtime_project_attachment (google.cloud.apihub_v1.types.RuntimeProjectAttachment):
             Required. The Runtime Project Attachment to
             create.
@@ -178,12 +176,12 @@ class ListRuntimeProjectAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    runtime_project_attachments: MutableSequence[
-        "RuntimeProjectAttachment"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="RuntimeProjectAttachment",
+    runtime_project_attachments: MutableSequence["RuntimeProjectAttachment"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="RuntimeProjectAttachment",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -254,8 +252,8 @@ class RuntimeProjectAttachment(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The resource name of a runtime
-            project attachment. Format:
+            Identifier. The resource name of a runtime project
+            attachment. Format:
             "projects/{project}/locations/{location}/runtimeProjectAttachments/{runtime_project_attachment}".
         runtime_project (str):
             Required. Immutable. Google cloud project

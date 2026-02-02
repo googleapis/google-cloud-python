@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -56,9 +56,8 @@ class UpdateSecuritySettingsRequest(proto.Message):
 
     Attributes:
         security_settings (google.cloud.dialogflowcx_v3.types.SecuritySettings):
-            Required. [SecuritySettings] object that
-            contains values for each of the fields to
-            update.
+            Required. [SecuritySettings] object that contains values for
+            each of the fields to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The mask to control which fields
             get updated. If the mask is not present, all
@@ -88,8 +87,8 @@ class ListSecuritySettingsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -307,6 +306,7 @@ class SecuritySettings(proto.Message):
                 Call redaction service to clean up the data
                 to be persisted.
         """
+
         REDACTION_STRATEGY_UNSPECIFIED = 0
         REDACT_WITH_SERVICE = 1
 
@@ -322,6 +322,7 @@ class SecuritySettings(proto.Message):
                 power is disconnected. This includes data that
                 are temporarily saved on disk.
         """
+
         REDACTION_SCOPE_UNSPECIFIED = 0
         REDACT_DISK_STORAGE = 2
 
@@ -339,6 +340,7 @@ class SecuritySettings(proto.Message):
                 conversation ends when the corresponding Dialogflow session
                 ends.
         """
+
         RETENTION_STRATEGY_UNSPECIFIED = 0
         REMOVE_AFTER_CONVERSATION = 1
 
@@ -354,6 +356,7 @@ class SecuritySettings(proto.Message):
                 Cloud logging, which is owned by the user - not
                 Dialogflow.
         """
+
         PURGE_DATA_TYPE_UNSPECIFIED = 0
         DIALOGFLOW_HISTORY = 1
 
@@ -401,6 +404,7 @@ class SecuritySettings(proto.Message):
                 OGG (3):
                     OGG Vorbis.
             """
+
             AUDIO_FORMAT_UNSPECIFIED = 0
             MULAW = 1
             MP3 = 2

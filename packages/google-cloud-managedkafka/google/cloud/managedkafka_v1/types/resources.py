@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -61,8 +61,7 @@ class Cluster(proto.Message):
 
             This field is a member of `oneof`_ ``platform_config``.
         name (str):
-            Identifier. The name of the cluster. Structured
-            like:
+            Identifier. The name of the cluster. Structured like:
             projects/{project_number}/locations/{location}/clusters/{cluster_id}
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the cluster was
@@ -107,6 +106,7 @@ class Cluster(proto.Message):
             DELETING (3):
                 The cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -214,6 +214,7 @@ class RebalanceConfig(proto.Message):
                 Automatically rebalance topic partitions
                 among brokers when the cluster is scaled up.
         """
+
         MODE_UNSPECIFIED = 0
         NO_REBALANCE = 1
         AUTO_REBALANCE_ON_SCALE_UP = 2
@@ -231,16 +232,14 @@ class NetworkConfig(proto.Message):
 
     Attributes:
         subnet (str):
-            Required. Name of the VPC subnet in which to
-            create Private Service Connect (PSC) endpoints
-            for the Kafka brokers and bootstrap address.
-            Structured like:
+            Required. Name of the VPC subnet in which to create Private
+            Service Connect (PSC) endpoints for the Kafka brokers and
+            bootstrap address. Structured like:
             projects/{project}/regions/{region}/subnetworks/{subnet_id}
 
-            The subnet must be located in the same region as
-            the Kafka cluster. The project may differ.
-            Multiple subnets from the same parent network
-            must not be specified.
+            The subnet must be located in the same region as the Kafka
+            cluster. The project may differ. Multiple subnets from the
+            same parent network must not be specified.
     """
 
     subnet: str = proto.Field(
@@ -276,11 +275,9 @@ class GcpConfig(proto.Message):
             Required. Access configuration for the Kafka
             cluster.
         kms_key (str):
-            Optional. Immutable. The Cloud KMS Key name to
-            use for encryption. The key must be located in
-            the same region as the cluster and cannot be
-            changed. Structured like:
-
+            Optional. Immutable. The Cloud KMS Key name to use for
+            encryption. The key must be located in the same region as
+            the cluster and cannot be changed. Structured like:
             projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}.
     """
 
@@ -343,12 +340,11 @@ class TrustConfig(proto.Message):
 
         Attributes:
             ca_pool (str):
-                Required. The name of the CA pool to pull CA
-                certificates from. Structured like:
-
+                Required. The name of the CA pool to pull CA certificates
+                from. Structured like:
                 projects/{project}/locations/{location}/caPools/{ca_pool}.
-                The CA pool does not need to be in the same
-                project or location as the Kafka cluster.
+                The CA pool does not need to be in the same project or
+                location as the Kafka cluster.
         """
 
         ca_pool: str = proto.Field(
@@ -356,12 +352,12 @@ class TrustConfig(proto.Message):
             number=1,
         )
 
-    cas_configs: MutableSequence[
-        CertificateAuthorityServiceConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=CertificateAuthorityServiceConfig,
+    cas_configs: MutableSequence[CertificateAuthorityServiceConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=CertificateAuthorityServiceConfig,
+        )
     )
 
 
@@ -557,8 +553,8 @@ class ConnectCluster(proto.Message):
 
             This field is a member of `oneof`_ ``platform_config``.
         name (str):
-            Identifier. The name of the Kafka Connect
-            cluster. Structured like:
+            Identifier. The name of the Kafka Connect cluster.
+            Structured like:
             projects/{project_number}/locations/{location}/connectClusters/{connect_cluster_id}
         kafka_cluster (str):
             Required. Immutable. The name of the Kafka
@@ -600,6 +596,7 @@ class ConnectCluster(proto.Message):
             DELETING (3):
                 The cluster is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -657,21 +654,18 @@ class ConnectNetworkConfig(proto.Message):
 
     Attributes:
         primary_subnet (str):
-            Required. VPC subnet to make available to the
-            Kafka Connect cluster. Structured like:
-
+            Required. VPC subnet to make available to the Kafka Connect
+            cluster. Structured like:
             projects/{project}/regions/{region}/subnetworks/{subnet_id}
 
-            It is used to create a Private Service Connect
-            (PSC) interface for the Kafka Connect workers.
-            It must be located in the same region as the
-            Kafka Connect cluster.
+            It is used to create a Private Service Connect (PSC)
+            interface for the Kafka Connect workers. It must be located
+            in the same region as the Kafka Connect cluster.
 
-            The CIDR range of the subnet must be within the
-            IPv4 address ranges for private networks, as
-            specified in RFC 1918. The primary subnet CIDR
-            range must have a minimum size of /22 (1024
-            addresses).
+            The CIDR range of the subnet must be within the IPv4 address
+            ranges for private networks, as specified in RFC 1918. The
+            primary subnet CIDR range must have a minimum size of /22
+            (1024 addresses).
         additional_subnets (MutableSequence[str]):
             Optional. Additional subnets may be
             specified. They may be in another region, but
@@ -762,9 +756,7 @@ class Connector(proto.Message):
 
             This field is a member of `oneof`_ ``restart_policy``.
         name (str):
-            Identifier. The name of the connector.
-            Structured like:
-
+            Identifier. The name of the connector. Structured like:
             projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}
         configs (MutableMapping[str, str]):
             Optional. Connector config as keys/values. The keys of the
@@ -795,6 +787,7 @@ class Connector(proto.Message):
             STOPPED (6):
                 The connector has been stopped.
         """
+
         STATE_UNSPECIFIED = 0
         UNASSIGNED = 1
         RUNNING = 2
@@ -826,15 +819,13 @@ class Connector(proto.Message):
 
 
 class TaskRetryPolicy(proto.Message):
-    r"""Task Retry Policy is implemented on a best-effort
-    basis.
-    Retry delay will be exponential based on provided minimum and
-    maximum backoffs.
+    r"""Task Retry Policy is implemented on a best-effort basis. Retry delay
+    will be exponential based on provided minimum and maximum backoffs.
     https://en.wikipedia.org/wiki/Exponential_backoff. Note that the
     delay between consecutive task restarts may not always precisely
     match the configured settings. This can happen when the
-    ConnectCluster is in rebalancing state or if the ConnectCluster
-    is unresponsive etc. The default values for minimum and maximum
+    ConnectCluster is in rebalancing state or if the ConnectCluster is
+    unresponsive etc. The default values for minimum and maximum
     backoffs are 60 seconds and 30 minutes respectively.
 
     Attributes:
@@ -861,8 +852,8 @@ class TaskRetryPolicy(proto.Message):
 
 
 class Acl(proto.Message):
-    r"""Represents the set of ACLs for a given Kafka Resource Pattern,
-    which consists of resource_type, resource_name and pattern_type.
+    r"""Represents the set of ACLs for a given Kafka Resource Pattern, which
+    consists of resource_type, resource_name and pattern_type.
 
     Attributes:
         name (str):
@@ -906,9 +897,8 @@ class Acl(proto.Message):
             the Kafka Cluster, but can't be returned in the Acl due to
             repeated field limits.
         resource_type (str):
-            Output only. The ACL resource type derived from
-            the name. One of: CLUSTER, TOPIC, GROUP,
-            TRANSACTIONAL_ID.
+            Output only. The ACL resource type derived from the name.
+            One of: CLUSTER, TOPIC, GROUP, TRANSACTIONAL_ID.
         resource_name (str):
             Output only. The ACL resource name derived from the name.
             For cluster resource_type, this is always "kafka-cluster".
@@ -960,14 +950,13 @@ class AclEntry(proto.Message):
             Required. The permission type. Accepted
             values are (case insensitive): ALLOW, DENY.
         operation (str):
-            Required. The operation type. Allowed values are
-            (case insensitive): ALL, READ, WRITE, CREATE,
-            DELETE, ALTER, DESCRIBE, CLUSTER_ACTION,
-            DESCRIBE_CONFIGS, ALTER_CONFIGS, and
-            IDEMPOTENT_WRITE. See
+            Required. The operation type. Allowed values are (case
+            insensitive): ALL, READ, WRITE, CREATE, DELETE, ALTER,
+            DESCRIBE, CLUSTER_ACTION, DESCRIBE_CONFIGS, ALTER_CONFIGS,
+            and IDEMPOTENT_WRITE. See
             https://kafka.apache.org/documentation/#operations_resources_and_protocols
-            for valid combinations of resource_type and
-            operation for different Kafka API requests.
+            for valid combinations of resource_type and operation for
+            different Kafka API requests.
         host (str):
             Required. The host. Must be set to "\*" for Managed Service
             for Apache Kafka.

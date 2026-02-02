@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.apigee_registry_v1.types import registry_models
@@ -807,12 +807,12 @@ class ListApiDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments: MutableSequence[
-        registry_models.ApiDeployment
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=registry_models.ApiDeployment,
+    api_deployments: MutableSequence[registry_models.ApiDeployment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=registry_models.ApiDeployment,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -999,12 +999,12 @@ class ListApiDeploymentRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    api_deployments: MutableSequence[
-        registry_models.ApiDeployment
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=registry_models.ApiDeployment,
+    api_deployments: MutableSequence[registry_models.ApiDeployment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=registry_models.ApiDeployment,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

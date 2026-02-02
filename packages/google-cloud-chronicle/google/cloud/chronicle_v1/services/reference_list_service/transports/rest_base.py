@@ -21,8 +21,8 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.chronicle_v1.types import reference_list as gcc_reference_list
 from google.cloud.chronicle_v1.types import reference_list
+from google.cloud.chronicle_v1.types import reference_list as gcc_reference_list
 
 from .base import DEFAULT_CLIENT_INFO, ReferenceListServiceTransport
 

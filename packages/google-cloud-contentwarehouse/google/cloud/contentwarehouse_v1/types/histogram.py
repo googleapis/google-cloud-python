@@ -85,30 +85,23 @@ class HistogramQueryPropertyNameFilter(proto.Message):
             At most 10 document schema names are allowed. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
         property_names (MutableSequence[str]):
-            It is optional. It will perform histogram for
-            all the property names if it is not set.
-            The properties need to be defined with the
-            is_filterable flag set to true and the name of
-            the property should be in the format:
-
-            "schemaId.propertyName". The property needs to
-            be defined in the schema. Example: the schema id
-            is abc. Then the name of property for property
-            MORTGAGE_TYPE will be "abc.MORTGAGE_TYPE".
+            It is optional. It will perform histogram for all the
+            property names if it is not set. The properties need to be
+            defined with the is_filterable flag set to true and the name
+            of the property should be in the format:
+            "schemaId.propertyName". The property needs to be defined in
+            the schema. Example: the schema id is abc. Then the name of
+            property for property MORTGAGE_TYPE will be
+            "abc.MORTGAGE_TYPE".
         y_axis (google.cloud.contentwarehouse_v1.types.HistogramQueryPropertyNameFilter.HistogramYAxis):
-            By default, the y_axis is
-            HISTOGRAM_YAXIS_DOCUMENT if this field is not
-            set.
+            By default, the y_axis is HISTOGRAM_YAXIS_DOCUMENT if this
+            field is not set.
     """
 
     class HistogramYAxis(proto.Enum):
         r"""The result of the histogram query count('FilterableProperties')
-        using HISTOGRAM_YAXIS_DOCUMENT will be:
-
-        invoice_id: 2
-        address: 1
-        payment_method: 2
-        line_item_description: 1
+        using HISTOGRAM_YAXIS_DOCUMENT will be: invoice_id: 2 address: 1
+        payment_method: 2 line_item_description: 1
 
         Values:
             HISTOGRAM_YAXIS_DOCUMENT (0):
@@ -116,6 +109,7 @@ class HistogramQueryPropertyNameFilter(proto.Message):
             HISTOGRAM_YAXIS_PROPERTY (1):
                 Count the properties per property name.
         """
+
         HISTOGRAM_YAXIS_DOCUMENT = 0
         HISTOGRAM_YAXIS_PROPERTY = 1
 

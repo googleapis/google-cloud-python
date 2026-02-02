@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.memcache_v1beta2 import gapic_version as package_version
 
@@ -61,13 +61,13 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.memcache_v1beta2.services.cloud_memcache import pagers
 from google.cloud.memcache_v1beta2.types import cloud_memcache
@@ -645,11 +645,9 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = CloudMemcacheClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            CloudMemcacheClient._read_environment_variables()
+        )
         self._client_cert_source = CloudMemcacheClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -684,8 +682,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(CloudMemcacheTransport, transport)
             self._api_endpoint = self._transport.host
@@ -1068,9 +1065,7 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (google.cloud.memcache_v1beta2.types.Instance):
-                Required. A Memcached [Instance]
-                resource
-
+                Required. A Memcached [Instance] resource
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1211,9 +1206,8 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resource (google.cloud.memcache_v1beta2.types.Instance):
-                Required. A Memcached [Instance]
-                resource. Only fields specified in
-                update_mask are updated.
+                Required. A Memcached [Instance] resource. Only fields
+                specified in update_mask are updated.
 
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1933,9 +1927,8 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reschedule_type (google.cloud.memcache_v1beta2.types.RescheduleMaintenanceRequest.RescheduleType):
-                Required. If reschedule type is
-                SPECIFIC_TIME, must set up schedule_time
-                as well.
+                Required. If reschedule type is SPECIFIC_TIME, must set
+                up schedule_time as well.
 
                 This corresponds to the ``reschedule_type`` field
                 on the ``request`` instance; if ``request`` is provided, this

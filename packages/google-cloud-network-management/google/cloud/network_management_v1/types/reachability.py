@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_management_v1.types import connectivity_test
@@ -115,12 +115,12 @@ class ListConnectivityTestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources: MutableSequence[
-        connectivity_test.ConnectivityTest
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=connectivity_test.ConnectivityTest,
+    resources: MutableSequence[connectivity_test.ConnectivityTest] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=connectivity_test.ConnectivityTest,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -190,8 +190,7 @@ class UpdateConnectivityTestRequest(proto.Message):
             Required. Mask of fields to update. At least
             one path must be supplied in this field.
         resource (google.cloud.network_management_v1.types.ConnectivityTest):
-            Required. Only fields specified in update_mask
-            are updated.
+            Required. Only fields specified in update_mask are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

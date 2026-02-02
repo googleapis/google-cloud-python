@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.netapp_v1.types import common
@@ -77,6 +77,7 @@ class Protocols(proto.Enum):
         ISCSI (4):
             ISCSI protocol
     """
+
     PROTOCOLS_UNSPECIFIED = 0
     NFSV3 = 1
     NFSV4 = 2
@@ -98,6 +99,7 @@ class AccessType(proto.Enum):
         READ_NONE (3):
             None
     """
+
     ACCESS_TYPE_UNSPECIFIED = 0
     READ_ONLY = 1
     READ_WRITE = 2
@@ -131,6 +133,7 @@ class SMBSettings(proto.Enum):
         CONTINUOUSLY_AVAILABLE (9):
             Continuously available enumeration
     """
+
     SMB_SETTINGS_UNSPECIFIED = 0
     ENCRYPT_DATA = 1
     BROWSABLE = 2
@@ -154,6 +157,7 @@ class SecurityStyle(proto.Enum):
         UNIX (2):
             SecurityStyle uses UNIX
     """
+
     SECURITY_STYLE_UNSPECIFIED = 0
     NTFS = 1
     UNIX = 2
@@ -169,6 +173,7 @@ class RestrictedAction(proto.Enum):
             Prevent volume from being deleted when
             mounted.
     """
+
     RESTRICTED_ACTION_UNSPECIFIED = 0
     DELETE = 1
 
@@ -296,13 +301,12 @@ class UpdateVolumeRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the Volume resource
-            by the update. The fields specified in the
-            update_mask are relative to the resource, not
-            the full request. A field will be overwritten if
-            it is in the mask. If the user does not provide
-            a mask then all fields will be overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the Volume resource by the update. The fields
+            specified in the update_mask are relative to the resource,
+            not the full request. A field will be overwritten if it is
+            in the mask. If the user does not provide a mask then all
+            fields will be overwritten.
         volume (google.cloud.netapp_v1.types.Volume):
             Required. The volume being updated
     """
@@ -349,14 +353,12 @@ class RevertVolumeRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the volume, in
-            the format of
+            Required. The resource name of the volume, in the format of
             projects/{project_id}/locations/{location}/volumes/{volume_id}.
         snapshot_id (str):
-            Required. The snapshot resource ID, in the
-            format 'my-snapshot', where the specified ID is
-            the {snapshot_id} of the fully qualified name
-            like
+            Required. The snapshot resource ID, in the format
+            'my-snapshot', where the specified ID is the {snapshot_id}
+            of the fully qualified name like
             projects/{project_id}/locations/{location_id}/volumes/{volume_id}/snapshots/{snapshot_id}
     """
 
@@ -418,14 +420,12 @@ class Volume(proto.Message):
         snapshot_policy (google.cloud.netapp_v1.types.SnapshotPolicy):
             Optional. SnapshotPolicy for a volume.
         snap_reserve (float):
-            Optional. Snap_reserve specifies percentage of
-            volume storage reserved for snapshot storage.
-            Default is 0 percent.
+            Optional. Snap_reserve specifies percentage of volume
+            storage reserved for snapshot storage. Default is 0 percent.
         snapshot_directory (bool):
-            Optional. Snapshot_directory if enabled (true)
-            the volume will contain a read-only .snapshot
-            directory which provides access to each of the
-            volume's snapshots.
+            Optional. Snapshot_directory if enabled (true) the volume
+            will contain a read-only .snapshot directory which provides
+            access to each of the volume's snapshots.
         used_gib (int):
             Output only. Used capacity in GIB of the
             volume. This is computed periodically and it
@@ -466,11 +466,10 @@ class Volume(proto.Message):
             Optional. Flag indicating if the volume will
             be a large capacity volume or a regular volume.
         multiple_endpoints (bool):
-            Optional. Flag indicating if the volume will
-            have an IP address per node for volumes
-            supporting multiple IP endpoints. Only the
-            volume with large_capacity will be allowed to
-            have multiple endpoints.
+            Optional. Flag indicating if the volume will have an IP
+            address per node for volumes supporting multiple IP
+            endpoints. Only the volume with large_capacity will be
+            allowed to have multiple endpoints.
         tiering_policy (google.cloud.netapp_v1.types.TieringPolicy):
             Tiering policy for the volume.
 
@@ -530,6 +529,7 @@ class Volume(proto.Message):
             READ_ONLY (9):
                 Volume State is Read Only
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2
@@ -857,6 +857,7 @@ class SimpleExportPolicyRule(proto.Message):
             ALL_SQUASH (3):
                 All users are squashed to anonymous user ID.
         """
+
         SQUASH_MODE_UNSPECIFIED = 0
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
@@ -1230,9 +1231,7 @@ class RestoreParameters(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         source_backup (str):
-            Full name of the backup resource.
-            Format:
-
+            Full name of the backup resource. Format:
             projects/{project}/locations/{location}/backupVaults/{backup_vault_id}/backups/{backup_id}
 
             This field is a member of `oneof`_ ``source``.
@@ -1261,9 +1260,7 @@ class BackupConfig(proto.Message):
             will be created based on the policy
             configuration.
         backup_vault (str):
-            Optional. Name of backup vault.
-            Format:
-
+            Optional. Name of backup vault. Format:
             projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}
         scheduled_backup_enabled (bool):
             Optional. When set to true, scheduled backup
@@ -1338,6 +1335,7 @@ class TieringPolicy(proto.Message):
                 new data. Existing data stays tiered until
                 accessed.
         """
+
         TIER_ACTION_UNSPECIFIED = 0
         ENABLED = 1
         PAUSED = 2
@@ -1418,6 +1416,7 @@ class HybridReplicationParameters(proto.Message):
                 New field for reversible OnPrem replication,
                 to be used for data protection.
         """
+
         VOLUME_HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
         MIGRATION = 1
         CONTINUOUS_REPLICATION = 2
@@ -1533,6 +1532,7 @@ class CacheParameters(proto.Message):
                 Terminal state wherein peering with origin
                 volume's ONTAP cluster has failed.
         """
+
         CACHE_STATE_UNSPECIFIED = 0
         PENDING_CLUSTER_PEERING = 1
         PENDING_SVM_PEERING = 2
@@ -1638,6 +1638,7 @@ class CacheConfig(proto.Message):
                 update request requested a prepopulation job but
                 the prepopulate job failed.
         """
+
         CACHE_PRE_POPULATE_STATE_UNSPECIFIED = 0
         NOT_NEEDED = 1
         IN_PROGRESS = 2

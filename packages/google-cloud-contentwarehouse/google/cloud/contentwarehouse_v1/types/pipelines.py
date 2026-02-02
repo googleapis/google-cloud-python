@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import common
@@ -197,12 +197,12 @@ class RunPipelineMetadata(proto.Message):
             message=ProcessWithDocAiPipelineMetadata,
         )
     )
-    individual_document_statuses: MutableSequence[
-        IndividualDocumentStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=IndividualDocumentStatus,
+    individual_document_statuses: MutableSequence[IndividualDocumentStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=IndividualDocumentStatus,
+        )
     )
 
 
@@ -219,10 +219,8 @@ class ProcessorInfo(proto.Message):
             The processor will process the documents with
             this document type.
         schema_name (str):
-            The Document schema resource name. All documents
-            processed by this processor will use this
-            schema. Format:
-
+            The Document schema resource name. All documents processed
+            by this processor will use this schema. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
     """
 
@@ -333,10 +331,8 @@ class GcsIngestPipeline(proto.Message):
             will be imported to Document Warehouse. Format:
             ``gs://<bucket-name>/<folder-name>``.
         schema_name (str):
-            The Document Warehouse schema resource name. All
-            documents processed by this pipeline will use
-            this schema. Format:
-
+            The Document Warehouse schema resource name. All documents
+            processed by this pipeline will use this schema. Format:
             projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
         processor_type (str):
             The Doc AI processor type name. Only used
@@ -451,9 +447,8 @@ class ExportToCdwPipeline(proto.Message):
 
     Attributes:
         documents (MutableSequence[str]):
-            The list of all the resource names of the
-            documents to be processed. Format:
-
+            The list of all the resource names of the documents to be
+            processed. Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
         export_folder_path (str):
             The Cloud Storage folder path used to store the exported
@@ -466,11 +461,10 @@ class ExportToCdwPipeline(proto.Message):
 
             projects/{project}/locations/{location}/processors/{processor}/dataset
         training_split_ratio (float):
-            Ratio of training dataset split. When importing
-            into Document AI Workbench, documents will be
-            automatically split into training and test split
-            category with the specified ratio. This field is
-            required if doc_ai_dataset is set.
+            Ratio of training dataset split. When importing into
+            Document AI Workbench, documents will be automatically split
+            into training and test split category with the specified
+            ratio. This field is required if doc_ai_dataset is set.
     """
 
     documents: MutableSequence[str] = proto.RepeatedField(
@@ -497,9 +491,8 @@ class ProcessWithDocAiPipeline(proto.Message):
 
     Attributes:
         documents (MutableSequence[str]):
-            The list of all the resource names of the
-            documents to be processed. Format:
-
+            The list of all the resource names of the documents to be
+            processed. Format:
             projects/{project_number}/locations/{location}/documents/{document_id}.
         export_folder_path (str):
             The Cloud Storage folder path used to store the exported

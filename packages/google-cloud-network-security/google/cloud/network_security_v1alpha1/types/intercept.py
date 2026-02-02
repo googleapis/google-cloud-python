@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -143,6 +143,7 @@ class InterceptEndpointGroup(proto.Message):
                 only permitted operation is to retry deleting
                 the endpoint group.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -326,12 +327,12 @@ class ListInterceptEndpointGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intercept_endpoint_groups: MutableSequence[
-        "InterceptEndpointGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="InterceptEndpointGroup",
+    intercept_endpoint_groups: MutableSequence["InterceptEndpointGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="InterceptEndpointGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -344,9 +345,8 @@ class GetInterceptEndpointGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the endpoint group to
-            retrieve. Format:
-
+            Required. The name of the endpoint group to retrieve.
+            Format:
             projects/{project}/locations/{location}/interceptEndpointGroups/{intercept_endpoint_group}
     """
 
@@ -541,6 +541,7 @@ class InterceptEndpointGroupAssociation(proto.Message):
                 The only permitted operation is to retry
                 deleting the association.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -578,6 +579,7 @@ class InterceptEndpointGroupAssociation(proto.Message):
                     (e.g. an inaccessible location) and the system
                     is expected to recover automatically.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             OUT_OF_SYNC = 2
@@ -728,9 +730,7 @@ class GetInterceptEndpointGroupAssociationRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the association to
-            retrieve. Format:
-
+            Required. The name of the association to retrieve. Format:
             projects/{project}/locations/{location}/interceptEndpointGroupAssociations/{intercept_endpoint_group_association}
     """
 
@@ -909,6 +909,7 @@ class InterceptDeploymentGroup(proto.Message):
             DELETING (3):
                 The deployment group is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -976,12 +977,12 @@ class InterceptDeploymentGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_endpoint_groups: MutableSequence[
-        ConnectedEndpointGroup
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=ConnectedEndpointGroup,
+    connected_endpoint_groups: MutableSequence[ConnectedEndpointGroup] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=ConnectedEndpointGroup,
+        )
     )
     nested_deployments: MutableSequence[Deployment] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1079,12 +1080,12 @@ class ListInterceptDeploymentGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intercept_deployment_groups: MutableSequence[
-        "InterceptDeploymentGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="InterceptDeploymentGroup",
+    intercept_deployment_groups: MutableSequence["InterceptDeploymentGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="InterceptDeploymentGroup",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1097,9 +1098,8 @@ class GetInterceptDeploymentGroupRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment group to
-            retrieve. Format:
-
+            Required. The name of the deployment group to retrieve.
+            Format:
             projects/{project}/locations/{location}/interceptDeploymentGroups/{intercept_deployment_group}
     """
 
@@ -1285,6 +1285,7 @@ class InterceptDeployment(proto.Message):
                 permitted operation is to retry deleting the
                 deployment.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CREATING = 2
@@ -1426,9 +1427,7 @@ class GetInterceptDeploymentRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment to
-            retrieve. Format:
-
+            Required. The name of the deployment to retrieve. Format:
             projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}
     """
 
@@ -1563,6 +1562,7 @@ class InterceptLocation(proto.Message):
                 location) and the system is expected to recover
                 automatically.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         OUT_OF_SYNC = 2

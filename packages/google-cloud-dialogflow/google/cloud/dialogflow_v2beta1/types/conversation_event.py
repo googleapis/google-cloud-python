@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import participant, session
@@ -50,9 +50,8 @@ class ConversationEvent(proto.Message):
             Required. The type of the event that this
             notification refers to.
         error_status (google.rpc.status_pb2.Status):
-            Optional. More detailed information about an
-            error. Only set for type
-            UNRECOVERABLE_ERROR_IN_PHONE_CALL.
+            Optional. More detailed information about an error. Only set
+            for type UNRECOVERABLE_ERROR_IN_PHONE_CALL.
         new_message_payload (google.cloud.dialogflow_v2beta1.types.Message):
             Payload of NEW_MESSAGE event.
 
@@ -106,6 +105,7 @@ class ConversationEvent(proto.Message):
                   or,
                 - when we can recover from an error.
         """
+
         TYPE_UNSPECIFIED = 0
         CONVERSATION_STARTED = 1
         CONVERSATION_FINISHED = 2

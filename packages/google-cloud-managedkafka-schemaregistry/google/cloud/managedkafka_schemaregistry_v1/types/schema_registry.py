@@ -96,12 +96,12 @@ class ListSchemaRegistriesResponse(proto.Message):
             The schema registry instances.
     """
 
-    schema_registries: MutableSequence[
-        schema_registry_resources.SchemaRegistry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=schema_registry_resources.SchemaRegistry,
+    schema_registries: MutableSequence[schema_registry_resources.SchemaRegistry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=schema_registry_resources.SchemaRegistry,
+        )
     )
 
 
@@ -436,11 +436,10 @@ class GetVersionRequest(proto.Message):
             or
             ``projects/{project}/locations/{location}/schemaRegistries/{schema_registry}/contexts/{context}/subjects/{subject}/versions/{version}``
         deleted (bool):
-            Optional. If true, no matter if the
-            subject/version is soft-deleted or not, it
-            returns the version details. If false, it
-            returns NOT_FOUND error if the subject/version
-            is soft-deleted. The default is false.
+            Optional. If true, no matter if the subject/version is
+            soft-deleted or not, it returns the version details. If
+            false, it returns NOT_FOUND error if the subject/version is
+            soft-deleted. The default is false.
 
             This field is a member of `oneof`_ ``_deleted``.
     """
@@ -529,12 +528,12 @@ class CreateVersionRequest(proto.Message):
         proto.STRING,
         number=5,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=schema_registry_resources.Schema.SchemaReference,
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=schema_registry_resources.Schema.SchemaReference,
+        )
     )
     normalize: bool = proto.Field(
         proto.BOOL,
@@ -608,12 +607,12 @@ class LookupVersionRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=schema_registry_resources.Schema.SchemaReference,
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=schema_registry_resources.Schema.SchemaReference,
+        )
     )
     normalize: bool = proto.Field(
         proto.BOOL,
@@ -728,12 +727,12 @@ class CheckCompatibilityRequest(proto.Message):
         proto.STRING,
         number=3,
     )
-    references: MutableSequence[
-        schema_registry_resources.Schema.SchemaReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=schema_registry_resources.Schema.SchemaReference,
+    references: MutableSequence[schema_registry_resources.Schema.SchemaReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=schema_registry_resources.Schema.SchemaReference,
+        )
     )
     verbose: bool = proto.Field(
         proto.BOOL,

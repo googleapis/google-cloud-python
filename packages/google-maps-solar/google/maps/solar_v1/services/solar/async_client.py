@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.maps.solar_v1 import gapic_version as package_version
 
@@ -44,10 +44,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 
 from google.maps.solar_v1.types import solar_service
 
@@ -105,7 +105,8 @@ class SolarAsyncClient:
         Returns:
             SolarAsyncClient: The constructed client.
         """
-        return SolarClient.from_service_account_info.__func__(SolarAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SolarClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SolarAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -121,7 +122,8 @@ class SolarAsyncClient:
         Returns:
             SolarAsyncClient: The constructed client.
         """
-        return SolarClient.from_service_account_file.__func__(SolarAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SolarClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SolarAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -504,59 +506,52 @@ class SolarAsyncClient:
 
         Returns:
             google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary
-                HTTP body. It should only be used for
-                payload formats that can't be
-                represented as JSON, such as raw binary
-                or an HTML page.
+                Message that represents an arbitrary HTTP body. It should only be used for
+                   payload formats that can't be represented as JSON,
+                   such as raw binary or an HTML page.
 
-                This message can be used both in
-                streaming and non-streaming API methods
-                in the request as well as the response.
+                   This message can be used both in streaming and
+                   non-streaming API methods in the request as well as
+                   the response.
 
-                It can be used as a top-level request
-                field, which is convenient if one wants
-                to extract parameters from either the
-                URL or HTTP template into the request
-                fields and also want access to the raw
-                HTTP body.
+                   It can be used as a top-level request field, which is
+                   convenient if one wants to extract parameters from
+                   either the URL or HTTP template into the request
+                   fields and also want access to the raw HTTP body.
 
-                Example:
+                   Example:
 
-                message GetResourceRequest {
-                // A unique request id.
-                string request_id = 1;
+                      message GetResourceRequest {
+                         // A unique request id. string request_id = 1;
 
-                // The raw HTTP body is bound to this
-                field. google.api.HttpBody http_body =
-                2;
+                         // The raw HTTP body is bound to this field.
+                         google.api.HttpBody http_body = 2;
 
-                }
+                      }
 
-                service ResourceService {
-                rpc GetResource(GetResourceRequest)
-                returns (google.api.HttpBody);
-                rpc UpdateResource(google.api.HttpBody)
-                returns (google.protobuf.Empty);
+                      service ResourceService {
+                         rpc GetResource(GetResourceRequest)
+                            returns (google.api.HttpBody);
 
-                }
+                         rpc UpdateResource(google.api.HttpBody)
+                            returns (google.protobuf.Empty);
 
-                Example with streaming methods:
+                      }
 
-                service CaldavService {
-                rpc GetCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
-                rpc UpdateCalendar(stream
-                google.api.HttpBody) returns (stream
-                google.api.HttpBody);
+                   Example with streaming methods:
 
-                }
+                      service CaldavService {
+                         rpc GetCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
 
-                Use of this type only changes how the
-                request and response bodies are handled,
-                all other features will continue to work
-                unchanged.
+                         rpc UpdateCalendar(stream google.api.HttpBody)
+                            returns (stream google.api.HttpBody);
+
+                      }
+
+                   Use of this type only changes how the request and
+                   response bodies are handled, all other features will
+                   continue to work unchanged.
 
         """
         # Create or coerce a protobuf request object.

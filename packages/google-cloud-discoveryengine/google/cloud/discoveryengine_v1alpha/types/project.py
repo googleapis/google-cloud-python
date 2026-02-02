@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -98,6 +98,7 @@ class Project(proto.Message):
                     The project has declined or revoked the
                     agreement to terms of service.
             """
+
             STATE_UNSPECIFIED = 0
             TERMS_ACCEPTED = 1
             TERMS_PENDING = 2

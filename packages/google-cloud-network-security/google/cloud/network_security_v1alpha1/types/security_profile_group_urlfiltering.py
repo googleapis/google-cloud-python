@@ -80,6 +80,7 @@ class UrlFilter(proto.Message):
                 The connection matching this filter will be
                 dropped.
         """
+
         URL_FILTERING_ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2

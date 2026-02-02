@@ -75,23 +75,56 @@ from .appengine import (
     UpdateVersionRequest,
     VersionView,
 )
-from .application import Application, UrlDispatchRule
-from .audit_data import AuditData, CreateVersionMethod, UpdateServiceMethod
+from .application import (
+    Application,
+    UrlDispatchRule,
+)
+from .audit_data import (
+    AuditData,
+    CreateVersionMethod,
+    UpdateServiceMethod,
+)
 from .certificate import (
     AuthorizedCertificate,
     CertificateRawData,
     ManagedCertificate,
     ManagementStatus,
 )
-from .deploy import CloudBuildOptions, ContainerInfo, Deployment, FileInfo, ZipInfo
-from .domain import AuthorizedDomain
-from .domain_mapping import DomainMapping, ResourceRecord, SslSettings
-from .firewall import FirewallRule
-from .instance import Instance
-from .location import LocationMetadata
-from .network_settings import NetworkSettings
-from .operation import CreateVersionMetadataV1, OperationMetadataV1
-from .service import Service, TrafficSplit
+from .deploy import (
+    CloudBuildOptions,
+    ContainerInfo,
+    Deployment,
+    FileInfo,
+    ZipInfo,
+)
+from .domain import (
+    AuthorizedDomain,
+)
+from .domain_mapping import (
+    DomainMapping,
+    ResourceRecord,
+    SslSettings,
+)
+from .firewall import (
+    FirewallRule,
+)
+from .instance import (
+    Instance,
+)
+from .location import (
+    LocationMetadata,
+)
+from .network_settings import (
+    NetworkSettings,
+)
+from .operation import (
+    CreateVersionMetadataV1,
+    OperationMetadataV1,
+)
+from .service import (
+    Service,
+    TrafficSplit,
+)
 from .version import (
     AutomaticScaling,
     BasicScaling,

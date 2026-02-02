@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,12 +31,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import intent
 from google.cloud.dialogflow_v2.types import intent as gcd_intent
@@ -411,9 +411,9 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Creates an intent in the specified agent.
 
-        Note: You should always train an agent prior to sending
-        it queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/es/docs/training).
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.CreateIntentRequest],
@@ -441,9 +441,9 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Updates the specified intent.
 
-        Note: You should always train an agent prior to sending
-        it queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/es/docs/training).
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.UpdateIntentRequest],
@@ -469,11 +469,12 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
     ) -> Callable[[intent.DeleteIntentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete intent method over gRPC.
 
-        Deletes the specified intent and its direct or indirect
-        followup intents.
-        Note: You should always train an agent prior to sending
-        it queries. See the [training
-        documentation](https://cloud.google.com/dialogflow/es/docs/training).
+        Deletes the specified intent and its direct or indirect followup
+        intents.
+
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Returns:
             Callable[[~.DeleteIntentRequest],

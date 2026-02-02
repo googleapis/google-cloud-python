@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -30,10 +30,10 @@ __protobuf__ = proto.module(
 
 
 class MetricsScope(proto.Message):
-    r"""Represents a [Metrics
-    Scope](https://cloud.google.com/monitoring/settings#concept-scope)
-    in Cloud Monitoring, which specifies one or more Google projects
-    and zero or more AWS accounts to monitor together.
+    r"""Represents a `Metrics
+    Scope <https://cloud.google.com/monitoring/settings#concept-scope>`__
+    in Cloud Monitoring, which specifies one or more Google projects and
+    zero or more AWS accounts to monitor together.
 
     Attributes:
         name (str):

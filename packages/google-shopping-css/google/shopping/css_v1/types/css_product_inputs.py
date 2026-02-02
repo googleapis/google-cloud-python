@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 from google.shopping.css_v1.types import css_product_common
 
@@ -51,47 +51,42 @@ class CssProductInput(proto.Message):
             Output only. The name of the processed CSS Product. Format:
             ``accounts/{account}/cssProducts/{css_product}`` ".
         raw_provided_id (str):
-            Required. Your unique identifier for the CSS
-            Product. This is the same for the CSS Product
-            input and processed CSS Product. We only allow
-            ids with alphanumerics, underscores and dashes.
-            See the [products feed
-            specification](https://support.google.com/merchants/answer/188494#id)
+            Required. Your unique identifier for the CSS Product. This
+            is the same for the CSS Product input and processed CSS
+            Product. We only allow ids with alphanumerics, underscores
+            and dashes. See the `products feed
+            specification <https://support.google.com/merchants/answer/188494#id>`__
             for details.
         content_language (str):
-            Required. The two-letter [ISO
-            639-1](http://en.wikipedia.org/wiki/ISO_639-1)
-            language code for the CSS Product.
+            Required. The two-letter `ISO
+            639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
+            code for the CSS Product.
         feed_label (str):
-            Required. The [feed
-            label](https://developers.google.com/shopping-content/guides/products/feed-labels)
-            for the CSS Product.
-            Feed Label is synonymous to "target country" and
-            hence should always be a valid region code. For
+            Required. The `feed
+            label <https://developers.google.com/shopping-content/guides/products/feed-labels>`__
+            for the CSS Product. Feed Label is synonymous to "target
+            country" and hence should always be a valid region code. For
             example: 'DE' for Germany, 'FR' for France.
         freshness_time (google.protobuf.timestamp_pb2.Timestamp):
-            DEPRECATED. Use expiration_date instead.
-            Represents the existing version (freshness) of
-            the CSS Product, which can be used to preserve
-            the right order when multiple updates are done
-            at the same time.
+            DEPRECATED. Use expiration_date instead. Represents the
+            existing version (freshness) of the CSS Product, which can
+            be used to preserve the right order when multiple updates
+            are done at the same time.
 
             This field must not be set to the future time.
 
-            If set, the update is prevented if a newer
-            version of the item already exists in our system
-            (that is the last update time of the existing
-            CSS products is later than the freshness time
-            set in the update). If the update happens, the
-            last update time is then set to this freshness
-            time.
+            If set, the update is prevented if a newer version of the
+            item already exists in our system (that is the last update
+            time of the existing CSS products is later than the
+            freshness time set in the update). If the update happens,
+            the last update time is then set to this freshness time.
 
-            If not set, the update will not be prevented and
-            the last update time will default to when this
-            request was received by the CSS API.
+            If not set, the update will not be prevented and the last
+            update time will default to when this request was received
+            by the CSS API.
 
-            If the operation is prevented, the aborted
-            exception will be thrown.
+            If the operation is prevented, the aborted exception will be
+            thrown.
         attributes (google.shopping.css_v1.types.Attributes):
             A list of CSS Product attributes.
         custom_attributes (MutableSequence[google.shopping.type.types.CustomAttribute]):

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.data_v1beta.types import data
@@ -130,19 +130,19 @@ class CheckCompatibilityResponse(proto.Message):
             The compatibility of each metric.
     """
 
-    dimension_compatibilities: MutableSequence[
-        data.DimensionCompatibility
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=data.DimensionCompatibility,
+    dimension_compatibilities: MutableSequence[data.DimensionCompatibility] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=data.DimensionCompatibility,
+        )
     )
-    metric_compatibilities: MutableSequence[
-        data.MetricCompatibility
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=data.MetricCompatibility,
+    metric_compatibilities: MutableSequence[data.MetricCompatibility] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=data.MetricCompatibility,
+        )
     )
 
 
@@ -187,14 +187,12 @@ class RunReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics property identifier whose
-            events are tracked. Specified in the URL path
-            and not the body. To learn more, see [where to
-            find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
-            Within a batch request, this property should
-            either be unspecified or consistent with the
-            batch-level property.
+            A Google Analytics property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            Within a batch request, this property should either be
+            unspecified or consistent with the batch-level property.
 
             Example: properties/1234
         dimensions (MutableSequence[google.analytics.data_v1beta.types.Dimension]):
@@ -209,12 +207,11 @@ class RunReportRequest(proto.Message):
             both date ranges. In a cohort request, this ``dateRanges``
             must be unspecified.
         dimension_filter (google.analytics.data_v1beta.types.FilterExpression):
-            Dimension filters let you ask for only specific
-            dimension values in the report. To learn more,
-            see [Fundamentals of Dimension
-            Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
-            for examples. Metrics cannot be used in this
-            filter.
+            Dimension filters let you ask for only specific dimension
+            values in the report. To learn more, see `Fundamentals of
+            Dimension
+            Filters <https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>`__
+            for examples. Metrics cannot be used in this filter.
         metric_filter (google.analytics.data_v1beta.types.FilterExpression):
             The filter clause of metrics. Applied after
             aggregating the report's rows, similar to SQL
@@ -461,26 +458,22 @@ class RunPivotReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics property identifier whose
-            events are tracked. Specified in the URL path
-            and not the body. To learn more, see [where to
-            find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
-            Within a batch request, this property should
-            either be unspecified or consistent with the
-            batch-level property.
+            A Google Analytics property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            Within a batch request, this property should either be
+            unspecified or consistent with the batch-level property.
 
             Example: properties/1234
         dimensions (MutableSequence[google.analytics.data_v1beta.types.Dimension]):
-            The dimensions requested. All defined dimensions
-            must be used by one of the following:
-            dimension_expression, dimension_filter, pivots,
-            order_bys.
+            The dimensions requested. All defined dimensions must be
+            used by one of the following: dimension_expression,
+            dimension_filter, pivots, order_bys.
         metrics (MutableSequence[google.analytics.data_v1beta.types.Metric]):
-            The metrics requested, at least one metric needs
-            to be specified. All defined metrics must be
-            used by one of the following: metric_expression,
-            metric_filter, order_bys.
+            The metrics requested, at least one metric needs to be
+            specified. All defined metrics must be used by one of the
+            following: metric_expression, metric_filter, order_bys.
         date_ranges (MutableSequence[google.analytics.data_v1beta.types.DateRange]):
             The date range to retrieve event data for the report. If
             multiple date ranges are specified, event data from each
@@ -720,14 +713,13 @@ class BatchRunReportsRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics property identifier whose
-            events are tracked. Specified in the URL path
-            and not the body. To learn more, see [where to
-            find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
-            This property must be specified for the batch.
-            The property within RunReportRequest may either
-            be unspecified or consistent with this property.
+            A Google Analytics property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            This property must be specified for the batch. The property
+            within RunReportRequest may either be unspecified or
+            consistent with this property.
 
             Example: properties/1234
         requests (MutableSequence[google.analytics.data_v1beta.types.RunReportRequest]):
@@ -777,15 +769,13 @@ class BatchRunPivotReportsRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics property identifier whose
-            events are tracked. Specified in the URL path
-            and not the body. To learn more, see [where to
-            find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
-            This property must be specified for the batch.
-            The property within RunPivotReportRequest may
-            either be unspecified or consistent with this
-            property.
+            A Google Analytics property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
+            This property must be specified for the batch. The property
+            within RunPivotReportRequest may either be unspecified or
+            consistent with this property.
 
             Example: properties/1234
         requests (MutableSequence[google.analytics.data_v1beta.types.RunPivotReportRequest]):
@@ -835,19 +825,17 @@ class GetMetadataRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the metadata to
-            retrieve. This name field is specified in the
-            URL path and not URL parameters. Property is a
-            numeric Google Analytics property identifier. To
-            learn more, see [where to find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+            Required. The resource name of the metadata to retrieve.
+            This name field is specified in the URL path and not URL
+            parameters. Property is a numeric Google Analytics property
+            identifier. To learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234/metadata
 
-            Set the Property ID to 0 for dimensions and
-            metrics common to all properties. In this
-            special mode, this method will not return custom
-            dimensions and metrics.
+            Set the Property ID to 0 for dimensions and metrics common
+            to all properties. In this special mode, this method will
+            not return custom dimensions and metrics.
     """
 
     name: str = proto.Field(
@@ -861,11 +849,10 @@ class RunRealtimeReportRequest(proto.Message):
 
     Attributes:
         property (str):
-            A Google Analytics property identifier whose
-            events are tracked. Specified in the URL path
-            and not the body. To learn more, see [where to
-            find your Property
-            ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+            A Google Analytics property identifier whose events are
+            tracked. Specified in the URL path and not the body. To
+            learn more, see `where to find your Property
+            ID <https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>`__.
 
             Example: properties/1234
         dimensions (MutableSequence[google.analytics.data_v1beta.types.Dimension]):
@@ -1239,6 +1226,7 @@ class AudienceExport(proto.Message):
                 is possible that re-requesting this audience
                 export will succeed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1421,9 +1409,8 @@ class AudienceDimension(proto.Message):
 
     Attributes:
         dimension_name (str):
-            Optional. The API name of the dimension. See the
-            [API
-            Dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions)
+            Optional. The API name of the dimension. See the `API
+            Dimensions <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-api-schema#dimensions>`__
             for the list of dimension names.
     """
 

@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -301,17 +301,15 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
     Service for program management.
 
-    Programs provide a mechanism for adding functionality to
-    merchant accounts. A typical example of this is the [Free
-    product
-    listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-    program, which enables products from a merchant's store to be
-    shown across Google for free.
+    Programs provide a mechanism for adding functionality to merchant
+    accounts. A typical example of this is the `Free product
+    listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+    program, which enables products from a merchant's store to be shown
+    across Google for free.
 
-    This service exposes methods to retrieve a merchant's
-    participation in all available programs, in addition to methods
-    for explicitly enabling or disabling participation in each
-    program.
+    This service exposes methods to retrieve a merchant's participation
+    in all available programs, in addition to methods for explicitly
+    enabling or disabling participation in each program.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -441,22 +439,19 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             Returns:
                 ~.programs.Program:
-                    Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                    Defines participation in a given program for the
+                specified account.
+
+                Programs provide a mechanism for adding functionality to
+                merchant accounts. A typical example of this is the
+                `Free product
+                listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+                program, which enables products from a merchant's store
+                to be shown across Google for free.
 
             """
 
-            http_options = (
-                _BaseProgramsServiceRestTransport._BaseDisableProgram._get_http_options()
-            )
+            http_options = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_http_options()
 
             request, metadata = self._interceptor.pre_disable_program(request, metadata)
             transcoded_request = _BaseProgramsServiceRestTransport._BaseDisableProgram._get_transcoded_request(
@@ -602,16 +597,15 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             Returns:
                 ~.programs.Program:
-                    Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                    Defines participation in a given program for the
+                specified account.
+
+                Programs provide a mechanism for adding functionality to
+                merchant accounts. A typical example of this is the
+                `Free product
+                listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+                program, which enables products from a merchant's store
+                to be shown across Google for free.
 
             """
 
@@ -762,16 +756,15 @@ class ProgramsServiceRestTransport(_BaseProgramsServiceRestTransport):
 
             Returns:
                 ~.programs.Program:
-                    Defines participation in a given program
-                for the specified account.
-                Programs provide a mechanism for adding
-                functionality to merchant accounts. A
-                typical example of this is the [Free
-                product
-                listings](https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU)
-                program, which enables products from a
-                merchant's store to be shown across
-                Google for free.
+                    Defines participation in a given program for the
+                specified account.
+
+                Programs provide a mechanism for adding functionality to
+                merchant accounts. A typical example of this is the
+                `Free product
+                listings <https://support.google.com/merchants/topic/9240261?ref_topic=7257954,7259405,&sjid=796648681813264022-EU>`__
+                program, which enables products from a merchant's store
+                to be shown across Google for free.
 
             """
 

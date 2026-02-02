@@ -22,9 +22,8 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.discoveryengine_v1beta.types import engine
+from google.cloud.discoveryengine_v1beta.types import engine, engine_service
 from google.cloud.discoveryengine_v1beta.types import engine as gcd_engine
-from google.cloud.discoveryengine_v1beta.types import engine_service
 
 from .base import DEFAULT_CLIENT_INFO, EngineServiceTransport
 

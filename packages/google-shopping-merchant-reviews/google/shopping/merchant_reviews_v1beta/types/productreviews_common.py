@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.reviews.v1beta",
@@ -208,6 +208,7 @@ class ProductReviewAttributes(proto.Message):
                 a solicitation after fulfillment of the user's
                 order.
         """
+
         COLLECTION_METHOD_UNSPECIFIED = 0
         UNSOLICITED = 1
         POST_FULFILLMENT = 2
@@ -236,6 +237,7 @@ class ProductReviewAttributes(proto.Message):
                     The review page contains a group of reviews
                     including this review.
             """
+
             TYPE_UNSPECIFIED = 0
             SINGLETON = 1
             GROUP = 2
@@ -407,14 +409,11 @@ class ProductReviewStatus(proto.Message):
             Output only. A list of all issues associated
             with the product review.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Date on which the item has been
-            created, in [ISO
-            8601](http://en.wikipedia.org/wiki/ISO_8601)
-            format.
+            Output only. Date on which the item has been created, in
+            `ISO 8601 <http://en.wikipedia.org/wiki/ISO_8601>`__ format.
         last_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Date on which the item has been
-            last updated, in [ISO
-            8601](http://en.wikipedia.org/wiki/ISO_8601)
+            Output only. Date on which the item has been last updated,
+            in `ISO 8601 <http://en.wikipedia.org/wiki/ISO_8601>`__
             format.
     """
 
@@ -474,6 +473,7 @@ class ProductReviewStatus(proto.Message):
                 DISAPPROVED (2):
                     Issue disapproves the product review.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DISAPPROVED = 2
@@ -515,19 +515,19 @@ class ProductReviewStatus(proto.Message):
             number=8,
         )
 
-    destination_statuses: MutableSequence[
-        ProductReviewDestinationStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ProductReviewDestinationStatus,
+    destination_statuses: MutableSequence[ProductReviewDestinationStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ProductReviewDestinationStatus,
+        )
     )
-    item_level_issues: MutableSequence[
-        ProductReviewItemLevelIssue
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=ProductReviewItemLevelIssue,
+    item_level_issues: MutableSequence[ProductReviewItemLevelIssue] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=ProductReviewItemLevelIssue,
+        )
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

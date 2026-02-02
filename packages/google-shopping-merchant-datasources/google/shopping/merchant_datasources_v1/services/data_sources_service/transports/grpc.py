@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_datasources_v1.types import datasources
 
@@ -111,10 +111,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class DataSourcesServiceGrpcTransport(DataSourcesServiceTransport):
     """gRPC backend transport for DataSourcesService.
 
-    Service to manage primary, supplemental, inventory and other
-    data sources. See more in the [Merchant
-    Center](https://support.google.com/merchants/answer/7439058)
-    help article.
+    Service to manage primary, supplemental, inventory and other data
+    sources. See more in the `Merchant
+    Center <https://support.google.com/merchants/answer/7439058>`__ help
+    article.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

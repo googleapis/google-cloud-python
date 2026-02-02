@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -694,6 +694,7 @@ class Recognizer(proto.Message):
             DELETED (4):
                 This Recognizer has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -865,6 +866,7 @@ class ExplicitDecodingConfig(proto.Message):
             MOV_AAC (12):
                 AAC audio frames in an MOV container.
         """
+
         AUDIO_ENCODING_UNSPECIFIED = 0
         LINEAR16 = 1
         MULAW = 2
@@ -1003,6 +1005,7 @@ class RecognitionFeatures(proto.Message):
                 selected [model][google.cloud.speech.v2.Recognizer.model] is
                 ``latest_short``.
         """
+
         MULTI_CHANNEL_MODE_UNSPECIFIED = 0
         SEPARATE_RECOGNITION_PER_CHANNEL = 1
 
@@ -1060,11 +1063,10 @@ class TranscriptNormalization(proto.Message):
 
     Attributes:
         entries (MutableSequence[google.cloud.speech_v2.types.TranscriptNormalization.Entry]):
-            A list of replacement entries. We will perform
-            replacement with one entry at a time. For
-            example, the second entry in ["cat" => "dog",
-            "mountain cat" => "mountain dog"] will never be
-            applied because we will always process the first
+            A list of replacement entries. We will perform replacement
+            with one entry at a time. For example, the second entry in
+            ["cat" => "dog", "mountain cat" => "mountain dog"] will
+            never be applied because we will always process the first
             entry before it. At most 100 entries.
     """
 
@@ -1190,15 +1192,13 @@ class DenoiserConfig(proto.Message):
             Denoise audio before sending to the
             transcription model.
         snr_threshold (float):
-            Signal-to-Noise Ratio (SNR) threshold for the
-            denoiser. Here SNR means the loudness of the
-            speech signal. Audio with an SNR below this
-            threshold, meaning the speech is too quiet, will
-            be prevented from being sent to the
-            transcription model.
+            Signal-to-Noise Ratio (SNR) threshold for the denoiser. Here
+            SNR means the loudness of the speech signal. Audio with an
+            SNR below this threshold, meaning the speech is too quiet,
+            will be prevented from being sent to the transcription
+            model.
 
-            If snr_threshold=0, no filtering will be
-            applied.
+            If snr_threshold=0, no filtering will be applied.
     """
 
     denoise_audio: bool = proto.Field(
@@ -1235,16 +1235,16 @@ class RecognitionConfig(proto.Message):
 
             This field is a member of `oneof`_ ``decoding_config``.
         model (str):
-            Optional. Which model to use for recognition
-            requests. Select the model best suited to your
-            domain to get best results.
+            Optional. Which model to use for recognition requests.
+            Select the model best suited to your domain to get best
+            results.
 
-            Guidance for choosing which model to use can be
-            found in the [Transcription Models
-            Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
-            and the models supported in each region can be
-            found in the [Table Of Supported
-            Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+            Guidance for choosing which model to use can be found in the
+            `Transcription Models
+            Documentation <https://cloud.google.com/speech-to-text/v2/docs/transcription-model>`__
+            and the models supported in each region can be found in the
+            `Table Of Supported
+            Models <https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages>`__.
         language_codes (MutableSequence[str]):
             Optional. The language of the supplied audio as a
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
@@ -1875,6 +1875,7 @@ class BatchRecognizeRequest(proto.Message):
                 lower utilization periods for a price discount.
                 The request is fulfilled within 24 hours.
         """
+
         PROCESSING_STRATEGY_UNSPECIFIED = 0
         DYNAMIC_BATCHING = 1
 
@@ -1943,8 +1944,8 @@ class VttOutputFileFormatConfig(proto.Message):
 
 
 class SrtOutputFileFormatConfig(proto.Message):
-    r"""Output configurations [SubRip
-    Text](https://www.matroska.org/technical/subtitles.html#srt-subtitles)
+    r"""Output configurations `SubRip
+    Text <https://www.matroska.org/technical/subtitles.html#srt-subtitles>`__
     formatted subtitle file.
 
     """
@@ -2496,6 +2497,7 @@ class StreamingRecognizeResponse(proto.Message):
                 repeatedly throughout the stream. This event is only sent if
                 ``voice_activity_events`` is set to true.
         """
+
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
         SPEECH_ACTIVITY_BEGIN = 2
@@ -2681,6 +2683,7 @@ class CustomClass(proto.Message):
             DELETED (4):
                 This CustomClass has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -2843,6 +2846,7 @@ class PhraseSet(proto.Message):
             DELETED (4):
                 This PhraseSet has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 2
         DELETED = 4
@@ -3011,13 +3015,12 @@ class ListCustomClassesRequest(proto.Message):
             to list. The expected format is
             ``projects/{project}/locations/{location}``.
         page_size (int):
-            Number of results per requests. A valid
-            page_size ranges from 0 to 100 inclusive. If the
-            page_size is zero or unspecified, a page size of
-            5 will be chosen. If the page size exceeds 100,
-            it will be coerced down to 100. Note that a call
-            might return fewer results than the requested
-            page size.
+            Number of results per requests. A valid page_size ranges
+            from 0 to 100 inclusive. If the page_size is zero or
+            unspecified, a page size of 5 will be chosen. If the page
+            size exceeds 100, it will be coerced down to 100. Note that
+            a call might return fewer results than the requested page
+            size.
         page_token (str):
             A page token, received from a previous
             [ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses]

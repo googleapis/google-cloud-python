@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -102,13 +102,13 @@ class Node(proto.Message):
             Required. The type of hardware accelerators
             associated with this node.
         ip_address (str):
-            Output only. DEPRECATED! Use network_endpoints
-            instead. The network address for the TPU Node as
-            visible to Compute Engine instances.
+            Output only. DEPRECATED! Use network_endpoints instead. The
+            network address for the TPU Node as visible to Compute
+            Engine instances.
         port (str):
-            Output only. DEPRECATED! Use network_endpoints
-            instead. The network port for the TPU Node as
-            visible to Compute Engine instances.
+            Output only. DEPRECATED! Use network_endpoints instead. The
+            network port for the TPU Node as visible to Compute Engine
+            instances.
         state (google.cloud.tpu_v1.types.Node.State):
             Output only. The current state for the TPU
             Node.
@@ -160,13 +160,12 @@ class Node(proto.Message):
             Resource labels to represent user-provided
             metadata.
         use_service_networking (bool):
-            Whether the VPC peering for the node is set up
-            through Service Networking API. The VPC Peering
-            should be set up before provisioning the node.
-            If this field is set, cidr_block field should
-            not be specified. If the network, that you want
-            to peer the TPU Node to, is Shared VPC networks,
-            the node must be created with this this field
+            Whether the VPC peering for the node is set up through
+            Service Networking API. The VPC Peering should be set up
+            before provisioning the node. If this field is set,
+            cidr_block field should not be specified. If the network,
+            that you want to peer the TPU Node to, is Shared VPC
+            networks, the node must be created with this this field
             enabled.
         api_version (google.cloud.tpu_v1.types.Node.ApiVersion):
             Output only. The API version that created
@@ -219,6 +218,7 @@ class Node(proto.Message):
                 TPU node has unknown state after a failed
                 repair.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -257,6 +257,7 @@ class Node(proto.Message):
                 caused rescheduling and will resume running once
                 rescheduled.
         """
+
         HEALTH_UNSPECIFIED = 0
         HEALTHY = 1
         DEPRECATED_UNHEALTHY = 2
@@ -277,6 +278,7 @@ class Node(proto.Message):
             V2_ALPHA1 (3):
                 TPU API V2Alpha1 version.
         """
+
         API_VERSION_UNSPECIFIED = 0
         V1_ALPHA1 = 1
         V1 = 2
@@ -377,8 +379,8 @@ class ListNodesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -574,8 +576,8 @@ class ListTensorFlowVersionsRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
         filter (str):
             List filter.
         order_by (str):
@@ -681,8 +683,8 @@ class ListAcceleratorTypesRequest(proto.Message):
         page_size (int):
             The maximum number of items to return.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
         filter (str):
             List filter.
         order_by (str):
@@ -835,6 +837,7 @@ class Symptom(proto.Message):
                 Abusive behaviors have been identified on the
                 current project.
         """
+
         SYMPTOM_TYPE_UNSPECIFIED = 0
         LOW_MEMORY = 1
         OUT_OF_MEMORY = 2

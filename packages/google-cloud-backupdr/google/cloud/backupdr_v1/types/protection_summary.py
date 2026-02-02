@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -99,12 +99,12 @@ class ListResourceBackupConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_backup_configs: MutableSequence[
-        "ResourceBackupConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ResourceBackupConfig",
+    resource_backup_configs: MutableSequence["ResourceBackupConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResourceBackupConfig",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -146,9 +146,9 @@ class ResourceBackupConfig(proto.Message):
             will be populated in this field for a Compute
             Engine VM which has the disk associated.
         backup_configured (bool):
-            Output only. Whether the target resource is
-            configured for backup. This is true if the
-            backup_configs_details is not empty.
+            Output only. Whether the target resource is configured for
+            backup. This is true if the backup_configs_details is not
+            empty.
         vaulted (bool):
             Output only. Whether the target resource is protected by a
             backup vault. This is true if the backup_configs_details is
@@ -174,6 +174,7 @@ class ResourceBackupConfig(proto.Message):
             COMPUTE_ENGINE_REGIONAL_DISK (4):
                 Compute Engine Regional Disk.
         """
+
         RESOURCE_TYPE_UNSPECIFIED = 0
         CLOUD_SQL_INSTANCE = 1
         COMPUTE_ENGINE_VM = 2
@@ -206,12 +207,12 @@ class ResourceBackupConfig(proto.Message):
         proto.STRING,
         number=6,
     )
-    backup_configs_details: MutableSequence[
-        "BackupConfigDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="BackupConfigDetails",
+    backup_configs_details: MutableSequence["BackupConfigDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="BackupConfigDetails",
+        )
     )
     backup_configured: bool = proto.Field(
         proto.BOOL,
@@ -259,19 +260,16 @@ class BackupConfigDetails(proto.Message):
             successful backup created via this backup
             configuration.
         applicable_resource (str):
-            Output only. The [full resource
-            name](https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of the resource that is applicable for the
-            backup configuration. Example:
-
+            Output only. The `full resource
+            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+            of the resource that is applicable for the backup
+            configuration. Example:
             "//compute.googleapis.com/projects/{project}/zones/{zone}/instances/{instance}".
         backup_vault (str):
-            Output only. The [full resource
-            name](https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of the backup vault that will store the backups
-            generated through this backup configuration.
-            Example:
-
+            Output only. The `full resource
+            name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
+            of the backup vault that will store the backups generated
+            through this backup configuration. Example:
             "//backupdr.googleapis.com/v1/projects/{project}/locations/{region}/backupVaults/{backupvaultId}".
         backup_locations (MutableSequence[google.cloud.backupdr_v1.types.BackupLocation]):
             The locations where the backups are to be
@@ -308,6 +306,7 @@ class BackupConfigDetails(proto.Message):
                 Backup config is Google Cloud Backup and DR's
                 Template.
         """
+
         TYPE_UNSPECIFIED = 0
         CLOUD_SQL_INSTANCE_BACKUP_CONFIG = 1
         COMPUTE_ENGINE_RESOURCE_POLICY = 2
@@ -334,6 +333,7 @@ class BackupConfigDetails(proto.Message):
                 Like the source project is deleted. For eg.
                 PlanAssociation, BackupPlan is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -497,6 +497,7 @@ class BackupLocation(proto.Message):
             MULTI_REGIONAL (3):
                 Location type is multi regional.
         """
+
         TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2

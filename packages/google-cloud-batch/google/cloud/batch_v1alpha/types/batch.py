@@ -17,14 +17,14 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import (
     resource_allowance as gcb_resource_allowance,
 )
-from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import task
 
 __protobuf__ = proto.module(
@@ -61,18 +61,16 @@ class CreateJobRequest(proto.Message):
             Job will be created. Pattern:
             "projects/{project}/locations/{location}".
         job_id (str):
-            ID used to uniquely identify the Job within its
-            parent scope. This field should contain at most
-            63 characters and must start with lowercase
-            characters.
-            Only lowercase characters, numbers and '-' are
-            accepted. The '-' character cannot be the first
-            or the last one. A system generated ID will be
-            used if the field is not set.
+            ID used to uniquely identify the Job within its parent
+            scope. This field should contain at most 63 characters and
+            must start with lowercase characters. Only lowercase
+            characters, numbers and '-' are accepted. The '-' character
+            cannot be the first or the last one. A system generated ID
+            will be used if the field is not set.
 
-            The job.name field in the request will be
-            ignored and the created resource name of the Job
-            will be "{parent}/jobs/{job_id}".
+            The job.name field in the request will be ignored and the
+            created resource name of the Job will be
+            "{parent}/jobs/{job_id}".
         job (google.cloud.batch_v1alpha.types.Job):
             Required. The Job to create.
         request_id (str):
@@ -292,9 +290,8 @@ class ListJobsRequest(proto.Message):
         filter (str):
             List filter.
         order_by (str):
-            Optional. Sort results. Supported are "name",
-            "name desc", "create_time", and "create_time
-            desc".
+            Optional. Sort results. Supported are "name", "name desc",
+            "create_time", and "create_time desc".
         page_size (int):
             Page size.
         page_token (str):
@@ -359,9 +356,8 @@ class ListTasksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Name of a TaskGroup from which Tasks
-            are being requested. Pattern:
-
+            Required. Name of a TaskGroup from which Tasks are being
+            requested. Pattern:
             "projects/{project}/locations/{location}/jobs/{job}/taskGroups/{task_group}".
         filter (str):
             Task filter, null filter matches all Tasks.
@@ -451,18 +447,16 @@ class CreateResourceAllowanceRequest(proto.Message):
             ResourceAllowance will be created. Pattern:
             "projects/{project}/locations/{location}".
         resource_allowance_id (str):
-            ID used to uniquely identify the
-            ResourceAllowance within its parent scope. This
-            field should contain at most 63 characters and
-            must start with lowercase characters.
-            Only lowercase characters, numbers and '-' are
-            accepted. The '-' character cannot be the first
-            or the last one. A system generated ID will be
-            used if the field is not set.
+            ID used to uniquely identify the ResourceAllowance within
+            its parent scope. This field should contain at most 63
+            characters and must start with lowercase characters. Only
+            lowercase characters, numbers and '-' are accepted. The '-'
+            character cannot be the first or the last one. A system
+            generated ID will be used if the field is not set.
 
-            The resource_allowance.name field in the request
-            will be ignored and the created resource name of
-            the ResourceAllowance will be
+            The resource_allowance.name field in the request will be
+            ignored and the created resource name of the
+            ResourceAllowance will be
             "{parent}/resourceAllowances/{resource_allowance_id}".
         resource_allowance (google.cloud.batch_v1alpha.types.ResourceAllowance):
             Required. The ResourceAllowance to create.
@@ -607,12 +601,12 @@ class ListResourceAllowancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_allowances: MutableSequence[
-        gcb_resource_allowance.ResourceAllowance
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcb_resource_allowance.ResourceAllowance,
+    resource_allowances: MutableSequence[gcb_resource_allowance.ResourceAllowance] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcb_resource_allowance.ResourceAllowance,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

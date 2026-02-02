@@ -34,9 +34,8 @@ class DatabaseCharacterSet(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the Database Character
-            Set resource in the following format:
-
+            Identifier. The name of the Database Character Set resource
+            in the following format:
             projects/{project}/locations/{region}/databaseCharacterSets/{database_character_set}
         character_set_type (google.cloud.oracledatabase_v1.types.DatabaseCharacterSet.CharacterSetType):
             Output only. The character set type for the
@@ -57,6 +56,7 @@ class DatabaseCharacterSet(proto.Message):
             NATIONAL (2):
                 Character set type is set to national.
         """
+
         CHARACTER_SET_TYPE_UNSPECIFIED = 0
         DATABASE = 1
         NATIONAL = 2
@@ -140,12 +140,12 @@ class ListDatabaseCharacterSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    database_character_sets: MutableSequence[
-        "DatabaseCharacterSet"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DatabaseCharacterSet",
+    database_character_sets: MutableSequence["DatabaseCharacterSet"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DatabaseCharacterSet",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

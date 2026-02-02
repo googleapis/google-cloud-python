@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import catalog
@@ -116,8 +116,8 @@ class ListCatalogItemsResponse(proto.Message):
         catalog_items (MutableSequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             The catalog items.
         next_page_token (str):
-            If empty, the list is complete. If nonempty, the
-            token to pass to the next request's
+            If empty, the list is complete. If nonempty, the token to
+            pass to the next request's
             ListCatalogItemRequest.page_token.
     """
 
@@ -145,8 +145,7 @@ class UpdateCatalogItemRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
         catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
             Required. The catalog item to update/create. The
-            'catalog_item_id' field has to match that in the
-            'name'.
+            'catalog_item_id' field has to match that in the 'name'.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Indicates which fields in the
             provided 'item' to update. If not set, will by

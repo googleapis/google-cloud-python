@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1alpha1.types import (
     security_profile_group,
@@ -371,12 +373,12 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_profile_groups" not in self._stubs:
-            self._stubs[
-                "list_security_profile_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/ListSecurityProfileGroups",
-                request_serializer=security_profile_group_service.ListSecurityProfileGroupsRequest.serialize,
-                response_deserializer=security_profile_group_service.ListSecurityProfileGroupsResponse.deserialize,
+            self._stubs["list_security_profile_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/ListSecurityProfileGroups",
+                    request_serializer=security_profile_group_service.ListSecurityProfileGroupsRequest.serialize,
+                    response_deserializer=security_profile_group_service.ListSecurityProfileGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_security_profile_groups"]
 
@@ -402,12 +404,12 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_profile_group" not in self._stubs:
-            self._stubs[
-                "get_security_profile_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/GetSecurityProfileGroup",
-                request_serializer=security_profile_group_service.GetSecurityProfileGroupRequest.serialize,
-                response_deserializer=security_profile_group.SecurityProfileGroup.deserialize,
+            self._stubs["get_security_profile_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/GetSecurityProfileGroup",
+                    request_serializer=security_profile_group_service.GetSecurityProfileGroupRequest.serialize,
+                    response_deserializer=security_profile_group.SecurityProfileGroup.deserialize,
+                )
             )
         return self._stubs["get_security_profile_group"]
 
@@ -434,12 +436,12 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_security_profile_group" not in self._stubs:
-            self._stubs[
-                "create_security_profile_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/CreateSecurityProfileGroup",
-                request_serializer=security_profile_group_service.CreateSecurityProfileGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_security_profile_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/CreateSecurityProfileGroup",
+                    request_serializer=security_profile_group_service.CreateSecurityProfileGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_security_profile_group"]
 
@@ -466,12 +468,12 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_profile_group" not in self._stubs:
-            self._stubs[
-                "update_security_profile_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/UpdateSecurityProfileGroup",
-                request_serializer=security_profile_group_service.UpdateSecurityProfileGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_security_profile_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/UpdateSecurityProfileGroup",
+                    request_serializer=security_profile_group_service.UpdateSecurityProfileGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_security_profile_group"]
 
@@ -497,12 +499,12 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_security_profile_group" not in self._stubs:
-            self._stubs[
-                "delete_security_profile_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/DeleteSecurityProfileGroup",
-                request_serializer=security_profile_group_service.DeleteSecurityProfileGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_security_profile_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/DeleteSecurityProfileGroup",
+                    request_serializer=security_profile_group_service.DeleteSecurityProfileGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_security_profile_group"]
 

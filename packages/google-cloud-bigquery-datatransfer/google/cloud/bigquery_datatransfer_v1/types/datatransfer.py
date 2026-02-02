@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.types import transfer
@@ -126,6 +126,7 @@ class DataSourceParameter(proto.Message):
             LIST (7):
                 List of strings parameter.
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         INTEGER = 2
@@ -285,6 +286,7 @@ class DataSource(proto.Message):
             FIRST_PARTY_OAUTH (3):
                 Use First Party OAuth.
         """
+
         AUTHORIZATION_TYPE_UNSPECIFIED = 0
         AUTHORIZATION_CODE = 1
         GOOGLE_PLUS_AUTHORIZATION_CODE = 2
@@ -308,6 +310,7 @@ class DataSource(proto.Message):
                 days. Allows custom values to be set for each
                 transfer config.
         """
+
         DATA_REFRESH_TYPE_UNSPECIFIED = 0
         SLIDING_WINDOW = 1
         CUSTOM_SLIDING_WINDOW = 2
@@ -480,21 +483,20 @@ class CreateTransferConfigRequest(proto.Message):
     user id corresponding to the authorization info. Otherwise, the
     transfer configuration will be associated with the calling user.
 
-    When using a cross project service account for creating a
-    transfer config, you must enable cross project service account
-    usage. For more information, see [Disable attachment of service
-    accounts to resources in other
-    projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
+    When using a cross project service account for creating a transfer
+    config, you must enable cross project service account usage. For
+    more information, see `Disable attachment of service accounts to
+    resources in other
+    projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
 
     Attributes:
         parent (str):
-            Required. The BigQuery project id where the
-            transfer configuration should be created. Must
-            be in the format
+            Required. The BigQuery project id where the transfer
+            configuration should be created. Must be in the format
             projects/{project_id}/locations/{location_id} or
-            projects/{project_id}. If specified location and
-            location of the destination bigquery dataset do
-            not match - the request will fail.
+            projects/{project_id}. If specified location and location of
+            the destination bigquery dataset do not match - the request
+            will fail.
         transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):
             Required. Data transfer configuration to
             create.
@@ -549,17 +551,15 @@ class CreateTransferConfigRequest(proto.Message):
             ``service_account_name`` is used to create the transfer
             config.
         service_account_name (str):
-            Optional service account email. If this field is
-            set, the transfer config will be created with
-            this service account's credentials. It requires
-            that the requesting user calling this API has
-            permissions to act as this service account.
+            Optional service account email. If this field is set, the
+            transfer config will be created with this service account's
+            credentials. It requires that the requesting user calling
+            this API has permissions to act as this service account.
 
-            Note that not all data sources support service
-            account credentials when creating a transfer
-            config. For the latest list of data sources,
-            read about [using service
-            accounts](https://cloud.google.com/bigquery-transfer/docs/use-service-accounts).
+            Note that not all data sources support service account
+            credentials when creating a transfer config. For the latest
+            list of data sources, read about `using service
+            accounts <https://cloud.google.com/bigquery-transfer/docs/use-service-accounts>`__.
     """
 
     parent: str = proto.Field(
@@ -586,15 +586,15 @@ class CreateTransferConfigRequest(proto.Message):
 
 
 class UpdateTransferConfigRequest(proto.Message):
-    r"""A request to update a transfer configuration. To update the user
-    id of the transfer configuration, authorization info needs to be
+    r"""A request to update a transfer configuration. To update the user id
+    of the transfer configuration, authorization info needs to be
     provided.
 
-    When using a cross project service account for updating a
-    transfer config, you must enable cross project service account
-    usage. For more information, see [Disable attachment of service
-    accounts to resources in other
-    projects](https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts).
+    When using a cross project service account for updating a transfer
+    config, you must enable cross project service account usage. For
+    more information, see `Disable attachment of service accounts to
+    resources in other
+    projects <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts#disable_cross_project_service_accounts>`__.
 
     Attributes:
         transfer_config (google.cloud.bigquery_datatransfer_v1.types.TransferConfig):
@@ -654,17 +654,15 @@ class UpdateTransferConfigRequest(proto.Message):
             ``service_account_name`` is used to update the transfer
             config.
         service_account_name (str):
-            Optional service account email. If this field is
-            set, the transfer config will be created with
-            this service account's credentials. It requires
-            that the requesting user calling this API has
-            permissions to act as this service account.
+            Optional service account email. If this field is set, the
+            transfer config will be created with this service account's
+            credentials. It requires that the requesting user calling
+            this API has permissions to act as this service account.
 
-            Note that not all data sources support service
-            account credentials when creating a transfer
-            config. For the latest list of data sources,
-            read about [using service
-            accounts](https://cloud.google.com/bigquery-transfer/docs/use-service-accounts).
+            Note that not all data sources support service account
+            credentials when creating a transfer config. For the latest
+            list of data sources, read about `using service
+            accounts <https://cloud.google.com/bigquery-transfer/docs/use-service-accounts>`__.
     """
 
     transfer_config: transfer.TransferConfig = proto.Field(
@@ -868,6 +866,7 @@ class ListTransferRunsRequest(proto.Message):
             LATEST (1):
                 Only latest run per day should be returned.
         """
+
         RUN_ATTEMPT_UNSPECIFIED = 0
         LATEST = 1
 
@@ -961,12 +960,12 @@ class ListTransferLogsRequest(proto.Message):
         proto.INT32,
         number=5,
     )
-    message_types: MutableSequence[
-        transfer.TransferMessage.MessageSeverity
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=transfer.TransferMessage.MessageSeverity,
+    message_types: MutableSequence[transfer.TransferMessage.MessageSeverity] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=transfer.TransferMessage.MessageSeverity,
+        )
     )
 
 
@@ -1099,26 +1098,24 @@ class StartManualTransferRunsRequest(proto.Message):
             ``projects/{project_id}/transferConfigs/{config_id}`` or
             ``projects/{project_id}/locations/{location_id}/transferConfigs/{config_id}``.
         requested_time_range (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest.TimeRange):
-            A time_range start and end timestamp for
-            historical data files or reports that are
-            scheduled to be transferred by the scheduled
-            transfer run. requested_time_range must be a
-            past time and cannot include future time values.
+            A time_range start and end timestamp for historical data
+            files or reports that are scheduled to be transferred by the
+            scheduled transfer run. requested_time_range must be a past
+            time and cannot include future time values.
 
             This field is a member of `oneof`_ ``time``.
         requested_run_time (google.protobuf.timestamp_pb2.Timestamp):
-            A run_time timestamp for historical data files
-            or reports that are scheduled to be transferred
-            by the scheduled transfer run.
-            requested_run_time must be a past time and
+            A run_time timestamp for historical data files or reports
+            that are scheduled to be transferred by the scheduled
+            transfer run. requested_run_time must be a past time and
             cannot include future time values.
 
             This field is a member of `oneof`_ ``time``.
     """
 
     class TimeRange(proto.Message):
-        r"""A specification for a time range, this will request transfer
-        runs with run_time between start_time (inclusive) and end_time
+        r"""A specification for a time range, this will request transfer runs
+        with run_time between start_time (inclusive) and end_time
         (exclusive).
 
         Attributes:

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -110,6 +110,7 @@ class IndustryCategory(proto.Enum):
         SHOPPING (26):
             Shopping
     """
+
     INDUSTRY_CATEGORY_UNSPECIFIED = 0
     AUTOMOTIVE = 1
     BUSINESS_AND_INDUSTRIAL_MARKETS = 2
@@ -151,6 +152,7 @@ class ServiceLevel(proto.Enum):
             The paid, premium version of Google
             Analytics.
     """
+
     SERVICE_LEVEL_UNSPECIFIED = 0
     GOOGLE_ANALYTICS_STANDARD = 1
     GOOGLE_ANALYTICS_360 = 2
@@ -164,14 +166,14 @@ class ActorType(proto.Enum):
         ACTOR_TYPE_UNSPECIFIED (0):
             Unknown or unspecified actor type.
         USER (1):
-            Changes made by the user specified in
-            actor_email.
+            Changes made by the user specified in actor_email.
         SYSTEM (2):
             Changes made by the Google Analytics system.
         SUPPORT (3):
             Changes made by Google Analytics support team
             staff.
     """
+
     ACTOR_TYPE_UNSPECIFIED = 0
     USER = 1
     SYSTEM = 2
@@ -191,6 +193,7 @@ class ActionType(proto.Enum):
         DELETED (3):
             Resource was deleted in this change.
     """
+
     ACTION_TYPE_UNSPECIFIED = 0
     CREATED = 1
     UPDATED = 2
@@ -234,6 +237,7 @@ class ChangeHistoryResourceType(proto.Enum):
         ATTRIBUTION_SETTINGS (20):
             AttributionSettings resource
     """
+
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
     PROPERTY = 2
@@ -264,6 +268,7 @@ class PropertyType(proto.Enum):
         PROPERTY_TYPE_ROLLUP (3):
             Google Analytics rollup property
     """
+
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
     PROPERTY_TYPE_SUBPROPERTY = 2
@@ -296,10 +301,9 @@ class Account(proto.Message):
             excluded from List results unless specifically
             requested.
         gmp_organization (str):
-            Output only. The URI for a Google Marketing
-            Platform organization resource. Only set when
-            this account is connected to a GMP organization.
-            Format:
+            Output only. The URI for a Google Marketing Platform
+            organization resource. Only set when this account is
+            connected to a GMP organization. Format:
             marketingplatformadmin.googleapis.com/organizations/{org_id}
     """
 
@@ -340,14 +344,13 @@ class Property(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this property.
-            Format: properties/{property_id}
-            Example: "properties/1000".
+            Output only. Resource name of this property. Format:
+            properties/{property_id} Example: "properties/1000".
         property_type (google.analytics.admin_v1beta.types.PropertyType):
-            Immutable. The property type for this Property
-            resource. When creating a property, if the type
-            is "PROPERTY_TYPE_UNSPECIFIED", then
-            "ORDINARY_PROPERTY" will be implied.
+            Immutable. The property type for this Property resource.
+            When creating a property, if the type is
+            "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will
+            be implied.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the entity was
             originally created.
@@ -367,26 +370,24 @@ class Property(proto.Message):
             The max allowed display name length is 100
             UTF-16 code units.
         industry_category (google.analytics.admin_v1beta.types.IndustryCategory):
-            Industry associated with this property
-            Example: AUTOMOTIVE, FOOD_AND_DRINK
+            Industry associated with this property Example: AUTOMOTIVE,
+            FOOD_AND_DRINK
         time_zone (str):
-            Required. Reporting Time Zone, used as the day
-            boundary for reports, regardless of where the
-            data originates. If the time zone honors DST,
-            Analytics will automatically adjust for the
-            changes.
+            Required. Reporting Time Zone, used as the day boundary for
+            reports, regardless of where the data originates. If the
+            time zone honors DST, Analytics will automatically adjust
+            for the changes.
 
-            NOTE: Changing the time zone only affects data
-            going forward, and is not applied retroactively.
+            NOTE: Changing the time zone only affects data going
+            forward, and is not applied retroactively.
 
-            Format: https://www.iana.org/time-zones
-            Example: "America/Los_Angeles".
+            Format: https://www.iana.org/time-zones Example:
+            "America/Los_Angeles".
         currency_code (str):
-            The currency type used in reports involving
-            monetary values.
+            The currency type used in reports involving monetary values.
 
-            Format: https://en.wikipedia.org/wiki/ISO_4217
-            Examples: "USD", "EUR", "JPY".
+            Format: https://en.wikipedia.org/wiki/ISO_4217 Examples:
+            "USD", "EUR", "JPY".
         service_level (google.analytics.admin_v1beta.types.ServiceLevel):
             Output only. The Google Analytics service
             level that applies to this property.
@@ -400,9 +401,8 @@ class Property(proto.Message):
             not set, then this property is not currently in
             the trash can and is not slated to be deleted.
         account (str):
-            Immutable. The resource name of the parent
-            account Format: accounts/{account_id}
-            Example: "accounts/123".
+            Immutable. The resource name of the parent account Format:
+            accounts/{account_id} Example: "accounts/123".
     """
 
     name: str = proto.Field(
@@ -478,25 +478,24 @@ class DataStream(proto.Message):
 
     Attributes:
         web_stream_data (google.analytics.admin_v1beta.types.DataStream.WebStreamData):
-            Data specific to web streams. Must be populated
-            if type is WEB_DATA_STREAM.
+            Data specific to web streams. Must be populated if type is
+            WEB_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         android_app_stream_data (google.analytics.admin_v1beta.types.DataStream.AndroidAppStreamData):
-            Data specific to Android app streams. Must be
-            populated if type is ANDROID_APP_DATA_STREAM.
+            Data specific to Android app streams. Must be populated if
+            type is ANDROID_APP_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         ios_app_stream_data (google.analytics.admin_v1beta.types.DataStream.IosAppStreamData):
-            Data specific to iOS app streams. Must be
-            populated if type is IOS_APP_DATA_STREAM.
+            Data specific to iOS app streams. Must be populated if type
+            is IOS_APP_DATA_STREAM.
 
             This field is a member of `oneof`_ ``stream_data``.
         name (str):
-            Output only. Resource name of this Data Stream.
-            Format:
-            properties/{property_id}/dataStreams/{stream_id}
-            Example: "properties/1000/dataStreams/2000".
+            Output only. Resource name of this Data Stream. Format:
+            properties/{property_id}/dataStreams/{stream_id} Example:
+            "properties/1000/dataStreams/2000".
         type_ (google.analytics.admin_v1beta.types.DataStream.DataStreamType):
             Required. Immutable. The type of this
             DataStream resource.
@@ -528,6 +527,7 @@ class DataStream(proto.Message):
             IOS_APP_DATA_STREAM (3):
                 iOS app data stream.
         """
+
         DATA_STREAM_TYPE_UNSPECIFIED = 0
         WEB_DATA_STREAM = 1
         ANDROID_APP_DATA_STREAM = 2
@@ -661,15 +661,13 @@ class FirebaseLink(proto.Message):
             Output only. Example format:
             properties/1234/firebaseLinks/5678
         project (str):
-            Immutable. Firebase project resource name. When
-            creating a FirebaseLink, you may provide this
-            resource name using either a project number or
-            project ID. Once this resource has been created,
-            returned FirebaseLinks will always have a
+            Immutable. Firebase project resource name. When creating a
+            FirebaseLink, you may provide this resource name using
+            either a project number or project ID. Once this resource
+            has been created, returned FirebaseLinks will always have a
             project_name that contains a project number.
 
-            Format: 'projects/{project number}'
-            Example: 'projects/1234'
+            Format: 'projects/{project number}' Example: 'projects/1234'
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this FirebaseLink was
             originally created.
@@ -823,13 +821,12 @@ class AccountSummary(proto.Message):
 
     Attributes:
         name (str):
-            Resource name for this account summary.
-            Format: accountSummaries/{account_id}
-            Example: "accountSummaries/1000".
+            Resource name for this account summary. Format:
+            accountSummaries/{account_id} Example:
+            "accountSummaries/1000".
         account (str):
-            Resource name of account referred to by this
-            account summary Format: accounts/{account_id}
-            Example: "accounts/1000".
+            Resource name of account referred to by this account summary
+            Format: accounts/{account_id} Example: "accounts/1000".
         display_name (str):
             Display name for the account referred to in
             this account summary.
@@ -863,9 +860,8 @@ class PropertySummary(proto.Message):
 
     Attributes:
         property (str):
-            Resource name of property referred to by this
-            property summary Format:
-            properties/{property_id} Example:
+            Resource name of property referred to by this property
+            summary Format: properties/{property_id} Example:
             "properties/1000".
         display_name (str):
             Display name for the property referred to in
@@ -914,10 +910,10 @@ class MeasurementProtocolSecret(proto.Message):
             Required. Human-readable display name for
             this secret.
         secret_value (str):
-            Output only. The measurement protocol secret
-            value. Pass this value to the api_secret field
-            of the Measurement Protocol API when sending
-            hits to this secret's parent property.
+            Output only. The measurement protocol secret value. Pass
+            this value to the api_secret field of the Measurement
+            Protocol API when sending hits to this secret's parent
+            property.
     """
 
     name: str = proto.Field(
@@ -1146,8 +1142,7 @@ class ConversionEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this conversion
-            event. Format:
+            Output only. Resource name of this conversion event. Format:
             properties/{property}/conversionEvents/{conversion_event}
         event_name (str):
             Immutable. The event name for this conversion
@@ -1194,6 +1189,7 @@ class ConversionEvent(proto.Message):
                 An Event instance is considered a Conversion
                 at most once per session per user.
         """
+
         CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -1207,18 +1203,16 @@ class ConversionEvent(proto.Message):
 
         Attributes:
             value (float):
-                This value will be used to populate the value
-                for all conversions of the specified event_name
-                where the event "value" parameter is unset.
+                This value will be used to populate the value for all
+                conversions of the specified event_name where the event
+                "value" parameter is unset.
 
                 This field is a member of `oneof`_ ``_value``.
             currency_code (str):
-                When a conversion event for this event_name has
-                no set currency, this currency will be applied
-                as the default. Must be in ISO 4217 currency
-                code format. See
-                https://en.wikipedia.org/wiki/ISO_4217 for more
-                information.
+                When a conversion event for this event_name has no set
+                currency, this currency will be applied as the default. Must
+                be in ISO 4217 currency code format. See
+                https://en.wikipedia.org/wiki/ISO_4217 for more information.
 
                 This field is a member of `oneof`_ ``_currency_code``.
         """
@@ -1273,8 +1267,7 @@ class KeyEvent(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Resource name of this key event.
-            Format:
+            Output only. Resource name of this key event. Format:
             properties/{property}/keyEvents/{key_event}
         event_name (str):
             Immutable. The event name for this key event.
@@ -1318,6 +1311,7 @@ class KeyEvent(proto.Message):
                 An Event instance is considered a Key Event
                 at most once per session per user.
         """
+
         COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -1327,18 +1321,17 @@ class KeyEvent(proto.Message):
 
         Attributes:
             numeric_value (float):
-                Required. This will be used to populate the
-                "value" parameter for all occurrences of this
-                Key Event (specified by event_name) where that
-                parameter is unset.
+                Required. This will be used to populate the "value"
+                parameter for all occurrences of this Key Event (specified
+                by event_name) where that parameter is unset.
             currency_code (str):
-                Required. When an occurrence of this Key Event
-                (specified by event_name) has no set currency
-                this currency will be applied as the default.
-                Must be in ISO 4217 currency code format.
+                Required. When an occurrence of this Key Event (specified by
+                event_name) has no set currency this currency will be
+                applied as the default. Must be in ISO 4217 currency code
+                format.
 
-                See https://en.wikipedia.org/wiki/ISO_4217 for
-                more information.
+                See https://en.wikipedia.org/wiki/ISO_4217 for more
+                information.
         """
 
         numeric_value: float = proto.Field(
@@ -1442,6 +1435,7 @@ class CustomDimension(proto.Message):
             ITEM (3):
                 Dimension scoped to eCommerce items
         """
+
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
@@ -1545,6 +1539,7 @@ class CustomMetric(proto.Message):
             HOURS (10):
                 This metric measures hours.
         """
+
         MEASUREMENT_UNIT_UNSPECIFIED = 0
         STANDARD = 1
         CURRENCY = 2
@@ -1566,6 +1561,7 @@ class CustomMetric(proto.Message):
             EVENT (1):
                 Metric scoped to an event.
         """
+
         METRIC_SCOPE_UNSPECIFIED = 0
         EVENT = 1
 
@@ -1581,6 +1577,7 @@ class CustomMetric(proto.Message):
             REVENUE_DATA (2):
                 Metric reports revenue data.
         """
+
         RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
         COST_DATA = 1
         REVENUE_DATA = 2
@@ -1663,6 +1660,7 @@ class DataRetentionSettings(proto.Message):
                 months. Available to 360 properties only.
                 Available for event data only.
         """
+
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
         FOURTEEN_MONTHS = 3

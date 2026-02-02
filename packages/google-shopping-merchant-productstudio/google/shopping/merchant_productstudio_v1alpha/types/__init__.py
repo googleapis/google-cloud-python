@@ -26,7 +26,9 @@ from .image import (
     UpscaleProductImageRequest,
     UpscaleProductImageResponse,
 )
-from .productstudio_common import InputImage
+from .productstudio_common import (
+    InputImage,
+)
 from .textsuggestions import (
     GenerateProductTextSuggestionsRequest,
     GenerateProductTextSuggestionsResponse,

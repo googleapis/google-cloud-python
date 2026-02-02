@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import diagnostic_config as gcn_diagnostic_config
@@ -93,6 +93,7 @@ class UpgradeType(proto.Enum):
         UPGRADE_ALL (4):
             Upgrade All (OS, Framework and CUDA).
     """
+
     UPGRADE_TYPE_UNSPECIFIED = 0
     UPGRADE_FRAMEWORK = 1
     UPGRADE_OS = 2
@@ -336,8 +337,8 @@ class SetInstanceMachineTypeRequest(proto.Message):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
         machine_type (str):
-            Required. The [Compute Engine machine
-            type](https://cloud.google.com/compute/docs/machine-types).
+            Required. The `Compute Engine machine
+            type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
     name: str = proto.Field(
@@ -636,16 +637,11 @@ class GetInstanceHealthResponse(proto.Message):
         health_state (google.cloud.notebooks_v1.types.GetInstanceHealthResponse.HealthState):
             Output only. Runtime health_state.
         health_info (MutableMapping[str, str]):
-            Output only. Additional information about
-            instance health. Example:
-
-            healthInfo": {
-            "docker_proxy_agent_status": "1",
-            "docker_status": "1",
-            "jupyterlab_api_status": "-1",
-            "jupyterlab_status": "-1",
-            "updated": "2020-10-18 09:40:03.573409"
-            }
+            Output only. Additional information about instance health.
+            Example: healthInfo": { "docker_proxy_agent_status": "1",
+            "docker_status": "1", "jupyterlab_api_status": "-1",
+            "jupyterlab_status": "-1", "updated": "2020-10-18
+            09:40:03.573409" }
     """
 
     class HealthState(proto.Enum):
@@ -669,6 +665,7 @@ class GetInstanceHealthResponse(proto.Message):
                 The instance health monitoring agent is not
                 running. Applies to ACTIVE state.
         """
+
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2
@@ -962,10 +959,12 @@ class ListSchedulesResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (MutableSequence[str]):
-            Schedules that could not be reached. For
-            example:
-            ['projects/{project_id}/location/{location}/schedules/monthly_digest',
-            'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
+            Schedules that could not be reached. For example:
+
+            ::
+
+                ['projects/{project_id}/location/{location}/schedules/monthly_digest',
+                 'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
     """
 
     @property
@@ -1114,10 +1113,12 @@ class ListExecutionsResponse(proto.Message):
             listing from the last result in the next list
             call.
         unreachable (MutableSequence[str]):
-            Executions IDs that could not be reached. For
-            example:
-            ['projects/{project_id}/location/{location}/executions/imagenet_test1',
-            'projects/{project_id}/location/{location}/executions/classifier_train1']
+            Executions IDs that could not be reached. For example:
+
+            ::
+
+                ['projects/{project_id}/location/{location}/executions/imagenet_test1',
+                 'projects/{project_id}/location/{location}/executions/classifier_train1']
     """
 
     @property

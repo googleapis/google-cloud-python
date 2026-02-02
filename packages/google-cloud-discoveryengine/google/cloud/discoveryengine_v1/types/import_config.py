@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import completion, document, user_event
@@ -278,6 +278,7 @@ class BigtableOptions(proto.Message):
             JSON (7):
                 JSON type.
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         NUMBER = 2
@@ -298,6 +299,7 @@ class BigtableOptions(proto.Message):
             BINARY (2):
                 Binary encoding.
         """
+
         ENCODING_UNSPECIFIED = 0
         TEXT = 1
         BINARY = 2
@@ -346,12 +348,12 @@ class BigtableOptions(proto.Message):
             number=3,
             enum="BigtableOptions.Type",
         )
-        columns: MutableSequence[
-            "BigtableOptions.BigtableColumn"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="BigtableOptions.BigtableColumn",
+        columns: MutableSequence["BigtableOptions.BigtableColumn"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="BigtableOptions.BigtableColumn",
+            )
         )
 
     class BigtableColumn(proto.Message):
@@ -471,12 +473,10 @@ class FhirStoreSource(proto.Message):
             have the FhirStore export to a specific Cloud
             Storage directory.
         resource_types (MutableSequence[str]):
-            The FHIR resource types to import. The resource
-            types should be a subset of all [supported FHIR
-            resource
-            types](https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification).
-            Default to all supported FHIR resource types if
-            empty.
+            The FHIR resource types to import. The resource types should
+            be a subset of all `supported FHIR resource
+            types <https://cloud.google.com/generative-ai-app-builder/docs/fhir-schema-reference#resource-level-specification>`__.
+            Default to all supported FHIR resource types if empty.
         update_from_latest_predefined_schema (bool):
             Optional. Whether to update the DataStore schema to the
             latest predefined schema.
@@ -1058,6 +1058,7 @@ class ImportDocumentsRequest(proto.Message):
                 deleted if they are not present in the source
                 location.
         """
+
         RECONCILIATION_MODE_UNSPECIFIED = 0
         INCREMENTAL = 1
         FULL = 2
@@ -1239,12 +1240,12 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        entries: MutableSequence[
-            completion.SuggestionDenyListEntry
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=completion.SuggestionDenyListEntry,
+        entries: MutableSequence[completion.SuggestionDenyListEntry] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=completion.SuggestionDenyListEntry,
+            )
         )
 
     inline_source: InlineSource = proto.Field(
@@ -1367,12 +1368,12 @@ class ImportCompletionSuggestionsRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        suggestions: MutableSequence[
-            completion.CompletionSuggestion
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=completion.CompletionSuggestion,
+        suggestions: MutableSequence[completion.CompletionSuggestion] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=completion.CompletionSuggestion,
+            )
         )
 
     inline_source: InlineSource = proto.Field(

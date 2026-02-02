@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import code_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -139,12 +139,11 @@ class Pipeline(proto.Message):
             their values. The decoded environment variables can
             overwrite the values specified by the ``environment`` field.
         timeout (google.protobuf.duration_pb2.Duration):
-            The maximum amount of time to give the pipeline
-            to complete. This includes the time spent
-            waiting for a worker to be allocated. If the
-            pipeline fails to complete before the timeout,
-            it will be cancelled and the error code will be
-            set to DEADLINE_EXCEEDED.
+            The maximum amount of time to give the pipeline to complete.
+            This includes the time spent waiting for a worker to be
+            allocated. If the pipeline fails to complete before the
+            timeout, it will be cancelled and the error code will be set
+            to DEADLINE_EXCEEDED.
 
             If unspecified, it will default to 7 days.
     """
@@ -535,31 +534,29 @@ class VirtualMachine(proto.Message):
 
     Attributes:
         machine_type (str):
-            Required. The machine type of the virtual
-            machine to create. Must be the short name of a
-            standard machine type (such as "n1-standard-1")
-            or a custom machine type (such as
-            "custom-1-4096", where "1" indicates the number
-            of vCPUs and "4096" indicates the memory in MB).
-            See [Creating an instance with a custom machine
-            type](https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create)
-            for more specifications on creating a custom
-            machine type.
+            Required. The machine type of the virtual machine to create.
+            Must be the short name of a standard machine type (such as
+            "n1-standard-1") or a custom machine type (such as
+            "custom-1-4096", where "1" indicates the number of vCPUs and
+            "4096" indicates the memory in MB). See `Creating an
+            instance with a custom machine
+            type <https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create>`__
+            for more specifications on creating a custom machine type.
         preemptible (bool):
             If true, allocate a preemptible VM.
         labels (MutableMapping[str, str]):
-            Optional set of labels to apply to the VM and
-            any attached disk resources. These labels must
-            adhere to the [name and value
-            restrictions](https://cloud.google.com/compute/docs/labeling-resources)
+            Optional set of labels to apply to the VM and any attached
+            disk resources. These labels must adhere to the `name and
+            value
+            restrictions <https://cloud.google.com/compute/docs/labeling-resources>`__
             on VM labels imposed by Compute Engine.
 
-            Labels keys with the prefix 'google-' are
-            reserved for use by Google.
+            Labels keys with the prefix 'google-' are reserved for use
+            by Google.
 
-            Labels applied at creation time to the VM.
-            Applied on a best-effort basis to attached disk
-            resources shortly after VM creation.
+            Labels applied at creation time to the VM. Applied on a
+            best-effort basis to attached disk resources shortly after
+            VM creation.
         disks (MutableSequence[google.cloud.lifesciences_v2beta.types.Disk]):
             The list of disks to create and attach to the VM.
 

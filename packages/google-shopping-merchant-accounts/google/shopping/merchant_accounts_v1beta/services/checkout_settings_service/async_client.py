@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1beta import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.shopping.type.types import types
 
 from google.shopping.merchant_accounts_v1beta.types import checkoutsettings
@@ -64,8 +64,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class CheckoutSettingsServiceAsyncClient:
-    """Service for supporting [checkout
-    settings](https://support.google.com/merchants/answer/13945960).
+    """Service for supporting `checkout
+    settings <https://support.google.com/merchants/answer/13945960>`__.
     """
 
     _client: CheckoutSettingsServiceClient
@@ -127,7 +127,8 @@ class CheckoutSettingsServiceAsyncClient:
         Returns:
             CheckoutSettingsServiceAsyncClient: The constructed client.
         """
-        return CheckoutSettingsServiceClient.from_service_account_info.__func__(CheckoutSettingsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = CheckoutSettingsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(CheckoutSettingsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -143,7 +144,10 @@ class CheckoutSettingsServiceAsyncClient:
         Returns:
             CheckoutSettingsServiceAsyncClient: The constructed client.
         """
-        return CheckoutSettingsServiceClient.from_service_account_file.__func__(CheckoutSettingsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = CheckoutSettingsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(
+            CheckoutSettingsServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -181,7 +185,9 @@ class CheckoutSettingsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return CheckoutSettingsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return CheckoutSettingsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> CheckoutSettingsServiceTransport:

@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -200,14 +200,12 @@ class UpdateReportConfigRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. Field mask is used to specify the
-            fields to be overwritten in the ReportConfig
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ReportConfig resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         report_config (google.cloud.storageinsights_v1.types.ReportConfig):
             Required. The resource being updated
         request_id (str):
@@ -322,9 +320,9 @@ class ReportDetail(proto.Message):
         labels (MutableMapping[str, str]):
             Labels as key value pairs
         target_datetime (google.type.datetime_pb2.DateTime):
-            The date for which report is generated. The time
-            part of target_datetime will be zero till we
-            support multiple reports per day.
+            The date for which report is generated. The time part of
+            target_datetime will be zero till we support multiple
+            reports per day.
         report_metrics (google.cloud.storageinsights_v1.types.ReportDetail.Metrics):
             Metrics of the report.
     """
@@ -560,6 +558,7 @@ class FrequencyOptions(proto.Message):
             WEEKLY (2):
                 Report will be generated weekly.
         """
+
         FREQUENCY_UNSPECIFIED = 0
         DAILY = 1
         WEEKLY = 2
@@ -805,6 +804,7 @@ class Identity(proto.Message):
             IDENTITY_TYPE_PER_PROJECT (2):
                 Google managed service account per project.
         """
+
         IDENTITY_TYPE_UNSPECIFIED = 0
         IDENTITY_TYPE_PER_CONFIG = 1
         IDENTITY_TYPE_PER_PROJECT = 2
@@ -821,9 +821,9 @@ class Identity(proto.Message):
 
 
 class DatasetConfig(proto.Message):
-    r"""Message describing the dataset configuration properties. For
-    more information, see [Dataset configuration
-    properties](https://cloud.google.com/storage/docs/insights/datasets#dataset-config).
+    r"""Message describing the dataset configuration properties. For more
+    information, see `Dataset configuration
+    properties <https://cloud.google.com/storage/docs/insights/datasets#dataset-config>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -943,6 +943,7 @@ class DatasetConfig(proto.Message):
             CONFIG_STATE_PROCESSING (4):
                 Configuration is under processing
         """
+
         CONFIG_STATE_UNSPECIFIED = 0
         CONFIG_STATE_ACTIVE = 1
         CONFIG_STATE_VERIFICATION_IN_PROGRESS = 2
@@ -1112,11 +1113,11 @@ class DatasetConfig(proto.Message):
             proto.INT64,
             number=7,
         )
-        non_storage_intelligence_entitled_bucket_ids: MutableSequence[
-            str
-        ] = proto.RepeatedField(
-            proto.STRING,
-            number=8,
+        non_storage_intelligence_entitled_bucket_ids: MutableSequence[str] = (
+            proto.RepeatedField(
+                proto.STRING,
+                number=8,
+            )
         )
 
     class ProjectErrors(proto.Message):
@@ -1198,22 +1199,22 @@ class DatasetConfig(proto.Message):
             number=7,
             optional=True,
         )
-        non_management_hub_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
-            proto.INT64,
-            number=8,
+        non_management_hub_entitled_project_numbers: MutableSequence[int] = (
+            proto.RepeatedField(
+                proto.INT64,
+                number=8,
+            )
         )
         non_storage_intelligence_entitled_error_count: int = proto.Field(
             proto.INT64,
             number=9,
             optional=True,
         )
-        non_storage_intelligence_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
-            proto.INT64,
-            number=10,
+        non_storage_intelligence_entitled_project_numbers: MutableSequence[int] = (
+            proto.RepeatedField(
+                proto.INT64,
+                number=10,
+            )
         )
         internal_error_count: int = proto.Field(
             proto.INT64,

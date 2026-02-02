@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -79,8 +79,8 @@ class Experiment(proto.Message):
         rollout_state (google.cloud.dialogflowcx_v3.types.RolloutState):
             State of the auto rollout process.
         rollout_failure_reason (str):
-            The reason why rollout has failed. Should only
-            be set when state is ROLLOUT_FAILED.
+            The reason why rollout has failed. Should only be set when
+            state is ROLLOUT_FAILED.
         result (google.cloud.dialogflowcx_v3.types.Experiment.Result):
             Inference result of the experiment.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -119,6 +119,7 @@ class Experiment(proto.Message):
                 The experiment with auto-rollout enabled has
                 failed.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -132,12 +133,11 @@ class Experiment(proto.Message):
 
         Attributes:
             condition (str):
-                The condition defines which subset of sessions
-                are selected for this experiment. If not
-                specified, all sessions are eligible. E.g.
-                "query_input.language_code=en" See the
-                [conditions
-                reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+                The condition defines which subset of sessions are selected
+                for this experiment. If not specified, all sessions are
+                eligible. E.g. "query_input.language_code=en" See the
+                `conditions
+                reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
             version_variants (google.cloud.dialogflowcx_v3.types.VersionVariants):
                 The flow versions as the variants of this
                 experiment.
@@ -187,9 +187,10 @@ class Experiment(proto.Message):
                 ABANDONED_SESSION_RATE (4):
                     Percentage of sessions where user hung up.
                 SESSION_END_RATE (5):
-                    Percentage of sessions reached Dialogflow
-                    'END_PAGE' or 'END_SESSION'.
+                    Percentage of sessions reached Dialogflow 'END_PAGE' or
+                    'END_SESSION'.
             """
+
             METRIC_UNSPECIFIED = 0
             CONTAINED_SESSION_NO_CALLBACK_RATE = 1
             LIVE_AGENT_HANDOFF_RATE = 2
@@ -210,6 +211,7 @@ class Experiment(proto.Message):
                 AVERAGE_TURN_COUNT (3):
                     Average turn count in a session.
             """
+
             COUNT_TYPE_UNSPECIFIED = 0
             TOTAL_NO_MATCH_COUNT = 1
             TOTAL_TURN_COUNT = 2
@@ -262,11 +264,11 @@ class Experiment(proto.Message):
 
             Attributes:
                 type_ (google.cloud.dialogflowcx_v3.types.Experiment.Result.MetricType):
-                    Ratio-based metric type. Only one of type or
-                    count_type is specified in each Metric.
+                    Ratio-based metric type. Only one of type or count_type is
+                    specified in each Metric.
                 count_type (google.cloud.dialogflowcx_v3.types.Experiment.Result.CountType):
-                    Count-based metric type. Only one of type or
-                    count_type is specified in each Metric.
+                    Count-based metric type. Only one of type or count_type is
+                    specified in each Metric.
                 ratio (float):
                     Ratio value of a metric.
 
@@ -336,12 +338,12 @@ class Experiment(proto.Message):
                 number=3,
             )
 
-        version_metrics: MutableSequence[
-            "Experiment.Result.VersionMetrics"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Experiment.Result.VersionMetrics",
+        version_metrics: MutableSequence["Experiment.Result.VersionMetrics"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Experiment.Result.VersionMetrics",
+            )
         )
         last_update_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -501,20 +503,18 @@ class RolloutConfig(proto.Message):
             should be sorted by percentage in ascending
             order.
         rollout_condition (str):
-            The conditions that are used to evaluate the
-            success of a rollout step. If not specified, all
-            rollout steps will proceed to the next one
-            unless failure conditions are met. E.g.
-            "containment_rate > 60% AND callback_rate <
-            20%". See the [conditions
-            reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+            The conditions that are used to evaluate the success of a
+            rollout step. If not specified, all rollout steps will
+            proceed to the next one unless failure conditions are met.
+            E.g. "containment_rate > 60% AND callback_rate < 20%". See
+            the `conditions
+            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
         failure_condition (str):
-            The conditions that are used to evaluate the
-            failure of a rollout step. If not specified, no
-            rollout steps will fail. E.g. "containment_rate
-            < 10% OR average_turn_count < 3". See the
-            [conditions
-            reference](https://cloud.google.com/dialogflow/cx/docs/reference/condition).
+            The conditions that are used to evaluate the failure of a
+            rollout step. If not specified, no rollout steps will fail.
+            E.g. "containment_rate < 10% OR average_turn_count < 3". See
+            the `conditions
+            reference <https://cloud.google.com/dialogflow/cx/docs/reference/condition>`__.
     """
 
     class RolloutStep(proto.Message):
@@ -524,8 +524,8 @@ class RolloutConfig(proto.Message):
             display_name (str):
                 The name of the rollout step;
             traffic_percent (int):
-                The percentage of traffic allocated to the flow
-                version of this rollout step. (0%, 100%].
+                The percentage of traffic allocated to the flow version of
+                this rollout step. (0%, 100%].
             min_duration (google.protobuf.duration_pb2.Duration):
                 The minimum time that this step should last.
                 Should be longer than 1 hour. If not set, the
@@ -605,8 +605,8 @@ class ListExperimentsRequest(proto.Message):
             The maximum number of items to return in a
             single page. By default 20 and at most 100.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -629,11 +629,10 @@ class ListExperimentsResponse(proto.Message):
 
     Attributes:
         experiments (MutableSequence[google.cloud.dialogflowcx_v3.types.Experiment]):
-            The list of experiments. There will be a maximum
-            number of items returned based on the page_size
-            field in the request. The list may in some cases
-            be empty or contain fewer entries than page_size
-            even if this isn't the last page.
+            The list of experiments. There will be a maximum number of
+            items returned based on the page_size field in the request.
+            The list may in some cases be empty or contain fewer entries
+            than page_size even if this isn't the last page.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the

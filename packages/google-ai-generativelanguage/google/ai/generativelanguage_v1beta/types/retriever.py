@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -280,6 +280,7 @@ class Condition(proto.Message):
                 Supported by string only when ``CustomMetadata`` value type
                 for the given key has a ``string_list_value``.
         """
+
         OPERATOR_UNSPECIFIED = 0
         LESS = 1
         LESS_EQUAL = 2
@@ -352,6 +353,7 @@ class Chunk(proto.Message):
             STATE_FAILED (10):
                 ``Chunk`` failed processing.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_PENDING_PROCESSING = 1
         STATE_ACTIVE = 2

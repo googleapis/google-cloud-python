@@ -49,12 +49,13 @@ class TimeUnitEnum(proto.Message):
             LIFETIME (6):
                 Lifetime
             POD (7):
-                Per pod of ads in a video stream. Only valid for
-                entities in a VIDEO_PLAYER environment.
+                Per pod of ads in a video stream. Only valid for entities in
+                a VIDEO_PLAYER environment.
             STREAM (8):
-                Per video stream. Only valid for entities in a
-                VIDEO_PLAYER environment.
+                Per video stream. Only valid for entities in a VIDEO_PLAYER
+                environment.
         """
+
         TIME_UNIT_UNSPECIFIED = 0
         MINUTE = 1
         HOUR = 2

@@ -80,6 +80,7 @@ class EncodingType(proto.Enum):
             is an example of a language that uses this encoding
             natively.
     """
+
     NONE = 0
     UTF8 = 1
     UTF16 = 2
@@ -107,13 +108,11 @@ class Document(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         gcs_content_uri (str):
-            The Google Cloud Storage URI where the file
-            content is located. This URI must be of the
-            form: gs://bucket_name/object_name. For more
-            details, see
-            https://cloud.google.com/storage/docs/reference-uris.
-            NOTE: Cloud Storage object versioning is not
-            supported.
+            The Google Cloud Storage URI where the file content is
+            located. This URI must be of the form:
+            gs://bucket_name/object_name. For more details, see
+            https://cloud.google.com/storage/docs/reference-uris. NOTE:
+            Cloud Storage object versioning is not supported.
 
             This field is a member of `oneof`_ ``source``.
         language (str):
@@ -148,6 +147,7 @@ class Document(proto.Message):
             HTML (2):
                 HTML
         """
+
         TYPE_UNSPECIFIED = 0
         PLAIN_TEXT = 1
         HTML = 2
@@ -165,6 +165,7 @@ class Document(proto.Message):
             KEEP_BOILERPLATE (2):
                 Treat boilerplate the same as content.
         """
+
         BOILERPLATE_HANDLING_UNSPECIFIED = 0
         SKIP_BOILERPLATE = 1
         KEEP_BOILERPLATE = 2
@@ -242,12 +243,12 @@ class Entity(proto.Message):
             they are available. For the metadata associated with other
             entity types, see the Type table below.
         salience (float):
-            The salience score associated with the entity in
-            the [0, 1.0] range.
-            The salience score for an entity provides
-            information about the importance or centrality
-            of that entity to the entire document text.
-            Scores closer to 0 are less salient, while
+            The salience score associated with the entity in the [0,
+            1.0] range.
+
+            The salience score for an entity provides information about
+            the importance or centrality of that entity to the entire
+            document text. Scores closer to 0 are less salient, while
             scores closer to 1.0 are highly salient.
         mentions (MutableSequence[google.cloud.language_v1beta2.types.EntityMention]):
             The mentions of this entity in the input
@@ -331,6 +332,7 @@ class Entity(proto.Message):
 
                 The metadata identifies the ``value`` and ``currency``.
         """
+
         UNKNOWN = 0
         PERSON = 1
         LOCATION = 2
@@ -418,10 +420,9 @@ class Sentiment(proto.Message):
 
     Attributes:
         magnitude (float):
-            A non-negative number in the [0, +inf) range,
-            which represents the absolute magnitude of
-            sentiment regardless of score (positive or
-            negative).
+            A non-negative number in the [0, +inf) range, which
+            represents the absolute magnitude of sentiment regardless of
+            score (positive or negative).
         score (float):
             Sentiment score between -1.0 (negative
             sentiment) and 1.0 (positive sentiment).
@@ -500,6 +501,7 @@ class PartOfSpeech(proto.Message):
             AFFIX (13):
                 Affix
         """
+
         UNKNOWN = 0
         ADJ = 1
         ADP = 2
@@ -530,6 +532,7 @@ class PartOfSpeech(proto.Message):
             PROGRESSIVE (3):
                 Progressive
         """
+
         ASPECT_UNKNOWN = 0
         PERFECTIVE = 1
         IMPERFECTIVE = 2
@@ -574,6 +577,7 @@ class PartOfSpeech(proto.Message):
             VOCATIVE (14):
                 Vocative
         """
+
         CASE_UNKNOWN = 0
         ACCUSATIVE = 1
         ADVERBIAL = 2
@@ -624,6 +628,7 @@ class PartOfSpeech(proto.Message):
             SPECIFIC (11):
                 Specific form
         """
+
         FORM_UNKNOWN = 0
         ADNOMIAL = 1
         AUXILIARY = 2
@@ -652,6 +657,7 @@ class PartOfSpeech(proto.Message):
             NEUTER (3):
                 Neuter
         """
+
         GENDER_UNKNOWN = 0
         FEMININE = 1
         MASCULINE = 2
@@ -678,6 +684,7 @@ class PartOfSpeech(proto.Message):
             SUBJUNCTIVE (6):
                 Subjunctive
         """
+
         MOOD_UNKNOWN = 0
         CONDITIONAL_MOOD = 1
         IMPERATIVE = 2
@@ -700,6 +707,7 @@ class PartOfSpeech(proto.Message):
             DUAL (3):
                 Dual
         """
+
         NUMBER_UNKNOWN = 0
         SINGULAR = 1
         PLURAL = 2
@@ -722,6 +730,7 @@ class PartOfSpeech(proto.Message):
             REFLEXIVE_PERSON (4):
                 Reflexive
         """
+
         PERSON_UNKNOWN = 0
         FIRST = 1
         SECOND = 2
@@ -740,6 +749,7 @@ class PartOfSpeech(proto.Message):
             NOT_PROPER (2):
                 Not proper
         """
+
         PROPER_UNKNOWN = 0
         PROPER = 1
         NOT_PROPER = 2
@@ -756,6 +766,7 @@ class PartOfSpeech(proto.Message):
             NON_RECIPROCAL (2):
                 Non-reciprocal
         """
+
         RECIPROCITY_UNKNOWN = 0
         RECIPROCAL = 1
         NON_RECIPROCAL = 2
@@ -780,6 +791,7 @@ class PartOfSpeech(proto.Message):
             PLUPERFECT (6):
                 Pluperfect
         """
+
         TENSE_UNKNOWN = 0
         CONDITIONAL_TENSE = 1
         FUTURE = 2
@@ -803,6 +815,7 @@ class PartOfSpeech(proto.Message):
             PASSIVE (3):
                 Passive
         """
+
         VOICE_UNKNOWN = 0
         ACTIVE = 1
         CAUSATIVE = 2
@@ -1061,6 +1074,7 @@ class DependencyEdge(proto.Message):
             NCOMP (82):
                 Nominal complement of a noun
         """
+
         UNKNOWN = 0
         ABBREV = 1
         ACOMP = 2
@@ -1184,6 +1198,7 @@ class EntityMention(proto.Message):
             COMMON (2):
                 Common noun (or noun compound)
         """
+
         TYPE_UNKNOWN = 0
         PROPER = 1
         COMMON = 2
@@ -1302,6 +1317,7 @@ class ClassificationModelOptions(proto.Message):
                 V2 (2):
                     Updated content categories in 2022.
             """
+
             CONTENT_CATEGORIES_VERSION_UNSPECIFIED = 0
             V1 = 1
             V2 = 2
@@ -1599,12 +1615,12 @@ class ModerateTextResponse(proto.Message):
             the input document.
     """
 
-    moderation_categories: MutableSequence[
-        "ClassificationCategory"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ClassificationCategory",
+    moderation_categories: MutableSequence["ClassificationCategory"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ClassificationCategory",
+        )
     )
 
 
@@ -1639,10 +1655,10 @@ class AnnotateTextRequest(proto.Message):
                 Extract entities and their associated
                 sentiment.
             classify_text (bool):
-                Classify the full document into categories. If
-                this is true, the API will use the default model
-                which classifies into a [predefined
-                taxonomy](https://cloud.google.com/natural-language/docs/categories).
+                Classify the full document into categories. If this is true,
+                the API will use the default model which classifies into a
+                `predefined
+                taxonomy <https://cloud.google.com/natural-language/docs/categories>`__.
             moderate_text (bool):
                 Moderate the document for harmful and
                 sensitive categories.
@@ -1761,12 +1777,12 @@ class AnnotateTextResponse(proto.Message):
         number=6,
         message="ClassificationCategory",
     )
-    moderation_categories: MutableSequence[
-        "ClassificationCategory"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="ClassificationCategory",
+    moderation_categories: MutableSequence["ClassificationCategory"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="ClassificationCategory",
+        )
     )
 
 

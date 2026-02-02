@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import launch_stage_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -79,11 +79,10 @@ class SubmitBuildRequest(proto.Message):
             Optional. Additional tags to annotate the
             build.
         machine_type (str):
-            Optional. The machine type from default pool to
-            use for the build. If left blank, cloudbuild
-            will use a sensible default. Currently only
-            E2_HIGHCPU_8 is supported. If worker_pool is
-            set, this field will be ignored.
+            Optional. The machine type from default pool to use for the
+            build. If left blank, cloudbuild will use a sensible
+            default. Currently only E2_HIGHCPU_8 is supported. If
+            worker_pool is set, this field will be ignored.
         release_track (google.api.launch_stage_pb2.LaunchStage):
             Optional. The release track of the client
             that initiated the build request.
@@ -110,14 +109,13 @@ class SubmitBuildRequest(proto.Message):
                 source is a function source. Required for
                 function builds.
             cache_image_uri (str):
-                Optional. cache_image_uri is the GCR/AR URL
-                where the cache image will be stored.
-                cache_image_uri is optional and omitting it will
-                disable caching. This URL must be stable across
-                builds. It is used to derive a build-specific
-                temporary URL by substituting the tag with the
-                build ID. The build will clean up the temporary
-                image on a best-effort basis.
+                Optional. cache_image_uri is the GCR/AR URL where the cache
+                image will be stored. cache_image_uri is optional and
+                omitting it will disable caching. This URL must be stable
+                across builds. It is used to derive a build-specific
+                temporary URL by substituting the tag with the build ID. The
+                build will clean up the temporary image on a best-effort
+                basis.
             base_image (str):
                 Optional. The base image to use for the
                 build.
@@ -131,10 +129,9 @@ class SubmitBuildRequest(proto.Message):
                 be built on a scratch base image, so the base
                 layers can be appended at run time.
             project_descriptor (str):
-                Optional. project_descriptor stores the path to
-                the project descriptor file. When empty, it
-                means that there is no project descriptor file
-                in the source.
+                Optional. project_descriptor stores the path to the project
+                descriptor file. When empty, it means that there is no
+                project descriptor file in the source.
         """
 
         runtime: str = proto.Field(
@@ -256,9 +253,9 @@ class StorageSource(proto.Message):
 
     Attributes:
         bucket (str):
-            Required. Google Cloud Storage bucket containing
-            the source (see [Bucket Name
-            Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+            Required. Google Cloud Storage bucket containing the source
+            (see `Bucket Name
+            Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
             Required. Google Cloud Storage object containing the source.
 

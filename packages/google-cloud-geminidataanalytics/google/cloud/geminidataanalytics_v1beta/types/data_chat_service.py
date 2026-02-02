@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1beta.types import context as gcg_context
@@ -122,9 +122,8 @@ class GenerationOptions(proto.Message):
             generated query will be returned in the
             response.
         generate_disambiguation_question (bool):
-            Optional. If true (default to false), the
-            service may return a clarifying_question if the
-            input query is ambiguous.
+            Optional. If true (default to false), the service may return
+            a clarifying_question if the input query is ambiguous.
     """
 
     generate_query_result: bool = proto.Field(
@@ -169,30 +168,26 @@ class QueryDataResponse(proto.Message):
         generated_query (str):
             Generated query for the given user prompt.
         intent_explanation (str):
-            A natural language explanation of the generated
-            query. Populated if options.generate_explanation
-            was true in the request.
+            A natural language explanation of the generated query.
+            Populated if options.generate_explanation was true in the
+            request.
         query_result (google.cloud.geminidataanalytics_v1beta.types.ExecutedQueryResult):
-            The result of executing the query.
-            Populated if options.generate_query_result or
-            options.generate_natural_language_answer was
-            true in the request, and execution was
-            successful or attempted.
+            The result of executing the query. Populated if
+            options.generate_query_result or
+            options.generate_natural_language_answer was true in the
+            request, and execution was successful or attempted.
         natural_language_answer (str):
-            A natural language answer to the query, based on
-            the query_result. Populated if
-            options.generate_natural_language_answer was
-            true in the request and query execution was
-            successful based in the response from executeSql
-            API.
+            A natural language answer to the query, based on the
+            query_result. Populated if
+            options.generate_natural_language_answer was true in the
+            request and query execution was successful based in the
+            response from executeSql API.
         disambiguation_question (MutableSequence[str]):
-            If ambiguity was detected in the natural
-            language query and
-            options.generate_disambiguation_question was
-            true, this field contains a question to the user
-            for clarification. The returned represents the
-            service's best effort based on the ambiguous
-            input.
+            If ambiguity was detected in the natural language query and
+            options.generate_disambiguation_question was true, this
+            field contains a question to the user for clarification. The
+            returned represents the service's best effort based on the
+            ambiguous input.
     """
 
     generated_query: str = proto.Field(
@@ -508,12 +503,12 @@ class DataAgentContext(proto.Message):
             Required. The name of the data agent
             resource.
         credentials (google.cloud.geminidataanalytics_v1beta.types.Credentials):
-            Optional. The credentials to use when calling
-            the Looker data source.
-            Currently supports both OAuth token and API
-            key-based credentials, as described in
-            [Authentication with an
-            SDK](https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk).
+            Optional. The credentials to use when calling the Looker
+            data source.
+
+            Currently supports both OAuth token and API key-based
+            credentials, as described in `Authentication with an
+            SDK <https://cloud.google.com/looker/docs/api-auth#authentication_with_an_sdk>`__.
         context_version (google.cloud.geminidataanalytics_v1beta.types.DataAgentContext.ContextVersion):
             Optional. Version of context to be used by
             DCS (e.g. STAGING, PUBLISHED)
@@ -534,6 +529,7 @@ class DataAgentContext(proto.Message):
                 Using this version, DCS will use the latest
                 published context for the data agent.
         """
+
         CONTEXT_VERSION_UNSPECIFIED = 0
         STAGING = 1
         PUBLISHED = 2
@@ -814,6 +810,7 @@ class TextMessage(proto.Message):
                 the final answer to the user (``FINAL_RESPONSE``). These
                 messages provide insight into the agent's actions.
         """
+
         TEXT_TYPE_UNSPECIFIED = 0
         FINAL_RESPONSE = 1
         THOUGHT = 2

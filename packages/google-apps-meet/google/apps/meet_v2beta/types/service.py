@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.apps.meet_v2beta.types import resource
@@ -171,11 +171,11 @@ class ConnectActiveConferenceRequest(proto.Message):
 class ConnectActiveConferenceResponse(proto.Message):
     r"""Response of ConnectActiveConference method.
 
-    A success response does not indicate the meeting is fully
-    joined; further communication must occur across WebRTC.
+    A success response does not indicate the meeting is fully joined;
+    further communication must occur across WebRTC.
 
-    See [Meet Media API
-    overview](https://developers.google.com/meet/media-api/guides/overview)
+    See `Meet Media API
+    overview <https://developers.google.com/meet/media-api/guides/overview>`__
     for more details about this connection.
 
     Attributes:
@@ -406,12 +406,12 @@ class ListConferenceRecordsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conference_records: MutableSequence[
-        resource.ConferenceRecord
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ConferenceRecord,
+    conference_records: MutableSequence[resource.ConferenceRecord] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ConferenceRecord,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -594,12 +594,12 @@ class ListParticipantSessionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    participant_sessions: MutableSequence[
-        resource.ParticipantSession
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resource.ParticipantSession,
+    participant_sessions: MutableSequence[resource.ParticipantSession] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resource.ParticipantSession,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

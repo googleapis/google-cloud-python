@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -103,8 +103,8 @@ class ListToolsRequest(proto.Message):
             models to return in a single page. Default to
             10.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -215,15 +215,13 @@ class Tool(proto.Message):
             Optional. A human readable description of the
             tool.
         action_confirmation_requirement (MutableMapping[str, google.cloud.dialogflow_v2.types.Tool.ConfirmationRequirement]):
-            Optional. Confirmation requirement for the
-            actions. Each key is an action name in the
-            action_schemas. If an action's confirmation
-            requirement is unspecified (either the key is
+            Optional. Confirmation requirement for the actions. Each key
+            is an action name in the action_schemas. If an action's
+            confirmation requirement is unspecified (either the key is
             not present, or its value is
-            CONFIRMATION_REQUIREMENT_UNSPECIFIED), the
-            requirement is inferred from the action's
-            method_type - confirmation is not required if
-            and only if method_type is GET.
+            CONFIRMATION_REQUIREMENT_UNSPECIFIED), the requirement is
+            inferred from the action's method_type - confirmation is not
+            required if and only if method_type is GET.
         extension_spec (google.cloud.dialogflow_v2.types.Tool.ExtensionTool):
             Vertex extension tool specification.
 
@@ -265,13 +263,14 @@ class Tool(proto.Message):
 
         Values:
             CONFIRMATION_REQUIREMENT_UNSPECIFIED (0):
-                Unspecified. Whether the action requires
-                confirmation is inferred from method_type.
+                Unspecified. Whether the action requires confirmation is
+                inferred from method_type.
             REQUIRED (1):
                 Conformation is required.
             NOT_REQUIRED (2):
                 Conformation is not required.
         """
+
         CONFIRMATION_REQUIREMENT_UNSPECIFIED = 0
         REQUIRED = 1
         NOT_REQUIRED = 2
@@ -293,6 +292,7 @@ class Tool(proto.Message):
             PATCH (5):
                 PATCH method.
         """
+
         METHOD_TYPE_UNSPECIFIED = 0
         GET = 1
         POST = 2
@@ -469,6 +469,7 @@ class Tool(proto.Message):
                         DELETE (5):
                             Delete operation.
                     """
+
                     OPERATION_TYPE_UNSPECIFIED = 0
                     LIST = 1
                     GET = 2
@@ -538,8 +539,8 @@ class Tool(proto.Message):
 
                 This field is a member of `oneof`_ ``auth_config``.
             service_agent_auth_config (google.cloud.dialogflow_v2.types.Tool.Authentication.ServiceAgentAuthConfig):
-                Config for [Diglogflow service
-                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent)
+                Config for `Diglogflow service
+                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__
                 auth.
 
                 This field is a member of `oneof`_ ``auth_config``.
@@ -560,6 +561,7 @@ class Tool(proto.Message):
                 QUERY_STRING (2):
                     Represents the key in query string.
             """
+
             REQUEST_LOCATION_UNSPECIFIED = 0
             HEADER = 1
             QUERY_STRING = 2
@@ -629,17 +631,18 @@ class Tool(proto.Message):
             """
 
             class OauthGrantType(proto.Enum):
-                r"""OAuth grant types. Only [client credential
-                grant](https://oauth.net/2/grant-types/client-credentials) is
+                r"""OAuth grant types. Only `client credential
+                grant <https://oauth.net/2/grant-types/client-credentials>`__ is
                 supported.
 
                 Values:
                     OAUTH_GRANT_TYPE_UNSPECIFIED (0):
                         Default value. This value is unused.
                     CLIENT_CREDENTIAL (1):
-                        Represents the [client credential
-                        flow](https://oauth.net/2/grant-types/client-credentials).
+                        Represents the `client credential
+                        flow <https://oauth.net/2/grant-types/client-credentials>`__.
                 """
+
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
 
@@ -672,27 +675,24 @@ class Tool(proto.Message):
             )
 
         class ServiceAgentAuthConfig(proto.Message):
-            r"""Config for auth using [Dialogflow service
-            agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+            r"""Config for auth using `Dialogflow service
+            agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
 
             Attributes:
                 service_agent_auth (google.cloud.dialogflow_v2.types.Tool.Authentication.ServiceAgentAuthConfig.ServiceAgentAuth):
-                    Optional. Indicate the auth token type generated
-                    from the [Diglogflow service
-                    agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
-                    The generated token is sent in the Authorization
-                    header.
+                    Optional. Indicate the auth token type generated from the
+                    `Diglogflow service
+                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+                    The generated token is sent in the Authorization header.
             """
 
             class ServiceAgentAuth(proto.Enum):
-                r"""Indicate the auth token type generated from the [Diaglogflow
-                service
-                agent](https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent).
+                r"""Indicate the auth token type generated from the `Diaglogflow service
+                agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
 
                 Values:
                     SERVICE_AGENT_AUTH_UNSPECIFIED (0):
-                        Service agent auth type unspecified. Default to
-                        ID_TOKEN.
+                        Service agent auth type unspecified. Default to ID_TOKEN.
                     ID_TOKEN (1):
                         Use `ID
                         token <https://cloud.google.com/docs/authentication/token-types#id>`__
@@ -706,6 +706,7 @@ class Tool(proto.Message):
                         other Google Cloud APIs after you grant required roles to
                         ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
                 """
+
                 SERVICE_AGENT_AUTH_UNSPECIFIED = 0
                 ID_TOKEN = 1
                 ACCESS_TOKEN = 2
@@ -852,13 +853,13 @@ class Tool(proto.Message):
         proto.STRING,
         number=3,
     )
-    action_confirmation_requirement: MutableMapping[
-        str, ConfirmationRequirement
-    ] = proto.MapField(
-        proto.STRING,
-        proto.ENUM,
-        number=17,
-        enum=ConfirmationRequirement,
+    action_confirmation_requirement: MutableMapping[str, ConfirmationRequirement] = (
+        proto.MapField(
+            proto.STRING,
+            proto.ENUM,
+            number=17,
+            enum=ConfirmationRequirement,
+        )
     )
     extension_spec: ExtensionTool = proto.Field(
         proto.MESSAGE,

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -55,6 +55,7 @@ class OutputState(proto.Enum):
         OUTPUT_STATE_PENDING (5):
             Pending.
     """
+
     OUTPUT_STATE_UNSPECIFIED = 0
     OUTPUT_STATE_OK = 1
     OUTPUT_STATE_CANCELLED = 2

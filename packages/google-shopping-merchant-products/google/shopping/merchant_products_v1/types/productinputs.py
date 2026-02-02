@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 from google.shopping.merchant_products_v1.types import products_common
 
@@ -93,18 +93,17 @@ class ProductInput(proto.Message):
             targeting local destinations, creating a ``legacy_local``
             product with an otherwise matching name will fail.
         offer_id (str):
-            Required. Immutable. Your unique identifier for
-            the product. This is the same for the product
-            input and processed product. Leading and
-            trailing whitespaces are stripped and multiple
-            whitespaces are replaced by a single whitespace
-            upon submission. See the [products data
-            specification](https://support.google.com/merchants/answer/188494#id)
+            Required. Immutable. Your unique identifier for the product.
+            This is the same for the product input and processed
+            product. Leading and trailing whitespaces are stripped and
+            multiple whitespaces are replaced by a single whitespace
+            upon submission. See the `products data
+            specification <https://support.google.com/merchants/answer/188494#id>`__
             for details.
         content_language (str):
-            Required. Immutable. The two-letter [ISO
-            639-1](http://en.wikipedia.org/wiki/ISO_639-1)
-            language code for the product.
+            Required. Immutable. The two-letter `ISO
+            639-1 <http://en.wikipedia.org/wiki/ISO_639-1>`__ language
+            code for the product.
         feed_label (str):
             Required. Immutable. The feed label that lets you categorize
             and identify your products. The maximum allowed characters

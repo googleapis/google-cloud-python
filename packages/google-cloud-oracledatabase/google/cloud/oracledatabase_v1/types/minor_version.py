@@ -35,8 +35,8 @@ class MinorVersion(proto.Message):
 
     Attributes:
         name (str):
-            Identifier. The name of the MinorVersion
-            resource with the format:
+            Identifier. The name of the MinorVersion resource with the
+            format:
             projects/{project}/locations/{region}/giVersions/{gi_version}/minorVersions/{minor_version}
         grid_image_id (str):
             Optional. The ID of the Grid Image.
@@ -64,8 +64,8 @@ class ListMinorVersionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent value for the MinorVersion
-            resource with the format:
+            Required. The parent value for the MinorVersion resource
+            with the format:
             projects/{project}/locations/{location}/giVersions/{gi_version}
         page_size (int):
             Optional. The maximum number of items to

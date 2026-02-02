@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -93,12 +93,11 @@ class CreateGatewaySecurityPolicyRequest(proto.Message):
             Must be in the format
             ``projects/{project}/locations/{location}``.
         gateway_security_policy_id (str):
-            Required. Short name of the
-            GatewaySecurityPolicy resource to be created.
-            This value should be 1-63 characters long,
-            containing only letters, numbers, hyphens, and
-            underscores, and should not start with a number.
-            E.g. "gateway_security_policy1".
+            Required. Short name of the GatewaySecurityPolicy resource
+            to be created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g.
+            "gateway_security_policy1".
         gateway_security_policy (google.cloud.network_security_v1alpha1.types.GatewaySecurityPolicy):
             Required. GatewaySecurityPolicy resource to
             be created.
@@ -159,11 +158,10 @@ class ListGatewaySecurityPoliciesResponse(proto.Message):
         gateway_security_policies (MutableSequence[google.cloud.network_security_v1alpha1.types.GatewaySecurityPolicy]):
             List of GatewaySecurityPolicies resources.
         next_page_token (str):
-            If there might be more results than those
-            appearing in this response, then
-            'next_page_token' is included. To get the next
-            set of results, call this method again using the
-            value of 'next_page_token' as 'page_token'.
+            If there might be more results than those appearing in this
+            response, then 'next_page_token' is included. To get the
+            next set of results, call this method again using the value
+            of 'next_page_token' as 'page_token'.
         unreachable (MutableSequence[str]):
             Locations that could not be reached.
     """
@@ -172,12 +170,12 @@ class ListGatewaySecurityPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    gateway_security_policies: MutableSequence[
-        "GatewaySecurityPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="GatewaySecurityPolicy",
+    gateway_security_policies: MutableSequence["GatewaySecurityPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="GatewaySecurityPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -226,14 +224,12 @@ class UpdateGatewaySecurityPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the
-            GatewaySecurityPolicy resource by the update.
-            The fields specified in the update_mask are
-            relative to the resource, not the full request.
-            A field will be overwritten if it is in the
-            mask. If the user does not provide a mask then
-            all fields will be overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the GatewaySecurityPolicy resource by the
+            update. The fields specified in the update_mask are relative
+            to the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
         gateway_security_policy (google.cloud.network_security_v1alpha1.types.GatewaySecurityPolicy):
             Required. Updated GatewaySecurityPolicy
             resource.

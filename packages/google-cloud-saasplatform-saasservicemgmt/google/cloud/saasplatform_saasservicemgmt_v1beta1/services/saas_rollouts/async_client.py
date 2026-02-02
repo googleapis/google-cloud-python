@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.saasplatform_saasservicemgmt_v1beta1 import (
     gapic_version as package_version,
@@ -46,10 +46,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts import (
     pagers,
@@ -127,7 +127,8 @@ class SaasRolloutsAsyncClient:
         Returns:
             SaasRolloutsAsyncClient: The constructed client.
         """
-        return SaasRolloutsClient.from_service_account_info.__func__(SaasRolloutsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SaasRolloutsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SaasRolloutsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -143,7 +144,8 @@ class SaasRolloutsAsyncClient:
         Returns:
             SaasRolloutsAsyncClient: The constructed client.
         """
-        return SaasRolloutsClient.from_service_account_file.__func__(SaasRolloutsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SaasRolloutsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SaasRolloutsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -715,18 +717,15 @@ class SaasRolloutsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the Rollout
-                resource by the update.
+                Field mask is used to specify the fields to be
+                overwritten in the Rollout resource by the update.
 
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then
-                all fields in the Rollout will be
-                overwritten.
+                If the user does not provide a mask then all fields in
+                the Rollout will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1331,18 +1330,15 @@ class SaasRolloutsAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Field mask is used to specify the fields
-                to be overwritten in the RolloutKind
-                resource by the update.
+                Field mask is used to specify the fields to be
+                overwritten in the RolloutKind resource by the update.
 
-                The fields specified in the update_mask
-                are relative to the resource, not the
-                full request. A field will be
+                The fields specified in the update_mask are relative to
+                the resource, not the full request. A field will be
                 overwritten if it is in the mask.
 
-                If the user does not provide a mask then
-                all fields in the RolloutKind will be
-                overwritten.
+                If the user does not provide a mask then all fields in
+                the RolloutKind will be overwritten.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

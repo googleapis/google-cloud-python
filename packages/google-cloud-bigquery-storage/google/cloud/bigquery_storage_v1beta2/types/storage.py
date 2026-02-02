@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1beta2.types import (
@@ -294,14 +294,13 @@ class SplitReadStreamResponse(proto.Message):
 
     Attributes:
         primary_stream (google.cloud.bigquery_storage_v1beta2.types.ReadStream):
-            Primary stream, which contains the beginning
-            portion of \|original_stream\|. An empty value
-            indicates that the original stream can no longer
-            be split.
+            Primary stream, which contains the beginning portion of
+            \|original_stream\|. An empty value indicates that the
+            original stream can no longer be split.
         remainder_stream (google.cloud.bigquery_storage_v1beta2.types.ReadStream):
             Remainder stream, which contains the tail of
-            \|original_stream\|. An empty value indicates
-            that the original stream can no longer be split.
+            \|original_stream\|. An empty value indicates that the
+            original stream can no longer be split.
     """
 
     primary_stream: stream.ReadStream = proto.Field(
@@ -427,32 +426,29 @@ class AppendRowsResponse(proto.Message):
 
             This field is a member of `oneof`_ ``response``.
         error (google.rpc.status_pb2.Status):
-            Error returned when problems were encountered.
-            If present, it indicates rows were not accepted
-            into the system. Users can retry or continue
-            with other append requests within the same
-            connection.
+            Error returned when problems were encountered. If present,
+            it indicates rows were not accepted into the system. Users
+            can retry or continue with other append requests within the
+            same connection.
 
             Additional information about error signalling:
 
-            ALREADY_EXISTS: Happens when an append specified
-            an offset, and the backend already has received
-            data at this offset. Typically encountered in
-            retry scenarios, and can be ignored.
+            ALREADY_EXISTS: Happens when an append specified an offset,
+            and the backend already has received data at this offset.
+            Typically encountered in retry scenarios, and can be
+            ignored.
 
-            OUT_OF_RANGE: Returned when the specified offset
-            in the stream is beyond the current end of the
-            stream.
+            OUT_OF_RANGE: Returned when the specified offset in the
+            stream is beyond the current end of the stream.
 
-            INVALID_ARGUMENT: Indicates a malformed request
-            or data.
+            INVALID_ARGUMENT: Indicates a malformed request or data.
 
-            ABORTED: Request processing is aborted because
-            of prior failures. The request can be retried if
-            previous failure is addressed.
+            ABORTED: Request processing is aborted because of prior
+            failures. The request can be retried if previous failure is
+            addressed.
 
-            INTERNAL: Indicates server side error(s) that
-            can be retried.
+            INTERNAL: Indicates server side error(s) that can be
+            retried.
 
             This field is a member of `oneof`_ ``response``.
         updated_schema (google.cloud.bigquery_storage_v1beta2.types.TableSchema):
@@ -672,6 +668,7 @@ class StorageError(proto.Message):
             STREAM_FINALIZED (6):
                 Stream is finalized.
         """
+
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
         STREAM_ALREADY_COMMITTED = 2

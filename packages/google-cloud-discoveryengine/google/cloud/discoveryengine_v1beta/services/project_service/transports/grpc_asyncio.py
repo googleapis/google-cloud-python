@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import project_service
 
@@ -357,14 +357,13 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     ]:
         r"""Return a callable for the provision project method over gRPC.
 
-        Provisions the project resource. During the
-        process, related systems will get prepared and
-        initialized.
+        Provisions the project resource. During the process, related
+        systems will get prepared and initialized.
 
-        Caller must read the [Terms for data
-        use](https://cloud.google.com/retail/data-use-terms),
-        and optionally specify in request to provide consent to
-        that service terms.
+        Caller must read the `Terms for data
+        use <https://cloud.google.com/retail/data-use-terms>`__, and
+        optionally specify in request to provide consent to that service
+        terms.
 
         Returns:
             Callable[[~.ProvisionProjectRequest],

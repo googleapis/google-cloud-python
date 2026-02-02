@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import common
@@ -44,6 +44,7 @@ class SearchResultType(proto.Enum):
         ENTRY_GROUP (3):
             An [EntryGroup][google.cloud.datacatalog.v1.EntryGroup].
     """
+
     SEARCH_RESULT_TYPE_UNSPECIFIED = 0
     ENTRY = 1
     TAG_TEMPLATE = 2

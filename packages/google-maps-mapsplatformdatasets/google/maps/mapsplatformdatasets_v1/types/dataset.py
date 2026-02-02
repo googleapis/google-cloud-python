@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.mapsplatformdatasets_v1.types import data_source
@@ -43,6 +43,7 @@ class Usage(proto.Enum):
             This dataset will be used for data driven
             styling.
     """
+
     USAGE_UNSPECIFIED = 0
     USAGE_DATA_DRIVEN_STYLING = 1
 
@@ -59,8 +60,8 @@ class Dataset(proto.Message):
 
     Attributes:
         name (str):
-            Resource name.
-            Format: projects/{project}/datasets/{dataset_id}
+            Resource name. Format:
+            projects/{project}/datasets/{dataset_id}
         display_name (str):
             Human readable name, shown in the console UI.
 
@@ -209,6 +210,7 @@ class Status(proto.Message):
                 the dataset being available for its specific
                 usage.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_IMPORTING = 1
         STATE_IMPORT_SUCCEEDED = 2

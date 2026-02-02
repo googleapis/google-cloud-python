@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     Awaitable,
@@ -31,13 +31,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 
@@ -46,7 +46,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow, avro, storage, stream
 
@@ -119,7 +119,8 @@ class BigQueryReadAsyncClient:
         Returns:
             BigQueryReadAsyncClient: The constructed client.
         """
-        return BigQueryReadClient.from_service_account_info.__func__(BigQueryReadAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = BigQueryReadClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(BigQueryReadAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +136,8 @@ class BigQueryReadAsyncClient:
         Returns:
             BigQueryReadAsyncClient: The constructed client.
         """
-        return BigQueryReadClient.from_service_account_file.__func__(BigQueryReadAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = BigQueryReadClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(BigQueryReadAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -370,23 +372,19 @@ class BigQueryReadAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             max_stream_count (:class:`int`):
-                Max initial number of streams. If unset
-                or zero, the server will provide a value
-                of streams so as to produce reasonable
-                throughput. Must be non-negative. The
-                number of streams may be lower than the
-                requested number, depending on the
-                amount parallelism that is reasonable
-                for the table. There is a default system
-                max limit of 1,000.
+                Max initial number of streams. If unset or zero, the
+                server will provide a value of streams so as to produce
+                reasonable throughput. Must be non-negative. The number
+                of streams may be lower than the requested number,
+                depending on the amount parallelism that is reasonable
+                for the table. There is a default system max limit of
+                1,000.
 
                 This must be greater than or equal to
-                preferred_min_stream_count. Typically,
-                clients should either leave this unset
-                to let the system to determine an upper
-                bound OR set this a size for the maximum
-                "units of work" it can gracefully
-                handle.
+                preferred_min_stream_count. Typically, clients should
+                either leave this unset to let the system to determine
+                an upper bound OR set this a size for the maximum "units
+                of work" it can gracefully handle.
 
                 This corresponds to the ``max_stream_count`` field
                 on the ``request`` instance; if ``request`` is provided, this

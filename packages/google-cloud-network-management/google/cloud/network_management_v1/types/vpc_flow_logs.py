@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.network_management_v1.types import (
@@ -191,8 +191,7 @@ class UpdateVpcFlowLogsConfigRequest(proto.Message):
             ``"state"``, and the ``vpc_flow_logs_config`` would be:
             ``vpc_flow_logs_config = { name = "projects/my-project/locations/global/vpcFlowLogsConfigs/my-config" state = "ENABLED" }``
         vpc_flow_logs_config (google.cloud.network_management_v1.types.VpcFlowLogsConfig):
-            Required. Only fields specified in update_mask
-            are updated.
+            Required. Only fields specified in update_mask are updated.
     """
 
     update_mask: field_mask_pb2.FieldMask = proto.Field(

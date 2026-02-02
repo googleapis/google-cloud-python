@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.servicecontrol_v2 import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.servicecontrol_v2.types import service_controller
 
@@ -63,12 +63,12 @@ _LOGGER = std_logging.getLogger(__name__)
 
 
 class ServiceControllerAsyncClient:
-    """[Service Control API
-    v2](https://cloud.google.com/service-infrastructure/docs/service-control/access-control)
+    """`Service Control API
+    v2 <https://cloud.google.com/service-infrastructure/docs/service-control/access-control>`__
 
     This API provides admission control and telemetry reporting for
-    services that are integrated with [Service
-    Infrastructure](https://cloud.google.com/service-infrastructure).
+    services that are integrated with `Service
+    Infrastructure <https://cloud.google.com/service-infrastructure>`__.
     """
 
     _client: ServiceControllerClient
@@ -118,7 +118,8 @@ class ServiceControllerAsyncClient:
         Returns:
             ServiceControllerAsyncClient: The constructed client.
         """
-        return ServiceControllerClient.from_service_account_info.__func__(ServiceControllerAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ServiceControllerClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ServiceControllerAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -134,7 +135,8 @@ class ServiceControllerAsyncClient:
         Returns:
             ServiceControllerAsyncClient: The constructed client.
         """
-        return ServiceControllerClient.from_service_account_file.__func__(ServiceControllerAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ServiceControllerClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ServiceControllerAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

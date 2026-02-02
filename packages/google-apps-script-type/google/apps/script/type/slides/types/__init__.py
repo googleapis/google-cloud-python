@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .slides_addon_manifest import SlidesAddOnManifest, SlidesExtensionPoint
+from .slides_addon_manifest import (
+    SlidesAddOnManifest,
+    SlidesExtensionPoint,
+)
 
 __all__ = (
     "SlidesAddOnManifest",

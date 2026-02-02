@@ -75,10 +75,9 @@ class GenerativeQuestionConfig(proto.Message):
         generated_question (str):
             Output only. The LLM generated question.
         final_question (str):
-            Optional. The question that will be used at
-            serving time. Question can have a max length of
-            300 bytes. When not populated,
-            generated_question should be used.
+            Optional. The question that will be used at serving time.
+            Question can have a max length of 300 bytes. When not
+            populated, generated_question should be used.
         example_values (MutableSequence[str]):
             Output only. Values that can be used to
             answer the question.

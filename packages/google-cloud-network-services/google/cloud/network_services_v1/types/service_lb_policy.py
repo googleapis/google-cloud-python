@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -58,9 +58,8 @@ class ServiceLbPolicy(proto.Message):
             Optional. A free-text description of the
             resource. Max length 1024 characters.
         load_balancing_algorithm (google.cloud.network_services_v1.types.ServiceLbPolicy.LoadBalancingAlgorithm):
-            Optional. The type of load balancing algorithm
-            to be used. The default behavior is
-            WATERFALL_BY_REGION.
+            Optional. The type of load balancing algorithm to be used.
+            The default behavior is WATERFALL_BY_REGION.
         auto_capacity_drain (google.cloud.network_services_v1.types.ServiceLbPolicy.AutoCapacityDrain):
             Optional. Configuration to automatically move
             traffic away for unhealthy IG/NEG for the
@@ -99,6 +98,7 @@ class ServiceLbPolicy(proto.Message):
                 closest to the client, before spilling over to
                 other zones.
         """
+
         LOAD_BALANCING_ALGORITHM_UNSPECIFIED = 0
         SPRAY_TO_WORLD = 3
         SPRAY_TO_REGION = 4
@@ -117,6 +117,7 @@ class ServiceLbPolicy(proto.Message):
                 Traffic for this service will be isolated at
                 the cloud region level.
         """
+
         ISOLATION_GRANULARITY_UNSPECIFIED = 0
         REGION = 1
 
@@ -136,6 +137,7 @@ class ServiceLbPolicy(proto.Message):
                 available in the same region as the load
                 balancer.
         """
+
         ISOLATION_MODE_UNSPECIFIED = 0
         NEAREST = 1
         STRICT = 2
@@ -377,14 +379,12 @@ class UpdateServiceLbPolicyRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the ServiceLbPolicy
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the ServiceLbPolicy resource by the update.
+            The fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         service_lb_policy (google.cloud.network_services_v1.types.ServiceLbPolicy):
             Required. Updated ServiceLbPolicy resource.
     """

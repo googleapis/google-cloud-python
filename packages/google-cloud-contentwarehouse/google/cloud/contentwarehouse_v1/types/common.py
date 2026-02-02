@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -41,8 +41,7 @@ class UpdateType(proto.Enum):
 
     Values:
         UPDATE_TYPE_UNSPECIFIED (0):
-            Defaults to full replace behavior, ie.
-            FULL_REPLACE.
+            Defaults to full replace behavior, ie. FULL_REPLACE.
         UPDATE_TYPE_REPLACE (1):
             Fully replace all the fields (including
             previously linked raw document). Any field masks
@@ -62,6 +61,7 @@ class UpdateType(proto.Enum):
             merge them based on update mask and merge fields
             options.
     """
+
     UPDATE_TYPE_UNSPECIFIED = 0
     UPDATE_TYPE_REPLACE = 1
     UPDATE_TYPE_MERGE = 2
@@ -83,6 +83,7 @@ class DatabaseType(proto.Enum):
         DB_CLOUD_SQL_POSTGRES (2):
             Cloud Sql with a Postgres Sql instance
     """
+
     DB_UNKNOWN = 0
     DB_INFRA_SPANNER = 1
     DB_CLOUD_SQL_POSTGRES = 2
@@ -105,6 +106,7 @@ class AccessControlMode(proto.Enum):
             Document level access control using Google
             Cloud Identity.
     """
+
     ACL_MODE_UNKNOWN = 0
     ACL_MODE_UNIVERSAL_ACCESS = 1
     ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID = 2
@@ -128,6 +130,7 @@ class DocumentCreatorDefaultRole(proto.Enum):
             Document Viewer, same as
             contentwarehouse.googleapis.com/documentViewer.
     """
+
     DOCUMENT_CREATOR_DEFAULT_ROLE_UNSPECIFIED = 0
     DOCUMENT_ADMIN = 1
     DOCUMENT_EDITOR = 2
@@ -242,18 +245,16 @@ class MergeFieldsOptions(proto.Message):
 
             This field is a member of `oneof`_ ``_replace_message_fields``.
         replace_repeated_fields (bool):
-            When merging repeated fields, the default
-            behavior is to append entries from the source
-            repeated field to the destination repeated
-            field. If you instead want to keep only the
-            entries from the source repeated field, set this
-            flag to true.
+            When merging repeated fields, the default behavior is to
+            append entries from the source repeated field to the
+            destination repeated field. If you instead want to keep only
+            the entries from the source repeated field, set this flag to
+            true.
 
-            If you want to replace a repeated field within a
-            message field on the destination message, you
-            must set both replace_repeated_fields and
-            replace_message_fields to true, otherwise the
-            repeated fields will be appended.
+            If you want to replace a repeated field within a message
+            field on the destination message, you must set both
+            replace_repeated_fields and replace_message_fields to true,
+            otherwise the repeated fields will be appended.
 
             This field is a member of `oneof`_ ``_replace_repeated_fields``.
     """

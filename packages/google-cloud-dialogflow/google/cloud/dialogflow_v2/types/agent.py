@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -75,10 +75,10 @@ class Agent(proto.Message):
             The maximum length is 500 characters. If
             exceeded, the request is rejected.
         avatar_uri (str):
-            Optional. The URI of the agent's avatar.
-            Avatars are used throughout the Dialogflow
-            console and in the self-hosted [Web
-            Demo](https://cloud.google.com/dialogflow/docs/integrations/web-demo)
+            Optional. The URI of the agent's avatar. Avatars are used
+            throughout the Dialogflow console and in the self-hosted
+            `Web
+            Demo <https://cloud.google.com/dialogflow/docs/integrations/web-demo>`__
             integration.
         enable_logging (bool):
             Optional. Determines whether this agent
@@ -106,8 +106,8 @@ class Agent(proto.Message):
             bots connectors and webhook calls will follow
             the specified API version.
         tier (google.cloud.dialogflow_v2.types.Agent.Tier):
-            Optional. The agent tier. If not specified,
-            TIER_STANDARD is assumed.
+            Optional. The agent tier. If not specified, TIER_STANDARD is
+            assumed.
     """
 
     class MatchMode(proto.Enum):
@@ -126,6 +126,7 @@ class Agent(proto.Message):
                 examples in intents, especially the ones using
                 @sys.any or very large custom entities.
         """
+
         MATCH_MODE_UNSPECIFIED = 0
         MATCH_MODE_HYBRID = 1
         MATCH_MODE_ML_ONLY = 2
@@ -143,6 +144,7 @@ class Agent(proto.Message):
             API_VERSION_V2_BETA_1 (3):
                 V2beta1 API.
         """
+
         API_VERSION_UNSPECIFIED = 0
         API_VERSION_V1 = 1
         API_VERSION_V2 = 2
@@ -162,9 +164,10 @@ class Agent(proto.Message):
                 Essentials Edition, previously known as
                 Enterprise Essential Edition.
             TIER_ENTERPRISE_PLUS (3):
-                Essentials Edition (same as TIER_ENTERPRISE),
-                previously known as Enterprise Plus Edition.
+                Essentials Edition (same as TIER_ENTERPRISE), previously
+                known as Enterprise Plus Edition.
         """
+
         TIER_UNSPECIFIED = 0
         TIER_STANDARD = 1
         TIER_ENTERPRISE = 2
@@ -292,8 +295,8 @@ class SearchAgentsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request.
+            The next_page_token value returned from a previous list
+            request.
     """
 
     parent: str = proto.Field(
@@ -316,9 +319,8 @@ class SearchAgentsResponse(proto.Message):
 
     Attributes:
         agents (MutableSequence[google.cloud.dialogflow_v2.types.Agent]):
-            The list of agents. There will be a maximum
-            number of items returned based on the page_size
-            field in the request.
+            The list of agents. There will be a maximum number of items
+            returned based on the page_size field in the request.
         next_page_token (str):
             Token to retrieve the next page of results,
             or empty if there are no more results in the
@@ -440,16 +442,14 @@ class ImportAgentRequest(proto.Message):
             Required. The project that the agent to import is associated
             with. Format: ``projects/<Project ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file
-            containing the agent to import. Note: The URI
-            must start with "gs://".
+            The URI to a Google Cloud Storage file containing the agent
+            to import. Note: The URI must start with "gs://".
 
-            Dialogflow performs a read operation for the
-            Cloud Storage object on the caller's behalf, so
-            your request authentication must have read
-            permissions for the object. For more
-            information, see [Dialogflow access
-            control](https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
@@ -490,16 +490,14 @@ class RestoreAgentRequest(proto.Message):
             Required. The project that the agent to restore is
             associated with. Format: ``projects/<Project ID>``.
         agent_uri (str):
-            The URI to a Google Cloud Storage file
-            containing the agent to restore. Note: The URI
-            must start with "gs://".
+            The URI to a Google Cloud Storage file containing the agent
+            to restore. Note: The URI must start with "gs://".
 
-            Dialogflow performs a read operation for the
-            Cloud Storage object on the caller's behalf, so
-            your request authentication must have read
-            permissions for the object. For more
-            information, see [Dialogflow access
-            control](https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage).
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
 
             This field is a member of `oneof`_ ``agent``.
         agent_content (bytes):
@@ -533,12 +531,12 @@ class GetValidationResultRequest(proto.Message):
             Required. The project that the agent is associated with.
             Format: ``projects/<Project ID>``.
         language_code (str):
-            Optional. The language for which you want a
-            validation result. If not specified, the agent's
-            default language is used. [Many
-            languages](https://cloud.google.com/dialogflow/docs/reference/language)
-            are supported. Note: languages must be enabled
-            in the agent before they can be used.
+            Optional. The language for which you want a validation
+            result. If not specified, the agent's default language is
+            used. `Many
+            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported. Note: languages must be enabled in the agent
+            before they can be used.
     """
 
     parent: str = proto.Field(

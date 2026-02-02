@@ -40,9 +40,7 @@ async def sample_create_generator_evaluation():
 
     # Initialize request argument(s)
     generator_evaluation = dialogflow_v2beta1.GeneratorEvaluation()
-    generator_evaluation.generator_evaluation_config.input_data_config.input_data_source_type = (
-        "INSIGHTS_CONVERSATIONS"
-    )
+    generator_evaluation.generator_evaluation_config.input_data_config.input_data_source_type = "INSIGHTS_CONVERSATIONS"
     generator_evaluation.generator_evaluation_config.output_gcs_bucket_path = (
         "output_gcs_bucket_path_value"
     )

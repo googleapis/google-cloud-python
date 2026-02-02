@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.lfp.v1beta",
@@ -54,8 +54,8 @@ class LfpSale(proto.Message):
             **Note**: if the merchant sells the same product new and
             used, they should have different IDs.
         region_code (str):
-            Required. The [CLDR territory
-            code](https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml)
+            Required. The `CLDR territory
+            code <https://github.com/unicode-org/cldr/blob/latest/common/main/en.xml>`__
             for the country where the product is sold.
         content_language (str):
             Required. The two-letter ISO 639-1 language

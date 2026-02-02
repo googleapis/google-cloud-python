@@ -17,25 +17,27 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service
 
@@ -678,11 +680,10 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
     ]:
         r"""Return a callable for the get api spec contents method over gRPC.
 
-        Returns the contents of a specified spec.
-        If specs are stored with GZip compression, the default
-        behavior is to return the spec uncompressed (the
-        mime_type response field indicates the exact format
-        returned).
+        Returns the contents of a specified spec. If specs are stored
+        with GZip compression, the default behavior is to return the
+        spec uncompressed (the mime_type response field indicates the
+        exact format returned).
 
         Returns:
             Callable[[~.GetApiSpecContentsRequest],
@@ -1071,12 +1072,12 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "tag_api_deployment_revision" not in self._stubs:
-            self._stubs[
-                "tag_api_deployment_revision"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apigeeregistry.v1.Registry/TagApiDeploymentRevision",
-                request_serializer=registry_service.TagApiDeploymentRevisionRequest.serialize,
-                response_deserializer=registry_models.ApiDeployment.deserialize,
+            self._stubs["tag_api_deployment_revision"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apigeeregistry.v1.Registry/TagApiDeploymentRevision",
+                    request_serializer=registry_service.TagApiDeploymentRevisionRequest.serialize,
+                    response_deserializer=registry_models.ApiDeployment.deserialize,
+                )
             )
         return self._stubs["tag_api_deployment_revision"]
 
@@ -1104,12 +1105,12 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_api_deployment_revisions" not in self._stubs:
-            self._stubs[
-                "list_api_deployment_revisions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apigeeregistry.v1.Registry/ListApiDeploymentRevisions",
-                request_serializer=registry_service.ListApiDeploymentRevisionsRequest.serialize,
-                response_deserializer=registry_service.ListApiDeploymentRevisionsResponse.deserialize,
+            self._stubs["list_api_deployment_revisions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apigeeregistry.v1.Registry/ListApiDeploymentRevisions",
+                    request_serializer=registry_service.ListApiDeploymentRevisionsRequest.serialize,
+                    response_deserializer=registry_service.ListApiDeploymentRevisionsResponse.deserialize,
+                )
             )
         return self._stubs["list_api_deployment_revisions"]
 
@@ -1166,12 +1167,12 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_api_deployment_revision" not in self._stubs:
-            self._stubs[
-                "delete_api_deployment_revision"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apigeeregistry.v1.Registry/DeleteApiDeploymentRevision",
-                request_serializer=registry_service.DeleteApiDeploymentRevisionRequest.serialize,
-                response_deserializer=registry_models.ApiDeployment.deserialize,
+            self._stubs["delete_api_deployment_revision"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apigeeregistry.v1.Registry/DeleteApiDeploymentRevision",
+                    request_serializer=registry_service.DeleteApiDeploymentRevisionRequest.serialize,
+                    response_deserializer=registry_models.ApiDeployment.deserialize,
+                )
             )
         return self._stubs["delete_api_deployment_revision"]
 
@@ -1240,11 +1241,10 @@ class RegistryGrpcAsyncIOTransport(RegistryTransport):
     ]:
         r"""Return a callable for the get artifact contents method over gRPC.
 
-        Returns the contents of a specified artifact.
-        If artifacts are stored with GZip compression, the
-        default behavior is to return the artifact uncompressed
-        (the mime_type response field indicates the exact format
-        returned).
+        Returns the contents of a specified artifact. If artifacts are
+        stored with GZip compression, the default behavior is to return
+        the artifact uncompressed (the mime_type response field
+        indicates the exact format returned).
 
         Returns:
             Callable[[~.GetArtifactContentsRequest],

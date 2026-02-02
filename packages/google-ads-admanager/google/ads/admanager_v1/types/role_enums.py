@@ -44,6 +44,7 @@ class RoleStatusEnum(proto.Message):
             INACTIVE (2):
                 Role is inactive.
         """
+
         ROLE_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

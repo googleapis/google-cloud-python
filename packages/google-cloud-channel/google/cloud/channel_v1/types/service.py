@@ -17,20 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.channel_v1.types import billing_accounts, common, repricing
 from google.cloud.channel_v1.types import (
     channel_partner_links as gcc_channel_partner_links,
 )
-from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
-from google.cloud.channel_v1.types import billing_accounts
-from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import customers as gcc_customers
+from google.cloud.channel_v1.types import entitlement_changes as gcc_entitlement_changes
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
 from google.cloud.channel_v1.types import offers as gcc_offers
 from google.cloud.channel_v1.types import products as gcc_products
-from google.cloud.channel_v1.types import repricing
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",
@@ -123,8 +121,8 @@ class CheckCloudIdentityAccountsExistRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The reseller account's resource name.
-            Parent uses the format: accounts/{account_id}
+            Required. The reseller account's resource name. Parent uses
+            the format: accounts/{account_id}
         domain (str):
             Required. Domain to fetch for Cloud Identity
             account customers, including domain and team
@@ -163,10 +161,8 @@ class CloudIdentityCustomerAccount(proto.Message):
             Services partner (with active subscriptions or
             purchase consents).
         customer_name (str):
-            If owned = true, the name of the customer that
-            owns the Cloud Identity account.
-            Customer_name uses the format:
-
+            If owned = true, the name of the customer that owns the
+            Cloud Identity account. Customer_name uses the format:
             accounts/{account_id}/customers/{customer_id}
         customer_cloud_identity_id (str):
             If existing = true, the Cloud Identity ID of
@@ -215,12 +211,12 @@ class CheckCloudIdentityAccountsExistResponse(proto.Message):
             the domain.
     """
 
-    cloud_identity_accounts: MutableSequence[
-        "CloudIdentityCustomerAccount"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CloudIdentityCustomerAccount",
+    cloud_identity_accounts: MutableSequence["CloudIdentityCustomerAccount"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CloudIdentityCustomerAccount",
+        )
     )
 
 
@@ -230,9 +226,9 @@ class ListCustomersRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller
-            account to list customers from. Parent uses the
-            format: accounts/{account_id}.
+            Required. The resource name of the reseller account to list
+            customers from. Parent uses the format:
+            accounts/{account_id}.
         page_size (int):
             Optional. The maximum number of customers to
             return. The service may return fewer than this
@@ -305,8 +301,8 @@ class GetCustomerRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the customer to
-            retrieve. Name uses the format:
+            Required. The resource name of the customer to retrieve.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}
     """
 
@@ -322,9 +318,9 @@ class CreateCustomerRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of reseller account
-            in which to create the customer. Parent uses the
-            format: accounts/{account_id}
+            Required. The resource name of reseller account in which to
+            create the customer. Parent uses the format:
+            accounts/{account_id}
         customer (google.cloud.channel_v1.types.Customer):
             Required. The customer to create.
     """
@@ -405,9 +401,8 @@ class ImportCustomerRequest(proto.Message):
 
             This field is a member of `oneof`_ ``customer_identity``.
         parent (str):
-            Required. The resource name of the reseller's
-            account. Parent takes the format:
-            accounts/{account_id} or
+            Required. The resource name of the reseller's account.
+            Parent takes the format: accounts/{account_id} or
             accounts/{account_id}/channelPartnerLinks/{channel_partner_id}
         auth_token (str):
             Optional. The super admin of the resold
@@ -429,9 +424,8 @@ class ImportCustomerRequest(proto.Message):
             2-tier transfer scenarios and can be provided
             via the request Parent binding as well.
         customer (str):
-            Optional. Specifies the customer that will
-            receive imported Cloud Identity information.
-            Format:
+            Optional. Specifies the customer that will receive imported
+            Cloud Identity information. Format:
             accounts/{account_id}/customers/{customer_id}
     """
 
@@ -478,8 +472,7 @@ class ProvisionCloudIdentityRequest(proto.Message):
 
     Attributes:
         customer (str):
-            Required. Resource name of the customer.
-            Format:
+            Required. Resource name of the customer. Format:
             accounts/{account_id}/customers/{customer_id}
         cloud_identity_info (google.cloud.channel_v1.types.CloudIdentityInfo):
             CloudIdentity-specific customer information.
@@ -516,9 +509,8 @@ class ListEntitlementsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller's
-            customer account to list entitlements for.
-            Parent uses the format:
+            Required. The resource name of the reseller's customer
+            account to list entitlements for. Parent uses the format:
             accounts/{account_id}/customers/{customer_id}
         page_size (int):
             Optional. Requested page size. Server might
@@ -594,16 +586,15 @@ class ListTransferableSkusRequest(proto.Message):
 
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         customer_name (str):
-            A reseller is required to create a customer and
-            use the resource name of the created customer
-            here. Customer_name uses the format:
-
+            A reseller is required to create a customer and use the
+            resource name of the created customer here. Customer_name
+            uses the format:
             accounts/{account_id}/customers/{customer_id}
 
             This field is a member of `oneof`_ ``transferred_customer_identity``.
         parent (str):
-            Required. The reseller account's resource name.
-            Parent uses the format: accounts/{account_id}
+            Required. The reseller account's resource name. Parent uses
+            the format: accounts/{account_id}
         page_size (int):
             The requested page size. Server might return
             fewer results than requested. If unspecified,
@@ -683,12 +674,12 @@ class ListTransferableSkusResponse(proto.Message):
     def raw_page(self):
         return self
 
-    transferable_skus: MutableSequence[
-        gcc_entitlements.TransferableSku
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_entitlements.TransferableSku,
+    transferable_skus: MutableSequence[gcc_entitlements.TransferableSku] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_entitlements.TransferableSku,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -740,13 +731,11 @@ class ListTransferableOffersRequest(proto.Message):
             the corresponding language code, if specified.
             The default value is "en-US".
         billing_account (str):
-            Optional. The Billing Account to look up Offers
-            for. Format:
+            Optional. The Billing Account to look up Offers for. Format:
             accounts/{account_id}/billingAccounts/{billing_account_id}.
 
-            This field is only relevant for multi-currency
-            accounts. It should be left empty for single
-            currency accounts.
+            This field is only relevant for multi-currency accounts. It
+            should be left empty for single currency accounts.
     """
 
     cloud_identity_id: str = proto.Field(
@@ -847,9 +836,8 @@ class GetEntitlementRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the entitlement
-            to retrieve. Name uses the format:
-
+            Required. The resource name of the entitlement to retrieve.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     """
 
@@ -865,9 +853,9 @@ class ListChannelPartnerLinksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller
-            account for listing channel partner links.
-            Parent uses the format: accounts/{account_id}
+            Required. The resource name of the reseller account for
+            listing channel partner links. Parent uses the format:
+            accounts/{account_id}
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -941,11 +929,10 @@ class GetChannelPartnerLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the channel
-            partner link to retrieve. Name uses the format:
-            accounts/{account_id}/channelPartnerLinks/{id}
-            where {id} is the Cloud Identity ID of the
-            partner.
+            Required. The resource name of the channel partner link to
+            retrieve. Name uses the format:
+            accounts/{account_id}/channelPartnerLinks/{id} where {id} is
+            the Cloud Identity ID of the partner.
         view (google.cloud.channel_v1.types.ChannelPartnerLinkView):
             Optional. The level of granularity the
             ChannelPartnerLink will display.
@@ -968,14 +955,13 @@ class CreateChannelPartnerLinkRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Create a channel partner link for the
-            provided reseller account's resource name.
-            Parent uses the format: accounts/{account_id}
+            Required. Create a channel partner link for the provided
+            reseller account's resource name. Parent uses the format:
+            accounts/{account_id}
         channel_partner_link (google.cloud.channel_v1.types.ChannelPartnerLink):
-            Required. The channel partner link to create.
-            Either
-            channel_partner_link.reseller_cloud_identity_id
-            or domain can be used to create a link.
+            Required. The channel partner link to create. Either
+            channel_partner_link.reseller_cloud_identity_id or domain
+            can be used to create a link.
     """
 
     parent: str = proto.Field(
@@ -995,19 +981,17 @@ class UpdateChannelPartnerLinkRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the channel
-            partner link to cancel. Name uses the format:
-            accounts/{account_id}/channelPartnerLinks/{id}
-            where {id} is the Cloud Identity ID of the
-            partner.
+            Required. The resource name of the channel partner link to
+            cancel. Name uses the format:
+            accounts/{account_id}/channelPartnerLinks/{id} where {id} is
+            the Cloud Identity ID of the partner.
         channel_partner_link (google.cloud.channel_v1.types.ChannelPartnerLink):
-            Required. The channel partner link to update.
-            Only channel_partner_link.link_state is allowed
-            for updates.
+            Required. The channel partner link to update. Only
+            channel_partner_link.link_state is allowed for updates.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Required. The update mask that applies to the
-            resource. The only allowable value for an update
-            mask is channel_partner_link.link_state.
+            Required. The update mask that applies to the resource. The
+            only allowable value for an update mask is
+            channel_partner_link.link_state.
     """
 
     name: str = proto.Field(
@@ -1032,9 +1016,8 @@ class GetCustomerRepricingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the
-            CustomerRepricingConfig. Format:
-
+            Required. The resource name of the CustomerRepricingConfig.
+            Format:
             accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
     """
 
@@ -1050,11 +1033,10 @@ class ListCustomerRepricingConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the customer.
-            Parent uses the format:
-            accounts/{account_id}/customers/{customer_id}.
-            Supports accounts/{account_id}/customers/- to
-            retrieve configs for all customers.
+            Required. The resource name of the customer. Parent uses the
+            format: accounts/{account_id}/customers/{customer_id}.
+            Supports accounts/{account_id}/customers/- to retrieve
+            configs for all customers.
         page_size (int):
             Optional. The maximum number of repricing
             configs to return. The service may return fewer
@@ -1115,12 +1097,12 @@ class ListCustomerRepricingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    customer_repricing_configs: MutableSequence[
-        repricing.CustomerRepricingConfig
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=repricing.CustomerRepricingConfig,
+    customer_repricing_configs: MutableSequence[repricing.CustomerRepricingConfig] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=repricing.CustomerRepricingConfig,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1134,10 +1116,8 @@ class CreateCustomerRepricingConfigRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the customer that
-            will receive this repricing config. Parent uses
-            the format:
-
+            Required. The resource name of the customer that will
+            receive this repricing config. Parent uses the format:
             accounts/{account_id}/customers/{customer_id}
         customer_repricing_config (google.cloud.channel_v1.types.CustomerRepricingConfig):
             Required. The CustomerRepricingConfig object
@@ -1178,9 +1158,8 @@ class DeleteCustomerRepricingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the customer
-            repricing config rule to delete. Format:
-
+            Required. The resource name of the customer repricing config
+            rule to delete. Format:
             accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
     """
 
@@ -1198,7 +1177,6 @@ class GetChannelPartnerRepricingConfigRequest(proto.Message):
         name (str):
             Required. The resource name of the
             ChannelPartnerRepricingConfig Format:
-
             accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
     """
 
@@ -1302,10 +1280,8 @@ class CreateChannelPartnerRepricingConfigRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the
-            ChannelPartner that will receive the repricing
-            config. Parent uses the format:
-
+            Required. The resource name of the ChannelPartner that will
+            receive the repricing config. Parent uses the format:
             accounts/{account_id}/channelPartnerLinks/{channel_partner_id}
         channel_partner_repricing_config (google.cloud.channel_v1.types.ChannelPartnerRepricingConfig):
             Required. The ChannelPartnerRepricingConfig
@@ -1401,8 +1377,7 @@ class ListSkuGroupBillableSkusRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Resource name of the SKU group.
-            Format:
+            Required. Resource name of the SKU group. Format:
             accounts/{account}/skuGroups/{sku_group}.
         page_size (int):
             Optional. The maximum number of SKUs to
@@ -1494,10 +1469,7 @@ class SkuGroup(proto.Message):
     Attributes:
         name (str):
             Resource name of SKU group. Format:
-
-            accounts/{account}/skuGroups/{sku_group}.
-            Example:
-
+            accounts/{account}/skuGroups/{sku_group}. Example:
             "accounts/C01234/skuGroups/3d50fd57-3157-4577-a5a9-a219b8490041".
         display_name (str):
             Unique human readable identifier for the SKU
@@ -1561,11 +1533,9 @@ class CreateEntitlementRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller's
-            customer account in which to create the
-            entitlement. Parent uses the format:
-
-            accounts/{account_id}/customers/{customer_id}
+            Required. The resource name of the reseller's customer
+            account in which to create the entitlement. Parent uses the
+            format: accounts/{account_id}/customers/{customer_id}
         entitlement (google.cloud.channel_v1.types.Entitlement):
             Required. The entitlement to create.
         request_id (str):
@@ -1606,10 +1576,9 @@ class TransferEntitlementsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller's
-            customer account that will receive transferred
-            entitlements. Parent uses the format:
-
+            Required. The resource name of the reseller's customer
+            account that will receive transferred entitlements. Parent
+            uses the format:
             accounts/{account_id}/customers/{customer_id}
         entitlements (MutableSequence[google.cloud.channel_v1.types.Entitlement]):
             Required. The new entitlements to create or
@@ -1681,11 +1650,9 @@ class TransferEntitlementsToGoogleRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller's
-            customer account where the entitlements transfer
-            from. Parent uses the format:
-
-            accounts/{account_id}/customers/{customer_id}
+            Required. The resource name of the reseller's customer
+            account where the entitlements transfer from. Parent uses
+            the format: accounts/{account_id}/customers/{customer_id}
         entitlements (MutableSequence[google.cloud.channel_v1.types.Entitlement]):
             Required. The entitlements to transfer to
             Google.
@@ -1727,9 +1694,8 @@ class ChangeParametersRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the entitlement to update.
-            Name uses the format:
-
+            Required. The name of the entitlement to update. Name uses
+            the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         parameters (MutableSequence[google.cloud.channel_v1.types.Parameter]):
             Required. Entitlement parameters to update. You can only
@@ -1783,9 +1749,8 @@ class ChangeRenewalSettingsRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the entitlement to update.
-            Name uses the format:
-
+            Required. The name of the entitlement to update. Name uses
+            the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         renewal_settings (google.cloud.channel_v1.types.RenewalSettings):
             Required. New renewal settings.
@@ -1827,13 +1792,12 @@ class ChangeOfferRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the entitlement
-            to update. Name uses the format:
-
+            Required. The resource name of the entitlement to update.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         offer (str):
-            Required. New Offer.
-            Format: accounts/{account_id}/offers/{offer_id}.
+            Required. New Offer. Format:
+            accounts/{account_id}/offers/{offer_id}.
         parameters (MutableSequence[google.cloud.channel_v1.types.Parameter]):
             Optional. Parameters needed to purchase the Offer. To view
             the available Parameters refer to the
@@ -1910,9 +1874,8 @@ class StartPaidServiceRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the entitlement to start a
-            paid service for. Name uses the format:
-
+            Required. The name of the entitlement to start a paid
+            service for. Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         request_id (str):
             Optional. You can specify an optional unique request ID, and
@@ -1947,9 +1910,8 @@ class CancelEntitlementRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the entitlement
-            to cancel. Name uses the format:
-
+            Required. The resource name of the entitlement to cancel.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         request_id (str):
             Optional. You can specify an optional unique request ID, and
@@ -1984,9 +1946,8 @@ class SuspendEntitlementRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the entitlement
-            to suspend. Name uses the format:
-
+            Required. The resource name of the entitlement to suspend.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         request_id (str):
             Optional. You can specify an optional unique request ID, and
@@ -2021,9 +1982,8 @@ class ActivateEntitlementRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the entitlement
-            to activate. Name uses the format:
-
+            Required. The resource name of the entitlement to activate.
+            Name uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         request_id (str):
             Optional. You can specify an optional unique request ID, and
@@ -2057,10 +2017,8 @@ class LookupOfferRequest(proto.Message):
 
     Attributes:
         entitlement (str):
-            Required. The resource name of the entitlement
-            to retrieve the Offer. Entitlement uses the
-            format:
-
+            Required. The resource name of the entitlement to retrieve
+            the Offer. Entitlement uses the format:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
     """
 
@@ -2075,8 +2033,8 @@ class ListProductsRequest(proto.Message):
 
     Attributes:
         account (str):
-            Required. The resource name of the reseller
-            account. Format: accounts/{account_id}.
+            Required. The resource name of the reseller account. Format:
+            accounts/{account_id}.
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -2141,13 +2099,12 @@ class ListSkusRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the Product to
-            list SKUs for. Parent uses the format:
-            products/{product_id}. Supports products/- to
-            retrieve SKUs for all products.
+            Required. The resource name of the Product to list SKUs for.
+            Parent uses the format: products/{product_id}. Supports
+            products/- to retrieve SKUs for all products.
         account (str):
-            Required. Resource name of the reseller.
-            Format: accounts/{account_id}.
+            Required. Resource name of the reseller. Format:
+            accounts/{account_id}.
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -2216,9 +2173,9 @@ class ListOffersRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the reseller
-            account from which to list Offers. Parent uses
-            the format: accounts/{account_id}.
+            Required. The resource name of the reseller account from
+            which to list Offers. Parent uses the format:
+            accounts/{account_id}.
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -2241,11 +2198,10 @@ class ListOffersRequest(proto.Message):
             the corresponding language code, if specified.
             The default value is "en-US".
         show_future_offers (bool):
-            Optional. A boolean flag that determines if a
-            response returns future offers 30 days from now.
-            If the show_future_offers is true, the response
-            will only contain offers that are scheduled to
-            be available 30 days from now.
+            Optional. A boolean flag that determines if a response
+            returns future offers 30 days from now. If the
+            show_future_offers is true, the response will only contain
+            offers that are scheduled to be available 30 days from now.
     """
 
     parent: str = proto.Field(
@@ -2324,9 +2280,8 @@ class ListPurchasableSkusRequest(proto.Message):
 
             This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
-            Required. The resource name of the customer to
-            list SKUs for. Format:
-            accounts/{account_id}/customers/{customer_id}.
+            Required. The resource name of the customer to list SKUs
+            for. Format: accounts/{account_id}/customers/{customer_id}.
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -2349,10 +2304,9 @@ class ListPurchasableSkusRequest(proto.Message):
 
         Attributes:
             product (str):
-                Required. List SKUs belonging to this Product.
-                Format: products/{product_id}.
-                Supports products/- to retrieve SKUs for all
-                products.
+                Required. List SKUs belonging to this Product. Format:
+                products/{product_id}. Supports products/- to retrieve SKUs
+                for all products.
         """
 
         product: str = proto.Field(
@@ -2367,9 +2321,7 @@ class ListPurchasableSkusRequest(proto.Message):
 
         Attributes:
             entitlement (str):
-                Required. Resource name of the entitlement.
-                Format:
-
+                Required. Resource name of the entitlement. Format:
                 accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
             change_type (google.cloud.channel_v1.types.ListPurchasableSkusRequest.ChangeOfferPurchase.ChangeType):
                 Required. Change Type for the entitlement.
@@ -2387,6 +2339,7 @@ class ListPurchasableSkusRequest(proto.Message):
                     SKU is a downgrade on the current
                     entitlement.
             """
+
             CHANGE_TYPE_UNSPECIFIED = 0
             UPGRADE = 1
             DOWNGRADE = 2
@@ -2494,9 +2447,8 @@ class ListPurchasableOffersRequest(proto.Message):
 
             This field is a member of `oneof`_ ``purchase_option``.
         customer (str):
-            Required. The resource name of the customer to
-            list Offers for. Format:
-            accounts/{account_id}/customers/{customer_id}.
+            Required. The resource name of the customer to list Offers
+            for. Format: accounts/{account_id}/customers/{customer_id}.
         page_size (int):
             Optional. Requested page size. Server might
             return fewer results than requested. If
@@ -2518,12 +2470,11 @@ class ListPurchasableOffersRequest(proto.Message):
 
         Attributes:
             sku (str):
-                Required. SKU that the result should be
-                restricted to. Format:
-                products/{product_id}/skus/{sku_id}.
+                Required. SKU that the result should be restricted to.
+                Format: products/{product_id}/skus/{sku_id}.
             billing_account (str):
-                Optional. Billing account that the result should
-                be restricted to. Format:
+                Optional. Billing account that the result should be
+                restricted to. Format:
                 accounts/{account_id}/billingAccounts/{billing_account_id}.
         """
 
@@ -2541,27 +2492,20 @@ class ListPurchasableOffersRequest(proto.Message):
 
         Attributes:
             entitlement (str):
-                Required. Resource name of the entitlement.
-                Format:
-
+                Required. Resource name of the entitlement. Format:
                 accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
             new_sku (str):
-                Optional. Resource name of the new target SKU.
-                Provide this SKU when upgrading or downgrading
-                an entitlement. Format:
-
+                Optional. Resource name of the new target SKU. Provide this
+                SKU when upgrading or downgrading an entitlement. Format:
                 products/{product_id}/skus/{sku_id}
             billing_account (str):
-                Optional. Resource name of the new target
-                Billing Account. Provide this Billing Account
-                when setting up billing for a trial
-                subscription. Format:
-
+                Optional. Resource name of the new target Billing Account.
+                Provide this Billing Account when setting up billing for a
+                trial subscription. Format:
                 accounts/{account_id}/billingAccounts/{billing_account_id}.
 
-                This field is only relevant for multi-currency
-                accounts. It should be left empty for single
-                currency accounts.
+                This field is only relevant for multi-currency accounts. It
+                should be left empty for single currency accounts.
         """
 
         entitlement: str = proto.Field(
@@ -2663,13 +2607,13 @@ class QueryEligibleBillingAccountsRequest(proto.Message):
 
     Attributes:
         customer (str):
-            Required. The resource name of the customer to
-            list eligible billing accounts for. Format:
+            Required. The resource name of the customer to list eligible
+            billing accounts for. Format:
             accounts/{account_id}/customers/{customer_id}.
         skus (MutableSequence[str]):
-            Required. List of SKUs to list eligible billing
-            accounts for. At least one SKU is required.
-            Format: products/{product_id}/skus/{sku_id}.
+            Required. List of SKUs to list eligible billing accounts
+            for. At least one SKU is required. Format:
+            products/{product_id}/skus/{sku_id}.
     """
 
     customer: str = proto.Field(
@@ -2687,11 +2631,11 @@ class QueryEligibleBillingAccountsResponse(proto.Message):
 
     Attributes:
         sku_purchase_groups (MutableSequence[google.cloud.channel_v1.types.SkuPurchaseGroup]):
-            List of SKU purchase groups where each group
-            represents a set of SKUs that must be purchased
-            using the same billing account. Each SKU from
-            [QueryEligibleBillingAccountsRequest.skus] will
-            appear in exactly one SKU group.
+            List of SKU purchase groups where each group represents a
+            set of SKUs that must be purchased using the same billing
+            account. Each SKU from
+            [QueryEligibleBillingAccountsRequest.skus] will appear in
+            exactly one SKU group.
     """
 
     sku_purchase_groups: MutableSequence["SkuPurchaseGroup"] = proto.RepeatedField(
@@ -2707,8 +2651,7 @@ class SkuPurchaseGroup(proto.Message):
 
     Attributes:
         skus (MutableSequence[str]):
-            Resource names of the SKUs included in this
-            group. Format:
+            Resource names of the SKUs included in this group. Format:
             products/{product_id}/skus/{sku_id}.
         billing_account_purchase_infos (MutableSequence[google.cloud.channel_v1.types.BillingAccountPurchaseInfo]):
             List of billing accounts that are eligible to
@@ -2719,12 +2662,12 @@ class SkuPurchaseGroup(proto.Message):
         proto.STRING,
         number=1,
     )
-    billing_account_purchase_infos: MutableSequence[
-        "BillingAccountPurchaseInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="BillingAccountPurchaseInfo",
+    billing_account_purchase_infos: MutableSequence["BillingAccountPurchaseInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BillingAccountPurchaseInfo",
+        )
     )
 
 
@@ -2995,12 +2938,12 @@ class ListEntitlementChangesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entitlement_changes: MutableSequence[
-        gcc_entitlement_changes.EntitlementChange
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_entitlement_changes.EntitlementChange,
+    entitlement_changes: MutableSequence[gcc_entitlement_changes.EntitlementChange] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_entitlement_changes.EntitlementChange,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

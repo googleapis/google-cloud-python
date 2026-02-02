@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.websecurityscanner_v1beta import gapic_version as package_version
 
@@ -44,24 +44,22 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import pagers
-from google.cloud.websecurityscanner_v1beta.types import (
-    scan_run,
-    scan_run_error_trace,
-    scan_run_warning_trace,
-    web_security_scanner,
-)
 from google.cloud.websecurityscanner_v1beta.types import (
     crawled_url,
     finding,
     finding_addon,
     finding_type_stats,
+    scan_config,
+    scan_run,
+    scan_run_error_trace,
+    scan_run_warning_trace,
+    web_security_scanner,
 )
 from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_config
 
 from .client import WebSecurityScannerClient
 from .transports.base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
@@ -139,7 +137,8 @@ class WebSecurityScannerAsyncClient:
         Returns:
             WebSecurityScannerAsyncClient: The constructed client.
         """
-        return WebSecurityScannerClient.from_service_account_info.__func__(WebSecurityScannerAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = WebSecurityScannerClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(WebSecurityScannerAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -155,7 +154,8 @@ class WebSecurityScannerAsyncClient:
         Returns:
             WebSecurityScannerAsyncClient: The constructed client.
         """
-        return WebSecurityScannerClient.from_service_account_file.__func__(WebSecurityScannerAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = WebSecurityScannerClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(WebSecurityScannerAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -193,7 +193,9 @@ class WebSecurityScannerAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return WebSecurityScannerClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return WebSecurityScannerClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> WebSecurityScannerTransport:
@@ -1683,10 +1685,8 @@ class WebSecurityScannerAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             filter (:class:`str`):
-                Required. The filter expression. The
-                expression must be in the format:
-                <field> <operator> <value>. Supported
-                field: 'finding_type'.
+                Required. The filter expression. The expression must be
+                in the format: . Supported field: 'finding_type'.
                 Supported operator: '='.
 
                 This corresponds to the ``filter`` field

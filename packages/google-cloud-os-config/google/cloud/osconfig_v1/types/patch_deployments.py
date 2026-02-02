@@ -17,12 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.osconfig_v1.types import patch_jobs
@@ -49,12 +49,11 @@ __protobuf__ = proto.module(
 
 
 class PatchDeployment(proto.Message):
-    r"""Patch deployments are configurations that individual patch jobs
-    use to complete a patch. These configurations include instance
-    filter, package repository settings, and a schedule. For more
-    information about creating and managing patch deployments, see
-    [Scheduling patch
-    jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+    r"""Patch deployments are configurations that individual patch jobs use
+    to complete a patch. These configurations include instance filter,
+    package repository settings, and a schedule. For more information
+    about creating and managing patch deployments, see `Scheduling patch
+    jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -127,6 +126,7 @@ class PatchDeployment(proto.Message):
                 not generate Patch jobs. Requires user action to
                 move in and out from this state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
@@ -270,6 +270,7 @@ class RecurringSchedule(proto.Message):
                 Indicates that the frequency of recurrence
                 should be expressed in terms of days.
         """
+
         FREQUENCY_UNSPECIFIED = 0
         WEEKLY = 1
         MONTHLY = 2

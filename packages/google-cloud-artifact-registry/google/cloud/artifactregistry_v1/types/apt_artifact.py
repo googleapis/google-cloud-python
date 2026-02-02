@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -70,6 +70,7 @@ class AptArtifact(proto.Message):
             SOURCE (2):
                 Source package.
         """
+
         PACKAGE_TYPE_UNSPECIFIED = 0
         BINARY = 1
         SOURCE = 2
@@ -107,8 +108,7 @@ class ImportAptArtifactsGcsSource(proto.Message):
 
     Attributes:
         uris (MutableSequence[str]):
-            Cloud Storage paths URI (e.g.,
-            gs://my_bucket//my_object).
+            Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
         use_wildcards (bool):
             Supports URI wildcards for matching multiple
             objects from a single URI.

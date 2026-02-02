@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2.types import gcs
@@ -48,11 +48,10 @@ class ConversationInfo(proto.Message):
 
     Attributes:
         language_code (str):
-            Optional. The language code of the conversation
-            data within this dataset. See
-            https://cloud.google.com/apis/design/standard_fields
-            for more information. Supports all UTF-8
-            languages.
+            Optional. The language code of the conversation data within
+            this dataset. See
+            https://cloud.google.com/apis/design/standard_fields for
+            more information. Supports all UTF-8 languages.
     """
 
     language_code: str = proto.Field(
@@ -225,8 +224,8 @@ class ListConversationDatasetsRequest(proto.Message):
             datasets to return in a single page. By default
             100 and at most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(

@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -171,12 +171,12 @@ class TcpRoute(proto.Message):
                 disabled.
         """
 
-        destinations: MutableSequence[
-            "TcpRoute.RouteDestination"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TcpRoute.RouteDestination",
+        destinations: MutableSequence["TcpRoute.RouteDestination"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TcpRoute.RouteDestination",
+            )
         )
         original_destination: bool = proto.Field(
             proto.BOOL,
@@ -397,14 +397,12 @@ class UpdateTcpRouteRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the TcpRoute
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the TcpRoute resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         tcp_route (google.cloud.network_services_v1.types.TcpRoute):
             Required. Updated TcpRoute resource.
     """

@@ -69,6 +69,7 @@ class AiModel(proto.Message):
             FINE_TUNED_MODEL (4):
                 Fine tuned model.
         """
+
         DEPLOYMENT_PLATFORM_UNSPECIFIED = 0
         VERTEX_AI = 1
         GKE = 2

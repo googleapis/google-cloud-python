@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ai.generativelanguage_v1beta3.types import permission as gag_permission
@@ -81,8 +81,8 @@ class ListPermissionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource of the
-            permissions. Format: tunedModels/{tuned_model}
+            Required. The parent resource of the permissions. Format:
+            tunedModels/{tuned_model}
         page_size (int):
             Optional. The maximum number of ``Permission``\ s to return
             (per page). The service may return fewer permissions.

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -93,6 +93,7 @@ class Connector(proto.Message):
             UPDATING (5):
                 The connector is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

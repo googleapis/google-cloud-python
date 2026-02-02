@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -68,10 +68,9 @@ class Enrollment(proto.Message):
             messages. It matches the form
             projects/{project}/locations/{location}/messageBuses/{messageBus}.
         destination (str):
-            Required. Destination is the Pipeline that the
-            Enrollment is delivering to. It must point to
-            the full resource name of a Pipeline. Format:
-
+            Required. Destination is the Pipeline that the Enrollment is
+            delivering to. It must point to the full resource name of a
+            Pipeline. Format:
             "projects/{PROJECT_ID}/locations/{region}/pipelines/{PIPELINE_ID)".
     """
 

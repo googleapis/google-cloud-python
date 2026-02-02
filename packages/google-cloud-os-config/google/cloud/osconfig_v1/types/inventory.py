@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -46,6 +46,7 @@ class InventoryView(proto.Enum):
         FULL (2):
             Returns all fields.
     """
+
     INVENTORY_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -59,8 +60,8 @@ class Inventory(proto.Message):
     You can use this API resource to determine the inventory data of
     your VM.
 
-    For more information, see [Information provided by OS inventory
-    management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
+    For more information, see `Information provided by OS inventory
+    management <https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>`__.
 
     Attributes:
         name (str):
@@ -187,6 +188,7 @@ class Inventory(proto.Message):
                     result of the agent reporting inventory via the
                     reporting API.
             """
+
             ORIGIN_TYPE_UNSPECIFIED = 0
             INVENTORY_REPORT = 1
 
@@ -203,6 +205,7 @@ class Inventory(proto.Message):
                     This represents an update that is available
                     for a package.
             """
+
             TYPE_UNSPECIFIED = 0
             INSTALLED_PACKAGE = 1
             AVAILABLE_PACKAGE = 2
@@ -256,8 +259,8 @@ class Inventory(proto.Message):
 
         Attributes:
             yum_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
-                Yum package info.
-                For details about the yum package manager, see
+                Yum package info. For details about the yum package manager,
+                see
                 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
 
                 This field is a member of `oneof`_ ``details``.
@@ -268,9 +271,9 @@ class Inventory(proto.Message):
 
                 This field is a member of `oneof`_ ``details``.
             zypper_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
-                Details of a Zypper package.
-                For details about the Zypper package manager,
-                see https://en.opensuse.org/SDB:Zypper_manual.
+                Details of a Zypper package. For details about the Zypper
+                package manager, see
+                https://en.opensuse.org/SDB:Zypper_manual.
 
                 This field is a member of `oneof`_ ``details``.
             googet_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
@@ -280,9 +283,9 @@ class Inventory(proto.Message):
 
                 This field is a member of `oneof`_ ``details``.
             zypper_patch (google.cloud.osconfig_v1.types.Inventory.ZypperPatch):
-                Details of a Zypper patch.
-                For details about the Zypper package manager,
-                see https://en.opensuse.org/SDB:Zypper_manual.
+                Details of a Zypper patch. For details about the Zypper
+                package manager, see
+                https://en.opensuse.org/SDB:Zypper_manual.
 
                 This field is a member of `oneof`_ ``details``.
             wua_package (google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage):
@@ -537,8 +540,8 @@ class Inventory(proto.Message):
                 Unique identifier associated with a
                 particular QFE update.
             install_time (google.protobuf.timestamp_pb2.Timestamp):
-                Date that the QFE update was installed. Mapped
-                from installed_on field.
+                Date that the QFE update was installed. Mapped from
+                installed_on field.
         """
 
         caption: str = proto.Field(

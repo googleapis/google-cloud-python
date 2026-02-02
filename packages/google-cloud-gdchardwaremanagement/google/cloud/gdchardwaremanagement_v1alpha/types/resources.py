@@ -17,12 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
-from google.type import timeofday_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
+import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -67,6 +67,7 @@ class PowerSupply(proto.Enum):
         POWER_SUPPLY_DC (2):
             DC power supply.
     """
+
     POWER_SUPPLY_UNSPECIFIED = 0
     POWER_SUPPLY_AC = 1
     POWER_SUPPLY_DC = 2
@@ -85,6 +86,7 @@ class Entity(proto.Enum):
         VENDOR (3):
             Vendor.
     """
+
     ENTITY_UNSPECIFIED = 0
     GOOGLE = 1
     CUSTOMER = 2
@@ -107,10 +109,10 @@ class Order(proto.Message):
             Output only. Time when this order was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this order as
-            key value pairs. For more information about
-            labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this order as key value
+            pairs. For more information about labels, see `Create and
+            manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         state (google.cloud.gdchardwaremanagement_v1alpha.types.Order.State):
             Output only. State of this order. On order
             creation, state will be set to DRAFT.
@@ -126,8 +128,8 @@ class Order(proto.Message):
             motivation for this order. The length of this
             field must be <= 1000 characters.
         fulfillment_time (google.protobuf.timestamp_pb2.Timestamp):
-            Deprecated: Please use
-            customer_requested_installation_date instead.
+            Deprecated: Please use customer_requested_installation_date
+            instead.
         customer_requested_installation_date (google.type.date_pb2.Date):
             Optional. Customer requested installation
             date for this order.
@@ -219,6 +221,7 @@ class Order(proto.Message):
             CANCELLED (11):
                 Order has been cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         SUBMITTED = 2
@@ -246,6 +249,7 @@ class Order(proto.Message):
             UNPAID (2):
                 Not billed.
         """
+
         _pb_options = {"allow_alias": True}
         TYPE_UNSPECIFIED = 0
         PAID = 1
@@ -270,6 +274,7 @@ class Order(proto.Message):
                 Customer lab deployment that we support as
                 though it's prod.
         """
+
         DEPLOYMENT_TYPE_UNSPECIFIED = 0
         FULL_PRODUCTION = 1
         PROOF_OF_CONCEPT = 2
@@ -416,10 +421,10 @@ class Site(proto.Message):
             Output only. Time when this site was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this site as
-            key value pairs. For more information about
-            labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this site as key value
+            pairs. For more information about labels, see `Create and
+            manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         organization_contact (google.cloud.gdchardwaremanagement_v1alpha.types.OrganizationContact):
             Required. Contact information for this site.
         google_maps_pin_uri (str):
@@ -522,10 +527,10 @@ class HardwareGroup(proto.Message):
             Output only. Time when this hardware group
             was last updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this hardware
-            group as key value pairs. For more information
-            about labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this hardware group as key
+            value pairs. For more information about labels, see `Create
+            and manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         hardware_count (int):
             Required. Number of hardware in this
             HardwareGroup.
@@ -545,8 +550,8 @@ class HardwareGroup(proto.Message):
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
             Deprecated: This value is not used. Use the
-            requested_installation_date field in the Order
-            resource instead.
+            requested_installation_date field in the Order resource
+            instead.
     """
 
     class State(proto.Enum):
@@ -576,6 +581,7 @@ class HardwareGroup(proto.Message):
                 An error occurred and customer intervention
                 is required.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         BUILDING = 2
@@ -649,10 +655,10 @@ class Hardware(proto.Message):
             Output only. Time when this hardware was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this hardware
-            as key value pairs. For more information about
-            labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this hardware as key value
+            pairs. For more information about labels, see `Create and
+            manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         order (str):
             Required. Name of the order that this hardware belongs to.
             Format:
@@ -686,12 +692,10 @@ class Hardware(proto.Message):
             Format:
             ``projects/{project}/locations/{location}/zones/{zone}``
         requested_installation_date (google.type.date_pb2.Date):
-            Optional. Requested installation date for this
-            hardware. If not specified, this is
-            auto-populated from the order's fulfillment_time
-            upon submission or from the HardwareGroup's
-            requested_installation_date upon order
-            acceptance.
+            Optional. Requested installation date for this hardware. If
+            not specified, this is auto-populated from the order's
+            fulfillment_time upon submission or from the HardwareGroup's
+            requested_installation_date upon order acceptance.
         actual_installation_date (google.type.date_pb2.Date):
             Output only. Actual installation date for
             this hardware. Filled in by Google.
@@ -726,6 +730,7 @@ class Hardware(proto.Message):
                 An error occurred and customer intervention
                 is required.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         BUILDING = 2
@@ -762,6 +767,7 @@ class Hardware(proto.Message):
                 VIRTUAL (3):
                     Address of a virtual interface.
             """
+
             ADDRESS_TYPE_UNSPECIFIED = 0
             NIC = 1
             BMC = 2
@@ -960,10 +966,10 @@ class Comment(proto.Message):
             Output only. Time when this comment was
             created.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this comment as
-            key value pairs. For more information about
-            labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this comment as key value
+            pairs. For more information about labels, see `Create and
+            manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         author (str):
             Output only. Username of the author of this
             comment. This is auto-populated from the
@@ -1026,10 +1032,10 @@ class ChangeLogEntry(proto.Message):
             Output only. Time when this change log entry
             was created.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this change log
-            entry as key value pairs. For more information
-            about labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this change log entry as
+            key value pairs. For more information about labels, see
+            `Create and manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         log (str):
             Output only. Content of this log entry.
     """
@@ -1107,6 +1113,7 @@ class Sku(proto.Message):
             SERVER (2):
                 Server SKU.
         """
+
         TYPE_UNSPECIFIED = 0
         RACK = 1
         SERVER = 2
@@ -1199,10 +1206,10 @@ class Zone(proto.Message):
             Output only. Time when this zone was last
             updated.
         labels (MutableMapping[str, str]):
-            Optional. Labels associated with this zone as
-            key value pairs. For more information about
-            labels, see [Create and manage
-            labels](https://cloud.google.com/resource-manager/docs/creating-managing-labels).
+            Optional. Labels associated with this zone as key value
+            pairs. For more information about labels, see `Create and
+            manage
+            labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels>`__.
         display_name (str):
             Optional. Human friendly display name of this
             zone.
@@ -1270,6 +1277,7 @@ class Zone(proto.Message):
             CANCELLED (4):
                 The Zone has been cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         PREPARING = 2
@@ -1294,6 +1302,7 @@ class Zone(proto.Message):
             PROVISIONING_COMPLETE (3):
                 Provisioning is complete. Set by customer.
         """
+
         PROVISIONING_STATE_UNSPECIFIED = 0
         PROVISIONING_REQUIRED = 1
         PROVISIONING_IN_PROGRESS = 2
@@ -1589,8 +1598,8 @@ class HardwarePhysicalInfo(proto.Message):
             C_13 (2):
                 C13.
             STANDARD_EU (3):
-                Deprecated: Please use TYPE_G_BS1363, CEE_7_3,
-                CEE_7_5 or TYPE_F instead.
+                Deprecated: Please use TYPE_G_BS1363, CEE_7_3, CEE_7_5 or
+                TYPE_F instead.
             TYPE_G_BS1363 (4):
                 Type G / BS1363.
             CEE_7_3 (5):
@@ -1600,6 +1609,7 @@ class HardwarePhysicalInfo(proto.Message):
             TYPE_F (7):
                 Type F.
         """
+
         POWER_RECEPTACLE_TYPE_UNSPECIFIED = 0
         NEMA_5_15 = 1
         C_13 = 2
@@ -1618,6 +1628,7 @@ class HardwarePhysicalInfo(proto.Message):
             RJ_45 (1):
                 RJ-45.
         """
+
         NETWORK_UPLINK_TYPE_UNSPECIFIED = 0
         RJ_45 = 1
 
@@ -1632,6 +1643,7 @@ class HardwarePhysicalInfo(proto.Message):
             VOLTAGE_220 (3):
                 220V.
         """
+
         VOLTAGE_UNSPECIFIED = 0
         VOLTAGE_110 = 1
         VOLTAGE_220 = 3
@@ -1645,6 +1657,7 @@ class HardwarePhysicalInfo(proto.Message):
             AMPERES_15 (1):
                 15A.
         """
+
         AMPERES_UNSPECIFIED = 0
         AMPERES_15 = 1
 
@@ -1703,6 +1716,7 @@ class HardwareInstallationInfo(proto.Message):
             FOUR_POST (2):
                 Four post rack.
         """
+
         RACK_TYPE_UNSPECIFIED = 0
         TWO_POST = 1
         FOUR_POST = 2
@@ -1981,6 +1995,7 @@ class SubscriptionConfig(proto.Message):
                 The subscription has been completed, because
                 it has reached the end date.
         """
+
         SUBSCRIPTION_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

@@ -16,20 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -3836,7 +3838,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3993,7 +3995,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4613,7 +4615,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -4768,7 +4770,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5076,7 +5078,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5230,7 +5232,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5506,20 +5508,15 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym.
-                For example,
-                { hypernym: "vehicle"
-                hyponyms: ["sedan", "truck"] }
-                This means in SMART_SEARCH mode,
-                searching for "vehicle" will also return
-                results with "sedan" or "truck" as
+                    Search resource: SearchHypernym. For example, {
+                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
+                means in SMART_SEARCH mode, searching for "vehicle" will
+                also return results with "sedan" or "truck" as
                 annotations.
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_http_options()
 
             request, metadata = self._interceptor.pre_create_search_hypernym(
                 request, metadata
@@ -5689,7 +5686,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5804,7 +5801,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -5952,7 +5949,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6094,7 +6091,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6202,7 +6199,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6317,7 +6314,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6465,7 +6462,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6606,7 +6603,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6691,9 +6688,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_search_hypernym(
                 request, metadata
@@ -6715,7 +6710,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -6835,7 +6830,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -7123,9 +7118,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_retrieval_url(
                 request, metadata
@@ -8478,13 +8471,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym.
-                For example,
-                { hypernym: "vehicle"
-                hyponyms: ["sedan", "truck"] }
-                This means in SMART_SEARCH mode,
-                searching for "vehicle" will also return
-                results with "sedan" or "truck" as
+                    Search resource: SearchHypernym. For example, {
+                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
+                means in SMART_SEARCH mode, searching for "vehicle" will
+                also return results with "sedan" or "truck" as
                 annotations.
 
             """
@@ -8669,7 +8659,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -8822,7 +8812,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10307,9 +10297,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_collection_item(
                 request, metadata
@@ -10492,7 +10480,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -10961,7 +10949,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -11898,7 +11886,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12052,7 +12040,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -12328,20 +12316,15 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             Returns:
                 ~.warehouse.SearchHypernym:
-                    Search resource: SearchHypernym.
-                For example,
-                { hypernym: "vehicle"
-                hyponyms: ["sedan", "truck"] }
-                This means in SMART_SEARCH mode,
-                searching for "vehicle" will also return
-                results with "sedan" or "truck" as
+                    Search resource: SearchHypernym. For example, {
+                hypernym: "vehicle" hyponyms: ["sedan", "truck"] } This
+                means in SMART_SEARCH mode, searching for "vehicle" will
+                also return results with "sedan" or "truck" as
                 annotations.
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_http_options()
 
             request, metadata = self._interceptor.pre_update_search_hypernym(
                 request, metadata
@@ -12522,7 +12505,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {

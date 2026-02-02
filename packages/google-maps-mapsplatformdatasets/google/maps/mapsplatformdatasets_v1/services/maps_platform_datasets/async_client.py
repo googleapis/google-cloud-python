@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.maps.mapsplatformdatasets_v1 import gapic_version as package_version
 
@@ -44,15 +44,17 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets import pagers
-from google.maps.mapsplatformdatasets_v1.types import data_source
-from google.maps.mapsplatformdatasets_v1.types import dataset
+from google.maps.mapsplatformdatasets_v1.types import (
+    data_source,
+    dataset,
+    maps_platform_datasets,
+)
 from google.maps.mapsplatformdatasets_v1.types import dataset as gmm_dataset
-from google.maps.mapsplatformdatasets_v1.types import maps_platform_datasets
 
 from .client import MapsPlatformDatasetsClient
 from .transports.base import DEFAULT_CLIENT_INFO, MapsPlatformDatasetsTransport
@@ -120,7 +122,8 @@ class MapsPlatformDatasetsAsyncClient:
         Returns:
             MapsPlatformDatasetsAsyncClient: The constructed client.
         """
-        return MapsPlatformDatasetsClient.from_service_account_info.__func__(MapsPlatformDatasetsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = MapsPlatformDatasetsClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(MapsPlatformDatasetsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -136,7 +139,8 @@ class MapsPlatformDatasetsAsyncClient:
         Returns:
             MapsPlatformDatasetsAsyncClient: The constructed client.
         """
-        return MapsPlatformDatasetsClient.from_service_account_file.__func__(MapsPlatformDatasetsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = MapsPlatformDatasetsClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(MapsPlatformDatasetsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -174,7 +178,9 @@ class MapsPlatformDatasetsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return MapsPlatformDatasetsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return MapsPlatformDatasetsClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> MapsPlatformDatasetsTransport:
@@ -465,9 +471,8 @@ class MapsPlatformDatasetsAsyncClient:
                 The request object. Request to update the metadata fields
                 of the dataset.
             dataset (:class:`google.maps.mapsplatformdatasets_v1.types.Dataset`):
-                Required. Resource name of the dataset
-                to update. Format:
-                projects/{project}/datasets/{dataset_id}
+                Required. Resource name of the dataset to update.
+                Format: projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -588,18 +593,16 @@ class MapsPlatformDatasetsAsyncClient:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1.types.GetDatasetRequest, dict]]):
                 The request object. Request to get the specified dataset.
             name (:class:`str`):
-                Required. Resource name.
-                Format:
+                Required. Resource name. Format:
                 projects/{project}/datasets/{dataset_id}
 
-                Can also fetch some special versions by
-                appending "@" and a tag. Format:
+                Can also fetch some special versions by appending "@"
+                and a tag. Format:
                 projects/{project}/datasets/{dataset_id}@{tag}
 
-                Tag "active": The info of the latest
-                completed version will be included, and
-                NOT_FOUND if the dataset does not have
-                one.
+                Tag "active": The info of the latest completed version
+                will be included, and NOT_FOUND if the dataset does not
+                have one.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -712,9 +715,8 @@ class MapsPlatformDatasetsAsyncClient:
                 The request object. Request to list detailed errors
                 belonging to a dataset.
             dataset (:class:`str`):
-                Required. The name of the dataset to
-                list all the errors for. Format:
-                projects/{project}/datasets/{dataset_id}
+                Required. The name of the dataset to list all the errors
+                for. Format: projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -965,8 +967,7 @@ class MapsPlatformDatasetsAsyncClient:
             request (Optional[Union[google.maps.mapsplatformdatasets_v1.types.DeleteDatasetRequest, dict]]):
                 The request object. Request to delete a dataset.
             name (:class:`str`):
-                Required. The name of the dataset to
-                delete. Format:
+                Required. The name of the dataset to delete. Format:
                 projects/{project}/datasets/{dataset_id}
 
                 This corresponds to the ``name`` field

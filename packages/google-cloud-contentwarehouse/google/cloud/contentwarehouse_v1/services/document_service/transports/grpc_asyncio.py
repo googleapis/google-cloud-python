@@ -17,27 +17,27 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.contentwarehouse_v1.types import document as gcc_document
 from google.cloud.contentwarehouse_v1.types import (
     document_service,
     document_service_request,
 )
-from google.cloud.contentwarehouse_v1.types import document as gcc_document
 
 from .base import DEFAULT_CLIENT_INFO, DocumentServiceTransport
 from .grpc import DocumentServiceGrpcTransport
@@ -372,8 +372,8 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     ]:
         r"""Return a callable for the get document method over gRPC.
 
-        Gets a document. Returns NOT_FOUND if the document does
-        not exist.
+        Gets a document. Returns NOT_FOUND if the document does not
+        exist.
 
         Returns:
             Callable[[~.GetDocumentRequest],
@@ -402,9 +402,8 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     ]:
         r"""Return a callable for the update document method over gRPC.
 
-        Updates a document. Returns INVALID_ARGUMENT if the name
-        of the document is non-empty and does not equal the
-        existing name.
+        Updates a document. Returns INVALID_ARGUMENT if the name of the
+        document is non-empty and does not equal the existing name.
 
         Returns:
             Callable[[~.UpdateDocumentRequest],
@@ -432,8 +431,8 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     ]:
         r"""Return a callable for the delete document method over gRPC.
 
-        Deletes a document. Returns NOT_FOUND if the document
-        does not exist.
+        Deletes a document. Returns NOT_FOUND if the document does not
+        exist.
 
         Returns:
             Callable[[~.DeleteDocumentRequest],
@@ -523,10 +522,9 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     ]:
         r"""Return a callable for the fetch acl method over gRPC.
 
-        Gets the access control policy for a resource. Returns
-        NOT_FOUND error if the resource does not exist. Returns
-        an empty policy if the resource exists but does not have
-        a policy set.
+        Gets the access control policy for a resource. Returns NOT_FOUND
+        error if the resource does not exist. Returns an empty policy if
+        the resource exists but does not have a policy set.
 
         Returns:
             Callable[[~.FetchAclRequest],

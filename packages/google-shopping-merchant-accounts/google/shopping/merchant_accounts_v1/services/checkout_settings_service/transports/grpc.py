@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_accounts_v1.types import checkoutsettings
 
@@ -111,8 +111,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class CheckoutSettingsServiceGrpcTransport(CheckoutSettingsServiceTransport):
     """gRPC backend transport for CheckoutSettingsService.
 
-    Service for supporting [checkout
-    settings](https://support.google.com/merchants/answer/13945960).
+    Service for supporting `checkout
+    settings <https://support.google.com/merchants/answer/13945960>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v2.types import gce_setup as gcn_gce_setup
@@ -62,6 +62,7 @@ class State(proto.Enum):
         SUSPENDED (10):
             The instance is suspended.
     """
+
     STATE_UNSPECIFIED = 0
     STARTING = 1
     PROVISIONING = 2
@@ -96,6 +97,7 @@ class HealthState(proto.Enum):
             The instance health monitoring agent is not
             running. Applies to ACTIVE state.
     """
+
     HEALTH_STATE_UNSPECIFIED = 0
     HEALTHY = 1
     UNHEALTHY = 2
@@ -147,6 +149,7 @@ class UpgradeHistoryEntry(proto.Message):
             FAILED (3):
                 The instance upgrade is failed.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         SUCCEEDED = 2
@@ -163,6 +166,7 @@ class UpgradeHistoryEntry(proto.Message):
             ROLLBACK (2):
                 Rollback.
         """
+
         ACTION_UNSPECIFIED = 0
         UPGRADE = 1
         ROLLBACK = 2
@@ -245,16 +249,18 @@ class Instance(proto.Message):
         health_state (google.cloud.notebooks_v2.types.HealthState):
             Output only. Instance health_state.
         health_info (MutableMapping[str, str]):
-            Output only. Additional information about
-            instance health. Example:
+            Output only. Additional information about instance health.
+            Example:
 
-            healthInfo": {
-            "docker_proxy_agent_status": "1",
-            "docker_status": "1",
-            "jupyterlab_api_status": "-1",
-            "jupyterlab_status": "-1",
-            "updated": "2020-10-18 09:40:03.573409"
-            }
+            ::
+
+                healthInfo": {
+                  "docker_proxy_agent_status": "1",
+                  "docker_status": "1",
+                  "jupyterlab_api_status": "-1",
+                  "jupyterlab_status": "-1",
+                  "updated": "2020-10-18 09:40:03.573409"
+                }
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):

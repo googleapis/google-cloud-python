@@ -28,15 +28,14 @@ __protobuf__ = proto.module(
 
 
 class Database(proto.Message):
-    r"""Represents database access information, such as queries. A
-    database may be a sub-resource of an instance (as in the case of
-    Cloud SQL instances or Cloud Spanner instances), or the database
-    instance itself. Some database resources might not have the
-    [full resource
-    name](https://google.aip.dev/122#full-resource-names) populated
-    because these resource types, such as Cloud SQL databases, are
-    not yet supported by Cloud Asset Inventory. In these cases only
-    the display name is provided.
+    r"""Represents database access information, such as queries. A database
+    may be a sub-resource of an instance (as in the case of Cloud SQL
+    instances or Cloud Spanner instances), or the database instance
+    itself. Some database resources might not have the `full resource
+    name <https://google.aip.dev/122#full-resource-names>`__ populated
+    because these resource types, such as Cloud SQL databases, are not
+    yet supported by Cloud Asset Inventory. In these cases only the
+    display name is provided.
 
     Attributes:
         name (str):
@@ -64,9 +63,9 @@ class Database(proto.Message):
             SQL privilege grant, which is not an IAM policy
             change.
         version (str):
-            The version of the database, for example,
-            POSTGRES_14. See [the complete
-            list](https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/SqlDatabaseVersion).
+            The version of the database, for example, POSTGRES_14. See
+            `the complete
+            list <https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/SqlDatabaseVersion>`__.
     """
 
     name: str = proto.Field(

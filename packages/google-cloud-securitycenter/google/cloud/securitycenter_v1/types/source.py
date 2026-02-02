@@ -38,7 +38,6 @@ class Source(proto.Message):
             The relative resource name of this source. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
-
             "organizations/{organization_id}/sources/{source_id}".
         display_name (str):
             The source's display name.
@@ -59,13 +58,12 @@ class Source(proto.Message):
             mixed content (HTTP in HTTPS), and outdated or
             insecure libraries.".
         canonical_name (str):
-            The canonical name of the finding source. It's
-            either
+            The canonical name of the finding source. It's either
             "organizations/{organization_id}/sources/{source_id}",
             "folders/{folder_id}/sources/{source_id}", or
-            "projects/{project_number}/sources/{source_id}",
-            depending on the closest CRM ancestor of the
-            resource associated with the finding.
+            "projects/{project_number}/sources/{source_id}", depending
+            on the closest CRM ancestor of the resource associated with
+            the finding.
     """
 
     name: str = proto.Field(

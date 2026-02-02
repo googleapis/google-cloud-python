@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -292,6 +292,7 @@ class Curation(proto.Message):
             FAILED (2):
                 The last curation execution failed.
         """
+
         LAST_EXECUTION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -309,6 +310,7 @@ class Curation(proto.Message):
                 The curation is not authorized to trigger the
                 endpoint uri.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         INTERNAL_ERROR = 1
         UNAUTHORIZED = 2
@@ -354,12 +356,12 @@ class Curation(proto.Message):
         number=4,
         message="Endpoint",
     )
-    plugin_instance_actions: MutableSequence[
-        PluginInstanceActionID
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=PluginInstanceActionID,
+    plugin_instance_actions: MutableSequence[PluginInstanceActionID] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=PluginInstanceActionID,
+        )
     )
     last_execution_state: LastExecutionState = proto.Field(
         proto.ENUM,

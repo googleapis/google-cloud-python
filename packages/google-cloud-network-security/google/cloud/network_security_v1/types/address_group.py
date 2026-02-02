@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -87,6 +87,7 @@ class AddressGroup(proto.Message):
             IPV6 (2):
                 IP v6 ranges.
         """
+
         TYPE_UNSPECIFIED = 0
         IPV4 = 1
         IPV6 = 2
@@ -104,6 +105,7 @@ class AddressGroup(proto.Message):
             CLOUD_ARMOR (2):
                 Address Group is usable in Cloud Armor.
         """
+
         PURPOSE_UNSPECIFIED = 0
         DEFAULT = 1
         CLOUD_ARMOR = 2
@@ -251,11 +253,10 @@ class CreateAddressGroupRequest(proto.Message):
             Required. The parent resource of the AddressGroup. Must be
             in the format ``projects/*/locations/{location}``.
         address_group_id (str):
-            Required. Short name of the AddressGroup
-            resource to be created. This value should be
-            1-63 characters long, containing only letters,
-            numbers, hyphens, and underscores, and should
-            not start with a number. E.g. "authz_policy".
+            Required. Short name of the AddressGroup resource to be
+            created. This value should be 1-63 characters long,
+            containing only letters, numbers, hyphens, and underscores,
+            and should not start with a number. E.g. "authz_policy".
         address_group (google.cloud.network_security_v1.types.AddressGroup):
             Required. AddressGroup resource to be
             created.
@@ -305,14 +306,12 @@ class UpdateAddressGroupRequest(proto.Message):
 
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Optional. Field mask is used to specify the
-            fields to be overwritten in the AddressGroup
-            resource by the update. The fields specified in
-            the update_mask are relative to the resource,
-            not the full request. A field will be
-            overwritten if it is in the mask. If the user
-            does not provide a mask then all fields will be
-            overwritten.
+            Optional. Field mask is used to specify the fields to be
+            overwritten in the AddressGroup resource by the update. The
+            fields specified in the update_mask are relative to the
+            resource, not the full request. A field will be overwritten
+            if it is in the mask. If the user does not provide a mask
+            then all fields will be overwritten.
         address_group (google.cloud.network_security_v1.types.AddressGroup):
             Required. Updated AddressGroup resource.
         request_id (str):
@@ -549,8 +548,8 @@ class ListAddressGroupReferencesRequest(proto.Message):
             to determine if there are more AddressGroupUsers left to be
             queried.
         page_token (str):
-            The next_page_token value returned from a
-            previous List request, if any.
+            The next_page_token value returned from a previous List
+            request, if any.
     """
 
     address_group: str = proto.Field(
@@ -613,12 +612,12 @@ class ListAddressGroupReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    address_group_references: MutableSequence[
-        AddressGroupReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=AddressGroupReference,
+    address_group_references: MutableSequence[AddressGroupReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=AddressGroupReference,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -36,11 +36,9 @@ class SecurityMarks(proto.Message):
 
     Attributes:
         name (str):
-            The relative resource name of the SecurityMarks.
-            See:
+            The relative resource name of the SecurityMarks. See:
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Examples:
-
             "organizations/{organization_id}/assets/{asset_id}/securityMarks"
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
         marks (MutableMapping[str, str]):
@@ -54,9 +52,7 @@ class SecurityMarks(proto.Message):
               remaining characters must be between 1 - 4096 characters
               (inclusive)
         canonical_name (str):
-            The canonical name of the marks.
-            Examples:
-
+            The canonical name of the marks. Examples:
             "organizations/{organization_id}/assets/{asset_id}/securityMarks"
             "folders/{folder_id}/assets/{asset_id}/securityMarks"
             "projects/{project_number}/assets/{asset_id}/securityMarks"

@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1.types import custom_tuning_model, import_config
@@ -65,12 +65,12 @@ class ListCustomModelsResponse(proto.Message):
             List of custom tuning models.
     """
 
-    models: MutableSequence[
-        custom_tuning_model.CustomTuningModel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=custom_tuning_model.CustomTuningModel,
+    models: MutableSequence[custom_tuning_model.CustomTuningModel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=custom_tuning_model.CustomTuningModel,
+        )
     )
 
 
@@ -139,10 +139,9 @@ class TrainCustomModelRequest(proto.Message):
                 - ``query-id\tcorpus-id\tscore``
                 - ``query1\tdoc1\t1``
             test_data_path (str):
-                Cloud Storage test data. Same format as
-                train_data_path. If not provided, a random 80/20
-                train/test split will be performed on
-                train_data_path.
+                Cloud Storage test data. Same format as train_data_path. If
+                not provided, a random 80/20 train/test split will be
+                performed on train_data_path.
         """
 
         corpus_data_path: str = proto.Field(

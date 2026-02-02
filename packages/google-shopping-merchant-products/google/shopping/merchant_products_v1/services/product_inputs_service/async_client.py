@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_products_v1 import gapic_version as package_version
 
@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.shopping.type.types import types
 
 from google.shopping.merchant_products_v1.types import productinputs, products_common
@@ -119,7 +119,8 @@ class ProductInputsServiceAsyncClient:
         Returns:
             ProductInputsServiceAsyncClient: The constructed client.
         """
-        return ProductInputsServiceClient.from_service_account_info.__func__(ProductInputsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ProductInputsServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ProductInputsServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +136,8 @@ class ProductInputsServiceAsyncClient:
         Returns:
             ProductInputsServiceAsyncClient: The constructed client.
         """
-        return ProductInputsServiceClient.from_service_account_file.__func__(ProductInputsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ProductInputsServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ProductInputsServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -173,7 +175,9 @@ class ProductInputsServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return ProductInputsServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return ProductInputsServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> ProductInputsServiceTransport:
@@ -305,21 +309,20 @@ class ProductInputsServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> productinputs.ProductInput:
-        r"""[Uploads a product input to your Merchant Center
-        account](/merchant/api/guides/products/overview#upload-product-input).
-        You must have a products [data
-        source](/merchant/api/guides/data-sources/overview) to
-        be able to insert a product. The unique identifier of
-        the data source is passed as a query parameter in the
-        request URL.
+        r"""`Uploads a product input to your Merchant Center
+        account </merchant/api/guides/products/overview#upload-product-input>`__.
+        You must have a products `data
+        source </merchant/api/guides/data-sources/overview>`__ to be
+        able to insert a product. The unique identifier of the data
+        source is passed as a query parameter in the request URL.
 
-        If a product input with the same contentLanguage,
-        offerId, and dataSource already exists, then the product
-        input inserted by this method replaces that entry.
+        If a product input with the same contentLanguage, offerId, and
+        dataSource already exists, then the product input inserted by
+        this method replaces that entry.
 
-        After inserting, updating, or deleting a product input,
-        it may take several minutes before the processed product
-        can be retrieved.
+        After inserting, updating, or deleting a product input, it may
+        take several minutes before the processed product can be
+        retrieved.
 
         .. code-block:: python
 

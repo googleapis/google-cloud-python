@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -879,24 +879,20 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_jobs.PatchJob:
-                    A high level representation of a patch
-                job that is either in progress or has
-                completed.
+                    A high level representation of a patch job that is
+                either in progress or has completed.
 
-                Instance details are not included in the
-                job. To paginate through instance
-                details, use
+                Instance details are not included in the job. To
+                paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
-                For more information about patch jobs,
-                see [Creating patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs, see `Creating
+                patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_patch_job(
                 request, metadata
@@ -1045,21 +1041,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
-                    Patch deployments are configurations
-                that individual patch jobs use to
-                complete a patch. These configurations
-                include instance filter, package
-                repository settings, and a schedule. For
-                more information about creating and
-                managing patch deployments, see
-                [Scheduling patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                    Patch deployments are configurations that individual
+                patch jobs use to complete a patch. These configurations
+                include instance filter, package repository settings,
+                and a schedule. For more information about creating and
+                managing patch deployments, see `Scheduling patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_patch_deployment(
                 request, metadata
@@ -1210,9 +1201,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_patch_deployment(
                 request, metadata
@@ -1234,7 +1223,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1324,24 +1313,20 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_jobs.PatchJob:
-                    A high level representation of a patch
-                job that is either in progress or has
-                completed.
+                    A high level representation of a patch job that is
+                either in progress or has completed.
 
-                Instance details are not included in the
-                job. To paginate through instance
-                details, use
+                Instance details are not included in the job. To
+                paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
-                For more information about patch jobs,
-                see [Creating patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs, see `Creating
+                patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_http_options()
 
             request, metadata = self._interceptor.pre_execute_patch_job(
                 request, metadata
@@ -1489,21 +1474,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
-                    Patch deployments are configurations
-                that individual patch jobs use to
-                complete a patch. These configurations
-                include instance filter, package
-                repository settings, and a schedule. For
-                more information about creating and
-                managing patch deployments, see
-                [Scheduling patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                    Patch deployments are configurations that individual
+                patch jobs use to complete a patch. These configurations
+                include instance filter, package repository settings,
+                and a schedule. For more information about creating and
+                managing patch deployments, see `Scheduling patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_patch_deployment(
                 request, metadata
@@ -1647,18 +1627,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_jobs.PatchJob:
-                    A high level representation of a patch
-                job that is either in progress or has
-                completed.
+                    A high level representation of a patch job that is
+                either in progress or has completed.
 
-                Instance details are not included in the
-                job. To paginate through instance
-                details, use
+                Instance details are not included in the job. To
+                paginate through instance details, use
                 ListPatchJobInstanceDetails.
 
-                For more information about patch jobs,
-                see [Creating patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
+                For more information about patch jobs, see `Creating
+                patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
 
             """
 
@@ -1810,9 +1788,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_patch_deployments(
                 request, metadata
@@ -1963,9 +1939,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_http_options()
 
             request, metadata = self._interceptor.pre_list_patch_job_instance_details(
                 request, metadata
@@ -2031,11 +2005,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_list_patch_job_instance_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_patch_job_instance_details_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_patch_job_instance_details_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2265,21 +2238,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
-                    Patch deployments are configurations
-                that individual patch jobs use to
-                complete a patch. These configurations
-                include instance filter, package
-                repository settings, and a schedule. For
-                more information about creating and
-                managing patch deployments, see
-                [Scheduling patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                    Patch deployments are configurations that individual
+                patch jobs use to complete a patch. These configurations
+                include instance filter, package repository settings,
+                and a schedule. For more information about creating and
+                managing patch deployments, see `Scheduling patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_patch_deployment(
                 request, metadata
@@ -2430,21 +2398,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
-                    Patch deployments are configurations
-                that individual patch jobs use to
-                complete a patch. These configurations
-                include instance filter, package
-                repository settings, and a schedule. For
-                more information about creating and
-                managing patch deployments, see
-                [Scheduling patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                    Patch deployments are configurations that individual
+                patch jobs use to complete a patch. These configurations
+                include instance filter, package repository settings,
+                and a schedule. For more information about creating and
+                managing patch deployments, see `Scheduling patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_patch_deployment(
                 request, metadata
@@ -2597,21 +2560,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             Returns:
                 ~.patch_deployments.PatchDeployment:
-                    Patch deployments are configurations
-                that individual patch jobs use to
-                complete a patch. These configurations
-                include instance filter, package
-                repository settings, and a schedule. For
-                more information about creating and
-                managing patch deployments, see
-                [Scheduling patch
-                jobs](https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
+                    Patch deployments are configurations that individual
+                patch jobs use to complete a patch. These configurations
+                include instance filter, package repository settings,
+                and a schedule. For more information about creating and
+                managing patch deployments, see `Scheduling patch
+                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_patch_deployment(
                 request, metadata
@@ -2783,7 +2741,9 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPatchJobInstanceDetails(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPatchJobInstanceDetails(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_patch_jobs(

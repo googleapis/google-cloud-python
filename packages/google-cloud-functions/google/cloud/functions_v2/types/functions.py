@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -74,6 +74,7 @@ class OperationType(proto.Enum):
         DELETE_FUNCTION (3):
             DeleteFunction
     """
+
     OPERATIONTYPE_UNSPECIFIED = 0
     CREATE_FUNCTION = 1
     UPDATE_FUNCTION = 2
@@ -91,6 +92,7 @@ class Environment(proto.Enum):
         GEN_2 (2):
             Gen 2
     """
+
     ENVIRONMENT_UNSPECIFIED = 0
     GEN_1 = 1
     GEN_2 = 2
@@ -171,6 +173,7 @@ class Function(proto.Message):
                 be updated or deleted to move it out of this
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -271,6 +274,7 @@ class StateMessage(proto.Message):
             INFO (3):
                 INFO-level severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -297,9 +301,9 @@ class StorageSource(proto.Message):
 
     Attributes:
         bucket (str):
-            Google Cloud Storage bucket containing the
-            source (see [Bucket Name
-            Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+            Google Cloud Storage bucket containing the source (see
+            `Bucket Name
+            Requirements <https://cloud.google.com/storage/docs/bucket-naming#requirements>`__).
         object_ (str):
             Google Cloud Storage object containing the source.
 
@@ -601,6 +605,7 @@ class BuildConfig(proto.Message):
                 also be specified by the user using the
                 ``docker_repository`` field.
         """
+
         DOCKER_REGISTRY_UNSPECIFIED = 0
         CONTAINER_REGISTRY = 1
         ARTIFACT_REGISTRY = 2
@@ -696,19 +701,18 @@ class ServiceConfig(proto.Message):
             Environment variables that shall be available
             during function execution.
         max_instance_count (int):
-            The limit on the maximum number of function
-            instances that may coexist at a given time.
+            The limit on the maximum number of function instances that
+            may coexist at a given time.
 
-            In some cases, such as rapid traffic surges,
-            Cloud Functions may, for a short period of time,
-            create more instances than the specified max
-            instances limit. If your function cannot
-            tolerate this temporary behavior, you may want
-            to factor in a safety margin and set a lower max
-            instances value than your function can tolerate.
+            In some cases, such as rapid traffic surges, Cloud Functions
+            may, for a short period of time, create more instances than
+            the specified max instances limit. If your function cannot
+            tolerate this temporary behavior, you may want to factor in
+            a safety margin and set a lower max instances value than
+            your function can tolerate.
 
-            See the [Max
-            Instances](https://cloud.google.com/functions/docs/max-instances)
+            See the `Max
+            Instances <https://cloud.google.com/functions/docs/max-instances>`__
             Guide for more details.
         min_instance_count (int):
             The limit on the minimum number of function
@@ -784,6 +788,7 @@ class ServiceConfig(proto.Message):
                 Force the use of VPC Access Connector for all
                 egress traffic from the function.
         """
+
         VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 0
         PRIVATE_RANGES_ONLY = 1
         ALL_TRAFFIC = 2
@@ -808,6 +813,7 @@ class ServiceConfig(proto.Message):
                 Allow HTTP traffic from private VPC sources
                 and through GCLB.
         """
+
         INGRESS_SETTINGS_UNSPECIFIED = 0
         ALLOW_ALL = 1
         ALLOW_INTERNAL_ONLY = 2
@@ -836,6 +842,7 @@ class ServiceConfig(proto.Message):
                 application can examine the request to determine
                 which protocol was used and respond accordingly.
         """
+
         SECURITY_LEVEL_UNSPECIFIED = 0
         SECURE_ALWAYS = 1
         SECURE_OPTIONAL = 2
@@ -1111,6 +1118,7 @@ class EventTrigger(proto.Message):
                 Retry on any failure, retry up to 7 days with
                 an exponential backoff (capped at 10 seconds).
         """
+
         RETRY_POLICY_UNSPECIFIED = 0
         RETRY_POLICY_DO_NOT_RETRY = 1
         RETRY_POLICY_RETRY = 2
@@ -1229,11 +1237,10 @@ class ListFunctionsRequest(proto.Message):
             reachable locations along with the names of any unreachable
             locations.
         page_size (int):
-            Maximum number of functions to return per call.
-            The largest allowed page_size is 1,000, if the
-            page_size is omitted or specified as greater
-            than 1,000 then it will be replaced as 1,000.
-            The size of the list response can be less than
+            Maximum number of functions to return per call. The largest
+            allowed page_size is 1,000, if the page_size is omitted or
+            specified as greater than 1,000 then it will be replaced as
+            1,000. The size of the list response can be less than
             specified when used with filters.
         page_token (str):
             The value returned by the last ``ListFunctionsResponse``;
@@ -1545,6 +1552,7 @@ class ListRuntimesResponse(proto.Message):
             DECOMMISSIONED (6):
                 The runtime is no longer supported.
         """
+
         RUNTIME_STAGE_UNSPECIFIED = 0
         DEVELOPMENT = 1
         ALPHA = 2
@@ -1793,6 +1801,7 @@ class Stage(proto.Message):
             TRIGGER_ROLLBACK (6):
                 Trigger Rollback Stage
         """
+
         NAME_UNSPECIFIED = 0
         ARTIFACT_REGISTRY = 1
         BUILD = 2
@@ -1814,6 +1823,7 @@ class Stage(proto.Message):
             COMPLETE (3):
                 Stage has completed.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         IN_PROGRESS = 2

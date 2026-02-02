@@ -17,21 +17,19 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
-from google.type import localized_text_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
+import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.places_v1.types import address_descriptor as gmp_address_descriptor
-from google.maps.places_v1.types import content_block, ev_charging
+from google.maps.places_v1.types import content_block, ev_charging, photo, review
 from google.maps.places_v1.types import fuel_options as gmp_fuel_options
-from google.maps.places_v1.types import photo
 from google.maps.places_v1.types import price_range as gmp_price_range
-from google.maps.places_v1.types import review
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -59,6 +57,7 @@ class PriceLevel(proto.Enum):
         PRICE_LEVEL_VERY_EXPENSIVE (5):
             Place provides very expensive services.
     """
+
     PRICE_LEVEL_UNSPECIFIED = 0
     PRICE_LEVEL_FREE = 1
     PRICE_LEVEL_INEXPENSIVE = 2
@@ -213,8 +212,7 @@ class Place(proto.Message):
             access different icon type by appending type
             suffix to the end (eg, ".svg" or ".png").
         icon_background_color (str):
-            Background color for icon_mask in hex format,
-            e.g. #909CE1.
+            Background color for icon_mask in hex format, e.g. #909CE1.
         takeout (bool):
             Specifies if the business supports takeout.
 
@@ -267,35 +265,30 @@ class Place(proto.Message):
 
             This field is a member of `oneof`_ ``_serves_vegetarian_food``.
         current_opening_hours (google.maps.places_v1.types.Place.OpeningHours):
-            The hours of operation for the next seven days
-            (including today). The time period starts at
-            midnight on the date of the request and ends at
-            11:59 pm six days later. This field includes the
-            special_days subfield of all hours, set for
+            The hours of operation for the next seven days (including
+            today). The time period starts at midnight on the date of
+            the request and ends at 11:59 pm six days later. This field
+            includes the special_days subfield of all hours, set for
             dates that have exceptional hours.
         current_secondary_opening_hours (MutableSequence[google.maps.places_v1.types.Place.OpeningHours]):
-            Contains an array of entries for the next seven
-            days including information about secondary hours
-            of a business. Secondary hours are different
-            from a business's main hours. For example, a
-            restaurant can specify drive through hours or
-            delivery hours as its secondary hours. This
-            field populates the type subfield, which draws
-            from a predefined list of opening hours types
-            (such as DRIVE_THROUGH, PICKUP, or TAKEOUT)
-            based on the types of the place. This field
-            includes the special_days subfield of all hours,
-            set for dates that have exceptional hours.
+            Contains an array of entries for the next seven days
+            including information about secondary hours of a business.
+            Secondary hours are different from a business's main hours.
+            For example, a restaurant can specify drive through hours or
+            delivery hours as its secondary hours. This field populates
+            the type subfield, which draws from a predefined list of
+            opening hours types (such as DRIVE_THROUGH, PICKUP, or
+            TAKEOUT) based on the types of the place. This field
+            includes the special_days subfield of all hours, set for
+            dates that have exceptional hours.
         regular_secondary_opening_hours (MutableSequence[google.maps.places_v1.types.Place.OpeningHours]):
-            Contains an array of entries for information
-            about regular secondary hours of a business.
-            Secondary hours are different from a business's
-            main hours. For example, a restaurant can
-            specify drive through hours or delivery hours as
-            its secondary hours. This field populates the
-            type subfield, which draws from a predefined
-            list of opening hours types (such as
-            DRIVE_THROUGH, PICKUP, or TAKEOUT) based on the
+            Contains an array of entries for information about regular
+            secondary hours of a business. Secondary hours are different
+            from a business's main hours. For example, a restaurant can
+            specify drive through hours or delivery hours as its
+            secondary hours. This field populates the type subfield,
+            which draws from a predefined list of opening hours types
+            (such as DRIVE_THROUGH, PICKUP, or TAKEOUT) based on the
             types of the place.
         editorial_summary (google.type.localized_text_pb2.LocalizedText):
             Contains a summary of the place. A summary is
@@ -434,6 +427,7 @@ class Place(proto.Message):
             CLOSED_PERMANENTLY (3):
                 The establishment is permanently closed.
         """
+
         BUSINESS_STATUS_UNSPECIFIED = 0
         OPERATIONAL = 1
         CLOSED_TEMPORARILY = 2
@@ -445,15 +439,13 @@ class Place(proto.Message):
 
         Attributes:
             long_text (str):
-                The full text description or name of the address
-                component. For example, an address component for
-                the country Australia may have a long_name of
-                "Australia".
+                The full text description or name of the address component.
+                For example, an address component for the country Australia
+                may have a long_name of "Australia".
             short_text (str):
-                An abbreviated textual name for the address
-                component, if available. For example, an address
-                component for the country of Australia may have
-                a short_name of "AU".
+                An abbreviated textual name for the address component, if
+                available. For example, an address component for the country
+                of Australia may have a short_name of "AU".
             types (MutableSequence[str]):
                 An array indicating the type(s) of the
                 address component.
@@ -555,13 +547,12 @@ class Place(proto.Message):
                 A type string used to identify the type of
                 secondary hours.
             special_days (MutableSequence[google.maps.places_v1.types.Place.OpeningHours.SpecialDay]):
-                Structured information for special days that
-                fall within the period that the returned opening
-                hours cover. Special days are days that could
-                impact the business hours of a place, e.g.
-                Christmas day. Set for current_opening_hours and
-                current_secondary_opening_hours if there are
-                exceptional hours.
+                Structured information for special days that fall within the
+                period that the returned opening hours cover. Special days
+                are days that could impact the business hours of a place,
+                e.g. Christmas day. Set for current_opening_hours and
+                current_secondary_opening_hours if there are exceptional
+                hours.
             next_open_time (google.protobuf.timestamp_pb2.Timestamp):
                 The next time the current opening hours
                 period starts up to 7 days in the future. This
@@ -611,6 +602,7 @@ class Place(proto.Message):
                 ONLINE_SERVICE_HOURS (13):
                     The online service hours.
             """
+
             SECONDARY_HOURS_TYPE_UNSPECIFIED = 0
             DRIVE_THROUGH = 1
             HAPPY_HOUR = 2
@@ -738,12 +730,12 @@ class Place(proto.Message):
             number=4,
             enum="Place.OpeningHours.SecondaryHoursType",
         )
-        special_days: MutableSequence[
-            "Place.OpeningHours.SpecialDay"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="Place.OpeningHours.SpecialDay",
+        special_days: MutableSequence["Place.OpeningHours.SpecialDay"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="Place.OpeningHours.SpecialDay",
+            )
         )
         next_open_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,
@@ -1431,19 +1423,19 @@ class Place(proto.Message):
         number=46,
         message=OpeningHours,
     )
-    current_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=47,
-        message=OpeningHours,
+    current_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=47,
+            message=OpeningHours,
+        )
     )
-    regular_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=49,
-        message=OpeningHours,
+    regular_secondary_opening_hours: MutableSequence[OpeningHours] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=49,
+            message=OpeningHours,
+        )
     )
     editorial_summary: localized_text_pb2.LocalizedText = proto.Field(
         proto.MESSAGE,

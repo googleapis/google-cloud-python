@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -230,8 +230,8 @@ class ListDockerImagesRequest(proto.Message):
             The maximum number of artifacts to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
         order_by (str):
             The field to order the results by.
     """
@@ -300,16 +300,13 @@ class MavenArtifact(proto.Message):
 
     Attributes:
         name (str):
-            Required. registry_location, project_id,
-            repository_name and maven_artifact forms a
-            unique artifact For example,
+            Required. registry_location, project_id, repository_name and
+            maven_artifact forms a unique artifact For example,
             "projects/test-project/locations/us-west4/repositories/test-repo/mavenArtifacts/
-            com.google.guava:guava:31.0-jre",
-            where "us-west4" is the registry_location,
-            "test-project" is the project_id, "test-repo" is
-            the repository_name and
-            "com.google.guava:guava:31.0-jre"
-            is the maven artifact.
+            com.google.guava:guava:31.0-jre", where "us-west4" is the
+            registry_location, "test-project" is the project_id,
+            "test-repo" is the repository_name and
+            "com.google.guava:guava:31.0-jre" is the maven artifact.
         pom_uri (str):
             Required. URL to access the pom file of the
             artifact. Example:
@@ -373,8 +370,8 @@ class ListMavenArtifactsRequest(proto.Message):
             The maximum number of artifacts to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -437,15 +434,12 @@ class NpmPackage(proto.Message):
 
     Attributes:
         name (str):
-            Required. registry_location, project_id,
-            repository_name and npm_package forms a unique
-            package For example,
+            Required. registry_location, project_id, repository_name and
+            npm_package forms a unique package For example,
             "projects/test-project/locations/us-west4/repositories/test-repo/npmPackages/
-            npm_test:1.0.0",
-            where "us-west4" is the registry_location,
-            "test-project" is the project_id, "test-repo" is
-            the repository_name and npm_test:1.0.0" is the
-            npm package.
+            npm_test:1.0.0", where "us-west4" is the registry_location,
+            "test-project" is the project_id, "test-repo" is the
+            repository_name and npm_test:1.0.0" is the npm package.
         package_name (str):
             Package for the artifact.
         version (str):
@@ -497,8 +491,8 @@ class ListNpmPackagesRequest(proto.Message):
             The maximum number of artifacts to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(
@@ -571,9 +565,7 @@ class PythonPackage(proto.Message):
             "test-repo" is the repository_name and python_package:1.0.0"
             is the python package.
         uri (str):
-            Required. URL to access the package.
-            Example:
-
+            Required. URL to access the package. Example:
             us-west4-python.pkg.dev/test-project/test-repo/python_package/file-name-1.0.0.tar.gz
         package_name (str):
             Package for the artifact.
@@ -624,8 +616,8 @@ class ListPythonPackagesRequest(proto.Message):
             The maximum number of artifacts to return.
             Maximum page size is 1,000.
         page_token (str):
-            The next_page_token value returned from a
-            previous list request, if any.
+            The next_page_token value returned from a previous list
+            request, if any.
     """
 
     parent: str = proto.Field(

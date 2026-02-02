@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 
@@ -44,14 +44,16 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1alpha1.services.sse_realm_service import pagers
 from google.cloud.network_security_v1alpha1.types import common, sse_realm
@@ -130,7 +132,8 @@ class SSERealmServiceAsyncClient:
         Returns:
             SSERealmServiceAsyncClient: The constructed client.
         """
-        return SSERealmServiceClient.from_service_account_info.__func__(SSERealmServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = SSERealmServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(SSERealmServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -146,7 +149,8 @@ class SSERealmServiceAsyncClient:
         Returns:
             SSERealmServiceAsyncClient: The constructed client.
         """
-        return SSERealmServiceClient.from_service_account_file.__func__(SSERealmServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = SSERealmServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(SSERealmServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -1657,11 +1661,10 @@ class SSERealmServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             partner_sse_realm_id (:class:`str`):
-                Required. Id of the requesting object
-                If auto-generating Id server-side,
-                remove this field and
-                partner_sse_realm_id from the
-                method_signature of Create RPC
+                Required. Id of the requesting object If auto-generating
+                Id server-side, remove this field and
+                partner_sse_realm_id from the method_signature of Create
+                RPC
 
                 This corresponds to the ``partner_sse_realm_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

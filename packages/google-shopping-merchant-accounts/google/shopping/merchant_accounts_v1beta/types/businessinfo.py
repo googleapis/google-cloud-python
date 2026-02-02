@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.type import phone_number_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.type.phone_number_pb2 as phone_number_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta.types import (
@@ -66,11 +66,9 @@ class BusinessInfo(proto.Message):
 
             This field is a member of `oneof`_ ``_customer_service``.
         korean_business_registration_number (str):
-            Optional. The 10-digit [Korean business
-            registration
-            number](https://support.google.com/merchants/answer/9037766)
-            separated with dashes in the format:
-            XXX-XX-XXXXX.
+            Optional. The 10-digit `Korean business registration
+            number <https://support.google.com/merchants/answer/9037766>`__
+            separated with dashes in the format: XXX-XX-XXXXX.
 
             This field is a member of `oneof`_ ``_korean_business_registration_number``.
     """

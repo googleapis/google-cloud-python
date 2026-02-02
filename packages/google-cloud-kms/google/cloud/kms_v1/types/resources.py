@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -65,6 +65,7 @@ class ProtectionLevel(proto.Enum):
             Crypto operations are performed in a
             single-tenant HSM.
     """
+
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
@@ -153,6 +154,7 @@ class AccessReason(proto.Enum):
             - Google-initiated support access to protect system
               reliability.
     """
+
     REASON_UNSPECIFIED = 0
     CUSTOMER_INITIATED_SUPPORT = 1
     GOOGLE_INITIATED_SERVICE = 2
@@ -379,6 +381,7 @@ class CryptoKey(proto.Message):
                 and
                 [Decapsulate][google.cloud.kms.v1.KeyManagementService.Decapsulate].
         """
+
         CRYPTO_KEY_PURPOSE_UNSPECIFIED = 0
         ENCRYPT_DECRYPT = 1
         ASYMMETRIC_SIGN = 5
@@ -524,6 +527,7 @@ class KeyOperationAttestation(proto.Message):
                 gzip. This is a new format introduced in
                 Cavium's version 3.2-08.
         """
+
         ATTESTATION_FORMAT_UNSPECIFIED = 0
         CAVIUM_V1_COMPRESSED = 3
         CAVIUM_V2_COMPRESSED = 4
@@ -756,26 +760,22 @@ class CryptoKeyVersion(proto.Message):
             RSA_SIGN_PSS_4096_SHA512 (15):
                 RSASSA-PSS 4096 bit key with a SHA512 digest.
             RSA_SIGN_PKCS1_2048_SHA256 (5):
-                RSASSA-PKCS1-v1_5 with a 2048 bit key and a
-                SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 2048 bit key and a SHA256 digest.
             RSA_SIGN_PKCS1_3072_SHA256 (6):
-                RSASSA-PKCS1-v1_5 with a 3072 bit key and a
-                SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 3072 bit key and a SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA256 (7):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
-                SHA256 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA256 digest.
             RSA_SIGN_PKCS1_4096_SHA512 (16):
-                RSASSA-PKCS1-v1_5 with a 4096 bit key and a
-                SHA512 digest.
+                RSASSA-PKCS1-v1_5 with a 4096 bit key and a SHA512 digest.
             RSA_SIGN_RAW_PKCS1_2048 (28):
-                RSASSA-PKCS1-v1_5 signing without encoding, with
-                a 2048 bit key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 2048 bit
+                key.
             RSA_SIGN_RAW_PKCS1_3072 (29):
-                RSASSA-PKCS1-v1_5 signing without encoding, with
-                a 3072 bit key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 3072 bit
+                key.
             RSA_SIGN_RAW_PKCS1_4096 (30):
-                RSASSA-PKCS1-v1_5 signing without encoding, with
-                a 4096 bit key.
+                RSASSA-PKCS1-v1_5 signing without encoding, with a 4096 bit
+                key.
             RSA_DECRYPT_OAEP_2048_SHA256 (8):
                 RSAES-OAEP 2048 bit key with a SHA256 digest.
             RSA_DECRYPT_OAEP_3072_SHA256 (9):
@@ -791,20 +791,17 @@ class CryptoKeyVersion(proto.Message):
             RSA_DECRYPT_OAEP_4096_SHA1 (39):
                 RSAES-OAEP 4096 bit key with a SHA1 digest.
             EC_SIGN_P256_SHA256 (12):
-                ECDSA on the NIST P-256 curve with a SHA256
-                digest. Other hash functions can also be used:
-
+                ECDSA on the NIST P-256 curve with a SHA256 digest. Other
+                hash functions can also be used:
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_P384_SHA384 (13):
-                ECDSA on the NIST P-384 curve with a SHA384
-                digest. Other hash functions can also be used:
-
+                ECDSA on the NIST P-384 curve with a SHA384 digest. Other
+                hash functions can also be used:
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_SECP256K1_SHA256 (31):
-                ECDSA on the non-NIST secp256k1 curve. This
-                curve is only supported for HSM protection
-                level. Other hash functions can also be used:
-
+                ECDSA on the non-NIST secp256k1 curve. This curve is only
+                supported for HSM protection level. Other hash functions can
+                also be used:
                 https://cloud.google.com/kms/docs/create-validate-signatures#ecdsa_support_for_other_hash_algorithms
             EC_SIGN_ED25519 (40):
                 EdDSA on the Curve25519 in pure mode (taking
@@ -839,6 +836,7 @@ class CryptoKeyVersion(proto.Message):
                 signature algorithm, at security level 1.
                 Randomized version.
         """
+
         CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED = 0
         GOOGLE_SYMMETRIC_ENCRYPTION = 1
         AES_128_GCM = 41
@@ -947,6 +945,7 @@ class CryptoKeyVersion(proto.Message):
                 manager was destroyed. Additional details can be found in
                 [CryptoKeyVersion.external_destruction_failure_reason][google.cloud.kms.v1.CryptoKeyVersion.external_destruction_failure_reason].
         """
+
         CRYPTO_KEY_VERSION_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 5
         ENABLED = 1
@@ -981,6 +980,7 @@ class CryptoKeyVersion(proto.Message):
                 including the
                 [attestation][google.cloud.kms.v1.CryptoKeyVersion.attestation].
         """
+
         CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED = 0
         FULL = 1
 
@@ -1194,6 +1194,7 @@ class PublicKey(proto.Message):
                 format defined in its standard
                 https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem.
         """
+
         PUBLIC_KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
         DER = 2
@@ -1386,6 +1387,7 @@ class ImportJob(proto.Message):
                 this method cannot be used to wrap RSA keys for
                 import.
         """
+
         IMPORT_METHOD_UNSPECIFIED = 0
         RSA_OAEP_3072_SHA1_AES_256 = 1
         RSA_OAEP_4096_SHA1_AES_256 = 2
@@ -1417,6 +1419,7 @@ class ImportJob(proto.Message):
                 This job can no longer be used and may not
                 leave this state once entered.
         """
+
         IMPORT_JOB_STATE_UNSPECIFIED = 0
         PENDING_GENERATION = 1
         ACTIVE = 2

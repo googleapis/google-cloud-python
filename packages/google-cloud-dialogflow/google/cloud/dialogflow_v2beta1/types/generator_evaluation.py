@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import generator
@@ -91,8 +91,8 @@ class ListGeneratorEvaluationsRequest(proto.Message):
             return in a single page. By default 100 and at
             most 1000.
         page_token (str):
-            Optional. The next_page_token value returned
-            from a previous list request.
+            Optional. The next_page_token value returned from a previous
+            list request.
     """
 
     parent: str = proto.Field(
@@ -717,12 +717,12 @@ class SummarizationEvaluationMetrics(proto.Message):
             message="SummarizationEvaluationMetrics.SectionToken",
         )
 
-    summarization_evaluation_results: MutableSequence[
-        SummarizationEvaluationResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=SummarizationEvaluationResult,
+    summarization_evaluation_results: MutableSequence[SummarizationEvaluationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=SummarizationEvaluationResult,
+        )
     )
     summarization_evaluation_merged_results_uri: str = proto.Field(
         proto.STRING,
@@ -754,12 +754,10 @@ class GeneratorEvaluationConfig(proto.Message):
         input_data_config (google.cloud.dialogflow_v2beta1.types.GeneratorEvaluationConfig.InputDataConfig):
             Required. The config/source of input data.
         output_gcs_bucket_path (str):
-            Required. The output Cloud Storage bucket path
-            to store eval files, e.g.
-            per_summary_accuracy_score report. This path is
-            provided by customer and files stored in it are
-            visible to customer, no internal data should be
-            stored in this path.
+            Required. The output Cloud Storage bucket path to store eval
+            files, e.g. per_summary_accuracy_score report. This path is
+            provided by customer and files stored in it are visible to
+            customer, no internal data should be stored in this path.
         summarization_config (google.cloud.dialogflow_v2beta1.types.GeneratorEvaluationConfig.SummarizationConfig):
             Evaluation configs for summarization
             generator.
@@ -775,17 +773,15 @@ class GeneratorEvaluationConfig(proto.Message):
                 Unspecified InputDataSourceType. Should not
                 be used.
             AGENT_ASSIST_CONVERSATIONS (1):
-                Fetch data from Agent Assist storage. If this
-                source type is chosen,
-                input_data_config.start_time and
-                input_data_config.end_timestamp must be
-                provided.
+                Fetch data from Agent Assist storage. If this source type is
+                chosen, input_data_config.start_time and
+                input_data_config.end_timestamp must be provided.
             INSIGHTS_CONVERSATIONS (2):
-                Fetch data from Insights storage. If this source
-                type is chosen, input_data_config.start_time and
-                input_data_config.end_timestamp must be
-                provided.
+                Fetch data from Insights storage. If this source type is
+                chosen, input_data_config.start_time and
+                input_data_config.end_timestamp must be provided.
         """
+
         INPUT_DATA_SOURCE_TYPE_UNSPECIFIED = 0
         AGENT_ASSIST_CONVERSATIONS = 1
         INSIGHTS_CONVERSATIONS = 2
@@ -891,6 +887,7 @@ class GeneratorEvaluationConfig(proto.Message):
                     Do not generate new summaries. Only use
                     existing summaries found.
             """
+
             SUMMARY_GENERATION_OPTION_UNSPECIFIED = 0
             ALWAYS_GENERATE = 1
             GENERATE_IF_MISSING = 2

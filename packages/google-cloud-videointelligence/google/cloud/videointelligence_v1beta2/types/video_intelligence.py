@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -69,6 +69,7 @@ class Feature(proto.Enum):
         FACE_DETECTION (4):
             Human face detection and tracking.
     """
+
     FEATURE_UNSPECIFIED = 0
     LABEL_DETECTION = 1
     SHOT_CHANGE_DETECTION = 2
@@ -90,6 +91,7 @@ class LabelDetectionMode(proto.Enum):
             Detect both shot-level and frame-level
             labels.
     """
+
     LABEL_DETECTION_MODE_UNSPECIFIED = 0
     SHOT_MODE = 1
     FRAME_MODE = 2
@@ -113,6 +115,7 @@ class Likelihood(proto.Enum):
         VERY_LIKELY (5):
             Very likely.
     """
+
     LIKELIHOOD_UNSPECIFIED = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -361,8 +364,7 @@ class LabelSegment(proto.Message):
         segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a label was detected.
         confidence (float):
-            Confidence that the label is accurate. Range:
-            [0, 1].
+            Confidence that the label is accurate. Range: [0, 1].
     """
 
     segment: "VideoSegment" = proto.Field(
@@ -385,8 +387,7 @@ class LabelFrame(proto.Message):
             video, corresponding to the video frame for this
             location.
         confidence (float):
-            Confidence that the label is accurate. Range:
-            [0, 1].
+            Confidence that the label is accurate. Range: [0, 1].
     """
 
     time_offset: duration_pb2.Duration = proto.Field(
@@ -405,9 +406,9 @@ class Entity(proto.Message):
 
     Attributes:
         entity_id (str):
-            Opaque entity ID. Some IDs may be available in
-            [Google Knowledge Graph Search
-            API](https://developers.google.com/knowledge-graph/).
+            Opaque entity ID. Some IDs may be available in `Google
+            Knowledge Graph Search
+            API <https://developers.google.com/knowledge-graph/>`__.
         description (str):
             Textual description, e.g. ``Fixed-gear bicycle``.
         language_code (str):
@@ -511,9 +512,8 @@ class ExplicitContentAnnotation(proto.Message):
 
 
 class NormalizedBoundingBox(proto.Message):
-    r"""Normalized bounding box.
-    The normalized vertex coordinates are relative to the original
-    image. Range: [0, 1].
+    r"""Normalized bounding box. The normalized vertex coordinates are
+    relative to the original image. Range: [0, 1].
 
     Attributes:
         left (float):
@@ -574,12 +574,12 @@ class FaceFrame(proto.Message):
             location.
     """
 
-    normalized_bounding_boxes: MutableSequence[
-        "NormalizedBoundingBox"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="NormalizedBoundingBox",
+    normalized_bounding_boxes: MutableSequence["NormalizedBoundingBox"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NormalizedBoundingBox",
+        )
     )
     time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -756,12 +756,12 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="VideoAnnotationProgress",
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="VideoAnnotationProgress",
+        )
     )
 
 

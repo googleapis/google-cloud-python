@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -196,12 +196,10 @@ class CreateFolderRequest(proto.Message):
             and folder_id fields, respectively. Populating those fields
             in ``folder`` will result in an error.
         folder_id (str):
-            Required. The full name of a folder, including
-            all its parent folders. Folders use single '/'
-            characters as a delimiter. The folder_id must
-            end with a slash.
-            For example, the folder_id of
-            "books/biographies/" would create a new
+            Required. The full name of a folder, including all its
+            parent folders. Folders use single '/' characters as a
+            delimiter. The folder_id must end with a slash. For example,
+            the folder_id of "books/biographies/" would create a new
             "biographies/" folder under the "books/" folder.
         recursive (bool):
             Optional. If true, parent folder doesn't have
@@ -314,18 +312,17 @@ class ListFoldersRequest(proto.Message):
             above prefix, or are one level below the prefix.
             The only supported value is '/'.
         lexicographic_start (str):
-            Optional. Filter results to folders whose names
-            are lexicographically equal to or after
-            lexicographic_start. If lexicographic_end is
-            also set, the folders listed have names between
-            lexicographic_start (inclusive) and
+            Optional. Filter results to folders whose names are
+            lexicographically equal to or after lexicographic_start. If
+            lexicographic_end is also set, the folders listed have names
+            between lexicographic_start (inclusive) and
             lexicographic_end (exclusive).
         lexicographic_end (str):
-            Optional. Filter results to folders whose names
-            are lexicographically before lexicographic_end.
-            If lexicographic_start is also set, the folders
-            listed have names between lexicographic_start
-            (inclusive) and lexicographic_end (exclusive).
+            Optional. Filter results to folders whose names are
+            lexicographically before lexicographic_end. If
+            lexicographic_start is also set, the folders listed have
+            names between lexicographic_start (inclusive) and
+            lexicographic_end (exclusive).
         request_id (str):
             Optional. A unique identifier for this
             request. UUID is the recommended format, but
@@ -472,9 +469,9 @@ class CommonLongRunningOperationMetadata(proto.Message):
             Output only. Identifies whether the user has
             requested cancellation.
         progress_percent (int):
-            Output only. The estimated progress of the
-            operation in percentage [0, 100]. The value -1
-            means the progress is unknown.
+            Output only. The estimated progress of the operation in
+            percentage [0, 100]. The value -1 means the progress is
+            unknown.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1404,6 +1401,7 @@ class IntelligenceConfig(proto.Message):
                 ``IntelligenceConfig`` resource is upgraded to ``STANDARD``
                 edition.
         """
+
         EDITION_CONFIG_UNSPECIFIED = 0
         INHERIT = 1
         DISABLED = 2
@@ -1526,6 +1524,7 @@ class IntelligenceConfig(proto.Message):
                 STANDARD (2):
                     The ``IntelligenceConfig`` resource is of STANDARD edition.
             """
+
             EFFECTIVE_EDITION_UNSPECIFIED = 0
             NONE = 1
             STANDARD = 2

@@ -35,11 +35,11 @@ class CompleteQueryRequest(proto.Message):
 
     Attributes:
         tenant (str):
-            Required. Resource name of tenant the completion
-            is performed within.
-            The format is
-            "projects/{project_id}/tenants/{tenant_id}", for
-            example, "projects/foo/tenants/bar".
+            Required. Resource name of tenant the completion is
+            performed within.
+
+            The format is "projects/{project_id}/tenants/{tenant_id}",
+            for example, "projects/foo/tenants/bar".
         query (str):
             Required. The query used to generate
             suggestions.
@@ -56,12 +56,11 @@ class CompleteQueryRequest(proto.Message):
 
             The maximum allowed page size is 10.
         company (str):
-            If provided, restricts completion to specified
-            company.
+            If provided, restricts completion to specified company.
+
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
-            for example,
-            "projects/foo/tenants/bar/companies/baz".
+            for example, "projects/foo/tenants/bar/companies/baz".
         scope (google.cloud.talent_v4.types.CompleteQueryRequest.CompletionScope):
             The scope of the completion. The defaults is
             [CompletionScope.PUBLIC][google.cloud.talent.v4.CompleteQueryRequest.CompletionScope.PUBLIC].
@@ -83,6 +82,7 @@ class CompleteQueryRequest(proto.Message):
                 Suggestions are based on all jobs data in the
                 system that's visible to the client
         """
+
         COMPLETION_SCOPE_UNSPECIFIED = 0
         TENANT = 1
         PUBLIC = 2
@@ -121,6 +121,7 @@ class CompleteQueryRequest(proto.Message):
                 [language_codes][google.cloud.talent.v4.CompleteQueryRequest.language_codes]
                 are returned.
         """
+
         COMPLETION_TYPE_UNSPECIFIED = 0
         JOB_TITLE = 1
         COMPANY_NAME = 2

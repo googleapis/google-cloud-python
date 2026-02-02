@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.retail_v2alpha import gapic_version as package_version
 
@@ -44,16 +44,14 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.cloud.retail_v2alpha.types import common
-from google.cloud.retail_v2alpha.types import project
+from google.cloud.retail_v2alpha.types import common, project, project_service
 from google.cloud.retail_v2alpha.types import project as gcr_project
-from google.cloud.retail_v2alpha.types import project_service
 
 from .client import ProjectServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, ProjectServiceTransport
@@ -129,7 +127,8 @@ class ProjectServiceAsyncClient:
         Returns:
             ProjectServiceAsyncClient: The constructed client.
         """
-        return ProjectServiceClient.from_service_account_info.__func__(ProjectServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = ProjectServiceClient.from_service_account_info.__func__  # type: ignore
+        return sa_info_func(ProjectServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -145,7 +144,8 @@ class ProjectServiceAsyncClient:
         Returns:
             ProjectServiceAsyncClient: The constructed client.
         """
-        return ProjectServiceClient.from_service_account_file.__func__(ProjectServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = ProjectServiceClient.from_service_account_file.__func__  # type: ignore
+        return sa_file_func(ProjectServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -543,9 +543,9 @@ class ProjectServiceAsyncClient:
 
         The [Recommendations AI solution
         type][google.cloud.retail.v2alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION]
-        is enrolled by default when your project enables Retail
-        API, so you don't need to call the enrollSolution method
-        for recommendations.
+        is enrolled by default when your project enables Retail API, so
+        you don't need to call the enrollSolution method for
+        recommendations.
 
         .. code-block:: python
 
@@ -797,8 +797,7 @@ class ProjectServiceAsyncClient:
                 [ProjectService.GetLoggingConfig][google.cloud.retail.v2alpha.ProjectService.GetLoggingConfig]
                 method.
             name (:class:`str`):
-                Required. Full LoggingConfig resource
-                name. Format:
+                Required. Full LoggingConfig resource name. Format:
                 projects/{project_number}/loggingConfig
 
                 This corresponds to the ``name`` field
@@ -1059,8 +1058,7 @@ class ProjectServiceAsyncClient:
                 [ProjectService.GetAlertConfig][google.cloud.retail.v2alpha.ProjectService.GetAlertConfig]
                 method.
             name (:class:`str`):
-                Required. Full AlertConfig resource
-                name. Format:
+                Required. Full AlertConfig resource name. Format:
                 projects/{project_number}/alertConfig
 
                 This corresponds to the ``name`` field

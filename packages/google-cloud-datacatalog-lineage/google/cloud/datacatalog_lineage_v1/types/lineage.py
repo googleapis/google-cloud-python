@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -161,6 +161,7 @@ class Run(proto.Message):
             ABORTED (4):
                 The run aborted.
         """
+
         UNKNOWN = 0
         STARTED = 1
         COMPLETED = 2
@@ -275,8 +276,8 @@ class EntityReference(proto.Message):
 
     Attributes:
         fully_qualified_name (str):
-            Required. [Fully Qualified Name
-            (FQN)](https://cloud.google.com/data-catalog/docs/fully-qualified-names)
+            Required. `Fully Qualified Name
+            (FQN) <https://cloud.google.com/data-catalog/docs/fully-qualified-names>`__
             of the entity.
     """
 
@@ -329,6 +330,7 @@ class OperationMetadata(proto.Message):
                 The operation is no longer running and did
                 not succeed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -346,6 +348,7 @@ class OperationMetadata(proto.Message):
             CREATE (2):
                 The resource creation operation.
         """
+
         TYPE_UNSPECIFIED = 0
         DELETE = 1
         CREATE = 2
@@ -1253,6 +1256,7 @@ class Origin(proto.Message):
             DATAPROC (6):
                 Dataproc
         """
+
         SOURCE_TYPE_UNSPECIFIED = 0
         CUSTOM = 1
         BIGQUERY = 2

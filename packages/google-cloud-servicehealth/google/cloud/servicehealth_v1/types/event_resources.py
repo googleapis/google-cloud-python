@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -59,6 +59,7 @@ class EventView(proto.Enum):
         EVENT_VIEW_FULL (2):
             Includes all event fields.
     """
+
     EVENT_VIEW_UNSPECIFIED = 0
     EVENT_VIEW_BASIC = 1
     EVENT_VIEW_FULL = 2
@@ -79,6 +80,7 @@ class OrganizationEventView(proto.Enum):
         ORGANIZATION_EVENT_VIEW_FULL (2):
             Includes all organization event fields.
     """
+
     ORGANIZATION_EVENT_VIEW_UNSPECIFIED = 0
     ORGANIZATION_EVENT_VIEW_BASIC = 1
     ORGANIZATION_EVENT_VIEW_FULL = 2
@@ -149,6 +151,7 @@ class Event(proto.Message):
                 Event category for service outage or
                 degradation.
         """
+
         EVENT_CATEGORY_UNSPECIFIED = 0
         INCIDENT = 2
 
@@ -168,6 +171,7 @@ class Event(proto.Message):
                 under investigation to determine if it has a
                 confirmed impact on any Google Cloud products.
         """
+
         DETAILED_CATEGORY_UNSPECIFIED = 0
         CONFIRMED_INCIDENT = 1
         EMERGING_INCIDENT = 2
@@ -186,6 +190,7 @@ class Event(proto.Message):
                 Event is no longer affecting the Google Cloud
                 product or has been merged with another event.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -228,6 +233,7 @@ class Event(proto.Message):
                 Google Cloud product. This state can change if
                 the incident is reviewed again.
         """
+
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
         CONFIRMED = 2
@@ -264,6 +270,7 @@ class Event(proto.Message):
                 The incident is verified to be impacting your
                 project.
         """
+
         RELEVANCE_UNSPECIFIED = 0
         UNKNOWN = 2
         NOT_IMPACTED = 6
@@ -410,6 +417,7 @@ class OrganizationEvent(proto.Message):
                 Event category for service outage or
                 degradation.
         """
+
         EVENT_CATEGORY_UNSPECIFIED = 0
         INCIDENT = 2
 
@@ -429,6 +437,7 @@ class OrganizationEvent(proto.Message):
                 under investigation to determine if it has a
                 confirmed impact on any Google Cloud products.
         """
+
         DETAILED_CATEGORY_UNSPECIFIED = 0
         CONFIRMED_INCIDENT = 1
         EMERGING_INCIDENT = 2
@@ -447,6 +456,7 @@ class OrganizationEvent(proto.Message):
                 Event is no longer affecting the Google Cloud
                 product or has been merged with another event.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -489,6 +499,7 @@ class OrganizationEvent(proto.Message):
                 Google Cloud product. This state can change if
                 the incident is reviewed again.
         """
+
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
         CONFIRMED = 2
@@ -718,9 +729,9 @@ class Asset(proto.Message):
 
     Attributes:
         asset_name (str):
-            Output only. Full name of the resource as
-            defined in [Resource
-            Names](https://cloud.google.com/apis/design/resource_names#full_resource_name).
+            Output only. Full name of the resource as defined in
+            `Resource
+            Names <https://cloud.google.com/apis/design/resource_names#full_resource_name>`__.
         asset_type (str):
             Output only. Type of the asset. Example:
             ``"cloudresourcemanager.googleapis.com/Project"``
@@ -750,14 +761,13 @@ class ListEventsRequest(proto.Message):
             events of category = INCIDENT, use ``location`` =
             ``global``.
         page_size (int):
-            Optional. The maximum number of events that
-            should be returned. Acceptable values are 1 to
-            100, inclusive. (The default value is 10.) If
-            more results are available, the service returns
-            a next_page_token that you can use to get the
-            next page of results in subsequent list
-            requests. The service may return fewer events
-            than the requested page_size.
+            Optional. The maximum number of events that should be
+            returned. Acceptable values are 1 to 100, inclusive. (The
+            default value is 10.) If more results are available, the
+            service returns a next_page_token that you can use to get
+            the next page of results in subsequent list requests. The
+            service may return fewer events than the requested
+            page_size.
         page_token (str):
             Optional. A token identifying a page of results the server
             should return. Provide Page token returned by a previous
@@ -823,13 +833,12 @@ class ListEventsResponse(proto.Message):
         events (MutableSequence[google.cloud.servicehealth_v1.types.Event]):
             Output only. List of events.
         next_page_token (str):
-            Output only. The continuation token, used to
-            page through large result sets. Provide this
-            value in a subsequent request as page_token to
-            retrieve the next page.
+            Output only. The continuation token, used to page through
+            large result sets. Provide this value in a subsequent
+            request as page_token to retrieve the next page.
 
-            If this field is not present, there are no
-            subsequent results.
+            If this field is not present, there are no subsequent
+            results.
         unreachable (MutableSequence[str]):
             Output only. Locations that could not be
             reached.

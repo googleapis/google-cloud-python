@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import common
@@ -53,26 +53,24 @@ class UserEvent(proto.Message):
             - ``search``: Product search.
             - ``shopping-cart-page-view``: User viewing a shopping cart.
         visitor_id (str):
-            Required. A unique identifier for tracking
-            visitors.
-            For example, this could be implemented with an
-            HTTP cookie, which should be able to uniquely
-            identify a visitor on a single device. This
-            unique identifier should not change if the
-            visitor log in/out of the website.
+            Required. A unique identifier for tracking visitors.
 
-            Don't set the field to the same fixed ID for
-            different users. This mixes the event history of
-            those users together, which results in degraded
-            model quality.
+            For example, this could be implemented with an HTTP cookie,
+            which should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change if
+            the visitor log in/out of the website.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            Don't set the field to the same fixed ID for different
+            users. This mixes the event history of those users together,
+            which results in degraded model quality.
 
-            The field should not contain PII or user-data.
-            We recommend to use Google Analytics [Client
-            ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId)
+            The field must be a UTF-8 encoded string with a length limit
+            of 128 characters. Otherwise, an INVALID_ARGUMENT error is
+            returned.
+
+            The field should not contain PII or user-data. We recommend
+            to use Google Analytics `Client
+            ID <https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>`__
             for this field.
         session_id (str):
             A unique identifier for tracking a visitor session with a

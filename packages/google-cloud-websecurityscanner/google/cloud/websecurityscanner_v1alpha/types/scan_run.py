@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -89,6 +89,7 @@ class ScanRun(proto.Message):
                 The scan is either finished or stopped by
                 user.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
@@ -108,6 +109,7 @@ class ScanRun(proto.Message):
             KILLED (3):
                 The scan was terminated by user.
         """
+
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2
