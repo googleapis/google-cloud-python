@@ -2,6 +2,6 @@
 # This file controls who is tagged for review for any given pull request.
 
 # Default owner for all directories not owned by others
-*                                             @googleapis/python-core-client-libraries @googleapis/cloud-sdk-librarian-team
+*                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
 
 /packages/google-cloud-bigquery-storage/      @googleapis/api-bigquery
