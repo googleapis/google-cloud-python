@@ -4,6 +4,40 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.9.0](https://github.com/googleapis/python-storage/compare/v3.8.0...v3.9.0) (2026-02-02)
+
+
+### Features
+
+* add get_object method for async grpc client (#1735) ([0e5ec29bc6a31b77bcfba4254cef5bffb199095c](https://github.com/googleapis/python-storage/commit/0e5ec29bc6a31b77bcfba4254cef5bffb199095c))
+* expose `DELETE_OBJECT`   in `AsyncGrpcClient` (#1718) ([c8dd7a0b124c395b7b60189ee78f47aba8d51f7d](https://github.com/googleapis/python-storage/commit/c8dd7a0b124c395b7b60189ee78f47aba8d51f7d))
+* update generation for MRD (#1730) ([08bc7082db7392f13bc8c51511b4afa9c7b157c9](https://github.com/googleapis/python-storage/commit/08bc7082db7392f13bc8c51511b4afa9c7b157c9))
+* Move Zonal Buckets features of `_experimental` (#1728) ([74c9ecc54173420bfcd48498a8956088a035af50](https://github.com/googleapis/python-storage/commit/74c9ecc54173420bfcd48498a8956088a035af50))
+* add default user agent for grpc (#1726) ([7b319469d2e495ea0bf7367f3949190e8f5d9fff](https://github.com/googleapis/python-storage/commit/7b319469d2e495ea0bf7367f3949190e8f5d9fff))
+* expose finalized_time in blob.py applicable for GET_OBJECT in ZB (#1719) ([8e21a7fe54d0a043f31937671003630a1985a5d2](https://github.com/googleapis/python-storage/commit/8e21a7fe54d0a043f31937671003630a1985a5d2))
+* add context manager to mrd (#1724) ([5ac2808a69195c688ed42c3604d4bfadbb602a66](https://github.com/googleapis/python-storage/commit/5ac2808a69195c688ed42c3604d4bfadbb602a66))
+* integrate writes strategy and appendable object writer (#1695) ([dbd162b3583e32e6f705a51f5c3fef333a9b89d0](https://github.com/googleapis/python-storage/commit/dbd162b3583e32e6f705a51f5c3fef333a9b89d0))
+* Add support for opening via `write_handle` and fix `write_handle` type (#1715) ([2bc15fa570683ba584230c51b439d189dbdcd580](https://github.com/googleapis/python-storage/commit/2bc15fa570683ba584230c51b439d189dbdcd580))
+* Add micro-benchmarks for writes comparing standard (regional) vs rapid (zonal) buckets. (#1707) ([dbe9d8b89d975dfbed8c830a5687ccfafea51d5f](https://github.com/googleapis/python-storage/commit/dbe9d8b89d975dfbed8c830a5687ccfafea51d5f))
+* Add micro-benchmarks for reads comparing standard (regional) vs rapid (zonal) buckets. (#1697) ([1917649fac41481da1adea6c2a9f4ab1298a34c4](https://github.com/googleapis/python-storage/commit/1917649fac41481da1adea6c2a9f4ab1298a34c4))
+* send `user_agent` to grpc channel (#1712) ([cdb2486bb051dcbfbffc2510aff6aacede5e54d3](https://github.com/googleapis/python-storage/commit/cdb2486bb051dcbfbffc2510aff6aacede5e54d3))
+* add samples for appendable objects writes and reads (#1705) ([2e1a1eb5cbe1c909f1f892a0cc74fe63c8ef36ff](https://github.com/googleapis/python-storage/commit/2e1a1eb5cbe1c909f1f892a0cc74fe63c8ef36ff))
+* add samples for appendable objects writes and reads ([2e1a1eb5cbe1c909f1f892a0cc74fe63c8ef36ff](https://github.com/googleapis/python-storage/commit/2e1a1eb5cbe1c909f1f892a0cc74fe63c8ef36ff))
+* add support for `generation=0` to avoid overwriting existing objects and add `is_stream_open` support  (#1709) ([ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae](https://github.com/googleapis/python-storage/commit/ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae))
+* add support for `generation=0` to prevent overwriting existing objects ([ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae](https://github.com/googleapis/python-storage/commit/ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae))
+* add `is_stream_open` property to AsyncAppendableObjectWriter for stream status check ([ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae](https://github.com/googleapis/python-storage/commit/ea0f5bf8316f4bfcff2728d9d1baa68dde6ebdae))
+
+
+### Bug Fixes
+
+* receive eof while closing reads stream (#1733) ([2ef63396dca1c36f9b0f0f3cf87a61b5aa4bd465](https://github.com/googleapis/python-storage/commit/2ef63396dca1c36f9b0f0f3cf87a61b5aa4bd465))
+* Change contructors of MRD and AAOW AsyncGrpcClient.grpc_client to AsyncGrpcClient (#1727) ([e730bf50c4584f737ab86b2e409ddb27b40d2cec](https://github.com/googleapis/python-storage/commit/e730bf50c4584f737ab86b2e409ddb27b40d2cec))
+* instance grpc client once per process in benchmarks (#1725) ([721ea2dd6c6db2aa91fd3b90e56a831aaaa64061](https://github.com/googleapis/python-storage/commit/721ea2dd6c6db2aa91fd3b90e56a831aaaa64061))
+* update write handle on every recv() (#1716) ([5d9fafe1466b5ccb1db4a814967a5cc8465148a2](https://github.com/googleapis/python-storage/commit/5d9fafe1466b5ccb1db4a814967a5cc8465148a2))
+* Fix formatting in setup.py dependencies list (#1713) ([cc4831d7e253b265b0b96e08b5479f4c759be442](https://github.com/googleapis/python-storage/commit/cc4831d7e253b265b0b96e08b5479f4c759be442))
+* implement requests_done method to signal end of requests in async streams. Gracefully close streams. (#1700) ([6c160794afded5e8f4179399f1fe5248e32bf707](https://github.com/googleapis/python-storage/commit/6c160794afded5e8f4179399f1fe5248e32bf707))
+* implement requests_done method to signal end of requests in async streams. Gracefully close streams. ([6c160794afded5e8f4179399f1fe5248e32bf707](https://github.com/googleapis/python-storage/commit/6c160794afded5e8f4179399f1fe5248e32bf707))
+
 ## [3.8.0](https://github.com/googleapis/python-storage/compare/v3.7.0...v3.8.0) (2026-01-13)
 
 

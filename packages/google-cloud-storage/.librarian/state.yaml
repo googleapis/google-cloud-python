@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:8e2c32496077054105bd06c54a59d6a6694287bc053588e24debe6da6920ad91
 libraries:
   - id: google-cloud-storage
-    version: 3.8.0
+    version: 3.9.0
     last_generated_commit: 5400ccce473c439885bd6bf2924fd242271bfcab
     apis:
       - path: google/storage/v2
