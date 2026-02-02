@@ -841,6 +841,9 @@ def test_content_bundle_service_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [ContentBundleServiceClient])
+@pytest.mark.filterwarnings(
+    "ignore:get_mtls_endpoint_and_cert_source is deprecated:DeprecationWarning"
+)
 @mock.patch.object(
     ContentBundleServiceClient,
     "DEFAULT_ENDPOINT",

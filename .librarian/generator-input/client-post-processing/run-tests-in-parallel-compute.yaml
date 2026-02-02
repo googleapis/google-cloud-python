@@ -18,18 +18,10 @@ replacements:
       packages/google-cloud-compute/noxfile.py,
     ]
     before: |
-      "mock",
-          "asyncmock",
-          "pytest",
-          "pytest-cov",
-          "pytest-asyncio",
+      "pytest-asyncio",
       \]
     after: |
-      "mock",
-          "asyncmock",
-          "pytest<9",
-          "pytest-cov",
-          "pytest-asyncio",
+      "pytest-asyncio",
           "pytest-xdist",
       ]
     count: 1
@@ -40,11 +32,22 @@ replacements:
       session.install\("protobuf<4"\)
       \
       \    # Run py.test against the unit tests.
+      \    session.run\(
+      \        "py.test",
+      \        "--quiet",
     after: |
       session.install("protobuf<4")\n
-          import faulthandler; faulthandler.enable()
-          concurrent_args = ["-n", "4", "--max-worker-restart", "0"]\n
+          import os
+          import faulthandler
+          import sys
+          os.environ['export PYTHONFAULTHANDLER'] = "1"
+          faulthandler.enable(sys.stderr)
+          concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
           # Run py.test against the unit tests.
+          session.run(
+              "py.test",
+              "-W",
+              "ignore::DeprecationWarning",
     count: 1
   - paths: [
       packages/google-cloud-compute/noxfile.py,

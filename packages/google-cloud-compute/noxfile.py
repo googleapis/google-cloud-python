@@ -254,13 +254,14 @@ def unit(session, protobuf_implementation):
     if protobuf_implementation == "cpp":
         session.install("protobuf<4")
 
-    # Limit to 4 CPUs for now
-    concurrent_args = ["-n", "4"]
+    import os
+    os.environ['export PYTHONFAULTHANDLER'] = "1"
+    concurrent_args = ["-n", "4", "--max-worker-restart", "16"]
 
     # Run py.test against the unit tests.
     session.run(
         "py.test",
-        "--quiet",
+        "-vvv",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
         "--cov=tests/unit",
