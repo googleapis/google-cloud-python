@@ -92,6 +92,10 @@ ENV PYTHON_VERSION_DEFAULT=3.14
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14992): Remove gdb
+    # Once this bug is fixed.
+    # Temporarily add gdb to assist with remote debugging for issue 14992.
+    gdb \
     # This is needed to avoid the following error:
     # `ImportError: libsqlite3.so.0: cannot open shared object file: No such file or directory`.
     # `libsqlite3-0` is used by the `coverage` PyPI package which is used when testing libraries
