@@ -49,9 +49,9 @@ replacements:
       packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/services/container_analysis/async_client.py,
     ]
     before: |
-      from google.iam.v1 import policy_pb2  # type: ignore\n
+      import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore\n
     after: |
-      from google.iam.v1 import policy_pb2  # type: ignore
+      import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
       from grafeas import grafeas_v1
       from grafeas.grafeas_v1.services.grafeas import transports\n
     count: 2
@@ -110,7 +110,7 @@ replacements:
   - paths: [
     packages/google-cloud-containeranalysis/google/cloud/devtools/containeranalysis_v1/types/containeranalysis.py
     ]
-    before: from grafeas.v1 import severity_pb2  # type: ignore
+    before: import grafeas.v1.severity_pb2 as severity_pb2  # type: ignore
     after: import grafeas.grafeas_v1  # type: ignore
     count: 1
   - paths: [

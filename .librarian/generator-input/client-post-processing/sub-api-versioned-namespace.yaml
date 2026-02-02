@@ -18,10 +18,8 @@ replacements:
       packages/google-cloud-gke-hub/google/cloud/gkehub_v1/types/feature.py
     ]
     before: |
-      from google.cloud.gkehub.configmanagement.v1 import configmanagement_pb2  # type: ignore
-      from google.cloud.gkehub.multiclusteringress.v1 import \(
-          multiclusteringress_pb2,
-      \)  # type: ignore
+      import google.cloud.gkehub.configmanagement.v1.configmanagement_pb2 as configmanagement_pb2  # type: ignore
+      import google.cloud.gkehub.multiclusteringress.v1.multiclusteringress_pb2 as multiclusteringress_pb2  # type: ignore
     after: |
       from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
       from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore

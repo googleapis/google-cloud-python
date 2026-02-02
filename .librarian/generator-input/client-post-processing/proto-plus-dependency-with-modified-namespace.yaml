@@ -18,7 +18,7 @@ replacements:
       packages/google-cloud-binary-authorization/google/cloud/binaryauthorization_v1/types/service.py,
     ]
     before: |
-      from grafeas.v1 import attestation_pb2  # type: ignore
+      import grafeas.v1.attestation_pb2 as attestation_pb2  # type: ignore
     after: |
       import grafeas.grafeas_v1.types  # type: ignore
     count: 1
@@ -37,7 +37,7 @@ replacements:
   - paths: [
       packages/google-cloud-policytroubleshooter-iam/google/cloud/policytroubleshooter_iam_v3/types/troubleshooter.py,
     ]
-    before: from google.iam.v2 import policy_pb2  # type: ignore
+    before: import google.iam.v2.policy_pb2 as policy_pb2  # type: ignore
     after: from google.cloud.iam_v2 import Policy  # type: ignore
     count: 1
   - paths: [
