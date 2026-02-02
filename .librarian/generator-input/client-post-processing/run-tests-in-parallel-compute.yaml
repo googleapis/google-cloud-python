@@ -55,7 +55,7 @@ replacements:
               "-m", "pytest",
               "-n", "auto",
               "--max-worker-restart", "0",
-              "tests/unit/gapic/compute_v1/test_instances.py::test_update_rest_call_success[dict]", 
+              "tests/unit/gapic/compute_v1",
               "-v"
           ]
 

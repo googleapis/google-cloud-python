@@ -291,10 +291,8 @@ def unit(session, protobuf_implementation):
 
     except subprocess.CalledProcessError as e:
         print(f"Command failed with return code {e.returncode}")
-        print(f"Error output:
-{e.stderr}")
-        print(f"Standard output:
-{e.stdout}")
+        print(f"Error output:{e.stderr}")
+        print(f"Standard output:{e.stdout}")
         concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]
 
         # Run py.test against the unit tests.
