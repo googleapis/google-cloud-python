@@ -243,7 +243,7 @@ class StorageSource(proto.Message):
             SOURCE_FETCHER_UNSPECIFIED (0):
                 Unspecified defaults to GSUTIL.
             GSUTIL (1):
-                Use the "gcloud storage" tool to download the source
+                Use the "gsutil" tool to download the source
                 file.
             GCS_FETCHER (2):
                 Use the Cloud Storage Fetcher tool to
