@@ -467,6 +467,24 @@ libraries:
       - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
+  - id: google-cloud-auditmanager
+    version: 0.0.0
+    last_generated_commit: 85b3f459f91cd08669c27da47d07bb57f6d9aa4d
+    apis:
+      - path: google/cloud/auditmanager/v1
+        service_config: auditmanager_v1.yaml
+    source_roots:
+      - packages/google-cloud-auditmanager
+    preserve_regex:
+      - packages/google-cloud-auditmanager/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-auditmanager
+    tag_format: '{id}-v{version}'
   - id: google-cloud-automl
     version: 2.18.1
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
