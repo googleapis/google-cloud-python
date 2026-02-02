@@ -1,6 +1,6 @@
 click
 # Testing branch cache-api-context
-gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@e5efb6190502b666c43f7a82fe119f75ff9d1fbe
+gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@95a512e4d2749de96940e440fe66c5d6742a4fc0
 nox
 starlark-pyo3>=2025.1
 build
