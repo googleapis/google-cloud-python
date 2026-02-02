@@ -74,8 +74,8 @@ replacements:
 
           except subprocess.CalledProcessError as e:
               print(f"Command failed with return code {e.returncode}")
-              print(f"Error output:\n{e.stderr}")
-              print(f"Standard output:\n{e.stdout}")
+              print(f"Error output:{e.stderr}")
+              print(f"Standard output:{e.stdout}")
               concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
               # Run py.test against the unit tests.
               session.run(

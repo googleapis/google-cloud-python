@@ -255,13 +255,53 @@ def unit(session, protobuf_implementation):
         session.install("protobuf<4")
 
     import os
+    import faulthandler
+    import sys
     os.environ['export PYTHONFAULTHANDLER'] = "1"
-    concurrent_args = ["-n", "4", "--max-worker-restart", "16"]
+    import subprocess
 
-    # Run py.test against the unit tests.
-    session.run(
-        "py.test",
-        "-vvv",
+    python_binary = f"{session.bin}/python"
+    # Define the command as a list of strings
+    command = [
+        "gdb", 
+        "-batch", 
+        "-ex", "run", 
+        "-ex", "bt", 
+        "--args", 
+        python_binary,
+        "-m", "pytest",
+        "-n", "auto",
+        "--max-worker-restart", "0",
+        "tests/unit/gapic/compute_v1/test_instances.py::test_update_rest_call_success[dict]", 
+        "-v"
+    ]
+
+    try:
+        # Run the command
+        result = subprocess.run(
+            command,
+            capture_output=True, # Captures stdout and stderr
+            text=True,           # Returns output as string instead of bytes
+            check=True           # Raises an error if the command fails
+        )
+
+        # Print the output
+        print("--- GDB Output ---")
+        print(result.stdout)
+
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed with return code {e.returncode}")
+        print(f"Error output:
+{e.stderr}")
+        print(f"Standard output:
+{e.stdout}")
+        concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]
+
+        # Run py.test against the unit tests.
+        session.run(
+            "py.test",
+            "-W",
+            "ignore::DeprecationWarning",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
         "--cov=tests/unit",
