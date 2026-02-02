@@ -254,3 +254,78 @@ class TestAsyncGrpcClient:
         assert request.if_generation_not_match == if_generation_not_match
         assert request.if_metageneration_match == if_metageneration_match
         assert request.if_metageneration_not_match == if_metageneration_not_match
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    @pytest.mark.asyncio
+    async def test_get_object(self, mock_async_storage_client):
+        # Arrange
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_gapic_client = mock.AsyncMock()
+        mock_async_storage_client.return_value = mock_gapic_client
+
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=_make_credentials(spec=AnonymousCredentials)
+        )
+
+        bucket_name = "bucket"
+        object_name = "object"
+
+        # Act
+        await client.get_object(
+            bucket_name,
+            object_name,
+        )
+
+        # Assert
+        call_args, call_kwargs = mock_gapic_client.get_object.call_args
+        request = call_kwargs["request"]
+        assert request.bucket == "projects/_/buckets/bucket"
+        assert request.object == "object"
+        assert request.soft_deleted is False
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    @pytest.mark.asyncio
+    async def test_get_object_with_all_parameters(self, mock_async_storage_client):
+        # Arrange
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_gapic_client = mock.AsyncMock()
+        mock_async_storage_client.return_value = mock_gapic_client
+
+        client = async_grpc_client.AsyncGrpcClient(
+            credentials=_make_credentials(spec=AnonymousCredentials)
+        )
+
+        bucket_name = "bucket"
+        object_name = "object"
+        generation = 123
+        if_generation_match = 456
+        if_generation_not_match = 789
+        if_metageneration_match = 111
+        if_metageneration_not_match = 222
+        soft_deleted = True
+
+        # Act
+        await client.get_object(
+            bucket_name,
+            object_name,
+            generation=generation,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            soft_deleted=soft_deleted,
+        )
+
+        # Assert
+        call_args, call_kwargs = mock_gapic_client.get_object.call_args
+        request = call_kwargs["request"]
+        assert request.bucket == "projects/_/buckets/bucket"
+        assert request.object == "object"
+        assert request.generation == generation
+        assert request.if_generation_match == if_generation_match
+        assert request.if_generation_not_match == if_generation_not_match
+        assert request.if_metageneration_match == if_metageneration_match
+        assert request.if_metageneration_not_match == if_metageneration_not_match
+        assert request.soft_deleted is True

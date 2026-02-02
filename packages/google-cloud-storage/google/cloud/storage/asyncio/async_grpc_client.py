@@ -158,3 +158,66 @@ class AsyncGrpcClient:
             **kwargs,
         )
         await self._grpc_client.delete_object(request=request)
+
+    async def get_object(
+        self,
+        bucket_name,
+        object_name,
+        generation=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        soft_deleted=None,
+        **kwargs,
+    ):
+        """Retrieves an object's metadata.
+
+        In the gRPC API, this is performed by the GetObject RPC, which
+        returns the object resource (metadata) without the object's data.
+
+        :type bucket_name: str
+        :param bucket_name: The name of the bucket in which the object resides.
+
+        :type object_name: str
+        :param object_name: The name of the object.
+
+        :type generation: int
+        :param generation:
+            (Optional) If present, selects a specific generation of an object.
+
+        :type if_generation_match: int
+        :param if_generation_match: (Optional) Precondition for object generation match.
+
+        :type if_generation_not_match: int
+        :param if_generation_not_match: (Optional) Precondition for object generation mismatch.
+
+        :type if_metageneration_match: int
+        :param if_metageneration_match: (Optional) Precondition for metageneration match.
+
+        :type if_metageneration_not_match: int
+        :param if_metageneration_not_match: (Optional) Precondition for metageneration mismatch.
+
+        :type soft_deleted: bool
+        :param soft_deleted:
+            (Optional) If True, return the soft-deleted version of this object.
+
+        :rtype: :class:`google.cloud._storage_v2.types.Object`
+        :returns: The object metadata resource.
+        """
+        bucket_path = f"projects/_/buckets/{bucket_name}"
+
+        request = storage_v2.GetObjectRequest(
+            bucket=bucket_path,
+            object=object_name,
+            generation=generation,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            soft_deleted=soft_deleted or False,
+            **kwargs,
+        )
+
+        # Calls the underlying GAPIC StorageAsyncClient.get_object method
+        return await self._grpc_client.get_object(request=request)
