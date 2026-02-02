@@ -46,3 +46,18 @@ def test_ai_operators_set_true_shows_warning():
         options.ai_operators = True
 
     assert options.ai_operators is True
+
+
+def test_sql_compiler_default_stable():
+    options = experiment_options.ExperimentOptions()
+
+    assert options.sql_compiler == "stable"
+
+
+def test_sql_compiler_set_experimental_shows_warning():
+    options = experiment_options.ExperimentOptions()
+
+    with pytest.warns(FutureWarning):
+        options.sql_compiler = "experimental"
+
+    assert options.sql_compiler == "experimental"

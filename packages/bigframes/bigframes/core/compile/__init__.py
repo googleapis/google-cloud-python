@@ -13,13 +13,28 @@
 # limitations under the License.
 from __future__ import annotations
 
+from typing import Any
+
+from bigframes import options
 from bigframes.core.compile.api import test_only_ibis_inferred_schema
 from bigframes.core.compile.configs import CompileRequest, CompileResult
-from bigframes.core.compile.ibis_compiler.ibis_compiler import compile_sql
+
+
+def compiler() -> Any:
+    """Returns the appropriate compiler module based on session options."""
+    if options.experiments.sql_compiler == "experimental":
+        import bigframes.core.compile.sqlglot.compiler as sqlglot_compiler
+
+        return sqlglot_compiler
+    else:
+        import bigframes.core.compile.ibis_compiler.ibis_compiler as ibis_compiler
+
+        return ibis_compiler
+
 
 __all__ = [
     "test_only_ibis_inferred_schema",
-    "compile_sql",
     "CompileRequest",
     "CompileResult",
+    "compiler",
 ]

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
+from typing import Literal, Optional
 import warnings
 
 import bigframes
@@ -27,6 +27,7 @@ class ExperimentOptions:
     def __init__(self):
         self._semantic_operators: bool = False
         self._ai_operators: bool = False
+        self._sql_compiler: Literal["legacy", "stable", "experimental"] = "stable"
 
     @property
     def semantic_operators(self) -> bool:
@@ -54,6 +55,24 @@ class ExperimentOptions:
             )
             warnings.warn(msg, category=bfe.PreviewWarning)
         self._ai_operators = value
+
+    @property
+    def sql_compiler(self) -> Literal["legacy", "stable", "experimental"]:
+        return self._sql_compiler
+
+    @sql_compiler.setter
+    def sql_compiler(self, value: Literal["legacy", "stable", "experimental"]):
+        if value not in ["legacy", "stable", "experimental"]:
+            raise ValueError(
+                "sql_compiler must be one of 'legacy', 'stable', or 'experimental'"
+            )
+        if value == "experimental":
+            msg = bfe.format_message(
+                "The experimental SQL compiler is still under experiments, and is subject "
+                "to change in the future."
+            )
+            warnings.warn(msg, category=FutureWarning)
+        self._sql_compiler = value
 
     @property
     def blob(self) -> bool:
