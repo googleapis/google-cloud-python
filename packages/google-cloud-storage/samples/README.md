@@ -34,8 +34,15 @@ for more detailed instructions.
     ```
     source <your-venv>/bin/activate
     ```
+3. To run samples for [Zonal Buckets](https://github.com/googleapis/python-storage/tree/main/samples/snippets/zonal_buckets)
 
-3. Install the dependencies needed to run the samples.
+    ```
+    pip install "google-cloud-storage[grpc]"
+    python samples/snippets/zonal_buckets/storage_create_and_write_appendable_object.py --bucket_name <BUCKET_NAME> --object_name <OBJECT_NAME>
+
+    ```
+
+4. Install the dependencies needed to run the samples.
     ```
     cd samples/snippets
     pip install -r requirements.txt
