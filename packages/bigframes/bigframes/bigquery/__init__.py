@@ -43,6 +43,7 @@ from bigframes.bigquery._operations.geo import (
     st_regionstats,
     st_simplify,
 )
+from bigframes.bigquery._operations.io import load_data
 from bigframes.bigquery._operations.json import (
     json_extract,
     json_extract_array,
@@ -107,6 +108,8 @@ _functions = [
     struct,
     # table ops
     create_external_table,
+    # io ops
+    load_data,
 ]
 
 _module = sys.modules[__name__]
@@ -160,6 +163,8 @@ __all__ = [
     "struct",
     # table ops
     "create_external_table",
+    # io ops
+    "load_data",
     # Modules / SQL namespaces
     "ai",
     "ml",
