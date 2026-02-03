@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.34.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.33.0...v2.34.0) (2026-02-02)
+
+
+### Features
+
+* add `bigframes.pandas.options.experiments.sql_compiler` for switching the backend compiler (#2417) ([7eba6ee03f07938315d99e2aeaf72368c02074cf](https://github.com/googleapis/python-bigquery-dataframes/commit/7eba6ee03f07938315d99e2aeaf72368c02074cf))
+* add bigquery.ml.generate_embedding function (#2422) ([35f3f5e6f8c64b47e6e7214034f96f047785e647](https://github.com/googleapis/python-bigquery-dataframes/commit/35f3f5e6f8c64b47e6e7214034f96f047785e647))
+* add bigquery.create_external_table method (#2415) ([76db2956e505aec4f1055118ac7ca523facc10ff](https://github.com/googleapis/python-bigquery-dataframes/commit/76db2956e505aec4f1055118ac7ca523facc10ff))
+* add deprecation warnings for .blob accessor and read_gbq_object_table (#2408) ([7261a4ea5cdab6b30f5bc333501648c60e70be59](https://github.com/googleapis/python-bigquery-dataframes/commit/7261a4ea5cdab6b30f5bc333501648c60e70be59))
+* add bigquery.ml.generate_text function (#2403) ([5ac681028624de15e31f0c2ae360b47b2dcf1e8d](https://github.com/googleapis/python-bigquery-dataframes/commit/5ac681028624de15e31f0c2ae360b47b2dcf1e8d))
+
+
+### Bug Fixes
+
+* broken job url (#2411) ([fcb5bc1761c656e1aec61dbcf96a36d436833b7a](https://github.com/googleapis/python-bigquery-dataframes/commit/fcb5bc1761c656e1aec61dbcf96a36d436833b7a))
+
 ## [2.33.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.32.0...v2.33.0) (2026-01-22)
 
 
