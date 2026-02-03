@@ -55,7 +55,16 @@ replacements:
               "-m", "pytest",
               "-n", "auto",
               "--max-worker-restart", "0",
-              "tests/unit/gapic/compute_v1",
+              "-W",
+              "ignore::DeprecationWarning",
+              f"--junitxml=unit_{session.python}_sponge_log.xml",
+              "--cov=google",
+              "--cov=tests/unit",
+              "--cov-append",
+              "--cov-config=.coveragerc",
+              "--cov-report=",
+              "--cov-fail-under=0",
+              "tests/unit",
               "-v"
           ]
 
