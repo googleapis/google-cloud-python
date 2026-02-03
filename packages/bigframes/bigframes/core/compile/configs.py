@@ -34,3 +34,4 @@ class CompileResult:
     sql: str
     sql_schema: typing.Sequence[google.cloud.bigquery.SchemaField]
     row_order: typing.Optional[ordering.RowOrdering]
+    encoded_type_refs: str

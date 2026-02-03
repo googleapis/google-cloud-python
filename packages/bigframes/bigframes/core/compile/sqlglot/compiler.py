@@ -34,6 +34,7 @@ from bigframes.core.compile.sqlglot.aggregations import windows
 from bigframes.core.compile.sqlglot.expressions import typed_expr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
+from bigframes.core.logging import data_types as data_type_logger
 import bigframes.core.ordering as bf_ordering
 from bigframes.core.rewrite import schema_binding
 
@@ -59,23 +60,29 @@ def compile_sql(request: configs.CompileRequest) -> configs.CompileResult:
     )
     if request.sort_rows:
         result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
+        encoded_type_refs = data_type_logger.encode_type_refs(result_node)
         sql = _compile_result_node(result_node)
         return configs.CompileResult(
-            sql, result_node.schema.to_bigquery(), result_node.order_by
+            sql,
+            result_node.schema.to_bigquery(),
+            result_node.order_by,
+            encoded_type_refs,
         )
 
     ordering: typing.Optional[bf_ordering.RowOrdering] = result_node.order_by
     result_node = dataclasses.replace(result_node, order_by=None)
     result_node = typing.cast(nodes.ResultNode, rewrite.column_pruning(result_node))
+    encoded_type_refs = data_type_logger.encode_type_refs(result_node)
     sql = _compile_result_node(result_node)
-
     # Return the ordering iff no extra columns are needed to define the row order
     if ordering is not None:
         output_order = (
             ordering if ordering.referenced_columns.issubset(result_node.ids) else None
         )
     assert (not request.materialize_all_order_keys) or (output_order is not None)
-    return configs.CompileResult(sql, result_node.schema.to_bigquery(), output_order)
+    return configs.CompileResult(
+        sql, result_node.schema.to_bigquery(), output_order, encoded_type_refs
+    )
 
 
 def _remap_variables(
