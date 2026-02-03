@@ -79,7 +79,7 @@ replacements:
               concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
               # Run py.test against the unit tests.
               session.run(
-                  "py.test",
+                  "pytest",
                   "-W",
                   "ignore::DeprecationWarning",
     count: 1
