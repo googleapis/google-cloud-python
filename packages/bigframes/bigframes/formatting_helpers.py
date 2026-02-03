@@ -200,10 +200,12 @@ def progress_callback(
                 display_id=current_display_id,
             )
         elif isinstance(event, bigframes.core.events.ExecutionFinished):
-            display.update_display(
-                display.HTML(f"✅ Completed. {previous_display_html}"),
-                display_id=current_display_id,
-            )
+            if previous_display_html:
+                display.update_display(
+                    display.HTML(f"✅ Completed. {previous_display_html}"),
+                    display_id=current_display_id,
+                )
+
         elif isinstance(event, bigframes.core.events.SessionClosed):
             display.update_display(
                 display.HTML(f"Session {event.session_id} closed."),
