@@ -10,5 +10,5 @@
     "repo": "googleapis/gapic-generator-python",
     "distribution_name": "gapic-generator",
     "default_version": "",
-    "codeowner_team": "@googleapis/actools-python"
+    "codeowner_team": "@googleapis/cloud-sdk-python-team"
 }
