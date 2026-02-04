@@ -13,9 +13,12 @@
 # limitations under the License.
 
 import pandas as pd
+import pytest
 
 import bigframes.dtypes as dtypes
 import bigframes.pandas as bpd
+
+pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
 
 
 def test_blob_uri(images_uris: list[str], images_mm_df: bpd.DataFrame):

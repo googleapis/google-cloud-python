@@ -26,6 +26,8 @@ import bigframes
 from bigframes import dtypes
 import bigframes.pandas as bpd
 
+pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
+
 
 @pytest.fixture(scope="function")
 def images_output_folder() -> Generator[str, None, None]:

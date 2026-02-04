@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pytest
+
 import bigframes.pandas as bpd
+
+pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
 
 
 def test_blob_read_url(images_mm_df: bpd.DataFrame):

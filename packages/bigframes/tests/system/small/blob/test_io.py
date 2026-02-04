@@ -20,6 +20,9 @@ import pytest
 import bigframes
 import bigframes.pandas as bpd
 
+pytest.skip("Skipping blob tests due to b/481790217", allow_module_level=True)
+
+
 idisplay = pytest.importorskip("IPython.display")
 
 
