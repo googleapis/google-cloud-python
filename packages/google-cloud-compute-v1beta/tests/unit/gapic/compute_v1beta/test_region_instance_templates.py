@@ -52,13 +52,13 @@ from google.api_core import (
 )
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import extended_operation  # type: ignore
 from google.api_core import retry as retries
+import google.api_core.extended_operation as extended_operation  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 
 from google.cloud.compute_v1beta.services.region_instance_templates import (
     RegionInstanceTemplatesClient,

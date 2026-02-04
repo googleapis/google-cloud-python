@@ -16,7 +16,7 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api import service_pb2  # type: ignore
+import google.api.service_pb2 as service_pb2  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1

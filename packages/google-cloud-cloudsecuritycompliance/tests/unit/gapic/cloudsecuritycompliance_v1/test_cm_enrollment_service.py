@@ -53,7 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.cloudsecuritycompliance_v1.services.cm_enrollment_service import (
     CmEnrollmentServiceAsyncClient,

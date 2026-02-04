@@ -16,7 +16,7 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -29,7 +29,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.apigee_registry_v1 import gapic_version as package_version
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service

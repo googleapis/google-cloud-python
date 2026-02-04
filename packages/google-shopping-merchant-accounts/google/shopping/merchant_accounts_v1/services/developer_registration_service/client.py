@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1.types import developerregistration
 
@@ -1041,8 +1041,8 @@ class DeveloperRegistrationServiceClient(
             # - It may require specifying regional endpoints when creating the service
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-            from google.protobuf import empty_pb2  # type: ignore
             from google.shopping import merchant_accounts_v1
+            import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
             def sample_get_account_for_gcp_registration():
                 # Create a client

@@ -24,7 +24,7 @@ from google.apps.script.type.gmail.types import gmail_addon_manifest
 from google.apps.script.type.sheets.types import sheets_addon_manifest
 from google.apps.script.type.slides.types import slides_addon_manifest
 from google.apps.script.type.types import script_manifest
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

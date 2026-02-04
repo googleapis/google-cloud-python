@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-securitycenter
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
 # [START securitycenter_v1beta1_generated_SecurityCenter_GetIamPolicy_sync]
 # This snippet has been automatically generated and should be regarded as a

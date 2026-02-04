@@ -46,7 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.retail_v2beta.services.serving_config_service import pagers
 from google.cloud.retail_v2beta.types import serving_config as gcr_serving_config

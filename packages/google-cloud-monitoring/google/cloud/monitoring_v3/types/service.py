@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.type import calendar_period_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.type.calendar_period_pb2 as calendar_period_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

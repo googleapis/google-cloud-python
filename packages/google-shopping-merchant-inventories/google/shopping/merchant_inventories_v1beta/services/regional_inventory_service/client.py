@@ -62,7 +62,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.shopping.type.types import types
-from google.type import interval_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 
 from google.shopping.merchant_inventories_v1beta.services.regional_inventory_service import (
     pagers,

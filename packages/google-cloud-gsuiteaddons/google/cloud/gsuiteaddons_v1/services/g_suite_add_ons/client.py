@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons import pagers
 from google.cloud.gsuiteaddons_v1.types import gsuiteaddons

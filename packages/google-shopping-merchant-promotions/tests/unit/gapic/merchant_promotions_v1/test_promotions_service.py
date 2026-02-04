@@ -51,9 +51,9 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.shopping.type.types import types
-from google.type import interval_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 
 from google.shopping.merchant_promotions_v1.services.promotions_service import (
     PromotionsServiceAsyncClient,

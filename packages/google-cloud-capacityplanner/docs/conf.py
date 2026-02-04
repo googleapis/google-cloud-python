@@ -12,8 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-#
+##
 # google-cloud-capacityplanner documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
@@ -25,9 +24,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import logging
 import os
 import shlex
 import sys
+from typing import Any
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -383,3 +384,34 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+
+# Setup for sphinx behaviors such as warning filters.
+class UnexpectedUnindentFilter(logging.Filter):
+    """Filter out warnings about unexpected unindentation following bullet lists."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        """Filter the log record.
+
+        Args:
+            record (logging.LogRecord): The log record.
+
+        Returns:
+            bool: False to suppress the warning, True to allow it.
+        """
+        msg = record.getMessage()
+        if "Bullet list ends without a blank line" in msg:
+            return False
+        return True
+
+
+def setup(app: Any) -> None:
+    """Setup the Sphinx application.
+
+    Args:
+        app (Any): The Sphinx application.
+    """
+    # Sphinx's logger is hierarchical. Adding a filter to the
+    # root 'sphinx' logger will catch warnings from all sub-loggers.
+    logger = logging.getLogger("sphinx")
+    logger.addFilter(UnexpectedUnindentFilter())

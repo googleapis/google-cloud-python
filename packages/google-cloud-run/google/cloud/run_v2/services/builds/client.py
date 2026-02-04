@@ -63,6 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 
 from google.cloud.run_v2.types import build
 

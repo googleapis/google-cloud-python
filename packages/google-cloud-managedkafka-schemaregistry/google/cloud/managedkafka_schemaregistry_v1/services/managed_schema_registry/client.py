@@ -61,10 +61,10 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 
 from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,

@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.shopping.type.types import types
-from google.type import interval_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 
 from google.shopping.merchant_inventories_v1beta.services.regional_inventory_service import (
     pagers,

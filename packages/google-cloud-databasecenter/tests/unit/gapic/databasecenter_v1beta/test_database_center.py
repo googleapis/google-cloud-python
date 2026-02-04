@@ -51,7 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.type import date_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
 
 from google.cloud.databasecenter_v1beta.services.database_center import (
     DatabaseCenterAsyncClient,

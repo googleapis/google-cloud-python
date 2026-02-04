@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import config_change_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.api.config_change_pb2 as config_change_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

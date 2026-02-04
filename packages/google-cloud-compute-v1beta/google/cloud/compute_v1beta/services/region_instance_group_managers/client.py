@@ -62,7 +62,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import extended_operation  # type: ignore
+import google.api_core.extended_operation as extended_operation  # type: ignore
 
 from google.cloud.compute_v1beta.services.region_instance_group_managers import pagers
 from google.cloud.compute_v1beta.types import compute

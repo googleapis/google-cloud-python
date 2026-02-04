@@ -20,8 +20,8 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import (
     transition_route_group as gcdc_transition_route_group,

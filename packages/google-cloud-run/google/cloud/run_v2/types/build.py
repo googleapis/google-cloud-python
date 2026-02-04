@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import launch_stage_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
