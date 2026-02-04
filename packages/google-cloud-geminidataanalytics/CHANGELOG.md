@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.9.0...google-cloud-geminidataanalytics-v0.10.0) (2026-02-04)
+
+
+### Documentation
+
+* A comment for enum value THOUGHT in enum TextType is changed ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
+
+### Features
+
+* add ClarificationMessage, thought-signature, formatted-data ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.8.0...google-cloud-geminidataanalytics-v0.9.0) (2026-01-15)
 
 
