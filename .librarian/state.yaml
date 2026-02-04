@@ -357,6 +357,24 @@ libraries:
     remove_regex:
       - packages/google-cloud-apihub/
     tag_format: '{id}-v{version}'
+  - id: google-cloud-apiregistry
+    version: 0.0.0
+    last_generated_commit: d077e5979c3e99b53fe43d606f553bba96b744d6
+    apis:
+      - path: google/cloud/apiregistry/v1beta
+        service_config: cloudapiregistry_v1beta.yaml
+    source_roots:
+      - packages/google-cloud-apiregistry
+    preserve_regex:
+      - packages/google-cloud-apiregistry/CHANGELOG.md
+      - docs/CHANGELOG.md
+      - samples/README.txt
+      - scripts/client-post-processing
+      - samples/snippets/README.rst
+      - tests/system
+    remove_regex:
+      - packages/google-cloud-apiregistry
+    tag_format: '{id}-v{version}'
   - id: google-cloud-appengine-admin
     version: 1.16.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
