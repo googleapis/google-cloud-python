@@ -30,7 +30,6 @@ def load_ipython_extension(ipython):
     ipython.register_magic_function(
         _cell_magic, magic_kind="cell", magic_name="bigquery"
     )
-    ipython.register_magic_function(_cell_magic, magic_kind="cell", magic_name="bqsql")
 
     global is_registered
     is_registered = True

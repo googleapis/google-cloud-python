@@ -8,7 +8,7 @@ in a Jupyter notebook cell.
 
     %load_ext bigquery_magics
 
-This makes the ``%%bigquery`` and ``%%bqsql`` magics available.
+This makes the ``%%bigquery`` magic available.
 
 Code Samples
 ------------

@@ -339,10 +339,7 @@ def test__create_dataset_if_necessary_not_exist():
 
 @pytest.mark.parametrize(
     ("magic_name",),
-    (
-        ("bigquery",),
-        ("bqsql",),
-    ),
+    (("bigquery",),),
 )
 def test_extension_load(magic_name):
     globalipapp.start_ipython()

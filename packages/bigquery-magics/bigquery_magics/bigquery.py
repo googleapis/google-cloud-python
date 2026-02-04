@@ -14,13 +14,13 @@
 
 """IPython Magics
 
-.. function:: ``%%bigquery`` or ``%%bqsql``
+.. function:: ``%%bigquery``
 
     IPython cell magic to run a query and display the result as a DataFrame
 
     .. code-block:: python
 
-        %%bqsql [<destination_var>] [--project <project>] [--use_legacy_sql]
+        %%bigquery [<destination_var>] [--project <project>] [--use_legacy_sql]
                    [--verbose] [--params <params>]
         <query>
 

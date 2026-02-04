@@ -101,15 +101,3 @@ Perform a query
     GROUP BY name
     ORDER BY count DESC
     LIMIT 3
-
-Since BigQuery supports Python via BigQuery DataFrames, `%%bqsql` is offered as
-an alias to clarify the language of these cells.
-
-.. code:: python
-
-    %%bqsql
-    SELECT name, SUM(number) as count
-    FROM 'bigquery-public-data.usa_names.usa_1910_current'
-    GROUP BY name
-    ORDER BY count DESC
-    LIMIT 3
