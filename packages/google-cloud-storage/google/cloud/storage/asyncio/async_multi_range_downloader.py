@@ -208,6 +208,10 @@ class AsyncMultiRangeDownloader:
                     "Cannot set both 'generation' and 'generation_number'. "
                     "Use 'generation' for new code."
                 )
+            logger.warning(
+                "'generation_number' is deprecated and will be removed in a future "
+                "major release. Please use 'generation' instead."
+            )
             generation = kwargs.pop("generation_number")
 
         raise_if_no_fast_crc32c()
