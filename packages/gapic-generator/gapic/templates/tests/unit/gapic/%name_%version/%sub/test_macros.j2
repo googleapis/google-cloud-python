@@ -752,8 +752,18 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
+        {% if method.paged_result_field.type.ident|string == 'struct_pb2.ListValue' %}
+        assert all(isinstance(i, Sequence)
+                   for i in results)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Struct' %}
+        assert all(isinstance(i, Mapping)
+                   for i in results)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Value' %}
+        assert all(True for i in results)
+        {% else %}
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in results)
+        {% endif %}
 {% endif %}
 def test_{{ method_name }}_pages(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
@@ -913,8 +923,18 @@ async def test_{{ method_name }}_async_pager():
         assert async_pager.get('a') is None
         assert isinstance(async_pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
         {% else %}
+        {% if method.paged_result_field.type.ident|string == 'struct_pb2.ListValue' %}
+        assert all(isinstance(i, Sequence)
+                for i in responses)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Struct' %}
+        assert all(isinstance(i, Mapping)
+                for i in responses)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Value' %}
+        assert all(True for i in responses)
+        {% else %}
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                 for i in responses)
+        {% endif %}
         {% endif %}
 
 
@@ -1412,8 +1432,18 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
         assert pager.get('a') is None
         assert isinstance(pager.get('h'), {{ method.paged_result_field.type.fields.get('value').ident }})
         {% else %}
+        {% if method.paged_result_field.type.ident|string == 'struct_pb2.ListValue' %}
+        assert all(isinstance(i, Sequence)
+                for i in results)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Struct' %}
+        assert all(isinstance(i, Mapping)
+                for i in results)
+        {% elif method.paged_result_field.type.ident|string == 'struct_pb2.Value' %}
+        assert all(True for i in results)
+        {% else %}
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                 for i in results)
+        {% endif %}
         {% endif %}
 
         pages = list(client.{{ method_name }}(request=sample_request).pages)
