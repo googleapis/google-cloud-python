@@ -14,12 +14,11 @@
 
 from __future__ import annotations
 
-import collections.abc
-import json
 from typing import Any, Dict, List, Mapping, Optional, Union
 
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.sql
+import bigframes.core.sql.literals
 
 
 def create_model_ddl(
@@ -109,36 +108,7 @@ def _build_struct_sql(
 ) -> str:
     if not struct_options:
         return ""
-
-    rendered_options = []
-    for option_name, option_value in struct_options.items():
-        if option_name == "model_params":
-            json_str = json.dumps(option_value)
-            # Escape single quotes for SQL string literal
-            sql_json_str = json_str.replace("'", "''")
-            rendered_val = f"JSON'{sql_json_str}'"
-        elif isinstance(option_value, collections.abc.Mapping):
-            struct_body = ", ".join(
-                [
-                    f"{bigframes.core.sql.simple_literal(v)} AS {k}"
-                    for k, v in option_value.items()
-                ]
-            )
-            rendered_val = f"STRUCT({struct_body})"
-        elif isinstance(option_value, list):
-            rendered_val = (
-                "["
-                + ", ".join(
-                    [bigframes.core.sql.simple_literal(v) for v in option_value]
-                )
-                + "]"
-            )
-        elif isinstance(option_value, bool):
-            rendered_val = str(option_value).lower()
-        else:
-            rendered_val = bigframes.core.sql.simple_literal(option_value)
-        rendered_options.append(f"{rendered_val} AS {option_name}")
-    return f", STRUCT({', '.join(rendered_options)})"
+    return f", {bigframes.core.sql.literals.struct_literal(struct_options)}"
 
 
 def evaluate(
