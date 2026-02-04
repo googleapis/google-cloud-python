@@ -48,6 +48,9 @@ __protobuf__ = proto.module(
         "ImportDataObjectsRequest",
         "ImportDataObjectsMetadata",
         "ImportDataObjectsResponse",
+        "ExportDataObjectsRequest",
+        "ExportDataObjectsMetadata",
+        "ExportDataObjectsResponse",
     },
 )
 
@@ -290,9 +293,10 @@ class CreateCollectionRequest(proto.Message):
             Required. Value for parent.
         collection_id (str):
             Required. ID of the Collection to create. The id must be
-            1-63 characters long, and comply with RFC1035. Specifically,
-            it must be 1-63 characters long and match the regular
-            expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
+            1-63 characters long, and comply with
+            `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+            Specifically, it must be 1-63 characters long and match the
+            regular expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
         collection (google.cloud.vectorsearch_v1beta.types.Collection):
             Required. The resource being created
         request_id (str):
@@ -351,8 +355,9 @@ class UpdateCollectionRequest(proto.Message):
             The following fields support update: ``display_name``,
             ``description``, ``labels``, ``data_schema``,
             ``vector_schema``. For ``data_schema`` and
-            ``vector_schema``, fields can only be added, not modified or
-            deleted. Partial updates for ``data_schema`` and
+            ``vector_schema``, fields can only be added, not deleted,
+            but ``vertex_embedding_config`` in ``vector_schema`` can be
+            added or removed. Partial updates for ``data_schema`` and
             ``vector_schema`` are also supported by using sub-field
             paths in ``update_mask``, e.g.
             ``data_schema.properties.foo`` or
@@ -526,9 +531,10 @@ class CreateIndexRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}``
         index_id (str):
             Required. ID of the Index to create. The id must be 1-63
-            characters long, and comply with RFC1035. Specifically, it
-            must be 1-63 characters long and match the regular
-            expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
+            characters long, and comply with
+            `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+            Specifically, it must be 1-63 characters long and match the
+            regular expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
         index (google.cloud.vectorsearch_v1beta.types.Index):
             Required. The resource being created
         request_id (str):
@@ -758,7 +764,9 @@ class OperationMetadata(proto.Message):
 
 
 class ImportDataObjectsRequest(proto.Message):
-    r"""Request message for [DataObjectService.ImportDataObjects][].
+    r"""Request message for
+    [VectorSearchService.ImportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects].
+
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -785,6 +793,13 @@ class ImportDataObjectsRequest(proto.Message):
                 Required. URI prefix of the Cloud Storage
                 location to write any errors encountered during
                 the import.
+            output_uri (str):
+                Optional. URI prefix of the Cloud Storage location to write
+                DataObject ``IDs`` and ``etags`` of DataObjects that were
+                successfully imported. The service will write the
+                successfully imported DataObjects to sharded files under
+                this prefix. If this field is empty, no output will be
+                written.
         """
 
         contents_uri: str = proto.Field(
@@ -794,6 +809,10 @@ class ImportDataObjectsRequest(proto.Message):
         error_uri: str = proto.Field(
             proto.STRING,
             number=2,
+        )
+        output_uri: str = proto.Field(
+            proto.STRING,
+            number=3,
         )
 
     gcs_import: GcsImportConfig = proto.Field(
@@ -809,7 +828,8 @@ class ImportDataObjectsRequest(proto.Message):
 
 
 class ImportDataObjectsMetadata(proto.Message):
-    r"""Metadata for [DataObjectService.ImportDataObjects][].
+    r"""Metadata for
+    [VectorSearchService.ImportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects].
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -845,7 +865,8 @@ class ImportDataObjectsMetadata(proto.Message):
 
 
 class ImportDataObjectsResponse(proto.Message):
-    r"""Response for [DataObjectService.ImportDataObjects][].
+    r"""Response for
+    [VectorSearchService.ImportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects].
 
     Attributes:
         status (google.rpc.status_pb2.Status):
@@ -857,6 +878,101 @@ class ImportDataObjectsResponse(proto.Message):
         number=1,
         message=status_pb2.Status,
     )
+
+
+class ExportDataObjectsRequest(proto.Message):
+    r"""Request message for
+    [VectorSearchService.ExportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ExportDataObjects].
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_destination (google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest.GcsExportDestination):
+            The Cloud Storage location where user wants
+            to export Data Objects.
+
+            This field is a member of `oneof`_ ``destination``.
+        name (str):
+            Required. The resource name of the Collection from which we
+            want to export Data Objects. Format:
+            ``projects/{project}/locations/{location}/collections/{collection}``.
+    """
+
+    class GcsExportDestination(proto.Message):
+        r"""Google Cloud Storage configuration for the export.
+
+        Attributes:
+            export_uri (str):
+                Required. URI prefix of the Cloud Storage
+                where to export Data Objects. The bucket is
+                required to be in the same region as the
+                collection.
+            format_ (google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest.GcsExportDestination.Format):
+                Required. The format of the exported Data
+                Objects.
+        """
+
+        class Format(proto.Enum):
+            r"""Options for the format of the exported Data Objects.
+            New formats may be added in the future.
+
+            Values:
+                FORMAT_UNSPECIFIED (0):
+                    Unspecified format.
+                JSON (1):
+                    The exported Data Objects will be in JSON
+                    format.
+            """
+            FORMAT_UNSPECIFIED = 0
+            JSON = 1
+
+        export_uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        format_: "ExportDataObjectsRequest.GcsExportDestination.Format" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ExportDataObjectsRequest.GcsExportDestination.Format",
+        )
+
+    gcs_destination: GcsExportDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message=GcsExportDestination,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ExportDataObjectsMetadata(proto.Message):
+    r"""Metadata for the ExportDataObjects LRO.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation was created.
+        finish_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time the operation finished.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    finish_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ExportDataObjectsResponse(proto.Message):
+    r"""Response for the ExportDataObjects LRO."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

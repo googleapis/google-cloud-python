@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "Message",
         "AttachedGif",
         "QuotedMessageMetadata",
+        "QuotedMessageSnapshot",
+        "ForwardedMetadata",
         "Thread",
         "ActionResponse",
         "AccessoryWidget",
@@ -434,7 +436,38 @@ class QuotedMessageMetadata(proto.Message):
 
             If ``last_update_time`` doesn't match the latest version of
             the quoted message, the request fails.
+        quote_type (google.apps.chat_v1.types.QuotedMessageMetadata.QuoteType):
+            Optional. Specifies the quote type. If not
+            set, defaults to REPLY in the message read/write
+            path for backward compatibility.
+        quoted_message_snapshot (google.apps.chat_v1.types.QuotedMessageSnapshot):
+            Output only. A snapshot of the quoted
+            message's content.
+        forwarded_metadata (google.apps.chat_v1.types.ForwardedMetadata):
+            Output only. Metadata about the source space
+            of the quoted message. Populated only for
+            FORWARD quote type.
     """
+
+    class QuoteType(proto.Enum):
+        r"""The quote type of the quoted message.
+
+        Values:
+            QUOTE_TYPE_UNSPECIFIED (0):
+                Reserved. This value is unused.
+            REPLY (1):
+                If quote_type is ``REPLY``, you can do the following:
+
+                - If you're replying in a thread, you can quote another
+                  message in that thread.
+
+                - If you're creating a root message, you can quote another
+                  root message in that space.
+
+                You can't quote a message reply from a different thread.
+        """
+        QUOTE_TYPE_UNSPECIFIED = 0
+        REPLY = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -444,6 +477,100 @@ class QuotedMessageMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+    quote_type: QuoteType = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=QuoteType,
+    )
+    quoted_message_snapshot: "QuotedMessageSnapshot" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="QuotedMessageSnapshot",
+    )
+    forwarded_metadata: "ForwardedMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ForwardedMetadata",
+    )
+
+
+class QuotedMessageSnapshot(proto.Message):
+    r"""Provides a snapshot of the content of the quoted message at
+    the time of quoting or forwarding
+
+    Attributes:
+        sender (str):
+            Output only. The quoted message's author
+            name. Populated for both REPLY & FORWARD quote
+            types.
+        text (str):
+            Output only. Snapshot of the quoted message's
+            text content.
+        formatted_text (str):
+            Output only. Contains the quoted message ``text`` with
+            markups added to support rich formatting like
+            hyperlinks,custom emojis, markup, etc. Populated only for
+            FORWARD quote type.
+        annotations (MutableSequence[google.apps.chat_v1.types.Annotation]):
+            Output only. Annotations parsed from the text
+            body of the quoted message. Populated only for
+            FORWARD quote type.
+        attachments (MutableSequence[google.apps.chat_v1.types.Attachment]):
+            Output only. Attachments that were part of
+            the quoted message. These are copies of the
+            quoted message's attachment metadata. Populated
+            only for FORWARD quote type.
+    """
+
+    sender: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    text: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    formatted_text: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    annotations: MutableSequence[annotation.Annotation] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=annotation.Annotation,
+    )
+    attachments: MutableSequence[gc_attachment.Attachment] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=gc_attachment.Attachment,
+    )
+
+
+class ForwardedMetadata(proto.Message):
+    r"""Metadata about the source space from which a message was
+    forwarded.
+
+    Attributes:
+        space (str):
+            Output only. The resource name of the source
+            space. Format: spaces/{space}
+        space_display_name (str):
+            Output only. The display name of the source space or DM at
+            the time of forwarding. For ``SPACE``, this is the space
+            name. For ``DIRECT_MESSAGE``, this is the other
+            participant's name (e.g., "User A"). For ``GROUP_CHAT``,
+            this is a generated name based on members' first names,
+            limited to 5 including the creator (e.g., "User A, User B").
+    """
+
+    space: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    space_display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

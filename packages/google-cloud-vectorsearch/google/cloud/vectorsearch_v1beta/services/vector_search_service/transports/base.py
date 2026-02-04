@@ -168,16 +168,43 @@ class VectorSearchServiceTransport(abc.ABC):
             ),
             self.create_collection: gapic_v1.method.wrap_method(
                 self.create_collection,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.update_collection: gapic_v1.method.wrap_method(
                 self.update_collection,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_collection: gapic_v1.method.wrap_method(
                 self.delete_collection,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
@@ -211,17 +238,49 @@ class VectorSearchServiceTransport(abc.ABC):
             ),
             self.create_index: gapic_v1.method.wrap_method(
                 self.create_index,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.delete_index: gapic_v1.method.wrap_method(
                 self.delete_index,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
                 client_info=client_info,
             ),
             self.import_data_objects: gapic_v1.method.wrap_method(
                 self.import_data_objects,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.export_data_objects: gapic_v1.method.wrap_method(
+                self.export_data_objects,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.get_location: gapic_v1.method.wrap_method(
@@ -364,6 +423,15 @@ class VectorSearchServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [vectorsearch_service.ImportDataObjectsRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def export_data_objects(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.ExportDataObjectsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

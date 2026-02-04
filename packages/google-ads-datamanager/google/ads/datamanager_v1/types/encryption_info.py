@@ -82,7 +82,9 @@ class GcpWrappedKeyInfo(proto.Message):
             Service resource
             ID <//cloud.google.com/kms/docs/getting-resource-ids>`__.
             Should be in the format of
-            "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}".
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}``
+            or
+            ``gcp-kms://projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{key}``
         encrypted_dek (str):
             Required. The base64 encoded encrypted data
             encryption key.
@@ -129,11 +131,13 @@ class AwsWrappedKeyInfo(proto.Message):
         role_arn (str):
             Required. The Amazon Resource Name of the IAM Role to assume
             for KMS decryption access. Should be in the format of
-            "arn:{partition}:iam::{account_id}:role/{role_name}".
+            ``arn:{partition}:iam::{account_id}:role/{role_name}``
         kek_uri (str):
             Required. The URI of the AWS KMS key used to decrypt the
             DEK. Should be in the format of
-            "arn:{partition}:kms:{region}:{account_id}:key/{key_id}".
+            ``arn:{partition}:kms:{region}:{account_id}:key/{key_id}``
+            or
+            ``aws-kms://arn:{partition}:kms:{region}:{account_id}:key/{key_id}``
         encrypted_dek (str):
             Required. The base64 encoded encrypted data
             encryption key.

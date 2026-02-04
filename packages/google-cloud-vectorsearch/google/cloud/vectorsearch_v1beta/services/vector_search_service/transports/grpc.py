@@ -623,6 +623,35 @@ class VectorSearchServiceGrpcTransport(VectorSearchServiceTransport):
             )
         return self._stubs["import_data_objects"]
 
+    @property
+    def export_data_objects(
+        self,
+    ) -> Callable[
+        [vectorsearch_service.ExportDataObjectsRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the export data objects method over gRPC.
+
+        Initiates a Long-Running Operation to export
+        DataObjects from a Collection.
+
+        Returns:
+            Callable[[~.ExportDataObjectsRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_data_objects" not in self._stubs:
+            self._stubs["export_data_objects"] = self._logged_channel.unary_unary(
+                "/google.cloud.vectorsearch.v1beta.VectorSearchService/ExportDataObjects",
+                request_serializer=vectorsearch_service.ExportDataObjectsRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_data_objects"]
+
     def close(self):
         self._logged_channel.close()
 

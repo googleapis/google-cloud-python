@@ -86,7 +86,7 @@ class VertexEmbeddingConfig(proto.Message):
             one or more references to fields in the
             DataObject, e.g.:
 
-            "Movie Title: {title} ---- Movie Plot: {plot}"".
+            "Movie Title: {title} ---- Movie Plot: {plot}".
         task_type (google.cloud.vectorsearch_v1beta.types.EmbeddingTaskType):
             Required. Required: Task type for the
             embeddings.

@@ -118,6 +118,10 @@ from .types.backupvault import (
     UpdateBackupVaultRequest,
     UpdateDataSourceRequest,
 )
+from .types.backupvault_alloydb import (
+    AlloyDbClusterBackupProperties,
+    AlloyDBClusterDataSourceProperties,
+)
 from .types.backupvault_ba import BackupApplianceBackupProperties
 from .types.backupvault_cloudsql import (
     CloudSqlInstanceBackupPlanAssociationProperties,
@@ -283,6 +287,8 @@ __all__ = (
     "AdvancedMachineFeatures",
     "AliasIpRange",
     "AllocationAffinity",
+    "AlloyDBClusterDataSourceProperties",
+    "AlloyDbClusterBackupProperties",
     "AttachedDisk",
     "Backup",
     "BackupApplianceBackupConfig",

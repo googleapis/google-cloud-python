@@ -62,6 +62,7 @@ from google.cloud.backupdr_v1.types import (
     backupplan,
     backupplanassociation,
     backupvault,
+    backupvault_alloydb,
     backupvault_ba,
     backupvault_cloudsql,
     backupvault_disk,
@@ -111,6 +112,8 @@ class BackupDRAsyncClient:
     )
     backup_vault_path = staticmethod(BackupDRClient.backup_vault_path)
     parse_backup_vault_path = staticmethod(BackupDRClient.parse_backup_vault_path)
+    cluster_path = staticmethod(BackupDRClient.cluster_path)
+    parse_cluster_path = staticmethod(BackupDRClient.parse_cluster_path)
     crypto_key_path = staticmethod(BackupDRClient.crypto_key_path)
     parse_crypto_key_path = staticmethod(BackupDRClient.parse_crypto_key_path)
     crypto_key_version_path = staticmethod(BackupDRClient.crypto_key_version_path)

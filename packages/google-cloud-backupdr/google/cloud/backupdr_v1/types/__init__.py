@@ -98,6 +98,10 @@ from .backupvault import (
     UpdateBackupVaultRequest,
     UpdateDataSourceRequest,
 )
+from .backupvault_alloydb import (
+    AlloyDbClusterBackupProperties,
+    AlloyDBClusterDataSourceProperties,
+)
 from .backupvault_ba import BackupApplianceBackupProperties
 from .backupvault_cloudsql import (
     CloudSqlInstanceBackupPlanAssociationProperties,
@@ -239,6 +243,8 @@ __all__ = (
     "BackupConfigState",
     "BackupVaultView",
     "BackupView",
+    "AlloyDbClusterBackupProperties",
+    "AlloyDBClusterDataSourceProperties",
     "BackupApplianceBackupProperties",
     "CloudSqlInstanceBackupPlanAssociationProperties",
     "CloudSqlInstanceBackupProperties",

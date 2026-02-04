@@ -22581,7 +22581,22 @@ def test_create_message_rest_call_success(request_type):
         ],
         "private_message_viewer": {},
         "deletion_metadata": {"deletion_type": 1},
-        "quoted_message_metadata": {"name": "name_value", "last_update_time": {}},
+        "quoted_message_metadata": {
+            "name": "name_value",
+            "last_update_time": {},
+            "quote_type": 1,
+            "quoted_message_snapshot": {
+                "sender": "sender_value",
+                "text": "text_value",
+                "formatted_text": "formatted_text_value",
+                "annotations": {},
+                "attachments": {},
+            },
+            "forwarded_metadata": {
+                "space": "space_value",
+                "space_display_name": "space_display_name_value",
+            },
+        },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
     }
@@ -23769,7 +23784,22 @@ def test_update_message_rest_call_success(request_type):
         ],
         "private_message_viewer": {},
         "deletion_metadata": {"deletion_type": 1},
-        "quoted_message_metadata": {"name": "name_value", "last_update_time": {}},
+        "quoted_message_metadata": {
+            "name": "name_value",
+            "last_update_time": {},
+            "quote_type": 1,
+            "quoted_message_snapshot": {
+                "sender": "sender_value",
+                "text": "text_value",
+                "formatted_text": "formatted_text_value",
+                "annotations": {},
+                "attachments": {},
+            },
+            "forwarded_metadata": {
+                "space": "space_value",
+                "space_display_name": "space_display_name_value",
+            },
+        },
         "attached_gifs": [{"uri": "uri_value"}],
         "accessory_widgets": [{"button_list": {}}],
     }

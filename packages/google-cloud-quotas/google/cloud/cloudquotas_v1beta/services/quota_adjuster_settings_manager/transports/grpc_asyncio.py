@@ -348,8 +348,8 @@ class QuotaAdjusterSettingsManagerGrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the update quota adjuster settings method over gRPC.
 
-        RPC Method for updating QuotaAdjusterSettings based
-        on the request
+        Updates the QuotaAdjusterSettings for the specified
+        resource.
 
         Returns:
             Callable[[~.UpdateQuotaAdjusterSettingsRequest],
@@ -380,8 +380,8 @@ class QuotaAdjusterSettingsManagerGrpcAsyncIOTransport(
     ]:
         r"""Return a callable for the get quota adjuster settings method over gRPC.
 
-        RPC Method for getting QuotaAdjusterSettings based on
-        the request
+        Gets the QuotaAdjusterSettings for the specified
+        resource.
 
         Returns:
             Callable[[~.GetQuotaAdjusterSettingsRequest],

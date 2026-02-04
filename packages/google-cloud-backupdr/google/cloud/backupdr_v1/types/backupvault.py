@@ -24,6 +24,7 @@ from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.backupdr_v1.types import (
+    backupvault_alloydb,
     backupvault_ba,
     backupvault_cloudsql,
     backupvault_disk,
@@ -823,6 +824,13 @@ class DataSourceGcpResource(proto.Message):
             useful at the Datasource level.
 
             This field is a member of `oneof`_ ``gcp_resource_properties``.
+        alloy_db_cluster_datasource_properties (google.cloud.backupdr_v1.types.AlloyDBClusterDataSourceProperties):
+            Output only.
+            AlloyDBClusterDataSourceProperties has a subset
+            of AlloyDB cluster properties that are useful at
+            the Datasource level.
+
+            This field is a member of `oneof`_ ``gcp_resource_properties``.
         disk_datasource_properties (google.cloud.backupdr_v1.types.DiskDataSourceProperties):
             DiskDataSourceProperties has a subset of Disk
             properties that are useful at the Datasource
@@ -854,6 +862,12 @@ class DataSourceGcpResource(proto.Message):
         number=5,
         oneof="gcp_resource_properties",
         message=backupvault_cloudsql.CloudSqlInstanceDataSourceProperties,
+    )
+    alloy_db_cluster_datasource_properties: backupvault_alloydb.AlloyDBClusterDataSourceProperties = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="gcp_resource_properties",
+        message=backupvault_alloydb.AlloyDBClusterDataSourceProperties,
     )
     disk_datasource_properties: backupvault_disk.DiskDataSourceProperties = proto.Field(
         proto.MESSAGE,
@@ -1138,6 +1152,11 @@ class Backup(proto.Message):
             properties.
 
             This field is a member of `oneof`_ ``backup_properties``.
+        alloy_db_backup_properties (google.cloud.backupdr_v1.types.AlloyDbClusterBackupProperties):
+            Output only. AlloyDB specific backup
+            properties.
+
+            This field is a member of `oneof`_ ``backup_properties``.
         disk_backup_properties (google.cloud.backupdr_v1.types.DiskBackupProperties):
             Output only. Disk specific backup properties.
 
@@ -1350,6 +1369,14 @@ class Backup(proto.Message):
         number=21,
         oneof="backup_properties",
         message=backupvault_ba.BackupApplianceBackupProperties,
+    )
+    alloy_db_backup_properties: backupvault_alloydb.AlloyDbClusterBackupProperties = (
+        proto.Field(
+            proto.MESSAGE,
+            number=27,
+            oneof="backup_properties",
+            message=backupvault_alloydb.AlloyDbClusterBackupProperties,
+        )
     )
     disk_backup_properties: backupvault_disk.DiskBackupProperties = proto.Field(
         proto.MESSAGE,

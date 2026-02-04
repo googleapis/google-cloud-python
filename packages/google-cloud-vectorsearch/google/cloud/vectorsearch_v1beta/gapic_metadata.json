@@ -233,6 +233,11 @@
                 "delete_index"
               ]
             },
+            "ExportDataObjects": {
+              "methods": [
+                "export_data_objects"
+              ]
+            },
             "GetCollection": {
               "methods": [
                 "get_collection"
@@ -288,6 +293,11 @@
                 "delete_index"
               ]
             },
+            "ExportDataObjects": {
+              "methods": [
+                "export_data_objects"
+              ]
+            },
             "GetCollection": {
               "methods": [
                 "get_collection"
@@ -341,6 +351,11 @@
             "DeleteIndex": {
               "methods": [
                 "delete_index"
+              ]
+            },
+            "ExportDataObjects": {
+              "methods": [
+                "export_data_objects"
               ]
             },
             "GetCollection": {

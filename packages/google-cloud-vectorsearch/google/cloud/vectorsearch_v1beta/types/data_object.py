@@ -37,13 +37,13 @@ class DataObject(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The fully qualified resource name of the
+            Identifier. The fully qualified resource name of the
             dataObject.
 
             Format:
             ``projects/{project}/locations/{location}/collections/{collection}/dataObjects/{data_object_id}``
             The data_object_id must be 1-63 characters long, and comply
-            with RFC1035.
+            with `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
         data_object_id (str):
             Output only. The id of the dataObject.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

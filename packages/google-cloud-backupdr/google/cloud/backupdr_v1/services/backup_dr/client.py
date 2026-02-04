@@ -79,6 +79,7 @@ from google.cloud.backupdr_v1.types import (
     backupplan,
     backupplanassociation,
     backupvault,
+    backupvault_alloydb,
     backupvault_ba,
     backupvault_cloudsql,
     backupvault_disk,
@@ -360,6 +361,28 @@ class BackupDRClient(metaclass=BackupDRClientMeta):
         """Parses a backup_vault path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/backupVaults/(?P<backupvault>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def cluster_path(
+        project: str,
+        location: str,
+        cluster: str,
+    ) -> str:
+        """Returns a fully-qualified cluster string."""
+        return "projects/{project}/locations/{location}/clusters/{cluster}".format(
+            project=project,
+            location=location,
+            cluster=cluster,
+        )
+
+    @staticmethod
+    def parse_cluster_path(path: str) -> Dict[str, str]:
+        """Parses a cluster path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/clusters/(?P<cluster>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

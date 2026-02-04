@@ -772,8 +772,8 @@ class QuotaAdjusterSettingsManagerClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gac_quota_adjuster_settings.QuotaAdjusterSettings:
-        r"""RPC Method for updating QuotaAdjusterSettings based
-        on the request
+        r"""Updates the QuotaAdjusterSettings for the specified
+        resource.
 
         .. code-block:: python
 
@@ -905,8 +905,8 @@ class QuotaAdjusterSettingsManagerClient(
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> quota_adjuster_settings.QuotaAdjusterSettings:
-        r"""RPC Method for getting QuotaAdjusterSettings based on
-        the request
+        r"""Gets the QuotaAdjusterSettings for the specified
+        resource.
 
         .. code-block:: python
 

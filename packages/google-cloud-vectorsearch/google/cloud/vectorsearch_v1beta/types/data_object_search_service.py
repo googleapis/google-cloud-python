@@ -106,14 +106,14 @@ class SearchHint(proto.Message):
 
     Attributes:
         use_index (google.cloud.vectorsearch_v1beta.types.SearchHint.IndexHint):
-            Specifies that the search should use a
-            particular index.
+            Optional. Specifies that the search should
+            use a particular index.
 
             This field is a member of `oneof`_ ``index_type``.
         use_knn (bool):
-            If set to true, the search will use the
-            system's default K-Nearest Neighbor (KNN) index
-            engine.
+            Optional. If set to true, the search will use
+            the system's default K-Nearest Neighbor (KNN)
+            index engine.
 
             This field is a member of `oneof`_ ``index_type``.
     """
@@ -305,6 +305,11 @@ class SemanticSearch(proto.Message):
             return.
 
             This field is a member of `oneof`_ ``_top_k``.
+        search_hint (google.cloud.vectorsearch_v1beta.types.SearchHint):
+            Optional. Sets the search hint. If no
+            strategy is specified, the service will use an
+            index if one is available, and fall back to KNN
+            search otherwise.
     """
 
     search_text: str = proto.Field(
@@ -335,6 +340,11 @@ class SemanticSearch(proto.Message):
         number=4,
         optional=True,
     )
+    search_hint: "SearchHint" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="SearchHint",
+    )
 
 
 class TextSearch(proto.Message):
@@ -354,6 +364,10 @@ class TextSearch(proto.Message):
             Optional. The number of results to return.
 
             This field is a member of `oneof`_ ``_top_k``.
+        filter (google.protobuf.struct_pb2.Struct):
+            Optional. A JSON filter expression, e.g.
+            ``{"genre": {"$eq": "sci-fi"}}``, represented as a
+            ``google.protobuf.Struct``.
     """
 
     search_text: str = proto.Field(
@@ -373,6 +387,11 @@ class TextSearch(proto.Message):
         proto.INT32,
         number=4,
         optional=True,
+    )
+    filter: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
     )
 
 

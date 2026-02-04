@@ -49,9 +49,10 @@ class CreateDataObjectRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}``
         data_object_id (str):
             Required. The id of the dataObject to create. The id must be
-            1-63 characters long, and comply with RFC1035. Specifically,
-            it must be 1-63 characters long and match the regular
-            expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
+            1-63 characters long, and comply with
+            `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+            Specifically, it must be 1-63 characters long and match the
+            regular expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
         data_object (google.cloud.vectorsearch_v1beta.types.DataObject):
             Required. The DataObject to create.
     """

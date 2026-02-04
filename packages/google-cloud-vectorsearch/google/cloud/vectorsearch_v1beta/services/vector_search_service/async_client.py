@@ -608,7 +608,8 @@ class VectorSearchServiceAsyncClient:
                 should not be set.
             collection_id (:class:`str`):
                 Required. ID of the Collection to create. The id must be
-                1-63 characters long, and comply with RFC1035.
+                1-63 characters long, and comply with
+                `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
                 Specifically, it must be 1-63 characters long and match
                 the regular expression
                 ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
@@ -758,10 +759,11 @@ class VectorSearchServiceAsyncClient:
                 ``description``, ``labels``, ``data_schema``,
                 ``vector_schema``. For ``data_schema`` and
                 ``vector_schema``, fields can only be added, not
-                modified or deleted. Partial updates for ``data_schema``
-                and ``vector_schema`` are also supported by using
-                sub-field paths in ``update_mask``, e.g.
-                ``data_schema.properties.foo`` or
+                deleted, but ``vertex_embedding_config`` in
+                ``vector_schema`` can be added or removed. Partial
+                updates for ``data_schema`` and ``vector_schema`` are
+                also supported by using sub-field paths in
+                ``update_mask``, e.g. ``data_schema.properties.foo`` or
                 ``vector_schema.my_vector_field``.
 
                 If ``*`` is provided in the update_mask, full
@@ -1278,9 +1280,11 @@ class VectorSearchServiceAsyncClient:
                 should not be set.
             index_id (:class:`str`):
                 Required. ID of the Index to create. The id must be 1-63
-                characters long, and comply with RFC1035. Specifically,
-                it must be 1-63 characters long and match the regular
-                expression ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
+                characters long, and comply with
+                `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
+                Specifically, it must be 1-63 characters long and match
+                the regular expression
+                ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.
 
                 This corresponds to the ``index_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1547,7 +1551,7 @@ class VectorSearchServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.vectorsearch_v1beta.types.ImportDataObjectsRequest, dict]]):
                 The request object. Request message for
-                [DataObjectService.ImportDataObjects][].
+                [VectorSearchService.ImportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects].
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1560,9 +1564,8 @@ class VectorSearchServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.cloud.vectorsearch_v1beta.types.ImportDataObjectsResponse`
-                Response for [DataObjectService.ImportDataObjects][].
+                The result type for the operation will be :class:`google.cloud.vectorsearch_v1beta.types.ImportDataObjectsResponse` Response for
+                   [VectorSearchService.ImportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ImportDataObjects].
 
         """
         # Create or coerce a protobuf request object.
@@ -1600,6 +1603,115 @@ class VectorSearchServiceAsyncClient:
             self._client._transport.operations_client,
             vectorsearch_service.ImportDataObjectsResponse,
             metadata_type=vectorsearch_service.ImportDataObjectsMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def export_data_objects(
+        self,
+        request: Optional[
+            Union[vectorsearch_service.ExportDataObjectsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Initiates a Long-Running Operation to export
+        DataObjects from a Collection.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import vectorsearch_v1beta
+
+            async def sample_export_data_objects():
+                # Create a client
+                client = vectorsearch_v1beta.VectorSearchServiceAsyncClient()
+
+                # Initialize request argument(s)
+                gcs_destination = vectorsearch_v1beta.GcsExportDestination()
+                gcs_destination.export_uri = "export_uri_value"
+                gcs_destination.format_ = "JSON"
+
+                request = vectorsearch_v1beta.ExportDataObjectsRequest(
+                    gcs_destination=gcs_destination,
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.export_data_objects(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.vectorsearch_v1beta.types.ExportDataObjectsRequest, dict]]):
+                The request object. Request message for
+                [VectorSearchService.ExportDataObjects][google.cloud.vectorsearch.v1beta.VectorSearchService.ExportDataObjects].
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.vectorsearch_v1beta.types.ExportDataObjectsResponse`
+                Response for the ExportDataObjects LRO.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, vectorsearch_service.ExportDataObjectsRequest):
+            request = vectorsearch_service.ExportDataObjectsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.export_data_objects
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            vectorsearch_service.ExportDataObjectsResponse,
+            metadata_type=vectorsearch_service.ExportDataObjectsMetadata,
         )
 
         # Done; return the response.

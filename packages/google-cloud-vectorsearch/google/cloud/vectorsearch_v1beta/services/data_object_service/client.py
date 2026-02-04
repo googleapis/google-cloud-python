@@ -827,7 +827,8 @@ class DataObjectServiceClient(metaclass=DataObjectServiceClientMeta):
                 should not be set.
             data_object_id (str):
                 Required. The id of the dataObject to create. The id
-                must be 1-63 characters long, and comply with RFC1035.
+                must be 1-63 characters long, and comply with
+                `RFC1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
                 Specifically, it must be 1-63 characters long and match
                 the regular expression
                 ``[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?``.

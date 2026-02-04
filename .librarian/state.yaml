@@ -16,7 +16,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.3.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -98,7 +98,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-card
     version: 0.4.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/apps/card/v1
         service_config: ""
@@ -113,7 +113,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
     version: 0.5.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/chat/v1
         service_config: chat_v1.yaml
@@ -491,7 +491,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.7.0
-    last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/backupdr/v1
         service_config: backupdr_v1.yaml
@@ -1590,7 +1590,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
     version: 0.9.0
-    last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
         service_config: geminidataanalytics_v1beta.yaml
@@ -2224,7 +2224,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-os-config
     version: 1.23.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/osconfig/v1alpha
         service_config: osconfig_v1alpha.yaml
@@ -2387,7 +2387,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.4.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/api/cloudquotas/v1
         service_config: cloudquotas_v1.yaml
@@ -2973,7 +2973,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
     version: 0.3.0
-    last_generated_commit: ded7ed1e4cce7c165c56a417572cebea9bc1d82c
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/vectorsearch/v1beta
         service_config: vectorsearch_v1beta.yaml
@@ -3598,7 +3598,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

@@ -102,7 +102,8 @@ class BackupPlan(proto.Message):
             for taking backups. Specify the email address of
             the Backup Vault Service Account.
         log_retention_days (int):
-            Optional. Applicable only for CloudSQL resource_type.
+            Optional. Applicable only for CloudSQL and AlloyDB
+            resource_type.
 
             Configures how long logs will be stored. It is defined in
             “days”. This value should be greater than or equal to

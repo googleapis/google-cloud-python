@@ -86,6 +86,7 @@ from google.cloud.backupdr_v1.types import (
     backupplan,
     backupplanassociation,
     backupvault,
+    backupvault_alloydb,
     backupvault_ba,
     backupvault_cloudsql,
     backupvault_disk,
@@ -28984,6 +28985,7 @@ def test_update_data_source_rest_call_success(request_type):
                 "instance_create_time": {},
                 "instance_tier": "instance_tier_value",
             },
+            "alloy_db_cluster_datasource_properties": {"name": "name_value"},
             "disk_datasource_properties": {
                 "name": "name_value",
                 "description": "description_value",
@@ -29748,6 +29750,12 @@ def test_update_backup_rest_call_success(request_type):
             "finalize_time": {},
             "recovery_range_start_time": {},
             "recovery_range_end_time": {},
+        },
+        "alloy_db_backup_properties": {
+            "description": "description_value",
+            "stored_bytes": 1303,
+            "chain_id": "chain_id_value",
+            "database_version": "database_version_value",
         },
         "disk_backup_properties": {
             "description": "description_value",
@@ -35128,11 +35136,37 @@ def test_parse_backup_vault_path():
     assert expected == actual
 
 
-def test_crypto_key_path():
+def test_cluster_path():
     project = "squid"
     location = "clam"
-    ring = "whelk"
-    key = "octopus"
+    cluster = "whelk"
+    expected = "projects/{project}/locations/{location}/clusters/{cluster}".format(
+        project=project,
+        location=location,
+        cluster=cluster,
+    )
+    actual = BackupDRClient.cluster_path(project, location, cluster)
+    assert expected == actual
+
+
+def test_parse_cluster_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "cluster": "nudibranch",
+    }
+    path = BackupDRClient.cluster_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = BackupDRClient.parse_cluster_path(path)
+    assert expected == actual
+
+
+def test_crypto_key_path():
+    project = "cuttlefish"
+    location = "mussel"
+    ring = "winkle"
+    key = "nautilus"
     expected = "projects/{project}/locations/{location}/keyRings/{ring}/cryptoKeys/{key}".format(
         project=project,
         location=location,
@@ -35145,10 +35179,10 @@ def test_crypto_key_path():
 
 def test_parse_crypto_key_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "ring": "cuttlefish",
-        "key": "mussel",
+        "project": "scallop",
+        "location": "abalone",
+        "ring": "squid",
+        "key": "clam",
     }
     path = BackupDRClient.crypto_key_path(**expected)
 
@@ -35158,11 +35192,11 @@ def test_parse_crypto_key_path():
 
 
 def test_crypto_key_version_path():
-    project = "winkle"
-    location = "nautilus"
-    key_ring = "scallop"
-    crypto_key = "abalone"
-    crypto_key_version = "squid"
+    project = "whelk"
+    location = "octopus"
+    key_ring = "oyster"
+    crypto_key = "nudibranch"
+    crypto_key_version = "cuttlefish"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
         project=project,
         location=location,
@@ -35178,11 +35212,11 @@ def test_crypto_key_version_path():
 
 def test_parse_crypto_key_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "key_ring": "octopus",
-        "crypto_key": "oyster",
-        "crypto_key_version": "nudibranch",
+        "project": "mussel",
+        "location": "winkle",
+        "key_ring": "nautilus",
+        "crypto_key": "scallop",
+        "crypto_key_version": "abalone",
     }
     path = BackupDRClient.crypto_key_version_path(**expected)
 
@@ -35192,10 +35226,10 @@ def test_parse_crypto_key_version_path():
 
 
 def test_data_source_path():
-    project = "cuttlefish"
-    location = "mussel"
-    backupvault = "winkle"
-    datasource = "nautilus"
+    project = "squid"
+    location = "clam"
+    backupvault = "whelk"
+    datasource = "octopus"
     expected = "projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}".format(
         project=project,
         location=location,
@@ -35208,10 +35242,10 @@ def test_data_source_path():
 
 def test_parse_data_source_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "backupvault": "squid",
-        "datasource": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "backupvault": "cuttlefish",
+        "datasource": "mussel",
     }
     path = BackupDRClient.data_source_path(**expected)
 
@@ -35221,9 +35255,9 @@ def test_parse_data_source_path():
 
 
 def test_data_source_reference_path():
-    project = "whelk"
-    location = "octopus"
-    data_source_reference = "oyster"
+    project = "winkle"
+    location = "nautilus"
+    data_source_reference = "scallop"
     expected = "projects/{project}/locations/{location}/dataSourceReferences/{data_source_reference}".format(
         project=project,
         location=location,
@@ -35237,9 +35271,9 @@ def test_data_source_reference_path():
 
 def test_parse_data_source_reference_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "data_source_reference": "mussel",
+        "project": "abalone",
+        "location": "squid",
+        "data_source_reference": "clam",
     }
     path = BackupDRClient.data_source_reference_path(**expected)
 
@@ -35249,8 +35283,8 @@ def test_parse_data_source_reference_path():
 
 
 def test_instance_path():
-    project = "winkle"
-    instance = "nautilus"
+    project = "whelk"
+    instance = "octopus"
     expected = "projects/{project}/instances/{instance}".format(
         project=project,
         instance=instance,
@@ -35261,8 +35295,8 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "scallop",
-        "instance": "abalone",
+        "project": "oyster",
+        "instance": "nudibranch",
     }
     path = BackupDRClient.instance_path(**expected)
 
@@ -35272,9 +35306,9 @@ def test_parse_instance_path():
 
 
 def test_management_server_path():
-    project = "squid"
-    location = "clam"
-    managementserver = "whelk"
+    project = "cuttlefish"
+    location = "mussel"
+    managementserver = "winkle"
     expected = "projects/{project}/locations/{location}/managementServers/{managementserver}".format(
         project=project,
         location=location,
@@ -35286,9 +35320,9 @@ def test_management_server_path():
 
 def test_parse_management_server_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "managementserver": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "managementserver": "abalone",
     }
     path = BackupDRClient.management_server_path(**expected)
 
@@ -35298,9 +35332,9 @@ def test_parse_management_server_path():
 
 
 def test_storage_pool_path():
-    project = "cuttlefish"
-    zone = "mussel"
-    storage_pool = "winkle"
+    project = "squid"
+    zone = "clam"
+    storage_pool = "whelk"
     expected = "projects/{project}/zones/{zone}/storagePools/{storage_pool}".format(
         project=project,
         zone=zone,
@@ -35312,9 +35346,9 @@ def test_storage_pool_path():
 
 def test_parse_storage_pool_path():
     expected = {
-        "project": "nautilus",
-        "zone": "scallop",
-        "storage_pool": "abalone",
+        "project": "octopus",
+        "zone": "oyster",
+        "storage_pool": "nudibranch",
     }
     path = BackupDRClient.storage_pool_path(**expected)
 
@@ -35324,7 +35358,7 @@ def test_parse_storage_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -35334,7 +35368,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = BackupDRClient.common_billing_account_path(**expected)
 
@@ -35344,7 +35378,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -35354,7 +35388,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = BackupDRClient.common_folder_path(**expected)
 
@@ -35364,7 +35398,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -35374,7 +35408,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = BackupDRClient.common_organization_path(**expected)
 
@@ -35384,7 +35418,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -35394,7 +35428,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = BackupDRClient.common_project_path(**expected)
 
@@ -35404,8 +35438,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -35416,8 +35450,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = BackupDRClient.common_location_path(**expected)
 
