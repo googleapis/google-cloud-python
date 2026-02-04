@@ -680,9 +680,11 @@ def _add_graph_widget(query_result):
     try:
         from google.colab import output
 
-        output.register_callback("graph_visualization.Query", _colab_query_callback)
         output.register_callback(
-            "graph_visualization.NodeExpansion", _colab_node_expansion_callback
+            "bigquery.graph_visualization.Query", _colab_query_callback
+        )
+        output.register_callback(
+            "bigquery.graph_visualization.NodeExpansion", _colab_node_expansion_callback
         )
 
         # In colab mode, the Javascript doesn't use the port value we pass in, as there is no
@@ -702,6 +704,13 @@ def _add_graph_widget(query_result):
         query="placeholder query",
         port=port,
         params=query_result.to_json().replace("\\", "\\\\").replace('"', '\\"'),
+    )
+    html_content = html_content.replace(
+        '"graph_visualization.Query"', '"bigquery.graph_visualization.Query"'
+    )
+    html_content = html_content.replace(
+        '"graph_visualization.NodeExpansion"',
+        '"bigquery.graph_visualization.NodeExpansion"',
     )
     IPython.display.display(IPython.core.display.HTML(html_content))
 
