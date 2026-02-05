@@ -62,3 +62,30 @@ def test_generate_embedding_with_options(embedding_model):
     assert "ml_generate_embedding_status" in result.columns
     embedding = result["ml_generate_embedding_result"].to_pandas()
     assert len(embedding[0]) == 256
+
+
+def test_create_model_linear_regression(dataset_id):
+    df = bpd.DataFrame({"x": [1, 2, 3], "y": [2, 4, 6]})
+    model_name = f"{dataset_id}.linear_regression_model"
+
+    result = ml.create_model(
+        model_name=model_name,
+        options={"model_type": "LINEAR_REG", "input_label_cols": ["y"]},
+        training_data=df,
+    )
+
+    assert result["modelType"] == "LINEAR_REGRESSION"
+
+
+def test_create_model_with_transform(dataset_id):
+    df = bpd.DataFrame({"x": [1, 2, 3], "y": [2, 4, 6]})
+    model_name = f"{dataset_id}.transform_model"
+
+    result = ml.create_model(
+        model_name=model_name,
+        options={"model_type": "LINEAR_REG", "input_label_cols": ["y"]},
+        training_data=df,
+        transform=["x * 2 AS x_doubled", "y"],
+    )
+
+    assert result["modelType"] == "LINEAR_REGRESSION"
