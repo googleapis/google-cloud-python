@@ -47,13 +47,13 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     AnalyticsHubServiceAsyncClient,

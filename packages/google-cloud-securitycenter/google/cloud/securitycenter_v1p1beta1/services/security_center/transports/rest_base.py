@@ -18,11 +18,11 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1.types import (
     notification_config as gcs_notification_config,

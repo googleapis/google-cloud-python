@@ -48,7 +48,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.videointelligence_v1p3beta1.services.streaming_video_intelligence_service import (
     StreamingVideoIntelligenceServiceAsyncClient,

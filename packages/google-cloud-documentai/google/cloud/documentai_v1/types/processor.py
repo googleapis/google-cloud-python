@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.documentai_v1.types import document_schema as gcd_document_schema

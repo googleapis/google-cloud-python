@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import localized_text_pb2  # type: ignore
+import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.routing_v2.types import location as gmr_location

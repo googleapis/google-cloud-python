@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.servicecontrol_v2.types import service_controller
 

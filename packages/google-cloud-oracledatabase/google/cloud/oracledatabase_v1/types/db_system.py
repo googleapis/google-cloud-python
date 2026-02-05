@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.oracledatabase_v1.types import database as gco_database

@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.area120.tables_v1alpha1.services.tables_service import pagers
 from google.area120.tables_v1alpha1.types import tables

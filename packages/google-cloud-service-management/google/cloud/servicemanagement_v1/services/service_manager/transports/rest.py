@@ -19,7 +19,7 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api import service_pb2  # type: ignore
+import google.api.service_pb2 as service_pb2  # type: ignore
 from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
@@ -1133,7 +1133,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1322,7 +1322,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1479,7 +1479,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -1626,7 +1626,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2115,7 +2115,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -2872,7 +2872,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
@@ -3021,7 +3021,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 )
                 method = transcoded_request["method"]
                 try:
-                    request_payload = json_format.MessageToJson(request)
+                    request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {

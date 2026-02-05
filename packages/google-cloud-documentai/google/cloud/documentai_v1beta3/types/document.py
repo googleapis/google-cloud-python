@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.documentai_v1beta3.types import barcode as gcd_barcode

@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.cloud.gsuiteaddons_v1.services.g_suite_add_ons import pagers
 from google.cloud.gsuiteaddons_v1.types import gsuiteaddons

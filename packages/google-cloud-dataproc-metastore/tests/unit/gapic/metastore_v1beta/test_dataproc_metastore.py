@@ -55,8 +55,8 @@ from google.api_core import (
 )
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
+import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
@@ -66,11 +66,11 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import dayofweek_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
 
 from google.cloud.metastore_v1beta.services.dataproc_metastore import (
     DataprocMetastoreAsyncClient,

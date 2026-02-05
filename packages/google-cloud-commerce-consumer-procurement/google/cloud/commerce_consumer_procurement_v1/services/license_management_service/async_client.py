@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.commerce_consumer_procurement_v1.services.license_management_service import (
     pagers,

@@ -24,8 +24,8 @@ from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version

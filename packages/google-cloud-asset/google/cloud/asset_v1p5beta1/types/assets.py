@@ -17,14 +17,12 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import (
-    service_perimeter_pb2,
-)  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.cloud.orgpolicy.v1.orgpolicy_pb2 as orgpolicy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_level_pb2 as access_level_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.access_policy_pb2 as access_policy_pb2  # type: ignore
+import google.identity.accesscontextmanager.v1.service_perimeter_pb2 as service_perimeter_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

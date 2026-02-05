@@ -63,7 +63,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.apihub_v1.services.api_hub_discovery import pagers
 from google.cloud.apihub_v1.types import common_fields, discovery_service

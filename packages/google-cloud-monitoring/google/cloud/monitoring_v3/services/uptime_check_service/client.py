@@ -61,9 +61,9 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.uptime_check_service import pagers
 from google.cloud.monitoring_v3.types import uptime, uptime_service

@@ -62,8 +62,8 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.type import calendar_period_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.type.calendar_period_pb2 as calendar_period_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.service_monitoring_service import pagers
 from google.cloud.monitoring_v3.types import service

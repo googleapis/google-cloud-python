@@ -46,8 +46,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.services.contexts import pagers
 from google.cloud.dialogflow_v2.types import context

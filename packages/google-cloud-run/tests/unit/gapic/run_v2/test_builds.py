@@ -43,7 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api import launch_stage_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
@@ -53,6 +53,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 from google.oauth2 import service_account
 
 from google.cloud.run_v2.services.builds import (

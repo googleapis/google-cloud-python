@@ -19,8 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 from google.cloud.orgpolicy_v2.types import constraint
 from google.cloud.orgpolicy_v2.types import orgpolicy as gcov_orgpolicy
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

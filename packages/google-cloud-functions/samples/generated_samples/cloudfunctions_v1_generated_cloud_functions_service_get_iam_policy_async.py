@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-functions
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
 # [START cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_async]
 # This snippet has been automatically generated and should be regarded as a

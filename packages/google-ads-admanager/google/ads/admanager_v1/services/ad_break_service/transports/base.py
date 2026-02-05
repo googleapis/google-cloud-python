@@ -25,7 +25,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.ads.admanager_v1 import gapic_version as package_version
 from google.ads.admanager_v1.types import ad_break_messages, ad_break_service

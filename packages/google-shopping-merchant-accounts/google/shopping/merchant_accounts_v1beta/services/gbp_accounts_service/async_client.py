@@ -44,7 +44,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1beta.services.gbp_accounts_service import (
     pagers,

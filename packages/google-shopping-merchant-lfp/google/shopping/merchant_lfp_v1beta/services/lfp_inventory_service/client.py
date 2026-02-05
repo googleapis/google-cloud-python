@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.shopping.type.types import types
 
 from google.shopping.merchant_lfp_v1beta.types import lfpinventory

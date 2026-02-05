@@ -23,6 +23,8 @@
 #   python3 -m pip install google-shopping-merchant-accounts
 
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+
 # [START merchantapi_v1_generated_DeveloperRegistrationService_GetAccountForGcpRegistration_async]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
@@ -31,8 +33,6 @@
 # - It may require specifying regional endpoints when creating the service
 #   client as shown in:
 #   https://googleapis.dev/python/google-api-core/latest/client_options.html
-from google.protobuf import empty_pb2  # type: ignore
-
 from google.shopping import merchant_accounts_v1
 
 

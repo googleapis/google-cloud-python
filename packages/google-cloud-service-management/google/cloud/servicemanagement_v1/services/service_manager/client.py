@@ -61,36 +61,36 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import auth_pb2  # type: ignore
-from google.api import backend_pb2  # type: ignore
-from google.api import billing_pb2  # type: ignore
-from google.api import client_pb2  # type: ignore
-from google.api import context_pb2  # type: ignore
-from google.api import control_pb2  # type: ignore
-from google.api import documentation_pb2  # type: ignore
-from google.api import endpoint_pb2  # type: ignore
-from google.api import http_pb2  # type: ignore
-from google.api import log_pb2  # type: ignore
-from google.api import logging_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
-from google.api import monitoring_pb2  # type: ignore
-from google.api import quota_pb2  # type: ignore
-from google.api import service_pb2  # type: ignore
-from google.api import source_info_pb2  # type: ignore
-from google.api import system_parameter_pb2  # type: ignore
-from google.api import usage_pb2  # type: ignore
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api.auth_pb2 as auth_pb2  # type: ignore
+import google.api.backend_pb2 as backend_pb2  # type: ignore
+import google.api.billing_pb2 as billing_pb2  # type: ignore
+import google.api.client_pb2 as client_pb2  # type: ignore
+import google.api.context_pb2 as context_pb2  # type: ignore
+import google.api.control_pb2 as control_pb2  # type: ignore
+import google.api.documentation_pb2 as documentation_pb2  # type: ignore
+import google.api.endpoint_pb2 as endpoint_pb2  # type: ignore
+import google.api.http_pb2 as http_pb2  # type: ignore
+import google.api.log_pb2 as log_pb2  # type: ignore
+import google.api.logging_pb2 as logging_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.api.monitoring_pb2 as monitoring_pb2  # type: ignore
+import google.api.quota_pb2 as quota_pb2  # type: ignore
+import google.api.service_pb2 as service_pb2  # type: ignore
+import google.api.source_info_pb2 as source_info_pb2  # type: ignore
+import google.api.system_parameter_pb2 as system_parameter_pb2  # type: ignore
+import google.api.usage_pb2 as usage_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import api_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import type_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.api_pb2 as api_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.type_pb2 as type_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.cloud.servicemanagement_v1.services.service_manager import pagers
 from google.cloud.servicemanagement_v1.types import resources, servicemanager

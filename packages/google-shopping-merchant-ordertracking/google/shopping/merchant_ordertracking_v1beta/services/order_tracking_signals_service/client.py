@@ -64,7 +64,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.shopping.type.types import types
-from google.type import datetime_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 
 from google.shopping.merchant_ordertracking_v1beta.types import order_tracking_signals
 

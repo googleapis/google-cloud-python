@@ -61,7 +61,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring import (
     pagers,

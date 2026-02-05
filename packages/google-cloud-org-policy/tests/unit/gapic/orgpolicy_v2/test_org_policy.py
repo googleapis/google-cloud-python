@@ -51,10 +51,10 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.orgpolicy_v2.services.org_policy import (
     OrgPolicyAsyncClient,

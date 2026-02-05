@@ -18,7 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.geo.type.types import viewport as ggt_viewport
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.fleetengine_delivery_v1.types import (

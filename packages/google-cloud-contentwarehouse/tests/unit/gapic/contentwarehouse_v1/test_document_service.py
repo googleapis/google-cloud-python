@@ -51,24 +51,26 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.documentai_v1.types import barcode
+from google.cloud.documentai_v1.types import document
 from google.cloud.documentai_v1.types import document as gcd_document
 from google.cloud.documentai_v1.types import geometry
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_service import (
     DocumentServiceAsyncClient,

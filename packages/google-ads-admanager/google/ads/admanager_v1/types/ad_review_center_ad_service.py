@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import status_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import (

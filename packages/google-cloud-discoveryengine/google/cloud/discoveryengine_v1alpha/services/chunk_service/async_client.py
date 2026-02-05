@@ -46,7 +46,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.services.chunk_service import pagers
 from google.cloud.discoveryengine_v1alpha.types import chunk, chunk_service

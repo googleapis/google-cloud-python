@@ -50,10 +50,10 @@ from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.type import expr_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.rule_set_service import (
     RuleSetServiceAsyncClient,

@@ -47,11 +47,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import duration_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech
 

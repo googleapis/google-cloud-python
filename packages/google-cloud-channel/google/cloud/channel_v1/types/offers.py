@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import money_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.channel_v1.types import common, products

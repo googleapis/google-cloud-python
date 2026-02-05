@@ -51,7 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.type import latlng_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 
 from google.maps.areainsights_v1.services.area_insights import (
     AreaInsightsAsyncClient,

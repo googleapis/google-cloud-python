@@ -50,16 +50,16 @@ from google.api_core import (
 )
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
+import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.type import date_pb2  # type: ignore
-from google.type import datetime_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.type.date_pb2 as date_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 
 from google.cloud.channel_v1.services.cloud_channel_reports_service import (
     CloudChannelReportsServiceAsyncClient,

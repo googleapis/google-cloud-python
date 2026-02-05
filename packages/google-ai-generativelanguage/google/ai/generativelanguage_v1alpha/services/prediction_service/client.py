@@ -62,7 +62,7 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 
 from google.ai.generativelanguage_v1alpha.types import prediction_service
 

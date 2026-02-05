@@ -53,7 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.apihub_v1.services.host_project_registration_service import (
     HostProjectRegistrationServiceAsyncClient,

@@ -55,11 +55,11 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import interval_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.interval_pb2 as interval_pb2  # type: ignore
 
 from google.cloud.dataform_v1.services.dataform import (
     DataformAsyncClient,

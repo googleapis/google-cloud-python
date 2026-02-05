@@ -61,14 +61,14 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api import httpbody_pb2  # type: ignore
+import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.apigee_registry_v1.services.registry import pagers
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service

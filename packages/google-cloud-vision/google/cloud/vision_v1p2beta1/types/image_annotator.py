@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.color_pb2 as color_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vision_v1p2beta1.types import web_detection as gcv_web_detection

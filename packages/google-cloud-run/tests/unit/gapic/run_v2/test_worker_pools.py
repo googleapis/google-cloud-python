@@ -43,7 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api import launch_stage_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
 from google.api_core import (
     future,
     gapic_v1,
@@ -55,21 +55,21 @@ from google.api_core import (
 )
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
+import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.run_v2.services.worker_pools import (
     WorkerPoolsAsyncClient,

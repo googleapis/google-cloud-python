@@ -63,7 +63,7 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.mediatranslation_v1beta1.types import media_translation
 

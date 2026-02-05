@@ -61,8 +61,8 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_billing import pagers
 from google.cloud.billing_v1.types import cloud_billing
@@ -1695,7 +1695,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import billing_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -1838,7 +1838,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import billing_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
@@ -1982,7 +1982,7 @@ class CloudBillingClient(metaclass=CloudBillingClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import billing_v1
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client

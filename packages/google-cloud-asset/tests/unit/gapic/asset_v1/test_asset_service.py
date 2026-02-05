@@ -54,18 +54,18 @@ from google.api_core import (
 )
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
+import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.asset_v1.services.asset_service import (
     AssetServiceAsyncClient,

@@ -53,9 +53,9 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service import (
     DataChatServiceAsyncClient,

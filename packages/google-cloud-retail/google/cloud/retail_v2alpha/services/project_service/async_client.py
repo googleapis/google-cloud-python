@@ -44,11 +44,11 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
 from google.cloud.retail_v2alpha.types import common
 from google.cloud.retail_v2alpha.types import project

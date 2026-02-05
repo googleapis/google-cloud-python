@@ -44,9 +44,9 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation as gac_operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
+import google.api_core.operation as gac_operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.appengine_admin_v1.services.services import pagers
 from google.cloud.appengine_admin_v1.types import appengine, network_settings

@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import context, intent

@@ -22,8 +22,8 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.visionai_v1alpha1.types import warehouse
 

@@ -44,10 +44,10 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api import label_pb2  # type: ignore
-from google.api import launch_stage_pb2  # type: ignore
-from google.api import metric_pb2  # type: ignore
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.label_pb2 as label_pb2  # type: ignore
+import google.api.launch_stage_pb2 as launch_stage_pb2  # type: ignore
+import google.api.metric_pb2 as metric_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.metric_service import pagers

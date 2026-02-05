@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import wrappers_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.maps.fleetengine_delivery_v1.types import common

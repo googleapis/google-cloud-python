@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import common

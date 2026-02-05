@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import empty_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

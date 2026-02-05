@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.type import money_pb2  # type: ignore
+import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

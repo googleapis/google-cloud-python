@@ -38,7 +38,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
+import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.types import group, group_service
 

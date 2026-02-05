@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-tasks
 
 
-from google.iam.v1 import iam_policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
 # [START cloudtasks_v2_generated_CloudTasks_SetIamPolicy_async]
 # This snippet has been automatically generated and should be regarded as a

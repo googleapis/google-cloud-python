@@ -45,7 +45,7 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.cloud.location import locations_pb2  # type: ignore
-from google.protobuf import struct_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 
 from google.cloud.apiregistry_v1beta.services.cloud_api_registry import pagers
 from google.cloud.apiregistry_v1beta.types import common, resources, service

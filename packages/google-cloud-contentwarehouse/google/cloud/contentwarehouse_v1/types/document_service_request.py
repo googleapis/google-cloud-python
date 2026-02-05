@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.contentwarehouse_v1.types import common

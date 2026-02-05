@@ -47,7 +47,7 @@ except AttributeError:  # pragma: NO COVER
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.dataproc_v1.services.session_template_controller import pagers
 from google.cloud.dataproc_v1.types import session_templates, sessions, shared

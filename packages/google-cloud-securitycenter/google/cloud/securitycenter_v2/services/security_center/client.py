@@ -61,14 +61,14 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.api_core.operation as operation  # type: ignore
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
@@ -2919,7 +2919,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
@@ -4972,7 +4972,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
@@ -5260,7 +5260,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             #   client as shown in:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import securitycenter_v2
-            from google.iam.v1 import iam_policy_pb2  # type: ignore
+            import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client

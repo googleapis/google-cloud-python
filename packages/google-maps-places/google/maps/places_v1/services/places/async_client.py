@@ -45,10 +45,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.geo.type.types import viewport
-from google.type import datetime_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
-from google.type import localized_text_pb2  # type: ignore
-from google.type import postal_address_pb2  # type: ignore
+import google.type.datetime_pb2 as datetime_pb2  # type: ignore
+import google.type.latlng_pb2 as latlng_pb2  # type: ignore
+import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
+import google.type.postal_address_pb2 as postal_address_pb2  # type: ignore
 
 from google.maps.places_v1.types import (
     address_descriptor,

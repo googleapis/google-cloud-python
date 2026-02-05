@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.rpc import code_pb2  # type: ignore
+import google.rpc.code_pb2 as code_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(

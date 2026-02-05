@@ -55,7 +55,7 @@ from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 
 from google.cloud.dataproc_v1.services.autoscaling_policy_service import (
     AutoscalingPolicyServiceAsyncClient,

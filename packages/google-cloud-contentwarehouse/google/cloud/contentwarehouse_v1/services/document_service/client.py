@@ -62,9 +62,10 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 from google.cloud.documentai_v1.types import document as gcd_document
-from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
+import google.longrunning.operations_pb2 as operations_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.contentwarehouse_v1.services.document_service import pagers
 from google.cloud.contentwarehouse_v1.types import (

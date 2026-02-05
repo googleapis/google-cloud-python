@@ -51,7 +51,7 @@ import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.rpc import status_pb2  # type: ignore
+import google.rpc.status_pb2 as status_pb2  # type: ignore
 
 from google.cloud.policytroubleshooter_v1.services.iam_checker import (
     IamCheckerAsyncClient,

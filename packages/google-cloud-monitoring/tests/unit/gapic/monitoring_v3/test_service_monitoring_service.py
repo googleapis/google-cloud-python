@@ -48,9 +48,9 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-from google.protobuf import duration_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.type import calendar_period_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.type.calendar_period_pb2 as calendar_period_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.service_monitoring_service import (
     ServiceMonitoringServiceAsyncClient,

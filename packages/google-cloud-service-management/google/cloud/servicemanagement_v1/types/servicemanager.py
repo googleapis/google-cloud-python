@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.api import service_pb2  # type: ignore
-from google.protobuf import any_pb2  # type: ignore
+import google.api.service_pb2 as service_pb2  # type: ignore
+import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicemanagement_v1.types import resources
