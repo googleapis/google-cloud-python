@@ -17,6 +17,7 @@ from typing import Union
 
 from .pubsub import (
     AcknowledgeRequest,
+    AIInference,
     BigQueryConfig,
     CloudStorageConfig,
     CreateSnapshotRequest,
@@ -99,6 +100,7 @@ TimeoutType = Union[
 __all__ = (
     "TimeoutType",
     "AcknowledgeRequest",
+    "AIInference",
     "BigQueryConfig",
     "CloudStorageConfig",
     "CreateSnapshotRequest",

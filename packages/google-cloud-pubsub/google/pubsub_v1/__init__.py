@@ -36,6 +36,7 @@ from .services.subscriber import SubscriberClient
 from .services.subscriber import SubscriberAsyncClient
 
 from .types.pubsub import AcknowledgeRequest
+from .types.pubsub import AIInference
 from .types.pubsub import BigQueryConfig
 from .types.pubsub import CloudStorageConfig
 from .types.pubsub import CreateSnapshotRequest
@@ -202,6 +203,7 @@ __all__ = (
     "PublisherAsyncClient",
     "SchemaServiceAsyncClient",
     "SubscriberAsyncClient",
+    "AIInference",
     "AcknowledgeRequest",
     "BigQueryConfig",
     "CloudStorageConfig",

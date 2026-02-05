@@ -21,6 +21,7 @@ import proto  # type: ignore
 
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.types import schema as gp_schema
 
@@ -34,6 +35,7 @@ __protobuf__ = proto.module(
         "PlatformLogsSettings",
         "IngestionFailureEvent",
         "JavaScriptUDF",
+        "AIInference",
         "MessageTransform",
         "Topic",
         "PubsubMessage",
@@ -1344,8 +1346,77 @@ class JavaScriptUDF(proto.Message):
     )
 
 
+class AIInference(proto.Message):
+    r"""Configuration for making inference requests against Vertex AI
+    models.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        endpoint (str):
+            Required. An endpoint to a Vertex AI model of the form
+            ``projects/{project}/locations/{location}/endpoints/{endpoint}``
+            or
+            ``projects/{project}/locations/{location}/publishers/{publisher}/models/{model}``.
+            Vertex AI API requests will be sent to this endpoint.
+        unstructured_inference (google.pubsub_v1.types.AIInference.UnstructuredInference):
+            Optional. Requests and responses can be any
+            arbitrary JSON object.
+
+            This field is a member of `oneof`_ ``inference_mode``.
+        service_account_email (str):
+            Optional. The service account to use to make prediction
+            requests against endpoints. The resource creator or updater
+            that specifies this field must have
+            ``iam.serviceAccounts.actAs`` permission on the service
+            account. If not specified, the Pub/Sub `service
+            agent <{$universe.dns_names.final_documentation_domain}/iam/docs/service-agents>`__,
+            service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com,
+            is used.
+    """
+
+    class UnstructuredInference(proto.Message):
+        r"""Configuration for making inferences using arbitrary JSON
+        payloads.
+
+        Attributes:
+            parameters (google.protobuf.struct_pb2.Struct):
+                Optional. A parameters object to be included
+                in each inference request. The parameters object
+                is combined with the data field of the Pub/Sub
+                message to form the inference request.
+        """
+
+        parameters: struct_pb2.Struct = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Struct,
+        )
+
+    endpoint: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    unstructured_inference: UnstructuredInference = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="inference_mode",
+        message=UnstructuredInference,
+    )
+    service_account_email: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class MessageTransform(proto.Message):
     r"""All supported message transforms types.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1354,6 +1425,13 @@ class MessageTransform(proto.Message):
             Optional. JavaScript User Defined Function. If multiple
             JavaScriptUDF's are specified on a resource, each must have
             a unique ``function_name``.
+
+            This field is a member of `oneof`_ ``transform``.
+        ai_inference (google.pubsub_v1.types.AIInference):
+            Optional. AI Inference. Specifies the Vertex
+            AI endpoint that inference requests built from
+            the Pub/Sub message data and provided parameters
+            will be sent to.
 
             This field is a member of `oneof`_ ``transform``.
         enabled (bool):
@@ -1370,6 +1448,12 @@ class MessageTransform(proto.Message):
         oneof="transform",
         message="JavaScriptUDF",
     )
+    ai_inference: "AIInference" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="transform",
+        message="AIInference",
+    )
     enabled: bool = proto.Field(
         proto.BOOL,
         number=3,
@@ -1385,10 +1469,10 @@ class Topic(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the topic. It must have the format
-            ``"projects/{project}/topics/{topic}"``. ``{topic}`` must
-            start with a letter, and contain only letters
-            (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``),
+            Required. Identifier. The name of the topic. It must have
+            the format ``"projects/{project}/topics/{topic}"``.
+            ``{topic}`` must start with a letter, and contain only
+            letters (``[A-Za-z]``), numbers (``[0-9]``), dashes (``-``),
             underscores (``_``), periods (``.``), tildes (``~``), plus
             (``+``) or percent signs (``%``). It must be between 3 and
             255 characters in length, and it must not start with
@@ -1442,7 +1526,11 @@ class Topic(proto.Message):
             example:
 
               "123/environment": "production",
-              "123/costCenter": "marketing".
+              "123/costCenter": "marketing"
+            See
+            https://docs.cloud.google.com/pubsub/docs/tags
+            for more information on using tags with Pub/Sub
+            resources.
     """
 
     class State(proto.Enum):
@@ -1889,8 +1977,8 @@ class Subscription(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the subscription. It must have the
-            format
+            Required. Identifier. The name of the subscription. It must
+            have the format
             ``"projects/{project}/subscriptions/{subscription}"``.
             ``{subscription}`` must start with a letter, and contain
             only letters (``[A-Za-z]``), numbers (``[0-9]``), dashes
@@ -2043,7 +2131,7 @@ class Subscription(proto.Message):
         analytics_hub_subscription_info (google.pubsub_v1.types.Subscription.AnalyticsHubSubscriptionInfo):
             Output only. Information about the associated
             Analytics Hub subscription. Only set if the
-            subscritpion is created by Analytics Hub.
+            subscription is created by Analytics Hub.
         message_transforms (MutableSequence[google.pubsub_v1.types.MessageTransform]):
             Optional. Transforms to be applied to
             messages before they are delivered to
@@ -2055,7 +2143,11 @@ class Subscription(proto.Message):
             example:
 
               "123/environment": "production",
-              "123/costCenter": "marketing".
+              "123/costCenter": "marketing"
+            See
+            https://docs.cloud.google.com/pubsub/docs/tags
+            for more information on using tags with Pub/Sub
+            resources.
     """
 
     class State(proto.Enum):
@@ -2530,6 +2622,10 @@ class BigQueryConfig(proto.Message):
                 Cannot write to the destination because enforce_in_transit
                 is set to true and the destination locations are not in the
                 allowed regions.
+            VERTEX_AI_LOCATION_RESTRICTION (6):
+                Cannot write to the BigQuery table because the table is not
+                in the same location as where Vertex AI models used in
+                ``message_transform``\ s are deployed.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -2537,6 +2633,7 @@ class BigQueryConfig(proto.Message):
         NOT_FOUND = 3
         SCHEMA_MISMATCH = 4
         IN_TRANSIT_LOCATION_RESTRICTION = 5
+        VERTEX_AI_LOCATION_RESTRICTION = 6
 
     table: str = proto.Field(
         proto.STRING,
@@ -2663,6 +2760,10 @@ class CloudStorageConfig(proto.Message):
                 Cannot write to the Cloud Storage bucket due
                 to an incompatibility between the topic schema
                 and subscription settings.
+            VERTEX_AI_LOCATION_RESTRICTION (6):
+                Cannot write to the Cloud Storage bucket because the bucket
+                is not in the same location as where Vertex AI models used
+                in ``message_transform``\ s are deployed.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
@@ -2670,6 +2771,7 @@ class CloudStorageConfig(proto.Message):
         NOT_FOUND = 3
         IN_TRANSIT_LOCATION_RESTRICTION = 4
         SCHEMA_MISMATCH = 5
+        VERTEX_AI_LOCATION_RESTRICTION = 6
 
     class TextConfig(proto.Message):
         r"""Configuration for writing message data in text format.
@@ -3354,7 +3456,11 @@ class CreateSnapshotRequest(proto.Message):
             example:
 
               "123/environment": "production",
-              "123/costCenter": "marketing".
+              "123/costCenter": "marketing"
+            See
+            https://docs.cloud.google.com/pubsub/docs/tags
+            for more information on using tags with Pub/Sub
+            resources.
     """
 
     name: str = proto.Field(

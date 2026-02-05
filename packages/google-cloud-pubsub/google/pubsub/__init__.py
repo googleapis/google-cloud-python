@@ -28,6 +28,7 @@ from google.pubsub_v1.services.subscriber.client import SubscriberClient
 from google.pubsub_v1.services.subscriber.async_client import SubscriberAsyncClient
 
 from google.pubsub_v1.types.pubsub import AcknowledgeRequest
+from google.pubsub_v1.types.pubsub import AIInference
 from google.pubsub_v1.types.pubsub import BigQueryConfig
 from google.pubsub_v1.types.pubsub import CloudStorageConfig
 from google.pubsub_v1.types.pubsub import CreateSnapshotRequest
@@ -104,6 +105,7 @@ __all__ = (
     "SubscriberClient",
     "SubscriberAsyncClient",
     "AcknowledgeRequest",
+    "AIInference",
     "BigQueryConfig",
     "CloudStorageConfig",
     "CreateSnapshotRequest",

@@ -360,8 +360,8 @@ class SubscriberAsyncClient:
                 then the subscriber will pull and ack messages using API
                 methods. At most one of these fields may be set.
             name (:class:`str`):
-                Required. The name of the subscription. It must have the
-                format
+                Required. Identifier. The name of the subscription. It
+                must have the format
                 ``"projects/{project}/subscriptions/{subscription}"``.
                 ``{subscription}`` must start with a letter, and contain
                 only letters (``[A-Za-z]``), numbers (``[0-9]``), dashes
