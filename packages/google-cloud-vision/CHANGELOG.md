@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.12.0...google-cloud-vision-v3.12.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* fix mypy errors (#15494) ([1f4c2862d77afa893f7a968af57e7adf54d49d0e](https://github.com/googleapis/google-cloud-python/commit/1f4c2862d77afa893f7a968af57e7adf54d49d0e))
+
 ## [3.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.11.0...google-cloud-vision-v3.12.0) (2026-01-09)
 
 

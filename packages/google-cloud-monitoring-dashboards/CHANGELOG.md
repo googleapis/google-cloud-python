@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring-dashboards/#history
 
+## [2.20.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.20.0...google-cloud-monitoring-dashboards-v2.20.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* fix mypy errors in google-cloud-monitoring-dashboards/google/monitoring (#15493) ([ca15a7e691a1f66e1b3beaa9b88a2e450a6947f5](https://github.com/googleapis/google-cloud-python/commit/ca15a7e691a1f66e1b3beaa9b88a2e450a6947f5))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.19.0...google-cloud-monitoring-dashboards-v2.20.0) (2026-01-08)
 
 

@@ -15,7 +15,7 @@ libraries:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/ads/datamanager/v1
@@ -97,7 +97,7 @@ libraries:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
   - id: google-apps-card
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/apps/card/v1
@@ -112,7 +112,7 @@ libraries:
       - packages/google-apps-card/
     tag_format: '{id}-v{version}'
   - id: google-apps-chat
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/chat/v1
@@ -358,7 +358,7 @@ libraries:
       - packages/google-cloud-apihub/
     tag_format: '{id}-v{version}'
   - id: google-cloud-apiregistry
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: d077e5979c3e99b53fe43d606f553bba96b744d6
     apis:
       - path: google/cloud/apiregistry/v1beta
@@ -486,7 +486,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-auditmanager
-    version: 0.0.0
+    version: 0.1.0
     last_generated_commit: 85b3f459f91cd08669c27da47d07bb57f6d9aa4d
     apis:
       - path: google/cloud/auditmanager/v1
@@ -526,7 +526,7 @@ libraries:
       - packages/google-cloud-automl/
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
-    version: 0.7.0
+    version: 0.8.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/backupdr/v1
@@ -2052,7 +2052,7 @@ libraries:
       - packages/google-cloud-modelarmor/
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring
-    version: 2.29.0
+    version: 2.29.1
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/monitoring/v3
@@ -2072,7 +2072,7 @@ libraries:
       - packages/google-cloud-monitoring
     tag_format: '{id}-v{version}'
   - id: google-cloud-monitoring-dashboards
-    version: 2.20.0
+    version: 2.20.1
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/monitoring/dashboard/v1
@@ -2240,7 +2240,7 @@ libraries:
       - packages/google-cloud-orchestration-airflow/
     tag_format: '{id}-v{version}'
   - id: google-cloud-org-policy
-    version: 1.16.0
+    version: 1.16.1
     last_generated_commit: 55319b058f8a0e46bbeeff30e374e4b1f081f494
     apis:
       - path: google/cloud/orgpolicy/v1
@@ -2422,7 +2422,7 @@ libraries:
       - packages/google-cloud-privilegedaccessmanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
-    version: 0.4.0
+    version: 0.5.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/api/cloudquotas/v1
@@ -2790,7 +2790,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
-    version: 2.36.0
+    version: 2.36.1
     last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
     apis:
       - path: google/cloud/speech/v1
@@ -3008,7 +3008,7 @@ libraries:
       - packages/google-cloud-translate/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vectorsearch
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
     apis:
       - path: google/cloud/vectorsearch/v1beta
@@ -3087,7 +3087,7 @@ libraries:
       - packages/google-cloud-videointelligence/
     tag_format: '{id}-v{version}'
   - id: google-cloud-vision
-    version: 3.12.0
+    version: 3.12.1
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/vision/v1p3beta1
@@ -3660,7 +3660,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
-    version: 1.19.0
+    version: 1.19.1
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: grafeas/v1

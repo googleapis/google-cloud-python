@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.19.0...grafeas-v1.19.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* fix mypy (#15496) ([4daf9cc283e66f49904b74c1067d245ba43e833a](https://github.com/googleapis/google-cloud-python/commit/4daf9cc283e66f49904b74c1067d245ba43e833a))
+
 ## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.18.0...grafeas-v1.19.0) (2026-01-29)
 
 

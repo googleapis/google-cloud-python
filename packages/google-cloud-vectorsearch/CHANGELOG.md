@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-vectorsearch/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.3.0...google-cloud-vectorsearch-v0.4.0) (2026-02-05)
+
+
+### Features
+
+* add SearchHint to SemanticSearch requests ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+* add ExportDataObjects API ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+* Allow requesting search metadata in SearchDataObjects ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+* add filter param for TextSearch requests ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vectorsearch-v0.2.0...google-cloud-vectorsearch-v0.3.0) (2026-01-08)
 
 

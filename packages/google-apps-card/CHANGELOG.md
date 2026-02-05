@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-apps-card/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.4.0...google-apps-card-v0.5.0) (2026-02-05)
+
+
+### Documentation
+
+* update reference documentation for `SelectionInput.DROPDOWN` to include dynamic data sources and autosuggestion ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+* update copyright to 2026 ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-card-v0.3.0...google-apps-card-v0.4.0) (2026-01-08)
 
 

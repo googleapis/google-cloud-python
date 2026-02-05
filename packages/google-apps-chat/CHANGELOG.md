@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.5.0...google-apps-chat-v0.6.0) (2026-02-05)
+
+
+### Features
+
+* Addition of QuoteType enum, QuotedMessageSnapshot &amp; ForwardMetadata in the QuotedMessageMetadata proto ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.4.0...google-apps-chat-v0.5.0) (2026-01-08)
 
 

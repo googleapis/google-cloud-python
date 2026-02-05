@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-quotas/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.4.0...google-cloud-quotas-v0.5.0) (2026-02-05)
+
+
+### Documentation
+
+* Folder level and organization level support for the quota adjuster feature. ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
+
+### Features
+
+* Hierarchical Quota Adjuster ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.3.0...google-cloud-quotas-v0.4.0) (2026-01-29)
 
 

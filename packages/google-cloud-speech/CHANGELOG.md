@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.36.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.36.0...google-cloud-speech-v2.36.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* fix mypy errors (#15494) ([1f4c2862d77afa893f7a968af57e7adf54d49d0e](https://github.com/googleapis/google-cloud-python/commit/1f4c2862d77afa893f7a968af57e7adf54d49d0e))
+
 ## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.35.0...google-cloud-speech-v2.36.0) (2026-01-09)
 
 

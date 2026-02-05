@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-backupdr/#history
 
+## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.7.0...google-cloud-backupdr-v0.8.0) (2026-02-05)
+
+
+### Documentation
+
+* A comment for field `log_retention_days` in message `.google.cloud.backupdr.v1.BackupPlan` is changed ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
+
+### Features
+
+* Add support for AlloyDB backup and restore ([fe0a0b4638a8f5301c30be43fd2f2898ddc6db37](https://github.com/googleapis/google-cloud-python/commit/fe0a0b4638a8f5301c30be43fd2f2898ddc6db37))
+
 ## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.6.0...google-cloud-backupdr-v0.7.0) (2026-01-15)
 
 
