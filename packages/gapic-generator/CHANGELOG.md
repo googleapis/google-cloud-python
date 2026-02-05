@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.7](https://github.com/googleapis/gapic-generator-python/compare/v1.30.6...v1.30.7) (2026-02-05)
+
+
+### Bug Fixes
+
+* updates tests for ListValue response fields (#2532) ([cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd](https://github.com/googleapis/gapic-generator-python/commit/cb659ad2ba5b1a169b9acb5f9055e5ee003f84bd))
+
 ## [1.30.6](https://github.com/googleapis/gapic-generator-python/compare/v1.30.5...v1.30.6) (2026-01-30)
 
 
