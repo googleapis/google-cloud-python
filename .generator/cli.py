@@ -528,7 +528,7 @@ def _create_repo_metadata_from_service_config(
     # newly generated clients.
     release_level = "preview"
 
-    return {
+    metadata = {
         "name": library_id,
         "name_pretty": name_pretty,
         "api_description": api_description,
@@ -546,6 +546,11 @@ def _create_repo_metadata_from_service_config(
         "default_version": Path(api_path).name,
         "api_shortname": api_shortname,
     }
+    # Note: we sort this to be forward-compatible with the next version of
+    # librarian, which generates .repo-metadata.json files from scratch,
+    # and always does so with sorted keys. This will reduce the diff during
+    # migration.
+    return dict(sorted(metadata.items()))
 
 
 def _get_repo_metadata_file_path(base: str, library_id: str, is_mono_repo: bool):
