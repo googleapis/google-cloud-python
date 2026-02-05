@@ -33,17 +33,41 @@ def mock_dataframe(mock_session):
     df = mock.create_autospec(spec=bigframes.dataframe.DataFrame)
     df._session = mock_session
     df.sql = "SELECT * FROM my_table"
+    df._to_sql_query.return_value = ("SELECT * FROM my_table", None, None)
     return df
 
 
 @pytest.fixture
-def mock_series(mock_session):
+def mock_embedding_series(mock_session):
     series = mock.create_autospec(spec=bigframes.series.Series)
     series._session = mock_session
     # Mock to_frame to return a mock dataframe
     df = mock.create_autospec(spec=bigframes.dataframe.DataFrame)
     df._session = mock_session
     df.sql = "SELECT my_col AS content FROM my_table"
+    df._to_sql_query.return_value = (
+        "SELECT my_col AS content FROM my_table",
+        None,
+        None,
+    )
+    series.copy.return_value = series
+    series.to_frame.return_value = df
+    return series
+
+
+@pytest.fixture
+def mock_text_series(mock_session):
+    series = mock.create_autospec(spec=bigframes.series.Series)
+    series._session = mock_session
+    # Mock to_frame to return a mock dataframe
+    df = mock.create_autospec(spec=bigframes.dataframe.DataFrame)
+    df._session = mock_session
+    df.sql = "SELECT my_col AS prompt FROM my_table"
+    df._to_sql_query.return_value = (
+        "SELECT my_col AS prompt FROM my_table",
+        None,
+        None,
+    )
     series.copy.return_value = series
     series.to_frame.return_value = df
     return series
@@ -58,8 +82,8 @@ def test_generate_embedding_with_dataframe(mock_dataframe, mock_session):
         output_dimensionality=256,
     )
 
-    mock_session.read_gbq.assert_called_once()
-    query = mock_session.read_gbq.call_args[0][0]
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
 
     # Normalize whitespace for comparison
     query = " ".join(query.split())
@@ -75,15 +99,19 @@ def test_generate_embedding_with_dataframe(mock_dataframe, mock_session):
     assert expected_part_4 in query
 
 
-def test_generate_embedding_with_series(mock_series, mock_session):
+def test_generate_embedding_with_series(mock_embedding_series, mock_session):
     model_name = "project.dataset.model"
 
     bbq.ai.generate_embedding(
-        model_name, mock_series, start_second=0.0, end_second=10.0, interval_seconds=5.0
+        model_name,
+        mock_embedding_series,
+        start_second=0.0,
+        end_second=10.0,
+        interval_seconds=5.0,
     )
 
-    mock_session.read_gbq.assert_called_once()
-    query = mock_session.read_gbq.call_args[0][0]
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
     query = " ".join(query.split())
 
     assert f"MODEL `{model_name}`" in query
@@ -102,8 +130,8 @@ def test_generate_embedding_defaults(mock_dataframe, mock_session):
         mock_dataframe,
     )
 
-    mock_session.read_gbq.assert_called_once()
-    query = mock_session.read_gbq.call_args[0][0]
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
     query = " ".join(query.split())
 
     assert f"MODEL `{model_name}`" in query
@@ -131,4 +159,86 @@ def test_generate_embedding_with_pandas_dataframe(
     # Check that read_pandas was called with something (the pandas df)
     assert read_pandas_mock.call_args[0][0] is pandas_df
 
-    mock_session.read_gbq.assert_called_once()
+    mock_session.read_gbq_query.assert_called_once()
+
+
+def test_generate_text_with_dataframe(mock_dataframe, mock_session):
+    model_name = "project.dataset.model"
+
+    bbq.ai.generate_text(
+        model_name,
+        mock_dataframe,
+        max_output_tokens=256,
+    )
+
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
+
+    # Normalize whitespace for comparison
+    query = " ".join(query.split())
+
+    expected_part_1 = "SELECT * FROM AI.GENERATE_TEXT("
+    expected_part_2 = f"MODEL `{model_name}`,"
+    expected_part_3 = "(SELECT * FROM my_table),"
+    expected_part_4 = "STRUCT(256 AS MAX_OUTPUT_TOKENS)"
+
+    assert expected_part_1 in query
+    assert expected_part_2 in query
+    assert expected_part_3 in query
+    assert expected_part_4 in query
+
+
+def test_generate_text_with_series(mock_text_series, mock_session):
+    model_name = "project.dataset.model"
+
+    bbq.ai.generate_text(
+        model_name,
+        mock_text_series,
+    )
+
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
+    query = " ".join(query.split())
+
+    assert f"MODEL `{model_name}`" in query
+    assert "(SELECT my_col AS prompt FROM my_table)" in query
+
+
+def test_generate_text_defaults(mock_dataframe, mock_session):
+    model_name = "project.dataset.model"
+
+    bbq.ai.generate_text(
+        model_name,
+        mock_dataframe,
+    )
+
+    mock_session.read_gbq_query.assert_called_once()
+    query = mock_session.read_gbq_query.call_args[0][0]
+    query = " ".join(query.split())
+
+    assert f"MODEL `{model_name}`" in query
+    assert "STRUCT()" in query
+
+
+@mock.patch("bigframes.pandas.read_pandas")
+def test_generate_text_with_pandas_dataframe(
+    read_pandas_mock, mock_dataframe, mock_session
+):
+    # This tests that pandas input path works and calls read_pandas
+    model_name = "project.dataset.model"
+
+    # Mock return value of read_pandas to be a BigFrames DataFrame
+    read_pandas_mock.return_value = mock_dataframe
+
+    pandas_df = pd.DataFrame({"content": ["test"]})
+
+    bbq.ai.generate_text(
+        model_name,
+        pandas_df,
+    )
+
+    read_pandas_mock.assert_called_once()
+    # Check that read_pandas was called with something (the pandas df)
+    assert read_pandas_mock.call_args[0][0] is pandas_df
+
+    mock_session.read_gbq_query.assert_called_once()

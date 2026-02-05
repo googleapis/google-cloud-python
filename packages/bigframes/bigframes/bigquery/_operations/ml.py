@@ -14,64 +14,18 @@
 
 from __future__ import annotations
 
-from typing import cast, List, Mapping, Optional, Union
+from typing import List, Mapping, Optional, Union
 
 import bigframes_vendored.constants
 import google.cloud.bigquery
 import pandas as pd
 
+from bigframes.bigquery._operations import utils
 import bigframes.core.logging.log_adapter as log_adapter
 import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base
 import bigframes.session
-
-
-# Helper to convert DataFrame to SQL string
-def _to_sql(df_or_sql: Union[pd.DataFrame, dataframe.DataFrame, str]) -> str:
-    import bigframes.pandas as bpd
-
-    if isinstance(df_or_sql, str):
-        return df_or_sql
-
-    if isinstance(df_or_sql, pd.DataFrame):
-        bf_df = bpd.read_pandas(df_or_sql)
-    else:
-        bf_df = cast(dataframe.DataFrame, df_or_sql)
-
-    # Cache dataframes to make sure base table is not a snapshot.
-    # Cached dataframe creates a full copy, never uses snapshot.
-    # This is a workaround for internal issue b/310266666.
-    bf_df.cache()
-    sql, _, _ = bf_df._to_sql_query(include_index=False)
-    return sql
-
-
-def _get_model_name_and_session(
-    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
-    # Other dataframe arguments to extract session from
-    *dataframes: Optional[Union[pd.DataFrame, dataframe.DataFrame, str]],
-) -> tuple[str, Optional[bigframes.session.Session]]:
-    if isinstance(model, pd.Series):
-        try:
-            model_ref = model["modelReference"]
-            model_name = f"{model_ref['projectId']}.{model_ref['datasetId']}.{model_ref['modelId']}"  # type: ignore
-        except KeyError:
-            raise ValueError("modelReference must be present in the pandas Series.")
-    elif isinstance(model, str):
-        model_name = model
-    else:
-        if model._bqml_model is None:
-            raise ValueError("Model must be fitted to be used in ML operations.")
-        return model._bqml_model.model_name, model._bqml_model.session
-
-    session = None
-    for df in dataframes:
-        if isinstance(df, dataframe.DataFrame):
-            session = df._session
-            break
-
-    return model_name, session
 
 
 def _get_model_metadata(
@@ -143,8 +97,12 @@ def create_model(
     """
     import bigframes.pandas as bpd
 
-    training_data_sql = _to_sql(training_data) if training_data is not None else None
-    custom_holiday_sql = _to_sql(custom_holiday) if custom_holiday is not None else None
+    training_data_sql = (
+        utils.to_sql(training_data) if training_data is not None else None
+    )
+    custom_holiday_sql = (
+        utils.to_sql(custom_holiday) if custom_holiday is not None else None
+    )
 
     # Determine session from DataFrames if not provided
     if session is None:
@@ -227,8 +185,8 @@ def evaluate(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_) if input_ is not None else None
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_) if input_ is not None else None
 
     sql = bigframes.core.sql.ml.evaluate(
         model_name=model_name,
@@ -281,8 +239,8 @@ def predict(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_)
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_)
 
     sql = bigframes.core.sql.ml.predict(
         model_name=model_name,
@@ -340,8 +298,8 @@ def explain_predict(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_)
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_)
 
     sql = bigframes.core.sql.ml.explain_predict(
         model_name=model_name,
@@ -383,7 +341,7 @@ def global_explain(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model)
+    model_name, session = utils.get_model_name_and_session(model)
     sql = bigframes.core.sql.ml.global_explain(
         model_name=model_name,
         class_level_explain=class_level_explain,
@@ -419,8 +377,8 @@ def transform(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_)
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_)
 
     sql = bigframes.core.sql.ml.transform(
         model_name=model_name,
@@ -500,8 +458,8 @@ def generate_text(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_)
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_)
 
     sql = bigframes.core.sql.ml.generate_text(
         model_name=model_name,
@@ -565,8 +523,8 @@ def generate_embedding(
     """
     import bigframes.pandas as bpd
 
-    model_name, session = _get_model_name_and_session(model, input_)
-    table_sql = _to_sql(input_)
+    model_name, session = utils.get_model_name_and_session(model, input_)
+    table_sql = utils.to_sql(input_)
 
     sql = bigframes.core.sql.ml.generate_embedding(
         model_name=model_name,

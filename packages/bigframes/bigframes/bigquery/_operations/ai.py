@@ -26,6 +26,7 @@ import pandas as pd
 from bigframes import clients, dataframe, dtypes
 from bigframes import pandas as bpd
 from bigframes import series, session
+from bigframes.bigquery._operations import utils as bq_utils
 from bigframes.core import convert
 from bigframes.core.logging import log_adapter
 import bigframes.core.sql.literals
@@ -391,7 +392,7 @@ def generate_double(
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
 def generate_embedding(
-    model_name: str,
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
     data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
     *,
     output_dimensionality: Optional[int] = None,
@@ -415,9 +416,8 @@ def generate_embedding(
         ... ) # doctest: +SKIP
 
     Args:
-        model_name (str):
-            The name of a remote model from Vertex AI, such as the
-            multimodalembedding@001 model.
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for text embedding.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
             The data to generate embeddings for. If a Series is provided, it is
             treated as the 'content' column.  If a DataFrame is provided, it
@@ -454,20 +454,9 @@ def generate_embedding(
             <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-ai-generate-embedding#output>`_
             for details.
     """
-    if isinstance(data, (pd.DataFrame, pd.Series)):
-        data = bpd.read_pandas(data)
-
-    if isinstance(data, series.Series):
-        data = data.copy()
-        data.name = "content"
-        data_df = data.to_frame()
-    elif isinstance(data, dataframe.DataFrame):
-        data_df = data
-    else:
-        raise ValueError(f"Unsupported data type: {type(data)}")
-
-    # We need to get the SQL for the input data to pass as a subquery to the TVF
-    source_sql = data_df.sql
+    data = _to_dataframe(data, series_rename="content")
+    model_name, session = bq_utils.get_model_name_and_session(model, data)
+    table_sql = bq_utils.to_sql(data)
 
     struct_fields: Dict[str, bigframes.core.sql.literals.STRUCT_VALUES] = {}
     if output_dimensionality is not None:
@@ -488,12 +477,128 @@ def generate_embedding(
         SELECT *
         FROM AI.GENERATE_EMBEDDING(
             MODEL `{model_name}`,
-            ({source_sql}),
-            {bigframes.core.sql.literals.struct_literal(struct_fields)})
+            ({table_sql}),
+            {bigframes.core.sql.literals.struct_literal(struct_fields)}
         )
     """
 
-    return data_df._session.read_gbq(query)
+    if session is None:
+        return bpd.read_gbq_query(query)
+    else:
+        return session.read_gbq_query(query)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
+def generate_text(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
+    *,
+    temperature: Optional[float] = None,
+    max_output_tokens: Optional[int] = None,
+    top_k: Optional[int] = None,
+    top_p: Optional[float] = None,
+    stop_sequences: Optional[List[str]] = None,
+    ground_with_google_search: Optional[bool] = None,
+    request_type: Optional[str] = None,
+) -> dataframe.DataFrame:
+    """
+    Generates text using a BigQuery ML model.
+
+    See the `BigQuery ML GENERATE_TEXT function syntax
+    <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text>`_
+    for additional reference.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> df = bpd.DataFrame({"prompt": ["write a poem about apples"]})
+        >>> bbq.ai.generate_text(
+        ...     "project.dataset.model_name",
+        ...     df
+        ... ) # doctest: +SKIP
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for text generation.
+        data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
+            The data to generate embeddings for. If a Series is provided, it is
+            treated as the 'content' column.  If a DataFrame is provided, it
+            must contain a 'content' column, or you must rename the column you
+            wish to embed to 'content'.
+        temperature (float, optional):
+            A FLOAT64 value that is used for sampling promiscuity. The value
+            must be in the range ``[0.0, 1.0]``. A lower temperature works well
+            for prompts that expect a more deterministic and less open-ended
+            or creative response, while a higher temperature can lead to more
+            diverse or creative results. A temperature of ``0`` is
+            deterministic, meaning that the highest probability response is
+            always selected.
+        max_output_tokens (int, optional):
+            An INT64 value that sets the maximum number of tokens in the
+            generated text.
+        top_k (int, optional):
+            An INT64 value that changes how the model selects tokens for
+            output. A ``top_k`` of ``1`` means the next selected token is the
+            most probable among all tokens in the model's vocabulary. A
+            ``top_k`` of ``3`` means that the next token is selected from
+            among the three most probable tokens by using temperature. The
+            default value is ``40``.
+        top_p (float, optional):
+            A FLOAT64 value that changes how the model selects tokens for
+            output. Tokens are selected from most probable to least probable
+            until the sum of their probabilities equals the ``top_p`` value.
+            For example, if tokens A, B, and C have a probability of 0.3, 0.2,
+            and 0.1 and the ``top_p`` value is ``0.5``, then the model will
+            select either A or B as the next token by using temperature. The
+            default value is ``0.95``.
+        stop_sequences (List[str], optional):
+            An ARRAY<STRING> value that contains the stop sequences for the model.
+        ground_with_google_search (bool, optional):
+            A BOOL value that determines whether to ground the model with Google Search.
+        request_type (str, optional):
+            A STRING value that contains the request type for the model.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The generated text.
+    """
+    data = _to_dataframe(data, series_rename="prompt")
+    model_name, session = bq_utils.get_model_name_and_session(model, data)
+    table_sql = bq_utils.to_sql(data)
+
+    struct_fields: Dict[
+        str,
+        Union[str, int, float, bool, Mapping[str, str], List[str], Mapping[str, Any]],
+    ] = {}
+    if temperature is not None:
+        struct_fields["TEMPERATURE"] = temperature
+    if max_output_tokens is not None:
+        struct_fields["MAX_OUTPUT_TOKENS"] = max_output_tokens
+    if top_k is not None:
+        struct_fields["TOP_K"] = top_k
+    if top_p is not None:
+        struct_fields["TOP_P"] = top_p
+    if stop_sequences is not None:
+        struct_fields["STEP_SEQUENCES"] = stop_sequences
+    if ground_with_google_search is not None:
+        struct_fields["GROUND_WITH_GOOGLE_SEARCH"] = ground_with_google_search
+    if request_type is not None:
+        struct_fields["REQUEST_TYPE"] = request_type
+
+    query = f"""
+        SELECT *
+        FROM AI.GENERATE_TEXT(
+            MODEL `{model_name}`,
+            ({table_sql}),
+            {bigframes.core.sql.literals.struct_literal(struct_fields)}
+        )
+    """
+
+    if session is None:
+        return bpd.read_gbq_query(query)
+    else:
+        return session.read_gbq_query(query)
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
@@ -811,3 +916,20 @@ def _resolve_connection_id(series: series.Series, connection_id: str | None):
         series._session._project,
         series._session._location,
     )
+
+
+def _to_dataframe(
+    data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
+    series_rename: str,
+) -> dataframe.DataFrame:
+    if isinstance(data, (pd.DataFrame, pd.Series)):
+        data = bpd.read_pandas(data)
+
+    if isinstance(data, series.Series):
+        data = data.copy()
+        data.name = series_rename
+        return data.to_frame()
+    elif isinstance(data, dataframe.DataFrame):
+        return data
+
+    raise ValueError(f"Unsupported data type: {type(data)}")

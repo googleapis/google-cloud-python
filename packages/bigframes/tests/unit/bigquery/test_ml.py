@@ -40,31 +40,6 @@ MODEL_SERIES = pd.Series(
 MODEL_NAME = "test-project.test-dataset.test-model"
 
 
-def test_get_model_name_and_session_with_pandas_series_model_input():
-    model_name, _ = ml_ops._get_model_name_and_session(MODEL_SERIES)
-    assert model_name == MODEL_NAME
-
-
-def test_get_model_name_and_session_with_pandas_series_model_input_missing_model_reference():
-    model_series = pd.Series({"some_other_key": "value"})
-    with pytest.raises(
-        ValueError, match="modelReference must be present in the pandas Series"
-    ):
-        ml_ops._get_model_name_and_session(model_series)
-
-
-@mock.patch("bigframes.pandas.read_pandas")
-def test_to_sql_with_pandas_dataframe(read_pandas_mock):
-    df = pd.DataFrame({"col1": [1, 2, 3]})
-    read_pandas_mock.return_value._to_sql_query.return_value = (
-        "SELECT * FROM `pandas_df`",
-        [],
-        [],
-    )
-    ml_ops._to_sql(df)
-    read_pandas_mock.assert_called_once()
-
-
 @mock.patch("bigframes.bigquery._operations.ml._get_model_metadata")
 @mock.patch("bigframes.pandas.read_pandas")
 def test_create_model_with_pandas_dataframe(
