@@ -23,7 +23,7 @@ Execute unit tests by running one of the sessions prefixed with `unit-`.
 
 ## Formatting
 
--   Lint sources by running `nox -s blacken`. Use `nox -s lint` to run lint check.
+-   Format sources by running `nox -s format`. Use `nox -s lint` to run lint check.
 
 ## Integration Tests
 
