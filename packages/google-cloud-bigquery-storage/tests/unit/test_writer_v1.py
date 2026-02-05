@@ -229,7 +229,7 @@ class Test_Connection(unittest.TestCase):
         assert isinstance(connection._thread_lock, type(threading.RLock()))
         assert connection._rpc is None
         assert connection._consumer is None
-        assert connection._stream_name is ""
+        assert connection._stream_name == ""
         assert isinstance(connection._queue, queue.Queue)
 
         assert connection._closed is False
