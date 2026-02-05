@@ -4450,3 +4450,10 @@ def test_dataframe_explode_reserve_order(session, ignore_index, ordered):
 def test_dataframe_explode_xfail(col_names):
     df = bpd.DataFrame({"A": [[0, 1, 2], [], [3, 4]]})
     df.explode(col_names)
+
+
+def test_recursion_limit_unit(scalars_df_index):
+    scalars_df_index = scalars_df_index[["int64_too", "int64_col", "float64_col"]]
+    for i in range(250):
+        scalars_df_index = scalars_df_index + 4
+    scalars_df_index.to_pandas()

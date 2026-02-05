@@ -31,10 +31,8 @@ def api_coverage_df():
     reason="Issues with installing sklearn for this test in python 3.13",
 )
 def test_api_coverage_produces_expected_schema(api_coverage_df):
-    if sys.version.split(".")[:2] == ["3", "9"]:
-        pytest.skip(
-            "Python 3.9 uses older pandas without good microsecond timestamp support."
-        )
+    # Older pandas has different timestamp default precision
+    pytest.importorskip("pandas", minversion="2.0.0")
 
     pandas.testing.assert_series_equal(
         api_coverage_df.dtypes,
@@ -56,6 +54,8 @@ def test_api_coverage_produces_expected_schema(api_coverage_df):
                 "release_version": "string",
             },
         ),
+        # String dtype behavior not consistent across pandas versions
+        check_dtype=False,
     )
 
 

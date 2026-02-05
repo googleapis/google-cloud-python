@@ -1,18 +1,39 @@
 # When we drop Python 3.9,
 # please keep these in sync with the minimum versions in setup.py
-google-auth==2.27.0
-ipykernel==5.5.6
-ipython==7.34.0
-notebook==6.5.5
-pandas==2.1.4
-pandas-stubs==2.1.4.231227
-portpicker==1.5.2
-requests==2.32.3
-tornado==6.3.3
-absl-py==1.4.0
-debugpy==1.6.6
+cloudpickle==2.0.0
+fsspec==2023.3.0
+gcsfs==2023.3.0
+geopandas==0.12.2
+google-auth==2.15.0
+google-cloud-bigtable==2.24.0
+google-cloud-pubsub==2.21.4
+google-cloud-bigquery==3.36.0
+google-cloud-functions==1.12.0
+google-cloud-bigquery-connection==1.12.0
+google-cloud-iam==2.12.1
+google-cloud-resource-manager==1.10.3
+google-cloud-storage==2.0.0
+grpc-google-iam-v1==0.14.2
+numpy==1.24.0
+pandas==1.5.3
+pandas-gbq==0.26.1
+pyarrow==15.0.2
+pydata-google-auth==1.8.2
+requests==2.27.1
+scikit-learn==1.2.2
+shapely==1.8.5
+tabulate==0.9
+ipywidgets==7.7.1
+humanize==4.6.0
 matplotlib==3.7.1
-psutil==5.9.5
-seaborn==0.13.1
-traitlets==5.7.1
-polars==1.21.0
+db-dtypes==1.4.2
+# For vendored ibis-framework.
+atpublic==2.3
+python-dateutil==2.8.2
+pytz==2022.7
+toolz==0.11
+typing-extensions==4.5.0
+rich==12.4.4
+# For anywidget mode
+anywidget>=0.9.18
+traitlets==5.0.0

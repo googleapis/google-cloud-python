@@ -205,7 +205,7 @@ class SumOp(UnaryAggregateOp):
             return dtypes.TIMEDELTA_DTYPE
 
         if dtypes.is_numeric(input_types[0]):
-            if pd.api.types.is_bool_dtype(input_types[0]):
+            if pd.api.types.is_bool_dtype(input_types[0]):  # type: ignore
                 return dtypes.INT_DTYPE
             return input_types[0]
 
@@ -224,7 +224,7 @@ class MedianOp(UnaryAggregateOp):
         # These will change if median is changed to exact implementation.
         if not dtypes.is_orderable(input_types[0]):
             raise TypeError(f"Type {input_types[0]} is not orderable")
-        if pd.api.types.is_bool_dtype(input_types[0]):
+        if pd.api.types.is_bool_dtype(input_types[0]):  # type: ignore
             return dtypes.INT_DTYPE
         else:
             return input_types[0]

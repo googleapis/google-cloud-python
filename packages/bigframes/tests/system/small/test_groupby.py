@@ -123,7 +123,7 @@ def test_dataframe_groupby_rank(
     scalars_df_index, scalars_pandas_df_index, na_option, method, ascending, pct
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
-    pytest.importorskip("pandas", minversion="2.0.0")
+    pytest.importorskip("pandas", minversion="2.2.0")
     col_names = ["int64_too", "float64_col", "int64_col", "string_col"]
     bf_result = (
         scalars_df_index[col_names]

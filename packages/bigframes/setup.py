@@ -33,7 +33,7 @@ description = (
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    # please keep these in sync with the minimum versions in testing/constraints-3.9.txt
+    # please keep these in sync with the minimum versions in testing/constraints-3.10.txt
     "cloudpickle >= 2.0.0",
     "fsspec >=2023.3.0",
     "gcsfs >=2023.3.0, !=2025.5.0",
@@ -133,7 +133,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
@@ -149,7 +148,7 @@ setuptools.setup(
         "bigframes_vendored": "third_party/bigframes_vendored",
     },
     packages=packages,
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     include_package_data=True,
     zip_safe=False,
 )

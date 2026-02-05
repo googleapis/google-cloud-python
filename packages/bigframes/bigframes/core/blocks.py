@@ -140,6 +140,7 @@ class Block:
         column_labels: typing.Union[pd.Index, typing.Iterable[Label]],
         index_labels: typing.Union[pd.Index, typing.Iterable[Label], None] = None,
         *,
+        value_columns: Optional[Iterable[str]] = None,
         transpose_cache: Optional[Block] = None,
     ):
         """Construct a block object, will create default index if no index columns specified."""
@@ -158,7 +159,13 @@ class Block:
             if index_labels
             else tuple([None for _ in index_columns])
         )
-        self._expr = self._normalize_expression(expr, self._index_columns)
+        if value_columns is None:
+            value_columns = [
+                col_id for col_id in expr.column_ids if col_id not in index_columns
+            ]
+        self._expr = self._normalize_expression(
+            expr, self._index_columns, value_columns
+        )
         # Use pandas index to more easily replicate column indexing, especially for hierarchical column index
         self._column_labels = (
             column_labels.copy()
@@ -1114,13 +1121,15 @@ class Block:
         labels: Union[Sequence[Label], pd.Index],
         drop=False,
     ) -> Block:
-        new_array, _ = self.expr.compute_values(exprs)
+        new_array, new_cols = self.expr.compute_values(exprs)
         if drop:
             new_array = new_array.drop_columns(self.value_columns)
 
+        new_val_cols = new_cols if drop else (*self.value_columns, *new_cols)
         return Block(
             new_array,
             index_columns=self.index_columns,
+            value_columns=new_val_cols,
             column_labels=labels
             if drop
             else self.column_labels.append(pd.Index(labels)),
@@ -1542,17 +1551,13 @@ class Block:
     def _normalize_expression(
         self,
         expr: core.ArrayValue,
-        index_columns: typing.Sequence[str],
-        assert_value_size: typing.Optional[int] = None,
+        index_columns: Iterable[str],
+        value_columns: Iterable[str],
     ):
         """Normalizes expression by moving index columns to left."""
-        value_columns = [
-            col_id for col_id in expr.column_ids if col_id not in index_columns
-        ]
-        if (assert_value_size is not None) and (
-            len(value_columns) != assert_value_size
-        ):
-            raise ValueError("Unexpected number of value columns.")
+        normalized_ids = (*index_columns, *value_columns)
+        if tuple(expr.column_ids) == normalized_ids:
+            return expr
         return expr.select_columns([*index_columns, *value_columns])
 
     def grouped_head(

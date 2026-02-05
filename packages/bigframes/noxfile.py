@@ -123,7 +123,7 @@ nox.options.sessions = [
     # TODO(tswast): Consider removing this when unit_noextras and cover is run
     # from GitHub actions.
     "unit_noextras",
-    "system-3.9",  # No extras.
+    "system-3.10",  # No extras.
     f"system-{LATEST_FULLY_SUPPORTED_PYTHON}",  # All extras.
     "cover",
     # TODO(b/401609005): remove
@@ -661,9 +661,7 @@ def prerelease(session: nox.sessions.Session, tests_path, extra_pytest_options=(
     # version, the first version we test with in the unit tests sessions has a
     # constraints file containing all dependencies and extras.
     with open(
-        CURRENT_DIRECTORY
-        / "testing"
-        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        CURRENT_DIRECTORY / "testing" / f"constraints-{DEFAULT_PYTHON_VERSION}.txt",
         encoding="utf-8",
     ) as constraints_file:
         constraints_text = constraints_file.read()

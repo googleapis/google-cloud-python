@@ -34,7 +34,7 @@ env | grep KOKORO
 
 # Install nox
 # `virtualenv==20.26.6` is added for Python 3.7 compatibility
-python3.9 -m pip install --upgrade --quiet nox virtualenv==20.26.6
+python3.10 -m pip install --upgrade --quiet nox virtualenv==20.26.6
 
 # Use secrets acessor service account to get secrets
 if [[ -f "${KOKORO_GFILE_DIR}/secrets_viewer_service_account.json" ]]; then
@@ -77,7 +77,7 @@ for file in samples/**/requirements.txt; do
     echo "------------------------------------------------------------"
 
     # Use nox to execute the tests for the project.
-    python3.9 -m nox -s "$RUN_TESTS_SESSION"
+    python3.10 -m nox -s "$RUN_TESTS_SESSION"
     EXIT=$?
 
     # If this is a periodic build, send the test log to the FlakyBot.

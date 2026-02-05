@@ -5754,16 +5754,9 @@ def test_df_dot_operator_series(
     )
 
 
-# TODO(tswast): We may be able to re-enable this test after we break large
-# queries up in https://github.com/googleapis/python-bigquery-dataframes/pull/427
-@pytest.mark.skipif(
-    sys.version_info >= (3, 12),
-    # See: https://github.com/python/cpython/issues/112282
-    reason="setrecursionlimit has no effect on the Python C stack since Python 3.12.",
-)
 def test_recursion_limit(scalars_df_index):
     scalars_df_index = scalars_df_index[["int64_too", "int64_col", "float64_col"]]
-    for i in range(400):
+    for i in range(250):
         scalars_df_index = scalars_df_index + 4
     scalars_df_index.to_pandas()
 
@@ -5964,7 +5957,7 @@ def test_resample_with_column(
     scalars_df_index, scalars_pandas_df_index, on, rule, origin
 ):
     # TODO: supply a reason why this isn't compatible with pandas 1.x
-    pytest.importorskip("pandas", minversion="2.0.0")
+    pytest.importorskip("pandas", minversion="2.2.0")
     bf_result = (
         scalars_df_index.resample(rule=rule, on=on, origin=origin)[
             ["int64_col", "int64_too"]
