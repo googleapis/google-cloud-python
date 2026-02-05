@@ -18,7 +18,8 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
-from typing import Callable, cast, Iterable, Mapping, Optional, Union
+import typing
+from typing import Callable, Iterable, Mapping, Optional, Union
 import uuid
 
 from google.cloud import bigquery
@@ -376,7 +377,7 @@ class BqmlModel(BaseBqml):
     def register(self, vertex_ai_model_id: Optional[str] = None) -> BqmlModel:
         if vertex_ai_model_id is None:
             # vertex id needs to start with letters. https://cloud.google.com/vertex-ai/docs/general/resource-naming
-            vertex_ai_model_id = "bigframes_" + cast(str, self._model.model_id)
+            vertex_ai_model_id = "bigframes_" + typing.cast(str, self._model.model_id)
 
         # truncate as Vertex ID only accepts 63 characters, easily exceeding the limit for temp models.
         # The possibility of conflicts should be low.

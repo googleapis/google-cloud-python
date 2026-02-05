@@ -20,7 +20,8 @@ https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_select
 import inspect
 from itertools import chain
 import time
-from typing import cast, Generator, List, Optional, Union
+import typing
+from typing import Generator, List, Optional, Union
 
 import bigframes_vendored.sklearn.model_selection._split as vendored_model_selection_split
 import bigframes_vendored.sklearn.model_selection._validation as vendored_model_selection_validation
@@ -99,10 +100,10 @@ def train_test_split(
             train_dfs.append(train)
             test_dfs.append(test)
 
-        train_df = cast(
+        train_df = typing.cast(
             bpd.DataFrame, bpd.concat(train_dfs).drop(columns="bigframes_stratify_col")
         )
-        test_df = cast(
+        test_df = typing.cast(
             bpd.DataFrame, bpd.concat(test_dfs).drop(columns="bigframes_stratify_col")
         )
         return [train_df, test_df]

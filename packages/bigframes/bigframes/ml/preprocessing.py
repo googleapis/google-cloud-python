@@ -18,7 +18,7 @@ scikit-learn's preprocessing module: https://scikit-learn.org/stable/modules/pre
 from __future__ import annotations
 
 import typing
-from typing import cast, Iterable, List, Literal, Optional, Union
+from typing import Iterable, List, Literal, Optional, Union
 
 import bigframes_vendored.sklearn.preprocessing._data
 import bigframes_vendored.sklearn.preprocessing._discretization
@@ -470,7 +470,7 @@ class OneHotEncoder(
         s = sql[sql.find("(") + 1 : sql.find(")")]
         col_label, drop_str, top_k, frequency_threshold = s.split(", ")
         drop = (
-            cast(Literal["most_frequent"], "most_frequent")
+            typing.cast(Literal["most_frequent"], "most_frequent")
             if drop_str.lower() == "'most_frequent'"
             else None
         )

@@ -16,7 +16,8 @@
 
 from __future__ import annotations
 
-from typing import cast, Iterable, Literal, Mapping, Optional, Union
+import typing
+from typing import Iterable, Literal, Mapping, Optional, Union
 import warnings
 
 import bigframes_vendored.constants as constants
@@ -252,7 +253,7 @@ class TextEmbeddingGenerator(base.RetriableRemotePredictor):
 
         if len(X.columns) == 1:
             # BQML identified the column by name
-            col_label = cast(blocks.Label, X.columns[0])
+            col_label = typing.cast(blocks.Label, X.columns[0])
             X = X.rename(columns={col_label: "content"})
 
         options: dict = {}
@@ -391,7 +392,7 @@ class MultimodalEmbeddingGenerator(base.RetriableRemotePredictor):
 
         if len(X.columns) == 1:
             # BQML identified the column by name
-            col_label = cast(blocks.Label, X.columns[0])
+            col_label = typing.cast(blocks.Label, X.columns[0])
             X = X.rename(columns={col_label: "content"})
 
         # TODO(garrettwu): remove transform to ObjRefRuntime when BQML supports ObjRef as input
@@ -604,7 +605,10 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
         options["prompt_col"] = X.columns.tolist()[0]
 
         self._bqml_model = self._bqml_model_factory.create_llm_remote_model(
-            X, y, options=options, connection_name=cast(str, self.connection_name)
+            X,
+            y,
+            options=options,
+            connection_name=typing.cast(str, self.connection_name),
         )
         return self
 
@@ -735,7 +739,7 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
 
         if len(X.columns) == 1:
             # BQML identified the column by name
-            col_label = cast(blocks.Label, X.columns[0])
+            col_label = typing.cast(blocks.Label, X.columns[0])
             X = X.rename(columns={col_label: "prompt"})
 
         options: dict = {
@@ -820,8 +824,8 @@ class GeminiTextGenerator(base.RetriableRemotePredictor):
             )
 
         # BQML identified the column by name
-        X_col_label = cast(blocks.Label, X.columns[0])
-        y_col_label = cast(blocks.Label, y.columns[0])
+        X_col_label = typing.cast(blocks.Label, X.columns[0])
+        y_col_label = typing.cast(blocks.Label, y.columns[0])
         X = X.rename(columns={X_col_label: "input_text"})
         y = y.rename(columns={y_col_label: "output_text"})
 
@@ -1033,7 +1037,7 @@ class Claude3TextGenerator(base.RetriableRemotePredictor):
 
         if len(X.columns) == 1:
             # BQML identified the column by name
-            col_label = cast(blocks.Label, X.columns[0])
+            col_label = typing.cast(blocks.Label, X.columns[0])
             X = X.rename(columns={col_label: "prompt"})
 
         options = {
