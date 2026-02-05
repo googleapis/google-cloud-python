@@ -4,4 +4,4 @@
 # Default owner for all directories not owned by others
 *                                             @googleapis/cloud-sdk-python-team @googleapis/cloud-sdk-librarian-team
 
-/packages/google-cloud-bigquery-storage/      @googleapis/api-bigquery
+/packages/google-cloud-bigquery-storage/      @googleapis/api-bigquery @googleapis/cloud-sdk-librarian-team
