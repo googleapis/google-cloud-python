@@ -66,7 +66,7 @@ class TestAppendRowsStream(unittest.TestCase):
         assert stream._closed is False
         assert not stream._close_callbacks
         assert stream._metadata == ()
-        assert stream._stream_name is None
+        assert stream._stream_name == ""
         assert isinstance(stream._thread_lock, type(threading.RLock()))
 
         assert isinstance(stream._connection, _Connection)
@@ -229,7 +229,7 @@ class Test_Connection(unittest.TestCase):
         assert isinstance(connection._thread_lock, type(threading.RLock()))
         assert connection._rpc is None
         assert connection._consumer is None
-        assert connection._stream_name is None
+        assert connection._stream_name is ""
         assert isinstance(connection._queue, queue.Queue)
 
         assert connection._closed is False
