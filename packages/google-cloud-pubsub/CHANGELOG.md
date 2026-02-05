@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.35.0](https://github.com/googleapis/python-pubsub/compare/v2.34.0...v2.35.0) (2026-02-05)
+
+
+### Documentation
+
+* A comment for field `topic` in message `.google.pubsub.v1.Subscription` is updated ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+* A comment for field `analytics_hub_subscription_info` in message `.google.pubsub.v1.Subscription` is updated ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+* A comment for field `subscription` in message `.google.pubsub.v1.CreateSnapshotRequest` is updated ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+* add tags documentation links to Pub/Sub resource tags fields ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+* Add the IDENTIFIER field behavior annotation to fields of Cloud Pub/Sub methods that represent a specific identity and need to be sourced with additional care ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+
+
+### Features
+
+* Add AIInference MessageTransform type ([07011139f51e4ff195889faf849bd707655e6d46](https://github.com/googleapis/python-pubsub/commit/07011139f51e4ff195889faf849bd707655e6d46))
+
 ## [2.34.0](https://github.com/googleapis/python-pubsub/compare/v2.33.0...v2.34.0) (2025-12-16)
 
 
