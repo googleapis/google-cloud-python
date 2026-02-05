@@ -1,15 +1,15 @@
 {
-    "name": "bigquerylogging",
-    "name_pretty": "BigQuery Logging Protos",
-    "product_documentation": "https://cloud.google.com/bigquery/docs/reference/auditlogs",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerylogging/latest",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "stable",
-    "language": "python",
-    "library_type": "OTHER",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-bigquery-logging",
-    "api_id": "",
-    "default_version": "v1",
-    "api_shortname": "bigquerylogging"
+  "api_id": "",
+  "api_shortname": "bigquerylogging",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/bigquerylogging/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-bigquery-logging",
+  "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+  "language": "python",
+  "library_type": "OTHER",
+  "name": "bigquerylogging",
+  "name_pretty": "BigQuery Logging Protos",
+  "product_documentation": "https://cloud.google.com/bigquery/docs/reference/auditlogs",
+  "release_level": "stable",
+  "repo": "googleapis/google-cloud-python"
 }

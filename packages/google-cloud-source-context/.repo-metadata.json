@@ -1,15 +1,15 @@
 {
-    "name": "source",
-    "name_pretty": "Source Context",
-    "product_documentation": "https://cloud.google.com",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/source/latest",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "stable",
-    "language": "python",
-    "library_type": "OTHER",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-source-context",
-    "api_id": "source.googleapis.com",
-    "default_version": "v1",
-    "api_shortname": "source"
+  "api_id": "source.googleapis.com",
+  "api_shortname": "source",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/source/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-source-context",
+  "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+  "language": "python",
+  "library_type": "OTHER",
+  "name": "source",
+  "name_pretty": "Source Context",
+  "product_documentation": "https://cloud.google.com",
+  "release_level": "stable",
+  "repo": "googleapis/google-cloud-python"
 }

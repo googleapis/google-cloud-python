@@ -1,15 +1,15 @@
 {
-    "name": "networkservices",
-    "name_pretty": "Network Services",
-    "product_documentation": "https://cloud.google.com",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/networkservices/latest",
-    "issue_tracker": "",
-    "release_level": "preview",
-    "language": "python",
-    "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-network-services",
-    "api_id": "networkservices.googleapis.com",
-    "default_version": "v1",
-    "api_shortname": "networkservices"
+  "api_id": "networkservices.googleapis.com",
+  "api_shortname": "networkservices",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/networkservices/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-network-services",
+  "issue_tracker": "",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "name": "networkservices",
+  "name_pretty": "Network Services",
+  "product_documentation": "https://cloud.google.com",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

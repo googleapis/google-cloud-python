@@ -1,16 +1,16 @@
 {
-  "name": "procurement",
-  "name_pretty": "Cloud Commerce Consumer Procurement API",
   "api_description": "Cloud Commerce Consumer Procurement API",
-  "product_documentation": "https://cloud.google.com/marketplace/docs/",
+  "api_id": "cloudcommerceconsumerprocurement.googleapis.com",
+  "api_shortname": "procurement",
   "client_documentation": "https://cloud.google.com/python/docs/reference/procurement/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-commerce-consumer-procurement",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1396141",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-commerce-consumer-procurement",
-  "api_id": "cloudcommerceconsumerprocurement.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "procurement"
+  "name": "procurement",
+  "name_pretty": "Cloud Commerce Consumer Procurement API",
+  "product_documentation": "https://cloud.google.com/marketplace/docs/",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

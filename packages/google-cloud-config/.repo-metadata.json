@@ -1,16 +1,16 @@
 {
-  "name": "config",
-  "name_pretty": "Infrastructure Manager API",
   "api_description": "Infrastructure Manager API",
-  "product_documentation": "https://cloud.google.com/infrastructure-manager/docs/overview",
+  "api_id": "config.googleapis.com",
+  "api_shortname": "config",
   "client_documentation": "https://cloud.google.com/python/docs/reference/config/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-config",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=536700",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-config",
-  "api_id": "config.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "config"
+  "name": "config",
+  "name_pretty": "Infrastructure Manager API",
+  "product_documentation": "https://cloud.google.com/infrastructure-manager/docs/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

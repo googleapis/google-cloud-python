@@ -1,16 +1,16 @@
 {
-  "name": "google-maps-areainsights",
-  "name_pretty": "Places Insights API",
   "api_description": "Places Insights API. ",
-  "product_documentation": "https://developers.google.com/maps/documentation/places-insights",
+  "api_id": "areainsights.googleapis.com",
+  "api_shortname": "areainsights",
   "client_documentation": "https://googleapis.dev/python/google-maps-areainsights/latest",
+  "default_version": "v1",
+  "distribution_name": "google-maps-areainsights",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1624013&template=2026178",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-maps-areainsights",
-  "api_id": "areainsights.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "areainsights"
+  "name": "google-maps-areainsights",
+  "name_pretty": "Places Insights API",
+  "product_documentation": "https://developers.google.com/maps/documentation/places-insights",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

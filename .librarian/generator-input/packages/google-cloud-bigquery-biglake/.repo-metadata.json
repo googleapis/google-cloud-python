@@ -1,16 +1,16 @@
 {
-  "name": "biglake",
-  "name_pretty": "BigLake API",
   "api_description": "BigLake API",
-  "product_documentation": "https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore",
+  "api_id": "biglake.googleapis.com",
+  "api_shortname": "biglake",
   "client_documentation": "https://cloud.google.com/python/docs/reference/biglake/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-bigquery-biglake",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=187149&template=1019829",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-bigquery-biglake",
-  "api_id": "biglake.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "biglake"
+  "name": "biglake",
+  "name_pretty": "BigLake API",
+  "product_documentation": "https://cloud.google.com/bigquery/docs/iceberg-tables#create-using-biglake-metastore",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

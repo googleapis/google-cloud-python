@@ -1,16 +1,16 @@
 {
+  "api_description": "Cloud IDS is an intrusion detection service that provides threat detection for intrusions, malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating a Google-managed peered network with mirrored VMs. Traffic in the peered network is mirrored, and then inspected by Palo Alto Networks threat protection technologies to provide advanced threat detection.",
+  "api_id": "ids.googleapis.com",
+  "api_shortname": "ids",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/ids/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-ids",
+  "issue_tracker": "",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
   "name": "ids",
   "name_pretty": "Cloud IDS",
   "product_documentation": "https://cloud.google.com/intrusion-detection-system/",
-  "client_documentation": "https://cloud.google.com/python/docs/reference/ids/latest",
-  "issue_tracker": "",
   "release_level": "stable",
-  "language": "python",
-  "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-ids",
-  "api_id": "ids.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "ids",
-  "api_description": "Cloud IDS is an intrusion detection service that provides threat detection for intrusions, malware, spyware, and command-and-control attacks on your network. Cloud IDS works by creating a Google-managed peered network with mirrored VMs. Traffic in the peered network is mirrored, and then inspected by Palo Alto Networks threat protection technologies to provide advanced threat detection."
+  "repo": "googleapis/google-cloud-python"
 }

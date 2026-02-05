@@ -1,16 +1,16 @@
 {
-  "name": "google-cloud-databasecenter",
-  "name_pretty": "Database Center API",
-  "api_description": "Database Center provides an organization-wide, cross-product fleet health\nplatform to eliminate the overhead, complexity, and risk associated with\naggregating and summarizing health signals through custom dashboards.\nThrough Database Center\u2019s fleet health dashboard and API, database\nplatform teams that are responsible for reliability, compliance, security,\ncost, and administration of database fleets will now have a single pane of\nglass that pinpoints issues relevant to each team.",
-  "product_documentation": "https://cloud.google.com/database-center/docs/overview",
+  "api_description": "Database Center provides an organization-wide, cross-product fleet health\nplatform to eliminate the overhead, complexity, and risk associated with\naggregating and summarizing health signals through custom dashboards.\nThrough Database Center’s fleet health dashboard and API, database\nplatform teams that are responsible for reliability, compliance, security,\ncost, and administration of database fleets will now have a single pane of\nglass that pinpoints issues relevant to each team.",
+  "api_id": "databasecenter.googleapis.com",
+  "api_shortname": "databasecenter",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-databasecenter/latest",
+  "default_version": "v1beta",
+  "distribution_name": "google-cloud-databasecenter",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1476470",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-databasecenter",
-  "api_id": "databasecenter.googleapis.com",
-  "default_version": "v1beta",
-  "api_shortname": "databasecenter"
+  "name": "google-cloud-databasecenter",
+  "name_pretty": "Database Center API",
+  "product_documentation": "https://cloud.google.com/database-center/docs/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

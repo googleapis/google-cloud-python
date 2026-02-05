@@ -1,14 +1,14 @@
 {
-    "name": "accesscontextmanager",
-    "name_pretty": "Access Context Manager",
-    "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager",
-    "product_documentation": "https://cloud.google.com/access-context-manager/docs/overview",
-    "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
-    "release_level": "preview",
-    "language": "python",
-    "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-access-context-manager",
-    "default_version": "apiVersion",
-    "api_shortname": "accesscontextmanager"
+  "api_shortname": "accesscontextmanager",
+  "client_documentation": "https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-access-context-manager",
+  "default_version": "apiVersion",
+  "distribution_name": "google-cloud-access-context-manager",
+  "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "name": "accesscontextmanager",
+  "name_pretty": "Access Context Manager",
+  "product_documentation": "https://cloud.google.com/access-context-manager/docs/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

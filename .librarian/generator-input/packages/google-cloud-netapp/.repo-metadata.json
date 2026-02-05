@@ -1,16 +1,16 @@
 {
-  "name": "netapp",
-  "name_pretty": "NetApp API",
   "api_description": "NetApp API",
-  "product_documentation": "https://cloud.google.com/netapp/volumes/docs/discover/overview",
+  "api_id": "netapp.googleapis.com",
+  "api_shortname": "netapp",
   "client_documentation": "https://cloud.google.com/python/docs/reference/netapp/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-netapp",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1144971",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-netapp",
-  "api_id": "netapp.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "netapp"
+  "name": "netapp",
+  "name_pretty": "NetApp API",
+  "product_documentation": "https://cloud.google.com/netapp/volumes/docs/discover/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

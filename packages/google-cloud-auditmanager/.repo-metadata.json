@@ -1,16 +1,16 @@
 {
-  "name": "google-cloud-auditmanager",
-  "name_pretty": "Audit Manager API",
   "api_description": "",
-  "product_documentation": "https://cloud.google.com/audit-manager/docs",
+  "api_id": "auditmanager.googleapis.com",
+  "api_shortname": "auditmanager",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-auditmanager/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-auditmanager",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1335397&template=0",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-auditmanager",
-  "api_id": "auditmanager.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "auditmanager"
+  "name": "google-cloud-auditmanager",
+  "name_pretty": "Audit Manager API",
+  "product_documentation": "https://cloud.google.com/audit-manager/docs",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

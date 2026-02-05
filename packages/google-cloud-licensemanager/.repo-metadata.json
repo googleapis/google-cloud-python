@@ -1,16 +1,16 @@
 {
-  "name": "google-cloud-licensemanager",
-  "name_pretty": "License Manager API",
   "api_description": "License Manager is a tool to manage and track third-party licenses on Google Cloud. ",
-  "product_documentation": "https://cloud.google.com/compute/docs/instances/windows/ms-licensing",
+  "api_id": "licensemanager.googleapis.com",
+  "api_shortname": "licensemanager",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-licensemanager/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-licensemanager",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1659587",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-licensemanager",
-  "api_id": "licensemanager.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "licensemanager"
+  "name": "google-cloud-licensemanager",
+  "name_pretty": "License Manager API",
+  "product_documentation": "https://cloud.google.com/compute/docs/instances/windows/ms-licensing",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

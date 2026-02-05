@@ -1,16 +1,16 @@
 {
-  "name": "google-cloud-gkerecommender",
-  "name_pretty": "GKE Recommender API",
   "api_description": "GKE Recommender API",
-  "product_documentation": "https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference-quickstart",
+  "api_id": "gkerecommender.googleapis.com",
+  "api_shortname": "gkerecommender",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-gkerecommender/latest",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-gkerecommender",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1790908",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-gkerecommender",
-  "api_id": "gkerecommender.googleapis.com",
-  "default_version": "v1",
-  "api_shortname": "gkerecommender"
+  "name": "google-cloud-gkerecommender",
+  "name_pretty": "GKE Recommender API",
+  "product_documentation": "https://cloud.google.com/kubernetes-engine/docs/how-to/machine-learning/inference-quickstart",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }

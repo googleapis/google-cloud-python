@@ -1,29 +1,29 @@
 {
-    "name": "cloudkms",
-    "name_pretty": "Google Cloud Key Management Service",
-    "product_documentation": "https://cloud.google.com/kms",
-    "client_documentation": "https://cloud.google.com/python/docs/reference/cloudkms/latest",
-    "issue_tracker": "https://issuetracker.google.com/savedsearches/5264932",
-    "release_level": "stable",
-    "language": "python",
-    "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/google-cloud-python",
-    "distribution_name": "google-cloud-kms",
-    "api_id": "cloudkms.googleapis.com",
-    "requires_billing": true,
-    "client_library": true,
-    "custom_content": "The Google Cloud KMS API is a service that allows you to keep encryption keys centrally in the cloud, for direct use by cloud services. More info about Cloud KMS can be found at https://cloud.google.com/kms/docs/",
-    "sample_project_dir": "samples/snippets/",
-    "samples": [
-        {
-            "name": "Quickstart",
-            "description": "This quickstart shows you how to create and use encryption keys with Cloud Key Management Service.",
-            "file": "quickstart.py",
-            "runnable": true,
-            "custom_content": "More information about the Cloud KMS quickstart is available at https://cloud.google.com/kms/docs/quickstart"
-        }
-    ],
-    "default_version": "v1",
-    "api_shortname": "cloudkms",
-    "api_description": "a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform."
+  "api_description": "a cloud-hosted key management service that lets you manage cryptographic keys for your cloud services the same way you do on-premises. You can generate, use, rotate, and destroy AES256, RSA 2048, RSA 3072, RSA 4096, EC P256, and EC P384 cryptographic keys. Cloud KMS is integrated with Cloud IAM and Cloud Audit Logging so that you can manage permissions on individual keys and monitor how these are used. Use Cloud KMS to protect secrets and other sensitive data that you need to store in Google Cloud Platform.",
+  "api_id": "cloudkms.googleapis.com",
+  "api_shortname": "cloudkms",
+  "client_documentation": "https://cloud.google.com/python/docs/reference/cloudkms/latest",
+  "client_library": true,
+  "custom_content": "The Google Cloud KMS API is a service that allows you to keep encryption keys centrally in the cloud, for direct use by cloud services. More info about Cloud KMS can be found at https://cloud.google.com/kms/docs/",
+  "default_version": "v1",
+  "distribution_name": "google-cloud-kms",
+  "issue_tracker": "https://issuetracker.google.com/savedsearches/5264932",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "name": "cloudkms",
+  "name_pretty": "Google Cloud Key Management Service",
+  "product_documentation": "https://cloud.google.com/kms",
+  "release_level": "stable",
+  "repo": "googleapis/google-cloud-python",
+  "requires_billing": true,
+  "sample_project_dir": "samples/snippets/",
+  "samples": [
+    {
+      "custom_content": "More information about the Cloud KMS quickstart is available at https://cloud.google.com/kms/docs/quickstart",
+      "description": "This quickstart shows you how to create and use encryption keys with Cloud Key Management Service.",
+      "file": "quickstart.py",
+      "name": "Quickstart",
+      "runnable": true
+    }
+  ]
 }

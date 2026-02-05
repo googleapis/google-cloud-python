@@ -1,16 +1,16 @@
 {
-  "name": "google-cloud-apiregistry",
-  "name_pretty": "Cloud API Registry API",
   "api_description": "Cloud API Registry lets you discover, govern, use, and monitor Model Context Protocol (MCP) servers and tools provided by Google, or by your organization through Apigee API hub.",
-  "product_documentation": "https://docs.cloud.google.com/api-registry/docs/overview",
+  "api_id": "cloudapiregistry.googleapis.com",
+  "api_shortname": "cloudapiregistry",
   "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-apiregistry/latest",
+  "default_version": "v1beta",
+  "distribution_name": "google-cloud-apiregistry",
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=1979613&template=2231768",
-  "release_level": "preview",
   "language": "python",
   "library_type": "GAPIC_AUTO",
-  "repo": "googleapis/google-cloud-python",
-  "distribution_name": "google-cloud-apiregistry",
-  "api_id": "cloudapiregistry.googleapis.com",
-  "default_version": "v1beta",
-  "api_shortname": "cloudapiregistry"
+  "name": "google-cloud-apiregistry",
+  "name_pretty": "Cloud API Registry API",
+  "product_documentation": "https://docs.cloud.google.com/api-registry/docs/overview",
+  "release_level": "preview",
+  "repo": "googleapis/google-cloud-python"
 }
