@@ -49,6 +49,7 @@ from pandas._typing import (
 import pyarrow as pa
 
 import bigframes._config as config
+import bigframes._importing
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 import bigframes.dataframe
@@ -356,8 +357,12 @@ def _read_gbq_colab(
             with warnings.catch_warnings():
                 # Don't warning about Polars in SQL cell.
                 # Related to b/437090788.
-                warnings.simplefilter("ignore", bigframes.exceptions.PreviewWarning)
-                config.options.bigquery.enable_polars_execution = True
+                try:
+                    bigframes._importing.import_polars()
+                    warnings.simplefilter("ignore", bigframes.exceptions.PreviewWarning)
+                    config.options.bigquery.enable_polars_execution = True
+                except ImportError:
+                    pass  # don't fail if polars isn't available
 
     return global_session.with_default_session(
         bigframes.session.Session._read_gbq_colab,
