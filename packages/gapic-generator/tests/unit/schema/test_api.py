@@ -2611,16 +2611,16 @@ def test_mixin_api_methods_locations():
     assert len(ms) == 2
     m1 = ms["ListLocations"]
     m1.options.ClearExtension(annotations_pb2.http)
-    m1.options.Extensions[annotations_pb2.http].selector = (
-        "google.cloud.location.Locations.ListLocations"
-    )
+    m1.options.Extensions[
+        annotations_pb2.http
+    ].selector = "google.cloud.location.Locations.ListLocations"
     m1.options.Extensions[annotations_pb2.http].get = "/v1/{name=examples/*}/*"
     m1.options.Extensions[annotations_pb2.http].body = "*"
     m2 = ms["GetLocation"]
     m2.options.ClearExtension(annotations_pb2.http)
-    m2.options.Extensions[annotations_pb2.http].selector = (
-        "google.cloud.location.Locations.GetLocation"
-    )
+    m2.options.Extensions[
+        annotations_pb2.http
+    ].selector = "google.cloud.location.Locations.GetLocation"
     m2.options.Extensions[annotations_pb2.http].get = "/v1/{name=examples/*}/*"
     m2.options.Extensions[annotations_pb2.http].body = "*"
     api_schema = api.API.build(fd, "google.example.v1", opts=opts)
@@ -3032,9 +3032,9 @@ def get_file_descriptor_proto_for_tests(
     """
 
     field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("UUID4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     fd = (
         make_file_pb2(
@@ -4213,9 +4213,9 @@ def test_read_method_settings_from_service_yaml():
     }
     cli_options = Options(service_yaml_config=service_yaml_config)
     field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("UUID4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     squid = make_field_pb2(
         name="squid", type="TYPE_STRING", options=field_options, number=1
@@ -4430,9 +4430,9 @@ def test_method_settings_unsupported_auto_populated_field_field_info_format_rais
     the format of the field is `IPV4`.
     """
     field_options = descriptor_pb2.FieldOptions()
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("IPV4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("IPV4")
     squid = make_field_pb2(
         name="squid", type="TYPE_STRING", options=field_options, number=1
     )
@@ -4461,9 +4461,9 @@ def test_method_settings_invalid_multiple_issues():
     # - Not annotated with google.api.field_info.format = UUID4
     # - Not of type string
     # - Required field
-    field_options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("IPV4")
-    )
+    field_options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("IPV4")
     squid = make_field_pb2(
         name="squid", type="TYPE_INT32", options=field_options, number=1
     )

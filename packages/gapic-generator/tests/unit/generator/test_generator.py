@@ -861,13 +861,13 @@ def make_api(
     *protos,
     naming: naming.Naming = None,
     service_yaml_config: service_pb2.Service = None,
-    **kwargs
+    **kwargs,
 ) -> api.API:
     return api.API(
         naming=naming or make_naming(),
         service_yaml_config=service_yaml_config or service_pb2.Service(),
         all_protos={i.name: i for i in protos},
-        **kwargs
+        **kwargs,
     )
 
 

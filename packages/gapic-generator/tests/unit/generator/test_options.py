@@ -161,7 +161,7 @@ def test_options_service_yaml_config(fs):
     service_yaml_fpath = "testapi_v2.yaml"
     fs.create_file(
         service_yaml_fpath,
-        contents=("config_version: 3\n" "name: testapi.googleapis.com\n"),
+        contents=("config_version: 3\nname: testapi.googleapis.com\n"),
     )
     opt_string = f"service-yaml={service_yaml_fpath}"
     opts = Options.build(opt_string)

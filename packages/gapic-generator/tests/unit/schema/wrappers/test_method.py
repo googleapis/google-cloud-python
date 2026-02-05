@@ -180,7 +180,8 @@ def test_method_paged_result_field_no_page_field():
     method = make_method(
         name="Foo",
         input_message=make_message(
-            name="FooRequest", fields=(make_field(name="page_token", type=9),)  # str
+            name="FooRequest",
+            fields=(make_field(name="page_token", type=9),),  # str
         ),
         output_message=make_message(
             name="FooResponse",

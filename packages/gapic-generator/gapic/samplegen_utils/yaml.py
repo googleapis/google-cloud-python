@@ -116,7 +116,9 @@ class Map(Element):
         return next(
             iter(
                 [
-                    e.val for e in self.elements if e.key == key  # type: ignore
+                    e.val
+                    for e in self.elements
+                    if e.key == key  # type: ignore
                 ]  # type: ignore
             ),
             default,

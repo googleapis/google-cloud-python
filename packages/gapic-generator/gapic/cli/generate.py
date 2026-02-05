@@ -39,7 +39,7 @@ from gapic.utils.cache import generation_cache_context
     "--output",
     type=click.File("wb"),
     default=sys.stdout.buffer,
-    help="Where to output the `CodeGeneratorResponse`. " "Defaults to stdout.",
+    help="Where to output the `CodeGeneratorResponse`. Defaults to stdout.",
 )
 def generate(request: typing.BinaryIO, output: typing.BinaryIO) -> None:
     """Generate a full API client description."""

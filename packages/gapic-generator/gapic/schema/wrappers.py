@@ -799,7 +799,7 @@ class MessageType:
         # Quick check: If this cursor has no message, there is a problem.
         if not cursor.message:
             raise KeyError(
-                f'Field {".".join(field_path)} could not be resolved from '
+                f"Field {'.'.join(field_path)} could not be resolved from "
                 f"{cursor.name}.",
             )
 

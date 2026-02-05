@@ -143,9 +143,9 @@ def test_not_required():
 
 def test_uuid4():
     field = make_field()
-    field.options.Extensions[field_info_pb2.field_info].format = (
-        field_info_pb2.FieldInfo.Format.Value("UUID4")
-    )
+    field.options.Extensions[
+        field_info_pb2.field_info
+    ].format = field_info_pb2.FieldInfo.Format.Value("UUID4")
     assert field.uuid4
 
 
@@ -186,9 +186,9 @@ def test_ident_sphinx_map():
 
 def test_resource_reference():
     field = make_field(type="TYPE_STRING")
-    field.options.Extensions[resource_pb2.resource_reference].type = (
-        "translate.googleapis.com/Glossary"
-    )
+    field.options.Extensions[
+        resource_pb2.resource_reference
+    ].type = "translate.googleapis.com/Glossary"
 
     assert field.resource_reference == "translate.googleapis.com/Glossary"
 

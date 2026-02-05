@@ -941,11 +941,7 @@ class API:
             selective_gapic_errors = {}
             # TODO(https://github.com/googleapis/gapic-generator-python/issues/2446):
             # Workaround issue in Python 3.14 related to code coverage by adding `# pragma: no branch`
-            for (
-                method_name
-            ) in (
-                library_settings.python_settings.common.selective_gapic_generation.methods
-            ):  # pragma: no branch
+            for method_name in library_settings.python_settings.common.selective_gapic_generation.methods:  # pragma: no branch
                 if method_name not in self.all_methods:
                     selective_gapic_errors[method_name] = "Method does not exist."
                 elif not method_name.startswith(library_settings.version):
@@ -1180,8 +1176,7 @@ class _ProtoBuilder:
                 object.__setattr__(field, "enum", maybe_enum_type)
             else:
                 raise TypeError(
-                    f"Unknown type referenced in "
-                    f"{self.file_descriptor.name}: '{key}'"
+                    f"Unknown type referenced in {self.file_descriptor.name}: '{key}'"
                 )
 
         # Only generate the service if this is a target file to be generated.

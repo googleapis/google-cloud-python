@@ -32,9 +32,7 @@ release = os.environ.get("CIRCLE_TAG", "latest")
 # Replace |version| in the docs with the actual version string.
 rst_epilog = """
 .. |version| replace:: {version}
-""".format(
-    version=version
-)
+""".format(version=version)
 
 # -- General configuration ---------------------------------------------------
 

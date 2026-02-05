@@ -31,10 +31,12 @@ nox.options.error_on_missing_interpreters = True
 
 showcase_version = os.environ.get("SHOWCASE_VERSION", "0.35.0")
 ADS_TEMPLATES = path.join(path.dirname(__file__), "gapic", "ads-templates")
-BLACK_VERSION = "black==25.1.0"
-BLACK_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
-# exclude golden files and generated protobuf code
-BLACK_EXCLUDES = "|".join([".*golden.*", ".*pb2.py"])
+RUFF_VERSION = "ruff==0.14.14"
+LINT_PATHS = ["docs", "gapic", "tests", "test_utils", "noxfile.py", "setup.py"]
+# Ruff uses globs for excludes (different from Black's regex)
+# .*golden.* -> *golden*
+# .*pb2.py -> *pb2.py
+RUFF_EXCLUDES = "*golden*,*pb2.py,*pb2.pyi"
 
 ALL_PYTHON = (
     "3.7",
@@ -755,14 +757,19 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", RUFF_VERSION)
+
+    # 2. Check formatting
     session.run(
-        "black",
+        "ruff",
+        "format",
         "--check",
-        *BLACK_PATHS,
-        "--extend-exclude",
-        BLACK_EXCLUDES,
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
     )
+
+    # 3. Run Flake8
     session.run(
         "flake8",
         "gapic",
@@ -772,11 +779,54 @@ def lint(session):
 
 @nox.session(python="3.10")
 def blacken(session):
-    """Run black. Format code to uniform standard."""
-    session.install(BLACK_VERSION)
+    """Run ruff format.
+
+    DEPRECATED: This session now uses Ruff instead of Black.
+    It formats code style only (indentation, quotes, etc).
+    """
+    session.log(
+        "WARNING: The 'blacken' session is deprecated and will be removed in the next release. Please use 'nox -s format' in the future."
+    )
+
+    session.install(RUFF_VERSION)
+
+    # 1. Format Code (Replaces black)
+    # We do NOT run 'ruff check --select I' here, preserving strict parity.
     session.run(
-        "black",
-        *BLACK_PATHS,
-        "--extend-exclude",
-        BLACK_EXCLUDES,
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+        "--exclude",
+        RUFF_EXCLUDES,
+    )
+
+
+@nox.session(python=NEWEST_PYTHON)
+def format(session):
+    """
+    Run ruff to sort imports and format code.
+    """
+    # 1. Install ruff (skipped automatically if you run with --no-venv)
+    session.install(RUFF_VERSION)
+
+    # 2. Run Ruff to fix imports
+    # check --select I: Enables strict import sorting
+    # --fix: Applies the changes automatically
+    session.run(
+        "ruff",
+        "check",
+        "--select",
+        "I",
+        "--fix",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
+    )
+
+    # 3. Run Ruff to format code
+    session.run(
+        "ruff",
+        "format",
+        "--line-length=88",  # Standard Black line length
+        *LINT_PATHS,
     )

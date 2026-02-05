@@ -94,7 +94,7 @@ class DummyMessage:
         options=False,
         ident=False,
         resource_path=False,
-        meta=None
+        meta=None,
     ):
         self.fields = fields
         self.type = type
