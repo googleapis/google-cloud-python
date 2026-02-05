@@ -1,6 +1,7 @@
 backoff==2.2.1
-pytest==8.4.2
+pytest==8.4.2; python_version <= '3.9'
+pytest==9.0.2; python_version > '3.9'
 mock==5.2.0
 flaky==3.8.1
-google-cloud-bigquery==3.38.0
-google-cloud-storage==3.4.0
+google-cloud-bigquery==3.40.0
+google-cloud-storage==3.9.0

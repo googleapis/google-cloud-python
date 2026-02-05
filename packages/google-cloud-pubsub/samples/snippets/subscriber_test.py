@@ -585,7 +585,7 @@ def test_create_subscription_with_smt(
     capsys: CaptureFixture[str],
 ) -> None:
     subscription_for_create_name = (
-        f"subscription-test-subscription-for-create-with-smt-{PY_VERSION}-{UUID}"
+        f"subscription-test-subscription-for-create-with-smt-{PY_VERSION}-{UUID}-smt"
     )
 
     subscription_path = subscriber_client.subscription_path(

@@ -1046,10 +1046,7 @@ if __name__ == "__main__":  # noqa: C901
             args.gcp_service_account,
         )
     elif args.command == "create_smt":
-        create_topic_with_smt(
-            args.project_id,
-            args.topic_id,
-        )
+        create_topic_with_smt(args.project_id, f"{args.topic_id}-smt")
     elif args.command == "update_kinesis_ingestion":
         update_topic_type(
             args.project_id,

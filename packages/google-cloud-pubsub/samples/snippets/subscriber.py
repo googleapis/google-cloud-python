@@ -1518,7 +1518,7 @@ if __name__ == "__main__":  # noqa
         )
     elif args.command == "create-with-smt":
         create_subscription_with_smt(
-            args.project_id, args.topic_id, args.subscription_id
+            args.project_id, f"{args.topic_id}-smt", f"{args.subscription_id}-smt"
         )
 
     elif args.command == "delete":

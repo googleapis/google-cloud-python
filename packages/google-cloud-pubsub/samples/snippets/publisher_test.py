@@ -316,15 +316,16 @@ def test_create_topic_with_confluent_cloud_ingestion(
 def test_create_with_smt(
     publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:
+    smt_topic_name = f"{TOPIC_ID}-smt"
     # The scope of `topic_path` is limited to this function.
-    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
+    topic_path = publisher_client.topic_path(PROJECT_ID, smt_topic_name)
 
     try:
         publisher_client.delete_topic(request={"topic": topic_path})
     except NotFound:
         pass
 
-    publisher.create_topic_with_smt(PROJECT_ID, TOPIC_ID)
+    publisher.create_topic_with_smt(PROJECT_ID, smt_topic_name)
 
     out, _ = capsys.readouterr()
     assert f"Created topic: {topic_path} with SMT" in out

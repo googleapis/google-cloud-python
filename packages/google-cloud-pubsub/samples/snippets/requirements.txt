@@ -1,7 +1,7 @@
-google-cloud-pubsub==2.31.1
-avro==1.12.0
+google-cloud-pubsub==2.34.0
+avro==1.12.1
 protobuf==6.33.5
-avro==1.12.0
-opentelemetry-api==1.37.0
-opentelemetry-sdk==1.37.0
-opentelemetry-exporter-gcp-trace==1.9.0
+avro==1.12.1
+opentelemetry-api==1.39.1
+opentelemetry-sdk==1.39.1
+opentelemetry-exporter-gcp-trace==1.11.0
