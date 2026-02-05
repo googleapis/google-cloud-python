@@ -294,7 +294,7 @@ def showcase_library(
                     }
                 ]
                 update_service_yaml = _add_python_settings(tmp_dir, python_settings)
-                session.run("python", "-c" f"{update_service_yaml}")
+                session.run("python", "-c", f"{update_service_yaml}")
             # END TODO section to remove.
         if retry_config:
             session.run(
