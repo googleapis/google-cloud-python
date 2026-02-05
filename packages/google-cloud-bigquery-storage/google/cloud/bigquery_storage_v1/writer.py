@@ -20,12 +20,12 @@ import logging
 import queue
 import threading
 import time
-from typing import Callable, Optional, Sequence, Tuple
+from typing import Callable, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import bidi, exceptions
 from google.api_core.future import polling as polling_future
 import google.api_core.retry
-import grpc
+import grpc  # type: ignore
 
 from google.cloud.bigquery_storage_v1 import exceptions as bqstorage_exceptions
 from google.cloud.bigquery_storage_v1 import gapic_version as package_version
@@ -44,7 +44,7 @@ _WRITE_OPEN_INTERVAL = 0.08
 _DEFAULT_TIMEOUT = 600
 
 
-def _wrap_as_exception(maybe_exception) -> Exception:
+def _wrap_as_exception(maybe_exception) -> BaseException:
     """Wrap an object as a Python exception, if needed.
     Args:
         maybe_exception (Any): The object to wrap, usually a gRPC exception class.
@@ -109,12 +109,12 @@ class AppendRowsStream(object):
         """
         self._client = client
         self._closed = False
-        self._close_callbacks = []
+        self._close_callbacks: List[Callable] = []
         self._metadata = metadata
         self._thread_lock = threading.RLock()
-        self._closed_connection = {}
+        self._closed_connection: Union[_Connection | None] = None
 
-        self._stream_name = None
+        self._stream_name: str = ""
 
         # Make a deepcopy of the template and clear the proto3-only fields
         self._initial_request_template = _process_request_template(
@@ -156,7 +156,7 @@ class AppendRowsStream(object):
             A future, which can be used to process the response when it
             arrives.
         """
-        if self._stream_name is None:
+        if not self._stream_name:
             self._stream_name = request.write_stream
         elif request.write_stream != self._stream_name:
             raise ValueError(
@@ -211,7 +211,7 @@ class AppendRowsStream(object):
         # critical section, this step is not guaranteed to be atomic.
         _closed_connection._shutdown(reason=reason)
 
-    def _on_rpc_done(self, reason: Optional[Exception] = None) -> None:
+    def _on_rpc_done(self, reason: Optional[BaseException] = None) -> None:
         """Callback passecd to _Connection. It's called when the RPC connection
         is closed without recovery. Spins up a new thread to call the helper
         function `_renew_connection()`, which creates a new connection and
@@ -254,10 +254,10 @@ class _Connection(object):
         self._metadata = metadata
         self._thread_lock = threading.RLock()
 
-        self._rpc = None
-        self._consumer = None
-        self._stream_name = None
-        self._queue = queue.Queue()
+        self._rpc: Union[bidi.BidiRpc | None] = None
+        self._consumer: Union[bidi.BackgroundConsumer | None] = None
+        self._stream_name: str = ""
+        self._queue: queue.Queue[AppendRowsFuture] = queue.Queue()
 
         # statuses
         self._closed = False
@@ -429,7 +429,8 @@ class _Connection(object):
         # pull it off and notify completion.
         future = AppendRowsFuture(self._writer)
         self._queue.put(future)
-        self._rpc.send(request)
+        if self._rpc is not None:
+            self._rpc.send(request)
         return future
 
     def _shutdown(self, reason: Optional[Exception] = None) -> None:
@@ -447,7 +448,8 @@ class _Connection(object):
             # Stop consuming messages.
             if self.is_active:
                 _LOGGER.debug("Stopping consumer.")
-                self._consumer.stop()
+                if self._consumer is not None:
+                    self._consumer.stop()
             self._consumer = None
 
             if self._rpc is not None:
@@ -462,6 +464,7 @@ class _Connection(object):
                 # stopped (or at least is attempting to stop), we won't get
                 # response callbacks to populate the remaining futures.
                 future = self._queue.get_nowait()
+                exc: Union[Exception, bqstorage_exceptions.StreamClosedError]
                 if reason is None:
                     exc = bqstorage_exceptions.StreamClosedError(
                         "Stream closed before receiving a response."

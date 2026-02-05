@@ -22,23 +22,21 @@ import time
 try:
     import fastavro
 except ImportError:  # pragma: NO COVER
-    fastavro = None
+    fastavro = None  # type: ignore
 import google.api_core.exceptions
-import google.rpc.error_details_pb2
+import google.rpc.error_details_pb2  # type: ignore
 
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
-    pandas = None
-try:
-    import pyarrow
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
+    pandas = None  # type: ignore
 
 try:
-    import pyarrow
+    # TODO(https://github.com/apache/arrow/issues/32609):
+    # Remove `type: ignore` once this bug is fixed
+    import pyarrow  # type: ignore
 except ImportError:  # pragma: NO COVER
-    pyarrow = None
+    pyarrow = None  # type: ignore
 
 
 _STREAM_RESUMPTION_EXCEPTIONS = (

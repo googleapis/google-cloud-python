@@ -20,12 +20,12 @@ import logging
 import queue
 import threading
 import time
-from typing import Callable, Optional, Sequence, Tuple
+from typing import Callable, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import bidi, exceptions
 from google.api_core.future import polling as polling_future
 import google.api_core.retry
-import grpc
+import grpc  # type: ignore
 
 from google.cloud.bigquery_storage_v1beta2 import exceptions as bqstorage_exceptions
 from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
@@ -43,7 +43,7 @@ _WRITE_OPEN_INTERVAL = 0.08
 _DEFAULT_TIMEOUT = 600
 
 
-def _wrap_as_exception(maybe_exception) -> Exception:
+def _wrap_as_exception(maybe_exception) -> Union[BaseException]:
     """Wrap an object as a Python exception, if needed.
     Args:
         maybe_exception (Any): The object to wrap, usually a gRPC exception class.
@@ -85,19 +85,19 @@ class AppendRowsStream(object):
         self._client = client
         self._closing = threading.Lock()
         self._closed = False
-        self._close_callbacks = []
-        self._futures_queue = queue.Queue()
+        self._close_callbacks: List[Callable] = []
+        self._futures_queue: queue.Queue[AppendRowsFuture] = queue.Queue()
         self._inital_request_template = initial_request_template
         self._metadata = metadata
 
         # Only one call to `send()` should attempt to open the RPC.
         self._opening = threading.Lock()
 
-        self._rpc = None
-        self._stream_name = None
+        self._rpc: Union[bidi.BidiRpc | None] = None
+        self._stream_name: str = ""
 
         # The threads created in ``._open()``.
-        self._consumer = None
+        self._consumer: Union[bidi.BackgroundConsumer | None] = None
 
     @property
     def is_active(self) -> bool:
@@ -251,7 +251,8 @@ class AppendRowsStream(object):
         # pull it off and notify completion.
         future = AppendRowsFuture(self)
         self._futures_queue.put(future)
-        self._rpc.send(request)
+        if self._rpc is not None:
+            self._rpc.send(request)
         return future
 
     def _on_response(self, response: gapic_types.AppendRowsResponse):
@@ -302,7 +303,8 @@ class AppendRowsStream(object):
             # Stop consuming messages.
             if self.is_active:
                 _LOGGER.debug("Stopping consumer.")
-                self._consumer.stop()
+                if self._consumer is not None:
+                    self._consumer.stop()
             self._consumer = None
 
             if self._rpc is not None:
@@ -318,6 +320,7 @@ class AppendRowsStream(object):
                 # stopped (or at least is attempting to stop), we won't get
                 # response callbacks to populate the remaining futures.
                 future = self._futures_queue.get_nowait()
+                exc: Union[Exception, bqstorage_exceptions.StreamClosedError]
                 if reason is None:
                     exc = bqstorage_exceptions.StreamClosedError(
                         "Stream closed before receiving a response."
