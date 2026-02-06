@@ -282,26 +282,26 @@ class AdUnit(proto.Message):
         number=21,
         message=applied_label.AppliedLabel,
     )
-    effective_applied_labels: MutableSequence[
-        applied_label.AppliedLabel
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message=applied_label.AppliedLabel,
+    effective_applied_labels: MutableSequence[applied_label.AppliedLabel] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message=applied_label.AppliedLabel,
+        )
     )
-    applied_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=23,
-        message="LabelFrequencyCap",
+    applied_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=23,
+            message="LabelFrequencyCap",
+        )
     )
-    effective_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=24,
-        message="LabelFrequencyCap",
+    effective_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=24,
+            message="LabelFrequencyCap",
+        )
     )
     smart_size_mode: ad_unit_enums.SmartSizeModeEnum.SmartSizeMode = proto.Field(
         proto.ENUM,

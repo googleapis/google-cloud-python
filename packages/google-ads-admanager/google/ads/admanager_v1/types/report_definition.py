@@ -133,6 +133,7 @@ class ReportDefinition(proto.Message):
             AD_SPEED (13):
                 Ad speed.
         """
+
         REPORT_TYPE_UNSPECIFIED = 0
         HISTORICAL = 1
         REACH = 5
@@ -5859,6 +5860,7 @@ class ReportDefinition(proto.Message):
                 equal to the ID in index 9 of
                 ``ReportDefinition.custom_dimension_key_ids``.
         """
+
         _pb_options = {"allow_alias": True}
         DIMENSION_UNSPECIFIED = 0
         ACTIVE_VIEW_MEASUREMENT_SOURCE = 575
@@ -11319,6 +11321,7 @@ class ReportDefinition(proto.Message):
 
                 Data format: ``INTEGER``
         """
+
         _pb_options = {"allow_alias": True}
         METRIC_UNSPECIFIED = 0
         ACTIVE_USERS = 223
@@ -11835,6 +11838,7 @@ class ReportDefinition(proto.Message):
             TIME_PERIOD_COLUMN_QUARTER (4):
                 A column for each quarter in the report.
         """
+
         TIME_PERIOD_COLUMN_UNSPECIFIED = 0
         TIME_PERIOD_COLUMN_DATE = 1
         TIME_PERIOD_COLUMN_WEEK = 2
@@ -11862,6 +11866,7 @@ class ReportDefinition(proto.Message):
                 The relative change between the primary and
                 comparison date ranges.
         """
+
         PRIMARY = 0
         PRIMARY_PERCENT_OF_TOTAL = 1
         COMPARISON = 2
@@ -11892,6 +11897,7 @@ class ReportDefinition(proto.Message):
                 compared with PUBLISHER, and reports may take longer to run
                 since the dates are dynamically calculated at request time.
         """
+
         TIME_ZONE_SOURCE_UNSPECIFIED = 0
         PUBLISHER = 1
         AD_EXCHANGE = 2
@@ -12109,6 +12115,7 @@ class ReportDefinition(proto.Message):
                     Wednesday, but SAME_PERIOD_PREVIOUS_YEAR will be Monday -
                     Sunday.
             """
+
             RELATIVE_DATE_RANGE_UNSPECIFIED = 0
             TODAY = 1
             YESTERDAY = 2
@@ -12269,6 +12276,7 @@ class ReportDefinition(proto.Message):
                     expression or set of regular expressions (none
                     must match).
             """
+
             IN = 0
             NOT_IN = 1
             CONTAINS = 2

@@ -44,6 +44,7 @@ class CmsMetadataKeyStatusEnum(proto.Message):
             INACTIVE (2):
                 The key is not active.
         """
+
         CMS_METADATA_KEY_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

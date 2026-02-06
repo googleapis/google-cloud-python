@@ -46,6 +46,7 @@ class TeamStatusEnum(proto.Message):
             INACTIVE (2):
                 The status of an inactive team.
         """
+
         TEAM_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -73,6 +74,7 @@ class TeamAccessTypeEnum(proto.Message):
                 The level of access in which team members can
                 view and edit a team's orders.
         """
+
         TEAM_ACCESS_TYPE_UNSPECIFIED = 0
         NONE = 1
         READ_ONLY = 2

@@ -55,6 +55,7 @@ class RequestPlatformEnum(proto.Message):
                 Represents a request made from a video
                 player.
         """
+
         REQUEST_PLATFORM_UNSPECIFIED = 0
         BROWSER = 1
         MOBILE_APP = 2

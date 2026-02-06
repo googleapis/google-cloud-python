@@ -136,12 +136,12 @@ class ListMobileCarriersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mobile_carriers: MutableSequence[
-        mobile_carrier_messages.MobileCarrier
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=mobile_carrier_messages.MobileCarrier,
+    mobile_carriers: MutableSequence[mobile_carrier_messages.MobileCarrier] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=mobile_carrier_messages.MobileCarrier,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

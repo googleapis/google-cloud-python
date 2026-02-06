@@ -49,6 +49,7 @@ class ExchangeSyndicationProductEnum(proto.Message):
             GAMES (4):
                 Property serves for games.
         """
+
         EXCHANGE_SYNDICATION_PRODUCT_UNSPECIFIED = 0
         DISPLAY = 1
         MOBILE_APP = 2
