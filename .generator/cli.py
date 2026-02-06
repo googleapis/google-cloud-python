@@ -351,8 +351,22 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     # If there is no noxfile, run `isort`` and `black` on the output.
     # This is required for proto-only libraries which are not GAPIC.
     if not Path(f"{output}/{path_to_library}/noxfile.py").exists():
-        subprocess.run(["isort", output])
-        subprocess.run(["black", output])
+        target_version = "py37"
+        # 1. Run Ruff to fix imports (replaces isort)
+        subprocess.run([
+            "ruff", "check", "--select", "I", "--fix", 
+            f"--target-version={target_version}", 
+            "--line-length=88", 
+            str(output)
+        ])
+        
+        # 2. Run Ruff to format code (replaces black)
+        subprocess.run([
+            "ruff", "format", 
+            f"--target-version={target_version}", 
+            "--line-length=88", 
+            str(output)
+        ])
 
     logger.info("Python post-processor ran successfully.")
 

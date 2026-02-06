@@ -3,5 +3,4 @@ gapic-generator==1.30.7 # replace isort and black with ruff https://github.com/g
 nox
 starlark-pyo3>=2025.1
 build
-black==23.7.0
-isort==5.11.0
+ruff==0.14.14
