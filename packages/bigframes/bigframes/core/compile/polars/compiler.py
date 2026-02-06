@@ -16,6 +16,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import itertools
+import json
 from typing import cast, Literal, Optional, Sequence, Tuple, Type, TYPE_CHECKING
 
 import pandas as pd
@@ -429,7 +430,68 @@ if polars_installed:
         @compile_op.register(json_ops.JSONDecode)
         def _(self, op: ops.ScalarOp, input: pl.Expr) -> pl.Expr:
             assert isinstance(op, json_ops.JSONDecode)
-            return input.str.json_decode(_DTYPE_MAPPING[op.to_type])
+            target_dtype = _bigframes_dtype_to_polars_dtype(op.to_type)
+            if op.safe:
+                # Polars does not support safe JSON decoding (returning null on failure).
+                # We use map_elements to provide safe JSON decoding.
+                def safe_decode(val):
+                    if val is None:
+                        return None
+                    try:
+                        decoded = json.loads(val)
+                    except Exception:
+                        return None
+
+                    if decoded is None:
+                        return None
+
+                    if op.to_type == bigframes.dtypes.INT_DTYPE:
+                        if type(decoded) is bool:
+                            return None
+                        if isinstance(decoded, int):
+                            return decoded
+                        if isinstance(decoded, float):
+                            if decoded.is_integer():
+                                return int(decoded)
+                        if isinstance(decoded, str):
+                            try:
+                                return int(decoded)
+                            except Exception:
+                                pass
+                        return None
+
+                    if op.to_type == bigframes.dtypes.FLOAT_DTYPE:
+                        if type(decoded) is bool:
+                            return None
+                        if isinstance(decoded, (int, float)):
+                            return float(decoded)
+                        if isinstance(decoded, str):
+                            try:
+                                return float(decoded)
+                            except Exception:
+                                pass
+                        return None
+
+                    if op.to_type == bigframes.dtypes.BOOL_DTYPE:
+                        if isinstance(decoded, bool):
+                            return decoded
+                        if isinstance(decoded, str):
+                            if decoded.lower() == "true":
+                                return True
+                            if decoded.lower() == "false":
+                                return False
+                        return None
+
+                    if op.to_type == bigframes.dtypes.STRING_DTYPE:
+                        if isinstance(decoded, str):
+                            return decoded
+                        return None
+
+                    return decoded
+
+                return input.map_elements(safe_decode, return_dtype=target_dtype)
+
+            return input.str.json_decode(target_dtype)
 
         @compile_op.register(arr_ops.ToArrayOp)
         def _(self, op: ops.ToArrayOp, *inputs: pl.Expr) -> pl.Expr:

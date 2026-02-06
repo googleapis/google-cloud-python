@@ -363,7 +363,8 @@ def repr_mimebundle(
 
     if opts.repr_mode == "anywidget":
         try:
-            return get_anywidget_bundle(obj, include=include, exclude=exclude)
+            with bigframes.option_context("display.progress_bar", None):
+                return get_anywidget_bundle(obj, include=include, exclude=exclude)
         except ImportError:
             # Anywidget is an optional dependency, so warn rather than fail.
             # TODO(shuowei): When Anywidget becomes the default for all repr modes,

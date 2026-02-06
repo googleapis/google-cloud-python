@@ -220,6 +220,7 @@ class JSONKeys(base_ops.UnaryOp):
 class JSONDecode(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "json_decode"
     to_type: dtypes.Dtype
+    safe: bool = False
 
     def output_type(self, *input_types):
         input_type = input_types[0]

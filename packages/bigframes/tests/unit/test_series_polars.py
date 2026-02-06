@@ -4142,7 +4142,6 @@ def test_json_astype_others_raise_error(data, to_type):
         bf_series.astype(to_type, errors="raise").to_pandas()
 
 
-@pytest.mark.skip(reason="AssertionError: Series NA mask are different")
 @pytest.mark.parametrize(
     ("data", "to_type"),
     [
