@@ -3661,7 +3661,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.19.1
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 725496d32a359a40dd773995d3fda0342b440e15
     apis:
       - path: grafeas/v1
         service_config: grafeas_v1.yaml

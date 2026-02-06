@@ -61,8 +61,7 @@ replacements:
       \        Returns:
       \            GrafeasAsyncClient: The constructed client.
       \        """
-      \        sa_file_func = GrafeasClient.from_service_account_file.__func__  # type: ignore
-      \        return sa_file_func\(GrafeasAsyncClient, filename, \*args, \*\*kwargs\)
+      \        return GrafeasClient.from_service_account_file.__func__\(GrafeasAsyncClient, filename, \*args, \*\*kwargs\)  # type: ignore
       \
       \    from_service_account_json = from_service_account_file
       \
