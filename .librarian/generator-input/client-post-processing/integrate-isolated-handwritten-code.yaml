@@ -305,3 +305,16 @@ replacements:
               "pandas-stubs",
           )
     count: 1
+  - paths: [
+      packages/google-cloud-bigquery-storage/noxfile.py,
+    ]
+    before: |
+      "types-protobuf",
+      \    \)
+      \    session.install\("."\)
+    after: |
+      "types-protobuf",
+              "pandas-stubs",
+          )
+          session.install(".[fastavro]")
+    count: 1
