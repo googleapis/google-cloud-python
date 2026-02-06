@@ -351,22 +351,20 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     # If there is no noxfile, run `isort`` and `black` on the output.
     # This is required for proto-only libraries which are not GAPIC.
     if not Path(f"{output}/{path_to_library}/noxfile.py").exists():
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/15538):
+        # Investigate if a `target_version needs to be maintained
+        # or can be eliminated.
         target_version = "py37"
+        common_args = [
+            f"--target-version={target_version}",
+            "--line-length=88",
+            output,
+        ]
         # 1. Run Ruff to fix imports (replaces isort)
-        subprocess.run([
-            "ruff", "check", "--select", "I", "--fix", 
-            f"--target-version={target_version}", 
-            "--line-length=88", 
-            str(output)
-        ])
+        subprocess.run(["ruff", "check", "--select", "I", "--fix", *common_args], check=True)
         
         # 2. Run Ruff to format code (replaces black)
-        subprocess.run([
-            "ruff", "format", 
-            f"--target-version={target_version}", 
-            "--line-length=88", 
-            str(output)
-        ])
+        subprocess.run(["ruff", "format", *common_args], check=True)
 
     logger.info("Python post-processor ran successfully.")
 
