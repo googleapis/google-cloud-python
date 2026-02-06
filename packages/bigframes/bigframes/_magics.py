@@ -47,10 +47,9 @@ def _cell_magic(line, cell):
     )
     if args.destination_var:
         ipython.push({args.destination_var: dataframe})
-    else:
-        with bigframes.option_context(
-            "display.repr_mode",
-            "anywidget",
-        ):
-            display(dataframe)
-    return
+
+    with bigframes.option_context(
+        "display.repr_mode",
+        "anywidget",
+    ):
+        display(dataframe)
