@@ -16,9 +16,9 @@ import importlib
 from unittest import mock
 
 import google.api_core.exceptions
+import pytest
 from google.api_core.gapic_v1 import client_info
 from google.auth import credentials
-import pytest
 
 from google.cloud.bigquery_storage_v1 import types
 

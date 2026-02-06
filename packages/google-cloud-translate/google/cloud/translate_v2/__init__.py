@@ -14,7 +14,6 @@
 
 """Google Cloud Translation API wrapper."""
 
-
 from google.cloud.translate import __version__
 from google.cloud.translate_v2.client import Client
 

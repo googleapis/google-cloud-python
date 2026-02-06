@@ -18,9 +18,9 @@ import time
 import unittest
 from unittest import mock
 
+import pytest
 from google.api_core import exceptions
 from google.protobuf import descriptor_pb2
-import pytest
 
 from google.cloud.bigquery_storage_v1 import exceptions as bqstorage_exceptions
 from google.cloud.bigquery_storage_v1 import gapic_version as package_version

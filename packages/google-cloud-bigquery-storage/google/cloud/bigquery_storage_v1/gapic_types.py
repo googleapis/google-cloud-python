@@ -20,10 +20,9 @@ import collections
 import inspect
 import sys
 
+import proto  # type: ignore
 from google.protobuf import message as protobuf_message
 from google.protobuf import timestamp_pb2
-
-import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow, avro, storage, stream
 

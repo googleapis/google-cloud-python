@@ -19,9 +19,9 @@
 This is the base from which all interactions with the API occur.
 """
 
-from google.api_core import gapic_v1
 import google.api_core.gapic_v1.method
 import google.api_core.retry
+from google.api_core import gapic_v1
 
 from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 from google.cloud.bigquery_storage_v1 import reader

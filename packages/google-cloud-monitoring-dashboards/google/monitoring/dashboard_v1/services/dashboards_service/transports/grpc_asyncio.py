@@ -17,11 +17,11 @@
 
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
 
+import grpc  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.monitoring.dashboard_v1.types import dashboard, dashboards_service
