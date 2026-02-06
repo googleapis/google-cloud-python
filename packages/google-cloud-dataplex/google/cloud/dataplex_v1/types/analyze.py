@@ -368,6 +368,7 @@ class Content(proto.Message):
                 SPARK (2):
                     Spark SQL Query.
             """
+
             QUERY_ENGINE_UNSPECIFIED = 0
             SPARK = 2
 
@@ -394,6 +395,7 @@ class Content(proto.Message):
                 PYTHON3 (1):
                     Python 3 Kernel.
             """
+
             KERNEL_TYPE_UNSPECIFIED = 0
             PYTHON3 = 1
 

@@ -552,6 +552,7 @@ class Unit(proto.Message):
                 Unit has error, when it is not ready and some
                 error operation
         """
+
         UNIT_STATE_UNSPECIFIED = 0
         UNIT_STATE_NOT_PROVISIONED = 1
         UNIT_STATE_PROVISIONING = 2
@@ -574,6 +575,7 @@ class Unit(proto.Message):
                 and delete the unit. User still can deprovision
                 or delete the unit manually.
         """
+
         MANAGEMENT_MODE_UNSPECIFIED = 0
         MANAGEMENT_MODE_USER = 1
         MANAGEMENT_MODE_SYSTEM = 2
@@ -593,6 +595,7 @@ class Unit(proto.Message):
                 Unit has no dependencies attached, and
                 attachment is not allowed.
         """
+
         SYSTEM_MANAGED_STATE_UNSPECIFIED = 0
         SYSTEM_MANAGED_STATE_ACTIVE = 1
         SYSTEM_MANAGED_STATE_INACTIVE = 2
@@ -885,6 +888,7 @@ class UnitOperation(proto.Message):
             UNIT_OPERATION_STATE_CANCELLED (7):
                 Unit operation was cancelled.
         """
+
         UNIT_OPERATION_STATE_UNKNOWN = 0
         UNIT_OPERATION_STATE_PENDING = 1
         UNIT_OPERATION_STATE_SCHEDULED = 2

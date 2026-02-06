@@ -43,6 +43,7 @@ class OperationType(proto.Enum):
         DELETE_FUNCTION (3):
             Triggered by DeleteFunction call.
     """
+
     OPERATION_UNSPECIFIED = 0
     CREATE_FUNCTION = 1
     UPDATE_FUNCTION = 2

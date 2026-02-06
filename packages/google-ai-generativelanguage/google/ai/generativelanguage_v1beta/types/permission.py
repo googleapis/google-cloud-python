@@ -90,6 +90,7 @@ class Permission(proto.Message):
                 Represents access to everyone. No extra
                 information is required.
         """
+
         GRANTEE_TYPE_UNSPECIFIED = 0
         USER = 1
         GROUP = 2
@@ -110,6 +111,7 @@ class Permission(proto.Message):
             READER (3):
                 Reader can use the resource.
         """
+
         ROLE_UNSPECIFIED = 0
         OWNER = 1
         WRITER = 2

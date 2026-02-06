@@ -16,47 +16,51 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
+from google.cloud.network_services_v1.types import (
+    endpoint_policy,
+    extensibility,
+    gateway,
+    grpc_route,
+    http_route,
+    mesh,
+    route_view,
+    service_binding,
+    service_lb_policy,
+    tcp_route,
+    tls_route,
+)
 from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
+from google.cloud.network_services_v1.types import gateway as gcn_gateway
+from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
+from google.cloud.network_services_v1.types import http_route as gcn_http_route
+from google.cloud.network_services_v1.types import mesh as gcn_mesh
 from google.cloud.network_services_v1.types import (
     service_binding as gcn_service_binding,
 )
 from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
-from google.cloud.network_services_v1.types import endpoint_policy
-from google.cloud.network_services_v1.types import extensibility
-from google.cloud.network_services_v1.types import gateway
-from google.cloud.network_services_v1.types import gateway as gcn_gateway
-from google.cloud.network_services_v1.types import grpc_route
-from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
-from google.cloud.network_services_v1.types import http_route
-from google.cloud.network_services_v1.types import http_route as gcn_http_route
-from google.cloud.network_services_v1.types import mesh
-from google.cloud.network_services_v1.types import mesh as gcn_mesh
-from google.cloud.network_services_v1.types import route_view
-from google.cloud.network_services_v1.types import service_binding
-from google.cloud.network_services_v1.types import service_lb_policy
-from google.cloud.network_services_v1.types import tcp_route
 from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
-from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
 from .base import DEFAULT_CLIENT_INFO, NetworkServicesTransport
@@ -590,12 +594,12 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_wasm_plugin_version" not in self._stubs:
-            self._stubs[
-                "create_wasm_plugin_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
-                request_serializer=extensibility.CreateWasmPluginVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_wasm_plugin_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkservices.v1.NetworkServices/CreateWasmPluginVersion",
+                    request_serializer=extensibility.CreateWasmPluginVersionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_wasm_plugin_version"]
 
@@ -620,12 +624,12 @@ class NetworkServicesGrpcTransport(NetworkServicesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_wasm_plugin_version" not in self._stubs:
-            self._stubs[
-                "delete_wasm_plugin_version"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
-                request_serializer=extensibility.DeleteWasmPluginVersionRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_wasm_plugin_version"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networkservices.v1.NetworkServices/DeleteWasmPluginVersion",
+                    request_serializer=extensibility.DeleteWasmPluginVersionRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_wasm_plugin_version"]
 

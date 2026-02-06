@@ -19,9 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1alpha.types import citation
+from google.ai.generativelanguage_v1alpha.types import citation, retriever, safety
 from google.ai.generativelanguage_v1alpha.types import content as gag_content
-from google.ai.generativelanguage_v1alpha.types import retriever, safety
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1alpha",
@@ -96,6 +95,7 @@ class TaskType(proto.Enum):
             Specifies that the given text will be used
             for fact verification.
     """
+
     TASK_TYPE_UNSPECIFIED = 0
     RETRIEVAL_QUERY = 1
     RETRIEVAL_DOCUMENT = 2
@@ -469,6 +469,7 @@ class GenerationConfig(proto.Message):
             AUDIO (3):
                 Indicates the model should return audio.
         """
+
         MODALITY_UNSPECIFIED = 0
         TEXT = 1
         IMAGE = 2
@@ -666,6 +667,7 @@ class GenerateContentResponse(proto.Message):
                     Candidates blocked due to unsafe image
                     generation content.
             """
+
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
@@ -833,6 +835,7 @@ class Candidate(proto.Message):
                 Token generation stopped because generated
                 images contain safety violations.
         """
+
         FINISH_REASON_UNSPECIFIED = 0
         STOP = 1
         MAX_TOKENS = 2
@@ -875,12 +878,12 @@ class Candidate(proto.Message):
         proto.INT32,
         number=7,
     )
-    grounding_attributions: MutableSequence[
-        "GroundingAttribution"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message="GroundingAttribution",
+    grounding_attributions: MutableSequence["GroundingAttribution"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message="GroundingAttribution",
+        )
     )
     grounding_metadata: "GroundingMetadata" = proto.Field(
         proto.MESSAGE,
@@ -1385,6 +1388,7 @@ class GenerateAnswerRequest(proto.Message):
                 paragraph, multiple paragraphs, or bullet
                 points, etc.
         """
+
         ANSWER_STYLE_UNSPECIFIED = 0
         ABSTRACTIVE = 1
         EXTRACTIVE = 2
@@ -1509,6 +1513,7 @@ class GenerateAnswerResponse(proto.Message):
                 OTHER (2):
                     Input was blocked due to other reasons.
             """
+
             BLOCK_REASON_UNSPECIFIED = 0
             SAFETY = 1
             OTHER = 2
@@ -1906,12 +1911,12 @@ class BidiGenerateContentToolResponse(proto.Message):
             Optional. The response to the function calls.
     """
 
-    function_responses: MutableSequence[
-        gag_content.FunctionResponse
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gag_content.FunctionResponse,
+    function_responses: MutableSequence[gag_content.FunctionResponse] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gag_content.FunctionResponse,
+        )
     )
 
 

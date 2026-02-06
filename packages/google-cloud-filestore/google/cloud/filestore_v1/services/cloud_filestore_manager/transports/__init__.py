@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CloudFilestoreManagerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CloudFilestoreManagerTransport]]
 _transport_registry["grpc"] = CloudFilestoreManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudFilestoreManagerGrpcAsyncIOTransport
 _transport_registry["rest"] = CloudFilestoreManagerRestTransport

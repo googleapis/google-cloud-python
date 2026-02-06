@@ -89,6 +89,7 @@ class ScanRun(proto.Message):
                 The scan is either finished or stopped by
                 user.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCANNING = 2
@@ -108,6 +109,7 @@ class ScanRun(proto.Message):
             KILLED (3):
                 The scan was terminated by user.
         """
+
         RESULT_STATE_UNSPECIFIED = 0
         SUCCESS = 1
         ERROR = 2

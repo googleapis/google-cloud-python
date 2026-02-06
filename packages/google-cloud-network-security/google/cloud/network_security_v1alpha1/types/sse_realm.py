@@ -90,6 +90,7 @@ class SACRealm(proto.Message):
             SYMANTEC_CLOUD_SWG (2):
                 Symantec Cloud SWG.
         """
+
         SECURITY_SERVICE_UNSPECIFIED = 0
         PALO_ALTO_PRISMA_ACCESS = 1
         SYMANTEC_CLOUD_SWG = 2
@@ -113,6 +114,7 @@ class SACRealm(proto.Message):
                 expired pairing key. Used only for Prisma
                 Access.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_PARTNER_ATTACHMENT = 7
         PARTNER_ATTACHED = 1
@@ -177,6 +179,7 @@ class SACRealm(proto.Message):
                     Symantec API due to an invalid API key or
                     Symantec API unavailability.
             """
+
             SYMANTEC_CONNECTION_STATE_UNSPECIFIED = 0
             SUCCEEDED = 1
             READ_SECRET_FAILED = 2
@@ -484,6 +487,7 @@ class SACAttachment(proto.Message):
                 Was once attached to a partner but has been
                 detached.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_PARTNER_ATTACHMENT = 1
         PARTNER_ATTACHED = 2
@@ -807,6 +811,7 @@ class PartnerSSERealm(proto.Message):
                 a customer realm. This is the state when the
                 customer realm is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CUSTOMER_ATTACHED = 1
         CUSTOMER_DETACHED = 2

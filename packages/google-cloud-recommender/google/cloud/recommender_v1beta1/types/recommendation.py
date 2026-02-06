@@ -118,6 +118,7 @@ class Recommendation(proto.Message):
                 Recommendation has P1 priority (highest
                 priority).
         """
+
         PRIORITY_UNSPECIFIED = 0
         P4 = 1
         P3 = 2
@@ -545,6 +546,7 @@ class Impact(proto.Message):
                 Indicates a potential increase or decrease in
                 sustainability.
         """
+
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -630,6 +632,7 @@ class RecommendationStateInfo(proto.Message):
                 DISMISSED recommendations can be marked as
                 ACTIVE.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLAIMED = 6

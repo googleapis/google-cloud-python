@@ -813,6 +813,7 @@ class UpgradeClusterResponse(proto.Message):
             CANCELLED (7):
                 Cancellation complete.
         """
+
         STATUS_UNSPECIFIED = 0
         NOT_STARTED = 4
         IN_PROGRESS = 5
@@ -843,6 +844,7 @@ class UpgradeClusterResponse(proto.Message):
             CLEANUP (7):
                 Cleanup.
         """
+
         STAGE_UNSPECIFIED = 0
         ALLOYDB_PRECHECK = 1
         PG_UPGRADE_CHECK = 2
@@ -956,12 +958,12 @@ class UpgradeClusterResponse(proto.Message):
             number=4,
             enum=resources.DatabaseVersion,
         )
-        stage_info: MutableSequence[
-            "UpgradeClusterResponse.StageInfo"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="UpgradeClusterResponse.StageInfo",
+        stage_info: MutableSequence["UpgradeClusterResponse.StageInfo"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="UpgradeClusterResponse.StageInfo",
+            )
         )
         instance_upgrade_details: MutableSequence[
             "UpgradeClusterResponse.InstanceUpgradeDetails"
@@ -980,12 +982,12 @@ class UpgradeClusterResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    cluster_upgrade_details: MutableSequence[
-        ClusterUpgradeDetails
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ClusterUpgradeDetails,
+    cluster_upgrade_details: MutableSequence[ClusterUpgradeDetails] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ClusterUpgradeDetails,
+        )
     )
 
 
@@ -1489,12 +1491,12 @@ class CreateInstanceRequests(proto.Message):
             to be created. This list should not be empty.
     """
 
-    create_instance_requests: MutableSequence[
-        "CreateInstanceRequest"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="CreateInstanceRequest",
+    create_instance_requests: MutableSequence["CreateInstanceRequest"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="CreateInstanceRequest",
+        )
     )
 
 
@@ -1584,13 +1586,13 @@ class BatchCreateInstancesMetadata(proto.Message):
         proto.STRING,
         number=1,
     )
-    instance_statuses: MutableMapping[
-        str, "BatchCreateInstanceStatus"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=2,
-        message="BatchCreateInstanceStatus",
+    instance_statuses: MutableMapping[str, "BatchCreateInstanceStatus"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message="BatchCreateInstanceStatus",
+        )
     )
 
 
@@ -1664,6 +1666,7 @@ class BatchCreateInstanceStatus(proto.Message):
                 was rolled back and deleted due to some other
                 failure during BatchCreateInstances operation.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING_CREATE = 1
         READY = 2
@@ -1916,6 +1919,7 @@ class InjectFaultRequest(proto.Message):
             STOP_VM (1):
                 Stop the VM
         """
+
         FAULT_TYPE_UNSPECIFIED = 0
         STOP_VM = 1
 
@@ -2130,6 +2134,7 @@ class ExecuteSqlMetadata(proto.Message):
                 https://google.aip.dev/193 but will be returned
                 as part of this message.
         """
+
         STATUS_UNSPECIFIED = 0
         OK = 1
         PARTIAL = 2
@@ -2484,12 +2489,12 @@ class ListSupportedDatabaseFlagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    supported_database_flags: MutableSequence[
-        resources.SupportedDatabaseFlag
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.SupportedDatabaseFlag,
+    supported_database_flags: MutableSequence[resources.SupportedDatabaseFlag] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.SupportedDatabaseFlag,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -496,9 +496,7 @@ class PrivateAuctionDealServiceRestTransport(
                         The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_http_options()
 
             request, metadata = self._interceptor.pre_create_private_auction_deal(
                 request, metadata
@@ -652,9 +650,7 @@ class PrivateAuctionDealServiceRestTransport(
                     The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_http_options()
 
             request, metadata = self._interceptor.pre_get_private_auction_deal(
                 request, metadata
@@ -808,9 +804,7 @@ class PrivateAuctionDealServiceRestTransport(
 
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_http_options()
 
             request, metadata = self._interceptor.pre_list_private_auction_deals(
                 request, metadata
@@ -963,9 +957,7 @@ class PrivateAuctionDealServiceRestTransport(
                         The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_http_options()
 
             request, metadata = self._interceptor.pre_update_private_auction_deal(
                 request, metadata
@@ -1073,7 +1065,9 @@ class PrivateAuctionDealServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreatePrivateAuctionDeal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreatePrivateAuctionDeal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_private_auction_deal(
@@ -1095,7 +1089,9 @@ class PrivateAuctionDealServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPrivateAuctionDeals(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPrivateAuctionDeals(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_private_auction_deal(
@@ -1106,7 +1102,9 @@ class PrivateAuctionDealServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdatePrivateAuctionDeal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdatePrivateAuctionDeal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -1166,9 +1164,7 @@ class PrivateAuctionDealServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_transcoded_request(

@@ -64,6 +64,7 @@ class ParameterFormat(proto.Enum):
         JSON (3):
             JSON format.
     """
+
     PARAMETER_FORMAT_UNSPECIFIED = 0
     UNFORMATTED = 1
     YAML = 2
@@ -84,6 +85,7 @@ class View(proto.Enum):
             Include metadata & other relevant payload
             data as well. This is the default view.
     """
+
     VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2

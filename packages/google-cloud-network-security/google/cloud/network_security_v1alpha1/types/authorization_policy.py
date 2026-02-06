@@ -84,6 +84,7 @@ class AuthorizationPolicy(proto.Message):
                 Deny rules should be avoided unless they are
                 used to provide a default "deny all" fallback.
         """
+
         ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -221,19 +222,19 @@ class AuthorizationPolicy(proto.Message):
                 message="AuthorizationPolicy.Rule.Destination.HttpHeaderMatch",
             )
 
-        sources: MutableSequence[
-            "AuthorizationPolicy.Rule.Source"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="AuthorizationPolicy.Rule.Source",
+        sources: MutableSequence["AuthorizationPolicy.Rule.Source"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AuthorizationPolicy.Rule.Source",
+            )
         )
-        destinations: MutableSequence[
-            "AuthorizationPolicy.Rule.Destination"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="AuthorizationPolicy.Rule.Destination",
+        destinations: MutableSequence["AuthorizationPolicy.Rule.Destination"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="AuthorizationPolicy.Rule.Destination",
+            )
         )
 
     name: str = proto.Field(
@@ -321,12 +322,12 @@ class ListAuthorizationPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    authorization_policies: MutableSequence[
-        "AuthorizationPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AuthorizationPolicy",
+    authorization_policies: MutableSequence["AuthorizationPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AuthorizationPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

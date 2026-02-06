@@ -73,6 +73,7 @@ class AccountLabel(proto.Message):
                 Indicates that the label was created
                 automatically by CSS Center.
         """
+
         LABEL_TYPE_UNSPECIFIED = 0
         MANUAL = 1
         AUTOMATIC = 2

@@ -357,12 +357,12 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ResponseMessage.MixedAudio.Segment",
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ResponseMessage.MixedAudio.Segment",
+            )
         )
 
     class TelephonyTransferCall(proto.Message):

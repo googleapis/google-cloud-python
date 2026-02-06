@@ -119,13 +119,13 @@ class TablesDatasetMetadata(proto.Message):
         proto.STRING,
         number=4,
     )
-    target_column_correlations: MutableMapping[
-        str, data_stats.CorrelationStats
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=6,
-        message=data_stats.CorrelationStats,
+    target_column_correlations: MutableMapping[str, data_stats.CorrelationStats] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=6,
+            message=data_stats.CorrelationStats,
+        )
     )
     stats_update_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -268,23 +268,23 @@ class TablesModelMetadata(proto.Message):
         number=2,
         message=column_spec.ColumnSpec,
     )
-    input_feature_column_specs: MutableSequence[
-        column_spec.ColumnSpec
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=column_spec.ColumnSpec,
+    input_feature_column_specs: MutableSequence[column_spec.ColumnSpec] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=column_spec.ColumnSpec,
+        )
     )
     optimization_objective: str = proto.Field(
         proto.STRING,
         number=4,
     )
-    tables_model_column_info: MutableSequence[
-        "TablesModelColumnInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="TablesModelColumnInfo",
+    tables_model_column_info: MutableSequence["TablesModelColumnInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="TablesModelColumnInfo",
+        )
     )
     train_budget_milli_node_hours: int = proto.Field(
         proto.INT64,
@@ -368,12 +368,12 @@ class TablesAnnotation(proto.Message):
         number=2,
         message=struct_pb2.Value,
     )
-    tables_model_column_info: MutableSequence[
-        "TablesModelColumnInfo"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="TablesModelColumnInfo",
+    tables_model_column_info: MutableSequence["TablesModelColumnInfo"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="TablesModelColumnInfo",
+        )
     )
     baseline_score: float = proto.Field(
         proto.FLOAT,

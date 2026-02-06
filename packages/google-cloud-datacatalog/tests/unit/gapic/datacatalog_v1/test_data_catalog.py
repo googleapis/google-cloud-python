@@ -24,13 +24,14 @@ except ImportError:  # pragma: NO COVER
 
 import json
 import math
+from collections.abc import Mapping, Sequence
 
-from google.api_core import api_core_version
 import grpc
+import pytest
+from google.api_core import api_core_version
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -39,7 +40,16 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -48,24 +58,17 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.options_pb2 as options_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1.services.data_catalog import (
     DataCatalogAsyncClient,
@@ -936,10 +939,9 @@ def test_data_catalog_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -984,10 +986,9 @@ def test_data_catalog_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1023,10 +1024,9 @@ def test_data_catalog_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1257,9 +1257,7 @@ def test_data_catalog_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1867,9 +1865,9 @@ def test_create_entry_group_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_entry_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_entry_group] = (
+            mock_rpc
+        )
         request = {}
         client.create_entry_group(request)
 
@@ -2581,9 +2579,9 @@ def test_update_entry_group_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_entry_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_entry_group] = (
+            mock_rpc
+        )
         request = {}
         client.update_entry_group(request)
 
@@ -2935,9 +2933,9 @@ def test_delete_entry_group_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_entry_group
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_entry_group] = (
+            mock_rpc
+        )
         request = {}
         client.delete_entry_group(request)
 
@@ -3267,9 +3265,9 @@ def test_list_entry_groups_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_entry_groups
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_entry_groups] = (
+            mock_rpc
+        )
         request = {}
         client.list_entry_groups(request)
 
@@ -5884,9 +5882,9 @@ def test_modify_entry_overview_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.modify_entry_overview
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.modify_entry_overview] = (
+            mock_rpc
+        )
         request = {}
         client.modify_entry_overview(request)
 
@@ -6137,9 +6135,9 @@ def test_modify_entry_contacts_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.modify_entry_contacts
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.modify_entry_contacts] = (
+            mock_rpc
+        )
         request = {}
         client.modify_entry_contacts(request)
 
@@ -6400,9 +6398,9 @@ def test_create_tag_template_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_tag_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_tag_template] = (
+            mock_rpc
+        )
         request = {}
         client.create_tag_template(request)
 
@@ -6769,9 +6767,9 @@ def test_get_tag_template_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_tag_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_tag_template] = (
+            mock_rpc
+        )
         request = {}
         client.get_tag_template(request)
 
@@ -7110,9 +7108,9 @@ def test_update_tag_template_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_tag_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_tag_template] = (
+            mock_rpc
+        )
         request = {}
         client.update_tag_template(request)
 
@@ -7463,9 +7461,9 @@ def test_delete_tag_template_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_tag_template
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_tag_template] = (
+            mock_rpc
+        )
         request = {}
         client.delete_tag_template(request)
 
@@ -12722,9 +12720,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 

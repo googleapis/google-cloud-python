@@ -87,6 +87,7 @@ class Report(proto.Message):
                 Reports with this visibility will appear in
                 the Ad Manager UI.
         """
+
         _pb_options = {"allow_alias": True}
         HIDDEN = 0
         DRAFT = 1
@@ -161,19 +162,19 @@ class ReportDataTable(proto.Message):
                 metric_value_groups represents the metrics for date y.
         """
 
-        dimension_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=report_value.ReportValue,
+        dimension_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=report_value.ReportValue,
+            )
         )
-        metric_value_groups: MutableSequence[
-            "ReportDataTable.MetricValueGroup"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ReportDataTable.MetricValueGroup",
+        metric_value_groups: MutableSequence["ReportDataTable.MetricValueGroup"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ReportDataTable.MetricValueGroup",
+            )
         )
 
     class MetricValueGroup(proto.Message):
@@ -208,19 +209,19 @@ class ReportDataTable(proto.Message):
             number=1,
             message=report_value.ReportValue,
         )
-        primary_percent_of_total_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=report_value.ReportValue,
+        primary_percent_of_total_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=report_value.ReportValue,
+            )
         )
-        comparison_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=report_value.ReportValue,
+        comparison_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=report_value.ReportValue,
+            )
         )
         comparison_percent_of_total_values: MutableSequence[
             report_value.ReportValue
@@ -229,19 +230,19 @@ class ReportDataTable(proto.Message):
             number=4,
             message=report_value.ReportValue,
         )
-        absolute_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=report_value.ReportValue,
+        absolute_change_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=report_value.ReportValue,
+            )
         )
-        relative_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message=report_value.ReportValue,
+        relative_change_values: MutableSequence[report_value.ReportValue] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message=report_value.ReportValue,
+            )
         )
         flag_values: MutableSequence[bool] = proto.RepeatedField(
             proto.BOOL,
@@ -275,6 +276,7 @@ class ScheduleOptions(proto.Message):
                 Deliver report when flag's conditions are
                 met.
         """
+
         NEVER = 0
         ALWAYS = 1
         WHEN_FLAG_CONDITIONS_MET = 2
@@ -342,6 +344,7 @@ class ScheduleOptions(proto.Message):
                 MONTHLY (7):
                     Schedule report to run on a monthly basis.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             HOURLY = 1
             TWO_TIMES_DAILY = 2
@@ -360,12 +363,12 @@ class ScheduleOptions(proto.Message):
                     report.
             """
 
-            weekly_scheduled_days: MutableSequence[
-                dayofweek_pb2.DayOfWeek
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=1,
-                enum=dayofweek_pb2.DayOfWeek,
+            weekly_scheduled_days: MutableSequence[dayofweek_pb2.DayOfWeek] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=1,
+                    enum=dayofweek_pb2.DayOfWeek,
+                )
             )
 
         class MonthlySchedule(proto.Message):
@@ -426,12 +429,12 @@ class ScheduleOptions(proto.Message):
         number=2,
         enum=DeliveryCondition,
     )
-    flags: MutableSequence[
-        gaa_report_definition.ReportDefinition.Flag
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=gaa_report_definition.ReportDefinition.Flag,
+    flags: MutableSequence[gaa_report_definition.ReportDefinition.Flag] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=gaa_report_definition.ReportDefinition.Flag,
+        )
     )
 
 

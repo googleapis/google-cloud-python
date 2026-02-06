@@ -70,6 +70,7 @@ class ActionType(proto.Enum):
         SYNC_RUNTIME_DATA (2):
             Action type for sync runtime data.
     """
+
     ACTION_TYPE_UNSPECIFIED = 0
     SYNC_METADATA = 1
     SYNC_RUNTIME_DATA = 2
@@ -98,6 +99,7 @@ class GatewayType(proto.Enum):
             The gateway type for any other types of
             gateways.
     """
+
     GATEWAY_TYPE_UNSPECIFIED = 0
     APIGEE_X_AND_HYBRID = 1
     APIGEE_EDGE_PUBLIC_CLOUD = 2
@@ -121,6 +123,7 @@ class CurationType(proto.Enum):
             Custom curation for API metadata will be
             used.
     """
+
     CURATION_TYPE_UNSPECIFIED = 0
     DEFAULT_CURATION_FOR_API_METADATA = 1
     CUSTOM_CURATION_FOR_API_METADATA = 2
@@ -219,6 +222,7 @@ class Plugin(proto.Message):
             DISABLED (2):
                 The plugin is disabled.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -238,6 +242,7 @@ class Plugin(proto.Message):
                 [CreatePlugin][google.cloud.apihub.v1.ApiHubPlugin.CreatePlugin]
                 method.
         """
+
         OWNERSHIP_TYPE_UNSPECIFIED = 0
         SYSTEM_OWNED = 1
         USER_OWNED = 2
@@ -299,12 +304,12 @@ class Plugin(proto.Message):
                     the corresponding service account.
             """
 
-            supported_auth_types: MutableSequence[
-                common_fields.AuthType
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=1,
-                enum=common_fields.AuthType,
+            supported_auth_types: MutableSequence[common_fields.AuthType] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=1,
+                    enum=common_fields.AuthType,
+                )
             )
             service_account: common_fields.GoogleServiceAccountConfig = proto.Field(
                 proto.MESSAGE,
@@ -439,6 +444,7 @@ class PluginActionConfig(proto.Message):
                 service need not handle this action id as part
                 of the execute call.
         """
+
         TRIGGER_MODE_UNSPECIFIED = 0
         API_HUB_ON_DEMAND_TRIGGER = 1
         API_HUB_SCHEDULE_TRIGGER = 2
@@ -590,6 +596,7 @@ class PluginInstanceAction(proto.Message):
                 enable/disable on actions can only be triggered if plugin
                 instance is in Active state.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -750,6 +757,7 @@ class PluginInstance(proto.Message):
                 running on the plugin instance and plugin
                 instance action.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -771,13 +779,13 @@ class PluginInstance(proto.Message):
         number=3,
         message=common_fields.AuthConfig,
     )
-    additional_config: MutableMapping[
-        str, common_fields.ConfigVariable
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=4,
-        message=common_fields.ConfigVariable,
+    additional_config: MutableMapping[str, common_fields.ConfigVariable] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message=common_fields.ConfigVariable,
+        )
     )
     state: State = proto.Field(
         proto.ENUM,
@@ -877,6 +885,7 @@ class ExecutionStatus(proto.Message):
                 The plugin instance is not running an
                 execution.
         """
+
         CURRENT_EXECUTION_STATE_UNSPECIFIED = 0
         RUNNING = 1
         NOT_RUNNING = 2
@@ -911,6 +920,7 @@ class ExecutionStatus(proto.Message):
                 FAILED (2):
                     The plugin instance execution failed.
             """
+
             RESULT_UNSPECIFIED = 0
             SUCCEEDED = 1
             FAILED = 2

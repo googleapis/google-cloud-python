@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -2370,9 +2372,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseCreateServiceProjectAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service_project_attachment(
                 request, metadata
@@ -2441,11 +2441,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_create_service_project_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_service_project_attachment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_service_project_attachment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2980,9 +2979,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseDeleteServiceProjectAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service_project_attachment(
                 request, metadata
@@ -3046,11 +3043,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_delete_service_project_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_service_project_attachment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_service_project_attachment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3281,9 +3277,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseDetachServiceProjectAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_detach_service_project_attachment(
                 request, metadata
@@ -3354,11 +3348,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_detach_service_project_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_detach_service_project_attachment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_detach_service_project_attachment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4059,9 +4052,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseGetServiceProjectAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service_project_attachment(
                 request, metadata
@@ -4125,11 +4116,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_get_service_project_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_service_project_attachment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_service_project_attachment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4663,9 +4653,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     Response for ListDiscoveredWorkloads.
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseListDiscoveredWorkloads._get_http_options()
 
             request, metadata = self._interceptor.pre_list_discovered_workloads(
                 request, metadata
@@ -4815,9 +4803,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseListServiceProjectAttachments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_service_project_attachments(
                 request, metadata
@@ -4881,11 +4867,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_list_service_project_attachments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_service_project_attachments_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_service_project_attachments_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5264,9 +5249,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
                     Response for LookupDiscoveredService.
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseLookupDiscoveredService._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseLookupDiscoveredService._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_discovered_service(
                 request, metadata
@@ -5415,9 +5398,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseLookupDiscoveredWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_discovered_workload(
                 request, metadata
@@ -5569,9 +5550,7 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             """
 
-            http_options = (
-                _BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_http_options()
-            )
+            http_options = _BaseAppHubRestTransport._BaseLookupServiceProjectAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_service_project_attachment(
                 request, metadata
@@ -5637,11 +5616,10 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
 
             resp = self._interceptor.post_lookup_service_project_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_lookup_service_project_attachment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_lookup_service_project_attachment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6159,7 +6137,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateServiceProjectAttachment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateServiceProjectAttachment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_workload(
@@ -6193,7 +6173,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteServiceProjectAttachment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteServiceProjectAttachment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_workload(
@@ -6212,7 +6194,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DetachServiceProjectAttachment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DetachServiceProjectAttachment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_application(
@@ -6259,7 +6243,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetServiceProjectAttachment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetServiceProjectAttachment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_workload(
@@ -6289,7 +6275,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDiscoveredServices(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDiscoveredServices(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_discovered_workloads(
@@ -6300,7 +6288,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDiscoveredWorkloads(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDiscoveredWorkloads(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_service_project_attachments(
@@ -6311,7 +6301,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListServiceProjectAttachments(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListServiceProjectAttachments(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_services(
@@ -6342,7 +6334,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._LookupDiscoveredService(self._session, self._host, self._interceptor)  # type: ignore
+        return self._LookupDiscoveredService(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def lookup_discovered_workload(
@@ -6353,7 +6347,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._LookupDiscoveredWorkload(self._session, self._host, self._interceptor)  # type: ignore
+        return self._LookupDiscoveredWorkload(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def lookup_service_project_attachment(
@@ -6364,7 +6360,9 @@ class AppHubRestTransport(_BaseAppHubRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._LookupServiceProjectAttachment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._LookupServiceProjectAttachment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_application(

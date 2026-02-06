@@ -317,6 +317,7 @@ class OptimizeToursRequest(proto.Message):
                 but only the ones that are detected as infeasible during
                 preprocessing.
         """
+
         DEFAULT_SOLVE = 0
         VALIDATE_ONLY = 1
         DETECT_SOME_INFEASIBLE_SHIPMENTS = 2
@@ -336,6 +337,7 @@ class OptimizeToursRequest(proto.Message):
                 Spend all the available time to search for
                 better solutions.
         """
+
         SEARCH_MODE_UNSPECIFIED = 0
         RETURN_FAST = 1
         CONSUME_ALL_AVAILABLE_TIME = 2
@@ -364,12 +366,12 @@ class OptimizeToursRequest(proto.Message):
         number=6,
         enum=SearchMode,
     )
-    injected_first_solution_routes: MutableSequence[
-        "ShipmentRoute"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="ShipmentRoute",
+    injected_first_solution_routes: MutableSequence["ShipmentRoute"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="ShipmentRoute",
+        )
     )
     injected_solution_constraint: "InjectedSolutionConstraint" = proto.Field(
         proto.MESSAGE,
@@ -547,12 +549,12 @@ class OptimizeToursResponse(proto.Message):
         number=4,
         message="SkippedShipment",
     )
-    validation_errors: MutableSequence[
-        "OptimizeToursValidationError"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message="OptimizeToursValidationError",
+    validation_errors: MutableSequence["OptimizeToursValidationError"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message="OptimizeToursValidationError",
+        )
     )
     metrics: Metrics = proto.Field(
         proto.MESSAGE,
@@ -895,12 +897,12 @@ class ShipmentModel(proto.Message):
                 number=2,
             )
 
-        rows: MutableSequence[
-            "ShipmentModel.DurationDistanceMatrix.Row"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ShipmentModel.DurationDistanceMatrix.Row",
+        rows: MutableSequence["ShipmentModel.DurationDistanceMatrix.Row"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ShipmentModel.DurationDistanceMatrix.Row",
+            )
         )
         vehicle_start_tag: str = proto.Field(
             proto.STRING,
@@ -1088,12 +1090,12 @@ class ShipmentModel(proto.Message):
                 message=duration_pb2.Duration,
             )
 
-        break_requests: MutableSequence[
-            "ShipmentModel.BreakRule.BreakRequest"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ShipmentModel.BreakRule.BreakRequest",
+        break_requests: MutableSequence["ShipmentModel.BreakRule.BreakRequest"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ShipmentModel.BreakRule.BreakRequest",
+            )
         )
         frequency_constraints: MutableSequence[
             "ShipmentModel.BreakRule.FrequencyConstraint"
@@ -1132,12 +1134,12 @@ class ShipmentModel(proto.Message):
         proto.DOUBLE,
         number=7,
     )
-    duration_distance_matrices: MutableSequence[
-        DurationDistanceMatrix
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message=DurationDistanceMatrix,
+    duration_distance_matrices: MutableSequence[DurationDistanceMatrix] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message=DurationDistanceMatrix,
+        )
     )
     duration_distance_matrix_src_tags: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1147,26 +1149,26 @@ class ShipmentModel(proto.Message):
         proto.STRING,
         number=10,
     )
-    transition_attributes: MutableSequence[
-        "TransitionAttributes"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message="TransitionAttributes",
+    transition_attributes: MutableSequence["TransitionAttributes"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="TransitionAttributes",
+        )
     )
-    shipment_type_incompatibilities: MutableSequence[
-        "ShipmentTypeIncompatibility"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message="ShipmentTypeIncompatibility",
+    shipment_type_incompatibilities: MutableSequence["ShipmentTypeIncompatibility"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message="ShipmentTypeIncompatibility",
+        )
     )
-    shipment_type_requirements: MutableSequence[
-        "ShipmentTypeRequirement"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message="ShipmentTypeRequirement",
+    shipment_type_requirements: MutableSequence["ShipmentTypeRequirement"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message="ShipmentTypeRequirement",
+        )
     )
     precedence_rules: MutableSequence[PrecedenceRule] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1604,6 +1606,7 @@ class ShipmentTypeIncompatibility(proto.Message):
                   the former shipment is delivered before the latter is
                   picked up.
         """
+
         INCOMPATIBILITY_MODE_UNSPECIFIED = 0
         NOT_PERFORMED_BY_SAME_VEHICLE = 1
         NOT_IN_SAME_VEHICLE_SIMULTANEOUSLY = 2
@@ -1670,6 +1673,7 @@ class ShipmentTypeRequirement(proto.Message):
                 have a "required" shipment on their vehicle at the time of
                 their *delivery*.
         """
+
         REQUIREMENT_MODE_UNSPECIFIED = 0
         PERFORMED_BY_SAME_VEHICLE = 1
         IN_SAME_VEHICLE_AT_PICKUP_TIME = 2
@@ -1977,6 +1981,7 @@ class Vehicle(proto.Message):
                 Travel mode corresponding to walking
                 directions.
         """
+
         TRAVEL_MODE_UNSPECIFIED = 0
         DRIVING = 1
         WALKING = 2
@@ -1999,6 +2004,7 @@ class Vehicle(proto.Message):
                 Deliveries must occur in the same order as
                 pickups
         """
+
         UNLOADING_POLICY_UNSPECIFIED = 0
         LAST_IN_FIRST_OUT = 1
         FIRST_IN_FIRST_OUT = 2
@@ -2287,13 +2293,13 @@ class Vehicle(proto.Message):
         number=23,
         message="DistanceLimit",
     )
-    extra_visit_duration_for_visit_type: MutableMapping[
-        str, duration_pb2.Duration
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=24,
-        message=duration_pb2.Duration,
+    extra_visit_duration_for_visit_type: MutableMapping[str, duration_pb2.Duration] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=24,
+            message=duration_pb2.Duration,
+        )
     )
     break_rule: "BreakRule" = proto.Field(
         proto.MESSAGE,
@@ -2317,19 +2323,19 @@ class Vehicle(proto.Message):
         number=13,
         message="CapacityQuantity",
     )
-    start_load_intervals: MutableSequence[
-        "CapacityQuantityInterval"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="CapacityQuantityInterval",
+    start_load_intervals: MutableSequence["CapacityQuantityInterval"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="CapacityQuantityInterval",
+        )
     )
-    end_load_intervals: MutableSequence[
-        "CapacityQuantityInterval"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=15,
-        message="CapacityQuantityInterval",
+    end_load_intervals: MutableSequence["CapacityQuantityInterval"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=15,
+            message="CapacityQuantityInterval",
+        )
     )
 
 
@@ -3340,13 +3346,13 @@ class ShipmentRoute(proto.Message):
             number=9,
             message="ShipmentRoute.EncodedPolyline",
         )
-        vehicle_loads: MutableMapping[
-            str, "ShipmentRoute.VehicleLoad"
-        ] = proto.MapField(
-            proto.STRING,
-            proto.MESSAGE,
-            number=11,
-            message="ShipmentRoute.VehicleLoad",
+        vehicle_loads: MutableMapping[str, "ShipmentRoute.VehicleLoad"] = (
+            proto.MapField(
+                proto.STRING,
+                proto.MESSAGE,
+                number=11,
+                message="ShipmentRoute.VehicleLoad",
+            )
         )
         loads: MutableSequence["CapacityQuantity"] = proto.RepeatedField(
             proto.MESSAGE,
@@ -3658,6 +3664,7 @@ class SkippedShipment(proto.Message):
                     The ``allowed_vehicle_indices`` field of the shipment is not
                     empty and this vehicle does not belong to it.
             """
+
             CODE_UNSPECIFIED = 0
             NO_VEHICLE = 1
             DEMAND_EXCEEDS_VEHICLE_CAPACITY = 2
@@ -3950,6 +3957,7 @@ class InjectedSolutionConstraint(proto.Message):
                         at or after the threshold time and can potentially become
                         unperformed.
                 """
+
                 LEVEL_UNSPECIFIED = 0
                 RELAX_VISIT_TIMES_AFTER_THRESHOLD = 1
                 RELAX_VISIT_TIMES_AND_SEQUENCE_AFTER_THRESHOLD = 2

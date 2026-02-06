@@ -76,6 +76,7 @@ class Maneuver(proto.Enum):
         NAME_CHANGE (20):
             Used to indicate a street name change.
     """
+
     MANEUVER_UNSPECIFIED = 0
     TURN_SLIGHT_LEFT = 1
     TURN_SHARP_LEFT = 2

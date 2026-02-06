@@ -16,19 +16,19 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.migrationcenter_v1.types import migrationcenter
@@ -3082,9 +3082,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_add_assets_to_group(
                 request, metadata
@@ -3236,9 +3234,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregate_assets_values(
                 request, metadata
@@ -3389,9 +3385,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_delete_assets(
                 request, metadata
@@ -3510,9 +3504,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_assets(
                 request, metadata
@@ -3819,9 +3811,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_http_options()
 
             request, metadata = self._interceptor.pre_create_import_data_file(
                 request, metadata
@@ -3972,9 +3962,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_import_job(
                 request, metadata
@@ -4126,9 +4114,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_http_options()
 
             request, metadata = self._interceptor.pre_create_preference_set(
                 request, metadata
@@ -4431,9 +4417,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_report_config(
                 request, metadata
@@ -4986,9 +4970,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_import_data_file(
                 request, metadata
@@ -5133,9 +5115,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_import_job(
                 request, metadata
@@ -5281,9 +5261,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_preference_set(
                 request, metadata
@@ -5574,9 +5552,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_report_config(
                 request, metadata
@@ -6317,9 +6293,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_import_data_file(
                 request, metadata
@@ -6612,9 +6586,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_preference_set(
                 request, metadata
@@ -6908,9 +6880,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_report_config(
                 request, metadata
@@ -7497,9 +7467,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response for listing error frames.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_http_options()
 
             request, metadata = self._interceptor.pre_list_error_frames(
                 request, metadata
@@ -7795,9 +7763,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_import_data_files(
                 request, metadata
@@ -7943,9 +7909,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response for listing import jobs.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListImportJobs._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_import_jobs(
                 request, metadata
@@ -8094,9 +8058,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_preference_sets(
                 request, metadata
@@ -8245,9 +8207,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_report_configs(
                 request, metadata
@@ -8691,9 +8651,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_assets_from_group(
                 request, metadata
@@ -8845,9 +8803,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response to a call to ``ReportAssetFrame``.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_http_options()
 
             request, metadata = self._interceptor.pre_report_asset_frames(
                 request, metadata
@@ -9457,9 +9413,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_import_job(
                 request, metadata
@@ -9611,9 +9565,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_http_options()
 
             request, metadata = self._interceptor.pre_update_preference_set(
                 request, metadata
@@ -9764,9 +9716,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_transcoded_request(
@@ -10067,9 +10017,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_validate_import_job(
                 request, metadata
@@ -10934,9 +10882,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -11053,9 +10999,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -11310,9 +11254,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseMigrationCenterRestTransport._BaseListOperations._get_transcoded_request(

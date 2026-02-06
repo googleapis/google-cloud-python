@@ -71,6 +71,7 @@ class Infrastructure(proto.Enum):
             Private Service Connect is used for
             connections.
     """
+
     INFRASTRUCTURE_UNSPECIFIED = 0
     PSC = 1
 
@@ -92,6 +93,7 @@ class ConnectionErrorType(proto.Enum):
             The error is due to the setup on producer
             side.
     """
+
     CONNECTION_ERROR_TYPE_UNSPECIFIED = 0
     ERROR_INTERNAL = 1
     ERROR_CONSUMER_SIDE = 2
@@ -111,6 +113,7 @@ class IPVersion(proto.Enum):
         IPV6 (2):
             Will use IPv6 only.
     """
+
     IP_VERSION_UNSPECIFIED = 0
     IPV4 = 1
     IPV6 = 2
@@ -261,6 +264,7 @@ class ServiceConnectionMap(proto.Message):
                     AllowedGoogleProducersResourceHierarchyLevels of
                     the matching ServiceConnectionPolicy.
             """
+
             STATE_UNSPECIFIED = 0
             VALID = 1
             CONNECTION_POLICY_MISSING = 2
@@ -403,6 +407,7 @@ class ServiceConnectionMap(proto.Message):
                     The connection is being repaired to complete
                     deletion.
             """
+
             STATE_UNSPECIFIED = 0
             ACTIVE = 1
             FAILED = 2
@@ -525,12 +530,12 @@ class ServiceConnectionMap(proto.Message):
         number=10,
         message=ConsumerPscConfig,
     )
-    consumer_psc_connections: MutableSequence[
-        ConsumerPscConnection
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message=ConsumerPscConnection,
+    consumer_psc_connections: MutableSequence[ConsumerPscConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message=ConsumerPscConnection,
+        )
     )
     token: str = proto.Field(
         proto.STRING,
@@ -602,12 +607,12 @@ class ListServiceConnectionMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_maps: MutableSequence[
-        "ServiceConnectionMap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionMap",
+    service_connection_maps: MutableSequence["ServiceConnectionMap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionMap",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -880,6 +885,7 @@ class ServiceConnectionPolicy(proto.Message):
                 The connection is being repaired to complete
                 deletion.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -950,6 +956,7 @@ class ServiceConnectionPolicy(proto.Message):
                     Producer instance must be within one of the values provided
                     in allowed_google_producers_resource_hierarchy_level.
             """
+
             PRODUCER_INSTANCE_LOCATION_UNSPECIFIED = 0
             CUSTOM_RESOURCE_HIERARCHY_LEVELS = 1
 
@@ -967,11 +974,11 @@ class ServiceConnectionPolicy(proto.Message):
             number=3,
             enum="ServiceConnectionPolicy.PscConfig.ProducerInstanceLocation",
         )
-        allowed_google_producers_resource_hierarchy_level: MutableSequence[
-            str
-        ] = proto.RepeatedField(
-            proto.STRING,
-            number=4,
+        allowed_google_producers_resource_hierarchy_level: MutableSequence[str] = (
+            proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
         )
 
     class PscConnection(proto.Message):
@@ -1206,12 +1213,12 @@ class ListServiceConnectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_policies: MutableSequence[
-        "ServiceConnectionPolicy"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionPolicy",
+    service_connection_policies: MutableSequence["ServiceConnectionPolicy"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionPolicy",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1805,12 +1812,12 @@ class ListServiceConnectionTokensResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_tokens: MutableSequence[
-        "ServiceConnectionToken"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ServiceConnectionToken",
+    service_connection_tokens: MutableSequence["ServiceConnectionToken"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ServiceConnectionToken",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

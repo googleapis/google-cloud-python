@@ -100,6 +100,7 @@ class FuelOptions(proto.Message):
                 TRUCK_DIESEL (18):
                     Truck diesel.
             """
+
             FUEL_TYPE_UNSPECIFIED = 0
             DIESEL = 1
             DIESEL_PLUS = 19

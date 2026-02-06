@@ -21,9 +21,8 @@ import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import common
+from google.cloud.contentwarehouse_v1.types import common, filters, histogram
 from google.cloud.contentwarehouse_v1.types import document as gcc_document
-from google.cloud.contentwarehouse_v1.types import filters, histogram
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -58,12 +57,12 @@ class CloudAIDocumentOption(proto.Message):
         proto.BOOL,
         number=1,
     )
-    customized_entities_properties_conversions: MutableMapping[
-        str, str
-    ] = proto.MapField(
-        proto.STRING,
-        proto.STRING,
-        number=2,
+    customized_entities_properties_conversions: MutableMapping[str, str] = (
+        proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
+        )
     )
 
 
@@ -363,6 +362,7 @@ class SearchDocumentsRequest(proto.Message):
                 It may adversely impact performance. The
                 limit is 1000,000.
         """
+
         TOTAL_RESULT_SIZE_UNSPECIFIED = 0
         ESTIMATED_SIZE = 1
         ACTUAL_SIZE = 2

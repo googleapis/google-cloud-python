@@ -224,6 +224,7 @@ class DataPolicy(proto.Message):
                 Used to create a data policy for data
                 masking.
         """
+
         DATA_POLICY_TYPE_UNSPECIFIED = 0
         COLUMN_LEVEL_SECURITY_POLICY = 3
         DATA_MASKING_POLICY = 2
@@ -304,6 +305,7 @@ class DataMaskingPolicy(proto.Message):
                 - STRUCT: NOT_APPLICABLE
                 - JSON: NULL
         """
+
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 3
         ALWAYS_NULL = 5

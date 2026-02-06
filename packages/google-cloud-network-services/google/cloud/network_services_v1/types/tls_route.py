@@ -159,12 +159,12 @@ class TlsRoute(proto.Message):
                 disabled.
         """
 
-        destinations: MutableSequence[
-            "TlsRoute.RouteDestination"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TlsRoute.RouteDestination",
+        destinations: MutableSequence["TlsRoute.RouteDestination"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TlsRoute.RouteDestination",
+            )
         )
         idle_timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,

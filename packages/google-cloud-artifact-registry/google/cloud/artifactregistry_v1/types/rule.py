@@ -70,6 +70,7 @@ class Rule(proto.Message):
             DENY (2):
                 Deny the operation.
         """
+
         ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -83,6 +84,7 @@ class Rule(proto.Message):
             DOWNLOAD (1):
                 Download operation.
         """
+
         OPERATION_UNSPECIFIED = 0
         DOWNLOAD = 1
 

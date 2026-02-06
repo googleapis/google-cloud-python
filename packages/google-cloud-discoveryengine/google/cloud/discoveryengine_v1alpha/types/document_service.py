@@ -317,6 +317,7 @@ class GetProcessedDocumentRequest(proto.Message):
                 Returns the converted Image bytes (as JPEG or
                 PNG) if available.
         """
+
         PROCESSED_DOCUMENT_TYPE_UNSPECIFIED = 0
         PARSED_DOCUMENT = 1
         CHUNKED_DOCUMENT = 2
@@ -333,6 +334,7 @@ class GetProcessedDocumentRequest(proto.Message):
                 Output format is a JSON string representation
                 of processed document.
         """
+
         PROCESSED_DOCUMENT_FORMAT_UNSPECIFIED = 0
         JSON = 1
 
@@ -446,6 +448,7 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                 [Document][google.cloud.discoveryengine.v1alpha.Document] is
                 not indexed.
         """
+
         STATE_UNSPECIFIED = 0
         INDEXED = 1
         NOT_IN_TARGET_SITE = 2

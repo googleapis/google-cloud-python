@@ -16,23 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.shopping.merchant_accounts_v1.types import online_return_policy
 from google.shopping.merchant_accounts_v1.types import (
     online_return_policy as gsma_online_return_policy,
 )
-from google.shopping.merchant_accounts_v1.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOnlineReturnPolicyServiceRestTransport
@@ -441,9 +441,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_online_return_policy(
                 request, metadata
@@ -595,9 +593,7 @@ class OnlineReturnPolicyServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_online_return_policy(
                 request, metadata
@@ -713,9 +709,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_online_return_policy(
                 request, metadata
@@ -868,9 +862,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_online_return_policies(
                 request, metadata
@@ -973,7 +965,9 @@ class OnlineReturnPolicyServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateOnlineReturnPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOnlineReturnPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_online_return_policy(
@@ -983,7 +977,9 @@ class OnlineReturnPolicyServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteOnlineReturnPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteOnlineReturnPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_online_return_policy(
@@ -1005,7 +1001,9 @@ class OnlineReturnPolicyServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOnlineReturnPolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOnlineReturnPolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

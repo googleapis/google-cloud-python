@@ -23,11 +23,10 @@ import proto  # type: ignore
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
 )
+from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
+from google.cloud.datalabeling_v1beta1.types import evaluation, human_annotation_config
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
-from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
-from google.cloud.datalabeling_v1beta1.types import evaluation
-from google.cloud.datalabeling_v1beta1.types import human_annotation_config
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
@@ -424,12 +423,12 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotated_datasets: MutableSequence[
-        gcd_dataset.AnnotatedDataset
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_dataset.AnnotatedDataset,
+    annotated_datasets: MutableSequence[gcd_dataset.AnnotatedDataset] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_dataset.AnnotatedDataset,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -524,6 +523,7 @@ class LabelImageRequest(proto.Message):
                 is different from bounding poly since it is more
                 fine-grained, pixel level annotation.
         """
+
         FEATURE_UNSPECIFIED = 0
         CLASSIFICATION = 1
         BOUNDING_BOX = 2
@@ -636,6 +636,7 @@ class LabelVideoRequest(proto.Message):
                 Label the range of video for the specified
                 events.
         """
+
         FEATURE_UNSPECIFIED = 0
         CLASSIFICATION = 1
         OBJECT_DETECTION = 2
@@ -729,6 +730,7 @@ class LabelTextRequest(proto.Message):
             TEXT_ENTITY_EXTRACTION (2):
                 Label entities and their span in text.
         """
+
         FEATURE_UNSPECIFIED = 0
         TEXT_CLASSIFICATION = 1
         TEXT_ENTITY_EXTRACTION = 2
@@ -946,12 +948,12 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    annotation_spec_sets: MutableSequence[
-        gcd_annotation_spec_set.AnnotationSpecSet
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_annotation_spec_set.AnnotationSpecSet,
+    annotation_spec_sets: MutableSequence[gcd_annotation_spec_set.AnnotationSpecSet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_annotation_spec_set.AnnotationSpecSet,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1269,12 +1271,12 @@ class SearchExampleComparisonsResponse(proto.Message):
             number=1,
             message=gcd_dataset.Example,
         )
-        model_created_examples: MutableSequence[
-            gcd_dataset.Example
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message=gcd_dataset.Example,
+        model_created_examples: MutableSequence[gcd_dataset.Example] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message=gcd_dataset.Example,
+            )
         )
 
     @property
@@ -1474,12 +1476,12 @@ class ListEvaluationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    evaluation_jobs: MutableSequence[
-        gcd_evaluation_job.EvaluationJob
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_evaluation_job.EvaluationJob,
+    evaluation_jobs: MutableSequence[gcd_evaluation_job.EvaluationJob] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_evaluation_job.EvaluationJob,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

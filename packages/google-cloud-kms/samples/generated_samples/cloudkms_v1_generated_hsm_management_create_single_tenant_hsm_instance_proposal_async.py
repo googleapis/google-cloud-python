@@ -40,9 +40,7 @@ async def sample_create_single_tenant_hsm_instance_proposal():
 
     # Initialize request argument(s)
     single_tenant_hsm_instance_proposal = kms_v1.SingleTenantHsmInstanceProposal()
-    single_tenant_hsm_instance_proposal.register_two_factor_auth_keys.required_approver_count = (
-        2487
-    )
+    single_tenant_hsm_instance_proposal.register_two_factor_auth_keys.required_approver_count = 2487
     single_tenant_hsm_instance_proposal.register_two_factor_auth_keys.two_factor_public_key_pems = [
         "two_factor_public_key_pems_value1",
         "two_factor_public_key_pems_value2",

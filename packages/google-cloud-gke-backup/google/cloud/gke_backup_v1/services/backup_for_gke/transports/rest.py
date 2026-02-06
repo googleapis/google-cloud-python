@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -2852,9 +2854,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateBackupChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup_channel(
                 request, metadata
@@ -3310,9 +3310,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateRestoreChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_restore_channel(
                 request, metadata
@@ -3464,9 +3462,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseCreateRestorePlan._get_http_options()
 
             request, metadata = self._interceptor.pre_create_restore_plan(
                 request, metadata
@@ -3764,9 +3760,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteBackupChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup_channel(
                 request, metadata
@@ -4204,9 +4198,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteRestoreChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_restore_channel(
                 request, metadata
@@ -4352,9 +4344,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseDeleteRestorePlan._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_restore_plan(
                 request, metadata
@@ -4806,9 +4796,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupIndexDownloadUrl._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_index_download_url(
                 request, metadata
@@ -4874,11 +4862,10 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             resp = self._interceptor.post_get_backup_index_download_url(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_backup_index_download_url_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_backup_index_download_url_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5114,9 +5101,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetBackupPlanBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_plan_binding(
                 request, metadata
@@ -5419,9 +5404,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestoreChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_restore_channel(
                 request, metadata
@@ -5724,9 +5707,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseGetRestorePlanBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_restore_plan_binding(
                 request, metadata
@@ -6174,9 +6155,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackupChannels._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackupChannels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_channels(
                 request, metadata
@@ -6325,9 +6304,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListBackupPlanBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_plan_bindings(
                 request, metadata
@@ -6772,9 +6749,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestoreChannels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_restore_channels(
                 request, metadata
@@ -6925,9 +6900,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListRestorePlanBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_restore_plan_bindings(
                 request, metadata
@@ -7372,9 +7345,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListVolumeBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_volume_backups(
                 request, metadata
@@ -7523,9 +7494,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseListVolumeRestores._get_http_options()
 
             request, metadata = self._interceptor.pre_list_volume_restores(
                 request, metadata
@@ -7831,9 +7800,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateBackupChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup_channel(
                 request, metadata
@@ -8289,9 +8256,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateRestoreChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_restore_channel(
                 request, metadata
@@ -8443,9 +8408,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseUpdateRestorePlan._get_http_options()
 
             request, metadata = self._interceptor.pre_update_restore_plan(
                 request, metadata
@@ -8657,7 +8620,9 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetBackupIndexDownloadUrl(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetBackupIndexDownloadUrl(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_backup_plan(
@@ -8745,7 +8710,9 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBackupPlanBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListBackupPlanBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_backup_plans(
@@ -8784,7 +8751,9 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListRestorePlanBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListRestorePlanBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_restore_plans(
@@ -9506,9 +9475,7 @@ class BackupForGKERestTransport(_BaseBackupForGKERestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBackupForGKERestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

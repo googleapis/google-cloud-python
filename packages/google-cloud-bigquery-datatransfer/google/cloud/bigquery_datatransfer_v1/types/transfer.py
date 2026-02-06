@@ -56,6 +56,7 @@ class TransferType(proto.Enum):
             source currently doesn't support multiple
             transfer configs per project.
     """
+
     _pb_options = {"deprecated": True}
     TRANSFER_TYPE_UNSPECIFIED = 0
     BATCH = 1
@@ -80,6 +81,7 @@ class TransferState(proto.Enum):
         CANCELLED (6):
             Data transfer is cancelled (6).
     """
+
     TRANSFER_STATE_UNSPECIFIED = 0
     PENDING = 2
     RUNNING = 3
@@ -690,6 +692,7 @@ class TransferMessage(proto.Message):
             ERROR (3):
                 Error message.
         """
+
         MESSAGE_SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

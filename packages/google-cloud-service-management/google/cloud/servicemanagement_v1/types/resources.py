@@ -100,6 +100,7 @@ class OperationMetadata(proto.Message):
                 The operation or step has completed with
                 cancellation.
         """
+
         STATUS_UNSPECIFIED = 0
         DONE = 1
         NOT_STARTED = 2
@@ -169,6 +170,7 @@ class Diagnostic(proto.Message):
             ERROR (1):
                 Only errors
         """
+
         WARNING = 0
         ERROR = 1
 
@@ -256,6 +258,7 @@ class ConfigFile(proto.Message):
                 only be included if at least one file of type
                 FILE_DESCRIPTOR_SET_PROTO is included.
         """
+
         FILE_TYPE_UNSPECIFIED = 0
         SERVICE_CONFIG_YAML = 1
         OPEN_API_JSON = 2
@@ -309,12 +312,12 @@ class ChangeReport(proto.Message):
             visibility.rules[selector='LibraryService.CreateBook'].restriction
     """
 
-    config_changes: MutableSequence[
-        config_change_pb2.ConfigChange
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=config_change_pb2.ConfigChange,
+    config_changes: MutableSequence[config_change_pb2.ConfigChange] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=config_change_pb2.ConfigChange,
+        )
     )
 
 
@@ -391,6 +394,7 @@ class Rollout(proto.Message):
                 The Rollout has failed and rolled back to the
                 previous successful Rollout.
         """
+
         ROLLOUT_STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         SUCCESS = 2

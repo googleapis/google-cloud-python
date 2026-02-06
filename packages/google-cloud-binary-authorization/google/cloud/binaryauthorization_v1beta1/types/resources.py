@@ -100,6 +100,7 @@ class Policy(proto.Message):
             DISABLE (2):
                 Disables system policy evaluation.
         """
+
         GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED = 0
         ENABLE = 1
         DISABLE = 2
@@ -117,12 +118,12 @@ class Policy(proto.Message):
         number=7,
         enum=GlobalPolicyEvaluationMode,
     )
-    admission_whitelist_patterns: MutableSequence[
-        "AdmissionWhitelistPattern"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="AdmissionWhitelistPattern",
+    admission_whitelist_patterns: MutableSequence["AdmissionWhitelistPattern"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="AdmissionWhitelistPattern",
+        )
     )
     cluster_admission_rules: MutableMapping[str, "AdmissionRule"] = proto.MapField(
         proto.STRING,
@@ -130,29 +131,29 @@ class Policy(proto.Message):
         number=3,
         message="AdmissionRule",
     )
-    kubernetes_namespace_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=10,
-        message="AdmissionRule",
+    kubernetes_namespace_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=10,
+            message="AdmissionRule",
+        )
     )
-    kubernetes_service_account_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=8,
-        message="AdmissionRule",
+    kubernetes_service_account_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=8,
+            message="AdmissionRule",
+        )
     )
-    istio_service_identity_admission_rules: MutableMapping[
-        str, "AdmissionRule"
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=9,
-        message="AdmissionRule",
+    istio_service_identity_admission_rules: MutableMapping[str, "AdmissionRule"] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=9,
+            message="AdmissionRule",
+        )
     )
     default_admission_rule: "AdmissionRule" = proto.Field(
         proto.MESSAGE,
@@ -239,6 +240,7 @@ class AdmissionRule(proto.Message):
             ALWAYS_DENY (3):
                 This rule denies all pod creations.
         """
+
         EVALUATION_MODE_UNSPECIFIED = 0
         ALWAYS_ALLOW = 1
         REQUIRE_ATTESTATION = 2
@@ -259,6 +261,7 @@ class AdmissionRule(proto.Message):
                 allow the pod creation as if the admission
                 request had specified break-glass.
         """
+
         ENFORCEMENT_MODE_UNSPECIFIED = 0
         ENFORCED_BLOCK_AND_AUDIT_LOG = 1
         DRYRUN_AUDIT_LOG_ONLY = 2
@@ -447,6 +450,7 @@ class PkixPublicKey(proto.Message):
                 ECDSA on the NIST P-521 curve with a SHA512
                 digest.
         """
+
         _pb_options = {"allow_alias": True}
         SIGNATURE_ALGORITHM_UNSPECIFIED = 0
         RSA_PSS_2048_SHA256 = 1

@@ -130,6 +130,7 @@ class AccessMetadata(proto.Message):
                 The project's org policy disallows the given
                 region.
         """
+
         CONSTRAINT_TYPE_UNSPECIFIED = 0
         RESOURCE_LOCATIONS_ORG_POLICY_CREATE_CONSTRAINT = 1
 

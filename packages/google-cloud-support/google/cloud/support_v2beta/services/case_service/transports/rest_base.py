@@ -20,9 +20,8 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
 
-from google.cloud.support_v2beta.types import case
+from google.cloud.support_v2beta.types import case, case_service
 from google.cloud.support_v2beta.types import case as gcs_case
-from google.cloud.support_v2beta.types import case_service
 
 from .base import DEFAULT_CLIENT_INFO, CaseServiceTransport
 

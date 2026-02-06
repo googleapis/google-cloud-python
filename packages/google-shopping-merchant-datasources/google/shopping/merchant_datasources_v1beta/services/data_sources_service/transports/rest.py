@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.shopping.merchant_datasources_v1beta.types import datasources
@@ -492,9 +492,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_source(
                 request, metadata
@@ -641,9 +639,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_source(
                 request, metadata
@@ -752,9 +748,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_data_source(
                 request, metadata
@@ -874,9 +868,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
             transcoded_request = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_transcoded_request(
@@ -1022,9 +1014,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
@@ -1176,9 +1166,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_source(
                 request, metadata

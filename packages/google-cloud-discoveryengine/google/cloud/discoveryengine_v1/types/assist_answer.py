@@ -63,6 +63,7 @@ class AssistAnswer(proto.Message):
             SKIPPED (4):
                 Assist operation has been skipped.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         FAILED = 2
@@ -84,6 +85,7 @@ class AssistAnswer(proto.Message):
                 (e.g., the query or the answer contained a
                 banned phrase).
         """
+
         ASSIST_SKIPPED_REASON_UNSPECIFIED = 0
         NON_ASSIST_SEEKING_QUERY_IGNORED = 1
         CUSTOMER_POLICY_VIOLATION = 2
@@ -253,6 +255,7 @@ class AssistantContent(proto.Message):
                     cancelled. There may or may not be a partial
                     output present.
             """
+
             OUTCOME_UNSPECIFIED = 0
             OUTCOME_OK = 1
             OUTCOME_FAILED = 2

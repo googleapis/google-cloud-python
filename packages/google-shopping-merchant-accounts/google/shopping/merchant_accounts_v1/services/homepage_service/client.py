@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1 import gapic_version as package_version
 
@@ -63,8 +63,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 
-from google.shopping.merchant_accounts_v1.types import homepage as gsma_homepage
 from google.shopping.merchant_accounts_v1.types import homepage
+from google.shopping.merchant_accounts_v1.types import homepage as gsma_homepage
 
 from .transports.base import DEFAULT_CLIENT_INFO, HomepageServiceTransport
 from .transports.grpc import HomepageServiceGrpcTransport
@@ -80,9 +80,7 @@ class HomepageServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[HomepageServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[HomepageServiceTransport]]
     _transport_registry["grpc"] = HomepageServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = HomepageServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = HomepageServiceRestTransport
@@ -617,11 +615,9 @@ class HomepageServiceClient(metaclass=HomepageServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = HomepageServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            HomepageServiceClient._read_environment_variables()
+        )
         self._client_cert_source = HomepageServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -656,8 +652,7 @@ class HomepageServiceClient(metaclass=HomepageServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(HomepageServiceTransport, transport)
             self._api_endpoint = self._transport.host

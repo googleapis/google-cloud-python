@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -533,9 +533,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseCreateOmnichannelSetting._get_http_options()
 
             request, metadata = self._interceptor.pre_create_omnichannel_setting(
                 request, metadata
@@ -690,9 +688,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseGetOmnichannelSetting._get_http_options()
 
             request, metadata = self._interceptor.pre_get_omnichannel_setting(
                 request, metadata
@@ -844,9 +840,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseListOmnichannelSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_omnichannel_settings(
                 request, metadata
@@ -1002,9 +996,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseRequestInventoryVerification._get_http_options()
 
             request, metadata = self._interceptor.pre_request_inventory_verification(
                 request, metadata
@@ -1073,11 +1065,10 @@ class OmnichannelSettingsServiceRestTransport(
 
             resp = self._interceptor.post_request_inventory_verification(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_request_inventory_verification_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_request_inventory_verification_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1166,9 +1157,7 @@ class OmnichannelSettingsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_http_options()
-            )
+            http_options = _BaseOmnichannelSettingsServiceRestTransport._BaseUpdateOmnichannelSetting._get_http_options()
 
             request, metadata = self._interceptor.pre_update_omnichannel_setting(
                 request, metadata
@@ -1274,7 +1263,9 @@ class OmnichannelSettingsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateOmnichannelSetting(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOmnichannelSetting(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_omnichannel_setting(
@@ -1296,7 +1287,9 @@ class OmnichannelSettingsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOmnichannelSettings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOmnichannelSettings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def request_inventory_verification(
@@ -1307,7 +1300,9 @@ class OmnichannelSettingsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RequestInventoryVerification(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RequestInventoryVerification(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_omnichannel_setting(
@@ -1318,7 +1313,9 @@ class OmnichannelSettingsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateOmnichannelSetting(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateOmnichannelSetting(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

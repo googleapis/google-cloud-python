@@ -296,6 +296,7 @@ class Instance(proto.Message):
                 Redis instance is failing over (availability
                 may be affected).
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -317,6 +318,7 @@ class Instance(proto.Message):
             STANDARD_HA (3):
                 STANDARD_HA tier: highly available primary/replica instances
         """
+
         TIER_UNSPECIFIED = 0
         BASIC = 1
         STANDARD_HA = 3
@@ -336,6 +338,7 @@ class Instance(proto.Message):
                 access provides an IP address range for multiple
                 Google Cloud services, including Memorystore.
         """
+
         CONNECT_MODE_UNSPECIFIED = 0
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
@@ -352,6 +355,7 @@ class Instance(proto.Message):
             DISABLED (2):
                 TLS is disabled for the instance.
         """
+
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         SERVER_AUTHENTICATION = 1
         DISABLED = 2
@@ -372,6 +376,7 @@ class Instance(proto.Message):
                 and the instance can scale up and down the
                 number of replicas. Not valid for basic tier.
         """
+
         READ_REPLICAS_MODE_UNSPECIFIED = 0
         READ_REPLICAS_DISABLED = 1
         READ_REPLICAS_ENABLED = 2
@@ -387,6 +392,7 @@ class Instance(proto.Message):
                 Something wrong with the CMEK key provided by
                 customer.
         """
+
         SUSPENSION_REASON_UNSPECIFIED = 0
         CUSTOMER_MANAGED_KEY_ISSUE = 1
 
@@ -584,6 +590,7 @@ class PersistenceConfig(proto.Message):
             RDB (2):
                 RDB based Persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -603,6 +610,7 @@ class PersistenceConfig(proto.Message):
             TWENTY_FOUR_HOURS (6):
                 Snapshot every 24 hours.
         """
+
         SNAPSHOT_PERIOD_UNSPECIFIED = 0
         ONE_HOUR = 3
         SIX_HOURS = 4
@@ -666,6 +674,7 @@ class RescheduleMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         NEXT_AVAILABLE_WINDOW = 2
@@ -721,12 +730,12 @@ class MaintenancePolicy(proto.Message):
         proto.STRING,
         number=3,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="WeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -1200,6 +1209,7 @@ class FailoverInstanceRequest(proto.Message):
                 Instance failover will be performed without
                 data loss control.
         """
+
         DATA_PROTECTION_MODE_UNSPECIFIED = 0
         LIMITED_DATA_LOSS = 1
         FORCE_DATA_LOSS = 2

@@ -243,6 +243,7 @@ class Replication(proto.Message):
                 Onprem ONTAP is destination and Replication
                 can only be managed from Onprem.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -266,6 +267,7 @@ class Replication(proto.Message):
             DESTINATION (2):
                 Indicates Destination volume.
         """
+
         REPLICATION_ROLE_UNSPECIFIED = 0
         SOURCE = 1
         DESTINATION = 2
@@ -285,6 +287,7 @@ class Replication(proto.Message):
             DAILY (3):
                 Replication happens once every day.
         """
+
         REPLICATION_SCHEDULE_UNSPECIFIED = 0
         EVERY_10_MINUTES = 1
         HOURLY = 2
@@ -317,6 +320,7 @@ class Replication(proto.Message):
             PENDING_PEERING (8):
                 Peering is yet to be established.
         """
+
         MIRROR_STATE_UNSPECIFIED = 0
         PREPARING = 1
         MIRRORED = 2
@@ -346,6 +350,7 @@ class Replication(proto.Message):
                 Transfer in the reverse direction (GCNV is
                 source and Onprem is destination)
         """
+
         HYBRID_REPLICATION_TYPE_UNSPECIFIED = 0
         MIGRATION = 1
         CONTINUOUS_REPLICATION = 2

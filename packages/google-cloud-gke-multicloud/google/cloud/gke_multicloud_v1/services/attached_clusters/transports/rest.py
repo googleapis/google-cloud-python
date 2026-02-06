@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -909,9 +909,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_attached_cluster(
                 request, metadata
@@ -1065,9 +1063,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_attached_cluster(
                 request, metadata
@@ -1216,15 +1212,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_attached_cluster_agent_token(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_generate_attached_cluster_agent_token(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_transcoded_request(
                 http_options, request
@@ -1292,11 +1285,10 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_generate_attached_cluster_agent_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_attached_cluster_agent_token_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_attached_cluster_agent_token_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1386,15 +1378,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_attached_cluster_install_manifest(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_generate_attached_cluster_install_manifest(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_transcoded_request(
                 http_options, request
@@ -1459,11 +1448,10 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_attached_cluster_install_manifest_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_attached_cluster_install_manifest_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1548,9 +1536,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attached_cluster(
                 request, metadata
@@ -1702,9 +1688,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_attached_server_config(
                 request, metadata
@@ -1858,9 +1842,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_import_attached_cluster(
                 request, metadata
@@ -2013,9 +1995,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_attached_clusters(
                 request, metadata
@@ -2169,9 +2149,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_attached_cluster(
                 request, metadata
@@ -2295,7 +2273,9 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAttachedClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateAttachedClusterAgentToken(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_attached_cluster_install_manifest(
@@ -2306,7 +2286,9 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAttachedClusterInstallManifest(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateAttachedClusterInstallManifest(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_attached_cluster(
@@ -2327,7 +2309,9 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAttachedServerConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAttachedServerConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def import_attached_cluster(
@@ -2416,9 +2400,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2536,9 +2518,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2793,9 +2773,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseAttachedClustersRestTransport._BaseListOperations._get_transcoded_request(

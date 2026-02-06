@@ -73,6 +73,7 @@ class AttackExposure(proto.Message):
             NOT_CALCULATED (2):
                 The attack exposure has not been calculated.
         """
+
         STATE_UNSPECIFIED = 0
         CALCULATED = 1
         NOT_CALCULATED = 2

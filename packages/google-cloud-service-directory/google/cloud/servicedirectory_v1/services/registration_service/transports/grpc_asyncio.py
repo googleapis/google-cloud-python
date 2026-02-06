@@ -17,30 +17,32 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.servicedirectory_v1.types import endpoint
+from google.cloud.servicedirectory_v1.types import (
+    endpoint,
+    namespace,
+    registration_service,
+    service,
+)
 from google.cloud.servicedirectory_v1.types import endpoint as gcs_endpoint
-from google.cloud.servicedirectory_v1.types import namespace
 from google.cloud.servicedirectory_v1.types import namespace as gcs_namespace
-from google.cloud.servicedirectory_v1.types import registration_service
-from google.cloud.servicedirectory_v1.types import service
 from google.cloud.servicedirectory_v1.types import service as gcs_service
 
 from .base import DEFAULT_CLIENT_INFO, RegistrationServiceTransport

@@ -731,6 +731,7 @@ class WorkstationConfig(proto.Message):
                         workstation. An administrator must manually
                         delete the disk.
                 """
+
                 RECLAIM_POLICY_UNSPECIFIED = 0
                 DELETE = 1
                 RETAIN = 2
@@ -1140,6 +1141,7 @@ class Workstation(proto.Message):
                 The workstation is stopped and will not be
                 able to receive requests until it is started.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_STARTING = 1
         STATE_RUNNING = 2

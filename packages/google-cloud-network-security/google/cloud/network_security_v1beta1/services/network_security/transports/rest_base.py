@@ -19,11 +19,18 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
+from google.cloud.network_security_v1beta1.types import (
+    authorization_policy,
+    client_tls_policy,
+    server_tls_policy,
+)
 from google.cloud.network_security_v1beta1.types import (
     authorization_policy as gcn_authorization_policy,
 )
@@ -33,9 +40,6 @@ from google.cloud.network_security_v1beta1.types import (
 from google.cloud.network_security_v1beta1.types import (
     server_tls_policy as gcn_server_tls_policy,
 )
-from google.cloud.network_security_v1beta1.types import authorization_policy
-from google.cloud.network_security_v1beta1.types import client_tls_policy
-from google.cloud.network_security_v1beta1.types import server_tls_policy
 
 from .base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 

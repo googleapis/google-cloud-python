@@ -58,6 +58,7 @@ class FileSource(proto.Enum):
             The file was retrieved from a URL (e.g.
             public web).
     """
+
     FILE_SOURCE_UNSPECIFIED = 0
     FILE_SOURCE_INLINE = 1
     FILE_SOURCE_LOCAL = 2
@@ -104,6 +105,7 @@ class Session(proto.Message):
             IN_PROGRESS (1):
                 The session is currently open.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
 
@@ -253,6 +255,7 @@ class ImageCharacteristics(proto.Message):
             OTHER_COLOR_SPACE (5):
                 Other colorspace.
         """
+
         COLOR_SPACE_UNSPECIFIED = 0
         RGB = 1
         CMYK = 2

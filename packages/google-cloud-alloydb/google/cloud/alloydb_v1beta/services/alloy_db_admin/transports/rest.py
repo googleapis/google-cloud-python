@@ -16,21 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.alloydb_v1beta.types import resources, service
@@ -2453,9 +2455,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseBatchCreateInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_instances(
                 request, metadata
@@ -3213,9 +3213,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_secondary_cluster(
                 request, metadata
@@ -3368,9 +3366,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseCreateSecondaryInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_secondary_instance(
                 request, metadata
@@ -4688,9 +4684,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGenerateClientCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_client_certificate(
                 request, metadata
@@ -5148,9 +5142,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseGetConnectionInfo._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection_info(
                 request, metadata
@@ -6497,9 +6489,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseListSupportedDatabaseFlags._get_http_options()
 
             request, metadata = self._interceptor.pre_list_supported_database_flags(
                 request, metadata
@@ -6565,11 +6555,10 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             resp = self._interceptor.post_list_supported_database_flags(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_supported_database_flags_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_supported_database_flags_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -7259,9 +7248,7 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
-            )
+            http_options = _BaseAlloyDBAdminRestTransport._BaseSwitchoverCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_switchover_cluster(
                 request, metadata
@@ -8164,7 +8151,9 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     ) -> Callable[[service.CreateSecondaryClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSecondaryCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSecondaryCluster(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_secondary_instance(
@@ -8172,7 +8161,9 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     ) -> Callable[[service.CreateSecondaryInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSecondaryInstance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSecondaryInstance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_user(self) -> Callable[[service.CreateUserRequest], resources.User]:
@@ -8243,7 +8234,9 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateClientCertificate(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateClientCertificate(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_backup(self) -> Callable[[service.GetBackupRequest], resources.Backup]:
@@ -8336,7 +8329,9 @@ class AlloyDBAdminRestTransport(_BaseAlloyDBAdminRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSupportedDatabaseFlags(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSupportedDatabaseFlags(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_users(

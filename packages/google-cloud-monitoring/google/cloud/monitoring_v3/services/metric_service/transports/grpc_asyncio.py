@@ -17,23 +17,23 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.api.metric_pb2 as metric_pb2  # type: ignore
 import google.api.monitored_resource_pb2 as monitored_resource_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.monitoring_v3.types import metric_service
 
@@ -358,12 +358,12 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_monitored_resource_descriptors" not in self._stubs:
-            self._stubs[
-                "list_monitored_resource_descriptors"
-            ] = self._logged_channel.unary_unary(
-                "/google.monitoring.v3.MetricService/ListMonitoredResourceDescriptors",
-                request_serializer=metric_service.ListMonitoredResourceDescriptorsRequest.serialize,
-                response_deserializer=metric_service.ListMonitoredResourceDescriptorsResponse.deserialize,
+            self._stubs["list_monitored_resource_descriptors"] = (
+                self._logged_channel.unary_unary(
+                    "/google.monitoring.v3.MetricService/ListMonitoredResourceDescriptors",
+                    request_serializer=metric_service.ListMonitoredResourceDescriptorsRequest.serialize,
+                    response_deserializer=metric_service.ListMonitoredResourceDescriptorsResponse.deserialize,
+                )
             )
         return self._stubs["list_monitored_resource_descriptors"]
 
@@ -390,12 +390,12 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_monitored_resource_descriptor" not in self._stubs:
-            self._stubs[
-                "get_monitored_resource_descriptor"
-            ] = self._logged_channel.unary_unary(
-                "/google.monitoring.v3.MetricService/GetMonitoredResourceDescriptor",
-                request_serializer=metric_service.GetMonitoredResourceDescriptorRequest.serialize,
-                response_deserializer=monitored_resource_pb2.MonitoredResourceDescriptor.FromString,
+            self._stubs["get_monitored_resource_descriptor"] = (
+                self._logged_channel.unary_unary(
+                    "/google.monitoring.v3.MetricService/GetMonitoredResourceDescriptor",
+                    request_serializer=metric_service.GetMonitoredResourceDescriptorRequest.serialize,
+                    response_deserializer=monitored_resource_pb2.MonitoredResourceDescriptor.FromString,
+                )
             )
         return self._stubs["get_monitored_resource_descriptor"]
 
@@ -607,12 +607,12 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_time_series" not in self._stubs:
-            self._stubs[
-                "create_service_time_series"
-            ] = self._logged_channel.unary_unary(
-                "/google.monitoring.v3.MetricService/CreateServiceTimeSeries",
-                request_serializer=metric_service.CreateTimeSeriesRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["create_service_time_series"] = (
+                self._logged_channel.unary_unary(
+                    "/google.monitoring.v3.MetricService/CreateServiceTimeSeries",
+                    request_serializer=metric_service.CreateTimeSeriesRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["create_service_time_series"]
 

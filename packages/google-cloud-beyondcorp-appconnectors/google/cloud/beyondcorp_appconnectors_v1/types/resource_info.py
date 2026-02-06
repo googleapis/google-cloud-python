@@ -46,6 +46,7 @@ class HealthStatus(proto.Enum):
         DEGRADED (4):
             Some sub-resources are UNHEALTHY.
     """
+
     HEALTH_STATUS_UNSPECIFIED = 0
     HEALTHY = 1
     UNHEALTHY = 2

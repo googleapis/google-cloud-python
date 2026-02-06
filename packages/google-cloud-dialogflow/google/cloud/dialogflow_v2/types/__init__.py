@@ -27,7 +27,9 @@ from .agent import (
     SetAgentRequest,
     TrainAgentRequest,
 )
-from .agent_coaching_instruction import AgentCoachingInstruction
+from .agent_coaching_instruction import (
+    AgentCoachingInstruction,
+)
 from .answer_record import (
     AgentAssistantFeedback,
     AgentAssistantRecord,
@@ -101,7 +103,9 @@ from .conversation_dataset import (
     ListConversationDatasetsRequest,
     ListConversationDatasetsResponse,
 )
-from .conversation_event import ConversationEvent
+from .conversation_event import (
+    ConversationEvent,
+)
 from .conversation_model import (
     ArticleSuggestionModelMetadata,
     ConversationModel,
@@ -197,8 +201,15 @@ from .environment import (
     TextToSpeechSettings,
     UpdateEnvironmentRequest,
 )
-from .fulfillment import Fulfillment, GetFulfillmentRequest, UpdateFulfillmentRequest
-from .gcs import GcsDestination, GcsSources
+from .fulfillment import (
+    Fulfillment,
+    GetFulfillmentRequest,
+    UpdateFulfillmentRequest,
+)
+from .gcs import (
+    GcsDestination,
+    GcsSources,
+)
 from .generator import (
     AgentCoachingContext,
     AgentCoachingSuggestion,
@@ -235,7 +246,9 @@ from .generator_evaluation import (
     ListGeneratorEvaluationsResponse,
     SummarizationEvaluationMetrics,
 )
-from .human_agent_assistant_event import HumanAgentAssistantEvent
+from .human_agent_assistant_event import (
+    HumanAgentAssistantEvent,
+)
 from .intent import (
     BatchDeleteIntentsRequest,
     BatchUpdateIntentsRequest,
@@ -259,7 +272,9 @@ from .knowledge_base import (
     ListKnowledgeBasesResponse,
     UpdateKnowledgeBaseRequest,
 )
-from .operations import GeneratorEvaluationOperationMetadata
+from .operations import (
+    GeneratorEvaluationOperationMetadata,
+)
 from .participant import (
     AnalyzeContentRequest,
     AnalyzeContentResponse,
@@ -342,8 +357,14 @@ from .tool import (
     Tool,
     UpdateToolRequest,
 )
-from .tool_call import ToolCall, ToolCallResult
-from .validation_result import ValidationError, ValidationResult
+from .tool_call import (
+    ToolCall,
+    ToolCallResult,
+)
+from .validation_result import (
+    ValidationError,
+    ValidationResult,
+)
 from .version import (
     CreateVersionRequest,
     DeleteVersionRequest,
@@ -353,7 +374,11 @@ from .version import (
     UpdateVersionRequest,
     Version,
 )
-from .webhook import OriginalDetectIntentRequest, WebhookRequest, WebhookResponse
+from .webhook import (
+    OriginalDetectIntentRequest,
+    WebhookRequest,
+    WebhookResponse,
+)
 
 __all__ = (
     "Agent",

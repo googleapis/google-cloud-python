@@ -44,6 +44,7 @@ class LinkVerificationState(proto.Enum):
             The link is requested, but hasn't been
             approved by the product account admin.
     """
+
     LINK_VERIFICATION_STATE_UNSPECIFIED = 0
     LINK_VERIFICATION_STATE_VERIFIED = 1
     LINK_VERIFICATION_STATE_NOT_VERIFIED = 2
@@ -60,6 +61,7 @@ class AnalyticsServiceLevel(proto.Enum):
         ANALYTICS_SERVICE_LEVEL_360 (2):
             The premium version of Google Analytics.
     """
+
     ANALYTICS_SERVICE_LEVEL_UNSPECIFIED = 0
     ANALYTICS_SERVICE_LEVEL_STANDARD = 1
     ANALYTICS_SERVICE_LEVEL_360 = 2
@@ -78,6 +80,7 @@ class AnalyticsPropertyType(proto.Enum):
         ANALYTICS_PROPERTY_TYPE_ROLLUP (3):
             Google Analytics rollup property
     """
+
     ANALYTICS_PROPERTY_TYPE_UNSPECIFIED = 0
     ANALYTICS_PROPERTY_TYPE_ORDINARY = 1
     ANALYTICS_PROPERTY_TYPE_SUBPROPERTY = 2

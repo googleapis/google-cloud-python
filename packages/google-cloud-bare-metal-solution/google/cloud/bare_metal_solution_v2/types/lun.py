@@ -86,6 +86,7 @@ class Lun(proto.Message):
                 The LUN is in cool off state. It will be deleted after
                 ``expire_time``.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -103,6 +104,7 @@ class Lun(proto.Message):
             LINUX (1):
                 Server with Linux OS.
         """
+
         MULTIPROTOCOL_TYPE_UNSPECIFIED = 0
         LINUX = 1
 
@@ -117,6 +119,7 @@ class Lun(proto.Message):
             HDD (2):
                 This storage type for this LUN is HDD.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2

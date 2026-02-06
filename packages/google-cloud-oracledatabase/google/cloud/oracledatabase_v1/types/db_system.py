@@ -200,6 +200,7 @@ class DbSystemProperties(proto.Message):
             ENTERPRISE_EDITION_HIGH_PERFORMANCE (3):
                 The database edition is Enterprise Edition.
         """
+
         DB_SYSTEM_DATABASE_EDITION_UNSPECIFIED = 0
         STANDARD_EDITION = 1
         ENTERPRISE_EDITION = 2
@@ -216,6 +217,7 @@ class DbSystemProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 The license model is bring your own license.
         """
+
         LICENSE_MODEL_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -255,6 +257,7 @@ class DbSystemProperties(proto.Message):
             UPGRADING (10):
                 Indicates that the resource is upgrading.
         """
+
         DB_SYSTEM_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -278,6 +281,7 @@ class DbSystemProperties(proto.Message):
             OCPU (2):
                 The compute model is physical.
         """
+
         COMPUTE_MODEL_UNSPECIFIED = 0
         ECPU = 1
         OCPU = 2
@@ -418,6 +422,7 @@ class DbSystemOptions(proto.Message):
             LVM (2):
                 Logical Volume management.
         """
+
         STORAGE_MANAGEMENT_UNSPECIFIED = 0
         ASM = 1
         LVM = 2

@@ -16,22 +16,24 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.alloydb_v1.types import resources, service
 
@@ -1123,12 +1125,12 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_supported_database_flags" not in self._stubs:
-            self._stubs[
-                "list_supported_database_flags"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.alloydb.v1.AlloyDBAdmin/ListSupportedDatabaseFlags",
-                request_serializer=service.ListSupportedDatabaseFlagsRequest.serialize,
-                response_deserializer=service.ListSupportedDatabaseFlagsResponse.deserialize,
+            self._stubs["list_supported_database_flags"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.alloydb.v1.AlloyDBAdmin/ListSupportedDatabaseFlags",
+                    request_serializer=service.ListSupportedDatabaseFlagsRequest.serialize,
+                    response_deserializer=service.ListSupportedDatabaseFlagsResponse.deserialize,
+                )
             )
         return self._stubs["list_supported_database_flags"]
 
@@ -1160,12 +1162,12 @@ class AlloyDBAdminGrpcTransport(AlloyDBAdminTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_client_certificate" not in self._stubs:
-            self._stubs[
-                "generate_client_certificate"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.alloydb.v1.AlloyDBAdmin/GenerateClientCertificate",
-                request_serializer=service.GenerateClientCertificateRequest.serialize,
-                response_deserializer=service.GenerateClientCertificateResponse.deserialize,
+            self._stubs["generate_client_certificate"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.alloydb.v1.AlloyDBAdmin/GenerateClientCertificate",
+                    request_serializer=service.GenerateClientCertificateRequest.serialize,
+                    response_deserializer=service.GenerateClientCertificateResponse.deserialize,
+                )
             )
         return self._stubs["generate_client_certificate"]
 

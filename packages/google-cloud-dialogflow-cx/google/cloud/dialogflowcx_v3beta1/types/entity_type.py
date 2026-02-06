@@ -129,6 +129,7 @@ class EntityType(proto.Message):
                 Regexp entity types allow to specify regular
                 expressions in entries values.
         """
+
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -147,6 +148,7 @@ class EntityType(proto.Message):
                 Allows an agent to recognize values that have
                 not been explicitly listed in the entity.
         """
+
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1
 
@@ -305,6 +307,7 @@ class ExportEntityTypesRequest(proto.Message):
                 EntityTypes will be exported in JSON Package
                 format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON_PACKAGE = 5
@@ -461,6 +464,7 @@ class ImportEntityTypesRequest(proto.Message):
                 conflicting new entity type when display name
                 conflicts exist.
         """
+
         MERGE_OPTION_UNSPECIFIED = 0
         REPLACE = 1
         MERGE = 2

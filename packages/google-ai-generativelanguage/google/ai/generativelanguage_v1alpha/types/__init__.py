@@ -21,8 +21,13 @@ from .cache_service import (
     ListCachedContentsResponse,
     UpdateCachedContentRequest,
 )
-from .cached_content import CachedContent
-from .citation import CitationMetadata, CitationSource
+from .cached_content import (
+    CachedContent,
+)
+from .citation import (
+    CitationMetadata,
+    CitationSource,
+)
 from .content import (
     Blob,
     CodeExecution,
@@ -53,7 +58,10 @@ from .discuss_service import (
     Message,
     MessagePrompt,
 )
-from .file import File, VideoMetadata
+from .file import (
+    File,
+    VideoMetadata,
+)
 from .file_service import (
     CreateFileRequest,
     CreateFileResponse,
@@ -101,7 +109,9 @@ from .generative_service import (
     TaskType,
     VoiceConfig,
 )
-from .model import Model
+from .model import (
+    Model,
+)
 from .model_service import (
     CreateTunedModelMetadata,
     CreateTunedModelRequest,
@@ -114,7 +124,9 @@ from .model_service import (
     ListTunedModelsResponse,
     UpdateTunedModelRequest,
 )
-from .permission import Permission
+from .permission import (
+    Permission,
+)
 from .permission_service import (
     CreatePermissionRequest,
     DeletePermissionRequest,
@@ -125,7 +137,10 @@ from .permission_service import (
     TransferOwnershipResponse,
     UpdatePermissionRequest,
 )
-from .prediction_service import PredictRequest, PredictResponse
+from .prediction_service import (
+    PredictRequest,
+    PredictResponse,
+)
 from .retriever import (
     Chunk,
     ChunkData,

@@ -20,7 +20,13 @@ from .provisioning_service import (
     Instance,
     OperationMetadata,
 )
-from .registry_models import Api, ApiDeployment, ApiSpec, ApiVersion, Artifact
+from .registry_models import (
+    Api,
+    ApiDeployment,
+    ApiSpec,
+    ApiVersion,
+    Artifact,
+)
 from .registry_service import (
     CreateApiDeploymentRequest,
     CreateApiRequest,

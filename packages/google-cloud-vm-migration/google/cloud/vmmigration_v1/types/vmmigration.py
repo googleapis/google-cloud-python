@@ -231,6 +231,7 @@ class ComputeEngineDiskType(proto.Enum):
         COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED (4):
             Hyperdisk balanced disk type.
     """
+
     COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED = 0
     COMPUTE_ENGINE_DISK_TYPE_STANDARD = 1
     COMPUTE_ENGINE_DISK_TYPE_SSD = 2
@@ -251,6 +252,7 @@ class ComputeEngineLicenseType(proto.Enum):
             The license type is Bring Your Own License
             type.
     """
+
     COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT = 0
     COMPUTE_ENGINE_LICENSE_TYPE_PAYG = 1
     COMPUTE_ENGINE_LICENSE_TYPE_BYOL = 2
@@ -267,6 +269,7 @@ class ComputeEngineBootOption(proto.Enum):
         COMPUTE_ENGINE_BOOT_OPTION_BIOS (2):
             The boot option is BIOS.
     """
+
     COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED = 0
     COMPUTE_ENGINE_BOOT_OPTION_EFI = 1
     COMPUTE_ENGINE_BOOT_OPTION_BIOS = 2
@@ -289,6 +292,7 @@ class OsCapability(proto.Enum):
         OS_CAPABILITY_IDPF_NETWORK_INTERFACE (3):
             IDPF virtual NIC driver supported.
     """
+
     OS_CAPABILITY_UNSPECIFIED = 0
     OS_CAPABILITY_NVME_STORAGE_ACCESS = 1
     OS_CAPABILITY_GVNIC_NETWORK_INTERFACE = 2
@@ -306,6 +310,7 @@ class BootConversion(proto.Enum):
         BIOS_TO_EFI (2):
             Convert from BIOS to EFI.
     """
+
     BOOT_CONVERSION_UNSPECIFIED = 0
     NONE = 1
     BIOS_TO_EFI = 2
@@ -325,6 +330,7 @@ class UtilizationReportView(proto.Enum):
         FULL (2):
             Include everything.
     """
+
     UTILIZATION_REPORT_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -344,6 +350,7 @@ class MigratingVmView(proto.Enum):
         MIGRATING_VM_VIEW_FULL (2):
             Include everything.
     """
+
     MIGRATING_VM_VIEW_UNSPECIFIED = 0
     MIGRATING_VM_VIEW_BASIC = 1
     MIGRATING_VM_VIEW_FULL = 2
@@ -361,6 +368,7 @@ class VmArchitecture(proto.Enum):
         VM_ARCHITECTURE_ARM64 (2):
             The architecture is ARM64.
     """
+
     VM_ARCHITECTURE_UNSPECIFIED = 0
     VM_ARCHITECTURE_X86_FAMILY = 1
     VM_ARCHITECTURE_ARM64 = 2
@@ -379,6 +387,7 @@ class ComputeEngineNetworkTier(proto.Enum):
         NETWORK_TIER_PREMIUM (2):
             A premium network tier.
     """
+
     COMPUTE_ENGINE_NETWORK_TIER_UNSPECIFIED = 0
     NETWORK_TIER_STANDARD = 1
     NETWORK_TIER_PREMIUM = 2
@@ -435,6 +444,7 @@ class ReplicationCycle(proto.Message):
             SUCCEEDED (4):
                 The replication cycle finished successfully.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         PAUSED = 2
@@ -768,6 +778,7 @@ class MigratingVm(proto.Message):
                 The migrating VM's has been finalized and
                 migration resources have been removed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         READY = 2
@@ -1031,6 +1042,7 @@ class CloneJob(proto.Message):
                 OS adaptation is running as part of the clone
                 job to generate license.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -1236,6 +1248,7 @@ class CutoverJob(proto.Message):
                 OS adaptation is running as part of the
                 cutover job to generate license.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -1758,6 +1771,7 @@ class AwsSourceDetails(proto.Message):
                 The source exists and its credentials were
                 verified.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -1907,6 +1921,7 @@ class AzureSourceDetails(proto.Message):
                 The source exists and its credentials were
                 verified.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         FAILED = 2
@@ -2059,6 +2074,7 @@ class DatacenterConnector(proto.Message):
                 The source exists and its credentials were
                 verified.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         OFFLINE = 2
@@ -2162,6 +2178,7 @@ class UpgradeStatus(proto.Message):
             SUCCEEDED (3):
                 The upgrade finished successfully.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         FAILED = 2
@@ -2568,6 +2585,7 @@ class VmwareVmDetails(proto.Message):
                 The VM is suspended. This is similar to
                 hibernation or sleep mode.
         """
+
         POWER_STATE_UNSPECIFIED = 0
         ON = 1
         OFF = 2
@@ -2584,6 +2602,7 @@ class VmwareVmDetails(proto.Message):
             BIOS (2):
                 The boot option is BIOS.
         """
+
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -2600,6 +2619,7 @@ class VmwareVmDetails(proto.Message):
             VM_ARCHITECTURE_ARM64 (2):
                 The architecture is ARM64.
         """
+
         VM_ARCHITECTURE_UNSPECIFIED = 0
         VM_ARCHITECTURE_X86_FAMILY = 1
         VM_ARCHITECTURE_ARM64 = 2
@@ -2727,6 +2747,7 @@ class AwsVmDetails(proto.Message):
             PENDING (4):
                 The VM is starting.
         """
+
         POWER_STATE_UNSPECIFIED = 0
         ON = 1
         OFF = 2
@@ -2744,6 +2765,7 @@ class AwsVmDetails(proto.Message):
             BIOS (2):
                 The boot option is LEGACY-BIOS.
         """
+
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -2759,6 +2781,7 @@ class AwsVmDetails(proto.Message):
             PARAVIRTUAL (2):
                 The virtualziation type is PARAVIRTUAL.
         """
+
         VM_VIRTUALIZATION_TYPE_UNSPECIFIED = 0
         HVM = 1
         PARAVIRTUAL = 2
@@ -2778,6 +2801,7 @@ class AwsVmDetails(proto.Message):
             X86_64_MAC (4):
                 The architecture is X86_64_MAC.
         """
+
         VM_ARCHITECTURE_UNSPECIFIED = 0
         I386 = 1
         X86_64 = 2
@@ -2947,6 +2971,7 @@ class AzureVmDetails(proto.Message):
             UNKNOWN (7):
                 The VM's power state is unknown.
         """
+
         POWER_STATE_UNSPECIFIED = 0
         STARTING = 1
         RUNNING = 2
@@ -2967,6 +2992,7 @@ class AzureVmDetails(proto.Message):
             BIOS (2):
                 The boot option is BIOS.
         """
+
         BOOT_OPTION_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -2983,6 +3009,7 @@ class AzureVmDetails(proto.Message):
             VM_ARCHITECTURE_ARM64 (2):
                 The architecture is ARM64.
         """
+
         VM_ARCHITECTURE_UNSPECIFIED = 0
         VM_ARCHITECTURE_X86_FAMILY = 1
         VM_ARCHITECTURE_ARM64 = 2
@@ -3275,6 +3302,7 @@ class FetchStorageInventoryRequest(proto.Message):
             SNAPSHOTS (2):
                 The type is snapshots.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         DISKS = 1
         SNAPSHOTS = 2
@@ -3414,6 +3442,7 @@ class UtilizationReport(proto.Message):
             FAILED (3):
                 Report creation failed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         SUCCEEDED = 2
@@ -3433,6 +3462,7 @@ class UtilizationReport(proto.Message):
             YEAR (3):
                 One year.
         """
+
         TIME_FRAME_UNSPECIFIED = 0
         WEEK = 1
         MONTH = 2
@@ -4533,6 +4563,7 @@ class AppliedLicense(proto.Message):
                 The license type is Bring Your Own License
                 type.
         """
+
         TYPE_UNSPECIFIED = 0
         NONE = 1
         PAYG = 2
@@ -4579,6 +4610,7 @@ class SchedulingNodeAffinity(proto.Message):
                 The node resource group should not be in
                 these resources affinity.
         """
+
         OPERATOR_UNSPECIFIED = 0
         IN = 1
         NOT_IN = 2
@@ -4639,6 +4671,7 @@ class ComputeScheduling(proto.Message):
                 Migrate the instance when the host machine
                 undergoes maintenance.
         """
+
         ON_HOST_MAINTENANCE_UNSPECIFIED = 0
         TERMINATE = 1
         MIGRATE = 2
@@ -4660,6 +4693,7 @@ class ComputeScheduling(proto.Message):
                 The Instance isn't automatically restarted
                 whenever it is terminated by Compute Engine.
         """
+
         RESTART_TYPE_UNSPECIFIED = 0
         AUTOMATIC_RESTART = 1
         NO_AUTOMATIC_RESTART = 2
@@ -5767,6 +5801,7 @@ class Group(proto.Message):
                 All MigratingVMs in the group must have
                 Compute Engine Disks targets.
         """
+
         MIGRATION_TARGET_TYPE_UNSPECIFIED = 0
         MIGRATION_TARGET_TYPE_GCE = 1
         MIGRATION_TARGET_TYPE_DISKS = 2
@@ -6376,6 +6411,7 @@ class MigrationError(proto.Message):
                 Migrate to Virtual Machines encountered an
                 error in disk migration operation.
         """
+
         ERROR_CODE_UNSPECIFIED = 0
         UNKNOWN_ERROR = 1
         SOURCE_VALIDATION_ERROR = 2
@@ -6446,6 +6482,7 @@ class MigrationWarning(proto.Message):
             ADAPTATION_WARNING (1):
                 A warning originated from OS Adaptation.
         """
+
         WARNING_CODE_UNSPECIFIED = 0
         ADAPTATION_WARNING = 1
 
@@ -6508,6 +6545,7 @@ class VmwareSourceVmDetails(proto.Message):
             BIOS (2):
                 The firmware is BIOS.
         """
+
         FIRMWARE_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -6595,6 +6633,7 @@ class AwsSourceVmDetails(proto.Message):
             BIOS (2):
                 The firmware is BIOS.
         """
+
         FIRMWARE_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -6682,6 +6721,7 @@ class AzureSourceVmDetails(proto.Message):
             BIOS (2):
                 The firmware is BIOS.
         """
+
         FIRMWARE_UNSPECIFIED = 0
         EFI = 1
         BIOS = 2
@@ -7017,6 +7057,7 @@ class ImageImportJob(proto.Message):
             CANCELLED (6):
                 The image import was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -7462,6 +7503,7 @@ class ShieldedInstanceConfig(proto.Message):
             FALSE (2):
                 Do not use secure boot.
         """
+
         SECURE_BOOT_UNSPECIFIED = 0
         TRUE = 1
         FALSE = 2
@@ -7951,6 +7993,7 @@ class DiskMigrationJob(proto.Message):
                 The migration process encountered an
                 unrecoverable error and was aborted.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         RUNNING = 3
@@ -8203,6 +8246,7 @@ class AwsSourceDiskDetails(proto.Message):
             STANDARD (7):
                 Standard disk type.
         """
+
         TYPE_UNSPECIFIED = 0
         GP2 = 1
         GP3 = 2

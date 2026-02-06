@@ -23,14 +23,13 @@ import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
-from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
-from google.maps.routing_v2.types import transit_preferences as gmr_transit_preferences
 from google.maps.routing_v2.types import fallback_info as gmr_fallback_info
-from google.maps.routing_v2.types import polyline, route
+from google.maps.routing_v2.types import geocoding_results as gmr_geocoding_results
+from google.maps.routing_v2.types import polyline, route, route_travel_mode
 from google.maps.routing_v2.types import route_modifiers as gmr_route_modifiers
-from google.maps.routing_v2.types import route_travel_mode
+from google.maps.routing_v2.types import routing_preference as gmr_routing_preference
 from google.maps.routing_v2.types import traffic_model as gmr_traffic_model
+from google.maps.routing_v2.types import transit_preferences as gmr_transit_preferences
 from google.maps.routing_v2.types import units as gmr_units
 from google.maps.routing_v2.types import waypoint as gmr_waypoint
 
@@ -62,6 +61,7 @@ class RouteMatrixElementCondition(proto.Enum):
             information, such as ``distance_meters`` or ``duration``,
             will not be filled out in the element.
     """
+
     ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED = 0
     ROUTE_EXISTS = 1
     ROUTE_NOT_FOUND = 2
@@ -221,6 +221,7 @@ class ComputeRoutesRequest(proto.Message):
                 such requests will fail. However, you can use it with any
                 ``routing_preference``.
         """
+
         REFERENCE_ROUTE_UNSPECIFIED = 0
         FUEL_EFFICIENT = 1
         SHORTER_DISTANCE = 2
@@ -258,6 +259,7 @@ class ComputeRoutesRequest(proto.Message):
                 feature is experimental, and the SKU/charge is subject to
                 change.
         """
+
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
         FUEL_CONSUMPTION = 2
@@ -498,6 +500,7 @@ class ComputeRouteMatrixRequest(proto.Message):
             TOLLS (1):
                 Toll information for the matrix element(s).
         """
+
         EXTRA_COMPUTATION_UNSPECIFIED = 0
         TOLLS = 1
 

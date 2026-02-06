@@ -110,6 +110,7 @@ class IndustryCategory(proto.Enum):
         SHOPPING (26):
             Shopping
     """
+
     INDUSTRY_CATEGORY_UNSPECIFIED = 0
     AUTOMOTIVE = 1
     BUSINESS_AND_INDUSTRIAL_MARKETS = 2
@@ -151,6 +152,7 @@ class ServiceLevel(proto.Enum):
             The paid, premium version of Google
             Analytics.
     """
+
     SERVICE_LEVEL_UNSPECIFIED = 0
     GOOGLE_ANALYTICS_STANDARD = 1
     GOOGLE_ANALYTICS_360 = 2
@@ -171,6 +173,7 @@ class ActorType(proto.Enum):
             Changes made by Google Analytics support team
             staff.
     """
+
     ACTOR_TYPE_UNSPECIFIED = 0
     USER = 1
     SYSTEM = 2
@@ -190,6 +193,7 @@ class ActionType(proto.Enum):
         DELETED (3):
             Resource was deleted in this change.
     """
+
     ACTION_TYPE_UNSPECIFIED = 0
     CREATED = 1
     UPDATED = 2
@@ -233,6 +237,7 @@ class ChangeHistoryResourceType(proto.Enum):
         ATTRIBUTION_SETTINGS (20):
             AttributionSettings resource
     """
+
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
     PROPERTY = 2
@@ -263,6 +268,7 @@ class PropertyType(proto.Enum):
         PROPERTY_TYPE_ROLLUP (3):
             Google Analytics rollup property
     """
+
     PROPERTY_TYPE_UNSPECIFIED = 0
     PROPERTY_TYPE_ORDINARY = 1
     PROPERTY_TYPE_SUBPROPERTY = 2
@@ -521,6 +527,7 @@ class DataStream(proto.Message):
             IOS_APP_DATA_STREAM (3):
                 iOS app data stream.
         """
+
         DATA_STREAM_TYPE_UNSPECIFIED = 0
         WEB_DATA_STREAM = 1
         ANDROID_APP_DATA_STREAM = 2
@@ -1182,6 +1189,7 @@ class ConversionEvent(proto.Message):
                 An Event instance is considered a Conversion
                 at most once per session per user.
         """
+
         CONVERSION_COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -1303,6 +1311,7 @@ class KeyEvent(proto.Message):
                 An Event instance is considered a Key Event
                 at most once per session per user.
         """
+
         COUNTING_METHOD_UNSPECIFIED = 0
         ONCE_PER_EVENT = 1
         ONCE_PER_SESSION = 2
@@ -1426,6 +1435,7 @@ class CustomDimension(proto.Message):
             ITEM (3):
                 Dimension scoped to eCommerce items
         """
+
         DIMENSION_SCOPE_UNSPECIFIED = 0
         EVENT = 1
         USER = 2
@@ -1529,6 +1539,7 @@ class CustomMetric(proto.Message):
             HOURS (10):
                 This metric measures hours.
         """
+
         MEASUREMENT_UNIT_UNSPECIFIED = 0
         STANDARD = 1
         CURRENCY = 2
@@ -1550,6 +1561,7 @@ class CustomMetric(proto.Message):
             EVENT (1):
                 Metric scoped to an event.
         """
+
         METRIC_SCOPE_UNSPECIFIED = 0
         EVENT = 1
 
@@ -1565,6 +1577,7 @@ class CustomMetric(proto.Message):
             REVENUE_DATA (2):
                 Metric reports revenue data.
         """
+
         RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
         COST_DATA = 1
         REVENUE_DATA = 2
@@ -1647,6 +1660,7 @@ class DataRetentionSettings(proto.Message):
                 months. Available to 360 properties only.
                 Available for event data only.
         """
+
         RETENTION_DURATION_UNSPECIFIED = 0
         TWO_MONTHS = 1
         FOURTEEN_MONTHS = 3

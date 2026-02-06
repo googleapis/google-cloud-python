@@ -101,6 +101,7 @@ class BackupVault(proto.Message):
             UPDATING (5):
                 BackupVault is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -119,6 +120,7 @@ class BackupVault(proto.Message):
             CROSS_REGION (2):
                 BackupVault type is CROSS_REGION.
         """
+
         BACKUP_VAULT_TYPE_UNSPECIFIED = 0
         IN_REGION = 1
         CROSS_REGION = 2
@@ -139,6 +141,7 @@ class BackupVault(proto.Message):
             ENCRYPTION_STATE_FAILED (4):
                 Encryption has failed.
         """
+
         ENCRYPTION_STATE_UNSPECIFIED = 0
         ENCRYPTION_STATE_PENDING = 1
         ENCRYPTION_STATE_COMPLETED = 2

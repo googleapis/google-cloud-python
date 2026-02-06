@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.network_security_v1alpha1.types import mirroring
 
@@ -366,12 +368,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_endpoint_groups" not in self._stubs:
-            self._stubs[
-                "list_mirroring_endpoint_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroups",
-                request_serializer=mirroring.ListMirroringEndpointGroupsRequest.serialize,
-                response_deserializer=mirroring.ListMirroringEndpointGroupsResponse.deserialize,
+            self._stubs["list_mirroring_endpoint_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroups",
+                    request_serializer=mirroring.ListMirroringEndpointGroupsRequest.serialize,
+                    response_deserializer=mirroring.ListMirroringEndpointGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_mirroring_endpoint_groups"]
 
@@ -397,12 +399,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "get_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroup",
-                request_serializer=mirroring.GetMirroringEndpointGroupRequest.serialize,
-                response_deserializer=mirroring.MirroringEndpointGroup.deserialize,
+            self._stubs["get_mirroring_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroup",
+                    request_serializer=mirroring.GetMirroringEndpointGroupRequest.serialize,
+                    response_deserializer=mirroring.MirroringEndpointGroup.deserialize,
+                )
             )
         return self._stubs["get_mirroring_endpoint_group"]
 
@@ -429,12 +431,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "create_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroup",
-                request_serializer=mirroring.CreateMirroringEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_mirroring_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroup",
+                    request_serializer=mirroring.CreateMirroringEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_mirroring_endpoint_group"]
 
@@ -461,12 +463,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "update_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroup",
-                request_serializer=mirroring.UpdateMirroringEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_mirroring_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroup",
+                    request_serializer=mirroring.UpdateMirroringEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_mirroring_endpoint_group"]
 
@@ -493,12 +495,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroup",
-                request_serializer=mirroring.DeleteMirroringEndpointGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_mirroring_endpoint_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroup",
+                    request_serializer=mirroring.DeleteMirroringEndpointGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_mirroring_endpoint_group"]
 
@@ -526,12 +528,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_endpoint_group_associations" not in self._stubs:
-            self._stubs[
-                "list_mirroring_endpoint_group_associations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroupAssociations",
-                request_serializer=mirroring.ListMirroringEndpointGroupAssociationsRequest.serialize,
-                response_deserializer=mirroring.ListMirroringEndpointGroupAssociationsResponse.deserialize,
+            self._stubs["list_mirroring_endpoint_group_associations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroupAssociations",
+                    request_serializer=mirroring.ListMirroringEndpointGroupAssociationsRequest.serialize,
+                    response_deserializer=mirroring.ListMirroringEndpointGroupAssociationsResponse.deserialize,
+                )
             )
         return self._stubs["list_mirroring_endpoint_group_associations"]
 
@@ -559,12 +561,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "get_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroupAssociation",
-                request_serializer=mirroring.GetMirroringEndpointGroupAssociationRequest.serialize,
-                response_deserializer=mirroring.MirroringEndpointGroupAssociation.deserialize,
+            self._stubs["get_mirroring_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroupAssociation",
+                    request_serializer=mirroring.GetMirroringEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=mirroring.MirroringEndpointGroupAssociation.deserialize,
+                )
             )
         return self._stubs["get_mirroring_endpoint_group_association"]
 
@@ -592,12 +594,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "create_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroupAssociation",
-                request_serializer=mirroring.CreateMirroringEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_mirroring_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroupAssociation",
+                    request_serializer=mirroring.CreateMirroringEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_mirroring_endpoint_group_association"]
 
@@ -625,12 +627,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "update_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroupAssociation",
-                request_serializer=mirroring.UpdateMirroringEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_mirroring_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroupAssociation",
+                    request_serializer=mirroring.UpdateMirroringEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_mirroring_endpoint_group_association"]
 
@@ -658,12 +660,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroupAssociation",
-                request_serializer=mirroring.DeleteMirroringEndpointGroupAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_mirroring_endpoint_group_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroupAssociation",
+                    request_serializer=mirroring.DeleteMirroringEndpointGroupAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_mirroring_endpoint_group_association"]
 
@@ -691,12 +693,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_deployment_groups" not in self._stubs:
-            self._stubs[
-                "list_mirroring_deployment_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeploymentGroups",
-                request_serializer=mirroring.ListMirroringDeploymentGroupsRequest.serialize,
-                response_deserializer=mirroring.ListMirroringDeploymentGroupsResponse.deserialize,
+            self._stubs["list_mirroring_deployment_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeploymentGroups",
+                    request_serializer=mirroring.ListMirroringDeploymentGroupsRequest.serialize,
+                    response_deserializer=mirroring.ListMirroringDeploymentGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_mirroring_deployment_groups"]
 
@@ -723,12 +725,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "get_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringDeploymentGroup",
-                request_serializer=mirroring.GetMirroringDeploymentGroupRequest.serialize,
-                response_deserializer=mirroring.MirroringDeploymentGroup.deserialize,
+            self._stubs["get_mirroring_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringDeploymentGroup",
+                    request_serializer=mirroring.GetMirroringDeploymentGroupRequest.serialize,
+                    response_deserializer=mirroring.MirroringDeploymentGroup.deserialize,
+                )
             )
         return self._stubs["get_mirroring_deployment_group"]
 
@@ -755,12 +757,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "create_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeploymentGroup",
-                request_serializer=mirroring.CreateMirroringDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_mirroring_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeploymentGroup",
+                    request_serializer=mirroring.CreateMirroringDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_mirroring_deployment_group"]
 
@@ -787,12 +789,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "update_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeploymentGroup",
-                request_serializer=mirroring.UpdateMirroringDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_mirroring_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeploymentGroup",
+                    request_serializer=mirroring.UpdateMirroringDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_mirroring_deployment_group"]
 
@@ -819,12 +821,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeploymentGroup",
-                request_serializer=mirroring.DeleteMirroringDeploymentGroupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_mirroring_deployment_group"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeploymentGroup",
+                    request_serializer=mirroring.DeleteMirroringDeploymentGroupRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_mirroring_deployment_group"]
 
@@ -851,12 +853,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_deployments" not in self._stubs:
-            self._stubs[
-                "list_mirroring_deployments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeployments",
-                request_serializer=mirroring.ListMirroringDeploymentsRequest.serialize,
-                response_deserializer=mirroring.ListMirroringDeploymentsResponse.deserialize,
+            self._stubs["list_mirroring_deployments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeployments",
+                    request_serializer=mirroring.ListMirroringDeploymentsRequest.serialize,
+                    response_deserializer=mirroring.ListMirroringDeploymentsResponse.deserialize,
+                )
             )
         return self._stubs["list_mirroring_deployments"]
 
@@ -911,12 +913,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "create_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeployment",
-                request_serializer=mirroring.CreateMirroringDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_mirroring_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeployment",
+                    request_serializer=mirroring.CreateMirroringDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_mirroring_deployment"]
 
@@ -942,12 +944,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "update_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeployment",
-                request_serializer=mirroring.UpdateMirroringDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_mirroring_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeployment",
+                    request_serializer=mirroring.UpdateMirroringDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_mirroring_deployment"]
 
@@ -973,12 +975,12 @@ class MirroringGrpcTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeployment",
-                request_serializer=mirroring.DeleteMirroringDeploymentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_mirroring_deployment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeployment",
+                    request_serializer=mirroring.DeleteMirroringDeploymentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_mirroring_deployment"]
 

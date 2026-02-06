@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.folders import FoldersAsyncClient, FoldersClient
 from .services.organizations import OrganizationsAsyncClient, OrganizationsClient
 from .services.projects import ProjectsAsyncClient, ProjectsClient

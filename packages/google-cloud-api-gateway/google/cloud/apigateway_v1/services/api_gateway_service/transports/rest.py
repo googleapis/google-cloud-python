@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1258,9 +1258,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseCreateApiConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_api_config(
                 request, metadata
@@ -1413,9 +1411,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_http_options()
 
             request, metadata = self._interceptor.pre_create_gateway(request, metadata)
             transcoded_request = _BaseApiGatewayServiceRestTransport._BaseCreateGateway._get_transcoded_request(
@@ -1711,9 +1707,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseDeleteApiConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api_config(
                 request, metadata
@@ -1860,9 +1854,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_gateway(request, metadata)
             transcoded_request = _BaseApiGatewayServiceRestTransport._BaseDeleteGateway._get_transcoded_request(
@@ -2157,9 +2149,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_api_config(request, metadata)
             transcoded_request = _BaseApiGatewayServiceRestTransport._BaseGetApiConfig._get_transcoded_request(
@@ -2456,9 +2446,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseListApiConfigs._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseListApiConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_api_configs(
                 request, metadata
@@ -2754,9 +2742,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseListGateways._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseListGateways._get_http_options()
 
             request, metadata = self._interceptor.pre_list_gateways(request, metadata)
             transcoded_request = _BaseApiGatewayServiceRestTransport._BaseListGateways._get_transcoded_request(
@@ -3056,9 +3042,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseUpdateApiConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_api_config(
                 request, metadata
@@ -3211,9 +3195,7 @@ class ApiGatewayServiceRestTransport(_BaseApiGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_http_options()
-            )
+            http_options = _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_http_options()
 
             request, metadata = self._interceptor.pre_update_gateway(request, metadata)
             transcoded_request = _BaseApiGatewayServiceRestTransport._BaseUpdateGateway._get_transcoded_request(

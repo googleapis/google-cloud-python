@@ -16,29 +16,31 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.recommender_v1beta1.types import (
+    insight,
+    insight_type_config,
+    recommendation,
+    recommender_config,
+    recommender_service,
+)
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
 from google.cloud.recommender_v1beta1.types import (
     recommender_config as gcr_recommender_config,
 )
-from google.cloud.recommender_v1beta1.types import insight
-from google.cloud.recommender_v1beta1.types import insight_type_config
-from google.cloud.recommender_v1beta1.types import recommendation
-from google.cloud.recommender_v1beta1.types import recommender_config
-from google.cloud.recommender_v1beta1.types import recommender_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseRecommenderRestTransport
@@ -1200,9 +1202,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for an InsightType.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_insight_type_config(
                 request, metadata
@@ -1498,9 +1498,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for a Recommender.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_recommender_config(
                 request, metadata
@@ -1944,9 +1942,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Response to the ``ListRecommendations`` method.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseListRecommendations._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseListRecommendations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_recommendations(
                 request, metadata
@@ -2247,9 +2243,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_http_options()
 
             request, metadata = self._interceptor.pre_mark_insight_accepted(
                 request, metadata
@@ -2405,9 +2399,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_http_options()
 
             request, metadata = self._interceptor.pre_mark_recommendation_claimed(
                 request, metadata
@@ -2564,9 +2556,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_http_options()
 
             request, metadata = self._interceptor.pre_mark_recommendation_failed(
                 request, metadata
@@ -2722,9 +2712,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_http_options()
 
             request, metadata = self._interceptor.pre_mark_recommendation_succeeded(
                 request, metadata
@@ -2795,11 +2783,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_recommendation_succeeded(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_mark_recommendation_succeeded_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_mark_recommendation_succeeded_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2880,9 +2867,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                         Configuration for an InsightType.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_insight_type_config(
                 request, metadata
@@ -3034,9 +3019,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for a Recommender.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_recommender_config(
                 request, metadata
@@ -3234,7 +3217,9 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._MarkRecommendationClaimed(self._session, self._host, self._interceptor)  # type: ignore
+        return self._MarkRecommendationClaimed(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def mark_recommendation_failed(
@@ -3245,7 +3230,9 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._MarkRecommendationFailed(self._session, self._host, self._interceptor)  # type: ignore
+        return self._MarkRecommendationFailed(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def mark_recommendation_succeeded(
@@ -3256,7 +3243,9 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._MarkRecommendationSucceeded(self._session, self._host, self._interceptor)  # type: ignore
+        return self._MarkRecommendationSucceeded(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_insight_type_config(
@@ -3267,7 +3256,9 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateInsightTypeConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateInsightTypeConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_recommender_config(
@@ -3278,7 +3269,9 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateRecommenderConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateRecommenderConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

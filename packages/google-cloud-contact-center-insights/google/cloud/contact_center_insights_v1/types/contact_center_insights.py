@@ -168,6 +168,7 @@ class ConversationView(proto.Enum):
             Populates all fields in the conversation
             except the transcript.
     """
+
     CONVERSATION_VIEW_UNSPECIFIED = 0
     FULL = 2
     BASIC = 1
@@ -272,12 +273,12 @@ class CalculateStatsResponse(proto.Message):
             number=1,
             message=duration_pb2.Duration,
         )
-        points: MutableSequence[
-            "CalculateStatsResponse.TimeSeries.Interval"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="CalculateStatsResponse.TimeSeries.Interval",
+        points: MutableSequence["CalculateStatsResponse.TimeSeries.Interval"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="CalculateStatsResponse.TimeSeries.Interval",
+            )
         )
 
     average_duration: duration_pb2.Duration = proto.Field(
@@ -763,6 +764,7 @@ class IngestConversationsRequest(proto.Message):
                 AUDIO (2):
                     The object is an audio file.
             """
+
             BUCKET_OBJECT_TYPE_UNSPECIFIED = 0
             TRANSCRIPT = 1
             AUDIO = 2
@@ -1325,6 +1327,7 @@ class ExportInsightsDataRequest(proto.Message):
                 If the table already exists, BigQuery will
                 append data to the table.
         """
+
         WRITE_DISPOSITION_UNSPECIFIED = 0
         WRITE_TRUNCATE = 1
         WRITE_APPEND = 2
@@ -2574,6 +2577,7 @@ class Dimension(proto.Message):
                 The dimension is keyed by the conversation
                 profile ID.
         """
+
         DIMENSION_KEY_UNSPECIFIED = 0
         ISSUE = 1
         AGENT = 2
@@ -2792,6 +2796,7 @@ class QueryMetricsRequest(proto.Message):
                 granularity. 1 MONTH means [01st of the month to 1st of the
                 next month).
         """
+
         TIME_GRANULARITY_UNSPECIFIED = 0
         NONE = 1
         DAILY = 2
@@ -3043,12 +3048,12 @@ class QueryMetricsResponse(proto.Message):
                     .
             """
 
-            data_points: MutableSequence[
-                "QueryMetricsResponse.Slice.DataPoint"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=4,
-                message="QueryMetricsResponse.Slice.DataPoint",
+            data_points: MutableSequence["QueryMetricsResponse.Slice.DataPoint"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=4,
+                    message="QueryMetricsResponse.Slice.DataPoint",
+                )
             )
 
         dimensions: MutableSequence["Dimension"] = proto.RepeatedField(
@@ -3746,12 +3751,12 @@ class ListQaScorecardRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    qa_scorecard_revisions: MutableSequence[
-        resources.QaScorecardRevision
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.QaScorecardRevision,
+    qa_scorecard_revisions: MutableSequence[resources.QaScorecardRevision] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.QaScorecardRevision,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -4048,6 +4053,7 @@ class BulkUploadFeedbackLabelsRequest(proto.Message):
                 JSON (2):
                     JSON format.
             """
+
             FORMAT_UNSPECIFIED = 0
             CSV = 1
             JSON = 2
@@ -4219,6 +4225,7 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
                 Downloaded file will contain only Topic
                 Modeling labels.
         """
+
         FEEDBACK_LABEL_TYPE_UNSPECIFIED = 0
         QUALITY_AI = 1
         TOPIC_MODELING = 2
@@ -4267,6 +4274,7 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
                     JSON format.
                     1 label stored per JSON file by default.
             """
+
             FORMAT_UNSPECIFIED = 0
             CSV = 1
             JSON = 2

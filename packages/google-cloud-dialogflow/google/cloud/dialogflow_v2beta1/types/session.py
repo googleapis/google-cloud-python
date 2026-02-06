@@ -24,11 +24,9 @@ import google.rpc.status_pb2 as status_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflow_v2beta1.types import agent, context, session_entity_type
 from google.cloud.dialogflow_v2beta1.types import audio_config as gcd_audio_config
-from google.cloud.dialogflow_v2beta1.types import agent
-from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
-from google.cloud.dialogflow_v2beta1.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -305,12 +303,12 @@ class QueryParameters(proto.Message):
         proto.BOOL,
         number=4,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=session_entity_type.SessionEntityType,
+        )
     )
     payload: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
@@ -561,12 +559,12 @@ class QueryResult(proto.Message):
         proto.STRING,
         number=6,
     )
-    fulfillment_messages: MutableSequence[
-        gcd_intent.Intent.Message
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_intent.Intent.Message,
+    fulfillment_messages: MutableSequence[gcd_intent.Intent.Message] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_intent.Intent.Message,
+        )
     )
     webhook_source: str = proto.Field(
         proto.STRING,
@@ -664,6 +662,7 @@ class KnowledgeAnswers(proto.Message):
                 HIGH (3):
                     Indicates our confidence is high.
             """
+
             MATCH_CONFIDENCE_LEVEL_UNSPECIFIED = 0
             LOW = 1
             MEDIUM = 2
@@ -932,19 +931,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=duration_pb2.Duration,
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=duration_pb2.Duration,
+        )
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=duration_pb2.Duration,
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=duration_pb2.Duration,
+        )
     )
     partial_responses: int = proto.Field(
         proto.INT32,
@@ -962,19 +961,19 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=duration_pb2.Duration,
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=duration_pb2.Duration,
+        )
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=13,
-        message=duration_pb2.Duration,
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=13,
+            message=duration_pb2.Duration,
+        )
     )
     single_utterance_end_time_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -1231,6 +1230,7 @@ class StreamingRecognitionResult(proto.Message):
                 be sent with DTMF digits collected up to the time of
                 sending, which represents an intermediate result.
         """
+
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
         END_OF_SINGLE_UTTERANCE = 2
@@ -1258,12 +1258,12 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=6,
     )
-    speech_word_info: MutableSequence[
-        gcd_audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message=gcd_audio_config.SpeechWordInfo,
+    speech_word_info: MutableSequence[gcd_audio_config.SpeechWordInfo] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message=gcd_audio_config.SpeechWordInfo,
+        )
     )
     speech_end_offset: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,

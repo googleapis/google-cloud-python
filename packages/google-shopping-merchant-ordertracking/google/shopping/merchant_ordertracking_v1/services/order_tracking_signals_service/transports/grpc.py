@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_ordertracking_v1.types import order_tracking_signals
 
@@ -343,12 +343,12 @@ class OrderTrackingSignalsServiceGrpcTransport(OrderTrackingSignalsServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_order_tracking_signal" not in self._stubs:
-            self._stubs[
-                "create_order_tracking_signal"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.ordertracking.v1.OrderTrackingSignalsService/CreateOrderTrackingSignal",
-                request_serializer=order_tracking_signals.CreateOrderTrackingSignalRequest.serialize,
-                response_deserializer=order_tracking_signals.OrderTrackingSignal.deserialize,
+            self._stubs["create_order_tracking_signal"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.ordertracking.v1.OrderTrackingSignalsService/CreateOrderTrackingSignal",
+                    request_serializer=order_tracking_signals.CreateOrderTrackingSignalRequest.serialize,
+                    response_deserializer=order_tracking_signals.OrderTrackingSignal.deserialize,
+                )
             )
         return self._stubs["create_order_tracking_signal"]
 

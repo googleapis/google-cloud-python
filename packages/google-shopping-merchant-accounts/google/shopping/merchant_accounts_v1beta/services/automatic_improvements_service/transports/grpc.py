@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_accounts_v1beta.types import automaticimprovements
 
@@ -345,12 +345,12 @@ class AutomaticImprovementsServiceGrpcTransport(AutomaticImprovementsServiceTran
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_automatic_improvements" not in self._stubs:
-            self._stubs[
-                "get_automatic_improvements"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/GetAutomaticImprovements",
-                request_serializer=automaticimprovements.GetAutomaticImprovementsRequest.serialize,
-                response_deserializer=automaticimprovements.AutomaticImprovements.deserialize,
+            self._stubs["get_automatic_improvements"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/GetAutomaticImprovements",
+                    request_serializer=automaticimprovements.GetAutomaticImprovementsRequest.serialize,
+                    response_deserializer=automaticimprovements.AutomaticImprovements.deserialize,
+                )
             )
         return self._stubs["get_automatic_improvements"]
 
@@ -376,12 +376,12 @@ class AutomaticImprovementsServiceGrpcTransport(AutomaticImprovementsServiceTran
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_automatic_improvements" not in self._stubs:
-            self._stubs[
-                "update_automatic_improvements"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/UpdateAutomaticImprovements",
-                request_serializer=automaticimprovements.UpdateAutomaticImprovementsRequest.serialize,
-                response_deserializer=automaticimprovements.AutomaticImprovements.deserialize,
+            self._stubs["update_automatic_improvements"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.AutomaticImprovementsService/UpdateAutomaticImprovements",
+                    request_serializer=automaticimprovements.UpdateAutomaticImprovementsRequest.serialize,
+                    response_deserializer=automaticimprovements.AutomaticImprovements.deserialize,
+                )
             )
         return self._stubs["update_automatic_improvements"]
 

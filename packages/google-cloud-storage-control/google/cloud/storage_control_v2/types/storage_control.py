@@ -1401,6 +1401,7 @@ class IntelligenceConfig(proto.Message):
                 ``IntelligenceConfig`` resource is upgraded to ``STANDARD``
                 edition.
         """
+
         EDITION_CONFIG_UNSPECIFIED = 0
         INHERIT = 1
         DISABLED = 2
@@ -1523,6 +1524,7 @@ class IntelligenceConfig(proto.Message):
                 STANDARD (2):
                     The ``IntelligenceConfig`` resource is of STANDARD edition.
             """
+
             EFFECTIVE_EDITION_UNSPECIFIED = 0
             NONE = 1
             STANDARD = 2

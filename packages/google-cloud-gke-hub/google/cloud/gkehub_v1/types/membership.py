@@ -535,6 +535,7 @@ class MembershipState(proto.Message):
                 The Membership is being updated by the Hub
                 Service.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

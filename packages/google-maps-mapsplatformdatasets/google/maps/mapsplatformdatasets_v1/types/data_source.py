@@ -42,6 +42,7 @@ class FileFormat(proto.Enum):
         FILE_FORMAT_CSV (3):
             CSV file.
     """
+
     FILE_FORMAT_UNSPECIFIED = 0
     FILE_FORMAT_GEOJSON = 1
     FILE_FORMAT_KML = 2

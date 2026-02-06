@@ -17,24 +17,26 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.translate_v3.types import (
     adaptive_mt,
@@ -1005,12 +1007,12 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_adaptive_mt_dataset" not in self._stubs:
-            self._stubs[
-                "create_adaptive_mt_dataset"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
-                request_serializer=adaptive_mt.CreateAdaptiveMtDatasetRequest.serialize,
-                response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
+            self._stubs["create_adaptive_mt_dataset"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
+                    request_serializer=adaptive_mt.CreateAdaptiveMtDatasetRequest.serialize,
+                    response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
+                )
             )
         return self._stubs["create_adaptive_mt_dataset"]
 
@@ -1036,12 +1038,12 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_adaptive_mt_dataset" not in self._stubs:
-            self._stubs[
-                "delete_adaptive_mt_dataset"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
-                request_serializer=adaptive_mt.DeleteAdaptiveMtDatasetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_adaptive_mt_dataset"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
+                    request_serializer=adaptive_mt.DeleteAdaptiveMtDatasetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_adaptive_mt_dataset"]
 
@@ -1272,12 +1274,12 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_adaptive_mt_sentences" not in self._stubs:
-            self._stubs[
-                "list_adaptive_mt_sentences"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
-                request_serializer=adaptive_mt.ListAdaptiveMtSentencesRequest.serialize,
-                response_deserializer=adaptive_mt.ListAdaptiveMtSentencesResponse.deserialize,
+            self._stubs["list_adaptive_mt_sentences"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
+                    request_serializer=adaptive_mt.ListAdaptiveMtSentencesRequest.serialize,
+                    response_deserializer=adaptive_mt.ListAdaptiveMtSentencesResponse.deserialize,
+                )
             )
         return self._stubs["list_adaptive_mt_sentences"]
 

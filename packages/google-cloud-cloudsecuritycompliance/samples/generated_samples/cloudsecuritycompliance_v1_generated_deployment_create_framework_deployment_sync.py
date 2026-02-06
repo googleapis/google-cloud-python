@@ -47,9 +47,7 @@ def sample_create_framework_deployment():
     framework_deployment.cloud_control_metadata.cloud_control_details.name = (
         "name_value"
     )
-    framework_deployment.cloud_control_metadata.cloud_control_details.major_revision_id = (
-        1811
-    )
+    framework_deployment.cloud_control_metadata.cloud_control_details.major_revision_id = 1811
     framework_deployment.cloud_control_metadata.enforcement_mode = "AUDIT"
 
     request = cloudsecuritycompliance_v1.CreateFrameworkDeploymentRequest(

@@ -79,6 +79,7 @@ class EngineVersion(proto.Message):
                 Version is deprecated, listed for
                 informational purposes only.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         LIMITED = 2

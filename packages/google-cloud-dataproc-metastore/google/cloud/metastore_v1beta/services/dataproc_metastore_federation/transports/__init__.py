@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataprocMetastoreFederationTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataprocMetastoreFederationTransport]]
 _transport_registry["grpc"] = DataprocMetastoreFederationGrpcTransport
 _transport_registry["grpc_asyncio"] = DataprocMetastoreFederationGrpcAsyncIOTransport
 _transport_registry["rest"] = DataprocMetastoreFederationRestTransport

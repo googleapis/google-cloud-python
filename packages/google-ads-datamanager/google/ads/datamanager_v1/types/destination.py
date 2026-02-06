@@ -46,6 +46,7 @@ class Product(proto.Enum):
         DATA_PARTNER (4):
             Data Partner.
     """
+
     _pb_options = {"deprecated": True}
     PRODUCT_UNSPECIFIED = 0
     GOOGLE_ADS = 1
@@ -154,6 +155,7 @@ class ProductAccount(proto.Message):
             GOOGLE_ANALYTICS_PROPERTY (5):
                 Google Analytics.
         """
+
         ACCOUNT_TYPE_UNSPECIFIED = 0
         GOOGLE_ADS = 1
         DISPLAY_VIDEO_PARTNER = 2

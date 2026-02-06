@@ -62,6 +62,7 @@ class DataSource(proto.Message):
             BIGQUERY (2):
                 BigQuery service.
         """
+
         SERVICE_UNSPECIFIED = 0
         CLOUD_STORAGE = 1
         BIGQUERY = 2

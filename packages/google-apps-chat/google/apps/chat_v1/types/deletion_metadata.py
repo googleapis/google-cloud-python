@@ -67,6 +67,7 @@ class DeletionMetadata(proto.Message):
                 A member of the space deleted the message.
                 Users can delete messages sent by apps.
         """
+
         DELETION_TYPE_UNSPECIFIED = 0
         CREATOR = 1
         SPACE_OWNER = 2

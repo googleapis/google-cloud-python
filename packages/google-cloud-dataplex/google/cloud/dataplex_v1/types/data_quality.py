@@ -302,6 +302,7 @@ class DataQualityResult(proto.Message):
                         result to export (usually caused by scan
                         failed).
                 """
+
                 STATE_UNSPECIFIED = 0
                 SUCCEEDED = 1
                 FAILED = 2
@@ -788,6 +789,7 @@ class DataQualityRule(proto.Message):
                 MAX (3):
                     Evaluate the column max
             """
+
             STATISTIC_UNDEFINED = 0
             MEAN = 1
             MIN = 2

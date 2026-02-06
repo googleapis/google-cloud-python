@@ -49,6 +49,7 @@ class CreativeTemplateVariableUrlTypeEnum(proto.Message):
             STANDARD_HTTP (4):
                 Standard HTTP URL.
         """
+
         CREATIVE_TEMPLATE_VARIABLE_URL_TYPE_UNSPECIFIED = 0
         CLICK_TRACKER = 1
         DEEPLINK = 2

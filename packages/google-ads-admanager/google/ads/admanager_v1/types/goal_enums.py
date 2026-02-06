@@ -77,6 +77,7 @@ class GoalTypeEnum(proto.Message):
                 - [LineItemTypeEnum.LineItemType.ADMOB][]
                 - [LineItemTypeEnum.LineItemType.BUMPER][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.BUMPER]
         """
+
         GOAL_TYPE_UNSPECIFIED = 0
         NONE = 1
         LIFETIME = 2
@@ -139,6 +140,7 @@ class UnitTypeEnum(proto.Message):
                 must be
                 [LineItemTypeEnum.LineItemType.STANDARD][google.ads.admanager.v1.LineItemTypeEnum.LineItemType.STANDARD].
         """
+
         UNIT_TYPE_UNSPECIFIED = 0
         IMPRESSIONS = 1
         CLICKS = 2

@@ -282,6 +282,7 @@ class Control(proto.Message):
                         ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                         ``T24H``.
                 """
+
                 ATTRIBUTE_TYPE_UNSPECIFIED = 0
                 NUMERICAL = 1
                 FRESHNESS = 2
@@ -298,6 +299,7 @@ class Control(proto.Message):
                         Piecewise linear interpolation will be
                         applied.
                 """
+
                 INTERPOLATION_TYPE_UNSPECIFIED = 0
                 LINEAR = 1
 

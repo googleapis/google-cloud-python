@@ -16,22 +16,24 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service
@@ -3277,9 +3279,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseDeleteApiDeploymentRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api_deployment_revision(
                 request, metadata
@@ -3343,11 +3343,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             resp = self._interceptor.post_delete_api_deployment_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_api_deployment_revision_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_api_deployment_revision_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3551,9 +3550,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseDeleteApiSpecRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_api_spec_revision(
                 request, metadata
@@ -5085,9 +5082,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseListApiDeploymentRevisions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_api_deployment_revisions(
                 request, metadata
@@ -5151,11 +5146,10 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             resp = self._interceptor.post_list_api_deployment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_api_deployment_revisions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_api_deployment_revisions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6316,9 +6310,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseRollbackApiDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_rollback_api_deployment(
                 request, metadata
@@ -6651,9 +6643,7 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_http_options()
-            )
+            http_options = _BaseRegistryRestTransport._BaseTagApiDeploymentRevision._get_http_options()
 
             request, metadata = self._interceptor.pre_tag_api_deployment_revision(
                 request, metadata
@@ -7626,7 +7616,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteApiDeploymentRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteApiDeploymentRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_api_spec(
@@ -7729,7 +7721,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListApiDeploymentRevisions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListApiDeploymentRevisions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_api_deployments(
@@ -7829,7 +7823,9 @@ class RegistryRestTransport(_BaseRegistryRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._TagApiDeploymentRevision(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TagApiDeploymentRevision(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def tag_api_spec_revision(

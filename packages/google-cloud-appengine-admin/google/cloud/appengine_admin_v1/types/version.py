@@ -77,6 +77,7 @@ class InboundServiceType(proto.Enum):
         INBOUND_SERVICE_WARMUP (9):
             Enables warmup requests.
     """
+
     INBOUND_SERVICE_UNSPECIFIED = 0
     INBOUND_SERVICE_MAIL = 1
     INBOUND_SERVICE_MAIL_BOUNCE = 2
@@ -103,6 +104,7 @@ class ServingStatus(proto.Enum):
             settings are ignored until the state of the version changes
             to ``SERVING``.
     """
+
     SERVING_STATUS_UNSPECIFIED = 0
     SERVING = 1
     STOPPED = 2
@@ -556,6 +558,7 @@ class EndpointsApiService(proto.Message):
                 Endpoints service configuration ID will be
                 updated with each rollout.
         """
+
         UNSPECIFIED_ROLLOUT_STRATEGY = 0
         FIXED = 1
         MANAGED = 2
@@ -1051,6 +1054,7 @@ class VpcAccessConnector(proto.Message):
                 Use the VPC Access Connector for private IP
                 space from RFC1918.
         """
+
         EGRESS_SETTING_UNSPECIFIED = 0
         ALL_TRAFFIC = 1
         PRIVATE_IP_RANGES = 2

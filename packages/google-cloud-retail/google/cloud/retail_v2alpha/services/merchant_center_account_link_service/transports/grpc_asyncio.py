@@ -17,9 +17,13 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -27,12 +31,8 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
 
@@ -380,12 +380,12 @@ class MerchantCenterAccountLinkServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_merchant_center_account_links" not in self._stubs:
-            self._stubs[
-                "list_merchant_center_account_links"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/ListMerchantCenterAccountLinks",
-                request_serializer=merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest.serialize,
-                response_deserializer=merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.deserialize,
+            self._stubs["list_merchant_center_account_links"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/ListMerchantCenterAccountLinks",
+                    request_serializer=merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest.serialize,
+                    response_deserializer=merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.deserialize,
+                )
             )
         return self._stubs["list_merchant_center_account_links"]
 
@@ -413,12 +413,12 @@ class MerchantCenterAccountLinkServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_merchant_center_account_link" not in self._stubs:
-            self._stubs[
-                "create_merchant_center_account_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/CreateMerchantCenterAccountLink",
-                request_serializer=merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_merchant_center_account_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/CreateMerchantCenterAccountLink",
+                    request_serializer=merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_merchant_center_account_link"]
 
@@ -449,12 +449,12 @@ class MerchantCenterAccountLinkServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_merchant_center_account_link" not in self._stubs:
-            self._stubs[
-                "delete_merchant_center_account_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/DeleteMerchantCenterAccountLink",
-                request_serializer=merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_merchant_center_account_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.retail.v2alpha.MerchantCenterAccountLinkService/DeleteMerchantCenterAccountLink",
+                    request_serializer=merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_merchant_center_account_link"]
 

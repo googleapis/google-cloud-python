@@ -97,6 +97,7 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
                 DISABLED based on its closest non-inherited
                 ancestor module in the CRM hierarchy.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

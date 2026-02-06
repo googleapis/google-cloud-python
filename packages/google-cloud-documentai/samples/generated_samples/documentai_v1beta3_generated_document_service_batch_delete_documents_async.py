@@ -40,9 +40,7 @@ async def sample_batch_delete_documents():
 
     # Initialize request argument(s)
     dataset_documents = documentai_v1beta3.BatchDatasetDocuments()
-    dataset_documents.individual_document_ids.document_ids.gcs_managed_doc_id.gcs_uri = (
-        "gcs_uri_value"
-    )
+    dataset_documents.individual_document_ids.document_ids.gcs_managed_doc_id.gcs_uri = "gcs_uri_value"
 
     request = documentai_v1beta3.BatchDeleteDocumentsRequest(
         dataset="dataset_value",

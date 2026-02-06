@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GDCHardwareManagementTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GDCHardwareManagementTransport]]
 _transport_registry["grpc"] = GDCHardwareManagementGrpcTransport
 _transport_registry["grpc_asyncio"] = GDCHardwareManagementGrpcAsyncIOTransport
 _transport_registry["rest"] = GDCHardwareManagementRestTransport

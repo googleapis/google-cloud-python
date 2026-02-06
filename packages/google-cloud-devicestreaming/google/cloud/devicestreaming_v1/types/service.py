@@ -275,6 +275,7 @@ class DeviceSession(proto.Message):
                 internal reason, such as an infrastructure
                 failure.
         """
+
         SESSION_STATE_UNSPECIFIED = 0
         REQUESTED = 1
         PENDING = 2

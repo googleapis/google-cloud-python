@@ -103,6 +103,7 @@ class LocationFeature(proto.Enum):
             Site-to-site spokes are supported in this
             location
     """
+
     LOCATION_FEATURE_UNSPECIFIED = 0
     SITE_TO_CLOUD_SPOKES = 1
     SITE_TO_SITE_SPOKES = 2
@@ -128,6 +129,7 @@ class RouteType(proto.Enum):
             Gateway Protocol (BGP) advertisements received
             from an NCC hybrid spoke.
     """
+
     ROUTE_TYPE_UNSPECIFIED = 0
     VPC_PRIMARY_SUBNET = 1
     VPC_SECONDARY_SUBNET = 2
@@ -170,6 +172,7 @@ class State(proto.Enum):
             try to delete the resource later or contact
             support for help.
     """
+
     STATE_UNSPECIFIED = 0
     CREATING = 1
     ACTIVE = 2
@@ -202,6 +205,7 @@ class SpokeType(proto.Enum):
             Spokes that are backed by a producer VPC
             network.
     """
+
     SPOKE_TYPE_UNSPECIFIED = 0
     VPN_TUNNEL = 1
     INTERCONNECT_ATTACHMENT = 2
@@ -220,6 +224,7 @@ class PolicyMode(proto.Enum):
         PRESET (1):
             Hub uses one of the preset topologies.
     """
+
     POLICY_MODE_UNSPECIFIED = 0
     PRESET = 1
 
@@ -240,6 +245,7 @@ class PresetTopology(proto.Enum):
             ``edge``, are automatically created along with hub creation.
             Spokes have to join one of the groups during creation.
     """
+
     PRESET_TOPOLOGY_UNSPECIFIED = 0
     MESH = 2
     STAR = 3
@@ -527,6 +533,7 @@ class Spoke(proto.Message):
                     Network Connectivity Center encountered
                     errors while accepting the spoke update.
             """
+
             CODE_UNSPECIFIED = 0
             PENDING_REVIEW = 1
             REJECTED = 2
@@ -1235,6 +1242,7 @@ class ListHubSpokesRequest(proto.Message):
                 ``DETAILED`` view only when you set the ``spoke_locations``
                 field to ``[global]``.
         """
+
         SPOKE_VIEW_UNSPECIFIED = 0
         BASIC = 1
         DETAILED = 2
@@ -1503,6 +1511,7 @@ class PscPropagationStatus(proto.Message):
                 because the ``PSC_PROPAGATED_CONNECTIONS_PER_VPC_NETWORK``
                 quota in the consumer VPC network has been exceeded.
         """
+
         CODE_UNSPECIFIED = 0
         READY = 1
         PROPAGATING = 2
@@ -2827,12 +2836,12 @@ class SpokeSummary(proto.Message):
         number=2,
         message=SpokeStateCount,
     )
-    spoke_state_reason_counts: MutableSequence[
-        SpokeStateReasonCount
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=SpokeStateReasonCount,
+    spoke_state_reason_counts: MutableSequence[SpokeStateReasonCount] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=SpokeStateReasonCount,
+        )
     )
 
 

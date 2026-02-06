@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.cloudcontrolspartner_v1.types import (
@@ -809,9 +809,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_create_customer(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseCreateCustomer._get_transcoded_request(
@@ -957,9 +955,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_customer(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseDeleteCustomer._get_transcoded_request(
@@ -1072,9 +1068,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_get_customer(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetCustomer._get_transcoded_request(
@@ -1220,9 +1214,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetEkmConnections._get_http_options()
 
             request, metadata = self._interceptor.pre_get_ekm_connections(
                 request, metadata
@@ -1369,9 +1361,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
                     Message describing Partner resource
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_http_options()
 
             request, metadata = self._interceptor.pre_get_partner(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartner._get_transcoded_request(
@@ -1517,9 +1507,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetPartnerPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_get_partner_permissions(
                 request, metadata
@@ -1670,9 +1658,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workload(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseGetWorkload._get_transcoded_request(
@@ -1821,9 +1807,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListAccessApprovalRequests._get_http_options()
 
             request, metadata = self._interceptor.pre_list_access_approval_requests(
                 request, metadata
@@ -1889,11 +1873,10 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             resp = self._interceptor.post_list_access_approval_requests(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_access_approval_requests_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_access_approval_requests_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1977,9 +1960,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_customers(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListCustomers._get_transcoded_request(
@@ -2126,9 +2107,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workloads(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseListWorkloads._get_transcoded_request(
@@ -2278,9 +2257,7 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_http_options()
 
             request, metadata = self._interceptor.pre_update_customer(request, metadata)
             transcoded_request = _BaseCloudControlsPartnerCoreRestTransport._BaseUpdateCustomer._get_transcoded_request(
@@ -2443,7 +2420,9 @@ class CloudControlsPartnerCoreRestTransport(_BaseCloudControlsPartnerCoreRestTra
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAccessApprovalRequests(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAccessApprovalRequests(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_customers(

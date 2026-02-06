@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import host_project_registration_service
 
@@ -362,12 +362,12 @@ class HostProjectRegistrationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_host_project_registration" not in self._stubs:
-            self._stubs[
-                "create_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
-                request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+            self._stubs["create_host_project_registration"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.HostProjectRegistrationService/CreateHostProjectRegistration",
+                    request_serializer=host_project_registration_service.CreateHostProjectRegistrationRequest.serialize,
+                    response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+                )
             )
         return self._stubs["create_host_project_registration"]
 
@@ -393,12 +393,12 @@ class HostProjectRegistrationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_host_project_registration" not in self._stubs:
-            self._stubs[
-                "get_host_project_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
-                request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
-                response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+            self._stubs["get_host_project_registration"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.HostProjectRegistrationService/GetHostProjectRegistration",
+                    request_serializer=host_project_registration_service.GetHostProjectRegistrationRequest.serialize,
+                    response_deserializer=host_project_registration_service.HostProjectRegistration.deserialize,
+                )
             )
         return self._stubs["get_host_project_registration"]
 
@@ -427,12 +427,12 @@ class HostProjectRegistrationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_host_project_registrations" not in self._stubs:
-            self._stubs[
-                "list_host_project_registrations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
-                request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
-                response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
+            self._stubs["list_host_project_registrations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.HostProjectRegistrationService/ListHostProjectRegistrations",
+                    request_serializer=host_project_registration_service.ListHostProjectRegistrationsRequest.serialize,
+                    response_deserializer=host_project_registration_service.ListHostProjectRegistrationsResponse.deserialize,
+                )
             )
         return self._stubs["list_host_project_registrations"]
 

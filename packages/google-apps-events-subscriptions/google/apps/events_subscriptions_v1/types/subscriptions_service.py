@@ -265,12 +265,12 @@ class ListSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subscriptions: MutableSequence[
-        subscription_resource.Subscription
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=subscription_resource.Subscription,
+    subscriptions: MutableSequence[subscription_resource.Subscription] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=subscription_resource.Subscription,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -20,10 +20,10 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 from google.api_core import gapic_v1, path_template
 from google.protobuf import json_format
 
+from google.shopping.merchant_accounts_v1beta.types import account_tax
 from google.shopping.merchant_accounts_v1beta.types import (
     account_tax as gsma_account_tax,
 )
-from google.shopping.merchant_accounts_v1beta.types import account_tax
 
 from .base import DEFAULT_CLIENT_INFO, AccountTaxServiceTransport
 

@@ -29,7 +29,10 @@ from .app_connectors_service import (
     ReportStatusRequest,
     UpdateAppConnectorRequest,
 )
-from .resource_info import HealthStatus, ResourceInfo
+from .resource_info import (
+    HealthStatus,
+    ResourceInfo,
+)
 
 __all__ = (
     "AppConnectorInstanceConfig",

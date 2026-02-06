@@ -18,9 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
 import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.products.v1",
@@ -80,6 +80,7 @@ class SubscriptionPeriod(proto.Enum):
             Indicates that the subscription period is
             year.
     """
+
     SUBSCRIPTION_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     YEAR = 2
@@ -104,6 +105,7 @@ class AgeGroup(proto.Enum):
         NEWBORN (5):
             0-3 months old.
     """
+
     AGE_GROUP_UNSPECIFIED = 0
     ADULT = 1
     KIDS = 2
@@ -130,6 +132,7 @@ class Availability(proto.Enum):
         BACKORDER (5):
             Backorder.
     """
+
     AVAILABILITY_UNSPECIFIED = 0
     IN_STOCK = 1
     OUT_OF_STOCK = 2
@@ -155,6 +158,7 @@ class Condition(proto.Enum):
             comes with a warranty, may or may not have the
             original packaging.
     """
+
     CONDITION_UNSPECIFIED = 0
     NEW = 1
     USED = 2
@@ -176,6 +180,7 @@ class Gender(proto.Enum):
         UNISEX (3):
             Unisex.
     """
+
     GENDER_UNSPECIFIED = 0
     MALE = 1
     FEMALE = 2
@@ -193,6 +198,7 @@ class CreditType(proto.Enum):
         LEASE (2):
             Lease.
     """
+
     CREDIT_TYPE_UNSPECIFIED = 0
     FINANCE = 1
     LEASE = 2
@@ -229,6 +235,7 @@ class SizeSystem(proto.Enum):
         US (11):
             US.
     """
+
     SIZE_SYSTEM_UNSPECIFIED = 0
     AU = 1
     BR = 2
@@ -264,6 +271,7 @@ class SizeType(proto.Enum):
         PLUS (6):
             Plus size.
     """
+
     SIZE_TYPE_UNSPECIFIED = 0
     REGULAR = 1
     PETITE = 2
@@ -302,6 +310,7 @@ class EnergyEfficiencyClass(proto.Enum):
         G (10):
             G.
     """
+
     ENERGY_EFFICIENCY_CLASS_UNSPECIFIED = 0
     APPP = 1
     APP = 2
@@ -334,6 +343,7 @@ class PickupMethod(proto.Enum):
             The item is purchased online and shipped to a
             local store for the customer to pick up.
     """
+
     PICKUP_METHOD_UNSPECIFIED = 0
     NOT_SUPPORTED = 1
     BUY = 2
@@ -376,6 +386,7 @@ class PickupSla(proto.Enum):
             a store for a customer to pick up in one week or
             more.
     """
+
     PICKUP_SLA_UNSPECIFIED = 0
     SAME_DAY = 1
     NEXT_DAY = 2
@@ -404,6 +415,7 @@ class Pause(proto.Enum):
             Display Ads, local inventory ads, Buy on Google,
             and free listings).
     """
+
     PAUSE_UNSPECIFIED = 0
     ADS = 1
     ALL = 2
@@ -427,6 +439,7 @@ class CertificationAuthority(proto.Enum):
             European Commission for energy labels in the
             EU.
     """
+
     CERTIFICATION_AUTHORITY_UNSPECIFIED = 0
     ADEME = 1
     BMWK = 2
@@ -456,6 +469,7 @@ class CertificationName(proto.Enum):
             For the CO2 class of a vehicle with a
             discharged battery.
     """
+
     CERTIFICATION_NAME_UNSPECIFIED = 0
     ENERGY_STAR = 1
     ENERGY_STAR_MOST_EFFICIENT = 2
@@ -479,6 +493,7 @@ class DigitalSourceType(proto.Enum):
             Text NOT created algorithmically using a
             model derived from sampled content (the default)
     """
+
     DIGITAL_SOURCE_TYPE_UNSPECIFIED = 0
     TRAINED_ALGORITHMIC_MEDIA = 1
     DEFAULT = 2
@@ -571,6 +586,7 @@ class CarrierTransitTimeOption(proto.Enum):
         USPS_FIRST_CLASS_MAIL (39):
             USPS First Class Mail shipping service.
     """
+
     CARRIER_TRANSIT_TIME_OPTION_UNSPECIFIED = 0
     DHL_PAKET = 1
     DHL_PACKCHEN = 2
@@ -1215,6 +1231,7 @@ class ProductAttributes(proto.Message):
                 USPS Ground Advantage Commercial shipping
                 service.
         """
+
         CARRIER_PRICE_OPTION_UNSPECIFIED = 0
         AUSTRALIA_POST_REGULAR = 1
         AUSTRALIA_POST_EXPRESS = 2
@@ -1695,12 +1712,12 @@ class ProductAttributes(proto.Message):
         number=142,
         message=CarrierShipping,
     )
-    free_shipping_threshold: MutableSequence[
-        "FreeShippingThreshold"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=135,
-        message="FreeShippingThreshold",
+    free_shipping_threshold: MutableSequence["FreeShippingThreshold"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=135,
+            message="FreeShippingThreshold",
+        )
     )
     shipping_weight: "ShippingWeight" = proto.Field(
         proto.MESSAGE,
@@ -1894,19 +1911,19 @@ class ProductAttributes(proto.Message):
         number=75,
         optional=True,
     )
-    included_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=76,
-        enum=types.Destination.DestinationEnum,
+    included_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=76,
+            enum=types.Destination.DestinationEnum,
+        )
     )
-    excluded_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=77,
-        enum=types.Destination.DestinationEnum,
+    excluded_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=77,
+            enum=types.Destination.DestinationEnum,
+        )
     )
     shopping_ads_excluded_countries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1961,12 +1978,12 @@ class ProductAttributes(proto.Message):
         number=124,
         message=types.Price,
     )
-    sustainability_incentives: MutableSequence[
-        "ProductSustainabilityIncentive"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=138,
-        message="ProductSustainabilityIncentive",
+    sustainability_incentives: MutableSequence["ProductSustainabilityIncentive"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=138,
+            message="ProductSustainabilityIncentive",
+        )
     )
 
 
@@ -2729,6 +2746,7 @@ class ProductStatus(proto.Message):
                 DISAPPROVED (3):
                     Issue disapproves the product.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DEMOTED = 2
@@ -2943,6 +2961,7 @@ class ProductSustainabilityIncentive(proto.Message):
                 plug-in hybrids. The grant amount may be a fixed
                 sum or a percentage of the sale price.
         """
+
         TYPE_UNSPECIFIED = 0
         EV_TAX_CREDIT = 1
         EV_PRICE_DISCOUNT = 2

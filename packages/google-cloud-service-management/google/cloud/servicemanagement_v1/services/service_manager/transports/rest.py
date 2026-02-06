@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.api.service_pb2 as service_pb2  # type: ignore
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1294,9 +1296,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseCreateServiceConfig._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseCreateServiceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service_config(
                 request, metadata
@@ -1451,9 +1451,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseCreateServiceRollout._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseCreateServiceRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service_rollout(
                 request, metadata
@@ -1751,9 +1749,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseGenerateConfigReport._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseGenerateConfigReport._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_config_report(
                 request, metadata
@@ -2091,9 +2087,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseGetServiceConfig._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseGetServiceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service_config(
                 request, metadata
@@ -2244,9 +2238,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseGetServiceRollout._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseGetServiceRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service_rollout(
                 request, metadata
@@ -2393,9 +2385,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseListServiceConfigs._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseListServiceConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_service_configs(
                 request, metadata
@@ -2545,9 +2535,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseListServiceRollouts._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseListServiceRollouts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_service_rollouts(
                 request, metadata
@@ -2844,9 +2832,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseSubmitConfigSource._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseSubmitConfigSource._get_http_options()
 
             request, metadata = self._interceptor.pre_submit_config_source(
                 request, metadata
@@ -2997,9 +2983,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseUndeleteService._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseUndeleteService._get_http_options()
 
             request, metadata = self._interceptor.pre_undelete_service(
                 request, metadata
@@ -3554,9 +3538,7 @@ class ServiceManagerRestTransport(_BaseServiceManagerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseServiceManagerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseServiceManagerRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

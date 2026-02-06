@@ -16,19 +16,19 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.iap_v1.types import service
@@ -813,9 +813,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     A TunnelDestGroup.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseCreateTunnelDestGroup._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseCreateTunnelDestGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tunnel_dest_group(
                 request, metadata
@@ -963,9 +961,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseDeleteTunnelDestGroup._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseDeleteTunnelDestGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tunnel_dest_group(
                 request, metadata
@@ -1152,9 +1148,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1304,9 +1298,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     The IAP configurable settings.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIapSettings._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetIapSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iap_settings(
                 request, metadata
@@ -1453,9 +1445,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     A TunnelDestGroup.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetTunnelDestGroup._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseGetTunnelDestGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tunnel_dest_group(
                 request, metadata
@@ -1604,9 +1594,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseListTunnelDestGroups._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseListTunnelDestGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tunnel_dest_groups(
                 request, metadata
@@ -1829,9 +1817,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1984,9 +1970,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2138,9 +2122,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     The IAP configurable settings.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateIapSettings._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateIapSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_iap_settings(
                 request, metadata
@@ -2293,9 +2275,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
                     A TunnelDestGroup.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateTunnelDestGroup._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseUpdateTunnelDestGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tunnel_dest_group(
                 request, metadata
@@ -2451,9 +2431,7 @@ class IdentityAwareProxyAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyAdminServiceRestTransport._BaseValidateIapAttributeExpression._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyAdminServiceRestTransport._BaseValidateIapAttributeExpression._get_http_options()
 
             request, metadata = self._interceptor.pre_validate_iap_attribute_expression(
                 request, metadata
@@ -2517,11 +2495,10 @@ class IdentityAwareProxyAdminServiceRestTransport(
 
             resp = self._interceptor.post_validate_iap_attribute_expression(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_validate_iap_attribute_expression_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_validate_iap_attribute_expression_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2642,7 +2619,9 @@ class IdentityAwareProxyAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ValidateIapAttributeExpression(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ValidateIapAttributeExpression(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

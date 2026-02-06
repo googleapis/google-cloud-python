@@ -184,6 +184,7 @@ class Webhook(proto.Message):
                     other Google Cloud APIs after you grant required roles to
                     ``service-<PROJECT-NUMBER>@gcp-sa-dialogflow.iam.gserviceaccount.com``.
             """
+
             SERVICE_AGENT_AUTH_UNSPECIFIED = 0
             NONE = 1
             ID_TOKEN = 2
@@ -200,6 +201,7 @@ class Webhook(proto.Message):
                 FLEXIBLE (2):
                     Represents a flexible webhook.
             """
+
             WEBHOOK_TYPE_UNSPECIFIED = 0
             STANDARD = 1
             FLEXIBLE = 2
@@ -225,6 +227,7 @@ class Webhook(proto.Message):
                 OPTIONS (7):
                     HTTP OPTIONS Method.
             """
+
             HTTP_METHOD_UNSPECIFIED = 0
             POST = 1
             GET = 2
@@ -926,16 +929,17 @@ class WebhookResponse(proto.Message):
                     ``messages`` will replace the list of messages waiting to be
                     sent to the user.
             """
+
             MERGE_BEHAVIOR_UNSPECIFIED = 0
             APPEND = 1
             REPLACE = 2
 
-        messages: MutableSequence[
-            response_message.ResponseMessage
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=response_message.ResponseMessage,
+        messages: MutableSequence[response_message.ResponseMessage] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=response_message.ResponseMessage,
+            )
         )
         merge_behavior: "WebhookResponse.FulfillmentResponse.MergeBehavior" = (
             proto.Field(
@@ -1079,6 +1083,7 @@ class PageInfo(proto.Message):
                     FILLED (3):
                         Indicates that the parameter has a value.
                 """
+
                 PARAMETER_STATE_UNSPECIFIED = 0
                 EMPTY = 1
                 INVALID = 2
@@ -1107,12 +1112,12 @@ class PageInfo(proto.Message):
                 number=5,
             )
 
-        parameter_info: MutableSequence[
-            "PageInfo.FormInfo.ParameterInfo"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="PageInfo.FormInfo.ParameterInfo",
+        parameter_info: MutableSequence["PageInfo.FormInfo.ParameterInfo"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="PageInfo.FormInfo.ParameterInfo",
+            )
         )
 
     current_page: str = proto.Field(

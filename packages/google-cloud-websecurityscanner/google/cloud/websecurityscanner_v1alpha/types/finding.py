@@ -157,6 +157,7 @@ class Finding(proto.Message):
                 Mismatching values in a duplicate security
                 header.
         """
+
         FINDING_TYPE_UNSPECIFIED = 0
         MIXED_CONTENT = 1
         OUTDATED_LIBRARY = 2

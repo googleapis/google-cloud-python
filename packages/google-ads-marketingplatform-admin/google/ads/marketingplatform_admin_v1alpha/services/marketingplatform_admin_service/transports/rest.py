@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.ads.marketingplatform_admin_v1alpha.types import (
@@ -672,9 +672,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseCreateAnalyticsAccountLink._get_http_options()
 
             request, metadata = self._interceptor.pre_create_analytics_account_link(
                 request, metadata
@@ -743,11 +741,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_create_analytics_account_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_analytics_account_link_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_analytics_account_link_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -827,9 +824,7 @@ class MarketingplatformAdminServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseDeleteAnalyticsAccountLink._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_analytics_account_link(
                 request, metadata
@@ -947,15 +942,12 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_find_sales_partner_managed_clients(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_find_sales_partner_managed_clients(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMarketingplatformAdminServiceRestTransport._BaseFindSalesPartnerManagedClients._get_transcoded_request(
                 http_options, request
@@ -1023,11 +1015,10 @@ class MarketingplatformAdminServiceRestTransport(
 
             resp = self._interceptor.post_find_sales_partner_managed_clients(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_find_sales_partner_managed_clients_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_find_sales_partner_managed_clients_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1112,9 +1103,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseGetOrganization._get_http_options()
 
             request, metadata = self._interceptor.pre_get_organization(
                 request, metadata
@@ -1265,9 +1254,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListAnalyticsAccountLinks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_analytics_account_links(
                 request, metadata
@@ -1417,9 +1404,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseListOrganizations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_organizations(
                 request, metadata
@@ -1574,9 +1559,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseReportPropertyUsage._get_http_options()
 
             request, metadata = self._interceptor.pre_report_property_usage(
                 request, metadata
@@ -1737,9 +1720,7 @@ class MarketingplatformAdminServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
-            )
+            http_options = _BaseMarketingplatformAdminServiceRestTransport._BaseSetPropertyServiceLevel._get_http_options()
 
             request, metadata = self._interceptor.pre_set_property_service_level(
                 request, metadata
@@ -1847,7 +1828,9 @@ class MarketingplatformAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAnalyticsAccountLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAnalyticsAccountLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_analytics_account_link(
@@ -1857,7 +1840,9 @@ class MarketingplatformAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAnalyticsAccountLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAnalyticsAccountLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def find_sales_partner_managed_clients(
@@ -1868,7 +1853,9 @@ class MarketingplatformAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FindSalesPartnerManagedClients(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FindSalesPartnerManagedClients(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_organization(
@@ -1889,7 +1876,9 @@ class MarketingplatformAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAnalyticsAccountLinks(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAnalyticsAccountLinks(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_organizations(
@@ -1922,7 +1911,9 @@ class MarketingplatformAdminServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetPropertyServiceLevel(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetPropertyServiceLevel(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

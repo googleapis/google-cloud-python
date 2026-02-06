@@ -115,6 +115,7 @@ class CleanupPolicyCondition(proto.Message):
             ANY (3):
                 Applies to all versions.
         """
+
         TAG_STATE_UNSPECIFIED = 0
         TAGGED = 1
         UNTAGGED = 2
@@ -219,6 +220,7 @@ class CleanupPolicy(proto.Message):
             KEEP (2):
                 Keep action.
         """
+
         ACTION_UNSPECIFIED = 0
         DELETE = 1
         KEEP = 2
@@ -395,6 +397,7 @@ class RemoteRepositoryConfig(proto.Message):
                 DOCKER_HUB (1):
                     Docker Hub.
             """
+
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             DOCKER_HUB = 1
 
@@ -458,6 +461,7 @@ class RemoteRepositoryConfig(proto.Message):
                 MAVEN_CENTRAL (1):
                     Maven Central.
             """
+
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             MAVEN_CENTRAL = 1
 
@@ -525,6 +529,7 @@ class RemoteRepositoryConfig(proto.Message):
                 NPMJS (1):
                     npmjs.
             """
+
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             NPMJS = 1
 
@@ -592,6 +597,7 @@ class RemoteRepositoryConfig(proto.Message):
                 PYPI (1):
                     PyPI.
             """
+
             PUBLIC_REPOSITORY_UNSPECIFIED = 0
             PYPI = 1
 
@@ -671,6 +677,7 @@ class RemoteRepositoryConfig(proto.Message):
                     DEBIAN_SNAPSHOT (3):
                         Archived Debian.
                 """
+
                 REPOSITORY_BASE_UNSPECIFIED = 0
                 DEBIAN = 1
                 UBUNTU = 2
@@ -773,6 +780,7 @@ class RemoteRepositoryConfig(proto.Message):
                         Fedora Extra Packages for Enterprise Linux
                         (EPEL).
                 """
+
                 REPOSITORY_BASE_UNSPECIFIED = 0
                 CENTOS = 1
                 CENTOS_DEBUG = 2
@@ -1024,6 +1032,7 @@ class Repository(proto.Message):
             RUBY (12):
                 Ruby package format.
         """
+
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
         MAVEN = 2
@@ -1052,6 +1061,7 @@ class Repository(proto.Message):
                 A remote repository to serve artifacts from a
                 remote source.
         """
+
         MODE_UNSPECIFIED = 0
         STANDARD_REPOSITORY = 1
         VIRTUAL_REPOSITORY = 2
@@ -1086,6 +1096,7 @@ class Repository(proto.Message):
                     SNAPSHOT - repository will accept only
                     Snapshot versions.
             """
+
             VERSION_POLICY_UNSPECIFIED = 0
             RELEASE = 1
             SNAPSHOT = 2
@@ -1154,6 +1165,7 @@ class Repository(proto.Message):
                     No automatic vulnerability scanning will be
                     performed for this repository.
             """
+
             ENABLEMENT_CONFIG_UNSPECIFIED = 0
             INHERITED = 1
             DISABLED = 2
@@ -1176,6 +1188,7 @@ class Repository(proto.Message):
                     Vulnerability scanning is active for this
                     repository.
             """
+
             ENABLEMENT_STATE_UNSPECIFIED = 0
             SCANNING_UNSUPPORTED = 1
             SCANNING_DISABLED = 2

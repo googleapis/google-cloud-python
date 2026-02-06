@@ -96,6 +96,7 @@ class DeletionPropagationPolicy(proto.Enum):
             resources synced to the cluster will be
             abandoned.
     """
+
     DELETION_PROPAGATION_POLICY_UNSPECIFIED = 0
     FOREGROUND = 1
     ORPHAN = 2
@@ -456,6 +457,7 @@ class FleetPackage(proto.Message):
             SUSPENDED (2):
                 ``FleetPackage`` is intended to be suspended.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -716,6 +718,7 @@ class FleetPackageInfo(proto.Message):
             DELETING (4):
                 ``FleetPackage`` is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         SUSPENDED = 2
@@ -814,6 +817,7 @@ class ClusterInfo(proto.Message):
             SKIPPED (9):
                 Skipped state.
         """
+
         STATE_UNSPECIFIED = 0
         WAITING = 1
         IN_PROGRESS = 2
@@ -912,6 +916,7 @@ class ResourceBundleDeploymentInfo(proto.Message):
             DELETED (8):
                 Deleted state.
         """
+
         SYNC_STATE_UNSPECIFIED = 0
         RECONCILING = 1
         STALLED = 2
@@ -1472,6 +1477,7 @@ class Release(proto.Message):
                 indicates that the ``Release`` is now published (or
                 released) and immutable.
         """
+
         LIFECYCLE_UNSPECIFIED = 0
         DRAFT = 1
         PUBLISHED = 2
@@ -2187,6 +2193,7 @@ class RolloutInfo(proto.Message):
             ABORTING (8):
                 Rollout aborting.
         """
+
         STATE_UNSPECIFIED = 0
         COMPLETED = 1
         SUSPENDED = 2

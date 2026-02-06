@@ -92,6 +92,7 @@ class BackupConfigState(proto.Enum):
             The data source is no longer protected (but
             may have backups under it)
     """
+
     BACKUP_CONFIG_STATE_UNSPECIFIED = 0
     ACTIVE = 1
     PASSIVE = 2
@@ -112,6 +113,7 @@ class BackupView(proto.Enum):
             This is the default value (for both ListBackups
             and GetBackup).
     """
+
     BACKUP_VIEW_UNSPECIFIED = 0
     BACKUP_VIEW_BASIC = 1
     BACKUP_VIEW_FULL = 2
@@ -133,6 +135,7 @@ class BackupVaultView(proto.Enum):
             This is the default value (for both
             ListBackupVaults and GetBackupVault).
     """
+
     BACKUP_VAULT_VIEW_UNSPECIFIED = 0
     BACKUP_VAULT_VIEW_BASIC = 1
     BACKUP_VAULT_VIEW_FULL = 2
@@ -256,6 +259,7 @@ class BackupVault(proto.Message):
                 together and have the same value. Invalid update
                 requests will be rejected by the server.
         """
+
         BACKUP_RETENTION_INHERITANCE_UNSPECIFIED = 0
         INHERIT_VAULT_RETENTION = 1
         MATCH_BACKUP_EXPIRE_TIME = 2
@@ -279,6 +283,7 @@ class BackupVault(proto.Message):
             UPDATING (5):
                 The backup vault is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -307,6 +312,7 @@ class BackupVault(proto.Message):
                 current organization will be denied except for
                 backup appliance.
         """
+
         ACCESS_RESTRICTION_UNSPECIFIED = 0
         WITHIN_PROJECT = 1
         WITHIN_ORGANIZATION = 2
@@ -523,6 +529,7 @@ class DataSource(proto.Message):
                 The data source is experiencing an issue and
                 might be unusable.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -651,6 +658,7 @@ class BackupConfigInfo(proto.Message):
                 The most recent backup could not be
                 run/failed because of the lack of permissions
         """
+
         LAST_BACKUP_STATE_UNSPECIFIED = 0
         FIRST_BACKUP_PENDING = 1
         SUCCEEDED = 2
@@ -1211,6 +1219,7 @@ class Backup(proto.Message):
             UPLOADING (5):
                 The backup is being uploaded.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1231,6 +1240,7 @@ class Backup(proto.Message):
             ON_DEMAND_OPERATIONAL (3):
                 Operational backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         SCHEDULED = 1
         ON_DEMAND = 2

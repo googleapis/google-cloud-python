@@ -156,6 +156,7 @@ class Kubernetes(proto.Message):
                 CLUSTER_ROLE (2):
                     Kubernetes ClusterRole.
             """
+
             KIND_UNSPECIFIED = 0
             ROLE = 1
             CLUSTER_ROLE = 2
@@ -236,6 +237,7 @@ class Kubernetes(proto.Message):
                 GROUP (3):
                     Collection of users.
             """
+
             AUTH_TYPE_UNSPECIFIED = 0
             USER = 1
             SERVICEACCOUNT = 2

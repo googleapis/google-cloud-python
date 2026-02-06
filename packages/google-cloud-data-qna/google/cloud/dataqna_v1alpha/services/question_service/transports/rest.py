@@ -16,23 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
-from google.cloud.dataqna_v1alpha.types import question
+from google.cloud.dataqna_v1alpha.types import question, question_service, user_feedback
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
-from google.cloud.dataqna_v1alpha.types import question_service
-from google.cloud.dataqna_v1alpha.types import user_feedback
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseQuestionServiceRestTransport
@@ -528,9 +526,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_question(request, metadata)
             transcoded_request = _BaseQuestionServiceRestTransport._BaseCreateQuestion._get_transcoded_request(
@@ -683,9 +679,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseExecuteQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_execute_question(
                 request, metadata
@@ -984,9 +978,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                     Feedback provided by a user.
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseGetUserFeedback._get_http_options()
 
             request, metadata = self._interceptor.pre_get_user_feedback(
                 request, metadata
@@ -1132,9 +1124,7 @@ class QuestionServiceRestTransport(_BaseQuestionServiceRestTransport):
                     Feedback provided by a user.
             """
 
-            http_options = (
-                _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
-            )
+            http_options = _BaseQuestionServiceRestTransport._BaseUpdateUserFeedback._get_http_options()
 
             request, metadata = self._interceptor.pre_update_user_feedback(
                 request, metadata

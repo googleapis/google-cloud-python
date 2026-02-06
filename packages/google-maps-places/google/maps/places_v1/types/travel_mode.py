@@ -52,6 +52,7 @@ class TravelMode(proto.Enum):
             two-wheeled
             vehicles <https://developers.google.com/maps/documentation/routes/coverage-two-wheeled>`__.
     """
+
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1
     BICYCLE = 2

@@ -110,6 +110,7 @@ class AddressDescriptor(proto.Message):
                     Close to the landmark's structure but further
                     away from its street entrances.
             """
+
             NEAR = 0
             WITHIN = 1
             BESIDE = 2
@@ -187,6 +188,7 @@ class AddressDescriptor(proto.Message):
                     The target location is outside the area
                     region, but close by.
             """
+
             CONTAINMENT_UNSPECIFIED = 0
             WITHIN = 1
             OUTSKIRTS = 2

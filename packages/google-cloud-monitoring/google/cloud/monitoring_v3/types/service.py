@@ -641,6 +641,7 @@ class ServiceLevelObjective(proto.Message):
                 ``RequestBasedSli`` or ``WindowsBasedSli``, return the
                 ``ServiceLevelIndicator`` as it was provided.
         """
+
         VIEW_UNSPECIFIED = 0
         FULL = 2
         EXPLICIT = 1

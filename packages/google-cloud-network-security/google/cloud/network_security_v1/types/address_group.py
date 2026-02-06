@@ -87,6 +87,7 @@ class AddressGroup(proto.Message):
             IPV6 (2):
                 IP v6 ranges.
         """
+
         TYPE_UNSPECIFIED = 0
         IPV4 = 1
         IPV6 = 2
@@ -104,6 +105,7 @@ class AddressGroup(proto.Message):
             CLOUD_ARMOR (2):
                 Address Group is usable in Cloud Armor.
         """
+
         PURPOSE_UNSPECIFIED = 0
         DEFAULT = 1
         CLOUD_ARMOR = 2
@@ -610,12 +612,12 @@ class ListAddressGroupReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    address_group_references: MutableSequence[
-        AddressGroupReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=AddressGroupReference,
+    address_group_references: MutableSequence[AddressGroupReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=AddressGroupReference,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

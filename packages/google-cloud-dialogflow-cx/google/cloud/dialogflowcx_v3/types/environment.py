@@ -434,6 +434,7 @@ class ContinuousTestResult(proto.Message):
             FAILED (2):
                 At least one test did not pass.
         """
+
         AGGREGATED_TEST_RESULT_UNSPECIFIED = 0
         PASSED = 1
         FAILED = 2
@@ -553,12 +554,12 @@ class ListContinuousTestResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    continuous_test_results: MutableSequence[
-        "ContinuousTestResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ContinuousTestResult",
+    continuous_test_results: MutableSequence["ContinuousTestResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ContinuousTestResult",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

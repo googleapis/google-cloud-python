@@ -21,10 +21,10 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import (
     resource_allowance as gcb_resource_allowance,
 )
-from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import task
 
 __protobuf__ = proto.module(
@@ -601,12 +601,12 @@ class ListResourceAllowancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_allowances: MutableSequence[
-        gcb_resource_allowance.ResourceAllowance
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcb_resource_allowance.ResourceAllowance,
+    resource_allowances: MutableSequence[gcb_resource_allowance.ResourceAllowance] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcb_resource_allowance.ResourceAllowance,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

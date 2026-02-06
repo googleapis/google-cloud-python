@@ -17,20 +17,19 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.scheduler_v1 import gapic_version as package_version
-from google.cloud.scheduler_v1.types import cloudscheduler
-from google.cloud.scheduler_v1.types import job
+from google.cloud.scheduler_v1.types import cloudscheduler, job
 from google.cloud.scheduler_v1.types import job as gcs_job
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

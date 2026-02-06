@@ -16,21 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.kms_v1.types import hsm_management
@@ -911,15 +913,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseApproveSingleTenantHsmInstanceProposal._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseApproveSingleTenantHsmInstanceProposal._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_approve_single_tenant_hsm_instance_proposal(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_approve_single_tenant_hsm_instance_proposal(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseApproveSingleTenantHsmInstanceProposal._get_transcoded_request(
                 http_options, request
@@ -989,11 +988,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_approve_single_tenant_hsm_instance_proposal_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_approve_single_tenant_hsm_instance_proposal_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1081,9 +1079,7 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseCreateSingleTenantHsmInstance._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseCreateSingleTenantHsmInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_single_tenant_hsm_instance(
                 request, metadata
@@ -1152,11 +1148,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             resp = self._interceptor.post_create_single_tenant_hsm_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_single_tenant_hsm_instance_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_single_tenant_hsm_instance_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1244,15 +1239,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseCreateSingleTenantHsmInstanceProposal._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseCreateSingleTenantHsmInstanceProposal._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_single_tenant_hsm_instance_proposal(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_single_tenant_hsm_instance_proposal(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseCreateSingleTenantHsmInstanceProposal._get_transcoded_request(
                 http_options, request
@@ -1318,11 +1310,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_single_tenant_hsm_instance_proposal_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_single_tenant_hsm_instance_proposal_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1402,15 +1393,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseDeleteSingleTenantHsmInstanceProposal._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseDeleteSingleTenantHsmInstanceProposal._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_single_tenant_hsm_instance_proposal(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_single_tenant_hsm_instance_proposal(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseDeleteSingleTenantHsmInstanceProposal._get_transcoded_request(
                 http_options, request
@@ -1526,15 +1514,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseExecuteSingleTenantHsmInstanceProposal._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseExecuteSingleTenantHsmInstanceProposal._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_execute_single_tenant_hsm_instance_proposal(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_execute_single_tenant_hsm_instance_proposal(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseExecuteSingleTenantHsmInstanceProposal._get_transcoded_request(
                 http_options, request
@@ -1600,11 +1585,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_execute_single_tenant_hsm_instance_proposal_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_execute_single_tenant_hsm_instance_proposal_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1697,9 +1681,7 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseGetSingleTenantHsmInstance._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseGetSingleTenantHsmInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_single_tenant_hsm_instance(
                 request, metadata
@@ -1765,11 +1747,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             resp = self._interceptor.post_get_single_tenant_hsm_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_single_tenant_hsm_instance_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_single_tenant_hsm_instance_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1857,15 +1838,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseGetSingleTenantHsmInstanceProposal._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseGetSingleTenantHsmInstanceProposal._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_single_tenant_hsm_instance_proposal(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_single_tenant_hsm_instance_proposal(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseGetSingleTenantHsmInstanceProposal._get_transcoded_request(
                 http_options, request
@@ -1926,11 +1904,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             resp = self._interceptor.post_get_single_tenant_hsm_instance_proposal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_single_tenant_hsm_instance_proposal_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_single_tenant_hsm_instance_proposal_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2018,15 +1995,12 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseListSingleTenantHsmInstanceProposals._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseListSingleTenantHsmInstanceProposals._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_single_tenant_hsm_instance_proposals(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_single_tenant_hsm_instance_proposals(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseHsmManagementRestTransport._BaseListSingleTenantHsmInstanceProposals._get_transcoded_request(
                 http_options, request
@@ -2091,11 +2065,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_single_tenant_hsm_instance_proposals_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_single_tenant_hsm_instance_proposals_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2181,9 +2154,7 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseListSingleTenantHsmInstances._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseListSingleTenantHsmInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_single_tenant_hsm_instances(
                 request, metadata
@@ -2249,11 +2220,10 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
 
             resp = self._interceptor.post_list_single_tenant_hsm_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_single_tenant_hsm_instances_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_single_tenant_hsm_instances_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2291,7 +2261,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ApproveSingleTenantHsmInstanceProposal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ApproveSingleTenantHsmInstanceProposal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_single_tenant_hsm_instance(
@@ -2301,7 +2273,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSingleTenantHsmInstance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSingleTenantHsmInstance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_single_tenant_hsm_instance_proposal(
@@ -2312,7 +2286,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateSingleTenantHsmInstanceProposal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateSingleTenantHsmInstanceProposal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_single_tenant_hsm_instance_proposal(
@@ -2322,7 +2298,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteSingleTenantHsmInstanceProposal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteSingleTenantHsmInstanceProposal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def execute_single_tenant_hsm_instance_proposal(
@@ -2333,7 +2311,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExecuteSingleTenantHsmInstanceProposal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ExecuteSingleTenantHsmInstanceProposal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_single_tenant_hsm_instance(
@@ -2344,7 +2324,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSingleTenantHsmInstance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSingleTenantHsmInstance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_single_tenant_hsm_instance_proposal(
@@ -2355,7 +2337,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetSingleTenantHsmInstanceProposal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetSingleTenantHsmInstanceProposal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_single_tenant_hsm_instance_proposals(
@@ -2366,7 +2350,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSingleTenantHsmInstanceProposals(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSingleTenantHsmInstanceProposals(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_single_tenant_hsm_instances(
@@ -2377,7 +2363,9 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListSingleTenantHsmInstances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListSingleTenantHsmInstances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -3005,9 +2993,7 @@ class HsmManagementRestTransport(_BaseHsmManagementRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseHsmManagementRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseHsmManagementRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata

@@ -531,6 +531,7 @@ class DataAgentContext(proto.Message):
                 Using this version, DCS will use the latest
                 published context for the data agent.
         """
+
         CONTEXT_VERSION_UNSPECIFIED = 0
         STAGING = 1
         PUBLISHED = 2
@@ -824,6 +825,7 @@ class TextMessage(proto.Message):
                 the final answer to the user (``FINAL_RESPONSE``). These
                 messages provide insight into the agent's actions.
         """
+
         TEXT_TYPE_UNSPECIFIED = 0
         FINAL_RESPONSE = 1
         THOUGHT = 2
@@ -1434,6 +1436,7 @@ class ClarificationQuestion(proto.Message):
             MULTI_SELECT (2):
                 The user can select multiple options.
         """
+
         SELECTION_MODE_UNSPECIFIED = 0
         SINGLE_SELECT = 1
         MULTI_SELECT = 2
@@ -1454,6 +1457,7 @@ class ClarificationQuestion(proto.Message):
                 columns, Looker fields (dimensions/measures), or
                 nested data structure properties.
         """
+
         CLARIFICATION_QUESTION_TYPE_UNSPECIFIED = 0
         FILTER_VALUES = 1
         FIELDS = 2

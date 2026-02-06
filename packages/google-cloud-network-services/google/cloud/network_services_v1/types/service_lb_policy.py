@@ -98,6 +98,7 @@ class ServiceLbPolicy(proto.Message):
                 closest to the client, before spilling over to
                 other zones.
         """
+
         LOAD_BALANCING_ALGORITHM_UNSPECIFIED = 0
         SPRAY_TO_WORLD = 3
         SPRAY_TO_REGION = 4
@@ -116,6 +117,7 @@ class ServiceLbPolicy(proto.Message):
                 Traffic for this service will be isolated at
                 the cloud region level.
         """
+
         ISOLATION_GRANULARITY_UNSPECIFIED = 0
         REGION = 1
 
@@ -135,6 +137,7 @@ class ServiceLbPolicy(proto.Message):
                 available in the same region as the load
                 balancer.
         """
+
         ISOLATION_MODE_UNSPECIFIED = 0
         NEAREST = 1
         STRICT = 2

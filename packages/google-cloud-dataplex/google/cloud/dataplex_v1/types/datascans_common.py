@@ -48,6 +48,7 @@ class DataScanCatalogPublishingStatus(proto.Message):
             FAILED (2):
                 Publish to catalog failed.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

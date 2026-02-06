@@ -16,22 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
-from google.maps.mapsplatformdatasets_v1.types import dataset
+from google.maps.mapsplatformdatasets_v1.types import dataset, maps_platform_datasets
 from google.maps.mapsplatformdatasets_v1.types import dataset as gmm_dataset
-from google.maps.mapsplatformdatasets_v1.types import maps_platform_datasets
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseMapsPlatformDatasetsRestTransport
@@ -533,9 +532,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseCreateDataset._get_transcoded_request(
@@ -679,9 +676,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseDeleteDataset._get_transcoded_request(
@@ -793,9 +788,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseFetchDatasetErrors._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_dataset_errors(
                 request, metadata
@@ -948,9 +941,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseGetDataset._get_transcoded_request(
@@ -1094,9 +1085,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
                     Response object of ListDatasets.
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
             transcoded_request = _BaseMapsPlatformDatasetsRestTransport._BaseListDatasets._get_transcoded_request(
@@ -1245,9 +1234,7 @@ class MapsPlatformDatasetsRestTransport(_BaseMapsPlatformDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_http_options()
-            )
+            http_options = _BaseMapsPlatformDatasetsRestTransport._BaseUpdateDatasetMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_update_dataset_metadata(
                 request, metadata

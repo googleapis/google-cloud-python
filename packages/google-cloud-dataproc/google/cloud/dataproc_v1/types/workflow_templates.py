@@ -737,6 +737,7 @@ class WorkflowMetadata(proto.Message):
                 The operation is done; either cancelled or
                 completed.
         """
+
         UNKNOWN = 0
         PENDING = 1
         RUNNING = 2
@@ -887,6 +888,7 @@ class WorkflowNode(proto.Message):
                 The node failed. A node can be marked FAILED
                 because its ancestor or peer failed.
         """
+
         NODE_STATE_UNSPECIFIED = 0
         BLOCKED = 1
         RUNNABLE = 2

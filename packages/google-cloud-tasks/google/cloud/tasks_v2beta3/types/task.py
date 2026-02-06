@@ -201,6 +201,7 @@ class Task(proto.Message):
                 IAM <https://cloud.google.com/iam/>`__ permission on the
                 [Queue][google.cloud.tasks.v2beta3.Queue] resource.
         """
+
         VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

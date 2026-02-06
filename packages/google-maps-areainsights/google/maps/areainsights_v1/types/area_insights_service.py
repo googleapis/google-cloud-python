@@ -126,6 +126,7 @@ class Insight(proto.Enum):
                  ]
                }
     """
+
     INSIGHT_UNSPECIFIED = 0
     INSIGHT_COUNT = 1
     INSIGHT_PLACES = 2
@@ -146,6 +147,7 @@ class OperatingStatus(proto.Enum):
             The place is temporarily closed and expected
             to reopen in the future.
     """
+
     OPERATING_STATUS_UNSPECIFIED = 0
     OPERATING_STATUS_OPERATIONAL = 1
     OPERATING_STATUS_PERMANENTLY_CLOSED = 3
@@ -169,6 +171,7 @@ class PriceLevel(proto.Enum):
         PRICE_LEVEL_VERY_EXPENSIVE (5):
             Place provides very expensive services.
     """
+
     PRICE_LEVEL_UNSPECIFIED = 0
     PRICE_LEVEL_FREE = 1
     PRICE_LEVEL_INEXPENSIVE = 2

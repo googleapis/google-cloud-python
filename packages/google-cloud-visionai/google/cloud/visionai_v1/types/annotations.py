@@ -65,6 +65,7 @@ class StreamAnnotationType(proto.Enum):
             counts of people who goes acroos the line in Occupancy
             Analytic Processor.
     """
+
     STREAM_ANNOTATION_TYPE_UNSPECIFIED = 0
     STREAM_ANNOTATION_TYPE_ACTIVE_ZONE = 1
     STREAM_ANNOTATION_TYPE_CROSSING_LINE = 2

@@ -21,15 +21,17 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3beta1.types import (
+    advanced_settings,
+    example,
+    generative_settings,
+    parameter_definition,
+)
 from google.cloud.dialogflowcx_v3beta1.types import code_block as gcdc_code_block
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment as gcdc_fulfillment
 from google.cloud.dialogflowcx_v3beta1.types import (
     import_strategy as gcdc_import_strategy,
 )
-from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
-from google.cloud.dialogflowcx_v3beta1.types import example
-from google.cloud.dialogflowcx_v3beta1.types import generative_settings
-from google.cloud.dialogflowcx_v3beta1.types import parameter_definition
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -286,6 +288,7 @@ class Playbook(proto.Message):
             ROUTINE (3):
                 Routine playbook.
         """
+
         PLAYBOOK_TYPE_UNSPECIFIED = 0
         TASK = 1
         ROUTINE = 3
@@ -662,6 +665,7 @@ class ExportPlaybookRequest(proto.Message):
             JSON (2):
                 Flow content will be exported in JSON format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2

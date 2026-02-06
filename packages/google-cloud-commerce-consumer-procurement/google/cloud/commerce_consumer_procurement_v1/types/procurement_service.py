@@ -52,6 +52,7 @@ class AutoRenewalBehavior(proto.Enum):
             Auto Renewal will be disabled on
             subscription.
     """
+
     AUTO_RENEWAL_BEHAVIOR_UNSPECIFIED = 0
     AUTO_RENEWAL_BEHAVIOR_ENABLE = 1
     AUTO_RENEWAL_BEHAVIOR_DISABLE = 2
@@ -334,6 +335,7 @@ class CancelOrderRequest(proto.Message):
                 order is not subscription based, the request
                 will fail.
         """
+
         CANCELLATION_POLICY_UNSPECIFIED = 0
         CANCELLATION_POLICY_CANCEL_IMMEDIATELY = 1
         CANCELLATION_POLICY_CANCEL_AT_TERM_END = 2

@@ -317,6 +317,7 @@ class Batch(proto.Message):
                 The batch is no longer running due to an
                 error.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

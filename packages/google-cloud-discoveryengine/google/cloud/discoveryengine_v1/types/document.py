@@ -226,12 +226,12 @@ class Document(proto.Message):
                 number=2,
             )
 
-        readers: MutableSequence[
-            "Document.AclInfo.AccessRestriction"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Document.AclInfo.AccessRestriction",
+        readers: MutableSequence["Document.AclInfo.AccessRestriction"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Document.AclInfo.AccessRestriction",
+            )
         )
 
     class IndexStatus(proto.Message):

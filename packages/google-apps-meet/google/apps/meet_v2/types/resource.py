@@ -157,6 +157,7 @@ class SpaceConfig(proto.Message):
                 Only invitees can join without knocking.
                 Everyone else must knock.
         """
+
         ACCESS_TYPE_UNSPECIFIED = 0
         OPEN = 1
         TRUSTED = 2
@@ -179,6 +180,7 @@ class SpaceConfig(proto.Message):
                 Meet Embed SDK Web or mobile Meet SDKs to create
                 owned entry points.
         """
+
         ENTRY_POINT_ACCESS_UNSPECIFIED = 0
         ALL = 1
         CREATOR_APP_ONLY = 2
@@ -453,6 +455,7 @@ class Recording(proto.Message):
                 Recording file is generated and ready to
                 download.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         ENDED = 2
@@ -556,6 +559,7 @@ class Transcript(proto.Message):
                 Transcript file is generated and ready to
                 download.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         ENDED = 2

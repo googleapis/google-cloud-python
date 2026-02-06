@@ -210,6 +210,7 @@ class Backup(proto.Message):
                 This Backup resource (and its associated
                 artifacts) is in the process of being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         IN_PROGRESS = 2

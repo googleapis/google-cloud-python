@@ -19,36 +19,40 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
 from google.cloud.network_services_v1.types import (
+    endpoint_policy,
+    extensibility,
+    gateway,
+    grpc_route,
+    http_route,
+    mesh,
+    route_view,
+    service_binding,
+    service_lb_policy,
+    tcp_route,
+    tls_route,
+)
+from google.cloud.network_services_v1.types import (
     endpoint_policy as gcn_endpoint_policy,
 )
+from google.cloud.network_services_v1.types import gateway as gcn_gateway
+from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
+from google.cloud.network_services_v1.types import http_route as gcn_http_route
+from google.cloud.network_services_v1.types import mesh as gcn_mesh
 from google.cloud.network_services_v1.types import (
     service_binding as gcn_service_binding,
 )
 from google.cloud.network_services_v1.types import (
     service_lb_policy as gcn_service_lb_policy,
 )
-from google.cloud.network_services_v1.types import endpoint_policy
-from google.cloud.network_services_v1.types import extensibility
-from google.cloud.network_services_v1.types import gateway
-from google.cloud.network_services_v1.types import gateway as gcn_gateway
-from google.cloud.network_services_v1.types import grpc_route
-from google.cloud.network_services_v1.types import grpc_route as gcn_grpc_route
-from google.cloud.network_services_v1.types import http_route
-from google.cloud.network_services_v1.types import http_route as gcn_http_route
-from google.cloud.network_services_v1.types import mesh
-from google.cloud.network_services_v1.types import mesh as gcn_mesh
-from google.cloud.network_services_v1.types import route_view
-from google.cloud.network_services_v1.types import service_binding
-from google.cloud.network_services_v1.types import service_lb_policy
-from google.cloud.network_services_v1.types import tcp_route
 from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
-from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
 from .base import DEFAULT_CLIENT_INFO, NetworkServicesTransport

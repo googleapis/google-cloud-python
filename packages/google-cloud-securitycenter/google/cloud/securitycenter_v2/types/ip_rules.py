@@ -84,6 +84,7 @@ class IpRules(proto.Message):
             EGRESS (2):
                 Egress direction value.
         """
+
         DIRECTION_UNSPECIFIED = 0
         INGRESS = 1
         EGRESS = 2

@@ -599,6 +599,7 @@ class AssetReference(proto.Message):
                 The validation is done and the asset
                 reference is invalid.
         """
+
         ASSET_VALIDATION_STATE_UNSPECIFIED = 0
         PENDING = 1
         VALID = 2

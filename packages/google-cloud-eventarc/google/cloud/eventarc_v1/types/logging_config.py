@@ -74,6 +74,7 @@ class LoggingConfig(proto.Message):
             EMERGENCY (9):
                 One or more systems are unusable.
         """
+
         LOG_SEVERITY_UNSPECIFIED = 0
         NONE = 1
         DEBUG = 2

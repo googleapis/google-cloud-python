@@ -92,6 +92,7 @@ class Attachment(proto.Message):
             UPLOADED_CONTENT (2):
                 The file is uploaded to Chat.
         """
+
         SOURCE_UNSPECIFIED = 0
         DRIVE_FILE = 1
         UPLOADED_CONTENT = 2

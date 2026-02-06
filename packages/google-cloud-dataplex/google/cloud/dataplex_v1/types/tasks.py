@@ -286,6 +286,7 @@ class Task(proto.Message):
                 RECURRING (2):
                     The task is scheduled to run periodically.
             """
+
             TYPE_UNSPECIFIED = 0
             ON_DEMAND = 1
             RECURRING = 2
@@ -645,6 +646,7 @@ class Job(proto.Message):
             DATAPROC (1):
                 Dataproc service is used to run this job.
         """
+
         SERVICE_UNSPECIFIED = 0
         DATAPROC = 1
 
@@ -668,6 +670,7 @@ class Job(proto.Message):
                 The job was cancelled outside of Dataplex
                 Universal Catalog.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2
@@ -690,6 +693,7 @@ class Job(proto.Message):
                 The job was triggered by the explicit call of
                 Task API.
         """
+
         TRIGGER_UNSPECIFIED = 0
         TASK_CONFIG = 1
         RUN_REQUEST = 2

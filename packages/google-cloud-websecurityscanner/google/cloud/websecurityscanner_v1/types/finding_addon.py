@@ -228,6 +228,7 @@ class Xss(proto.Message):
                 third-party host via a URL that is
                 user-controllable
         """
+
         ATTACK_VECTOR_UNSPECIFIED = 0
         LOCAL_STORAGE = 1
         SESSION_STORAGE = 2
@@ -287,6 +288,7 @@ class Xxe(proto.Message):
                 The XML payload replaced the complete request
                 body.
         """
+
         LOCATION_UNSPECIFIED = 0
         COMPLETE_REQUEST_BODY = 1
 

@@ -21,9 +21,8 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.bare_metal_solution_v2.types import common
+from google.cloud.bare_metal_solution_v2.types import common, network, volume
 from google.cloud.bare_metal_solution_v2.types import lun as gcb_lun
-from google.cloud.bare_metal_solution_v2.types import network, volume
 
 __protobuf__ = proto.module(
     package="google.cloud.baremetalsolution.v2",
@@ -144,6 +143,7 @@ class Instance(proto.Message):
             SHUTDOWN (7):
                 The server is shutdown.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -532,6 +532,7 @@ class ServerNetworkTemplate(proto.Message):
                 NIC (2):
                     NIC interface type.
             """
+
             INTERFACE_TYPE_UNSPECIFIED = 0
             BOND = 1
             NIC = 2

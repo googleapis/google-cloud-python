@@ -17,37 +17,47 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
+from google.cloud.network_security_v1alpha1.types import (
+    authorization_policy,
+    authz_policy,
+    backend_authentication_config,
+    client_tls_policy,
+    gateway_security_policy,
+    gateway_security_policy_rule,
+    server_tls_policy,
+    tls_inspection_policy,
+    url_list,
+)
 from google.cloud.network_security_v1alpha1.types import (
     authorization_policy as gcn_authorization_policy,
 )
 from google.cloud.network_security_v1alpha1.types import (
     authz_policy as gcn_authz_policy,
 )
-from google.cloud.network_security_v1alpha1.types import backend_authentication_config
 from google.cloud.network_security_v1alpha1.types import (
     backend_authentication_config as gcn_backend_authentication_config,
 )
 from google.cloud.network_security_v1alpha1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy as gcn_gateway_security_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy_rule as gcn_gateway_security_policy_rule,
 )
@@ -58,12 +68,6 @@ from google.cloud.network_security_v1alpha1.types import (
     tls_inspection_policy as gcn_tls_inspection_policy,
 )
 from google.cloud.network_security_v1alpha1.types import url_list as gcn_url_list
-from google.cloud.network_security_v1alpha1.types import authorization_policy
-from google.cloud.network_security_v1alpha1.types import authz_policy
-from google.cloud.network_security_v1alpha1.types import client_tls_policy
-from google.cloud.network_security_v1alpha1.types import server_tls_policy
-from google.cloud.network_security_v1alpha1.types import tls_inspection_policy
-from google.cloud.network_security_v1alpha1.types import url_list
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -937,13 +941,19 @@ class NetworkSecurityTransport(abc.ABC):
     @property
     def cancel_operation(
         self,
-    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.CancelOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property
     def delete_operation(
         self,
-    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+    ) -> Callable[
+        [operations_pb2.DeleteOperationRequest],
+        None,
+    ]:
         raise NotImplementedError()
 
     @property

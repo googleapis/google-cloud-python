@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.maps.routeoptimization_v1.types import route_optimization_service
 
@@ -496,12 +496,12 @@ class RouteOptimizationGrpcTransport(RouteOptimizationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "optimize_tours_long_running" not in self._stubs:
-            self._stubs[
-                "optimize_tours_long_running"
-            ] = self._logged_channel.unary_unary(
-                "/google.maps.routeoptimization.v1.RouteOptimization/OptimizeToursLongRunning",
-                request_serializer=route_optimization_service.OptimizeToursRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["optimize_tours_long_running"] = (
+                self._logged_channel.unary_unary(
+                    "/google.maps.routeoptimization.v1.RouteOptimization/OptimizeToursLongRunning",
+                    request_serializer=route_optimization_service.OptimizeToursRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["optimize_tours_long_running"]
 

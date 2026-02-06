@@ -175,6 +175,7 @@ class Model(proto.Message):
                 The model is trained on tuned hyperparameters
                 and can be queried.
         """
+
         SERVING_STATE_UNSPECIFIED = 0
         INACTIVE = 1
         ACTIVE = 2
@@ -191,6 +192,7 @@ class Model(proto.Message):
             TRAINING (2):
                 The model is training.
         """
+
         TRAINING_STATE_UNSPECIFIED = 0
         PAUSED = 1
         TRAINING = 2
@@ -220,6 +222,7 @@ class Model(proto.Message):
                 disabled by calling the ``DisableModelPeriodicTuning``
                 method.
         """
+
         PERIODIC_TUNING_STATE_UNSPECIFIED = 0
         PERIODIC_TUNING_DISABLED = 1
         ALL_TUNING_DISABLED = 3
@@ -240,6 +243,7 @@ class Model(proto.Message):
                 data. Error messages can be queried via
                 Stackdriver.
         """
+
         DATA_STATE_UNSPECIFIED = 0
         DATA_OK = 1
         DATA_ERROR = 2
@@ -261,6 +265,7 @@ class Model(proto.Message):
                 the recommendation. Typically used on shopping
                 cart pages.
         """
+
         CONTEXT_PRODUCTS_TYPE_UNSPECIFIED = 0
         SINGLE_CONTEXT_PRODUCT = 1
         MULTIPLE_CONTEXT_PRODUCTS = 2
@@ -437,6 +442,7 @@ class Model(proto.Message):
                     - (home_page_ctr_no_diversity, home_page_ctr_no_diversity)
                     - (home_page_ctr_no_diversity, home_page_ctr_diversity)
             """
+
             RESTRICTION_UNSPECIFIED = 0
             NO_RESTRICTION = 1
             UNIQUE_SERVING_CONFIG_RESTRICTION = 2
@@ -489,12 +495,12 @@ class Model(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            candidates: MutableSequence[
-                "Model.PageOptimizationConfig.Candidate"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="Model.PageOptimizationConfig.Candidate",
+            candidates: MutableSequence["Model.PageOptimizationConfig.Candidate"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Model.PageOptimizationConfig.Candidate",
+                )
             )
             default_candidate: "Model.PageOptimizationConfig.Candidate" = proto.Field(
                 proto.MESSAGE,
@@ -506,12 +512,12 @@ class Model(proto.Message):
             proto.STRING,
             number=1,
         )
-        panels: MutableSequence[
-            "Model.PageOptimizationConfig.Panel"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="Model.PageOptimizationConfig.Panel",
+        panels: MutableSequence["Model.PageOptimizationConfig.Panel"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Model.PageOptimizationConfig.Panel",
+            )
         )
         restriction: "Model.PageOptimizationConfig.Restriction" = proto.Field(
             proto.ENUM,

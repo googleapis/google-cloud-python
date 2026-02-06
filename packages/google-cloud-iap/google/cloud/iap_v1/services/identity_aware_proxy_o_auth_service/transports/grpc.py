@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.iap_v1.types import service
 
@@ -435,12 +435,12 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_identity_aware_proxy_client" not in self._stubs:
-            self._stubs[
-                "create_identity_aware_proxy_client"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/CreateIdentityAwareProxyClient",
-                request_serializer=service.CreateIdentityAwareProxyClientRequest.serialize,
-                response_deserializer=service.IdentityAwareProxyClient.deserialize,
+            self._stubs["create_identity_aware_proxy_client"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/CreateIdentityAwareProxyClient",
+                    request_serializer=service.CreateIdentityAwareProxyClientRequest.serialize,
+                    response_deserializer=service.IdentityAwareProxyClient.deserialize,
+                )
             )
         return self._stubs["create_identity_aware_proxy_client"]
 
@@ -467,12 +467,12 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_identity_aware_proxy_clients" not in self._stubs:
-            self._stubs[
-                "list_identity_aware_proxy_clients"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/ListIdentityAwareProxyClients",
-                request_serializer=service.ListIdentityAwareProxyClientsRequest.serialize,
-                response_deserializer=service.ListIdentityAwareProxyClientsResponse.deserialize,
+            self._stubs["list_identity_aware_proxy_clients"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/ListIdentityAwareProxyClients",
+                    request_serializer=service.ListIdentityAwareProxyClientsRequest.serialize,
+                    response_deserializer=service.ListIdentityAwareProxyClientsResponse.deserialize,
+                )
             )
         return self._stubs["list_identity_aware_proxy_clients"]
 
@@ -499,12 +499,12 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_identity_aware_proxy_client" not in self._stubs:
-            self._stubs[
-                "get_identity_aware_proxy_client"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/GetIdentityAwareProxyClient",
-                request_serializer=service.GetIdentityAwareProxyClientRequest.serialize,
-                response_deserializer=service.IdentityAwareProxyClient.deserialize,
+            self._stubs["get_identity_aware_proxy_client"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/GetIdentityAwareProxyClient",
+                    request_serializer=service.GetIdentityAwareProxyClientRequest.serialize,
+                    response_deserializer=service.IdentityAwareProxyClient.deserialize,
+                )
             )
         return self._stubs["get_identity_aware_proxy_client"]
 
@@ -533,12 +533,12 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reset_identity_aware_proxy_client_secret" not in self._stubs:
-            self._stubs[
-                "reset_identity_aware_proxy_client_secret"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/ResetIdentityAwareProxyClientSecret",
-                request_serializer=service.ResetIdentityAwareProxyClientSecretRequest.serialize,
-                response_deserializer=service.IdentityAwareProxyClient.deserialize,
+            self._stubs["reset_identity_aware_proxy_client_secret"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/ResetIdentityAwareProxyClientSecret",
+                    request_serializer=service.ResetIdentityAwareProxyClientSecretRequest.serialize,
+                    response_deserializer=service.IdentityAwareProxyClient.deserialize,
+                )
             )
         return self._stubs["reset_identity_aware_proxy_client_secret"]
 
@@ -565,12 +565,12 @@ class IdentityAwareProxyOAuthServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_identity_aware_proxy_client" not in self._stubs:
-            self._stubs[
-                "delete_identity_aware_proxy_client"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/DeleteIdentityAwareProxyClient",
-                request_serializer=service.DeleteIdentityAwareProxyClientRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_identity_aware_proxy_client"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.iap.v1.IdentityAwareProxyOAuthService/DeleteIdentityAwareProxyClient",
+                    request_serializer=service.DeleteIdentityAwareProxyClientRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_identity_aware_proxy_client"]
 

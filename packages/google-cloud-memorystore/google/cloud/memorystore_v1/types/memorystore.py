@@ -80,6 +80,7 @@ class PscConnectionStatus(proto.Enum):
         NOT_FOUND (2):
             Connection not found
     """
+
     PSC_CONNECTION_STATUS_UNSPECIFIED = 0
     ACTIVE = 1
     NOT_FOUND = 2
@@ -101,6 +102,7 @@ class ConnectionType(proto.Enum):
             Connection that will be used as reader
             endpoint to access replicas.
     """
+
     CONNECTION_TYPE_UNSPECIFIED = 0
     CONNECTION_TYPE_DISCOVERY = 1
     CONNECTION_TYPE_PRIMARY = 2
@@ -297,6 +299,7 @@ class Instance(proto.Message):
             DELETING (4):
                 Instance is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -314,6 +317,7 @@ class Instance(proto.Message):
             IAM_AUTH (2):
                 IAM basic authorization.
         """
+
         AUTHORIZATION_MODE_UNSPECIFIED = 0
         AUTH_DISABLED = 1
         IAM_AUTH = 2
@@ -330,6 +334,7 @@ class Instance(proto.Message):
                 Server-managed encryption is used for
                 in-transit encryption.
         """
+
         TRANSIT_ENCRYPTION_MODE_UNSPECIFIED = 0
         TRANSIT_ENCRYPTION_DISABLED = 1
         SERVER_AUTHENTICATION = 2
@@ -351,6 +356,7 @@ class Instance(proto.Message):
             STANDARD_SMALL (4):
                 Standard small.
         """
+
         NODE_TYPE_UNSPECIFIED = 0
         SHARED_CORE_NANO = 1
         HIGHMEM_MEDIUM = 2
@@ -371,6 +377,7 @@ class Instance(proto.Message):
             CLUSTER_DISABLED (4):
                 Cluster mode is disabled for the instance.
         """
+
         MODE_UNSPECIFIED = 0
         STANDALONE = 1
         CLUSTER = 2
@@ -645,12 +652,12 @@ class Instance(proto.Message):
         number=20,
         message="PscAutoConnection",
     )
-    psc_attachment_details: MutableSequence[
-        "PscAttachmentDetail"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=21,
-        message="PscAttachmentDetail",
+    psc_attachment_details: MutableSequence["PscAttachmentDetail"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=21,
+            message="PscAttachmentDetail",
+        )
     )
     endpoints: MutableSequence[InstanceEndpoint] = proto.RepeatedField(
         proto.MESSAGE,
@@ -776,6 +783,7 @@ class AutomatedBackupConfig(proto.Message):
             ENABLED (2):
                 Automated backup config enabled.
         """
+
         AUTOMATED_BACKUP_MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -951,6 +959,7 @@ class Backup(proto.Message):
             AUTOMATED (2):
                 Automated backup.
         """
+
         BACKUP_TYPE_UNSPECIFIED = 0
         ON_DEMAND = 1
         AUTOMATED = 2
@@ -972,6 +981,7 @@ class Backup(proto.Message):
                 reasons like project deletion, billing account
                 closure, etc.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -1136,6 +1146,7 @@ class CrossInstanceReplicationConfig(proto.Message):
                 A instance that allows only reads and
                 replicates data from a primary instance.
         """
+
         INSTANCE_ROLE_UNSPECIFIED = 0
         NONE = 1
         PRIMARY = 2
@@ -1244,12 +1255,12 @@ class MaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "WeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message="WeeklyMaintenanceWindow",
+    weekly_maintenance_window: MutableSequence["WeeklyMaintenanceWindow"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="WeeklyMaintenanceWindow",
+        )
     )
 
 
@@ -1554,6 +1565,7 @@ class PersistenceConfig(proto.Message):
             AOF (3):
                 AOF based persistence is enabled.
         """
+
         PERSISTENCE_MODE_UNSPECIFIED = 0
         DISABLED = 1
         RDB = 2
@@ -1587,6 +1599,7 @@ class PersistenceConfig(proto.Message):
                 TWENTY_FOUR_HOURS (4):
                     Twenty four hours.
             """
+
             SNAPSHOT_PERIOD_UNSPECIFIED = 0
             ONE_HOUR = 1
             SIX_HOURS = 2
@@ -1630,6 +1643,7 @@ class PersistenceConfig(proto.Message):
                     appended to the AOF. The best data loss
                     protection at the cost of performance.
             """
+
             APPEND_FSYNC_UNSPECIFIED = 0
             NEVER = 1
             EVERY_SEC = 2
@@ -1698,6 +1712,7 @@ class ZoneDistributionConfig(proto.Message):
                 Provision resources in a single zone. Zone
                 field must be specified.
         """
+
         ZONE_DISTRIBUTION_MODE_UNSPECIFIED = 0
         MULTI_ZONE = 1
         SINGLE_ZONE = 2
@@ -1743,6 +1758,7 @@ class RescheduleMaintenanceRequest(proto.Message):
                 If the user wants to reschedule the
                 maintenance to a specific time.
         """
+
         RESCHEDULE_TYPE_UNSPECIFIED = 0
         IMMEDIATE = 1
         SPECIFIC_TIME = 3
@@ -2451,6 +2467,7 @@ class EncryptionInfo(proto.Message):
                 is managed by the customer. KMS key versions
                 will be populated.
         """
+
         TYPE_UNSPECIFIED = 0
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
@@ -2480,6 +2497,7 @@ class EncryptionInfo(proto.Message):
             UNKNOWN_FAILURE (8):
                 All other unknown failures.
         """
+
         KMS_KEY_STATE_UNSPECIFIED = 0
         ENABLED = 1
         PERMISSION_DENIED = 2

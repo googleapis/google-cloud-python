@@ -58,6 +58,7 @@ class WasmPluginView(proto.Enum):
             resource, the server's response includes the ``WasmPlugin``
             resource with all its versions.
     """
+
     WASM_PLUGIN_VIEW_UNSPECIFIED = 0
     WASM_PLUGIN_VIEW_BASIC = 1
     WASM_PLUGIN_VIEW_FULL = 2
@@ -286,6 +287,7 @@ class WasmPlugin(proto.Message):
                 CRITICAL (6):
                     Report logs with CRITICAL level only.
             """
+
             LOG_LEVEL_UNSPECIFIED = 0
             TRACE = 1
             DEBUG = 2

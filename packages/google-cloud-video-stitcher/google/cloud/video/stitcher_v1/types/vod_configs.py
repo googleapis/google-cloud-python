@@ -66,6 +66,7 @@ class VodConfig(proto.Message):
             DELETING (3):
                 VOD config is queued up for deletion.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

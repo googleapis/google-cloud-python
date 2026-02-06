@@ -247,12 +247,12 @@ class ListMetricDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metric_descriptors: MutableSequence[
-        metric_pb2.MetricDescriptor
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=metric_pb2.MetricDescriptor,
+    metric_descriptors: MutableSequence[metric_pb2.MetricDescriptor] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=metric_pb2.MetricDescriptor,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -405,6 +405,7 @@ class ListTimeSeriesRequest(proto.Message):
                 time series resource, but not the time series
                 data.
         """
+
         FULL = 0
         HEADERS = 1
 

@@ -73,6 +73,7 @@ class GenerateCredentialsRequest(proto.Message):
                 Generates a kubeconfig that is specifically
                 designed to work with Windows.
         """
+
         OPERATING_SYSTEM_UNSPECIFIED = 0
         OPERATING_SYSTEM_WINDOWS = 1
 

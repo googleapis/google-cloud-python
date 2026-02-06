@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.databasecenter_v1beta.types import service
 
@@ -399,12 +399,12 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_database_resource_groups" not in self._stubs:
-            self._stubs[
-                "query_database_resource_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryDatabaseResourceGroups",
-                request_serializer=service.QueryDatabaseResourceGroupsRequest.serialize,
-                response_deserializer=service.QueryDatabaseResourceGroupsResponse.deserialize,
+            self._stubs["query_database_resource_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryDatabaseResourceGroups",
+                    request_serializer=service.QueryDatabaseResourceGroupsRequest.serialize,
+                    response_deserializer=service.QueryDatabaseResourceGroupsResponse.deserialize,
+                )
             )
         return self._stubs["query_database_resource_groups"]
 

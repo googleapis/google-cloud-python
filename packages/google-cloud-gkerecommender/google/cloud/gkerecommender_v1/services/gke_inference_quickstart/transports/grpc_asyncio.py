@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gkerecommender_v1.types import gkerecommender
 
@@ -421,12 +421,12 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_model_server_versions" not in self._stubs:
-            self._stubs[
-                "fetch_model_server_versions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/FetchModelServerVersions",
-                request_serializer=gkerecommender.FetchModelServerVersionsRequest.serialize,
-                response_deserializer=gkerecommender.FetchModelServerVersionsResponse.deserialize,
+            self._stubs["fetch_model_server_versions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/FetchModelServerVersions",
+                    request_serializer=gkerecommender.FetchModelServerVersionsRequest.serialize,
+                    response_deserializer=gkerecommender.FetchModelServerVersionsResponse.deserialize,
+                )
             )
         return self._stubs["fetch_model_server_versions"]
 
@@ -496,12 +496,12 @@ class GkeInferenceQuickstartGrpcAsyncIOTransport(GkeInferenceQuickstartTransport
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_optimized_manifest" not in self._stubs:
-            self._stubs[
-                "generate_optimized_manifest"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/GenerateOptimizedManifest",
-                request_serializer=gkerecommender.GenerateOptimizedManifestRequest.serialize,
-                response_deserializer=gkerecommender.GenerateOptimizedManifestResponse.deserialize,
+            self._stubs["generate_optimized_manifest"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/GenerateOptimizedManifest",
+                    request_serializer=gkerecommender.GenerateOptimizedManifestRequest.serialize,
+                    response_deserializer=gkerecommender.GenerateOptimizedManifestResponse.deserialize,
+                )
             )
         return self._stubs["generate_optimized_manifest"]
 

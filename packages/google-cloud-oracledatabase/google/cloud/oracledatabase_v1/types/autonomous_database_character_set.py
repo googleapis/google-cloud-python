@@ -56,6 +56,7 @@ class AutonomousDatabaseCharacterSet(proto.Message):
             NATIONAL (2):
                 Character set type is set to national.
         """
+
         CHARACTER_SET_TYPE_UNSPECIFIED = 0
         DATABASE = 1
         NATIONAL = 2

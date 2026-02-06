@@ -229,6 +229,7 @@ class Engine(proto.Message):
                 TRAINING (2):
                     The engine is training.
             """
+
             TRAINING_STATE_UNSPECIFIED = 0
             PAUSED = 1
             TRAINING = 2

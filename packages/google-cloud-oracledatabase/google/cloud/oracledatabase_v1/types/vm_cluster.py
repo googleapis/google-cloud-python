@@ -253,6 +253,7 @@ class CloudVmClusterProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 Bring your own license
         """
+
         LICENSE_TYPE_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -268,6 +269,7 @@ class CloudVmClusterProperties(proto.Message):
             NORMAL (2):
                 Normal - 2 way mirror.
         """
+
         DISK_REDUNDANCY_UNSPECIFIED = 0
         HIGH = 1
         NORMAL = 2
@@ -300,6 +302,7 @@ class CloudVmClusterProperties(proto.Message):
                 Indicates that the resource is in maintenance
                 in progress state.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2

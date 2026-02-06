@@ -52,6 +52,7 @@ class OperationErrorType(proto.Enum):
         INTERNAL_ERROR (6):
             Any other internal error.
     """
+
     OPERATION_ERROR_TYPE_UNSPECIFIED = 0
     KMS_KEY_ERROR = 1
     DATABASE_ERROR = 2

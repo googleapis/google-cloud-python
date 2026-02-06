@@ -82,6 +82,7 @@ class IcebergCatalog(proto.Message):
                 Catalog type for Google Cloud Storage
                 Buckets.
         """
+
         CATALOG_TYPE_UNSPECIFIED = 0
         CATALOG_TYPE_GCS_BUCKET = 1
 
@@ -110,6 +111,7 @@ class IcebergCatalog(proto.Message):
                 https://github.com/apache/iceberg/blob/931865ecaf40a827f9081dddb675bf1c95c05461/open-api/rest-catalog-open-api.yaml#L1854
                 for more details.
         """
+
         CREDENTIAL_MODE_UNSPECIFIED = 0
         CREDENTIAL_MODE_END_USER = 1
         CREDENTIAL_MODE_VENDED_CREDENTIALS = 2
@@ -250,6 +252,7 @@ class ListIcebergCatalogsRequest(proto.Message):
             CATALOG_VIEW_FULL (2):
                 Include all fields of the catalog.
         """
+
         CATALOG_VIEW_UNSPECIFIED = 0
         CATALOG_VIEW_BASIC = 1
         CATALOG_VIEW_FULL = 2

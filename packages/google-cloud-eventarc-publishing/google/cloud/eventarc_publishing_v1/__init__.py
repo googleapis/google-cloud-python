@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.publisher import PublisherAsyncClient, PublisherClient
 from .types.cloud_event import CloudEvent
 from .types.publisher import (

@@ -60,6 +60,7 @@ class CalendarPeriod(proto.Enum):
         DAY (5):
             The day starts at 12:00am.
     """
+
     CALENDAR_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     QUARTER = 2
@@ -79,6 +80,7 @@ class ResourceAllowanceState(proto.Enum):
         RESOURCE_ALLOWANCE_DEPLETED (2):
             ResourceAllowance limit is reached.
     """
+
     RESOURCE_ALLOWANCE_STATE_UNSPECIFIED = 0
     RESOURCE_ALLOWANCE_ACTIVE = 1
     RESOURCE_ALLOWANCE_DEPLETED = 2

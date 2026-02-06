@@ -94,6 +94,7 @@ class Version(proto.Message):
             FAILED (3):
                 Version training failed.
         """
+
         VERSION_STATUS_UNSPECIFIED = 0
         IN_PROGRESS = 1
         READY = 2

@@ -137,6 +137,7 @@ class Event(proto.Message):
             INGEST (2):
                 Use the timestamp when the data is received.
         """
+
         CLOCK_UNSPECIFIED = 0
         CAPTURE = 1
         INGEST = 2

@@ -26,40 +26,38 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1.types import (
     attack_path,
     bigquery_export,
     effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
+    event_threat_detection_custom_module_validation_errors,
+    folder,
+    security_health_analytics_custom_config,
+    valued_resource,
 )
 from google.cloud.securitycenter_v1.types import (
     event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
-from google.cloud.securitycenter_v1.types import (
-    event_threat_detection_custom_module_validation_errors,
-)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
 from google.cloud.securitycenter_v1.types import (
     organization_settings as gcs_organization_settings,
 )
+from google.cloud.securitycenter_v1.types import resource as gcs_resource
 from google.cloud.securitycenter_v1.types import (
     resource_value_config as gcs_resource_value_config,
 )
-from google.cloud.securitycenter_v1.types import security_health_analytics_custom_config
 from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import asset as gcs_asset
-from google.cloud.securitycenter_v1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1.types import folder
-from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v1.types import resource as gcs_resource
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.cloud.securitycenter_v1.types import valued_resource
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
@@ -211,6 +209,7 @@ class BulkMuteFindingsRequest(proto.Message):
                 Matching findings will have their mute state
                 cleared.
         """
+
         MUTE_STATE_UNSPECIFIED = 0
         MUTED = 1
         UNDEFINED = 2
@@ -1422,12 +1421,12 @@ class ListValuedResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    valued_resources: MutableSequence[
-        valued_resource.ValuedResource
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=valued_resource.ValuedResource,
+    valued_resources: MutableSequence[valued_resource.ValuedResource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=valued_resource.ValuedResource,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -2113,6 +2112,7 @@ class ListAssetsResponse(proto.Message):
                 ACTIVE (3):
                     Asset was present at both point(s) in time.
             """
+
             UNUSED = 0
             ADDED = 1
             REMOVED = 2
@@ -2410,6 +2410,7 @@ class ListFindingsResponse(proto.Message):
                     The finding at timestamp does not match the filter
                     specified, but it did at timestamp - compare_duration.
             """
+
             UNUSED = 0
             CHANGED = 1
             UNCHANGED = 2
@@ -3141,12 +3142,12 @@ class ListBigQueryExportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    big_query_exports: MutableSequence[
-        bigquery_export.BigQueryExport
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=bigquery_export.BigQueryExport,
+    big_query_exports: MutableSequence[bigquery_export.BigQueryExport] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=bigquery_export.BigQueryExport,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

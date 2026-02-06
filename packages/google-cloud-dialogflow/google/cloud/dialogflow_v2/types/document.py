@@ -156,6 +156,7 @@ class Document(proto.Message):
                 The document contains agent-facing Smart
                 Reply entries.
         """
+
         KNOWLEDGE_TYPE_UNSPECIFIED = 0
         FAQ = 1
         EXTRACTIVE_QA = 2
@@ -179,6 +180,7 @@ class Document(proto.Message):
             DELETING (5):
                 The document deletion is in progress.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -673,6 +675,7 @@ class KnowledgeOperationMetadata(proto.Message):
                 The operation is done, either cancelled or
                 completed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

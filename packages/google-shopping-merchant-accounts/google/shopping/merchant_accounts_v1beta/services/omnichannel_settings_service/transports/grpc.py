@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_accounts_v1beta.types import omnichannelsettings
 
@@ -406,12 +406,12 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_omnichannel_setting" not in self._stubs:
-            self._stubs[
-                "create_omnichannel_setting"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/CreateOmnichannelSetting",
-                request_serializer=omnichannelsettings.CreateOmnichannelSettingRequest.serialize,
-                response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
+            self._stubs["create_omnichannel_setting"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/CreateOmnichannelSetting",
+                    request_serializer=omnichannelsettings.CreateOmnichannelSettingRequest.serialize,
+                    response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
+                )
             )
         return self._stubs["create_omnichannel_setting"]
 
@@ -438,12 +438,12 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_omnichannel_setting" not in self._stubs:
-            self._stubs[
-                "update_omnichannel_setting"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/UpdateOmnichannelSetting",
-                request_serializer=omnichannelsettings.UpdateOmnichannelSettingRequest.serialize,
-                response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
+            self._stubs["update_omnichannel_setting"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/UpdateOmnichannelSetting",
+                    request_serializer=omnichannelsettings.UpdateOmnichannelSettingRequest.serialize,
+                    response_deserializer=omnichannelsettings.OmnichannelSetting.deserialize,
+                )
             )
         return self._stubs["update_omnichannel_setting"]
 
@@ -470,12 +470,12 @@ class OmnichannelSettingsServiceGrpcTransport(OmnichannelSettingsServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "request_inventory_verification" not in self._stubs:
-            self._stubs[
-                "request_inventory_verification"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/RequestInventoryVerification",
-                request_serializer=omnichannelsettings.RequestInventoryVerificationRequest.serialize,
-                response_deserializer=omnichannelsettings.RequestInventoryVerificationResponse.deserialize,
+            self._stubs["request_inventory_verification"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService/RequestInventoryVerification",
+                    request_serializer=omnichannelsettings.RequestInventoryVerificationRequest.serialize,
+                    response_deserializer=omnichannelsettings.RequestInventoryVerificationResponse.deserialize,
+                )
             )
         return self._stubs["request_inventory_verification"]
 

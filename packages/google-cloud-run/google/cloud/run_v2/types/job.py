@@ -670,6 +670,7 @@ class ExecutionReference(proto.Message):
             EXECUTION_CANCELLED (5):
                 Job execution has been cancelled by the user.
         """
+
         COMPLETION_STATUS_UNSPECIFIED = 0
         EXECUTION_SUCCEEDED = 1
         EXECUTION_FAILED = 2

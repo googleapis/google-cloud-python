@@ -16,24 +16,26 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.network_security_v1.types import address_group as gcn_address_group
 from google.cloud.network_security_v1.types import address_group
+from google.cloud.network_security_v1.types import address_group as gcn_address_group
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOrganizationAddressGroupServiceRestTransport
@@ -1043,9 +1045,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseAddAddressGroupItems._get_http_options()
 
             request, metadata = self._interceptor.pre_add_address_group_items(
                 request, metadata
@@ -1200,9 +1200,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCloneAddressGroupItems._get_http_options()
 
             request, metadata = self._interceptor.pre_clone_address_group_items(
                 request, metadata
@@ -1357,9 +1355,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCreateAddressGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_address_group(
                 request, metadata
@@ -1513,9 +1509,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteAddressGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_address_group(
                 request, metadata
@@ -1662,9 +1656,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetAddressGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_address_group(
                 request, metadata
@@ -1815,9 +1807,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroupReferences._get_http_options()
 
             request, metadata = self._interceptor.pre_list_address_group_references(
                 request, metadata
@@ -1881,11 +1871,10 @@ class OrganizationAddressGroupServiceRestTransport(
 
             resp = self._interceptor.post_list_address_group_references(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_address_group_references_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_address_group_references_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1974,9 +1963,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListAddressGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_address_groups(
                 request, metadata
@@ -2131,9 +2118,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseRemoveAddressGroupItems._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_address_group_items(
                 request, metadata
@@ -2288,9 +2273,7 @@ class OrganizationAddressGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseUpdateAddressGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_address_group(
                 request, metadata
@@ -2401,7 +2384,9 @@ class OrganizationAddressGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CloneAddressGroupItems(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CloneAddressGroupItems(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_address_group(
@@ -2438,7 +2423,9 @@ class OrganizationAddressGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAddressGroupReferences(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAddressGroupReferences(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_address_groups(
@@ -2459,7 +2446,9 @@ class OrganizationAddressGroupServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveAddressGroupItems(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveAddressGroupItems(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_address_group(
@@ -2529,9 +2518,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -2672,9 +2659,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -2813,9 +2798,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2955,9 +2938,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -3104,9 +3085,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3250,9 +3229,7 @@ class OrganizationAddressGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3370,9 +3347,7 @@ class OrganizationAddressGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3488,9 +3463,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3629,9 +3602,7 @@ class OrganizationAddressGroupServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrganizationAddressGroupServiceRestTransport._BaseListOperations._get_transcoded_request(

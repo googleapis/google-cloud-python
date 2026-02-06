@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
 
@@ -514,12 +514,12 @@ class AwsClustersGrpcTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_aws_cluster_agent_token" not in self._stubs:
-            self._stubs[
-                "generate_aws_cluster_agent_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
-                request_serializer=aws_service.GenerateAwsClusterAgentTokenRequest.serialize,
-                response_deserializer=aws_service.GenerateAwsClusterAgentTokenResponse.deserialize,
+            self._stubs["generate_aws_cluster_agent_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AwsClusters/GenerateAwsClusterAgentToken",
+                    request_serializer=aws_service.GenerateAwsClusterAgentTokenRequest.serialize,
+                    response_deserializer=aws_service.GenerateAwsClusterAgentTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_aws_cluster_agent_token"]
 
@@ -639,12 +639,12 @@ class AwsClustersGrpcTransport(AwsClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_aws_node_pool_update" not in self._stubs:
-            self._stubs[
-                "rollback_aws_node_pool_update"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
-                request_serializer=aws_service.RollbackAwsNodePoolUpdateRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["rollback_aws_node_pool_update"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AwsClusters/RollbackAwsNodePoolUpdate",
+                    request_serializer=aws_service.RollbackAwsNodePoolUpdateRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["rollback_aws_node_pool_update"]
 

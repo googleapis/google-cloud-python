@@ -119,6 +119,7 @@ class UserEvent(proto.Message):
                 The event is ingested via Import user events
                 API.
         """
+
         EVENT_SOURCE_UNSPECIFIED = 0
         AUTOML = 1
         ECOMMERCE = 2
@@ -368,12 +369,12 @@ class ProductEventDetail(proto.Message):
         proto.STRING,
         number=1,
     )
-    page_categories: MutableSequence[
-        catalog.CatalogItem.CategoryHierarchy
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=catalog.CatalogItem.CategoryHierarchy,
+    page_categories: MutableSequence[catalog.CatalogItem.CategoryHierarchy] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=catalog.CatalogItem.CategoryHierarchy,
+        )
     )
     product_details: MutableSequence["ProductDetail"] = proto.RepeatedField(
         proto.MESSAGE,

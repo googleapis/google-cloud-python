@@ -129,6 +129,7 @@ class ConversationModel(proto.Message):
                 until there is enough capacity to start
                 training.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UNDEPLOYED = 2
@@ -150,6 +151,7 @@ class ConversationModel(proto.Message):
             SMART_REPLY_BERT_MODEL (6):
                 ModelType smart reply bert model.
         """
+
         MODEL_TYPE_UNSPECIFIED = 0
         SMART_REPLY_DUAL_ENCODER_MODEL = 2
         SMART_REPLY_BERT_MODEL = 6
@@ -684,12 +686,12 @@ class ListConversationModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_model_evaluations: MutableSequence[
-        "ConversationModelEvaluation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ConversationModelEvaluation",
+    conversation_model_evaluations: MutableSequence["ConversationModelEvaluation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ConversationModelEvaluation",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -762,6 +764,7 @@ class CreateConversationModelOperationMetadata(proto.Message):
             TRAINING (6):
                 Custom model is training.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SUCCEEDED = 2
@@ -927,6 +930,7 @@ class CreateConversationModelEvaluationOperationMetadata(proto.Message):
             FAILED (5):
                 The operation has failed.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         RUNNING = 2

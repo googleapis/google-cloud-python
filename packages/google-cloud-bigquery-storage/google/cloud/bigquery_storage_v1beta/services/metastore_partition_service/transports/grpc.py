@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.bigquery_storage_v1beta.types import metastore_partition
 
@@ -348,12 +348,12 @@ class MetastorePartitionServiceGrpcTransport(MetastorePartitionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_metastore_partitions" not in self._stubs:
-            self._stubs[
-                "batch_create_metastore_partitions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchCreateMetastorePartitions",
-                request_serializer=metastore_partition.BatchCreateMetastorePartitionsRequest.serialize,
-                response_deserializer=metastore_partition.BatchCreateMetastorePartitionsResponse.deserialize,
+            self._stubs["batch_create_metastore_partitions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchCreateMetastorePartitions",
+                    request_serializer=metastore_partition.BatchCreateMetastorePartitionsRequest.serialize,
+                    response_deserializer=metastore_partition.BatchCreateMetastorePartitionsResponse.deserialize,
+                )
             )
         return self._stubs["batch_create_metastore_partitions"]
 
@@ -379,12 +379,12 @@ class MetastorePartitionServiceGrpcTransport(MetastorePartitionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_delete_metastore_partitions" not in self._stubs:
-            self._stubs[
-                "batch_delete_metastore_partitions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchDeleteMetastorePartitions",
-                request_serializer=metastore_partition.BatchDeleteMetastorePartitionsRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["batch_delete_metastore_partitions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchDeleteMetastorePartitions",
+                    request_serializer=metastore_partition.BatchDeleteMetastorePartitionsRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["batch_delete_metastore_partitions"]
 
@@ -411,12 +411,12 @@ class MetastorePartitionServiceGrpcTransport(MetastorePartitionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_metastore_partitions" not in self._stubs:
-            self._stubs[
-                "batch_update_metastore_partitions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchUpdateMetastorePartitions",
-                request_serializer=metastore_partition.BatchUpdateMetastorePartitionsRequest.serialize,
-                response_deserializer=metastore_partition.BatchUpdateMetastorePartitionsResponse.deserialize,
+            self._stubs["batch_update_metastore_partitions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/BatchUpdateMetastorePartitions",
+                    request_serializer=metastore_partition.BatchUpdateMetastorePartitionsRequest.serialize,
+                    response_deserializer=metastore_partition.BatchUpdateMetastorePartitionsResponse.deserialize,
+                )
             )
         return self._stubs["batch_update_metastore_partitions"]
 
@@ -478,12 +478,12 @@ class MetastorePartitionServiceGrpcTransport(MetastorePartitionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stream_metastore_partitions" not in self._stubs:
-            self._stubs[
-                "stream_metastore_partitions"
-            ] = self._logged_channel.stream_stream(
-                "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/StreamMetastorePartitions",
-                request_serializer=metastore_partition.StreamMetastorePartitionsRequest.serialize,
-                response_deserializer=metastore_partition.StreamMetastorePartitionsResponse.deserialize,
+            self._stubs["stream_metastore_partitions"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.bigquery.storage.v1beta.MetastorePartitionService/StreamMetastorePartitions",
+                    request_serializer=metastore_partition.StreamMetastorePartitionsRequest.serialize,
+                    response_deserializer=metastore_partition.StreamMetastorePartitionsResponse.deserialize,
+                )
             )
         return self._stubs["stream_metastore_partitions"]
 

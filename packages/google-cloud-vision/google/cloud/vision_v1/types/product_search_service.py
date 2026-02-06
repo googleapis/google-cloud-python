@@ -1019,6 +1019,7 @@ class BatchOperationMetadata(proto.Message):
                 processed before the cancel command are output
                 as specified in the request.
         """
+
         STATE_UNSPECIFIED = 0
         PROCESSING = 1
         SUCCESSFUL = 2

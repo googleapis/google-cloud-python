@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,11 +43,16 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -1063,10 +1068,9 @@ def test_terms_of_service_agreement_state_service_client_get_mtls_endpoint_and_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1111,10 +1115,9 @@ def test_terms_of_service_agreement_state_service_client_get_mtls_endpoint_and_c
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1150,10 +1153,9 @@ def test_terms_of_service_agreement_state_service_client_get_mtls_endpoint_and_c
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1423,9 +1425,7 @@ def test_terms_of_service_agreement_state_service_client_create_channel_credenti
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1849,9 +1849,7 @@ def test_retrieve_for_application_terms_of_service_agreement_state(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1896,10 +1894,11 @@ def test_retrieve_for_application_terms_of_service_agreement_state_non_empty_req
         )
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest(
-            parent="parent_value",
+        assert (
+            args[0]
+            == termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest(
+                parent="parent_value",
+            )
         )
 
 
@@ -2023,9 +2022,7 @@ async def test_retrieve_for_application_terms_of_service_agreement_state_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2054,9 +2051,7 @@ def test_retrieve_for_application_terms_of_service_agreement_state_field_headers
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-    )
+    request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
 
     request.parent = "parent_value"
 
@@ -2091,9 +2086,7 @@ async def test_retrieve_for_application_terms_of_service_agreement_state_field_h
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-    )
+    request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
 
     request.parent = "parent_value"
 
@@ -2758,9 +2751,7 @@ def test_retrieve_for_application_terms_of_service_agreement_state_empty_call_gr
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request_msg = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
 
         assert args[0] == request_msg
 
@@ -2843,9 +2834,7 @@ async def test_retrieve_for_application_terms_of_service_agreement_state_empty_c
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request_msg = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
 
         assert args[0] == request_msg
 
@@ -3136,9 +3125,7 @@ def test_retrieve_for_application_terms_of_service_agreement_state_rest_intercep
         )
         req.return_value.content = return_value
 
-        request = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -3214,9 +3201,7 @@ def test_retrieve_for_application_terms_of_service_agreement_state_empty_call_re
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
-        )
+        request_msg = termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest()
 
         assert args[0] == request_msg
 
@@ -3528,12 +3513,8 @@ def test_terms_of_service_agreement_state_service_client_transport_session_colli
     session1 = client1.transport.get_terms_of_service_agreement_state._session
     session2 = client2.transport.get_terms_of_service_agreement_state._session
     assert session1 != session2
-    session1 = (
-        client1.transport.retrieve_for_application_terms_of_service_agreement_state._session
-    )
-    session2 = (
-        client2.transport.retrieve_for_application_terms_of_service_agreement_state._session
-    )
+    session1 = client1.transport.retrieve_for_application_terms_of_service_agreement_state._session
+    session2 = client2.transport.retrieve_for_application_terms_of_service_agreement_state._session
     assert session1 != session2
 
 

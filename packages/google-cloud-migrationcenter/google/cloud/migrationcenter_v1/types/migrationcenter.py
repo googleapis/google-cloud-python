@@ -203,6 +203,7 @@ class AssetView(proto.Enum):
             The asset view includes all the metadata of
             an asset and performance data.
     """
+
     ASSET_VIEW_UNSPECIFIED = 0
     ASSET_VIEW_BASIC = 1
     ASSET_VIEW_FULL = 2
@@ -221,6 +222,7 @@ class OperatingSystemFamily(proto.Enum):
         OS_FAMILY_UNIX (3):
             Non-Linux Unix flavors.
     """
+
     OS_FAMILY_UNKNOWN = 0
     OS_FAMILY_WINDOWS = 1
     OS_FAMILY_LINUX = 2
@@ -249,6 +251,7 @@ class ImportJobFormat(proto.Enum):
             upload data
             tables][https://cloud.google.com/migrate/stratozone/docs/import-data-portal].
     """
+
     IMPORT_JOB_FORMAT_UNSPECIFIED = 0
     IMPORT_JOB_FORMAT_RVTOOLS_XLSX = 1
     IMPORT_JOB_FORMAT_RVTOOLS_CSV = 2
@@ -273,6 +276,7 @@ class ImportJobView(proto.Enum):
             The import job view includes all metadata of
             an import job.
     """
+
     IMPORT_JOB_VIEW_UNSPECIFIED = 0
     IMPORT_JOB_VIEW_BASIC = 1
     IMPORT_JOB_VIEW_FULL = 2
@@ -293,6 +297,7 @@ class ErrorFrameView(proto.Enum):
         ERROR_FRAME_VIEW_FULL (2):
             Include everything.
     """
+
     ERROR_FRAME_VIEW_UNSPECIFIED = 0
     ERROR_FRAME_VIEW_BASIC = 1
     ERROR_FRAME_VIEW_FULL = 2
@@ -315,6 +320,7 @@ class PersistentDiskType(proto.Enum):
         PERSISTENT_DISK_TYPE_SSD (3):
             SSD Persistent Disk.
     """
+
     PERSISTENT_DISK_TYPE_UNSPECIFIED = 0
     PERSISTENT_DISK_TYPE_STANDARD = 1
     PERSISTENT_DISK_TYPE_BALANCED = 2
@@ -336,6 +342,7 @@ class LicenseType(proto.Enum):
             Bring-your-own-license (BYOL) plan. User
             provides the OS license.
     """
+
     LICENSE_TYPE_UNSPECIFIED = 0
     LICENSE_TYPE_DEFAULT = 1
     LICENSE_TYPE_BRING_YOUR_OWN_LICENSE = 2
@@ -364,6 +371,7 @@ class SizingOptimizationStrategy(proto.Enum):
             reported usage, with little slack. Using this
             option can help reduce costs.
     """
+
     SIZING_OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
     SIZING_OPTIMIZATION_STRATEGY_SAME_AS_SOURCE = 1
     SIZING_OPTIMIZATION_STRATEGY_MODERATE = 2
@@ -384,6 +392,7 @@ class CommitmentPlan(proto.Enum):
         COMMITMENT_PLAN_THREE_YEARS (3):
             3 years commitment.
     """
+
     COMMITMENT_PLAN_UNSPECIFIED = 0
     COMMITMENT_PLAN_NONE = 1
     COMMITMENT_PLAN_ONE_YEAR = 2
@@ -406,6 +415,7 @@ class ComputeMigrationTargetProduct(proto.Enum):
             Prefer to migrate to Google Cloud Sole Tenant
             Nodes.
     """
+
     COMPUTE_MIGRATION_TARGET_PRODUCT_UNSPECIFIED = 0
     COMPUTE_MIGRATION_TARGET_PRODUCT_COMPUTE_ENGINE = 1
     COMPUTE_MIGRATION_TARGET_PRODUCT_VMWARE_ENGINE = 2
@@ -430,6 +440,7 @@ class ReportView(proto.Enum):
             The report view includes the standard
             metadata of an report. Useful for detail view.
     """
+
     REPORT_VIEW_UNSPECIFIED = 0
     REPORT_VIEW_BASIC = 1
     REPORT_VIEW_FULL = 2
@@ -641,6 +652,7 @@ class ImportJob(proto.Message):
                 The validation of the job completed with no
                 blocking errors.
         """
+
         IMPORT_JOB_STATE_UNSPECIFIED = 0
         IMPORT_JOB_STATE_PENDING = 1
         IMPORT_JOB_STATE_RUNNING = 2
@@ -738,6 +750,7 @@ class ImportDataFile(proto.Message):
             ACTIVE (2):
                 The data file completed initialization.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -914,6 +927,7 @@ class Source(proto.Message):
             SOURCE_TYPE_CUSTOM (4):
                 Third-party owned sources.
         """
+
         SOURCE_TYPE_UNKNOWN = 0
         SOURCE_TYPE_UPLOAD = 1
         SOURCE_TYPE_GUEST_OS_SCAN = 2
@@ -934,6 +948,7 @@ class Source(proto.Message):
                 Source is in an invalid state. Asset frames
                 reported to it will be ignored.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         DELETING = 2
@@ -1053,12 +1068,12 @@ class ReportConfig(proto.Message):
         proto.STRING,
         number=5,
     )
-    group_preferenceset_assignments: MutableSequence[
-        GroupPreferenceSetAssignment
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=6,
-        message=GroupPreferenceSetAssignment,
+    group_preferenceset_assignments: MutableSequence[GroupPreferenceSetAssignment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=6,
+            message=GroupPreferenceSetAssignment,
+        )
     )
 
 
@@ -1095,6 +1110,7 @@ class Report(proto.Message):
             TOTAL_COST_OF_OWNERSHIP (1):
                 Total cost of ownership Report type.
         """
+
         TYPE_UNSPECIFIED = 0
         TOTAL_COST_OF_OWNERSHIP = 1
 
@@ -1111,6 +1127,7 @@ class Report(proto.Message):
             FAILED (3):
                 Failed to create Report.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SUCCEEDED = 2
@@ -3574,6 +3591,7 @@ class MachineDetails(proto.Message):
                 The machine is deleted from the hosting
                 platform.
         """
+
         POWER_STATE_UNSPECIFIED = 0
         PENDING = 1
         ACTIVE = 2
@@ -3672,6 +3690,7 @@ class MachineArchitectureDetails(proto.Message):
             EFI (2):
                 EFI firmware.
         """
+
         FIRMWARE_TYPE_UNSPECIFIED = 0
         BIOS = 1
         EFI = 2
@@ -3687,6 +3706,7 @@ class MachineArchitectureDetails(proto.Message):
             ENABLED (2):
                 Hyper-threading is enabled.
         """
+
         CPU_HYPER_THREADING_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -3893,6 +3913,7 @@ class NetworkAddress(proto.Message):
             ADDRESS_ASSIGNMENT_DHCP (2):
                 Dynamically assigned IP (DHCP).
         """
+
         ADDRESS_ASSIGNMENT_UNSPECIFIED = 0
         ADDRESS_ASSIGNMENT_STATIC = 1
         ADDRESS_ASSIGNMENT_DHCP = 2
@@ -4009,6 +4030,7 @@ class DiskEntry(proto.Message):
             ISCSI (7):
                 iSCSI interface type.
         """
+
         INTERFACE_TYPE_UNSPECIFIED = 0
         IDE = 1
         SATA = 2
@@ -4162,6 +4184,7 @@ class VmwareDiskConfig(proto.Message):
             BACKING_TYPE_SESPARSE_V2 (8):
                 SEsparse v1.
         """
+
         BACKING_TYPE_UNSPECIFIED = 0
         BACKING_TYPE_FLAT_V1 = 1
         BACKING_TYPE_FLAT_V2 = 2
@@ -4185,6 +4208,7 @@ class VmwareDiskConfig(proto.Message):
             INDEPENDENT_NONPERSISTENT (3):
                 Independent - Nonpersistent disk mode.
         """
+
         VMDK_MODE_UNSPECIFIED = 0
         DEPENDENT = 1
         INDEPENDENT_PERSISTENT = 2
@@ -4201,6 +4225,7 @@ class VmwareDiskConfig(proto.Message):
             VIRTUAL_COMPATIBILITY (2):
                 Virtual compatibility mode.
         """
+
         RDM_COMPATIBILITY_UNSPECIFIED = 0
         PHYSICAL_COMPATIBILITY = 1
         VIRTUAL_COMPATIBILITY = 2
@@ -4296,6 +4321,7 @@ class GuestConfigDetails(proto.Message):
             SE_LINUX_MODE_ENFORCING (3):
                 SELinux enforcing mode.
         """
+
         SE_LINUX_MODE_UNSPECIFIED = 0
         SE_LINUX_MODE_DISABLED = 1
         SE_LINUX_MODE_PERMISSIVE = 2
@@ -4571,6 +4597,7 @@ class RunningService(proto.Message):
             STOPPED (3):
                 Service is stopped.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PAUSED = 2
@@ -4597,6 +4624,7 @@ class RunningService(proto.Message):
             DISABLED (5):
                 The service is disabled.
         """
+
         START_MODE_UNSPECIFIED = 0
         BOOT = 1
         SYSTEM = 2
@@ -4762,6 +4790,7 @@ class NetworkConnection(proto.Message):
             CLOSED (5):
                 The connection is closed.
         """
+
         STATE_UNSPECIFIED = 0
         OPENING = 1
         OPEN = 2
@@ -5596,6 +5625,7 @@ class FitDescriptor(proto.Message):
             REQUIRES_EFFORT (3):
                 Fit with effort.
         """
+
         FIT_LEVEL_UNSPECIFIED = 0
         FIT = 1
         NO_FIT = 2
@@ -5794,12 +5824,12 @@ class AggregationResult(proto.Message):
                 number=3,
             )
 
-        buckets: MutableSequence[
-            "AggregationResult.Histogram.Bucket"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="AggregationResult.Histogram.Bucket",
+        buckets: MutableSequence["AggregationResult.Histogram.Bucket"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AggregationResult.Histogram.Bucket",
+            )
         )
 
     class Frequency(proto.Message):
@@ -5959,6 +5989,7 @@ class ImportError(proto.Message):
             INFO (3):
                 No description available.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -6267,6 +6298,7 @@ class VmwareEnginePreferences(proto.Message):
             COMMITMENT_3_YEAR_UPFRONT_PAYMENT (5):
                 3 years commitment (upfront payment).
         """
+
         COMMITMENT_PLAN_UNSPECIFIED = 0
         ON_DEMAND = 1
         COMMITMENT_1_YEAR_MONTHLY_PAYMENTS = 2
@@ -6329,6 +6361,7 @@ class SoleTenancyPreferences(proto.Message):
                 Migrate within node group host maintenance
                 policy.
         """
+
         HOST_MAINTENANCE_POLICY_UNSPECIFIED = 0
         HOST_MAINTENANCE_POLICY_DEFAULT = 1
         HOST_MAINTENANCE_POLICY_RESTART_IN_PLACE = 2
@@ -6347,6 +6380,7 @@ class SoleTenancyPreferences(proto.Message):
             COMMITMENT_3_YEAR (3):
                 3 years commitment.
         """
+
         COMMITMENT_PLAN_UNSPECIFIED = 0
         ON_DEMAND = 1
         COMMITMENT_1_YEAR = 2
@@ -6473,12 +6507,12 @@ class ReportSummary(proto.Message):
                 number=2,
             )
 
-        data_points: MutableSequence[
-            "ReportSummary.ChartData.DataPoint"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ReportSummary.ChartData.DataPoint",
+        data_points: MutableSequence["ReportSummary.ChartData.DataPoint"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ReportSummary.ChartData.DataPoint",
+            )
         )
 
     class UtilizationChartData(proto.Message):
@@ -6544,12 +6578,12 @@ class ReportSummary(proto.Message):
                 number=3,
             )
 
-        buckets: MutableSequence[
-            "ReportSummary.HistogramChartData.Bucket"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="ReportSummary.HistogramChartData.Bucket",
+        buckets: MutableSequence["ReportSummary.HistogramChartData.Bucket"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="ReportSummary.HistogramChartData.Bucket",
+            )
         )
 
     class AssetAggregateStats(proto.Message):
@@ -6687,12 +6721,12 @@ class ReportSummary(proto.Message):
             number=3,
             message="ReportSummary.MachineSeriesAllocation",
         )
-        allocated_disk_types: MutableSequence[
-            "PersistentDiskType"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=4,
-            enum="PersistentDiskType",
+        allocated_disk_types: MutableSequence["PersistentDiskType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=4,
+                enum="PersistentDiskType",
+            )
         )
 
     class VmwareEngineFinding(proto.Message):
@@ -6717,12 +6751,12 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=2,
         )
-        node_allocations: MutableSequence[
-            "ReportSummary.VmwareNodeAllocation"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ReportSummary.VmwareNodeAllocation",
+        node_allocations: MutableSequence["ReportSummary.VmwareNodeAllocation"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ReportSummary.VmwareNodeAllocation",
+            )
         )
 
     class VmwareNodeAllocation(proto.Message):
@@ -6789,12 +6823,12 @@ class ReportSummary(proto.Message):
             proto.INT64,
             number=2,
         )
-        node_allocations: MutableSequence[
-            "ReportSummary.SoleTenantNodeAllocation"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ReportSummary.SoleTenantNodeAllocation",
+        node_allocations: MutableSequence["ReportSummary.SoleTenantNodeAllocation"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ReportSummary.SoleTenantNodeAllocation",
+            )
         )
 
     class SoleTenantNodeAllocation(proto.Message):

@@ -130,6 +130,7 @@ class Volume(proto.Message):
             HDD (2):
                 This storage type for this volume is HDD.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2
@@ -153,6 +154,7 @@ class Volume(proto.Message):
                 The storage volume is in cool off state. It will be deleted
                 after ``expire_time``.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -176,6 +178,7 @@ class Volume(proto.Message):
             NEWEST_FIRST (3):
                 Delete the newest snapshots first.
         """
+
         SNAPSHOT_AUTO_DELETE_BEHAVIOR_UNSPECIFIED = 0
         DISABLED = 1
         OLDEST_FIRST = 2
@@ -194,6 +197,7 @@ class Volume(proto.Message):
                 volume. Such volumes cannot be manipulated via
                 Volumes API.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         FIBRE_CHANNEL = 1
         NFS = 2
@@ -209,6 +213,7 @@ class Volume(proto.Message):
             HANA (2):
                 The workload profile is hana.
         """
+
         WORKLOAD_PROFILE_UNSPECIFIED = 0
         GENERIC = 1
         HANA = 2

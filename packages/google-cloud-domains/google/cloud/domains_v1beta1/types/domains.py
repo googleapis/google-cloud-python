@@ -91,6 +91,7 @@ class ContactPrivacy(proto.Enum):
             details, see `the registration privacy
             article <https://support.google.com/domains/answer/3251242>`__.
     """
+
     CONTACT_PRIVACY_UNSPECIFIED = 0
     PUBLIC_CONTACT_DATA = 1
     PRIVATE_CONTACT_DATA = 2
@@ -110,6 +111,7 @@ class DomainNotice(proto.Enum):
             `how to get an SSL
             certificate <https://support.google.com/domains/answer/7638036>`__.
     """
+
     DOMAIN_NOTICE_UNSPECIFIED = 0
     HSTS_PRELOADED = 1
 
@@ -125,6 +127,7 @@ class ContactNotice(proto.Enum):
             ``ContactSettings`` to ``PUBLIC_CONTACT_DATA``, which
             exposes contact data publicly.
     """
+
     CONTACT_NOTICE_UNSPECIFIED = 0
     PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT = 1
 
@@ -142,6 +145,7 @@ class TransferLockState(proto.Enum):
             The domain is locked and cannot be
             transferred to another registrar.
     """
+
     TRANSFER_LOCK_STATE_UNSPECIFIED = 0
     UNLOCKED = 1
     LOCKED = 2
@@ -256,6 +260,7 @@ class Registration(proto.Message):
                 shown about it may be stale. Domains in this state are not
                 automatically renewed by Cloud Domains.
         """
+
         STATE_UNSPECIFIED = 0
         REGISTRATION_PENDING = 1
         REGISTRATION_FAILED = 2
@@ -285,6 +290,7 @@ class Registration(proto.Message):
                 verification email, call ConfigureContactSettings and
                 provide the current ``registrant_contact.email``.
         """
+
         ISSUE_UNSPECIFIED = 0
         CONTACT_SUPPORT = 1
         UNVERIFIED_EMAIL = 2
@@ -381,6 +387,7 @@ class ManagementSettings(proto.Message):
                 To manage the domain's current billing and renewal settings,
                 go to `Google Domains <https://domains.google/>`__.
         """
+
         RENEWAL_METHOD_UNSPECIFIED = 0
         AUTOMATIC_RENEWAL = 1
         MANUAL_RENEWAL = 2
@@ -441,6 +448,7 @@ class DnsSettings(proto.Message):
                 ``Registration``'s ``dns_provider`` field is already
                 DNSSEC-signed.
         """
+
         DS_STATE_UNSPECIFIED = 0
         DS_RECORDS_UNPUBLISHED = 1
         DS_RECORDS_PUBLISHED = 2
@@ -581,6 +589,7 @@ class DnsSettings(proto.Message):
                     Private algorithm OID. Cannot be used for new
                     deployments.
             """
+
             ALGORITHM_UNSPECIFIED = 0
             RSAMD5 = 1
             DH = 2
@@ -616,6 +625,7 @@ class DnsSettings(proto.Message):
                 SHA384 (4):
                     SHA-384.
             """
+
             DIGEST_TYPE_UNSPECIFIED = 0
             SHA1 = 1
             SHA256 = 2
@@ -1370,6 +1380,7 @@ class RegisterParameters(proto.Message):
                 availability, generally due to system
                 maintenance at the domain name registry.
         """
+
         AVAILABILITY_UNSPECIFIED = 0
         AVAILABLE = 1
         UNAVAILABLE = 2

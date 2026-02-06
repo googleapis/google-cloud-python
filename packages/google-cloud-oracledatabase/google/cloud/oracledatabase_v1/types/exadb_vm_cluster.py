@@ -232,6 +232,7 @@ class ExadbVmClusterProperties(proto.Message):
             BRING_YOUR_OWN_LICENSE (2):
                 Bring your own license.
         """
+
         LICENSE_MODEL_UNSPECIFIED = 0
         LICENSE_INCLUDED = 1
         BRING_YOUR_OWN_LICENSE = 2
@@ -264,6 +265,7 @@ class ExadbVmClusterProperties(proto.Message):
                 Indicates that the resource is in maintenance
                 in progress state.
         """
+
         EXADB_VM_CLUSTER_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -288,6 +290,7 @@ class ExadbVmClusterProperties(proto.Message):
                 Indicates that the resource is in block
                 storage.
         """
+
         SHAPE_ATTRIBUTE_UNSPECIFIED = 0
         SMART_STORAGE = 1
         BLOCK_STORAGE = 2

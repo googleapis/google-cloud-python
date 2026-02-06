@@ -109,6 +109,7 @@ class HistogramQueryPropertyNameFilter(proto.Message):
             HISTOGRAM_YAXIS_PROPERTY (1):
                 Count the properties per property name.
         """
+
         HISTOGRAM_YAXIS_DOCUMENT = 0
         HISTOGRAM_YAXIS_PROPERTY = 1
 

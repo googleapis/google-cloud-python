@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.gke_multicloud_v1.types import azure_resources, azure_service
 
@@ -647,12 +647,12 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_azure_cluster_agent_token" not in self._stubs:
-            self._stubs[
-                "generate_azure_cluster_agent_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
-                request_serializer=azure_service.GenerateAzureClusterAgentTokenRequest.serialize,
-                response_deserializer=azure_service.GenerateAzureClusterAgentTokenResponse.deserialize,
+            self._stubs["generate_azure_cluster_agent_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureClusterAgentToken",
+                    request_serializer=azure_service.GenerateAzureClusterAgentTokenRequest.serialize,
+                    response_deserializer=azure_service.GenerateAzureClusterAgentTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_azure_cluster_agent_token"]
 
@@ -680,12 +680,12 @@ class AzureClustersGrpcTransport(AzureClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_azure_access_token" not in self._stubs:
-            self._stubs[
-                "generate_azure_access_token"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureAccessToken",
-                request_serializer=azure_service.GenerateAzureAccessTokenRequest.serialize,
-                response_deserializer=azure_service.GenerateAzureAccessTokenResponse.deserialize,
+            self._stubs["generate_azure_access_token"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.gkemulticloud.v1.AzureClusters/GenerateAzureAccessToken",
+                    request_serializer=azure_service.GenerateAzureAccessTokenRequest.serialize,
+                    response_deserializer=azure_service.GenerateAzureAccessTokenResponse.deserialize,
+                )
             )
         return self._stubs["generate_azure_access_token"]
 

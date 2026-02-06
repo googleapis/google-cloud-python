@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.notebook_service import NotebookServiceAsyncClient, NotebookServiceClient
 from .types.environment import ContainerImage, Environment, VmImage
 from .types.instance import Instance, ReservationAffinity

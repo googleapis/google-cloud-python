@@ -53,6 +53,7 @@ class IngressTraffic(proto.Enum):
         INGRESS_TRAFFIC_NONE (4):
             No ingress traffic is allowed.
     """
+
     INGRESS_TRAFFIC_UNSPECIFIED = 0
     INGRESS_TRAFFIC_ALL = 1
     INGRESS_TRAFFIC_INTERNAL_ONLY = 2
@@ -71,6 +72,7 @@ class ExecutionEnvironment(proto.Enum):
         EXECUTION_ENVIRONMENT_GEN2 (2):
             Uses Second Generation environment.
     """
+
     EXECUTION_ENVIRONMENT_UNSPECIFIED = 0
     EXECUTION_ENVIRONMENT_GEN1 = 1
     EXECUTION_ENVIRONMENT_GEN2 = 2
@@ -89,6 +91,7 @@ class EncryptionKeyRevocationAction(proto.Enum):
             Shuts down existing instances, and prevents
             creation of new ones.
     """
+
     ENCRYPTION_KEY_REVOCATION_ACTION_UNSPECIFIED = 0
     PREVENT_NEW = 1
     SHUTDOWN = 2
@@ -129,6 +132,7 @@ class VpcAccess(proto.Message):
                 Only private IP ranges are routed through the
                 VPC connector.
         """
+
         VPC_EGRESS_UNSPECIFIED = 0
         ALL_TRAFFIC = 1
         PRIVATE_RANGES_ONLY = 2
@@ -321,6 +325,7 @@ class ServiceScaling(proto.Message):
                 Scale to exactly min instances and ignore max
                 instances.
         """
+
         SCALING_MODE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2

@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.securitycenter_v2 import gapic_version as package_version
 
@@ -65,10 +65,10 @@ import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
 import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.securitycenter_v2.services.security_center import pagers
 from google.cloud.securitycenter_v2.types import (
@@ -93,8 +93,8 @@ from google.cloud.securitycenter_v2.types import (
     database,
     disk,
     exfiltration,
-)
-from google.cloud.securitycenter_v2.types import (
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -105,19 +105,27 @@ from google.cloud.securitycenter_v2.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v2.types import (
+    mute_config,
+    network,
+    notebook,
+    notification_config,
+    org_policy,
+    process,
+    resource,
+    resource_value_config,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v2.types import (
+    source,
     toxic_combination,
     valued_resource,
     vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
@@ -125,17 +133,6 @@ from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import file
-from google.cloud.securitycenter_v2.types import finding
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import network, notebook
-from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process, resource
-from google.cloud.securitycenter_v2.types import resource_value_config
-from google.cloud.securitycenter_v2.types import security_marks
-from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
 
 from .transports.base import DEFAULT_CLIENT_INFO, SecurityCenterTransport
@@ -152,9 +149,7 @@ class SecurityCenterClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[SecurityCenterTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[SecurityCenterTransport]]
     _transport_registry["grpc"] = SecurityCenterGrpcTransport
     _transport_registry["grpc_asyncio"] = SecurityCenterGrpcAsyncIOTransport
     _transport_registry["rest"] = SecurityCenterRestTransport
@@ -982,11 +977,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = SecurityCenterClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            SecurityCenterClient._read_environment_variables()
+        )
         self._client_cert_source = SecurityCenterClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -1021,8 +1014,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(SecurityCenterTransport, transport)
             self._api_endpoint = self._transport.host

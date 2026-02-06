@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,11 +43,16 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+import google.auth
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
@@ -1005,10 +1010,9 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1053,10 +1057,9 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1092,10 +1095,9 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1356,9 +1358,7 @@ def test_prediction_api_key_registry_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1412,9 +1412,7 @@ def test_create_prediction_api_key_registration(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1451,10 +1449,11 @@ def test_create_prediction_api_key_registration_non_empty_request_with_auto_popu
         client.create_prediction_api_key_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
-            parent="parent_value",
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+                parent="parent_value",
+            )
         )
 
 
@@ -1569,9 +1568,7 @@ async def test_create_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1799,9 +1796,7 @@ def test_list_prediction_api_key_registrations(request_type, transport: str = "g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1837,11 +1832,12 @@ def test_list_prediction_api_key_registrations_non_empty_request_with_auto_popul
         client.list_prediction_api_key_registrations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
 
 
@@ -1956,9 +1952,7 @@ async def test_list_prediction_api_key_registrations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1988,9 +1982,7 @@ def test_list_prediction_api_key_registrations_field_headers():
     with mock.patch.object(
         type(client.transport.list_prediction_api_key_registrations), "__call__"
     ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         client.list_prediction_api_key_registrations(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2052,9 +2044,7 @@ def test_list_prediction_api_key_registrations_flattened():
         type(client.transport.list_prediction_api_key_registrations), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_prediction_api_key_registrations(
@@ -2095,9 +2085,7 @@ async def test_list_prediction_api_key_registrations_flattened_async():
         type(client.transport.list_prediction_api_key_registrations), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
@@ -2374,9 +2362,7 @@ def test_delete_prediction_api_key_registration(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2410,10 +2396,11 @@ def test_delete_prediction_api_key_registration_non_empty_request_with_auto_popu
         client.delete_prediction_api_key_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
-            name="name_value",
+        assert (
+            args[0]
+            == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+                name="name_value",
+            )
         )
 
 
@@ -2524,9 +2511,7 @@ async def test_delete_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -3064,9 +3049,7 @@ def test_list_prediction_api_key_registrations_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -3510,9 +3493,7 @@ def test_create_prediction_api_key_registration_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3529,17 +3510,13 @@ def test_list_prediction_api_key_registrations_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.list_prediction_api_key_registrations), "__call__"
     ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         client.list_prediction_api_key_registrations(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -3562,9 +3539,7 @@ def test_delete_prediction_api_key_registration_empty_call_grpc():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3607,9 +3582,7 @@ async def test_create_prediction_api_key_registration_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3638,9 +3611,7 @@ async def test_list_prediction_api_key_registrations_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -3665,9 +3636,7 @@ async def test_delete_prediction_api_key_registration_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3801,9 +3770,7 @@ def test_create_prediction_api_key_registration_rest_interceptors(null_intercept
         )
         req.return_value.content = return_value
 
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -3946,17 +3913,13 @@ def test_list_prediction_api_key_registrations_rest_interceptors(null_intercepto
         )
         req.return_value.content = return_value
 
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        post.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         post_with_metadata.return_value = (
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(),
             metadata,
@@ -4071,9 +4034,7 @@ def test_delete_prediction_api_key_registration_rest_interceptors(null_intercept
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -4115,9 +4076,7 @@ def test_create_prediction_api_key_registration_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -4139,9 +4098,7 @@ def test_list_prediction_api_key_registrations_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -4163,9 +4120,7 @@ def test_delete_prediction_api_key_registration_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 

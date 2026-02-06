@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
@@ -1053,9 +1053,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_http_options()
 
             request, metadata = self._interceptor.pre_check_valid_creds(
                 request, metadata
@@ -1228,9 +1226,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_transfer_config(
                 request, metadata
@@ -1381,9 +1377,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_transfer_config(
                 request, metadata
@@ -1493,9 +1487,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_transfer_run(
                 request, metadata
@@ -1606,9 +1598,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_http_options()
 
             request, metadata = self._interceptor.pre_enroll_data_sources(
                 request, metadata
@@ -1728,9 +1718,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_transcoded_request(
@@ -1881,9 +1869,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_transfer_config(
                 request, metadata
@@ -2031,9 +2017,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     Represents a data transfer run.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_http_options()
 
             request, metadata = self._interceptor.pre_get_transfer_run(
                 request, metadata
@@ -2182,9 +2166,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_sources(
                 request, metadata
@@ -2334,9 +2316,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_transfer_configs(
                 request, metadata
@@ -2489,9 +2469,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_transfer_logs(
                 request, metadata
@@ -2640,9 +2618,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_transfer_runs(
                 request, metadata
@@ -2793,9 +2769,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_schedule_transfer_runs(
                 request, metadata
@@ -2954,9 +2928,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_start_manual_transfer_runs(
                 request, metadata
@@ -3108,9 +3080,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_http_options()
 
             request, metadata = self._interceptor.pre_unenroll_data_sources(
                 request, metadata
@@ -3244,9 +3214,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_transfer_config(
                 request, metadata
@@ -3470,7 +3438,9 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StartManualTransferRuns(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StartManualTransferRuns(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def unenroll_data_sources(
@@ -3546,9 +3516,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3687,9 +3655,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataTransferServiceRestTransport._BaseListLocations._get_transcoded_request(

@@ -98,6 +98,7 @@ class EntityType(proto.Message):
                 Regexp entity types allow to specify regular
                 expressions in entries values.
         """
+
         KIND_UNSPECIFIED = 0
         KIND_MAP = 1
         KIND_LIST = 2
@@ -116,6 +117,7 @@ class EntityType(proto.Message):
                 Allows an agent to recognize values that have
                 not been explicitly listed in the entity.
         """
+
         AUTO_EXPANSION_MODE_UNSPECIFIED = 0
         AUTO_EXPANSION_MODE_DEFAULT = 1
 

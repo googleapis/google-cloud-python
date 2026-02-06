@@ -122,6 +122,7 @@ class DisableServiceRequest(proto.Message):
                 If a service, or its dependents, has usage in the last 30
                 days, the request returns a FAILED_PRECONDITION error.
         """
+
         CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED = 0
         SKIP = 1
         CHECK = 2

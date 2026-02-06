@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -622,15 +622,12 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_org_policy_violations_preview(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_org_policy_violations_preview(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_transcoded_request(
                 http_options, request
@@ -694,11 +691,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_create_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_org_policy_violations_preview_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_org_policy_violations_preview_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -792,9 +788,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_http_options()
 
             request, metadata = self._interceptor.pre_get_org_policy_violations_preview(
                 request, metadata
@@ -858,11 +852,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_get_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_org_policy_violations_preview_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_org_policy_violations_preview_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -952,9 +945,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_org_policy_violations(
                 request, metadata
@@ -1109,15 +1100,12 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_org_policy_violations_previews(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_org_policy_violations_previews(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_transcoded_request(
                 http_options, request
@@ -1178,11 +1166,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_list_org_policy_violations_previews(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_org_policy_violations_previews_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_org_policy_violations_previews_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1220,7 +1207,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOrgPolicyViolationsPreview(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_org_policy_violations_preview(
@@ -1231,7 +1220,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetOrgPolicyViolationsPreview(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_org_policy_violations(
@@ -1242,7 +1233,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOrgPolicyViolations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOrgPolicyViolations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_org_policy_violations_previews(
@@ -1253,7 +1246,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListOrgPolicyViolationsPreviews(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListOrgPolicyViolationsPreviews(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -1313,9 +1308,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1454,9 +1447,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_transcoded_request(

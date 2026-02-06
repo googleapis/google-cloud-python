@@ -44,6 +44,7 @@ class DataFormat(proto.Enum):
         STRING (2):
             Input data in string format.
     """
+
     DATA_FORMAT_UNSPECIFIED = 0
     JSON = 1
     STRING = 2
@@ -172,6 +173,7 @@ class AsyncModelMetadata(proto.Message):
             FAILED (4):
                 The operation has failed.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2

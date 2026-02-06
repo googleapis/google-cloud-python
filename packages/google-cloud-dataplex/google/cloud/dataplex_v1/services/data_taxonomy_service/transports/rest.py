@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1310,9 +1312,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttribute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_attribute(
                 request, metadata
@@ -1467,9 +1467,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataAttributeBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_attribute_binding(
                 request, metadata
@@ -1536,11 +1534,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_create_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_data_attribute_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_data_attribute_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1624,9 +1621,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCreateDataTaxonomy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_taxonomy(
                 request, metadata
@@ -1779,9 +1774,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttribute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_attribute(
                 request, metadata
@@ -1930,9 +1923,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataAttributeBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_attribute_binding(
                 request, metadata
@@ -1994,11 +1985,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_data_attribute_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_data_attribute_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2081,9 +2071,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteDataTaxonomy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_taxonomy(
                 request, metadata
@@ -2240,9 +2228,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttribute._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_attribute(
                 request, metadata
@@ -2392,9 +2378,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataAttributeBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_attribute_binding(
                 request, metadata
@@ -2549,9 +2533,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetDataTaxonomy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_taxonomy(
                 request, metadata
@@ -2697,9 +2679,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                         List DataAttributeBindings response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributeBindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_attribute_bindings(
                 request, metadata
@@ -2848,9 +2828,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     List DataAttributes response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataAttributes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_attributes(
                 request, metadata
@@ -2999,9 +2977,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     List DataTaxonomies response.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListDataTaxonomies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_taxonomies(
                 request, metadata
@@ -3154,9 +3130,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttribute._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_attribute(
                 request, metadata
@@ -3311,9 +3285,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataAttributeBinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_attribute_binding(
                 request, metadata
@@ -3380,11 +3352,10 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             resp = self._interceptor.post_update_data_attribute_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_data_attribute_binding_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_data_attribute_binding_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3468,9 +3439,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseUpdateDataTaxonomy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_taxonomy(
                 request, metadata
@@ -3581,7 +3550,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateDataAttributeBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_data_taxonomy(
@@ -3609,7 +3580,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteDataAttributeBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_data_taxonomy(
@@ -3636,7 +3609,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetDataAttributeBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_data_taxonomy(
@@ -3655,7 +3630,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDataAttributeBindings(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDataAttributeBindings(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_data_attributes(
@@ -3695,7 +3672,9 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateDataAttributeBinding(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateDataAttributeBinding(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_data_taxonomy(
@@ -3765,9 +3744,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -3906,9 +3883,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -4045,9 +4020,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -4165,9 +4138,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -4283,9 +4254,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4424,9 +4393,7 @@ class DataTaxonomyServiceRestTransport(_BaseDataTaxonomyServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataTaxonomyServiceRestTransport._BaseListOperations._get_transcoded_request(

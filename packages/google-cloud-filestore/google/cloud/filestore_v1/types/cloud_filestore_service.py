@@ -111,6 +111,7 @@ class NetworkConfig(proto.Message):
             MODE_IPV4 (1):
                 Use the IPv4 internet protocol.
         """
+
         ADDRESS_MODE_UNSPECIFIED = 0
         MODE_IPV4 = 1
 
@@ -129,6 +130,7 @@ class NetworkConfig(proto.Message):
                 provides an IP address range for multiple Google
                 Cloud services, including Filestore.
         """
+
         CONNECT_MODE_UNSPECIFIED = 0
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
@@ -249,6 +251,7 @@ class NfsExportOptions(proto.Message):
                 The client can read and write the file share
                 (default).
         """
+
         ACCESS_MODE_UNSPECIFIED = 0
         READ_ONLY = 1
         READ_WRITE = 2
@@ -266,6 +269,7 @@ class NfsExportOptions(proto.Message):
                 The Root user has squashed access to the
                 anonymous uid/gid.
         """
+
         SQUASH_MODE_UNSPECIFIED = 0
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
@@ -328,6 +332,7 @@ class ReplicaConfig(proto.Message):
                 You can get further details from the ``stateReasons`` field
                 of the ``ReplicaConfig`` object.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 3
@@ -347,6 +352,7 @@ class ReplicaConfig(proto.Message):
                 The remove replica peer instance operation
                 failed.
         """
+
         STATE_REASON_UNSPECIFIED = 0
         PEER_INSTANCE_UNREACHABLE = 1
         REMOVE_FAILED = 2
@@ -397,6 +403,7 @@ class Replication(proto.Message):
                 The instance is the ``STANDBY`` replication member,
                 functions as the replication destination instance.
         """
+
         ROLE_UNSPECIFIED = 0
         ACTIVE = 1
         STANDBY = 2
@@ -533,6 +540,7 @@ class Instance(proto.Message):
             PROMOTING (13):
                 The replica instance is being promoted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -580,6 +588,7 @@ class Instance(proto.Message):
                 availability needed for mission-critical
                 workloads.
         """
+
         TIER_UNSPECIFIED = 0
         STANDARD = 1
         PREMIUM = 2
@@ -601,6 +610,7 @@ class Instance(proto.Message):
                 The KMS key used by the instance is either
                 revoked or denied access to.
         """
+
         SUSPENSION_REASON_UNSPECIFIED = 0
         KMS_KEY_ISSUE = 1
 
@@ -616,6 +626,7 @@ class Instance(proto.Message):
             NFS_V4_1 (2):
                 NFS 4.1.
         """
+
         FILE_PROTOCOL_UNSPECIFIED = 0
         NFS_V3 = 1
         NFS_V4_1 = 2
@@ -1152,6 +1163,7 @@ class Snapshot(proto.Message):
             DELETING (3):
                 Snapshot is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -1455,6 +1467,7 @@ class Backup(proto.Message):
                 creating new instances or restoring existing
                 instances.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         FINALIZING = 2

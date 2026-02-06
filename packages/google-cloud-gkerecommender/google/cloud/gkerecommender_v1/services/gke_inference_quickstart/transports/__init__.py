@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
 _transport_registry["grpc"] = GkeInferenceQuickstartGrpcTransport
 _transport_registry["grpc_asyncio"] = GkeInferenceQuickstartGrpcAsyncIOTransport
 _transport_registry["rest"] = GkeInferenceQuickstartRestTransport

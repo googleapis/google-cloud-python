@@ -191,6 +191,7 @@ class Service(proto.Message):
                 error and cannot be used. The metastore service
                 should be deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -215,6 +216,7 @@ class Service(proto.Message):
                 availability, and sufficient scalability for
                 enterprise-level Dataproc Metastore workloads.
         """
+
         TIER_UNSPECIFIED = 0
         DEVELOPER = 1
         ENTERPRISE = 3
@@ -238,6 +240,7 @@ class Service(proto.Message):
                 considered stable and have been validated for production
                 use.
         """
+
         RELEASE_CHANNEL_UNSPECIFIED = 0
         CANARY = 1
         STABLE = 2
@@ -254,6 +257,7 @@ class Service(proto.Message):
                 Spanner is used to persist the metastore
                 data.
         """
+
         DATABASE_TYPE_UNSPECIFIED = 0
         MYSQL = 1
         SPANNER = 2
@@ -434,6 +438,7 @@ class HiveMetastoreConfig(proto.Message):
                 Use the modernized gRPC protocol for the
                 metastore service endpoint.
         """
+
         ENDPOINT_PROTOCOL_UNSPECIFIED = 0
         THRIFT = 1
         GRPC = 2
@@ -658,6 +663,7 @@ class TelemetryConfig(proto.Message):
             JSON (2):
                 Logging output uses the ``jsonPayload`` format.
         """
+
         LOG_FORMAT_UNSPECIFIED = 0
         LEGACY = 1
         JSON = 2
@@ -741,6 +747,7 @@ class MetadataImport(proto.Message):
                 The metadata import failed, and attempted
                 metadata changes were rolled back.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -774,6 +781,7 @@ class MetadataImport(proto.Message):
                 MYSQL (1):
                     The type of the source database is MySQL.
             """
+
             DATABASE_TYPE_UNSPECIFIED = 0
             MYSQL = 1
 
@@ -871,6 +879,7 @@ class MetadataExport(proto.Message):
             CANCELLED (4):
                 The metadata export is cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -948,6 +957,7 @@ class Backup(proto.Message):
             RESTORING (5):
                 The backup is being restored.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         DELETING = 2
@@ -1029,6 +1039,7 @@ class Restore(proto.Message):
             CANCELLED (4):
                 The metadata restore is cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         SUCCEEDED = 2
@@ -1047,6 +1058,7 @@ class Restore(proto.Message):
             METADATA_ONLY (2):
                 Only the service's metadata is restored.
         """
+
         RESTORE_TYPE_UNSPECIFIED = 0
         FULL = 1
         METADATA_ONLY = 2
@@ -1128,6 +1140,7 @@ class ScalingConfig(proto.Message):
                 Extra large instance size, maps to a scaling
                 factor of 6.0.
         """
+
         INSTANCE_SIZE_UNSPECIFIED = 0
         EXTRA_SMALL = 1
         SMALL = 2
@@ -2051,12 +2064,12 @@ class LocationMetadata(proto.Message):
             number=2,
         )
 
-    supported_hive_metastore_versions: MutableSequence[
-        HiveMetastoreVersion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=HiveMetastoreVersion,
+    supported_hive_metastore_versions: MutableSequence[HiveMetastoreVersion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=HiveMetastoreVersion,
+        )
     )
 
 
@@ -2077,6 +2090,7 @@ class DatabaseDumpSpec(proto.Message):
             AVRO (2):
                 Database dump contains Avro files.
         """
+
         TYPE_UNSPECIFIED = 0
         MYSQL = 1
         AVRO = 2

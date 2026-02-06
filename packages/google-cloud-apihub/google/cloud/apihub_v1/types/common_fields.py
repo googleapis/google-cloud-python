@@ -80,6 +80,7 @@ class LintState(proto.Enum):
         LINT_STATE_ERROR (2):
             Linting encountered errors.
     """
+
     LINT_STATE_UNSPECIFIED = 0
     LINT_STATE_SUCCESS = 1
     LINT_STATE_ERROR = 2
@@ -96,6 +97,7 @@ class Linter(proto.Enum):
         OTHER (2):
             Linter type other.
     """
+
     LINTER_UNSPECIFIED = 0
     SPECTRAL = 1
     OTHER = 2
@@ -116,6 +118,7 @@ class Severity(proto.Enum):
         SEVERITY_HINT (4):
             Severity hint.
     """
+
     SEVERITY_UNSPECIFIED = 0
     SEVERITY_ERROR = 1
     SEVERITY_WARNING = 2
@@ -141,6 +144,7 @@ class AuthType(proto.Enum):
             Oauth 2.0 client credentials grant
             authentication.
     """
+
     AUTH_TYPE_UNSPECIFIED = 0
     NO_AUTH = 1
     GOOGLE_SERVICE_ACCOUNT = 2
@@ -162,6 +166,7 @@ class PluginCategory(proto.Enum):
             API_PRODUCER plugins represent plugins built for API
             Producers like Cloud Run, Application Integration etc.
     """
+
     PLUGIN_CATEGORY_UNSPECIFIED = 0
     API_GATEWAY = 1
     API_PRODUCER = 2
@@ -621,6 +626,7 @@ class Spec(proto.Message):
                 strict, meaning that parsing errors in the spec
                 contents will fail the API call.
         """
+
         PARSING_MODE_UNSPECIFIED = 0
         RELAXED = 1
         STRICT = 2
@@ -1021,6 +1027,7 @@ class Definition(proto.Message):
             SCHEMA (1):
                 Definition type schema.
         """
+
         TYPE_UNSPECIFIED = 0
         SCHEMA = 1
 
@@ -1127,6 +1134,7 @@ class Attribute(proto.Message):
             USER_DEFINED (2):
                 The attribute is defined by the user.
         """
+
         DEFINITION_TYPE_UNSPECIFIED = 0
         SYSTEM_DEFINED = 1
         USER_DEFINED = 2
@@ -1157,6 +1165,7 @@ class Attribute(proto.Message):
             PLUGIN (9):
                 Attribute can be linked to a Plugin.
         """
+
         SCOPE_UNSPECIFIED = 0
         API = 1
         VERSION = 2
@@ -1183,6 +1192,7 @@ class Attribute(proto.Message):
             URI (4):
                 Attribute's value is of type uri.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         ENUM = 1
         JSON = 2
@@ -1372,6 +1382,7 @@ class OpenApiSpecDetails(proto.Message):
             OPEN_API_SPEC_3_1 (3):
                 OpenAPI Spec v3.1.
         """
+
         FORMAT_UNSPECIFIED = 0
         OPEN_API_SPEC_2_0 = 1
         OPEN_API_SPEC_3_0 = 2
@@ -1477,6 +1488,7 @@ class HttpOperation(proto.Message):
             TRACE (8):
                 Trace Operation type.
         """
+
         METHOD_UNSPECIFIED = 0
         GET = 1
         PUT = 2
@@ -1744,6 +1756,7 @@ class Dependency(proto.Message):
                 it is validated by the admin or manually created
                 in the API hub.
         """
+
         STATE_UNSPECIFIED = 0
         PROPOSED = 1
         VALIDATED = 2
@@ -1758,6 +1771,7 @@ class Dependency(proto.Message):
                 Manual mode of discovery when the dependency
                 is defined by the user.
         """
+
         DISCOVERY_MODE_UNSPECIFIED = 0
         MANUAL = 1
 
@@ -1880,6 +1894,7 @@ class DependencyErrorDetail(proto.Message):
             SUPPLIER_RECREATED (2):
                 Supplier entity has been recreated.
         """
+
         ERROR_UNSPECIFIED = 0
         SUPPLIER_NOT_FOUND = 1
         SUPPLIER_RECREATED = 2
@@ -2177,6 +2192,7 @@ class ApiHubInstance(proto.Message):
                 The ApiHub instance encountered an error
                 during a state change.
         """
+
         STATE_UNSPECIFIED = 0
         INACTIVE = 1
         CREATING = 2
@@ -2223,6 +2239,7 @@ class ApiHubInstance(proto.Message):
                     Encryption using customer managed encryption
                     key.
             """
+
             ENCRYPTION_TYPE_UNSPECIFIED = 0
             GMEK = 1
             CMEK = 2
@@ -2456,6 +2473,7 @@ class ConfigVariableTemplate(proto.Message):
             MULTI_INT (8):
                 Value type is multi int.
         """
+
         VALUE_TYPE_UNSPECIFIED = 0
         STRING = 1
         INT = 2
@@ -2786,6 +2804,7 @@ class AuthConfig(proto.Message):
                 COOKIE (5):
                     Element is in the HTTP request cookie.
             """
+
             HTTP_ELEMENT_LOCATION_UNSPECIFIED = 0
             QUERY = 1
             HEADER = 2
@@ -2876,6 +2895,7 @@ class SourceMetadata(proto.Message):
             PLUGIN (1):
                 Source type plugin.
         """
+
         SOURCE_TYPE_UNSPECIFIED = 0
         PLUGIN = 1
 
@@ -2993,6 +3013,7 @@ class DiscoveredApiObservation(proto.Message):
             GRAPHQL (3):
                 Style is GraphQL API
         """
+
         STYLE_UNSPECIFIED = 0
         REST = 1
         GRPC = 2
@@ -3010,6 +3031,7 @@ class DiscoveredApiObservation(proto.Message):
             GCP_ILB (2):
                 GCP internal load balancer.
         """
+
         SOURCE_TYPE_UNSPECIFIED = 0
         GCP_XLB = 1
         GCP_ILB = 2
@@ -3136,6 +3158,7 @@ class DiscoveredApiOperation(proto.Message):
                 Operation does not have a matched catalog
                 operation.
         """
+
         CLASSIFICATION_UNSPECIFIED = 0
         KNOWN = 1
         UNKNOWN = 2
@@ -3242,6 +3265,7 @@ class HttpOperationDetails(proto.Message):
             UUID (5):
                 UUID data type
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         BOOL = 1
         INTEGER = 2

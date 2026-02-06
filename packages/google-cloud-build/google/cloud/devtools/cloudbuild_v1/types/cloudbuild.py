@@ -249,6 +249,7 @@ class StorageSource(proto.Message):
                 Use the Cloud Storage Fetcher tool to
                 download the source file.
         """
+
         SOURCE_FETCHER_UNSPECIFIED = 0
         GSUTIL = 1
         GCS_FETCHER = 2
@@ -1265,6 +1266,7 @@ class Build(proto.Message):
                 Build was enqueued for longer than the value of
                 ``queue_ttl``.
         """
+
         STATUS_UNKNOWN = 0
         PENDING = 10
         QUEUED = 1
@@ -1303,6 +1305,7 @@ class Build(proto.Message):
                     e.g. alerts that a feature used in the build
                     is pending removal
             """
+
             PRIORITY_UNSPECIFIED = 0
             INFO = 1
             WARNING = 2
@@ -1350,6 +1353,7 @@ class Build(proto.Message):
                 FETCH_SOURCE_FAILED (6):
                     The source fetching has failed.
             """
+
             FAILURE_TYPE_UNSPECIFIED = 0
             PUSH_FAILED = 1
             PUSH_IMAGE_NOT_FOUND = 2
@@ -2126,6 +2130,7 @@ class Hash(proto.Message):
             SHA512 (4):
                 Use a sha512 hash.
         """
+
         NONE = 0
         SHA256 = 1
         MD5 = 2
@@ -2466,6 +2471,7 @@ class BuildApproval(proto.Message):
                 Build was cancelled while it was still
                 pending approval.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         APPROVED = 2
@@ -2546,6 +2552,7 @@ class ApprovalResult(proto.Message):
             REJECTED (2):
                 Build is rejected.
         """
+
         DECISION_UNSPECIFIED = 0
         APPROVED = 1
         REJECTED = 2
@@ -2697,6 +2704,7 @@ class GitFileSource(proto.Message):
             GITLAB (4):
                 A GitLab-hosted repo.
         """
+
         UNKNOWN = 0
         CLOUD_SOURCE_REPOSITORIES = 1
         GITHUB = 2
@@ -3018,6 +3026,7 @@ class RepositoryEventConfig(proto.Message):
             GITLAB_ENTERPRISE (3):
                 The SCM repo is GITLAB Enterprise.
         """
+
         REPOSITORY_TYPE_UNSPECIFIED = 0
         GITHUB = 1
         GITHUB_ENTERPRISE = 2
@@ -3148,6 +3157,7 @@ class PubsubConfig(proto.Message):
                 Some of the subscription's field are
                 misconfigured.
         """
+
         STATE_UNSPECIFIED = 0
         OK = 1
         SUBSCRIPTION_DELETED = 2
@@ -3206,6 +3216,7 @@ class WebhookConfig(proto.Message):
             SECRET_DELETED (2):
                 The secret provided in auth_method has been deleted.
         """
+
         STATE_UNSPECIFIED = 0
         OK = 1
         SECRET_DELETED = 2
@@ -3286,6 +3297,7 @@ class PullRequestFilter(proto.Message):
                    with write permissions or above must comment ``/gcbrun``
                    in order to fire a build.
         """
+
         COMMENTS_DISABLED = 0
         COMMENTS_ENABLED = 1
         COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY = 2
@@ -3650,6 +3662,7 @@ class BuildOptions(proto.Message):
             VERIFIED (1):
                 Build must be verified.
         """
+
         NOT_VERIFIED = 0
         VERIFIED = 1
 
@@ -3672,6 +3685,7 @@ class BuildOptions(proto.Message):
             E2_MEDIUM (7):
                 E2 machine with 1 CPU.
         """
+
         UNSPECIFIED = 0
         N1_HIGHCPU_8 = 1
         N1_HIGHCPU_32 = 2
@@ -3692,6 +3706,7 @@ class BuildOptions(proto.Message):
                 Do not fail the build if error in
                 substitutions checks.
         """
+
         MUST_MATCH = 0
         ALLOW_LOOSE = 1
 
@@ -3711,6 +3726,7 @@ class BuildOptions(proto.Message):
                 Storage; they will be written when the build is
                 completed.
         """
+
         STREAM_DEFAULT = 0
         STREAM_ON = 1
         STREAM_OFF = 2
@@ -3738,6 +3754,7 @@ class BuildOptions(proto.Message):
                 Turn off all logging. No build logs will be
                 captured.
         """
+
         LOGGING_UNSPECIFIED = 0
         LEGACY = 1
         GCS_ONLY = 2
@@ -3761,6 +3778,7 @@ class BuildOptions(proto.Message):
                 Bucket is located in a Google-owned project
                 and is not regionalized.
         """
+
         DEFAULT_LOGS_BUCKET_BEHAVIOR_UNSPECIFIED = 0
         REGIONAL_USER_OWNED_BUCKET = 1
         LEGACY_BUCKET = 2
@@ -4110,6 +4128,7 @@ class WorkerPool(proto.Message):
             UPDATING (5):
                 ``WorkerPool`` is being updated; new builds cannot be run.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -4263,6 +4282,7 @@ class PrivatePoolV1Config(proto.Message):
                     If set, workers are created with a public
                     address which allows for public internet egress.
             """
+
             EGRESS_OPTION_UNSPECIFIED = 0
             NO_PUBLIC_EGRESS = 1
             PUBLIC_EGRESS = 2

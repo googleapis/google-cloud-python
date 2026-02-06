@@ -253,6 +253,7 @@ class Connection(proto.Message):
             KEEPALIVE (4):
                 SIP Trunk connection is keepalive.
         """
+
         STATE_UNSPECIFIED = 0
         CONNECTED = 1
         DISCONNECTED = 2
@@ -284,6 +285,7 @@ class Connection(proto.Message):
             CERTIFICATE_QUOTA_EXCEEDED (8):
                 Certificate has exhausted its quota.
         """
+
         CERTIFICATE_STATE_UNSPECIFIED = 0
         CERTIFICATE_VALID = 1
         CERTIFICATE_INVALID = 2

@@ -16,28 +16,30 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
-from google.cloud.servicedirectory_v1.types import endpoint
+from google.cloud.servicedirectory_v1.types import (
+    endpoint,
+    namespace,
+    registration_service,
+    service,
+)
 from google.cloud.servicedirectory_v1.types import endpoint as gcs_endpoint
-from google.cloud.servicedirectory_v1.types import namespace
 from google.cloud.servicedirectory_v1.types import namespace as gcs_namespace
-from google.cloud.servicedirectory_v1.types import registration_service
-from google.cloud.servicedirectory_v1.types import service
 from google.cloud.servicedirectory_v1.types import service as gcs_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -1206,9 +1208,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateEndpoint._get_transcoded_request(
@@ -1363,9 +1363,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateNamespace._get_http_options()
 
             request, metadata = self._interceptor.pre_create_namespace(
                 request, metadata
@@ -1521,9 +1519,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseCreateService._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseCreateService._get_transcoded_request(
@@ -1668,9 +1664,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteEndpoint._get_transcoded_request(
@@ -1776,9 +1770,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteNamespace._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_namespace(
                 request, metadata
@@ -1886,9 +1878,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseDeleteService._get_transcoded_request(
@@ -2003,9 +1993,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetEndpoint._get_transcoded_request(
@@ -2224,9 +2212,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2380,9 +2366,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_namespace(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetNamespace._get_transcoded_request(
@@ -2533,9 +2517,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetService._get_http_options()
 
             request, metadata = self._interceptor.pre_get_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetService._get_transcoded_request(
@@ -2681,9 +2663,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListEndpoints._get_transcoded_request(
@@ -2831,9 +2811,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_http_options()
 
             request, metadata = self._interceptor.pre_list_namespaces(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListNamespaces._get_transcoded_request(
@@ -2981,9 +2959,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListServices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListServices._get_transcoded_request(
@@ -3204,9 +3180,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -3355,9 +3329,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3514,9 +3486,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_update_endpoint(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateEndpoint._get_transcoded_request(
@@ -3671,9 +3641,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateNamespace._get_http_options()
 
             request, metadata = self._interceptor.pre_update_namespace(
                 request, metadata
@@ -3829,9 +3797,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseUpdateService._get_transcoded_request(
@@ -4142,9 +4108,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4283,9 +4247,7 @@ class RegistrationServiceRestTransport(_BaseRegistrationServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseRegistrationServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(

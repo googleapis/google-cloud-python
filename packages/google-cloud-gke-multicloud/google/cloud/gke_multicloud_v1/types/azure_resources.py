@@ -201,6 +201,7 @@ class AzureCluster(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -937,6 +938,7 @@ class AzureNodePool(proto.Message):
                 requires user action to restore full
                 functionality.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2

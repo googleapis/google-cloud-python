@@ -236,6 +236,7 @@ class InstallationState(proto.Message):
             COMPLETE (10):
                 Installation process has been completed.
         """
+
         STAGE_UNSPECIFIED = 0
         PENDING_CREATE_APP = 1
         PENDING_USER_OAUTH = 2
@@ -1206,6 +1207,7 @@ class FetchGitRefsRequest(proto.Message):
             BRANCH (2):
                 To fetch branches.
         """
+
         REF_TYPE_UNSPECIFIED = 0
         TAG = 1
         BRANCH = 2

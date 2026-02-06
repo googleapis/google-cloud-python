@@ -18,9 +18,9 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-from google.shopping.type.types import types
 import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.products.v1beta",
@@ -66,6 +66,7 @@ class SubscriptionPeriod(proto.Enum):
             Indicates that the subscription period is
             year.
     """
+
     SUBSCRIPTION_PERIOD_UNSPECIFIED = 0
     MONTH = 1
     YEAR = 2
@@ -749,12 +750,12 @@ class Attributes(proto.Message):
         number=39,
         message="Shipping",
     )
-    free_shipping_threshold: MutableSequence[
-        "FreeShippingThreshold"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=135,
-        message="FreeShippingThreshold",
+    free_shipping_threshold: MutableSequence["FreeShippingThreshold"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=135,
+            message="FreeShippingThreshold",
+        )
     )
     shipping_weight: "ShippingWeight" = proto.Field(
         proto.MESSAGE,
@@ -1011,12 +1012,12 @@ class Attributes(proto.Message):
         number=124,
         message=types.Price,
     )
-    sustainability_incentives: MutableSequence[
-        "ProductSustainabilityIncentive"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=138,
-        message="ProductSustainabilityIncentive",
+    sustainability_incentives: MutableSequence["ProductSustainabilityIncentive"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=138,
+            message="ProductSustainabilityIncentive",
+        )
     )
 
 
@@ -1837,6 +1838,7 @@ class ProductStatus(proto.Message):
                 DISAPPROVED (3):
                     Issue disapproves the product.
             """
+
             SEVERITY_UNSPECIFIED = 0
             NOT_IMPACTED = 1
             DEMOTED = 2
@@ -2051,6 +2053,7 @@ class ProductSustainabilityIncentive(proto.Message):
                 plug-in hybrids. The grant amount may be a fixed
                 sum or a percentage of the sale price.
         """
+
         TYPE_UNSPECIFIED = 0
         EV_TAX_CREDIT = 1
         EV_PRICE_DISCOUNT = 2

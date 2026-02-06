@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import google.type.interval_pb2 as interval_pb2  # type: ignore
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.inventories.v1",
@@ -96,6 +96,7 @@ class LocalInventoryAttributes(proto.Message):
             OUT_OF_STOCK (4):
                 Indicates that the product is out of stock.
         """
+
         LOCAL_INVENTORY_AVAILABILITY_UNSPECIFIED = 0
         IN_STOCK = 1
         LIMITED_AVAILABILITY = 2
@@ -123,6 +124,7 @@ class LocalInventoryAttributes(proto.Message):
                 Indicates that the pickup method is not
                 supported.
         """
+
         PICKUP_METHOD_UNSPECIFIED = 0
         BUY = 1
         RESERVE = 2
@@ -157,6 +159,7 @@ class LocalInventoryAttributes(proto.Message):
             MULTI_WEEK (9):
                 Indicates that the pickup SLA is multi-week.
         """
+
         PICKUP_SLA_UNSPECIFIED = 0
         SAME_DAY = 1
         NEXT_DAY = 2
@@ -251,6 +254,7 @@ class RegionalInventoryAttributes(proto.Message):
             OUT_OF_STOCK (2):
                 Indicates that the product is out of stock.
         """
+
         REGIONAL_INVENTORY_AVAILABILITY_UNSPECIFIED = 0
         IN_STOCK = 1
         OUT_OF_STOCK = 2

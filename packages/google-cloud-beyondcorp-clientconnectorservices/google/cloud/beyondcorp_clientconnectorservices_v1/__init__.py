@@ -30,6 +30,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.client_connector_services_service import (
     ClientConnectorServicesServiceAsyncClient,
     ClientConnectorServicesServiceClient,
@@ -49,7 +50,9 @@ if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
 ):  # pragma: NO COVER
     api_core.check_python_version("google.cloud.beyondcorp_clientconnectorservices_v1")  # type: ignore
-    api_core.check_dependency_versions("google.cloud.beyondcorp_clientconnectorservices_v1")  # type: ignore
+    api_core.check_dependency_versions(
+        "google.cloud.beyondcorp_clientconnectorservices_v1"
+    )  # type: ignore
 else:  # pragma: NO COVER
     # An older version of api_core is installed which does not define the
     # functions above. We do equivalent checks manually.

@@ -302,6 +302,7 @@ class TagTemplate(proto.Message):
                 Dataplex service. Visible in both services.
                 Editable in Dataplex, read-only in DataCatalog.
         """
+
         DATAPLEX_TRANSFER_STATUS_UNSPECIFIED = 0
         MIGRATED = 1
         TRANSFERRED = 2
@@ -440,6 +441,7 @@ class FieldType(proto.Message):
             RICHTEXT (5):
                 A Richtext description.
         """
+
         PRIMITIVE_TYPE_UNSPECIFIED = 0
         DOUBLE = 1
         STRING = 2
@@ -483,12 +485,12 @@ class FieldType(proto.Message):
                 number=1,
             )
 
-        allowed_values: MutableSequence[
-            "FieldType.EnumType.EnumValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="FieldType.EnumType.EnumValue",
+        allowed_values: MutableSequence["FieldType.EnumType.EnumValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="FieldType.EnumType.EnumValue",
+            )
         )
 
     primitive_type: PrimitiveType = proto.Field(

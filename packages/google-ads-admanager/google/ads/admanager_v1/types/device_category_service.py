@@ -136,12 +136,12 @@ class ListDeviceCategoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    device_categories: MutableSequence[
-        device_category_messages.DeviceCategory
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=device_category_messages.DeviceCategory,
+    device_categories: MutableSequence[device_category_messages.DeviceCategory] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=device_category_messages.DeviceCategory,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

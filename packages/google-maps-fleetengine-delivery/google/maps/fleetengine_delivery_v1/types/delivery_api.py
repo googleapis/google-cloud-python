@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.fleetengine_delivery_v1.types import (
     delivery_vehicles as mfd_delivery_vehicles,
@@ -261,12 +261,12 @@ class ListDeliveryVehiclesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    delivery_vehicles: MutableSequence[
-        mfd_delivery_vehicles.DeliveryVehicle
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=mfd_delivery_vehicles.DeliveryVehicle,
+    delivery_vehicles: MutableSequence[mfd_delivery_vehicles.DeliveryVehicle] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=mfd_delivery_vehicles.DeliveryVehicle,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

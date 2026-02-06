@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import (
     prediction_apikey_registry_service,
@@ -360,12 +360,12 @@ class PredictionApiKeyRegistryGrpcAsyncIOTransport(PredictionApiKeyRegistryTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_prediction_api_key_registration" not in self._stubs:
-            self._stubs[
-                "create_prediction_api_key_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/CreatePredictionApiKeyRegistration",
-                request_serializer=prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest.serialize,
-                response_deserializer=prediction_apikey_registry_service.PredictionApiKeyRegistration.deserialize,
+            self._stubs["create_prediction_api_key_registration"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/CreatePredictionApiKeyRegistration",
+                    request_serializer=prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest.serialize,
+                    response_deserializer=prediction_apikey_registry_service.PredictionApiKeyRegistration.deserialize,
+                )
             )
         return self._stubs["create_prediction_api_key_registration"]
 
@@ -395,12 +395,12 @@ class PredictionApiKeyRegistryGrpcAsyncIOTransport(PredictionApiKeyRegistryTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_prediction_api_key_registrations" not in self._stubs:
-            self._stubs[
-                "list_prediction_api_key_registrations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/ListPredictionApiKeyRegistrations",
-                request_serializer=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest.serialize,
-                response_deserializer=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.deserialize,
+            self._stubs["list_prediction_api_key_registrations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/ListPredictionApiKeyRegistrations",
+                    request_serializer=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest.serialize,
+                    response_deserializer=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.deserialize,
+                )
             )
         return self._stubs["list_prediction_api_key_registrations"]
 
@@ -427,12 +427,12 @@ class PredictionApiKeyRegistryGrpcAsyncIOTransport(PredictionApiKeyRegistryTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_prediction_api_key_registration" not in self._stubs:
-            self._stubs[
-                "delete_prediction_api_key_registration"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/DeletePredictionApiKeyRegistration",
-                request_serializer=prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_prediction_api_key_registration"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry/DeletePredictionApiKeyRegistration",
+                    request_serializer=prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_prediction_api_key_registration"]
 

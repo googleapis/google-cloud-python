@@ -82,6 +82,7 @@ class ValidationMessage(proto.Message):
             AGENT_TRANSITION_ROUTE_GROUP (14):
                 Agent transition route group.
         """
+
         RESOURCE_TYPE_UNSPECIFIED = 0
         AGENT = 1
         INTENT = 2
@@ -112,6 +113,7 @@ class ValidationMessage(proto.Message):
             ERROR (3):
                 The agent may experience failures.
         """
+
         SEVERITY_UNSPECIFIED = 0
         INFO = 1
         WARNING = 2

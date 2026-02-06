@@ -108,6 +108,7 @@ class DatabaseEntityView(proto.Enum):
             the page_size property of the request is ignored. The
             returned page will only include the top-most node types.
     """
+
     DATABASE_ENTITY_VIEW_UNSPECIFIED = 0
     DATABASE_ENTITY_VIEW_BASIC = 1
     DATABASE_ENTITY_VIEW_FULL = 2
@@ -195,12 +196,12 @@ class ListMigrationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_jobs: MutableSequence[
-        clouddms_resources.MigrationJob
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=clouddms_resources.MigrationJob,
+    migration_jobs: MutableSequence[clouddms_resources.MigrationJob] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=clouddms_resources.MigrationJob,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -723,12 +724,12 @@ class ListConnectionProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connection_profiles: MutableSequence[
-        clouddms_resources.ConnectionProfile
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=clouddms_resources.ConnectionProfile,
+    connection_profiles: MutableSequence[clouddms_resources.ConnectionProfile] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=clouddms_resources.ConnectionProfile,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1033,12 +1034,12 @@ class ListPrivateConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_connections: MutableSequence[
-        clouddms_resources.PrivateConnection
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=clouddms_resources.PrivateConnection,
+    private_connections: MutableSequence[clouddms_resources.PrivateConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=clouddms_resources.PrivateConnection,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1529,12 +1530,12 @@ class ListMappingRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mapping_rules: MutableSequence[
-        conversionworkspace_resources.MappingRule
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=conversionworkspace_resources.MappingRule,
+    mapping_rules: MutableSequence[conversionworkspace_resources.MappingRule] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=conversionworkspace_resources.MappingRule,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1773,6 +1774,7 @@ class DescribeDatabaseEntitiesRequest(proto.Message):
             DESTINATION_TREE (3):
                 The destination database tree.
         """
+
         DB_TREE_TYPE_UNSPECIFIED = 0
         SOURCE_TREE = 1
         DRAFT_TREE = 2
@@ -1831,12 +1833,12 @@ class DescribeDatabaseEntitiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    database_entities: MutableSequence[
-        conversionworkspace_resources.DatabaseEntity
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=conversionworkspace_resources.DatabaseEntity,
+    database_entities: MutableSequence[conversionworkspace_resources.DatabaseEntity] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=conversionworkspace_resources.DatabaseEntity,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1895,12 +1897,12 @@ class SearchBackgroundJobsResponse(proto.Message):
             rules.
     """
 
-    jobs: MutableSequence[
-        conversionworkspace_resources.BackgroundJobLogEntry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=conversionworkspace_resources.BackgroundJobLogEntry,
+    jobs: MutableSequence[conversionworkspace_resources.BackgroundJobLogEntry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=conversionworkspace_resources.BackgroundJobLogEntry,
+        )
     )
 
 
@@ -1937,12 +1939,12 @@ class DescribeConversionWorkspaceRevisionsResponse(proto.Message):
             The list of conversion workspace revisions.
     """
 
-    revisions: MutableSequence[
-        conversionworkspace_resources.ConversionWorkspace
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=conversionworkspace_resources.ConversionWorkspace,
+    revisions: MutableSequence[conversionworkspace_resources.ConversionWorkspace] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=conversionworkspace_resources.ConversionWorkspace,
+        )
     )
 
 

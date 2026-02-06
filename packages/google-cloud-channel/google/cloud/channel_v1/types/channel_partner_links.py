@@ -47,6 +47,7 @@ class ChannelPartnerLinkView(proto.Enum):
         FULL (2):
             Includes all fields.
     """
+
     UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -71,6 +72,7 @@ class ChannelPartnerLinkState(proto.Enum):
             Status when the reseller is suspended by
             Google or distributor.
     """
+
     CHANNEL_PARTNER_LINK_STATE_UNSPECIFIED = 0
     INVITED = 1
     ACTIVE = 2

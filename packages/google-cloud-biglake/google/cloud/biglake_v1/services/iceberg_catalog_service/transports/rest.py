@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -547,9 +547,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_create_iceberg_catalog(
                 request, metadata
@@ -707,9 +705,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_failover_iceberg_catalog(
                 request, metadata
@@ -863,9 +859,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iceberg_catalog(
                 request, metadata
@@ -1016,9 +1010,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_iceberg_catalogs(
                 request, metadata
@@ -1171,9 +1163,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_update_iceberg_catalog(
                 request, metadata
@@ -1292,7 +1282,9 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FailoverIcebergCatalog(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FailoverIcebergCatalog(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_iceberg_catalog(

@@ -92,6 +92,7 @@ class Evaluation(proto.Message):
             FAILED (4):
                 The evaluation failed.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2

@@ -71,6 +71,7 @@ class CloudFunctionStatus(proto.Enum):
             be updated or deleted to move it out of this
             state.
     """
+
     CLOUD_FUNCTION_STATUS_UNSPECIFIED = 0
     ACTIVE = 1
     OFFLINE = 2
@@ -321,6 +322,7 @@ class CloudFunction(proto.Message):
                 Force the use of VPC Access Connector for all
                 egress traffic from the function.
         """
+
         VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 0
         PRIVATE_RANGES_ONLY = 1
         ALL_TRAFFIC = 2
@@ -345,6 +347,7 @@ class CloudFunction(proto.Message):
                 Allow HTTP traffic from private VPC sources
                 and through GCLB.
         """
+
         INGRESS_SETTINGS_UNSPECIFIED = 0
         ALLOW_ALL = 1
         ALLOW_INTERNAL_ONLY = 2
@@ -367,6 +370,7 @@ class CloudFunction(proto.Message):
                 also be specified by the user using the
                 ``docker_repository`` field.
         """
+
         DOCKER_REGISTRY_UNSPECIFIED = 0
         CONTAINER_REGISTRY = 1
         ARTIFACT_REGISTRY = 2
@@ -633,6 +637,7 @@ class HttpsTrigger(proto.Message):
                 application can examine the request to determine
                 which protocol was used and respond accordingly.
         """
+
         SECURITY_LEVEL_UNSPECIFIED = 0
         SECURE_ALWAYS = 1
         SECURE_OPTIONAL = 2

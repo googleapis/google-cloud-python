@@ -324,6 +324,7 @@ class DataPolicy(proto.Message):
                 Used to create a data policy for raw data
                 access.
         """
+
         DATA_POLICY_TYPE_UNSPECIFIED = 0
         DATA_MASKING_POLICY = 1
         RAW_DATA_ACCESS_POLICY = 2
@@ -342,6 +343,7 @@ class DataPolicy(proto.Message):
             V2 (2):
                 V2 data policy version.
         """
+
         VERSION_UNSPECIFIED = 0
         V1 = 1
         V2 = 2
@@ -433,6 +435,7 @@ class DataMaskingPolicy(proto.Message):
                 - STRUCT: NOT_APPLICABLE
                 - JSON: NULL
         """
+
         PREDEFINED_EXPRESSION_UNSPECIFIED = 0
         SHA256 = 1
         ALWAYS_NULL = 2

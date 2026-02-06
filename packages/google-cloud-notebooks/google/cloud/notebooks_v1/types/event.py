@@ -64,6 +64,7 @@ class Event(proto.Message):
                 Host maintenance information to Control Plane.
                 https://cloud.google.com/compute/docs/gpus/gpu-host-maintenance
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
         HEARTBEAT = 2

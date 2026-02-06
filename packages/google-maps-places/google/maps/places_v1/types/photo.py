@@ -63,12 +63,12 @@ class Photo(proto.Message):
         proto.INT32,
         number=3,
     )
-    author_attributions: MutableSequence[
-        attribution.AuthorAttribution
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message=attribution.AuthorAttribution,
+    author_attributions: MutableSequence[attribution.AuthorAttribution] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message=attribution.AuthorAttribution,
+        )
     )
     flag_content_uri: str = proto.Field(
         proto.STRING,

@@ -135,12 +135,12 @@ class ListSampleQuerySetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sample_query_sets: MutableSequence[
-        gcd_sample_query_set.SampleQuerySet
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcd_sample_query_set.SampleQuerySet,
+    sample_query_sets: MutableSequence[gcd_sample_query_set.SampleQuerySet] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcd_sample_query_set.SampleQuerySet,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
