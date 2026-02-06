@@ -14,7 +14,9 @@
 
 import json
 import unittest
+from unittest import mock
 
+import pandas as pd
 import pytest
 import requests
 
@@ -209,7 +211,7 @@ def _validate_nodes_and_edges(result):
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_one_column_no_rows():
-    result = graph_server.convert_graph_data({"result": {}})
+    result = graph_server._convert_graph_data({"result": {}})
     assert result == {
         "response": {
             "edges": [],
@@ -224,7 +226,7 @@ def test_convert_one_column_no_rows():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_one_column_one_row():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "result": {
                 "0": json.dumps(row_alex_owns_account),
@@ -247,7 +249,7 @@ def test_convert_one_column_one_row():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_one_column_two_rows_null_json():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "result": {
                 "0": None,
@@ -274,7 +276,7 @@ def test_convert_one_column_two_rows_null_json():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_one_column_two_rows():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "result": {
                 "0": json.dumps(row_alex_owns_account_converted),
@@ -298,7 +300,7 @@ def test_convert_one_column_two_rows():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_one_row_two_columns():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "col1": {
                 "0": json.dumps(row_alex_owns_account_converted),
@@ -327,7 +329,7 @@ def test_convert_one_row_two_columns():
 def test_convert_nongraph_json():
     # If we have valid json that doesn't represent a graph, we don't expect to get nodes and edges,
     # but we should at least have row data, allowing the tabular view to work.
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "result": {
                 "0": json.dumps({"foo": 1, "bar": 2}),
@@ -346,7 +348,7 @@ def test_convert_nongraph_json():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_outer_key_not_string():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             0: {
                 "0": json.dumps({"foo": 1, "bar": 2}),
@@ -360,7 +362,7 @@ def test_convert_outer_key_not_string():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_outer_value_not_dict():
-    result = graph_server.convert_graph_data({"result": 0})
+    result = graph_server._convert_graph_data({"result": 0})
     assert result == {"error": "Expected outer value to be dict, got <class 'int'>"}
 
 
@@ -368,7 +370,7 @@ def test_convert_outer_value_not_dict():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_inner_value_not_string():
-    result = graph_server.convert_graph_data(
+    result = graph_server._convert_graph_data(
         {
             "col1": {
                 "0": json.dumps(row_alex_owns_account),
@@ -396,7 +398,7 @@ def test_convert_inner_value_not_string():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_empty_dict():
-    result = graph_server.convert_graph_data({})
+    result = graph_server._convert_graph_data({})
     assert result == {
         "response": {
             "nodes": [],
@@ -411,7 +413,7 @@ def test_convert_empty_dict():
     graph_visualization is None, reason="Requires `spanner-graph-notebook`"
 )
 def test_convert_wrong_row_index():
-    result0 = graph_server.convert_graph_data(
+    result0 = graph_server._convert_graph_data(
         {
             "result": {
                 "0": json.dumps(row_alex_owns_account),
@@ -420,7 +422,7 @@ def test_convert_wrong_row_index():
     )
 
     # Changing the index should not impact the result.
-    result1 = graph_server.convert_graph_data(
+    result1 = graph_server._convert_graph_data(
         {
             "result": {
                 "1": json.dumps(row_alex_owns_account),
@@ -476,14 +478,61 @@ class TestGraphServer(unittest.TestCase):
         )
 
         data = {
-            "result": {
-                "0": json.dumps(row_alex_owns_account),
+            "query_result": {
+                "result": {
+                    "0": json.dumps(row_alex_owns_account),
+                }
             }
         }
         response = requests.post(route, json={"params": json.dumps(data)})
         self.assertEqual(response.status_code, 200)
         response_data = response.json()["response"]
 
+        self.assertEqual(len(response_data["nodes"]), 2)
+        self.assertEqual(len(response_data["edges"]), 1)
+
+        _validate_nodes_and_edges(response.json())
+
+        self.assertEqual(
+            response_data["query_result"], {"result": [row_alex_owns_account_converted]}
+        )
+        self.assertIsNone(response_data["schema"])
+
+    @pytest.mark.skipif(
+        graph_visualization is None, reason="Requires `spanner-graph-notebook`"
+    )
+    def test_post_query_from_table(self):
+        self.assertTrue(self.server_thread.is_alive())
+        route = graph_server.graph_server.build_route(
+            graph_server.GraphServer.endpoints["post_query"]
+        )
+
+        params = {
+            "destination_table": {"projectId": "p", "datasetId": "d", "tableId": "t"},
+            "args": {
+                "project": "p",
+                "bigquery_api_endpoint": "e",
+                "location": "l",
+            },
+        }
+
+        with mock.patch("bigquery_magics.core.create_bq_client") as mock_create:
+            mock_client = mock.Mock()
+            mock_create.return_value = mock_client
+            mock_df = pd.DataFrame(
+                [json.dumps(row_alex_owns_account)], columns=["result"]
+            )
+            mock_client.list_rows.return_value.to_dataframe.return_value = mock_df
+
+            response = requests.post(route, json={"params": json.dumps(params)})
+            self.assertEqual(response.status_code, 200)
+
+            mock_create.assert_called_once_with(
+                project="p", bigquery_api_endpoint="e", location="l"
+            )
+            mock_client.list_rows.assert_called_once()
+
+        response_data = response.json()["response"]
         self.assertEqual(len(response_data["nodes"]), 2)
         self.assertEqual(len(response_data["edges"]), 1)
 

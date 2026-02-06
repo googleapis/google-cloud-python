@@ -563,6 +563,7 @@ def test_bigquery_graph_json_json_result(monkeypatch):
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
     monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -597,6 +598,9 @@ def test_bigquery_graph_json_json_result(monkeypatch):
         google.cloud.bigquery.job.QueryJob, instance=True
     )
     query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = TABLE_ID
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
@@ -630,6 +634,7 @@ def test_bigquery_graph_json_result(monkeypatch):
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
     monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -661,6 +666,9 @@ def test_bigquery_graph_json_result(monkeypatch):
         google.cloud.bigquery.job.QueryJob, instance=True
     )
     query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = TABLE_ID
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
@@ -690,6 +698,12 @@ def test_bigquery_graph_json_result(monkeypatch):
             "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
         )  # identifier in 3rd row of query result
 
+        # Verify that args are present in the HTML.
+        assert '\\"args\\": {' in html_content
+        assert '\\"bigquery_api_endpoint\\": null' in html_content
+        assert '\\"project\\": null' in html_content
+        assert '\\"location\\": null' in html_content
+
         # Make sure we can run a second graph query, after the graph server is already running.
         try:
             return_value = ip.run_cell_magic("bigquery", "--graph", sql)
@@ -714,10 +728,196 @@ def test_bigquery_graph_json_result(monkeypatch):
             "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
         )  # identifier in 3rd row of query result
 
+        # Verify that args are present in the HTML.
+        assert '\\"args\\": {' in html_content
+        assert '\\"bigquery_api_endpoint\\": null' in html_content
+        assert '\\"project\\": null' in html_content
+        assert '\\"location\\": null' in html_content
+
     assert bqstorage_mock.called  # BQ storage client was used
     assert isinstance(return_value, pandas.DataFrame)
     assert len(return_value) == len(result)  # verify row count
     assert list(return_value) == list(result)  # verify column names
+
+
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_size_exceeds_max(monkeypatch):
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
+
+    # Set threshold to a very small value to trigger the error.
+    monkeypatch.setattr(magics, "MAX_GRAPH_VISUALIZATION_SIZE", 5)
+
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+
+    sql = "SELECT graph_json FROM t"
+    result = pandas.DataFrame(['{"id": 1}'], columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = TABLE_ID
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+
+        ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Should display error message
+        assert display_mock.called
+        html_content = display_mock.call_args[0][0].data
+        assert (
+            "Error:</b> The query result is too large for graph visualization."
+            in html_content
+        )
+
+
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_size_exceeds_query_result_max(monkeypatch):
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
+
+    # Set threshold to a very small value, but larger than the other one.
+    # We want estimated_size > MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE
+    # and estimated_size <= MAX_GRAPH_VISUALIZATION_SIZE
+    monkeypatch.setattr(magics, "MAX_GRAPH_VISUALIZATION_SIZE", 1000000)
+    monkeypatch.setattr(magics, "MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE", 5)
+
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+
+    sql = "SELECT graph_json FROM t"
+    result = pandas.DataFrame(['{"id": 1977323800}'], columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = TABLE_ID
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+
+        ip.run_cell_magic("bigquery", "--graph", sql)
+
+        # Should display visualization but without query_result embedded.
+        assert display_mock.called
+        html_content = display_mock.call_args[0][0].data
+        assert "<script>" in html_content
+        assert "1977323800" not in html_content
+
+
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_bigquery_graph_with_args_serialization(monkeypatch):
+    globalipapp.start_ipython()
+    ip = globalipapp.get_ipython()
+    ip.extension_manager.load_extension("bigquery_magics")
+    mock_credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    # Set up the context with monkeypatch so that it's reset for subsequent
+    # tests.
+    monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
+
+    # Mock out the BigQuery Storage API.
+    bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    bqstorage_instance_mock = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    bqstorage_instance_mock._transport = mock.Mock()
+    bqstorage_mock.return_value = bqstorage_instance_mock
+    bqstorage_client_patch = mock.patch(
+        "google.cloud.bigquery_storage.BigQueryReadClient", bqstorage_mock
+    )
+    display_patch = mock.patch("IPython.display.display", autospec=True)
+
+    sql = "SELECT graph_json FROM t"
+    graph_json_rows = [
+        """
+        [{"identifier":"mUZpbkdyYXBoLlBlcnNvbgB4kQI=","kind":"node","labels":["Person"],"properties":{"id":1}}]
+        """
+    ]
+    result = pandas.DataFrame(graph_json_rows, columns=["graph_json"])
+    run_query_patch = mock.patch("bigquery_magics.bigquery._run_query", autospec=True)
+    query_job_mock = mock.create_autospec(
+        google.cloud.bigquery.job.QueryJob, instance=True
+    )
+    query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = TABLE_ID
+
+    with run_query_patch as run_query_mock, (
+        bqstorage_client_patch
+    ), display_patch as display_mock:
+        run_query_mock.return_value = query_job_mock
+
+        endpoint = "https://example.com"
+        project = "my-project"
+        location = "us-west1"
+        magic_args = (
+            f"--graph --bigquery_api_endpoint={endpoint} "
+            f"--project={project} --location={location}"
+        )
+        ip.run_cell_magic("bigquery", magic_args, sql)
+
+        assert display_mock.called
+        html_content = display_mock.call_args_list[0][0][0].data
+
+        # Verify that args are present in the HTML with their assigned values.
+        assert '\\"args\\": {' in html_content
+        assert f'\\"bigquery_api_endpoint\\": \\"{endpoint}\\"' in html_content
+        assert f'\\"project\\": \\"{project}\\"' in html_content
+        assert f'\\"location\\": \\"{location}\\"' in html_content
 
 
 @pytest.mark.skipif(
@@ -739,6 +939,7 @@ def test_bigquery_graph_colab(monkeypatch):
     # Set up the context with monkeypatch so that it's reset for subsequent
     # tests.
     monkeypatch.setattr(bigquery_magics.context, "_credentials", mock_credentials)
+    monkeypatch.setattr(bigquery_magics.context, "_project", PROJECT_ID)
 
     # Mock out the BigQuery Storage API.
     bqstorage_mock = mock.create_autospec(bigquery_storage.BigQueryReadClient)
@@ -770,6 +971,9 @@ def test_bigquery_graph_colab(monkeypatch):
         google.cloud.bigquery.job.QueryJob, instance=True
     )
     query_job_mock.to_dataframe.return_value = result
+    query_job_mock.configuration.destination.project = PROJECT_ID
+    query_job_mock.configuration.destination.dataset_id = DATASET_ID
+    query_job_mock.configuration.destination.table_id = "test_destination_table"
 
     with run_query_patch as run_query_mock, (
         bqstorage_client_patch
@@ -801,6 +1005,12 @@ def test_bigquery_graph_colab(monkeypatch):
             "mUZpbkdyYXBoLlBlcnNvbgB4kQQ=" in html_content
         )  # identifier in 3rd row of query result
 
+        # Verify that args are present in the HTML.
+        assert '\\"args\\": {' in html_content
+        assert '\\"bigquery_api_endpoint\\": null' in html_content
+        assert '\\"project\\": null' in html_content
+        assert '\\"location\\": null' in html_content
+
         # Make sure we actually used colab path, not GraphServer path.
         assert sys.modules["google.colab"].output.register_callback.called
 
@@ -816,7 +1026,7 @@ def test_bigquery_graph_colab(monkeypatch):
 )
 def test_colab_query_callback():
     result = bigquery_magics.bigquery._colab_query_callback(
-        "query", json.dumps({"result": {}})
+        "query", json.dumps({"query_result": {"result": {}}})
     )
     assert result.data == {
         "response": {

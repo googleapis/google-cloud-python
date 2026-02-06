@@ -19,6 +19,10 @@ import socketserver
 import threading
 from typing import Any, Dict, List
 
+from google.cloud import bigquery
+
+from bigquery_magics import core
+
 
 def execute_node_expansion(params, request):
     return {"error": "Node expansion not yet implemented"}
@@ -54,7 +58,7 @@ def _stringify_properties(d: Any) -> Any:
         return _stringify_value(d)
 
 
-def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
+def _convert_graph_data(query_results: Dict[str, Dict[str, str]]):
     """
     Converts graph data to the form expected by the visualization framework.
 
@@ -141,6 +145,24 @@ def convert_graph_data(query_results: Dict[str, Dict[str, str]]):
         }
     except Exception as e:
         return {"error": getattr(e, "message", str(e))}
+
+
+def convert_graph_params(params: Dict[str, Any]):
+    query_results = None
+    if "query_result" in params:
+        query_results = params["query_result"]
+    else:
+        bq_client = core.create_bq_client(
+            project=params["args"]["project"],
+            bigquery_api_endpoint=params["args"]["bigquery_api_endpoint"],
+            location=params["args"]["location"],
+        )
+
+        table_ref = bigquery.TableReference.from_api_repr(params["destination_table"])
+        query_results = json.loads(
+            bq_client.list_rows(table_ref).to_dataframe().to_json()
+        )
+    return _convert_graph_data(query_results=query_results)
 
 
 class GraphServer:
@@ -251,7 +273,9 @@ class GraphServerHandler(http.server.SimpleHTTPRequestHandler):
 
     def handle_post_query(self):
         data = self.parse_post_data()
-        response = convert_graph_data(query_results=json.loads(data["params"]))
+        params = json.loads(data["params"])
+
+        response = convert_graph_params(params)
         self.do_data_response(response)
 
     def handle_post_node_expansion(self):

@@ -117,7 +117,6 @@ import warnings
 import IPython  # type: ignore
 from IPython.core import magic_arguments  # type: ignore
 from IPython.core.getipython import get_ipython
-from google.api_core import client_info
 from google.api_core.exceptions import NotFound
 from google.cloud import bigquery
 from google.cloud.bigquery import exceptions
@@ -126,13 +125,12 @@ from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.job import QueryJobConfig
 import pandas
 
-from bigquery_magics import environment
 from bigquery_magics import line_arg_parser as lap
 import bigquery_magics._versions_helpers
 import bigquery_magics.config
 import bigquery_magics.graph_server as graph_server
+from bigquery_magics import core
 import bigquery_magics.pyformat
-import bigquery_magics.version
 
 try:
     from google.cloud import bigquery_storage  # type: ignore
@@ -145,24 +143,6 @@ except ImportError:
     bpd = None
 
 context = bigquery_magics.config.context
-
-
-def _get_user_agent():
-    identities = [
-        f"ipython-{IPython.__version__}",
-        f"bigquery-magics/{bigquery_magics.version.__version__}",
-    ]
-
-    if environment.is_vscode():
-        identities.append("vscode")
-        if environment.is_vscode_google_cloud_code_extension_installed():
-            identities.append(environment.GOOGLE_CLOUD_CODE_EXTENSION_NAME)
-    elif environment.is_jupyter():
-        identities.append("jupyter")
-        if environment.is_jupyter_bigquery_plugin_installed():
-            identities.append(environment.BIGQUERY_JUPYTER_PLUGIN_NAME)
-
-    return " ".join(identities)
 
 
 def _handle_error(error, destination_var=None):
@@ -565,23 +545,11 @@ def _query_with_pandas(query: str, params: List[Any], args: Any):
 
 
 def _create_clients(args: Any) -> Tuple[bigquery.Client, Any]:
-    bigquery_client_options = copy.deepcopy(context.bigquery_client_options)
-    if args.bigquery_api_endpoint:
-        if isinstance(bigquery_client_options, dict):
-            bigquery_client_options["api_endpoint"] = args.bigquery_api_endpoint
-        else:
-            bigquery_client_options.api_endpoint = args.bigquery_api_endpoint
-
-    bq_client = bigquery.Client(
-        project=args.project or context.project,
-        credentials=context.credentials,
-        default_query_job_config=context.default_query_job_config,
-        client_info=client_info.ClientInfo(user_agent=_get_user_agent()),
-        client_options=bigquery_client_options,
+    bq_client = core.create_bq_client(
+        project=args.project,
+        bigquery_api_endpoint=args.bigquery_api_endpoint,
         location=args.location,
     )
-    if context._connection:
-        bq_client._connection = context._connection
 
     # Check and instantiate bq storage client
     if args.use_bqstorage_api is not None:
@@ -634,7 +602,7 @@ def _handle_result(result, args):
 
 def _colab_query_callback(query: str, params: str):
     return IPython.core.display.JSON(
-        graph_server.convert_graph_data(query_results=json.loads(params))
+        graph_server.convert_graph_params(json.loads(params))
     )
 
 
@@ -663,7 +631,11 @@ def _colab_node_expansion_callback(request: dict, params_str: str):
 singleton_server_thread: threading.Thread = None
 
 
-def _add_graph_widget(query_result):
+MAX_GRAPH_VISUALIZATION_SIZE = 2_000_000
+MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE = 100_000
+
+
+def _add_graph_widget(query_result: pandas.DataFrame, query_job: Any, args: Any):
     try:
         from spanner_graphs.graph_visualization import generate_visualization_html
     except ImportError as err:
@@ -700,10 +672,36 @@ def _add_graph_widget(query_result):
         port = graph_server.graph_server.port
 
     # Create html to invoke the graph server
+    args_dict = {
+        "bigquery_api_endpoint": args.bigquery_api_endpoint,
+        "project": args.project,
+        "location": args.location,
+    }
+
+    estimated_size = query_result.memory_usage(index=True, deep=True).sum()
+    if estimated_size > MAX_GRAPH_VISUALIZATION_SIZE:
+        IPython.display.display(
+            IPython.core.display.HTML(
+                "<big><b>Error:</b> The query result is too large for graph visualization.</big>"
+            )
+        )
+        return
+
+    table_dict = {
+        "projectId": query_job.configuration.destination.project,
+        "datasetId": query_job.configuration.destination.dataset_id,
+        "tableId": query_job.configuration.destination.table_id,
+    }
+
+    params_dict = {"destination_table": table_dict, "args": args_dict}
+    if estimated_size < MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE:
+        params_dict["query_result"] = json.loads(query_result.to_json())
+
+    params_str = json.dumps(params_dict)
     html_content = generate_visualization_html(
         query="placeholder query",
         port=port,
-        params=query_result.to_json().replace("\\", "\\\\").replace('"', '\\"'),
+        params=params_str.replace("\\", "\\\\").replace('"', '\\"'),
     )
     html_content = html_content.replace(
         '"graph_visualization.Query"', '"bigquery.graph_visualization.Query"'
@@ -819,7 +817,7 @@ def _make_bq_query(
         result = result.to_dataframe(**dataframe_kwargs)
 
     if args.graph and _supports_graph_widget(result):
-        _add_graph_widget(result)
+        _add_graph_widget(result, query_job, args)
     return _handle_result(result, args)
 
 
@@ -913,7 +911,7 @@ def _make_bqstorage_client(client, client_options):
 
     return client._ensure_bqstorage_client(
         client_options=client_options,
-        client_info=gapic_client_info.ClientInfo(user_agent=_get_user_agent()),
+        client_info=gapic_client_info.ClientInfo(user_agent=core._get_user_agent()),
     )
 
 
