@@ -58,6 +58,7 @@ import bigframes.core
 from bigframes.core import agg_expressions
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
+import bigframes.core.col
 import bigframes.core.convert
 import bigframes.core.explode
 import bigframes.core.expression as ex
@@ -94,7 +95,13 @@ if typing.TYPE_CHECKING:
     import bigframes.session
 
     SingleItemValue = Union[
-        bigframes.series.Series, int, float, str, pandas.Timedelta, Callable
+        bigframes.series.Series,
+        int,
+        float,
+        str,
+        pandas.Timedelta,
+        Callable,
+        bigframes.core.col.Expression,
     ]
     MultiItemValue = Union[
         "DataFrame", Sequence[int | float | str | pandas.Timedelta | Callable]
@@ -2236,6 +2243,13 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if isinstance(v, bigframes.series.Series):
             return self._assign_series_join_on_index(k, v)
+        elif isinstance(v, bigframes.core.col.Expression):
+            label_to_col_ref = {
+                label: ex.deref(id) for id, label in self._block.col_id_to_label.items()
+            }
+            resolved_expr = v._value.bind_variables(label_to_col_ref)
+            block = self._block.project_block_exprs([resolved_expr], labels=[k])
+            return DataFrame(block)
         elif isinstance(v, bigframes.dataframe.DataFrame):
             v_df_col_count = len(v._block.value_columns)
             if v_df_col_count != 1:

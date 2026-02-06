@@ -27,6 +27,7 @@ import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetim
 import pandas
 
 import bigframes._config as config
+from bigframes.core.col import col
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 from bigframes.core.logging import log_adapter
@@ -415,6 +416,7 @@ __all__ = [
     "clean_up_by_session_id",
     "concat",
     "crosstab",
+    "col",
     "cut",
     "deploy_remote_function",
     "deploy_udf",

@@ -19,7 +19,7 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Mapping, Tuple, TypeVar
+from typing import Callable, Hashable, Mapping, Tuple, TypeVar
 
 from bigframes import dtypes
 from bigframes.core import expression, window_spec
@@ -68,7 +68,7 @@ class Aggregation(expression.Expression):
         return self.inputs
 
     @property
-    def free_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return tuple(
             itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
         )
@@ -92,7 +92,7 @@ class Aggregation(expression.Expression):
 
     def bind_variables(
         self: TExpression,
-        bindings: Mapping[str, expression.Expression],
+        bindings: Mapping[Hashable, expression.Expression],
         allow_partial_bindings: bool = False,
     ) -> TExpression:
         return self.transform_children(
@@ -192,7 +192,7 @@ class WindowExpression(expression.Expression):
         return self.inputs
 
     @property
-    def free_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return tuple(
             itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
         )
@@ -216,7 +216,7 @@ class WindowExpression(expression.Expression):
 
     def bind_variables(
         self: WindowExpression,
-        bindings: Mapping[str, expression.Expression],
+        bindings: Mapping[Hashable, expression.Expression],
         allow_partial_bindings: bool = False,
     ) -> WindowExpression:
         return self.transform_children(

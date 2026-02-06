@@ -19,7 +19,7 @@ import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Generator, Mapping, TypeVar, Union
+from typing import Callable, Generator, Hashable, Mapping, TypeVar, Union
 
 import pandas as pd
 
@@ -39,7 +39,7 @@ def deref(name: str) -> DerefOp:
     return DerefOp(ids.ColumnId(name))
 
 
-def free_var(id: str) -> UnboundVariableExpression:
+def free_var(id: Hashable) -> UnboundVariableExpression:
     return UnboundVariableExpression(id)
 
 
@@ -52,7 +52,7 @@ class Expression(abc.ABC):
     """An expression represents a computation taking N scalar inputs and producing a single output scalar."""
 
     @property
-    def free_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return ()
 
     @property
@@ -116,7 +116,9 @@ class Expression(abc.ABC):
 
     @abc.abstractmethod
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         """Replace variables with expression given in `bindings`.
 
@@ -191,7 +193,9 @@ class ScalarConstantExpression(Expression):
         return self.dtype
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         return self
 
@@ -226,10 +230,10 @@ class ScalarConstantExpression(Expression):
 class UnboundVariableExpression(Expression):
     """A variable expression representing an unbound variable."""
 
-    id: str
+    id: Hashable
 
     @property
-    def free_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return (self.id,)
 
     @property
@@ -256,7 +260,9 @@ class UnboundVariableExpression(Expression):
         return self
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         if self.id in bindings.keys():
             return bindings[self.id]
@@ -304,7 +310,9 @@ class DerefOp(Expression):
         raise ValueError(f"Type of variable {self.id} has not been fixed.")
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> Expression:
         return self
 
@@ -373,7 +381,7 @@ class OpExpression(Expression):
         )
 
     @property
-    def free_variables(self) -> typing.Tuple[str, ...]:
+    def free_variables(self) -> typing.Tuple[Hashable, ...]:
         return tuple(
             itertools.chain.from_iterable(map(lambda x: x.free_variables, self.inputs))
         )
@@ -408,7 +416,9 @@ class OpExpression(Expression):
         return self.op.output_type(*input_types)
 
     def bind_variables(
-        self, bindings: Mapping[str, Expression], allow_partial_bindings: bool = False
+        self,
+        bindings: Mapping[Hashable, Expression],
+        allow_partial_bindings: bool = False,
     ) -> OpExpression:
         return OpExpression(
             self.op,

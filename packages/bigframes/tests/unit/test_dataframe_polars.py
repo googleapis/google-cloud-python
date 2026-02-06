@@ -828,6 +828,26 @@ def test_assign_new_column(scalars_dfs):
     assert_frame_equal(bf_result, pd_result)
 
 
+def test_assign_using_pd_col(scalars_dfs):
+    if pd.__version__.startswith("1.") or pd.__version__.startswith("2."):
+        pytest.skip("col expression interface only supported for pandas 3+")
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_kwargs = {
+        "new_col_1": 4 - bpd.col("int64_col"),
+        "new_col_2": bpd.col("int64_col") / (bpd.col("float64_col") * 0.5),
+    }
+    pd_kwargs = {
+        "new_col_1": 4 - pd.col("int64_col"),  # type: ignore
+        "new_col_2": pd.col("int64_col") / (pd.col("float64_col") * 0.5),  # type: ignore
+    }
+
+    df = scalars_df.assign(**bf_kwargs)
+    bf_result = df.to_pandas()
+    pd_result = scalars_pandas_df.assign(**pd_kwargs)
+
+    assert_frame_equal(bf_result, pd_result)
+
+
 def test_assign_new_column_w_loc(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_df = scalars_df.copy()
