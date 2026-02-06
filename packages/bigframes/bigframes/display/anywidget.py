@@ -133,26 +133,25 @@ class TableWidget(_WIDGET_BASE):
         # obtain the row counts
         # TODO(b/428238610): Start iterating over the result of `to_pandas_batches()`
         # before we get here so that the count might already be cached.
-        with bigframes.option_context("display.progress_bar", None):
-            self._reset_batches_for_new_page_size()
+        self._reset_batches_for_new_page_size()
 
-            if self._batches is None:
-                self._error_message = (
-                    "Could not retrieve data batches. Data might be unavailable or "
-                    "an error occurred."
-                )
-                self.row_count = None
-            elif self._batches.total_rows is None:
-                # Total rows is unknown, this is an expected state.
-                # TODO(b/461536343): Cheaply discover if we have exactly 1 page.
-                # There are cases where total rows is not set, but there are no additional
-                # pages. We could disable the "next" button in these cases.
-                self.row_count = None
-            else:
-                self.row_count = self._batches.total_rows
+        if self._batches is None:
+            self._error_message = (
+                "Could not retrieve data batches. Data might be unavailable or "
+                "an error occurred."
+            )
+            self.row_count = None
+        elif self._batches.total_rows is None:
+            # Total rows is unknown, this is an expected state.
+            # TODO(b/461536343): Cheaply discover if we have exactly 1 page.
+            # There are cases where total rows is not set, but there are no additional
+            # pages. We could disable the "next" button in these cases.
+            self.row_count = None
+        else:
+            self.row_count = self._batches.total_rows
 
-            # get the initial page
-            self._set_table_html()
+        # get the initial page
+        self._set_table_html()
 
     @traitlets.observe("_initial_load_complete")
     def _on_initial_load_complete(self, change: dict[str, Any]):
@@ -282,9 +281,7 @@ class TableWidget(_WIDGET_BASE):
     def _set_table_html(self) -> None:
         """Sets the current html data based on the current page and page size."""
         new_page = None
-        with self._setting_html_lock, bigframes.option_context(
-            "display.progress_bar", None
-        ):
+        with self._setting_html_lock:
             if self._error_message:
                 self.table_html = (
                     f"<div class='bigframes-error-message'>"

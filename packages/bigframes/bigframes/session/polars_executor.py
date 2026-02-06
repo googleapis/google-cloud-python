@@ -34,7 +34,6 @@ from bigframes.operations import (
     numeric_ops,
     string_ops,
 )
-import bigframes.operations.json_ops as json_ops
 from bigframes.session import executor, semi_executor
 
 if TYPE_CHECKING:
@@ -95,7 +94,6 @@ _COMPATIBLE_SCALAR_OPS = (
     string_ops.EndsWithOp,
     string_ops.StrContainsOp,
     string_ops.StrContainsRegexOp,
-    json_ops.JSONDecode,
 )
 _COMPATIBLE_AGG_OPS = (
     agg_ops.SizeOp,

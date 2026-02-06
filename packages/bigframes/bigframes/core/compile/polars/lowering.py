@@ -391,7 +391,7 @@ def _lower_cast(cast_op: ops.AsTypeOp, arg: expression.Expression):
         return arg
 
     if arg.output_type == dtypes.JSON_DTYPE:
-        return json_ops.JSONDecode(cast_op.to_type, safe=cast_op.safe).as_expr(arg)
+        return json_ops.JSONDecode(cast_op.to_type).as_expr(arg)
     if (
         arg.output_type == dtypes.STRING_DTYPE
         and cast_op.to_type == dtypes.DATETIME_DTYPE
