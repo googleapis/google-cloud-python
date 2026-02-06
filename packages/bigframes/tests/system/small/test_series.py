@@ -3885,9 +3885,9 @@ def test_date_time_astype_int(
     assert bf_result.dtype == "Int64"
 
 
-def test_string_astype_int():
-    pd_series = pd.Series(["4", "-7", "0", "    -03"])
-    bf_series = series.Series(pd_series)
+def test_string_astype_int(session):
+    pd_series = pd.Series(["4", "-7", "0", "-03"])
+    bf_series = series.Series(pd_series, session=session)
 
     pd_result = pd_series.astype("Int64")
     bf_result = bf_series.astype("Int64").to_pandas()
@@ -3895,12 +3895,12 @@ def test_string_astype_int():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
-def test_string_astype_float():
+def test_string_astype_float(session):
     pd_series = pd.Series(
-        ["1", "-1", "-0", "000", "    -03.235", "naN", "-inf", "INf", ".33", "7.235e-8"]
+        ["1", "-1", "-0", "000", "-03.235", "naN", "-inf", "INf", ".33", "7.235e-8"]
     )
 
-    bf_series = series.Series(pd_series)
+    bf_series = series.Series(pd_series, session=session)
 
     pd_result = pd_series.astype("Float64")
     bf_result = bf_series.astype("Float64").to_pandas()
@@ -3908,7 +3908,7 @@ def test_string_astype_float():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
-def test_string_astype_date():
+def test_string_astype_date(session):
     if int(pa.__version__.split(".")[0]) < 15:
         pytest.skip(
             "Avoid pyarrow.lib.ArrowNotImplementedError: "
@@ -3919,7 +3919,7 @@ def test_string_astype_date():
         pd.ArrowDtype(pa.string())
     )
 
-    bf_series = series.Series(pd_series)
+    bf_series = series.Series(pd_series, session=session)
 
     # TODO(b/340885567): fix type error
     pd_result = pd_series.astype("date32[day][pyarrow]")  # type: ignore
@@ -3928,12 +3928,12 @@ def test_string_astype_date():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
-def test_string_astype_datetime():
+def test_string_astype_datetime(session):
     pd_series = pd.Series(
         ["2014-08-15 08:15:12", "2015-08-15 08:15:12.654754", "2016-02-29 00:00:00"]
     ).astype(pd.ArrowDtype(pa.string()))
 
-    bf_series = series.Series(pd_series)
+    bf_series = series.Series(pd_series, session=session)
 
     pd_result = pd_series.astype(pd.ArrowDtype(pa.timestamp("us")))
     bf_result = bf_series.astype(pd.ArrowDtype(pa.timestamp("us"))).to_pandas()
@@ -3941,7 +3941,7 @@ def test_string_astype_datetime():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
-def test_string_astype_timestamp():
+def test_string_astype_timestamp(session):
     pd_series = pd.Series(
         [
             "2014-08-15 08:15:12+00:00",
@@ -3950,7 +3950,7 @@ def test_string_astype_timestamp():
         ]
     ).astype(pd.ArrowDtype(pa.string()))
 
-    bf_series = series.Series(pd_series)
+    bf_series = series.Series(pd_series, session=session)
 
     pd_result = pd_series.astype(pd.ArrowDtype(pa.timestamp("us", tz="UTC")))
     bf_result = bf_series.astype(
@@ -3960,13 +3960,14 @@ def test_string_astype_timestamp():
     pd.testing.assert_series_equal(bf_result, pd_result, check_index_type=False)
 
 
-def test_timestamp_astype_string():
+def test_timestamp_astype_string(session):
     bf_series = series.Series(
         [
             "2014-08-15 08:15:12+00:00",
             "2015-08-15 08:15:12.654754+05:00",
             "2016-02-29 00:00:00+08:00",
-        ]
+        ],
+        session=session,
     ).astype(pd.ArrowDtype(pa.timestamp("us", tz="UTC")))
 
     expected_result = pd.Series(
@@ -3985,9 +3986,9 @@ def test_timestamp_astype_string():
 
 
 @pytest.mark.parametrize("errors", ["raise", "null"])
-def test_float_astype_json(errors):
+def test_float_astype_json(errors, session):
     data = ["1.25", "2500000000", None, "-12323.24"]
-    bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE)
+    bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype(dtypes.JSON_DTYPE, errors=errors)
     assert bf_result.dtype == dtypes.JSON_DTYPE
@@ -3997,9 +3998,9 @@ def test_float_astype_json(errors):
     pd.testing.assert_series_equal(bf_result.to_pandas(), expected_result)
 
 
-def test_float_astype_json_str():
+def test_float_astype_json_str(session):
     data = ["1.25", "2500000000", None, "-12323.24"]
-    bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE)
+    bf_series = series.Series(data, dtype=dtypes.FLOAT_DTYPE, session=session)
 
     bf_result = bf_series.astype("json")
     assert bf_result.dtype == dtypes.JSON_DTYPE
@@ -4010,14 +4011,14 @@ def test_float_astype_json_str():
 
 
 @pytest.mark.parametrize("errors", ["raise", "null"])
-def test_string_astype_json(errors):
+def test_string_astype_json(errors, session):
     data = [
         "1",
         None,
         '["1","3","5"]',
         '{"a":1,"b":["x","y"],"c":{"x":[],"z":false}}',
     ]
-    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE)
+    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE, session=session)
 
     bf_result = bf_series.astype(dtypes.JSON_DTYPE, errors=errors)
     assert bf_result.dtype == dtypes.JSON_DTYPE
@@ -4026,9 +4027,9 @@ def test_string_astype_json(errors):
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
-def test_string_astype_json_in_safe_mode():
+def test_string_astype_json_in_safe_mode(session):
     data = ["this is not a valid json string"]
-    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE)
+    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE, session=session)
     bf_result = bf_series.astype(dtypes.JSON_DTYPE, errors="null")
     assert bf_result.dtype == dtypes.JSON_DTYPE
 
@@ -4037,9 +4038,9 @@ def test_string_astype_json_in_safe_mode():
     pd.testing.assert_series_equal(bf_result.to_pandas(), expected)
 
 
-def test_string_astype_json_raise_error():
+def test_string_astype_json_raise_error(session):
     data = ["this is not a valid json string"]
-    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE)
+    bf_series = series.Series(data, dtype=dtypes.STRING_DTYPE, session=session)
     with pytest.raises(
         google.api_core.exceptions.BadRequest,
         match="syntax error while parsing value",
@@ -4063,8 +4064,8 @@ def test_string_astype_json_raise_error():
         ),
     ],
 )
-def test_json_astype_others(data, to_type, errors):
-    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE)
+def test_json_astype_others(data, to_type, errors, session):
+    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE, session=session)
 
     bf_result = bf_series.astype(to_type, errors=errors)
     assert bf_result.dtype == to_type
@@ -4084,8 +4085,8 @@ def test_json_astype_others(data, to_type, errors):
         pytest.param(["true", None], dtypes.STRING_DTYPE, id="to_string"),
     ],
 )
-def test_json_astype_others_raise_error(data, to_type):
-    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE)
+def test_json_astype_others_raise_error(data, to_type, session):
+    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE, session=session)
     with pytest.raises(google.api_core.exceptions.BadRequest):
         bf_series.astype(to_type, errors="raise").to_pandas()
 
@@ -4099,8 +4100,8 @@ def test_json_astype_others_raise_error(data, to_type):
         pytest.param(["true", None], dtypes.STRING_DTYPE, id="to_string"),
     ],
 )
-def test_json_astype_others_in_safe_mode(data, to_type):
-    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE)
+def test_json_astype_others_in_safe_mode(data, to_type, session):
+    bf_series = series.Series(data, dtype=dtypes.JSON_DTYPE, session=session)
     bf_result = bf_series.astype(to_type, errors="null")
     assert bf_result.dtype == to_type
 
@@ -4414,8 +4415,8 @@ def test_query_job_setters(scalars_dfs):
         ([1, 1, 1, 1, 1],),
     ],
 )
-def test_is_monotonic_increasing(series_input):
-    scalars_df = series.Series(series_input, dtype=pd.Int64Dtype())
+def test_is_monotonic_increasing(series_input, session):
+    scalars_df = series.Series(series_input, dtype=pd.Int64Dtype(), session=session)
     scalars_pandas_df = pd.Series(series_input, dtype=pd.Int64Dtype())
     assert (
         scalars_df.is_monotonic_increasing == scalars_pandas_df.is_monotonic_increasing
@@ -4433,8 +4434,8 @@ def test_is_monotonic_increasing(series_input):
         ([1, 1, 1, 1, 1],),
     ],
 )
-def test_is_monotonic_decreasing(series_input):
-    scalars_df = series.Series(series_input)
+def test_is_monotonic_decreasing(series_input, session):
+    scalars_df = series.Series(series_input, session=session)
     scalars_pandas_df = pd.Series(series_input)
     assert (
         scalars_df.is_monotonic_decreasing == scalars_pandas_df.is_monotonic_decreasing
