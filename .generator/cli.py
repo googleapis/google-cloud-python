@@ -348,7 +348,7 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     else:
         raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
 
-    # If there is no noxfile, run `isort`` and `black` on the output.
+    # If there is no noxfile, run `ruff` on the output.
     # This is required for proto-only libraries which are not GAPIC.
     if not Path(f"{output}/{path_to_library}/noxfile.py").exists():
         # TODO(https://github.com/googleapis/google-cloud-python/issues/15538):
@@ -358,7 +358,6 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
         common_args = [
             f"--target-version={target_version}",
             "--line-length=88",
-            output,
         ]
         # 1. Run Ruff to fix imports (replaces isort)
         subprocess.run(["ruff", "check", "--select", "I", "--fix", *common_args], check=True)
