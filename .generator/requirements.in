@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.6 # Fix incorrect REST serialization https://github.com/googleapis/gapic-generator-python/pull/2549
+gapic-generator==1.30.7 # replace isort and black with ruff https://github.com/googleapis/gapic-generator-python/pull/2539
 nox
 starlark-pyo3>=2025.1
 build
