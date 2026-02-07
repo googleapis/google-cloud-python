@@ -332,7 +332,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
     @property
     def columns(self) -> pandas.Index:
-        return self.dtypes.index
+        return self._block.column_labels
 
     @columns.setter
     def columns(self, labels: pandas.Index):

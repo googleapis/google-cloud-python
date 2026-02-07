@@ -23,6 +23,7 @@ import math
 import threading
 from typing import Any, Iterator, Optional
 import uuid
+import warnings
 
 import pandas as pd
 
@@ -111,22 +112,31 @@ class TableWidget(_WIDGET_BASE):
         self.page_size = initial_page_size
         self.max_columns = initial_max_columns
 
-        # TODO(b/469861913): Nested columns from structs (e.g., 'struct_col.name') are not currently sortable.
-        # TODO(b/463754889): Support non-string column labels for sorting.
-        if all(isinstance(col, str) for col in dataframe.columns):
-            self.orderable_columns = [
-                str(col_name)
-                for col_name, dtype in dataframe.dtypes.items()
-                if dtypes.is_orderable(dtype)
-            ]
-        else:
-            self.orderable_columns = []
+        self.orderable_columns = self._get_orderable_columns(dataframe)
 
         self._initial_load()
 
         # Signals to the frontend that the initial data load is complete.
         # Also used as a guard to prevent observers from firing during initialization.
         self._initial_load_complete = True
+
+    def _get_orderable_columns(
+        self, dataframe: bigframes.dataframe.DataFrame
+    ) -> list[str]:
+        """Determine which columns can be used for client-side sorting."""
+        # TODO(b/469861913): Nested columns from structs (e.g., 'struct_col.name') are not currently sortable.
+        # TODO(b/463754889): Support non-string column labels for sorting.
+        if not all(isinstance(col, str) for col in dataframe.columns):
+            return []
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", bigframes.exceptions.JSONDtypeWarning)
+            warnings.simplefilter("ignore", category=FutureWarning)
+            return [
+                str(col_name)
+                for col_name, dtype in dataframe.dtypes.items()
+                if dtypes.is_orderable(dtype)
+            ]
 
     def _initial_load(self) -> None:
         """Get initial data and row count."""
