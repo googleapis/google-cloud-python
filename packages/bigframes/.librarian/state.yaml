@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:e7cc6823efb073a8a26e7cefdd869f12ec228abfbd2a44aa9a7eacc284023677
 libraries:
   - id: bigframes
-    version: 2.34.0
+    version: 2.35.0
     last_generated_commit: ""
     apis: []
     source_roots:
