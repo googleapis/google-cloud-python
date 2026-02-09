@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.7 # replace isort and black with ruff https://github.com/googleapis/gapic-generator-python/pull/2539
+gapic-generator==1.30.8 # fix mypy issue for __func__ type https://github.com/googleapis/gapic-generator-python/pull/2562
 nox
 starlark-pyo3>=2025.1
 build
