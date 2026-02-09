@@ -98,7 +98,9 @@ class {{ service.async_client_name }}:
         Returns:
             {{ service.async_client_name }}: The constructed client.
         """
-        sa_info_func = {{ service.client_name }}.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            {{ service.client_name }}.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func({{ service.async_client_name }}, info, *args, **kwargs)
 
     @classmethod
@@ -115,7 +117,9 @@ class {{ service.async_client_name }}:
         Returns:
             {{ service.async_client_name }}: The constructed client.
         """
-        sa_file_func = {{ service.client_name }}.from_service_account_file.__func__  # type: ignore
+        sa_file_func = (
+            {{ service.client_name }}.from_service_account_file.__func__  # type: ignore
+        )
         return sa_file_func({{ service.async_client_name }}, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file

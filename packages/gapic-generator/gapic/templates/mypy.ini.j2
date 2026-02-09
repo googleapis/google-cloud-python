@@ -1,3 +1,15 @@
 [mypy]
 python_version = 3.14
 namespace_packages = True
+ignore_missing_imports = False
+
+# TODO(https://github.com/googleapis/gapic-generator-python/issues/2563):
+# Dependencies that historically lacks py.typed markers
+[mypy-google.iam.*]
+ignore_missing_imports = True
+
+# Helps mypy navigate the 'google' namespace more reliably in 3.10+
+explicit_package_bases = True
+
+# Performance: reuse results from previous runs to speed up 'nox'
+incremental = True

@@ -114,7 +114,9 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-        sa_info_func = CloudRedisClient.from_service_account_info.__func__  # type: ignore
+        sa_info_func = (
+            CloudRedisClient.from_service_account_info.__func__  # type: ignore
+        )
         return sa_info_func(CloudRedisAsyncClient, info, *args, **kwargs)
 
     @classmethod
@@ -131,7 +133,9 @@ class CloudRedisAsyncClient:
         Returns:
             CloudRedisAsyncClient: The constructed client.
         """
-        sa_file_func = CloudRedisClient.from_service_account_file.__func__  # type: ignore
+        sa_file_func = (
+            CloudRedisClient.from_service_account_file.__func__  # type: ignore
+        )
         return sa_file_func(CloudRedisAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file

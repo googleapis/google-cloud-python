@@ -405,13 +405,13 @@ jobs:
       - name: Install nox.
         run: |
             python -m pip install nox
-      - name: Run blacken and lint on the generated output.
+      - name: Run format, lint, and mypy on the generated output.
         run: |
-          nox -f tests/integration/goldens/asset/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
-          nox -f tests/integration/goldens/credentials/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
-          nox -f tests/integration/goldens/eventarc/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
-          nox -f tests/integration/goldens/logging/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
-          nox -f tests/integration/goldens/redis/noxfile.py -s mypy-${{ env.LATEST_STABLE_PYTHON }} blacken lint
+          nox -f tests/integration/goldens/asset/noxfile.py -s format lint mypy-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/credentials/noxfile.py -s format lint mypy-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/eventarc/noxfile.py -s format lint mypy-${{ env.LATEST_STABLE_PYTHON }} 
+          nox -f tests/integration/goldens/logging/noxfile.py -s format lint mypy-${{ env.LATEST_STABLE_PYTHON }}
+          nox -f tests/integration/goldens/redis/noxfile.py -s format lint mypy-${{ env.LATEST_STABLE_PYTHON }}
   goldens-unit:
     runs-on: ubuntu-latest
     steps:
