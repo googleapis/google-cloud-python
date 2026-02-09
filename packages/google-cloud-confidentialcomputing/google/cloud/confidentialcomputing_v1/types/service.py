@@ -65,6 +65,7 @@ class SigningAlgorithm(proto.Enum):
             ECDSA on the P-256 Curve with a SHA256
             digest.
     """
+
     SIGNING_ALGORITHM_UNSPECIFIED = 0
     RSASSA_PSS_SHA256 = 1
     RSASSA_PKCS1V15_SHA256 = 2
@@ -87,6 +88,7 @@ class TokenType(proto.Enum):
         TOKEN_TYPE_AWS_PRINCIPALTAGS (4):
             Principal-tag-based token for AWS integration
     """
+
     TOKEN_TYPE_UNSPECIFIED = 0
     TOKEN_TYPE_OIDC = 1
     TOKEN_TYPE_PKI = 2
@@ -106,6 +108,7 @@ class SignatureType(proto.Enum):
         SIGNATURE_TYPE_PKI (2):
             Public Key Infrastructure (PKI) signature.
     """
+
     SIGNATURE_TYPE_UNSPECIFIED = 0
     SIGNATURE_TYPE_OIDC = 1
     SIGNATURE_TYPE_PKI = 2
@@ -122,6 +125,7 @@ class TokenProfile(proto.Enum):
         TOKEN_PROFILE_AWS (2):
             AWS Principal Tags claims.
     """
+
     TOKEN_PROFILE_UNSPECIFIED = 0
     TOKEN_PROFILE_DEFAULT_EAT = 1
     TOKEN_PROFILE_AWS = 2
@@ -607,12 +611,12 @@ class SignedEntity(proto.Message):
             signatures attached to an OCI image object.
     """
 
-    container_image_signatures: MutableSequence[
-        "ContainerImageSignature"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ContainerImageSignature",
+    container_image_signatures: MutableSequence["ContainerImageSignature"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ContainerImageSignature",
+        )
     )
 
 

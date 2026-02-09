@@ -62,6 +62,7 @@ class State(proto.Enum):
         SUSPENDED (10):
             The instance is suspended.
     """
+
     STATE_UNSPECIFIED = 0
     STARTING = 1
     PROVISIONING = 2
@@ -96,6 +97,7 @@ class HealthState(proto.Enum):
             The instance health monitoring agent is not
             running. Applies to ACTIVE state.
     """
+
     HEALTH_STATE_UNSPECIFIED = 0
     HEALTHY = 1
     UNHEALTHY = 2
@@ -147,6 +149,7 @@ class UpgradeHistoryEntry(proto.Message):
             FAILED (3):
                 The instance upgrade is failed.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 1
         SUCCEEDED = 2
@@ -163,6 +166,7 @@ class UpgradeHistoryEntry(proto.Message):
             ROLLBACK (2):
                 Rollback.
         """
+
         ACTION_UNSPECIFIED = 0
         UPGRADE = 1
         ROLLBACK = 2

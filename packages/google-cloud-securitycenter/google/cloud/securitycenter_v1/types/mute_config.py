@@ -121,6 +121,7 @@ class MuteConfig(proto.Message):
                 dynamic mute state may become "unmuted" (unless
                 other configs still match).
         """
+
         MUTE_CONFIG_TYPE_UNSPECIFIED = 0
         STATIC = 1
         DYNAMIC = 2

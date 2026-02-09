@@ -342,6 +342,7 @@ class Workload(proto.Message):
             ASSURED_WORKLOADS_FOR_PARTNERS (12):
                 Assured Workloads for Partners
         """
+
         COMPLIANCE_REGIME_UNSPECIFIED = 0
         IL4 = 1
         CJIS = 2
@@ -367,6 +368,7 @@ class Workload(proto.Message):
             KAJ_ENROLLMENT_STATE_COMPLETE (2):
                 Complete State for KAJ Enrollment.
         """
+
         KAJ_ENROLLMENT_STATE_UNSPECIFIED = 0
         KAJ_ENROLLMENT_STATE_PENDING = 1
         KAJ_ENROLLMENT_STATE_COMPLETE = 2
@@ -380,6 +382,7 @@ class Workload(proto.Message):
             LOCAL_CONTROLS_BY_S3NS (1):
                 S3NS regime/controls.
         """
+
         PARTNER_UNSPECIFIED = 0
         LOCAL_CONTROLS_BY_S3NS = 1
 
@@ -412,6 +415,7 @@ class Workload(proto.Message):
                 KEYRING (3):
                     Keyring resource that hosts encryption keys.
             """
+
             RESOURCE_TYPE_UNSPECIFIED = 0
             CONSUMER_PROJECT = 1
             CONSUMER_FOLDER = 4
@@ -519,6 +523,7 @@ class Workload(proto.Message):
                 STATUS_COMPLETE (2):
                     SAA enrollment comopleted.
             """
+
             SETUP_STATE_UNSPECIFIED = 0
             STATUS_PENDING = 1
             STATUS_COMPLETE = 2
@@ -543,6 +548,7 @@ class Workload(proto.Message):
                     Returned when exception was encountered
                     during evaluation of other criteria.
             """
+
             SETUP_ERROR_UNSPECIFIED = 0
             ERROR_INVALID_BASE_SETUP = 1
             ERROR_MISSING_EXTERNAL_SIGNING_KEY = 2
@@ -555,12 +561,12 @@ class Workload(proto.Message):
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors: MutableSequence[
-            "Workload.SaaEnrollmentResponse.SetupError"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=2,
-            enum="Workload.SaaEnrollmentResponse.SetupError",
+        setup_errors: MutableSequence["Workload.SaaEnrollmentResponse.SetupError"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="Workload.SaaEnrollmentResponse.SetupError",
+            )
         )
 
     name: str = proto.Field(
@@ -708,6 +714,7 @@ class RestrictAllowedResourcesRequest(proto.Message):
                 https://cloud.google.com/assured-workloads/docs/supported-products
                 for the list of supported resources.
         """
+
         RESTRICTION_TYPE_UNSPECIFIED = 0
         ALLOW_ALL_GCP_RESOURCES = 1
         ALLOW_COMPLIANT_RESOURCES = 2
@@ -954,6 +961,7 @@ class Violation(proto.Message):
             EXCEPTION (4):
                 Violation is Exception
         """
+
         STATE_UNSPECIFIED = 0
         RESOLVED = 2
         UNRESOLVED = 3
@@ -999,6 +1007,7 @@ class Violation(proto.Message):
                     Remediation type for
                     gcp.restrictCmekCryptoKeyProjects
             """
+
             REMEDIATION_TYPE_UNSPECIFIED = 0
             REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION = 1
             REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION = 2

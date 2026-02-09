@@ -16,26 +16,28 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.geminidataanalytics_v1alpha.types import (
+    data_agent,
+    data_agent_service,
+)
 from google.cloud.geminidataanalytics_v1alpha.types import data_agent as gcg_data_agent
-from google.cloud.geminidataanalytics_v1alpha.types import data_agent
-from google.cloud.geminidataanalytics_v1alpha.types import data_agent_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDataAgentServiceRestTransport
@@ -1020,9 +1022,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseCreateDataAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_agent(
                 request, metadata
@@ -1173,9 +1173,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_agent_sync(
                 request, metadata
@@ -1328,9 +1326,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_agent(
                 request, metadata
@@ -1469,9 +1465,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_agent_sync(
                 request, metadata
@@ -1957,9 +1951,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListAccessibleDataAgents._get_http_options()
 
             request, metadata = self._interceptor.pre_list_accessible_data_agents(
                 request, metadata
@@ -2112,9 +2104,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListDataAgents._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_agents(
                 request, metadata
@@ -2490,9 +2480,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_agent(
                 request, metadata
@@ -2643,9 +2631,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_agent_sync(
                 request, metadata
@@ -2803,7 +2789,9 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAccessibleDataAgents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAccessibleDataAgents(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_data_agents(
@@ -3041,9 +3029,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataAgentServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -3180,9 +3166,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3300,9 +3284,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3557,9 +3539,7 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataAgentServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataAgentServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataAgentServiceRestTransport._BaseListOperations._get_transcoded_request(

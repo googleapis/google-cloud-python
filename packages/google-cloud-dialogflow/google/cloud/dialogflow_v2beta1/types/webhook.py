@@ -20,9 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2beta1.types import context, intent
+from google.cloud.dialogflow_v2beta1.types import context, intent, session_entity_type
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
-from google.cloud.dialogflow_v2beta1.types import session_entity_type
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
@@ -75,12 +74,12 @@ class WebhookRequest(proto.Message):
         number=2,
         message=gcd_session.QueryResult,
     )
-    alternative_query_results: MutableSequence[
-        gcd_session.QueryResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=gcd_session.QueryResult,
+    alternative_query_results: MutableSequence[gcd_session.QueryResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gcd_session.QueryResult,
+        )
     )
     original_detect_intent_request: "OriginalDetectIntentRequest" = proto.Field(
         proto.MESSAGE,
@@ -206,12 +205,12 @@ class WebhookResponse(proto.Message):
         proto.BOOL,
         number=8,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10,
-        message=session_entity_type.SessionEntityType,
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=session_entity_type.SessionEntityType,
+        )
     )
 
 

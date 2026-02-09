@@ -55,6 +55,7 @@ class RebillingBasis(proto.Enum):
             the customer would see if they viewed the bill
             in the Google Cloud Console.
     """
+
     REBILLING_BASIS_UNSPECIFIED = 0
     COST_AT_LIST = 1
     DIRECT_CUSTOMER_COST = 2

@@ -23,9 +23,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[InterconnectLocationsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[InterconnectLocationsTransport]]
 _transport_registry["rest"] = InterconnectLocationsRestTransport
 
 __all__ = (

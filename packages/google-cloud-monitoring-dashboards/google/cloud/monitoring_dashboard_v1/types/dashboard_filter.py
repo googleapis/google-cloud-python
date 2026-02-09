@@ -68,6 +68,7 @@ class DashboardFilter(proto.Message):
             GROUP (5):
                 Filter on a group id
         """
+
         FILTER_TYPE_UNSPECIFIED = 0
         RESOURCE_LABEL = 1
         METRIC_LABEL = 2

@@ -65,6 +65,7 @@ class ScanRunWarningTrace(proto.Message):
             NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN (5):
                 Indicates that no seeds is found for a scan
         """
+
         CODE_UNSPECIFIED = 0
         INSUFFICIENT_CRAWL_RESULTS = 1
         TOO_MANY_CRAWL_RESULTS = 2

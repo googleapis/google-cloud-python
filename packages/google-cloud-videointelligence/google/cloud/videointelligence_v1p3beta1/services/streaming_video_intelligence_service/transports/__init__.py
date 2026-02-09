@@ -21,13 +21,11 @@ from .grpc import StreamingVideoIntelligenceServiceGrpcTransport
 from .grpc_asyncio import StreamingVideoIntelligenceServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[StreamingVideoIntelligenceServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[StreamingVideoIntelligenceServiceTransport]]
 _transport_registry["grpc"] = StreamingVideoIntelligenceServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = StreamingVideoIntelligenceServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = (
+    StreamingVideoIntelligenceServiceGrpcAsyncIOTransport
+)
 
 __all__ = (
     "StreamingVideoIntelligenceServiceTransport",

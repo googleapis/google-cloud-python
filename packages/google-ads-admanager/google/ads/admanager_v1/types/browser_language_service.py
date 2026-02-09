@@ -136,12 +136,12 @@ class ListBrowserLanguagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    browser_languages: MutableSequence[
-        browser_language_messages.BrowserLanguage
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=browser_language_messages.BrowserLanguage,
+    browser_languages: MutableSequence[browser_language_messages.BrowserLanguage] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=browser_language_messages.BrowserLanguage,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

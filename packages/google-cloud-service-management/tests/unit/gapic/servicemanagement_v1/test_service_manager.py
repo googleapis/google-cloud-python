@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -65,27 +65,8 @@ import google.api.service_pb2 as service_pb2  # type: ignore
 import google.api.source_info_pb2 as source_info_pb2  # type: ignore
 import google.api.system_parameter_pb2 as system_parameter_pb2  # type: ignore
 import google.api.usage_pb2 as usage_pb2  # type: ignore
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
 import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.api_pb2 as api_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
@@ -94,6 +75,27 @@ import google.protobuf.source_context_pb2 as source_context_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.type_pb2 as type_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 from google.cloud.servicemanagement_v1.services.service_manager import (
     ServiceManagerAsyncClient,
@@ -988,10 +990,9 @@ def test_service_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1036,10 +1037,9 @@ def test_service_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1075,10 +1075,9 @@ def test_service_manager_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1325,9 +1324,7 @@ def test_service_manager_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -2819,9 +2816,9 @@ def test_undelete_service_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.undelete_service
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.undelete_service] = (
+            mock_rpc
+        )
         request = {}
         client.undelete_service(request)
 
@@ -3159,9 +3156,9 @@ def test_list_service_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_service_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_service_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_service_configs(request)
 
@@ -3711,9 +3708,9 @@ def test_get_service_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_service_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_service_config] = (
+            mock_rpc
+        )
         request = {}
         client.get_service_config(request)
 
@@ -4083,9 +4080,9 @@ def test_create_service_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_service_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_service_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_service_config(request)
 
@@ -4434,9 +4431,9 @@ def test_submit_config_source_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.submit_config_source
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.submit_config_source] = (
+            mock_rpc
+        )
         request = {}
         client.submit_config_source(request)
 
@@ -4808,9 +4805,9 @@ def test_list_service_rollouts_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_service_rollouts
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_service_rollouts] = (
+            mock_rpc
+        )
         request = {}
         client.list_service_rollouts(request)
 
@@ -5370,9 +5367,9 @@ def test_get_service_rollout_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_service_rollout
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_service_rollout] = (
+            mock_rpc
+        )
         request = {}
         client.get_service_rollout(request)
 
@@ -5724,9 +5721,9 @@ def test_create_service_rollout_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_service_rollout
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_service_rollout] = (
+            mock_rpc
+        )
         request = {}
         client.create_service_rollout(request)
 
@@ -6082,9 +6079,9 @@ def test_generate_config_report_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_config_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_config_report] = (
+            mock_rpc
+        )
         request = {}
         client.generate_config_report(request)
 
@@ -6996,9 +6993,9 @@ def test_undelete_service_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.undelete_service
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.undelete_service] = (
+            mock_rpc
+        )
 
         request = {}
         client.undelete_service(request)
@@ -7175,9 +7172,9 @@ def test_list_service_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_service_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_service_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_service_configs(request)
@@ -7433,9 +7430,9 @@ def test_get_service_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_service_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_service_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_service_config(request)
@@ -7630,9 +7627,9 @@ def test_create_service_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_service_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_service_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_service_config(request)
@@ -7817,9 +7814,9 @@ def test_submit_config_source_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.submit_config_source
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.submit_config_source] = (
+            mock_rpc
+        )
 
         request = {}
         client.submit_config_source(request)
@@ -8011,9 +8008,9 @@ def test_list_service_rollouts_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_service_rollouts
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_service_rollouts] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_service_rollouts(request)
@@ -8291,9 +8288,9 @@ def test_get_service_rollout_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_service_rollout
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_service_rollout] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_service_rollout(request)
@@ -8488,9 +8485,9 @@ def test_create_service_rollout_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_service_rollout
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_service_rollout] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_service_rollout(request)
@@ -8679,9 +8676,9 @@ def test_generate_config_report_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_config_report
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_config_report] = (
+            mock_rpc
+        )
 
         request = {}
         client.generate_config_report(request)

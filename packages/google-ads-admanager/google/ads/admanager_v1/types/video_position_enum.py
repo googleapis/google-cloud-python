@@ -49,6 +49,7 @@ class VideoPositionEnum(proto.Message):
             PREROLL (4):
                 Target ad placement before the video starts.
         """
+
         VIDEO_POSITION_UNSPECIFIED = 0
         ALL = 1
         MIDROLL = 2

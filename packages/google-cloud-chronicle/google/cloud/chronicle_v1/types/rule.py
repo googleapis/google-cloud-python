@@ -70,6 +70,7 @@ class RunFrequency(proto.Enum):
         DAILY (3):
             Executes once per day.
     """
+
     RUN_FREQUENCY_UNSPECIFIED = 0
     LIVE = 1
     HOURLY = 2
@@ -90,6 +91,7 @@ class RuleType(proto.Enum):
             Rule checks for correlation between multiple
             events
     """
+
     RULE_TYPE_UNSPECIFIED = 0
     SINGLE_EVENT = 1
     MULTI_EVENT = 2
@@ -120,6 +122,7 @@ class RuleView(proto.Enum):
             Returned fields include: revision_id and
             revision_create_time.
     """
+
     RULE_VIEW_UNSPECIFIED = 0
     BASIC = 1
     FULL = 2
@@ -221,6 +224,7 @@ class Rule(proto.Message):
                 This is possible if a backwards-incompatible
                 change was made to the compiler.
         """
+
         COMPILATION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -292,12 +296,12 @@ class Rule(proto.Message):
         proto.STRING,
         number=16,
     )
-    compilation_diagnostics: MutableSequence[
-        "CompilationDiagnostic"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=17,
-        message="CompilationDiagnostic",
+    compilation_diagnostics: MutableSequence["CompilationDiagnostic"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=17,
+            message="CompilationDiagnostic",
+        )
     )
     near_real_time_live_rule_eligible: bool = proto.Field(
         proto.BOOL,
@@ -376,6 +380,7 @@ class RuleDeployment(proto.Message):
             PAUSED (3):
                 Paused rules are not executed at all.
         """
+
         EXECUTION_STATE_UNSPECIFIED = 0
         DEFAULT = 1
         LIMITED = 2
@@ -468,6 +473,7 @@ class Retrohunt(proto.Message):
             FAILED (4):
                 Failed state.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         DONE = 2
@@ -1056,6 +1062,7 @@ class CompilationDiagnostic(proto.Message):
             ERROR (2):
                 A compilation error.
         """
+
         SEVERITY_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

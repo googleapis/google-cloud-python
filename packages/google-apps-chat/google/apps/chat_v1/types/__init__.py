@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .action_status import ActionStatus
+from .action_status import (
+    ActionStatus,
+)
 from .annotation import (
     Annotation,
     AnnotationType,
@@ -34,8 +36,12 @@ from .attachment import (
     UploadAttachmentRequest,
     UploadAttachmentResponse,
 )
-from .contextual_addon import ContextualAddOnMarkup
-from .deletion_metadata import DeletionMetadata
+from .contextual_addon import (
+    ContextualAddOnMarkup,
+)
+from .deletion_metadata import (
+    DeletionMetadata,
+)
 from .event_payload import (
     MembershipBatchCreatedEventData,
     MembershipBatchDeletedEventData,
@@ -56,9 +62,15 @@ from .event_payload import (
     SpaceBatchUpdatedEventData,
     SpaceUpdatedEventData,
 )
-from .group import Group
-from .history_state import HistoryState
-from .matched_url import MatchedUrl
+from .group import (
+    Group,
+)
+from .history_state import (
+    HistoryState,
+)
+from .matched_url import (
+    MatchedUrl,
+)
 from .membership import (
     CreateMembershipRequest,
     DeleteMembershipRequest,
@@ -102,7 +114,9 @@ from .reaction import (
     ListReactionsResponse,
     Reaction,
 )
-from .slash_command import SlashCommand
+from .slash_command import (
+    SlashCommand,
+)
 from .space import (
     CompleteImportSpaceRequest,
     CompleteImportSpaceResponse,
@@ -133,10 +147,19 @@ from .space_read_state import (
     SpaceReadState,
     UpdateSpaceReadStateRequest,
 )
-from .space_setup import SetUpSpaceRequest
-from .thread_read_state import GetThreadReadStateRequest, ThreadReadState
-from .user import User
-from .widgets import WidgetMarkup
+from .space_setup import (
+    SetUpSpaceRequest,
+)
+from .thread_read_state import (
+    GetThreadReadStateRequest,
+    ThreadReadState,
+)
+from .user import (
+    User,
+)
+from .widgets import (
+    WidgetMarkup,
+)
 
 __all__ = (
     "ActionStatus",

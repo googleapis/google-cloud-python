@@ -60,6 +60,7 @@ class SpeedReadingInterval(proto.Message):
             TRAFFIC_JAM (3):
                 Traffic delays.
         """
+
         SPEED_UNSPECIFIED = 0
         NORMAL = 1
         SLOW = 2
@@ -94,12 +95,12 @@ class ConsumableTrafficPolyline(proto.Message):
             ``speed_reading_interval``). Decoding is not yet supported.
     """
 
-    speed_reading_interval: MutableSequence[
-        "SpeedReadingInterval"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SpeedReadingInterval",
+    speed_reading_interval: MutableSequence["SpeedReadingInterval"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SpeedReadingInterval",
+        )
     )
     encoded_path_to_waypoint: str = proto.Field(
         proto.STRING,

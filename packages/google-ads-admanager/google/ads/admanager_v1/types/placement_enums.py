@@ -46,6 +46,7 @@ class PlacementStatusEnum(proto.Message):
             ARCHIVED (3):
                 No stats collected, user-visible.
         """
+
         PLACEMENT_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

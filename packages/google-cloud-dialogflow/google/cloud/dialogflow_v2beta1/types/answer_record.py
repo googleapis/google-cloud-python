@@ -205,6 +205,7 @@ class AnswerFeedback(proto.Message):
             FULLY_CORRECT (3):
                 Answer is fully correct.
         """
+
         CORRECTNESS_LEVEL_UNSPECIFIED = 0
         NOT_CORRECT = 1
         PARTIALLY_CORRECT = 2
@@ -294,6 +295,7 @@ class AgentAssistantFeedback(proto.Message):
             RELEVANT (2):
                 Answer is relevant to query.
         """
+
         ANSWER_RELEVANCE_UNSPECIFIED = 0
         IRRELEVANT = 1
         RELEVANT = 2
@@ -309,6 +311,7 @@ class AgentAssistantFeedback(proto.Message):
             CORRECT (2):
                 Information in document is correct.
         """
+
         DOCUMENT_CORRECTNESS_UNSPECIFIED = 0
         INCORRECT = 1
         CORRECT = 2
@@ -324,6 +327,7 @@ class AgentAssistantFeedback(proto.Message):
             EFFICIENT (2):
                 Document is efficient.
         """
+
         DOCUMENT_EFFICIENCY_UNSPECIFIED = 0
         INEFFICIENT = 1
         EFFICIENT = 2

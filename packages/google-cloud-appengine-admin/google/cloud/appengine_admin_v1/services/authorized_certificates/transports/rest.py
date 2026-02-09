@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.appengine_admin_v1.types import appengine, certificate
@@ -490,9 +490,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_authorized_certificate(
                 request, metadata
@@ -561,11 +559,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_create_authorized_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_authorized_certificate_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_authorized_certificate_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -647,9 +644,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_authorized_certificate(
                 request, metadata
@@ -767,9 +762,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_authorized_certificate(
                 request, metadata
@@ -922,9 +915,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_authorized_certificates(
                 request, metadata
@@ -1081,9 +1072,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_update_authorized_certificate(
                 request, metadata
@@ -1152,11 +1141,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_update_authorized_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_authorized_certificate_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_authorized_certificate_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1192,7 +1180,9 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAuthorizedCertificate(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_authorized_certificate(
@@ -1200,7 +1190,9 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
     ) -> Callable[[appengine.DeleteAuthorizedCertificateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAuthorizedCertificate(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_authorized_certificate(
@@ -1210,7 +1202,9 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAuthorizedCertificate(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_authorized_certificates(
@@ -1221,7 +1215,9 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAuthorizedCertificates(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAuthorizedCertificates(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_authorized_certificate(
@@ -1232,7 +1228,9 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAuthorizedCertificate(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

@@ -99,12 +99,12 @@ class ListResourceBackupConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_backup_configs: MutableSequence[
-        "ResourceBackupConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ResourceBackupConfig",
+    resource_backup_configs: MutableSequence["ResourceBackupConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResourceBackupConfig",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -174,6 +174,7 @@ class ResourceBackupConfig(proto.Message):
             COMPUTE_ENGINE_REGIONAL_DISK (4):
                 Compute Engine Regional Disk.
         """
+
         RESOURCE_TYPE_UNSPECIFIED = 0
         CLOUD_SQL_INSTANCE = 1
         COMPUTE_ENGINE_VM = 2
@@ -206,12 +207,12 @@ class ResourceBackupConfig(proto.Message):
         proto.STRING,
         number=6,
     )
-    backup_configs_details: MutableSequence[
-        "BackupConfigDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=7,
-        message="BackupConfigDetails",
+    backup_configs_details: MutableSequence["BackupConfigDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=7,
+            message="BackupConfigDetails",
+        )
     )
     backup_configured: bool = proto.Field(
         proto.BOOL,
@@ -305,6 +306,7 @@ class BackupConfigDetails(proto.Message):
                 Backup config is Google Cloud Backup and DR's
                 Template.
         """
+
         TYPE_UNSPECIFIED = 0
         CLOUD_SQL_INSTANCE_BACKUP_CONFIG = 1
         COMPUTE_ENGINE_RESOURCE_POLICY = 2
@@ -331,6 +333,7 @@ class BackupConfigDetails(proto.Message):
                 Like the source project is deleted. For eg.
                 PlanAssociation, BackupPlan is deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -494,6 +497,7 @@ class BackupLocation(proto.Message):
             MULTI_REGIONAL (3):
                 Location type is multi regional.
         """
+
         TYPE_UNSPECIFIED = 0
         ZONAL = 1
         REGIONAL = 2

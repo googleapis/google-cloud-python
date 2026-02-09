@@ -229,6 +229,7 @@ class JobEvent(proto.Message):
                 / recommendation provided by the Cloud Talent
                 Solution service.
         """
+
         JOB_EVENT_TYPE_UNSPECIFIED = 0
         IMPRESSION = 1
         VIEW = 2

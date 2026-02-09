@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .agent_context import AgentContextReference
+from .agent_context import (
+    AgentContextReference,
+)
 from .context import (
     AnalysisOptions,
     ChartOptions,
@@ -33,8 +35,13 @@ from .conversation import (
     ListConversationsRequest,
     ListConversationsResponse,
 )
-from .credentials import Credentials, OAuthCredentials
-from .data_agent import DataAgent
+from .credentials import (
+    Credentials,
+    OAuthCredentials,
+)
+from .data_agent import (
+    DataAgent,
+)
 from .data_agent_service import (
     CreateDataAgentRequest,
     DeleteDataAgentRequest,
@@ -46,7 +53,9 @@ from .data_agent_service import (
     OperationMetadata,
     UpdateDataAgentRequest,
 )
-from .data_analytics_agent import DataAnalyticsAgent
+from .data_analytics_agent import (
+    DataAnalyticsAgent,
+)
 from .data_chat_service import (
     AnalysisEvent,
     AnalysisMessage,

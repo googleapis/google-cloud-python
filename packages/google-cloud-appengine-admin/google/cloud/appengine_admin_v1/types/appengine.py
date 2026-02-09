@@ -20,11 +20,10 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.appengine_admin_v1.types import domain_mapping as ga_domain_mapping
 from google.cloud.appengine_admin_v1.types import application as ga_application
 from google.cloud.appengine_admin_v1.types import certificate as ga_certificate
-from google.cloud.appengine_admin_v1.types import domain
-from google.cloud.appengine_admin_v1.types import firewall, instance
+from google.cloud.appengine_admin_v1.types import domain, firewall, instance
+from google.cloud.appengine_admin_v1.types import domain_mapping as ga_domain_mapping
 from google.cloud.appengine_admin_v1.types import service as ga_service
 from google.cloud.appengine_admin_v1.types import version as ga_version
 
@@ -95,6 +94,7 @@ class VersionView(proto.Enum):
             resources, but is not returned in ``Get`` or ``List`` by
             default.
     """
+
     BASIC = 0
     FULL = 1
 
@@ -112,6 +112,7 @@ class AuthorizedCertificateView(proto.Enum):
             information on the domain mappings that have this
             certificate mapped.
     """
+
     BASIC_CERTIFICATE = 0
     FULL_CERTIFICATE = 1
 
@@ -135,6 +136,7 @@ class DomainOverrideStrategy(proto.Enum):
             Engine application, that app will no longer
             serve from that domain.
     """
+
     UNSPECIFIED_DOMAIN_OVERRIDE_STRATEGY = 0
     STRICT = 1
     OVERRIDE = 2
@@ -923,12 +925,12 @@ class ListAuthorizedCertificatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificates: MutableSequence[
-        ga_certificate.AuthorizedCertificate
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=ga_certificate.AuthorizedCertificate,
+    certificates: MutableSequence[ga_certificate.AuthorizedCertificate] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=ga_certificate.AuthorizedCertificate,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1074,12 +1076,12 @@ class ListDomainMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    domain_mappings: MutableSequence[
-        ga_domain_mapping.DomainMapping
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=ga_domain_mapping.DomainMapping,
+    domain_mappings: MutableSequence[ga_domain_mapping.DomainMapping] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=ga_domain_mapping.DomainMapping,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

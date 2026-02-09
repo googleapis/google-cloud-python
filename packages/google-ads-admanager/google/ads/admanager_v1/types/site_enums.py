@@ -48,6 +48,7 @@ class SiteDisapprovalReasonEnum(proto.Message):
                 The parent must be an authorized seller of
                 the child network's inventory.
         """
+
         SITE_DISAPPROVAL_REASON_UNSPECIFIED = 0
         CONTENT = 1
         OTHER = 2
@@ -84,6 +85,7 @@ class SiteApprovalStatusEnum(proto.Message):
                 be reviwed with an estimated turn-around time of
                 24h. Such a site cannot serve ads.
         """
+
         SITE_APPROVAL_STATUS_UNSPECIFIED = 0
         APPROVED = 1
         DISAPPROVED = 2

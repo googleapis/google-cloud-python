@@ -41,6 +41,7 @@ class GCAEntitlementType(proto.Enum):
             The resource is entitled to the GCA Standard
             Tier.
     """
+
     GCA_ENTITLEMENT_TYPE_UNSPECIFIED = 0
     GCA_STANDARD = 1
 

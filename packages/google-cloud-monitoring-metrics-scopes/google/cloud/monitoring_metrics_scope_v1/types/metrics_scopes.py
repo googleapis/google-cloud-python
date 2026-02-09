@@ -160,6 +160,7 @@ class OperationMetadata(proto.Message):
             CANCELLED (4):
                 The batch processing was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2

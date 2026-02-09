@@ -136,6 +136,7 @@ class TunedModel(proto.Message):
             FAILED (3):
                 The model failed to be created.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

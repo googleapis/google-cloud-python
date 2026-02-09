@@ -56,6 +56,7 @@ class DatabaseCharacterSet(proto.Message):
             NATIONAL (2):
                 Character set type is set to national.
         """
+
         CHARACTER_SET_TYPE_UNSPECIFIED = 0
         DATABASE = 1
         NATIONAL = 2
@@ -139,12 +140,12 @@ class ListDatabaseCharacterSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    database_character_sets: MutableSequence[
-        "DatabaseCharacterSet"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DatabaseCharacterSet",
+    database_character_sets: MutableSequence["DatabaseCharacterSet"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DatabaseCharacterSet",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

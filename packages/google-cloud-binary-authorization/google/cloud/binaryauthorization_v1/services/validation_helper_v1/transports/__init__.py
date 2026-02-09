@@ -22,9 +22,7 @@ from .grpc_asyncio import ValidationHelperV1GrpcAsyncIOTransport
 from .rest import ValidationHelperV1RestInterceptor, ValidationHelperV1RestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ValidationHelperV1Transport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ValidationHelperV1Transport]]
 _transport_registry["grpc"] = ValidationHelperV1GrpcTransport
 _transport_registry["grpc_asyncio"] = ValidationHelperV1GrpcAsyncIOTransport
 _transport_registry["rest"] = ValidationHelperV1RestTransport

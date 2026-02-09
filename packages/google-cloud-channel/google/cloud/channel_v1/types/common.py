@@ -55,6 +55,7 @@ class EduData(proto.Message):
             UNIVERSITY (2):
                 Higher Education Universities & Colleges
         """
+
         INSTITUTE_TYPE_UNSPECIFIED = 0
         K12 = 1
         UNIVERSITY = 2
@@ -80,6 +81,7 @@ class EduData(proto.Message):
             SIZE_10001_OR_MORE (7):
                 10,001 +
         """
+
         INSTITUTE_SIZE_UNSPECIFIED = 0
         SIZE_1_100 = 1
         SIZE_101_500 = 2
@@ -148,6 +150,7 @@ class CloudIdentityInfo(proto.Message):
                 Team customer which needs email verification
                 to use services.
         """
+
         CUSTOMER_TYPE_UNSPECIFIED = 0
         DOMAIN = 1
         TEAM = 2

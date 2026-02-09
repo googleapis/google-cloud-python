@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
 _transport_registry["grpc"] = PredictionApiKeyRegistryGrpcTransport
 _transport_registry["grpc_asyncio"] = PredictionApiKeyRegistryGrpcAsyncIOTransport
 _transport_registry["rest"] = PredictionApiKeyRegistryRestTransport

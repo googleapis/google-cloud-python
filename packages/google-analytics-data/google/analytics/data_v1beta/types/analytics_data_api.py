@@ -130,19 +130,19 @@ class CheckCompatibilityResponse(proto.Message):
             The compatibility of each metric.
     """
 
-    dimension_compatibilities: MutableSequence[
-        data.DimensionCompatibility
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=data.DimensionCompatibility,
+    dimension_compatibilities: MutableSequence[data.DimensionCompatibility] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=data.DimensionCompatibility,
+        )
     )
-    metric_compatibilities: MutableSequence[
-        data.MetricCompatibility
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=data.MetricCompatibility,
+    metric_compatibilities: MutableSequence[data.MetricCompatibility] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=data.MetricCompatibility,
+        )
     )
 
 
@@ -1226,6 +1226,7 @@ class AudienceExport(proto.Message):
                 is possible that re-requesting this audience
                 export will succeed.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

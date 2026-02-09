@@ -89,6 +89,7 @@ class DeliveryRequestHeader(proto.Message):
             JAVASCRIPT (3):
                 The calling SDK is JavaScript.
         """
+
         SDK_TYPE_UNSPECIFIED = 0
         CONSUMER = 1
         DRIVER = 2
@@ -108,6 +109,7 @@ class DeliveryRequestHeader(proto.Message):
             WEB (3):
                 The request is coming from the web.
         """
+
         PLATFORM_UNSPECIFIED = 0
         ANDROID = 1
         IOS = 2

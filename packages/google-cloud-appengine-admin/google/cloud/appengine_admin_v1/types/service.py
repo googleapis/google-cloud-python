@@ -149,6 +149,7 @@ class TrafficSplit(proto.Message):
                 probability proportional to the version's
                 traffic share.
         """
+
         UNSPECIFIED = 0
         COOKIE = 1
         IP = 2

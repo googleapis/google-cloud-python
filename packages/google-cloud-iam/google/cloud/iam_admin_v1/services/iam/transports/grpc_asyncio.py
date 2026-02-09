@@ -17,22 +17,22 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.iam_admin_v1.types import iam
 
@@ -741,12 +741,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_account_key" not in self._stubs:
-            self._stubs[
-                "create_service_account_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/CreateServiceAccountKey",
-                request_serializer=iam.CreateServiceAccountKeyRequest.serialize,
-                response_deserializer=iam.ServiceAccountKey.deserialize,
+            self._stubs["create_service_account_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/CreateServiceAccountKey",
+                    request_serializer=iam.CreateServiceAccountKeyRequest.serialize,
+                    response_deserializer=iam.ServiceAccountKey.deserialize,
+                )
             )
         return self._stubs["create_service_account_key"]
 
@@ -776,12 +776,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "upload_service_account_key" not in self._stubs:
-            self._stubs[
-                "upload_service_account_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/UploadServiceAccountKey",
-                request_serializer=iam.UploadServiceAccountKeyRequest.serialize,
-                response_deserializer=iam.ServiceAccountKey.deserialize,
+            self._stubs["upload_service_account_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/UploadServiceAccountKey",
+                    request_serializer=iam.UploadServiceAccountKeyRequest.serialize,
+                    response_deserializer=iam.ServiceAccountKey.deserialize,
+                )
             )
         return self._stubs["upload_service_account_key"]
 
@@ -808,12 +808,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_account_key" not in self._stubs:
-            self._stubs[
-                "delete_service_account_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/DeleteServiceAccountKey",
-                request_serializer=iam.DeleteServiceAccountKeyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_service_account_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/DeleteServiceAccountKey",
+                    request_serializer=iam.DeleteServiceAccountKeyRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_service_account_key"]
 
@@ -839,12 +839,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_service_account_key" not in self._stubs:
-            self._stubs[
-                "disable_service_account_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/DisableServiceAccountKey",
-                request_serializer=iam.DisableServiceAccountKeyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["disable_service_account_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/DisableServiceAccountKey",
+                    request_serializer=iam.DisableServiceAccountKeyRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["disable_service_account_key"]
 
@@ -868,12 +868,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_service_account_key" not in self._stubs:
-            self._stubs[
-                "enable_service_account_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/EnableServiceAccountKey",
-                request_serializer=iam.EnableServiceAccountKeyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["enable_service_account_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/EnableServiceAccountKey",
+                    request_serializer=iam.EnableServiceAccountKeyRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["enable_service_account_key"]
 
@@ -1282,12 +1282,12 @@ class IAMGrpcAsyncIOTransport(IAMTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_testable_permissions" not in self._stubs:
-            self._stubs[
-                "query_testable_permissions"
-            ] = self._logged_channel.unary_unary(
-                "/google.iam.admin.v1.IAM/QueryTestablePermissions",
-                request_serializer=iam.QueryTestablePermissionsRequest.serialize,
-                response_deserializer=iam.QueryTestablePermissionsResponse.deserialize,
+            self._stubs["query_testable_permissions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.iam.admin.v1.IAM/QueryTestablePermissions",
+                    request_serializer=iam.QueryTestablePermissionsRequest.serialize,
+                    response_deserializer=iam.QueryTestablePermissionsResponse.deserialize,
+                )
             )
         return self._stubs["query_testable_permissions"]
 

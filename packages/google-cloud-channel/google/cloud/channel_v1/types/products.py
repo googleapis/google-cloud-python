@@ -40,6 +40,7 @@ class MediaType(proto.Enum):
         MEDIA_TYPE_IMAGE (1):
             Type of image.
     """
+
     MEDIA_TYPE_UNSPECIFIED = 0
     MEDIA_TYPE_IMAGE = 1
 

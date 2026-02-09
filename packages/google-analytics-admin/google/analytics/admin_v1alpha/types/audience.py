@@ -55,6 +55,7 @@ class AudienceFilterScope(proto.Enum):
             condition is met by any event across any
             session.
     """
+
     AUDIENCE_FILTER_SCOPE_UNSPECIFIED = 0
     AUDIENCE_FILTER_SCOPE_WITHIN_SAME_EVENT = 1
     AUDIENCE_FILTER_SCOPE_WITHIN_SAME_SESSION = 2
@@ -159,6 +160,7 @@ class AudienceDimensionOrMetricFilter(proto.Message):
                     Full regular expression matches with the
                     string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -262,6 +264,7 @@ class AudienceDimensionOrMetricFilter(proto.Message):
                 GREATER_THAN (4):
                     Greater than.
             """
+
             OPERATION_UNSPECIFIED = 0
             EQUAL = 1
             LESS_THAN = 2
@@ -457,12 +460,12 @@ class AudienceFilterExpressionList(proto.Message):
             A list of Audience filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "AudienceFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AudienceFilterExpression",
+    filter_expressions: MutableSequence["AudienceFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AudienceFilterExpression",
+        )
     )
 
 
@@ -617,6 +620,7 @@ class AudienceFilterClause(proto.Message):
                 Users will be excluded from the Audience if
                 the filter clause is met.
         """
+
         AUDIENCE_CLAUSE_TYPE_UNSPECIFIED = 0
         INCLUDE = 1
         EXCLUDE = 2
@@ -664,6 +668,7 @@ class AudienceEventTrigger(proto.Message):
                 Audience condition is met, even if the user is
                 already a member of the Audience.
         """
+
         LOG_CONDITION_UNSPECIFIED = 0
         AUDIENCE_JOINED = 1
         AUDIENCE_MEMBERSHIP_RENEWED = 2
@@ -732,6 +737,7 @@ class Audience(proto.Message):
                 Exclude users from the Audience if they've
                 ever met the filter clause.
         """
+
         AUDIENCE_EXCLUSION_DURATION_MODE_UNSPECIFIED = 0
         EXCLUDE_TEMPORARILY = 1
         EXCLUDE_PERMANENTLY = 2

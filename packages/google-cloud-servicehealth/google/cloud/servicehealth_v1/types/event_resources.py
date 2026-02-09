@@ -59,6 +59,7 @@ class EventView(proto.Enum):
         EVENT_VIEW_FULL (2):
             Includes all event fields.
     """
+
     EVENT_VIEW_UNSPECIFIED = 0
     EVENT_VIEW_BASIC = 1
     EVENT_VIEW_FULL = 2
@@ -79,6 +80,7 @@ class OrganizationEventView(proto.Enum):
         ORGANIZATION_EVENT_VIEW_FULL (2):
             Includes all organization event fields.
     """
+
     ORGANIZATION_EVENT_VIEW_UNSPECIFIED = 0
     ORGANIZATION_EVENT_VIEW_BASIC = 1
     ORGANIZATION_EVENT_VIEW_FULL = 2
@@ -149,6 +151,7 @@ class Event(proto.Message):
                 Event category for service outage or
                 degradation.
         """
+
         EVENT_CATEGORY_UNSPECIFIED = 0
         INCIDENT = 2
 
@@ -168,6 +171,7 @@ class Event(proto.Message):
                 under investigation to determine if it has a
                 confirmed impact on any Google Cloud products.
         """
+
         DETAILED_CATEGORY_UNSPECIFIED = 0
         CONFIRMED_INCIDENT = 1
         EMERGING_INCIDENT = 2
@@ -186,6 +190,7 @@ class Event(proto.Message):
                 Event is no longer affecting the Google Cloud
                 product or has been merged with another event.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -228,6 +233,7 @@ class Event(proto.Message):
                 Google Cloud product. This state can change if
                 the incident is reviewed again.
         """
+
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
         CONFIRMED = 2
@@ -264,6 +270,7 @@ class Event(proto.Message):
                 The incident is verified to be impacting your
                 project.
         """
+
         RELEVANCE_UNSPECIFIED = 0
         UNKNOWN = 2
         NOT_IMPACTED = 6
@@ -410,6 +417,7 @@ class OrganizationEvent(proto.Message):
                 Event category for service outage or
                 degradation.
         """
+
         EVENT_CATEGORY_UNSPECIFIED = 0
         INCIDENT = 2
 
@@ -429,6 +437,7 @@ class OrganizationEvent(proto.Message):
                 under investigation to determine if it has a
                 confirmed impact on any Google Cloud products.
         """
+
         DETAILED_CATEGORY_UNSPECIFIED = 0
         CONFIRMED_INCIDENT = 1
         EMERGING_INCIDENT = 2
@@ -447,6 +456,7 @@ class OrganizationEvent(proto.Message):
                 Event is no longer affecting the Google Cloud
                 product or has been merged with another event.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLOSED = 2
@@ -489,6 +499,7 @@ class OrganizationEvent(proto.Message):
                 Google Cloud product. This state can change if
                 the incident is reviewed again.
         """
+
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
         CONFIRMED = 2

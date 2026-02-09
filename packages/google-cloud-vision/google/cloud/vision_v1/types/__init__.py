@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .geometry import BoundingPoly, NormalizedVertex, Position, Vertex
+from .geometry import (
+    BoundingPoly,
+    NormalizedVertex,
+    Position,
+    Vertex,
+)
 from .image_annotator import (
     AnnotateFileRequest,
     AnnotateFileResponse,
@@ -56,7 +61,10 @@ from .image_annotator import (
     TextDetectionParams,
     WebDetectionParams,
 )
-from .product_search import ProductSearchParams, ProductSearchResults
+from .product_search import (
+    ProductSearchParams,
+    ProductSearchResults,
+)
 from .product_search_service import (
     AddProductToProductSetRequest,
     BatchOperationMetadata,
@@ -90,8 +98,17 @@ from .product_search_service import (
     UpdateProductRequest,
     UpdateProductSetRequest,
 )
-from .text_annotation import Block, Page, Paragraph, Symbol, TextAnnotation, Word
-from .web_detection import WebDetection
+from .text_annotation import (
+    Block,
+    Page,
+    Paragraph,
+    Symbol,
+    TextAnnotation,
+    Word,
+)
+from .web_detection import (
+    WebDetection,
+)
 
 __all__ = (
     "BoundingPoly",

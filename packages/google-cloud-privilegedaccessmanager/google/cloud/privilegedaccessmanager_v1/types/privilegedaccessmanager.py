@@ -214,6 +214,7 @@ class Entitlement(proto.Message):
             UPDATING (5):
                 The entitlement is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         AVAILABLE = 2
@@ -537,12 +538,12 @@ class PrivilegedAccess(proto.Message):
             proto.STRING,
             number=2,
         )
-        role_bindings: MutableSequence[
-            "PrivilegedAccess.GcpIamAccess.RoleBinding"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="PrivilegedAccess.GcpIamAccess.RoleBinding",
+        role_bindings: MutableSequence["PrivilegedAccess.GcpIamAccess.RoleBinding"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="PrivilegedAccess.GcpIamAccess.RoleBinding",
+            )
         )
 
     gcp_iam_access: GcpIamAccess = proto.Field(
@@ -665,6 +666,7 @@ class SearchEntitlementsRequest(proto.Message):
                 The user has access to approve/deny grants
                 created under this entitlement.
         """
+
         CALLER_ACCESS_TYPE_UNSPECIFIED = 0
         GRANT_REQUESTER = 1
         GRANT_APPROVER = 2
@@ -973,6 +975,7 @@ class Grant(proto.Message):
                 Grant was withdrawn by the grant owner. This
                 is a terminal state.
         """
+
         STATE_UNSPECIFIED = 0
         APPROVAL_AWAITED = 1
         DENIED = 3
@@ -1499,6 +1502,7 @@ class SearchGrantsRequest(proto.Message):
                 The caller had successfully approved/denied
                 this grant earlier.
         """
+
         CALLER_RELATIONSHIP_TYPE_UNSPECIFIED = 0
         HAD_CREATED = 1
         CAN_APPROVE = 2

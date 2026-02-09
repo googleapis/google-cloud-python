@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
@@ -67,6 +67,7 @@ class AccountIssue(proto.Message):
             SUGGESTION (3):
                 The issue is a suggestion for improvement.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         ERROR = 2
@@ -115,12 +116,12 @@ class AccountIssue(proto.Message):
             optional=True,
             enum=types.ReportingContext.ReportingContextEnum,
         )
-        impacts: MutableSequence[
-            "AccountIssue.ImpactedDestination.Impact"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="AccountIssue.ImpactedDestination.Impact",
+        impacts: MutableSequence["AccountIssue.ImpactedDestination.Impact"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="AccountIssue.ImpactedDestination.Impact",
+            )
         )
 
     name: str = proto.Field(

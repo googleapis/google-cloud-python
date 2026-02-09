@@ -316,12 +316,12 @@ class SearchPrincipalAccessBoundaryPolicyBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    policy_bindings: MutableSequence[
-        policy_binding_resources.PolicyBinding
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=policy_binding_resources.PolicyBinding,
+    policy_bindings: MutableSequence[policy_binding_resources.PolicyBinding] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=policy_binding_resources.PolicyBinding,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

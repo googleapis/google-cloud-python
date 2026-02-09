@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -33,8 +34,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation, gapic_v1
@@ -44,7 +45,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.compute_v1 import gapic_version as package_version
 
@@ -79,9 +79,7 @@ class RegionInstanceGroupManagersClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[RegionInstanceGroupManagersTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[RegionInstanceGroupManagersTransport]]
     _transport_registry["rest"] = RegionInstanceGroupManagersRestTransport
 
     def get_transport_class(
@@ -608,11 +606,9 @@ class RegionInstanceGroupManagersClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = RegionInstanceGroupManagersClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            RegionInstanceGroupManagersClient._read_environment_variables()
+        )
         self._client_cert_source = (
             RegionInstanceGroupManagersClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -649,8 +645,7 @@ class RegionInstanceGroupManagersClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(RegionInstanceGroupManagersTransport, transport)
             self._api_endpoint = self._transport.host
@@ -863,9 +858,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_abandon_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_abandon_instances_request_resource = (
-                    region_instance_group_managers_abandon_instances_request_resource
-                )
+                request.region_instance_group_managers_abandon_instances_request_resource = region_instance_group_managers_abandon_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1039,9 +1032,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_abandon_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_abandon_instances_request_resource = (
-                    region_instance_group_managers_abandon_instances_request_resource
-                )
+                request.region_instance_group_managers_abandon_instances_request_resource = region_instance_group_managers_abandon_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1228,9 +1219,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_apply_updates_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_apply_updates_request_resource = (
-                    region_instance_group_managers_apply_updates_request_resource
-                )
+                request.region_instance_group_managers_apply_updates_request_resource = region_instance_group_managers_apply_updates_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1394,9 +1383,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_apply_updates_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_apply_updates_request_resource = (
-                    region_instance_group_managers_apply_updates_request_resource
-                )
+                request.region_instance_group_managers_apply_updates_request_resource = region_instance_group_managers_apply_updates_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1588,9 +1575,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_create_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_create_instances_request_resource = (
-                    region_instance_group_managers_create_instances_request_resource
-                )
+                request.region_instance_group_managers_create_instances_request_resource = region_instance_group_managers_create_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1755,9 +1740,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_create_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_create_instances_request_resource = (
-                    region_instance_group_managers_create_instances_request_resource
-                )
+                request.region_instance_group_managers_create_instances_request_resource = region_instance_group_managers_create_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2257,9 +2240,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_delete_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_delete_instances_request_resource = (
-                    region_instance_group_managers_delete_instances_request_resource
-                )
+                request.region_instance_group_managers_delete_instances_request_resource = region_instance_group_managers_delete_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2433,9 +2414,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_delete_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_delete_instances_request_resource = (
-                    region_instance_group_managers_delete_instances_request_resource
-                )
+                request.region_instance_group_managers_delete_instances_request_resource = region_instance_group_managers_delete_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2622,9 +2601,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_delete_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_delete_instance_config_req_resource = (
-                    region_instance_group_manager_delete_instance_config_req_resource
-                )
+                request.region_instance_group_manager_delete_instance_config_req_resource = region_instance_group_manager_delete_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -2788,9 +2765,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_delete_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_delete_instance_config_req_resource = (
-                    region_instance_group_manager_delete_instance_config_req_resource
-                )
+                request.region_instance_group_manager_delete_instance_config_req_resource = region_instance_group_manager_delete_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4423,9 +4398,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_patch_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_patch_instance_config_req_resource = (
-                    region_instance_group_manager_patch_instance_config_req_resource
-                )
+                request.region_instance_group_manager_patch_instance_config_req_resource = region_instance_group_manager_patch_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4591,9 +4564,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_patch_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_patch_instance_config_req_resource = (
-                    region_instance_group_manager_patch_instance_config_req_resource
-                )
+                request.region_instance_group_manager_patch_instance_config_req_resource = region_instance_group_manager_patch_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5515,9 +5486,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_resume_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_resume_instances_request_resource = (
-                    region_instance_group_managers_resume_instances_request_resource
-                )
+                request.region_instance_group_managers_resume_instances_request_resource = region_instance_group_managers_resume_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5692,9 +5661,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_resume_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_resume_instances_request_resource = (
-                    region_instance_group_managers_resume_instances_request_resource
-                )
+                request.region_instance_group_managers_resume_instances_request_resource = region_instance_group_managers_resume_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6221,9 +6188,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_set_target_pools_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_set_target_pools_request_resource = (
-                    region_instance_group_managers_set_target_pools_request_resource
-                )
+                request.region_instance_group_managers_set_target_pools_request_resource = region_instance_group_managers_set_target_pools_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6380,9 +6345,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_set_target_pools_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_set_target_pools_request_resource = (
-                    region_instance_group_managers_set_target_pools_request_resource
-                )
+                request.region_instance_group_managers_set_target_pools_request_resource = region_instance_group_managers_set_target_pools_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6582,9 +6545,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_start_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_start_instances_request_resource = (
-                    region_instance_group_managers_start_instances_request_resource
-                )
+                request.region_instance_group_managers_start_instances_request_resource = region_instance_group_managers_start_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6759,9 +6720,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_start_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_start_instances_request_resource = (
-                    region_instance_group_managers_start_instances_request_resource
-                )
+                request.region_instance_group_managers_start_instances_request_resource = region_instance_group_managers_start_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6975,9 +6934,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_stop_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_stop_instances_request_resource = (
-                    region_instance_group_managers_stop_instances_request_resource
-                )
+                request.region_instance_group_managers_stop_instances_request_resource = region_instance_group_managers_stop_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7166,9 +7123,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_stop_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_stop_instances_request_resource = (
-                    region_instance_group_managers_stop_instances_request_resource
-                )
+                request.region_instance_group_managers_stop_instances_request_resource = region_instance_group_managers_stop_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7380,9 +7335,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_suspend_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_suspend_instances_request_resource = (
-                    region_instance_group_managers_suspend_instances_request_resource
-                )
+                request.region_instance_group_managers_suspend_instances_request_resource = region_instance_group_managers_suspend_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7569,9 +7522,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_managers_suspend_instances_request_resource
                 is not None
             ):
-                request.region_instance_group_managers_suspend_instances_request_resource = (
-                    region_instance_group_managers_suspend_instances_request_resource
-                )
+                request.region_instance_group_managers_suspend_instances_request_resource = region_instance_group_managers_suspend_instances_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7760,9 +7711,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_update_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_update_instance_config_req_resource = (
-                    region_instance_group_manager_update_instance_config_req_resource
-                )
+                request.region_instance_group_manager_update_instance_config_req_resource = region_instance_group_manager_update_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -7928,9 +7877,7 @@ class RegionInstanceGroupManagersClient(
                 region_instance_group_manager_update_instance_config_req_resource
                 is not None
             ):
-                request.region_instance_group_manager_update_instance_config_req_resource = (
-                    region_instance_group_manager_update_instance_config_req_resource
-                )
+                request.region_instance_group_manager_update_instance_config_req_resource = region_instance_group_manager_update_instance_config_req_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

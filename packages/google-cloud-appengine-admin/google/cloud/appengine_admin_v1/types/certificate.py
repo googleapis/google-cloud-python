@@ -72,6 +72,7 @@ class ManagementStatus(proto.Enum):
             domain. The last successfully provisioned
             certificate may still be serving.
     """
+
     MANAGEMENT_STATUS_UNSPECIFIED = 0
     OK = 1
     PENDING = 2

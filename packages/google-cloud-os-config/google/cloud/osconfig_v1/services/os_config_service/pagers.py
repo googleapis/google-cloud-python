@@ -67,7 +67,7 @@ class ListPatchJobsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -143,7 +143,7 @@ class ListPatchJobsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -223,7 +223,7 @@ class ListPatchJobInstanceDetailsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -301,7 +301,7 @@ class ListPatchJobInstanceDetailsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -383,7 +383,7 @@ class ListPatchDeploymentsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -461,7 +461,7 @@ class ListPatchDeploymentsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 

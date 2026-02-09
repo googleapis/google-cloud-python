@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .job_state import JobState
-from .operation_metadata import CommonOperationMetadata
+from .job_state import (
+    JobState,
+)
+from .operation_metadata import (
+    CommonOperationMetadata,
+)
 from .service import (
     AffinityClusteringConfig,
     BigQueryInputConfig,

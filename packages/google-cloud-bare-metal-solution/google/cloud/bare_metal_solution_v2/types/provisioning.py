@@ -118,6 +118,7 @@ class ProvisioningConfig(proto.Message):
                 The request is submitted for provisioning,
                 with error return.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         SUBMITTED = 2
@@ -289,6 +290,7 @@ class ProvisioningQuota(proto.Message):
             ASSET_TYPE_NETWORK (3):
                 The network asset type.
         """
+
         ASSET_TYPE_UNSPECIFIED = 0
         ASSET_TYPE_SERVER = 1
         ASSET_TYPE_STORAGE = 2
@@ -458,6 +460,7 @@ class InstanceConfig(proto.Message):
                 Instance part of multiple (or single) client
                 networks and private networks.
         """
+
         NETWORKCONFIG_UNSPECIFIED = 0
         SINGLE_VLAN = 1
         MULTI_VLAN = 2
@@ -595,6 +598,7 @@ class VolumeConfig(proto.Message):
             DISK (2):
                 This Volume is on disk.
         """
+
         TYPE_UNSPECIFIED = 0
         FLASH = 1
         DISK = 2
@@ -610,6 +614,7 @@ class VolumeConfig(proto.Message):
             PROTOCOL_NFS (2):
                 Network file system.
         """
+
         PROTOCOL_UNSPECIFIED = 0
         PROTOCOL_FC = 1
         PROTOCOL_NFS = 2
@@ -680,6 +685,7 @@ class VolumeConfig(proto.Message):
                 READ_WRITE (2):
                     Read-write permission.
             """
+
             PERMISSIONS_UNSPECIFIED = 0
             READ_ONLY = 1
             READ_WRITE = 2
@@ -822,6 +828,7 @@ class NetworkConfig(proto.Message):
                 Private network, that is a network local to
                 the BMS POD.
         """
+
         TYPE_UNSPECIFIED = 0
         CLIENT = 1
         PRIVATE = 2
@@ -841,6 +848,7 @@ class NetworkConfig(proto.Message):
             BW_10_GBPS (4):
                 10 Gbps.
         """
+
         BANDWIDTH_UNSPECIFIED = 0
         BW_1_GBPS = 1
         BW_2_GBPS = 2
@@ -865,6 +873,7 @@ class NetworkConfig(proto.Message):
                 Use the highest /28 block of the network to
                 host services.
         """
+
         SERVICE_CIDR_UNSPECIFIED = 0
         DISABLED = 1
         HIGH_26 = 2

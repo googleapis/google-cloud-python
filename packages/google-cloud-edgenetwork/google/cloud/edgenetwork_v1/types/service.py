@@ -712,12 +712,12 @@ class ListInterconnectAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    interconnect_attachments: MutableSequence[
-        resources.InterconnectAttachment
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=resources.InterconnectAttachment,
+    interconnect_attachments: MutableSequence[resources.InterconnectAttachment] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=resources.InterconnectAttachment,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1180,6 +1180,7 @@ class DiagnoseNetworkResponse(proto.Message):
                     At least one relevant link does not have any
                     MACsec sessions up.
             """
+
             MACSEC_STATUS_UNSPECIFIED = 0
             SECURE = 1
             UNSECURE = 2

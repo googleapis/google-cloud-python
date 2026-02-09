@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.policy_bindings import PolicyBindingsAsyncClient, PolicyBindingsClient
 from .services.principal_access_boundary_policies import (
     PrincipalAccessBoundaryPoliciesAsyncClient,

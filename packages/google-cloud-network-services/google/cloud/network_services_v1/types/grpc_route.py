@@ -160,6 +160,7 @@ class GrpcRoute(proto.Message):
                     Will interpret grpc_method and grpc_service as regexes. RE2
                     syntax is supported.
             """
+
             TYPE_UNSPECIFIED = 0
             EXACT = 1
             REGULAR_EXPRESSION = 2
@@ -209,6 +210,7 @@ class GrpcRoute(proto.Message):
                     Will match paths conforming to the prefix
                     specified by value. RE2 syntax is supported.
             """
+
             TYPE_UNSPECIFIED = 0
             EXACT = 1
             REGULAR_EXPRESSION = 2

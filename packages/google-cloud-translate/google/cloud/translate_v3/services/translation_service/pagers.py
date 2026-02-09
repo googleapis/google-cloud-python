@@ -72,7 +72,7 @@ class ListGlossariesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -148,7 +148,7 @@ class ListGlossariesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -228,7 +228,7 @@ class ListGlossaryEntriesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -306,7 +306,7 @@ class ListGlossaryEntriesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -388,7 +388,7 @@ class ListDatasetsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -464,7 +464,7 @@ class ListDatasetsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -544,7 +544,7 @@ class ListAdaptiveMtDatasetsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -620,7 +620,7 @@ class ListAdaptiveMtDatasetsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -700,7 +700,7 @@ class ListAdaptiveMtFilesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -776,7 +776,7 @@ class ListAdaptiveMtFilesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -856,7 +856,7 @@ class ListAdaptiveMtSentencesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -932,7 +932,7 @@ class ListAdaptiveMtSentencesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -1012,7 +1012,7 @@ class ListExamplesPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -1088,7 +1088,7 @@ class ListExamplesAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 
@@ -1168,7 +1168,7 @@ class ListModelsPager:
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiate the pager.
 
@@ -1244,7 +1244,7 @@ class ListModelsAsyncPager:
         *,
         retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ):
         """Instantiates the pager.
 

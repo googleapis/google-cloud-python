@@ -17,10 +17,10 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.documentai_v1.types import document as gcd_document
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import proto  # type: ignore
+from google.cloud.documentai_v1.types import document as gcd_document
 
 __protobuf__ = proto.module(
     package="google.cloud.contentwarehouse.v1",
@@ -66,6 +66,7 @@ class RawDocumentFileType(proto.Enum):
         RAW_DOCUMENT_FILE_TYPE_TIFF (6):
             TIFF or TIF image file format
     """
+
     RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED = 0
     RAW_DOCUMENT_FILE_TYPE_PDF = 1
     RAW_DOCUMENT_FILE_TYPE_DOCX = 2
@@ -89,6 +90,7 @@ class ContentCategory(proto.Enum):
         CONTENT_CATEGORY_VIDEO (3):
             Content is of video type.
     """
+
     CONTENT_CATEGORY_UNSPECIFIED = 0
     CONTENT_CATEGORY_IMAGE = 1
     CONTENT_CATEGORY_AUDIO = 2

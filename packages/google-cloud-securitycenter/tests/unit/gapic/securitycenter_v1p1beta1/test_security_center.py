@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,19 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,24 +64,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.options_pb2 as options_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1p1beta1.services.security_center import (
     SecurityCenterAsyncClient,
@@ -78,22 +78,24 @@ from google.cloud.securitycenter_v1p1beta1.services.security_center import (
     transports,
 )
 from google.cloud.securitycenter_v1p1beta1.types import (
+    finding,
+    notification_config,
+    organization_settings,
+    run_asset_discovery_response,
+    security_marks,
+    securitycenter_service,
+    source,
+)
+from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1p1beta1.types import (
     notification_config as gcs_notification_config,
 )
 from google.cloud.securitycenter_v1p1beta1.types import (
     organization_settings as gcs_organization_settings,
 )
-from google.cloud.securitycenter_v1p1beta1.types import run_asset_discovery_response
 from google.cloud.securitycenter_v1p1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.cloud.securitycenter_v1p1beta1.types import finding
-from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1p1beta1.types import notification_config
-from google.cloud.securitycenter_v1p1beta1.types import organization_settings
-from google.cloud.securitycenter_v1p1beta1.types import security_marks
-from google.cloud.securitycenter_v1p1beta1.types import securitycenter_service
-from google.cloud.securitycenter_v1p1beta1.types import source
 from google.cloud.securitycenter_v1p1beta1.types import source as gcs_source
 
 CRED_INFO_JSON = {
@@ -981,10 +983,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1029,10 +1030,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1068,10 +1068,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1318,9 +1317,7 @@ def test_security_center_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -7377,9 +7374,9 @@ def test_run_asset_discovery_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_asset_discovery
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_asset_discovery] = (
+            mock_rpc
+        )
         request = {}
         client.run_asset_discovery(request)
 
@@ -7738,9 +7735,9 @@ def test_set_finding_state_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
         request = {}
         client.set_finding_state(request)
 
@@ -8451,9 +8448,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -10243,9 +10240,9 @@ def test_update_security_marks_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
         request = {}
         client.update_security_marks(request)
 
@@ -13550,9 +13547,9 @@ def test_run_asset_discovery_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_asset_discovery
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_asset_discovery] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_asset_discovery(request)
@@ -13730,9 +13727,9 @@ def test_set_finding_state_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
 
         request = {}
         client.set_finding_state(request)
@@ -14111,9 +14108,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -15047,9 +15044,9 @@ def test_update_security_marks_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_security_marks(request)

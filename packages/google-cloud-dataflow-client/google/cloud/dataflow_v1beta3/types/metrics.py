@@ -65,6 +65,7 @@ class ExecutionState(proto.Enum):
         EXECUTION_STATE_CANCELLED (5):
             Execution of the component was cancelled.
     """
+
     EXECUTION_STATE_UNKNOWN = 0
     EXECUTION_STATE_NOT_STARTED = 1
     EXECUTION_STATE_RUNNING = 2

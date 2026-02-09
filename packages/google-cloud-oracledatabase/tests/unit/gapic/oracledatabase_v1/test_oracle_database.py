@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,25 +43,8 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.api_core.operation_async as operation_async  # type: ignore
 import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
@@ -70,6 +53,23 @@ import google.type.datetime_pb2 as datetime_pb2  # type: ignore
 import google.type.dayofweek_pb2 as dayofweek_pb2  # type: ignore
 import google.type.month_pb2 as month_pb2  # type: ignore
 import google.type.timeofday_pb2 as timeofday_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 from google.cloud.oracledatabase_v1.services.oracle_database import (
     OracleDatabaseAsyncClient,
@@ -78,6 +78,7 @@ from google.cloud.oracledatabase_v1.services.oracle_database import (
     transports,
 )
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
     autonomous_database_character_set,
     autonomous_db_backup,
     autonomous_db_version,
@@ -86,15 +87,18 @@ from google.cloud.oracledatabase_v1.types import (
     database_character_set,
     db_node,
     db_server,
-)
-from google.cloud.oracledatabase_v1.types import (
+    db_system,
     db_system_initial_storage_size,
     db_system_shape,
     db_version,
     entitlement,
     exadata_infra,
-)
-from google.cloud.oracledatabase_v1.types import (
+    exadb_vm_cluster,
+    exascale_db_storage_vault,
+    gi_version,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
@@ -102,21 +106,14 @@ from google.cloud.oracledatabase_v1.types import (
 from google.cloud.oracledatabase_v1.types import (
     autonomous_database as gco_autonomous_database,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exadb_vm_cluster as gco_exadb_vm_cluster,
 )
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import autonomous_database
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exadb_vm_cluster
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import gi_version, minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 CRED_INFO_JSON = {
@@ -1004,10 +1001,9 @@ def test_oracle_database_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1052,10 +1048,9 @@ def test_oracle_database_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1091,10 +1086,9 @@ def test_oracle_database_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1341,9 +1335,7 @@ def test_oracle_database_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -3097,9 +3089,9 @@ def test_list_cloud_vm_clusters_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_cloud_vm_clusters
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_cloud_vm_clusters] = (
+            mock_rpc
+        )
         request = {}
         client.list_cloud_vm_clusters(request)
 
@@ -3659,9 +3651,9 @@ def test_get_cloud_vm_cluster_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_cloud_vm_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_cloud_vm_cluster] = (
+            mock_rpc
+        )
         request = {}
         client.get_cloud_vm_cluster(request)
 
@@ -4735,9 +4727,9 @@ def test_list_entitlements_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_entitlements
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_entitlements] = (
+            mock_rpc
+        )
         request = {}
         client.list_entitlements(request)
 
@@ -6314,9 +6306,9 @@ def test_list_gi_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_gi_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_gi_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_gi_versions(request)
 
@@ -6843,9 +6835,9 @@ def test_list_minor_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_minor_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_minor_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_minor_versions(request)
 
@@ -7391,9 +7383,9 @@ def test_list_db_system_shapes_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_db_system_shapes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_db_system_shapes] = (
+            mock_rpc
+        )
         request = {}
         client.list_db_system_shapes(request)
 
@@ -14136,9 +14128,9 @@ def test_list_odb_networks_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_odb_networks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_odb_networks] = (
+            mock_rpc
+        )
         request = {}
         client.list_odb_networks(request)
 
@@ -15019,9 +15011,9 @@ def test_create_odb_network_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_odb_network
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_odb_network] = (
+            mock_rpc
+        )
         request = {}
         client.create_odb_network(request)
 
@@ -15385,9 +15377,9 @@ def test_delete_odb_network_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_odb_network
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_odb_network] = (
+            mock_rpc
+        )
         request = {}
         client.delete_odb_network(request)
 
@@ -15735,9 +15727,9 @@ def test_list_odb_subnets_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_odb_subnets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_odb_subnets] = (
+            mock_rpc
+        )
         request = {}
         client.list_odb_subnets(request)
 
@@ -16594,9 +16586,9 @@ def test_create_odb_subnet_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_odb_subnet
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_odb_subnet] = (
+            mock_rpc
+        )
         request = {}
         client.create_odb_subnet(request)
 
@@ -16957,9 +16949,9 @@ def test_delete_odb_subnet_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_odb_subnet
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_odb_subnet] = (
+            mock_rpc
+        )
         request = {}
         client.delete_odb_subnet(request)
 
@@ -17312,9 +17304,9 @@ def test_list_exadb_vm_clusters_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_exadb_vm_clusters
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_exadb_vm_clusters] = (
+            mock_rpc
+        )
         request = {}
         client.list_exadb_vm_clusters(request)
 
@@ -17868,9 +17860,9 @@ def test_get_exadb_vm_cluster_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_exadb_vm_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_exadb_vm_cluster] = (
+            mock_rpc
+        )
         request = {}
         client.get_exadb_vm_cluster(request)
 
@@ -23315,9 +23307,9 @@ def test_get_pluggable_database_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_pluggable_database
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_pluggable_database] = (
+            mock_rpc
+        )
         request = {}
         client.get_pluggable_database(request)
 
@@ -24518,9 +24510,9 @@ def test_create_db_system_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_db_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_db_system] = (
+            mock_rpc
+        )
         request = {}
         client.create_db_system(request)
 
@@ -24867,9 +24859,9 @@ def test_delete_db_system_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_db_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_db_system] = (
+            mock_rpc
+        )
         request = {}
         client.delete_db_system(request)
 
@@ -25203,9 +25195,9 @@ def test_list_db_versions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_db_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_db_versions] = (
+            mock_rpc
+        )
         request = {}
         client.list_db_versions(request)
 
@@ -26733,9 +26725,9 @@ def test_create_cloud_exadata_infrastructure_rest_required_fields(
     )
 
     jsonified_request["parent"] = "parent_value"
-    jsonified_request[
-        "cloudExadataInfrastructureId"
-    ] = "cloud_exadata_infrastructure_id_value"
+    jsonified_request["cloudExadataInfrastructureId"] = (
+        "cloud_exadata_infrastructure_id_value"
+    )
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -27122,9 +27114,9 @@ def test_list_cloud_vm_clusters_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_cloud_vm_clusters
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_cloud_vm_clusters] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_cloud_vm_clusters(request)
@@ -27384,9 +27376,9 @@ def test_get_cloud_vm_cluster_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_cloud_vm_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_cloud_vm_cluster] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_cloud_vm_cluster(request)
@@ -27986,9 +27978,9 @@ def test_list_entitlements_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_entitlements
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_entitlements] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_entitlements(request)
@@ -28764,9 +28756,9 @@ def test_list_gi_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_gi_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_gi_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_gi_versions(request)
@@ -29025,9 +29017,9 @@ def test_list_minor_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_minor_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_minor_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_minor_versions(request)
@@ -29292,9 +29284,9 @@ def test_list_db_system_shapes_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_db_system_shapes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_db_system_shapes] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_db_system_shapes(request)
@@ -32814,9 +32806,9 @@ def test_list_odb_networks_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_odb_networks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_odb_networks] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_odb_networks(request)
@@ -33258,9 +33250,9 @@ def test_create_odb_network_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_odb_network
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_odb_network] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_odb_network(request)
@@ -33478,9 +33470,9 @@ def test_delete_odb_network_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_odb_network
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_odb_network] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_odb_network(request)
@@ -33661,9 +33653,9 @@ def test_list_odb_subnets_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_odb_subnets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_odb_subnets] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_odb_subnets(request)
@@ -34105,9 +34097,9 @@ def test_create_odb_subnet_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_odb_subnet
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_odb_subnet] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_odb_subnet(request)
@@ -34325,9 +34317,9 @@ def test_delete_odb_subnet_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_odb_subnet
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_odb_subnet] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_odb_subnet(request)
@@ -34511,9 +34503,9 @@ def test_list_exadb_vm_clusters_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_exadb_vm_clusters
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_exadb_vm_clusters] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_exadb_vm_clusters(request)
@@ -34775,9 +34767,9 @@ def test_get_exadb_vm_cluster_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_exadb_vm_cluster
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_exadb_vm_cluster] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_exadb_vm_cluster(request)
@@ -37645,9 +37637,9 @@ def test_get_pluggable_database_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_pluggable_database
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_pluggable_database] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_pluggable_database(request)
@@ -38261,9 +38253,9 @@ def test_create_db_system_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_db_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_db_system] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_db_system(request)
@@ -38478,9 +38470,9 @@ def test_delete_db_system_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_db_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_db_system] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_db_system(request)
@@ -38660,9 +38652,9 @@ def test_list_db_versions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_db_versions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_db_versions] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_db_versions(request)

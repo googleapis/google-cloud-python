@@ -21,6 +21,24 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.securitycenter_v2.types import access as gcs_access
+from google.cloud.securitycenter_v2.types import (
+    affected_resources as gcs_affected_resources,
+)
+from google.cloud.securitycenter_v2.types import ai_model as gcs_ai_model
+from google.cloud.securitycenter_v2.types import application as gcs_application
+from google.cloud.securitycenter_v2.types import attack_exposure as gcs_attack_exposure
+from google.cloud.securitycenter_v2.types import (
+    backup_disaster_recovery as gcs_backup_disaster_recovery,
+)
+from google.cloud.securitycenter_v2.types import chokepoint as gcs_chokepoint
+from google.cloud.securitycenter_v2.types import cloud_armor as gcs_cloud_armor
+from google.cloud.securitycenter_v2.types import (
+    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
+)
+from google.cloud.securitycenter_v2.types import (
+    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
+)
 from google.cloud.securitycenter_v2.types import (
     compliance,
     connection,
@@ -29,29 +47,26 @@ from google.cloud.securitycenter_v2.types import (
     data_access_event,
     data_flow_event,
     data_retention_deletion_event,
-)
-from google.cloud.securitycenter_v2.types import (
     external_system,
     file,
     group_membership,
     iam_binding,
+    load_balancer,
+    log_entry,
+    network,
+    org_policy,
+    process,
 )
-from google.cloud.securitycenter_v2.types import (
-    affected_resources as gcs_affected_resources,
-)
-from google.cloud.securitycenter_v2.types import attack_exposure as gcs_attack_exposure
-from google.cloud.securitycenter_v2.types import (
-    backup_disaster_recovery as gcs_backup_disaster_recovery,
-)
-from google.cloud.securitycenter_v2.types import (
-    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
-)
-from google.cloud.securitycenter_v2.types import (
-    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
-)
+from google.cloud.securitycenter_v2.types import database as gcs_database
+from google.cloud.securitycenter_v2.types import disk as gcs_disk
 from google.cloud.securitycenter_v2.types import exfiltration as gcs_exfiltration
+from google.cloud.securitycenter_v2.types import indicator as gcs_indicator
+from google.cloud.securitycenter_v2.types import ip_rules as gcs_ip_rules
+from google.cloud.securitycenter_v2.types import job as gcs_job
 from google.cloud.securitycenter_v2.types import kernel_rootkit as gcs_kernel_rootkit
+from google.cloud.securitycenter_v2.types import kubernetes as gcs_kubernetes
 from google.cloud.securitycenter_v2.types import mitre_attack as gcs_mitre_attack
+from google.cloud.securitycenter_v2.types import notebook as gcs_notebook
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v2.types import (
     security_posture as gcs_security_posture,
@@ -59,23 +74,8 @@ from google.cloud.securitycenter_v2.types import (
 from google.cloud.securitycenter_v2.types import (
     toxic_combination as gcs_toxic_combination,
 )
-from google.cloud.securitycenter_v2.types import vulnerability as gcs_vulnerability
-from google.cloud.securitycenter_v2.types import access as gcs_access
-from google.cloud.securitycenter_v2.types import ai_model as gcs_ai_model
-from google.cloud.securitycenter_v2.types import application as gcs_application
-from google.cloud.securitycenter_v2.types import chokepoint as gcs_chokepoint
-from google.cloud.securitycenter_v2.types import cloud_armor as gcs_cloud_armor
-from google.cloud.securitycenter_v2.types import database as gcs_database
-from google.cloud.securitycenter_v2.types import disk as gcs_disk
-from google.cloud.securitycenter_v2.types import indicator as gcs_indicator
-from google.cloud.securitycenter_v2.types import ip_rules as gcs_ip_rules
-from google.cloud.securitycenter_v2.types import job as gcs_job
-from google.cloud.securitycenter_v2.types import kubernetes as gcs_kubernetes
-from google.cloud.securitycenter_v2.types import load_balancer, log_entry
-from google.cloud.securitycenter_v2.types import network
-from google.cloud.securitycenter_v2.types import notebook as gcs_notebook
-from google.cloud.securitycenter_v2.types import org_policy, process
 from google.cloud.securitycenter_v2.types import vertex_ai as gcs_vertex_ai
+from google.cloud.securitycenter_v2.types import vulnerability as gcs_vulnerability
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v2",
@@ -393,6 +393,7 @@ class Finding(proto.Message):
                 non-issue or otherwise addressed and is no
                 longer active.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -479,6 +480,7 @@ class Finding(proto.Message):
                 access to an environment but is not able to
                 access data, execute code, or create resources.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -498,6 +500,7 @@ class Finding(proto.Message):
             UNDEFINED (3):
                 Finding has never been muted/unmuted.
         """
+
         MUTE_UNSPECIFIED = 0
         MUTED = 1
         UNMUTED = 2
@@ -540,6 +543,7 @@ class Finding(proto.Message):
                 high risk attack paths converge, based on attack
                 path simulations (APS).
         """
+
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
         VULNERABILITY = 2
@@ -620,12 +624,12 @@ class Finding(proto.Message):
             number=1,
             message="Finding.MuteInfo.StaticMute",
         )
-        dynamic_mute_records: MutableSequence[
-            "Finding.MuteInfo.DynamicMuteRecord"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="Finding.MuteInfo.DynamicMuteRecord",
+        dynamic_mute_records: MutableSequence["Finding.MuteInfo.DynamicMuteRecord"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Finding.MuteInfo.DynamicMuteRecord",
+            )
         )
 
     name: str = proto.Field(
@@ -713,13 +717,13 @@ class Finding(proto.Message):
         number=19,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems: MutableMapping[
-        str, external_system.ExternalSystem
-    ] = proto.MapField(
-        proto.STRING,
-        proto.MESSAGE,
-        number=20,
-        message=external_system.ExternalSystem,
+    external_systems: MutableMapping[str, external_system.ExternalSystem] = (
+        proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=20,
+            message=external_system.ExternalSystem,
+        )
     )
     mitre_attack: gcs_mitre_attack.MitreAttack = proto.Field(
         proto.MESSAGE,
@@ -881,31 +885,31 @@ class Finding(proto.Message):
         number=56,
         message=gcs_toxic_combination.ToxicCombination,
     )
-    group_memberships: MutableSequence[
-        group_membership.GroupMembership
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=57,
-        message=group_membership.GroupMembership,
+    group_memberships: MutableSequence[group_membership.GroupMembership] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=57,
+            message=group_membership.GroupMembership,
+        )
     )
     disk: gcs_disk.Disk = proto.Field(
         proto.MESSAGE,
         number=58,
         message=gcs_disk.Disk,
     )
-    data_access_events: MutableSequence[
-        data_access_event.DataAccessEvent
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=61,
-        message=data_access_event.DataAccessEvent,
+    data_access_events: MutableSequence[data_access_event.DataAccessEvent] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=61,
+            message=data_access_event.DataAccessEvent,
+        )
     )
-    data_flow_events: MutableSequence[
-        data_flow_event.DataFlowEvent
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=62,
-        message=data_flow_event.DataFlowEvent,
+    data_flow_events: MutableSequence[data_flow_event.DataFlowEvent] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=62,
+            message=data_flow_event.DataFlowEvent,
+        )
     )
     networks: MutableSequence[network.Network] = proto.RepeatedField(
         proto.MESSAGE,

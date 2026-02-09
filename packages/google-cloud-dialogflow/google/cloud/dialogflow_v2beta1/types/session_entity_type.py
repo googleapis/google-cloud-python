@@ -97,6 +97,7 @@ class SessionEntityType(proto.Message):
                 [EntityTypes.GetEntityType][google.cloud.dialogflow.v2beta1.EntityTypes.GetEntityType]
                 on the custom entity type and merge.
         """
+
         ENTITY_OVERRIDE_MODE_UNSPECIFIED = 0
         ENTITY_OVERRIDE_MODE_OVERRIDE = 1
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2

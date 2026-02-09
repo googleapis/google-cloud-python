@@ -167,6 +167,7 @@ class Instance(proto.Message):
                 Instance is unknown, we are not sure if it's
                 functioning.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -186,6 +187,7 @@ class Instance(proto.Message):
                 INSTANCE_RESUMING indicates that the instance was previously
                 paused and is under the process of being brought back.
         """
+
         STATE_NOTE_UNSPECIFIED = 0
         PAUSED_CMEK_UNAVAILABLE = 1
         INSTANCE_RESUMING = 2
@@ -715,6 +717,7 @@ class Hook(proto.Message):
                 Pull request events are triggered when a pull
                 request is opened, closed, reopened, or edited.
         """
+
         UNSPECIFIED = 0
         PUSH = 1
         PULL_REQUEST = 2
@@ -960,6 +963,7 @@ class PullRequest(proto.Message):
             MERGED (3):
                 A merged pull request.
         """
+
         STATE_UNSPECIFIED = 0
         OPEN = 1
         CLOSED = 2
@@ -1060,6 +1064,7 @@ class FileDiff(proto.Message):
             DELETED (3):
                 The file was deleted.
         """
+
         ACTION_UNSPECIFIED = 0
         ADDED = 1
         MODIFIED = 2
@@ -1125,6 +1130,7 @@ class Issue(proto.Message):
             CLOSED (2):
                 A closed issue.
         """
+
         STATE_UNSPECIFIED = 0
         OPEN = 1
         CLOSED = 2
@@ -1262,6 +1268,7 @@ class PullRequestComment(proto.Message):
                 APPROVED (3):
                     Change approved from this review.
             """
+
             ACTION_TYPE_UNSPECIFIED = 0
             COMMENT = 1
             CHANGE_REQUESTED = 2
@@ -2597,6 +2604,7 @@ class TreeEntry(proto.Message):
                 Represents a pointer to another repository
                 (submodule).
         """
+
         OBJECT_TYPE_UNSPECIFIED = 0
         TREE = 1
         BLOB = 2

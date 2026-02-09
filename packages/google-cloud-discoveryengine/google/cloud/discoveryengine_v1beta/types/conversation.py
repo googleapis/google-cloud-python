@@ -68,6 +68,7 @@ class Conversation(proto.Message):
             COMPLETED (2):
                 Conversation has been completed.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         COMPLETED = 2

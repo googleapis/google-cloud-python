@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .audit_data import AuditData
+from .audit_data import (
+    AuditData,
+)
 from .iam import (
     CreateRoleRequest,
     CreateServiceAccountKeyRequest,

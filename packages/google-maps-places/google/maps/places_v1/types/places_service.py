@@ -17,16 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport
 
-from google.maps.places_v1.types import contextual_content, ev_charging, geometry
-from google.maps.places_v1.types import routing_preference as gmp_routing_preference
+from google.maps.places_v1.types import (
+    contextual_content,
+    ev_charging,
+    geometry,
+    routing_summary,
+)
 from google.maps.places_v1.types import place as gmp_place
 from google.maps.places_v1.types import polyline as gmp_polyline
 from google.maps.places_v1.types import route_modifiers as gmp_route_modifiers
-from google.maps.places_v1.types import routing_summary
+from google.maps.places_v1.types import routing_preference as gmp_routing_preference
 from google.maps.places_v1.types import travel_mode as gmp_travel_mode
 
 __protobuf__ = proto.module(
@@ -230,6 +234,7 @@ class SearchNearbyRequest(proto.Message):
             POPULARITY (2):
                 Ranks results by popularity.
         """
+
         RANK_PREFERENCE_UNSPECIFIED = 0
         DISTANCE = 1
         POPULARITY = 2
@@ -319,12 +324,12 @@ class SearchNearbyResponse(proto.Message):
         number=1,
         message=gmp_place.Place,
     )
-    routing_summaries: MutableSequence[
-        routing_summary.RoutingSummary
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=routing_summary.RoutingSummary,
+    routing_summaries: MutableSequence[routing_summary.RoutingSummary] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=routing_summary.RoutingSummary,
+        )
     )
 
 
@@ -432,6 +437,7 @@ class SearchTextRequest(proto.Message):
                 Ranks results by relevance. Sort order
                 determined by normal ranking stack.
         """
+
         RANK_PREFERENCE_UNSPECIFIED = 0
         DISTANCE = 1
         RELEVANCE = 2
@@ -524,12 +530,12 @@ class SearchTextRequest(proto.Message):
             proto.DOUBLE,
             number=1,
         )
-        connector_types: MutableSequence[
-            ev_charging.EVConnectorType
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=2,
-            enum=ev_charging.EVConnectorType,
+        connector_types: MutableSequence[ev_charging.EVConnectorType] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum=ev_charging.EVConnectorType,
+            )
         )
 
     class SearchAlongRouteParameters(proto.Message):
@@ -667,19 +673,19 @@ class SearchTextResponse(proto.Message):
         number=1,
         message=gmp_place.Place,
     )
-    routing_summaries: MutableSequence[
-        routing_summary.RoutingSummary
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=routing_summary.RoutingSummary,
+    routing_summaries: MutableSequence[routing_summary.RoutingSummary] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=routing_summary.RoutingSummary,
+        )
     )
-    contextual_contents: MutableSequence[
-        contextual_content.ContextualContent
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=contextual_content.ContextualContent,
+    contextual_contents: MutableSequence[contextual_content.ContextualContent] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=contextual_content.ContextualContent,
+        )
     )
 
 

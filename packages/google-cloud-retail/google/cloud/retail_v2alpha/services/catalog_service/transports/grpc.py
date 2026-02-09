@@ -16,24 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.retail_v2alpha.types import catalog
+from google.cloud.retail_v2alpha.types import catalog, catalog_service
 from google.cloud.retail_v2alpha.types import catalog as gcr_catalog
-from google.cloud.retail_v2alpha.types import catalog_service
 
 from .base import DEFAULT_CLIENT_INFO, CatalogServiceTransport
 
@@ -693,12 +692,12 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_remove_catalog_attributes" not in self._stubs:
-            self._stubs[
-                "batch_remove_catalog_attributes"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.retail.v2alpha.CatalogService/BatchRemoveCatalogAttributes",
-                request_serializer=catalog_service.BatchRemoveCatalogAttributesRequest.serialize,
-                response_deserializer=catalog_service.BatchRemoveCatalogAttributesResponse.deserialize,
+            self._stubs["batch_remove_catalog_attributes"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.retail.v2alpha.CatalogService/BatchRemoveCatalogAttributes",
+                    request_serializer=catalog_service.BatchRemoveCatalogAttributesRequest.serialize,
+                    response_deserializer=catalog_service.BatchRemoveCatalogAttributesResponse.deserialize,
+                )
             )
         return self._stubs["batch_remove_catalog_attributes"]
 

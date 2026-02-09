@@ -173,6 +173,7 @@ class AutonomousDatabaseBackupProperties(proto.Message):
                 Indicates that the resource is in updating
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -194,6 +195,7 @@ class AutonomousDatabaseBackupProperties(proto.Message):
             LONG_TERM (3):
                 Long term backups.
         """
+
         TYPE_UNSPECIFIED = 0
         INCREMENTAL = 1
         FULL = 2

@@ -169,12 +169,12 @@ class ListDocumentSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    document_schemas: MutableSequence[
-        gcc_document_schema.DocumentSchema
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcc_document_schema.DocumentSchema,
+    document_schemas: MutableSequence[gcc_document_schema.DocumentSchema] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcc_document_schema.DocumentSchema,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

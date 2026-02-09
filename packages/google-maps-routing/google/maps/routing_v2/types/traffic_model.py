@@ -54,6 +54,7 @@ class TrafficModel(proto.Enum):
             good traffic conditions may be faster than this
             value.
     """
+
     TRAFFIC_MODEL_UNSPECIFIED = 0
     BEST_GUESS = 1
     PESSIMISTIC = 2

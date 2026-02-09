@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 from google.shopping.merchant_promotions_v1.types import promotions_common
 
@@ -131,12 +131,12 @@ class Promotion(proto.Message):
         proto.STRING,
         number=4,
     )
-    redemption_channel: MutableSequence[
-        promotions_common.RedemptionChannel
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=5,
-        enum=promotions_common.RedemptionChannel,
+    redemption_channel: MutableSequence[promotions_common.RedemptionChannel] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=5,
+            enum=promotions_common.RedemptionChannel,
+        )
     )
     data_source: str = proto.Field(
         proto.STRING,

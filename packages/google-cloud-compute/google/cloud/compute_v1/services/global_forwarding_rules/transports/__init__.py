@@ -23,9 +23,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GlobalForwardingRulesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GlobalForwardingRulesTransport]]
 _transport_registry["rest"] = GlobalForwardingRulesRestTransport
 
 __all__ = (

@@ -100,6 +100,7 @@ class OperationMetadata(proto.Message):
             UPGRADE_PAUSED (1):
                 The cluster upgrade is currently paused.
         """
+
         STATUS_REASON_UNSPECIFIED = 0
         UPGRADE_PAUSED = 1
 
@@ -334,6 +335,7 @@ class UpgradeClusterRequest(proto.Message):
                 The cluster is going to be upgraded
                 immediately after receiving the request.
         """
+
         SCHEDULE_UNSPECIFIED = 0
         IMMEDIATELY = 1
 

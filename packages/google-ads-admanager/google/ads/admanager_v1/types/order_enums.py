@@ -60,6 +60,7 @@ class OrderStatusEnum(proto.Message):
             DELETED (8):
                 Indicates that the Order has been deleted.
         """
+
         ORDER_STATUS_UNSPECIFIED = 0
         DRAFT = 2
         PENDING_APPROVAL = 3

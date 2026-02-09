@@ -16,23 +16,22 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
+from google.ai.generativelanguage_v1beta.types import permission, permission_service
 from google.ai.generativelanguage_v1beta.types import permission as gag_permission
-from google.ai.generativelanguage_v1beta.types import permission
-from google.ai.generativelanguage_v1beta.types import permission_service
 
 from .base import DEFAULT_CLIENT_INFO, PermissionServiceTransport
 

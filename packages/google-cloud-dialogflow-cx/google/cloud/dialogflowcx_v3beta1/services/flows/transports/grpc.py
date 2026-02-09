@@ -16,20 +16,20 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import flow
 from google.cloud.dialogflowcx_v3beta1.types import flow as gcdc_flow
@@ -559,12 +559,12 @@ class FlowsGrpcTransport(FlowsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_flow_validation_result" not in self._stubs:
-            self._stubs[
-                "get_flow_validation_result"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.cx.v3beta1.Flows/GetFlowValidationResult",
-                request_serializer=flow.GetFlowValidationResultRequest.serialize,
-                response_deserializer=flow.FlowValidationResult.deserialize,
+            self._stubs["get_flow_validation_result"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.cx.v3beta1.Flows/GetFlowValidationResult",
+                    request_serializer=flow.GetFlowValidationResultRequest.serialize,
+                    response_deserializer=flow.FlowValidationResult.deserialize,
+                )
             )
         return self._stubs["get_flow_validation_result"]
 

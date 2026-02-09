@@ -91,6 +91,7 @@ class ChannelGroupFilter(proto.Message):
                     Partial regular expression match with the
                     string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             BEGINS_WITH = 2
@@ -213,12 +214,12 @@ class ChannelGroupFilterExpressionList(proto.Message):
             A list of Channel Group filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ChannelGroupFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ChannelGroupFilterExpression",
+    filter_expressions: MutableSequence["ChannelGroupFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ChannelGroupFilterExpression",
+        )
     )
 
 

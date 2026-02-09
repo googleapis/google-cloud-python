@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.apps.meet_v2beta.types import resource, service
@@ -640,9 +640,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseConnectActiveConference._get_http_options()
 
             request, metadata = self._interceptor.pre_connect_active_conference(
                 request, metadata
@@ -1211,9 +1209,7 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_http_options()
-            )
+            http_options = _BaseSpacesServiceRestTransport._BaseEndActiveConference._get_http_options()
 
             request, metadata = self._interceptor.pre_end_active_conference(
                 request, metadata
@@ -1889,7 +1885,9 @@ class SpacesServiceRestTransport(_BaseSpacesServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ConnectActiveConference(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ConnectActiveConference(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_member(self) -> Callable[[service.CreateMemberRequest], resource.Member]:

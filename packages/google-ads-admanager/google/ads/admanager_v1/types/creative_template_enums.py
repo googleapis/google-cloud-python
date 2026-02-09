@@ -47,6 +47,7 @@ class CreativeTemplateTypeEnum(proto.Message):
                 Creative templates created by an
                 administrator or other user in the network.
         """
+
         CREATIVE_TEMPLATE_TYPE_UNSPECIFIED = 0
         STANDARD = 1
         CUSTOM = 2
@@ -76,6 +77,7 @@ class CreativeTemplateStatusEnum(proto.Message):
                 but existing ones can be edited and continue to
                 serve
         """
+
         CREATIVE_TEMPLATE_STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         DELETED = 2

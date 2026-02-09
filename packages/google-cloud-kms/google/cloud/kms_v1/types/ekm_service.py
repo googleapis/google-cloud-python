@@ -419,6 +419,7 @@ class EkmConnection(proto.Message):
                   [DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
                 - Automatic rotation of key material is supported.
         """
+
         KEY_MANAGEMENT_MODE_UNSPECIFIED = 0
         MANUAL = 1
         CLOUD_KMS = 2

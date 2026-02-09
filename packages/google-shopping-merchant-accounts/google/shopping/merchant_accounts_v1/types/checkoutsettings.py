@@ -18,8 +18,8 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-from google.shopping.type.types import types
 import proto  # type: ignore
+from google.shopping.type.types import types
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1",
@@ -198,6 +198,7 @@ class CheckoutSettings(proto.Message):
                 Merchant has previously enrolled but opted
                 out of the program.
         """
+
         CHECKOUT_ENROLLMENT_STATE_UNSPECIFIED = 0
         INACTIVE = 1
         ENROLLED = 2
@@ -221,6 +222,7 @@ class CheckoutSettings(proto.Message):
                 Merchant account has been disapproved due to
                 data quality issues.
         """
+
         CHECKOUT_REVIEW_STATE_UNSPECIFIED = 0
         IN_REVIEW = 1
         APPROVED = 2
@@ -236,12 +238,12 @@ class CheckoutSettings(proto.Message):
         optional=True,
         message="UriSettings",
     )
-    eligible_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=8,
-        enum=types.Destination.DestinationEnum,
+    eligible_destinations: MutableSequence[types.Destination.DestinationEnum] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=8,
+            enum=types.Destination.DestinationEnum,
+        )
     )
     enrollment_state: CheckoutEnrollmentState = proto.Field(
         proto.ENUM,

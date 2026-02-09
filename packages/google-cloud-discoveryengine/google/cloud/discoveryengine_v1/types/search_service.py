@@ -427,6 +427,7 @@ class SearchRequest(proto.Message):
             HIGH (4):
                 High relevance threshold.
         """
+
         RELEVANCE_THRESHOLD_UNSPECIFIED = 0
         LOWEST = 1
         LOW = 2
@@ -446,6 +447,7 @@ class SearchRequest(proto.Message):
             RANK_BY_FORMULA (4):
                 Ranking by custom formula.
         """
+
         RANKING_EXPRESSION_BACKEND_UNSPECIFIED = 0
         RANK_BY_EMBEDDING = 3
         RANK_BY_FORMULA = 4
@@ -809,6 +811,7 @@ class SearchRequest(proto.Message):
                             ``[nD][T[nH][nM][nS]]``. For example, ``5D``, ``3DT12H30M``,
                             ``T24H``.
                     """
+
                     ATTRIBUTE_TYPE_UNSPECIFIED = 0
                     NUMERICAL = 1
                     FRESHNESS = 2
@@ -825,6 +828,7 @@ class SearchRequest(proto.Message):
                             Piecewise linear interpolation will be
                             applied.
                     """
+
                     INTERPOLATION_TYPE_UNSPECIFIED = 0
                     LINEAR = 1
 
@@ -934,6 +938,7 @@ class SearchRequest(proto.Message):
                     Automatic query expansion built by the Search
                     API.
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             AUTO = 2
@@ -977,6 +982,7 @@ class SearchRequest(proto.Message):
                     Search API. Search will be based on the
                     corrected query if found.
             """
+
             MODE_UNSPECIFIED = 0
             SUGGESTION_ONLY = 1
             AUTO = 2
@@ -1026,6 +1032,7 @@ class SearchRequest(proto.Message):
                     [DocumentProcessingConfig.chunking_config][google.cloud.discoveryengine.v1.DocumentProcessingConfig.chunking_config]
                     is specified.
             """
+
             SEARCH_RESULT_MODE_UNSPECIFIED = 0
             DOCUMENTS = 1
             CHUNKS = 2
@@ -1414,6 +1421,7 @@ class SearchRequest(proto.Message):
                     ideal for single-API implementations (e.g.,
                     debouncing).
             """
+
             CONDITION_UNSPECIFIED = 0
             DISABLED = 1
             ENABLED = 2
@@ -1447,6 +1455,7 @@ class SearchRequest(proto.Message):
                 MATCH_HIGHLIGHTING_ENABLED (2):
                     Enables match highlighting on all documents.
             """
+
             MATCH_HIGHLIGHTING_CONDITION_UNSPECIFIED = 0
             MATCH_HIGHLIGHTING_DISABLED = 1
             MATCH_HIGHLIGHTING_ENABLED = 2
@@ -1951,12 +1960,12 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="SearchResponse.Facet.FacetValue",
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Facet.FacetValue",
+            )
         )
         dynamic_facet: bool = proto.Field(
             proto.BOOL,
@@ -2050,6 +2059,7 @@ class SearchResponse(proto.Message):
 
                     Google skips the summary if the time out.
             """
+
             SUMMARY_SKIPPED_REASON_UNSPECIFIED = 0
             ADVERSARIAL_QUERY_IGNORED = 1
             NON_SUMMARY_SEEKING_QUERY_IGNORED = 2
@@ -2094,12 +2104,12 @@ class SearchResponse(proto.Message):
                     Citations for segments.
             """
 
-            citations: MutableSequence[
-                "SearchResponse.Summary.Citation"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="SearchResponse.Summary.Citation",
+            citations: MutableSequence["SearchResponse.Summary.Citation"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="SearchResponse.Summary.Citation",
+                )
             )
 
         class Citation(proto.Message):
@@ -2123,12 +2133,12 @@ class SearchResponse(proto.Message):
                 proto.INT64,
                 number=2,
             )
-            sources: MutableSequence[
-                "SearchResponse.Summary.CitationSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="SearchResponse.Summary.CitationSource",
+            sources: MutableSequence["SearchResponse.Summary.CitationSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="SearchResponse.Summary.CitationSource",
+                )
             )
 
         class CitationSource(proto.Message):
@@ -2226,12 +2236,12 @@ class SearchResponse(proto.Message):
                 number=2,
                 message="SearchResponse.Summary.CitationMetadata",
             )
-            references: MutableSequence[
-                "SearchResponse.Summary.Reference"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=3,
-                message="SearchResponse.Summary.Reference",
+            references: MutableSequence["SearchResponse.Summary.Reference"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=3,
+                    message="SearchResponse.Summary.Reference",
+                )
             )
 
         summary_text: str = proto.Field(
@@ -2360,12 +2370,12 @@ class SearchResponse(proto.Message):
         number=19,
         message=SessionInfo,
     )
-    search_link_promotions: MutableSequence[
-        common.SearchLinkPromotion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=23,
-        message=common.SearchLinkPromotion,
+    search_link_promotions: MutableSequence[common.SearchLinkPromotion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=23,
+            message=common.SearchLinkPromotion,
+        )
     )
 
 

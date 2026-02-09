@@ -62,6 +62,7 @@ class YumArtifact(proto.Message):
             SOURCE (2):
                 Source package (.srpm).
         """
+
         PACKAGE_TYPE_UNSPECIFIED = 0
         BINARY = 1
         SOURCE = 2

@@ -171,12 +171,12 @@ class TcpRoute(proto.Message):
                 disabled.
         """
 
-        destinations: MutableSequence[
-            "TcpRoute.RouteDestination"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TcpRoute.RouteDestination",
+        destinations: MutableSequence["TcpRoute.RouteDestination"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TcpRoute.RouteDestination",
+            )
         )
         original_destination: bool = proto.Field(
             proto.BOOL,

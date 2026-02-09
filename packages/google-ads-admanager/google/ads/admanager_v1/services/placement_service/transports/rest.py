@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -777,9 +777,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchActivatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_activate_placements(
                 request, metadata
@@ -936,9 +934,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchArchivePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_archive_placements(
                 request, metadata
@@ -1095,9 +1091,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchCreatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_placements(
                 request, metadata
@@ -1258,9 +1252,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_deactivate_placements(
                 request, metadata
@@ -1417,9 +1409,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchUpdatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_placements(
                 request, metadata
@@ -1576,9 +1566,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     The ``Placement`` resource.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseCreatePlacement._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_http_options()
 
             request, metadata = self._interceptor.pre_create_placement(
                 request, metadata
@@ -1873,9 +1861,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseListPlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseListPlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_list_placements(request, metadata)
             transcoded_request = _BasePlacementServiceRestTransport._BaseListPlacements._get_transcoded_request(
@@ -2021,9 +2007,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     The ``Placement`` resource.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_http_options()
 
             request, metadata = self._interceptor.pre_update_placement(
                 request, metadata
@@ -2127,7 +2111,9 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchActivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchActivatePlacements(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_archive_placements(
@@ -2138,7 +2124,9 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchArchivePlacements(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchArchivePlacements(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_create_placements(
@@ -2160,7 +2148,9 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchDeactivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchDeactivatePlacements(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_update_placements(

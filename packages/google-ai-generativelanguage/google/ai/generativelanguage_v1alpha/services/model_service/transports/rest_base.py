@@ -17,14 +17,13 @@ import json  # type: ignore
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
+from google.ai.generativelanguage_v1alpha.types import model, model_service, tuned_model
 from google.ai.generativelanguage_v1alpha.types import tuned_model as gag_tuned_model
-from google.ai.generativelanguage_v1alpha.types import model, model_service
-from google.ai.generativelanguage_v1alpha.types import tuned_model
 
 from .base import DEFAULT_CLIENT_INFO, ModelServiceTransport
 

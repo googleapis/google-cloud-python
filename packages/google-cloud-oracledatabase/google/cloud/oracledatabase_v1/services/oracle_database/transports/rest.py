@@ -16,46 +16,42 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
 from google.cloud.oracledatabase_v1.types import (
+    autonomous_database,
+    database,
+    database_character_set,
+    db_system,
     db_system_initial_storage_size,
     db_version,
     exadata_infra,
     exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
+    exascale_db_storage_vault,
+    minor_version,
+    odb_network,
+    odb_subnet,
     oracledatabase,
     pluggable_database,
     vm_cluster,
 )
+from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import (
     exascale_db_storage_vault as gco_exascale_db_storage_vault,
 )
-from google.cloud.oracledatabase_v1.types import db_system
-from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
-from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
-from google.cloud.oracledatabase_v1.types import minor_version
-from google.cloud.oracledatabase_v1.types import odb_network
 from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
-from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -3794,9 +3790,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_create_autonomous_database(
                 request, metadata
@@ -3951,15 +3945,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_cloud_exadata_infrastructure(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_cloud_exadata_infrastructure(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_transcoded_request(
                 http_options, request
@@ -4023,11 +4014,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_cloud_exadata_infrastructure_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4111,9 +4101,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cloud_vm_cluster(
                 request, metadata
@@ -4418,9 +4406,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_exadb_vm_cluster(
                 request, metadata
@@ -4573,9 +4559,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_http_options()
 
             request, metadata = self._interceptor.pre_create_exascale_db_storage_vault(
                 request, metadata
@@ -4644,11 +4628,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_exascale_db_storage_vault_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4731,9 +4714,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_create_odb_network(
                 request, metadata
@@ -4884,9 +4865,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_create_odb_subnet(
                 request, metadata
@@ -5038,9 +5017,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_autonomous_database(
                 request, metadata
@@ -5189,15 +5166,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_cloud_exadata_infrastructure(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_cloud_exadata_infrastructure(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_transcoded_request(
                 http_options, request
@@ -5256,11 +5230,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_cloud_exadata_infrastructure_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5343,9 +5316,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(
                 request, metadata
@@ -5638,9 +5609,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_exadb_vm_cluster(
                 request, metadata
@@ -5788,9 +5757,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_exascale_db_storage_vault(
                 request, metadata
@@ -5854,11 +5821,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_exascale_db_storage_vault_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5940,9 +5906,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_odb_network(
                 request, metadata
@@ -6087,9 +6051,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_odb_subnet(
                 request, metadata
@@ -6238,9 +6200,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_failover_autonomous_database(
                 request, metadata
@@ -6392,15 +6352,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDatabase.GenerateWallet``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_autonomous_database_wallet(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_generate_autonomous_database_wallet(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_transcoded_request(
                 http_options, request
@@ -6466,11 +6423,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_generate_autonomous_database_wallet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_autonomous_database_wallet_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_generate_autonomous_database_wallet_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6557,9 +6513,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_autonomous_database(
                 request, metadata
@@ -6710,9 +6664,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(
                 request, metadata
@@ -6776,11 +6728,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_cloud_exadata_infrastructure_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6864,9 +6815,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cloud_vm_cluster(
                 request, metadata
@@ -7307,9 +7256,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_get_exadb_vm_cluster(
                 request, metadata
@@ -7458,9 +7405,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_http_options()
 
             request, metadata = self._interceptor.pre_get_exascale_db_storage_vault(
                 request, metadata
@@ -7526,11 +7471,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_exascale_db_storage_vault_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -7904,9 +7848,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pluggable_database(
                 request, metadata
@@ -8054,9 +7996,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDatabaseBackup.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_autonomous_database_backups(
                 request, metadata
@@ -8120,11 +8060,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_autonomous_database_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_autonomous_database_backups_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_autonomous_database_backups_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8213,15 +8152,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_autonomous_database_character_sets(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_autonomous_database_character_sets(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_transcoded_request(
                 http_options, request
@@ -8284,11 +8220,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_autonomous_database_character_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_autonomous_database_character_sets_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_autonomous_database_character_sets_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8370,9 +8305,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``AutonomousDatabase.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_autonomous_databases(
                 request, metadata
@@ -8522,9 +8455,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDbVersion.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_autonomous_db_versions(
                 request, metadata
@@ -8676,15 +8607,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``CloudExadataInfrastructures.list``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_cloud_exadata_infrastructures(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_cloud_exadata_infrastructures(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_transcoded_request(
                 http_options, request
@@ -8745,11 +8673,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_cloud_exadata_infrastructures(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_cloud_exadata_infrastructures_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_cloud_exadata_infrastructures_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8833,9 +8760,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``CloudVmCluster.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cloud_vm_clusters(
                 request, metadata
@@ -8983,9 +8908,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``DatabaseCharacterSet.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_database_character_sets(
                 request, metadata
@@ -9571,15 +9494,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``DbSystemInitialStorageSizes.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_db_system_initial_storage_sizes(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_db_system_initial_storage_sizes(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_transcoded_request(
                 http_options, request
@@ -9644,11 +9564,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_system_initial_storage_sizes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_db_system_initial_storage_sizes_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_db_system_initial_storage_sizes_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9873,9 +9792,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbSystemShape.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_db_system_shapes(
                 request, metadata
@@ -10169,9 +10086,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``Entitlement.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entitlements(
                 request, metadata
@@ -10318,9 +10233,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``ExadbVmCluster.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_exadb_vm_clusters(
                 request, metadata
@@ -10468,9 +10381,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``ExascaleDbStorageVault.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_http_options()
 
             request, metadata = self._interceptor.pre_list_exascale_db_storage_vaults(
                 request, metadata
@@ -10538,11 +10449,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_exascale_db_storage_vaults(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_exascale_db_storage_vaults_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_exascale_db_storage_vaults_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -10771,9 +10681,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``MinorVersion.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_minor_versions(
                 request, metadata
@@ -10919,9 +10827,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``OdbNetwork.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_odb_networks(
                 request, metadata
@@ -11216,9 +11122,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``PluggableDatabase.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pluggable_databases(
                 request, metadata
@@ -11376,15 +11280,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_remove_virtual_machine_exadb_vm_cluster(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_remove_virtual_machine_exadb_vm_cluster(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_transcoded_request(
                 http_options, request
@@ -11448,11 +11349,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_remove_virtual_machine_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_virtual_machine_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_remove_virtual_machine_exadb_vm_cluster_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -11537,9 +11437,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_restart_autonomous_database(
                 request, metadata
@@ -11694,9 +11592,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_autonomous_database(
                 request, metadata
@@ -11850,9 +11746,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_start_autonomous_database(
                 request, metadata
@@ -12006,9 +11900,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_autonomous_database(
                 request, metadata
@@ -12164,9 +12056,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_switchover_autonomous_database(
                 request, metadata
@@ -12235,11 +12125,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_switchover_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_switchover_autonomous_database_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_switchover_autonomous_database_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -12324,9 +12213,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_update_autonomous_database(
                 request, metadata
@@ -12483,9 +12370,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_exadb_vm_cluster(
                 request, metadata
@@ -12586,7 +12471,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_cloud_exadata_infrastructure(
@@ -12597,7 +12484,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateCloudExadataInfrastructure(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_cloud_vm_cluster(
@@ -12636,7 +12525,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateExascaleDbStorageVault(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_odb_network(
@@ -12662,7 +12553,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_cloud_exadata_infrastructure(
@@ -12673,7 +12566,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteCloudExadataInfrastructure(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_cloud_vm_cluster(
@@ -12712,7 +12607,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteExascaleDbStorageVault(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_odb_network(
@@ -12738,7 +12635,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FailoverAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FailoverAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def generate_autonomous_database_wallet(
@@ -12749,7 +12648,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAutonomousDatabaseWallet(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateAutonomousDatabaseWallet(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_autonomous_database(
@@ -12771,7 +12672,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetCloudExadataInfrastructure(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_cloud_vm_cluster(
@@ -12816,7 +12719,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetExascaleDbStorageVault(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_odb_network(
@@ -12854,7 +12759,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAutonomousDatabaseBackups(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAutonomousDatabaseBackups(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_autonomous_database_character_sets(
@@ -12865,7 +12772,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAutonomousDatabaseCharacterSets(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAutonomousDatabaseCharacterSets(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_autonomous_databases(
@@ -12876,7 +12785,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAutonomousDatabases(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAutonomousDatabases(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_autonomous_db_versions(
@@ -12887,7 +12798,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAutonomousDbVersions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAutonomousDbVersions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_cloud_exadata_infrastructures(
@@ -12898,7 +12811,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCloudExadataInfrastructures(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListCloudExadataInfrastructures(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_cloud_vm_clusters(
@@ -12920,7 +12835,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDatabaseCharacterSets(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDatabaseCharacterSets(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_databases(
@@ -12959,7 +12876,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListDbSystemInitialStorageSizes(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListDbSystemInitialStorageSizes(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_db_systems(
@@ -13021,7 +12940,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListExascaleDbStorageVaults(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListExascaleDbStorageVaults(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_gi_versions(
@@ -13073,7 +12994,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPluggableDatabases(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPluggableDatabases(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def remove_virtual_machine_exadb_vm_cluster(
@@ -13084,7 +13007,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveVirtualMachineExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveVirtualMachineExadbVmCluster(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def restart_autonomous_database(
@@ -13094,7 +13019,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RestartAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RestartAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def restore_autonomous_database(
@@ -13104,7 +13031,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RestoreAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RestoreAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def start_autonomous_database(
@@ -13114,7 +13043,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StartAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StartAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def stop_autonomous_database(
@@ -13124,7 +13055,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StopAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StopAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def switchover_autonomous_database(
@@ -13134,7 +13067,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SwitchoverAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SwitchoverAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_autonomous_database(
@@ -13144,7 +13079,9 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAutonomousDatabase(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_exadb_vm_cluster(
@@ -13491,9 +13428,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -13610,9 +13545,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata

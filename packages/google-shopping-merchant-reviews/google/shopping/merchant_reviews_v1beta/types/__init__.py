@@ -21,7 +21,10 @@ from .merchantreviews import (
     ListMerchantReviewsResponse,
     MerchantReview,
 )
-from .merchantreviews_common import MerchantReviewAttributes, MerchantReviewStatus
+from .merchantreviews_common import (
+    MerchantReviewAttributes,
+    MerchantReviewStatus,
+)
 from .productreviews import (
     DeleteProductReviewRequest,
     GetProductReviewRequest,
@@ -30,7 +33,10 @@ from .productreviews import (
     ListProductReviewsResponse,
     ProductReview,
 )
-from .productreviews_common import ProductReviewAttributes, ProductReviewStatus
+from .productreviews_common import (
+    ProductReviewAttributes,
+    ProductReviewStatus,
+)
 
 __all__ = (
     "DeleteMerchantReviewRequest",

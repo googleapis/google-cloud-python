@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.ids import IDSAsyncClient, IDSClient
 from .types.ids import (
     CreateEndpointRequest,

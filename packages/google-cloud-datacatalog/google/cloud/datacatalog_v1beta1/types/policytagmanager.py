@@ -97,6 +97,7 @@ class Taxonomy(proto.Message):
                 Fine grained access control policy, which
                 enables access control on tagged resources.
         """
+
         POLICY_TYPE_UNSPECIFIED = 0
         FINE_GRAINED_ACCESS_CONTROL = 1
 

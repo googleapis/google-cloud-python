@@ -19,7 +19,6 @@ from typing import MutableMapping, MutableSequence
 
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
-
 from google.cloud.oslogin_v1.common.types import common
 
 __protobuf__ = proto.module(

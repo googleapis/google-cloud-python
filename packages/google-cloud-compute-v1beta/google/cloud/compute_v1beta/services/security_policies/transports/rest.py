@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1134,9 +1134,7 @@ class SecurityPoliciesRestTransport(_BaseSecurityPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityPoliciesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseSecurityPoliciesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
             transcoded_request = _BaseSecurityPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
@@ -2100,15 +2098,12 @@ class SecurityPoliciesRestTransport(_BaseSecurityPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_http_options()
-            )
+            http_options = _BaseSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_preconfigured_expression_sets(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_preconfigured_expression_sets(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseSecurityPoliciesRestTransport._BaseListPreconfiguredExpressionSets._get_transcoded_request(
                 http_options, request
@@ -2171,11 +2166,10 @@ class SecurityPoliciesRestTransport(_BaseSecurityPoliciesRestTransport):
 
             resp = self._interceptor.post_list_preconfigured_expression_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_preconfigured_expression_sets_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_preconfigured_expression_sets_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2978,9 +2972,7 @@ class SecurityPoliciesRestTransport(_BaseSecurityPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSecurityPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3143,7 +3135,9 @@ class SecurityPoliciesRestTransport(_BaseSecurityPoliciesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListPreconfiguredExpressionSets(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListPreconfiguredExpressionSets(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def patch(

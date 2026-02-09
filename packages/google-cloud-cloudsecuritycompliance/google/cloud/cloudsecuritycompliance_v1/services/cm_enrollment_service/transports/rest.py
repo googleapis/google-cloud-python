@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,7 +27,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -495,9 +495,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseCalculateEffectiveCmEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_calculate_effective_cm_enrollment(
                 request, metadata
@@ -563,11 +561,10 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             resp = self._interceptor.post_calculate_effective_cm_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_calculate_effective_cm_enrollment_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_calculate_effective_cm_enrollment_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -652,9 +649,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseUpdateCmEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cm_enrollment(
                 request, metadata
@@ -762,7 +757,9 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CalculateEffectiveCmEnrollment(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CalculateEffectiveCmEnrollment(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_cm_enrollment(
@@ -833,9 +830,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -974,9 +969,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -1113,9 +1106,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1233,9 +1224,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -1351,9 +1340,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1492,9 +1479,7 @@ class CmEnrollmentServiceRestTransport(_BaseCmEnrollmentServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCmEnrollmentServiceRestTransport._BaseListOperations._get_transcoded_request(

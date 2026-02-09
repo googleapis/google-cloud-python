@@ -64,6 +64,7 @@ class UptimeCheckRegion(proto.Enum):
             Allows checks to run from locations within
             the eastern United States of America
     """
+
     REGION_UNSPECIFIED = 0
     USA = 1
     EUROPE = 2
@@ -90,6 +91,7 @@ class GroupResourceType(proto.Enum):
         AWS_ELB_LOAD_BALANCER (2):
             A group of Amazon ELB load balancers.
     """
+
     RESOURCE_TYPE_UNSPECIFIED = 0
     INSTANCE = 1
     AWS_ELB_LOAD_BALANCER = 2
@@ -158,6 +160,7 @@ class InternalChecker(proto.Message):
                 neither visible nor usable, so there is no "deleting" or
                 "down" state.
         """
+
         UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -365,6 +368,7 @@ class UptimeCheckConfig(proto.Message):
                 When using ``VPC_CHECKERS``, the monitored resource type
                 must be ``servicedirectory_service``.
         """
+
         CHECKER_TYPE_UNSPECIFIED = 0
         STATIC_IP_CHECKERS = 1
         VPC_CHECKERS = 3
@@ -526,6 +530,7 @@ class UptimeCheckConfig(proto.Message):
                 POST (2):
                     POST request.
             """
+
             METHOD_UNSPECIFIED = 0
             GET = 1
             POST = 2
@@ -546,6 +551,7 @@ class UptimeCheckConfig(proto.Message):
                     setting the ``Content-Type`` to the contents of
                     ``custom_content_type`` in the HTTP request.
             """
+
             TYPE_UNSPECIFIED = 0
             URL_ENCODED = 1
             USER_PROVIDED = 2
@@ -620,6 +626,7 @@ class UptimeCheckConfig(proto.Message):
                     STATUS_CLASS_ANY (1000):
                         The class of all status codes.
                 """
+
                 STATUS_CLASS_UNSPECIFIED = 0
                 STATUS_CLASS_1XX = 100
                 STATUS_CLASS_2XX = 200
@@ -663,6 +670,7 @@ class UptimeCheckConfig(proto.Message):
                     OIDC_TOKEN (1):
                         OIDC Authentication
                 """
+
                 SERVICE_AGENT_AUTHENTICATION_TYPE_UNSPECIFIED = 0
                 OIDC_TOKEN = 1
 
@@ -824,6 +832,7 @@ class UptimeCheckConfig(proto.Message):
                     does *NOT* match as specified. JSONPath is only supported
                     for HTTP/HTTPS checks.
             """
+
             CONTENT_MATCHER_OPTION_UNSPECIFIED = 0
             CONTAINS_STRING = 1
             NOT_CONTAINS_STRING = 2
@@ -862,6 +871,7 @@ class UptimeCheckConfig(proto.Message):
                         the content at the ``json_path`` within the output matches
                         the regular expression specified in the ``content`` string.
                 """
+
                 JSON_PATH_MATCHER_OPTION_UNSPECIFIED = 0
                 EXACT_MATCH = 1
                 REGEX_MATCH = 2

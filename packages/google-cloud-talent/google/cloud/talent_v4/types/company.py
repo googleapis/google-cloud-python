@@ -166,11 +166,11 @@ class Company(proto.Message):
         proto.STRING,
         number=10,
     )
-    keyword_searchable_job_custom_attributes: MutableSequence[
-        str
-    ] = proto.RepeatedField(
-        proto.STRING,
-        number=11,
+    keyword_searchable_job_custom_attributes: MutableSequence[str] = (
+        proto.RepeatedField(
+            proto.STRING,
+            number=11,
+        )
     )
     derived_info: DerivedInfo = proto.Field(
         proto.MESSAGE,

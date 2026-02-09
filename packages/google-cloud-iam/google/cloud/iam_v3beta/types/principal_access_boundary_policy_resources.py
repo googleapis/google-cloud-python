@@ -171,6 +171,7 @@ class PrincipalAccessBoundaryPolicyRule(proto.Message):
             ALLOW (1):
                 Allows access to the resources in this rule.
         """
+
         EFFECT_UNSPECIFIED = 0
         ALLOW = 1
 

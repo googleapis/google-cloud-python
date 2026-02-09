@@ -59,6 +59,7 @@ class ContactStatusEnum(proto.Message):
                 their orders, but their access was later
                 revoked.
         """
+
         CONTACT_STATUS_UNSPECIFIED = 0
         INVITE_CANCELED = 1
         INVITE_EXPIRED = 2

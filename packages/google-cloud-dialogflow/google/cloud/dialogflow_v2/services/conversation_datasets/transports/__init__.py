@@ -22,9 +22,7 @@ from .grpc_asyncio import ConversationDatasetsGrpcAsyncIOTransport
 from .rest import ConversationDatasetsRestInterceptor, ConversationDatasetsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ConversationDatasetsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ConversationDatasetsTransport]]
 _transport_registry["grpc"] = ConversationDatasetsGrpcTransport
 _transport_registry["grpc_asyncio"] = ConversationDatasetsGrpcAsyncIOTransport
 _transport_registry["rest"] = ConversationDatasetsRestTransport

@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
 
@@ -714,12 +714,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_iam_policy_longrunning" not in self._stubs:
-            self._stubs[
-                "analyze_iam_policy_longrunning"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
-                request_serializer=asset_service.AnalyzeIamPolicyLongrunningRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["analyze_iam_policy_longrunning"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
+                    request_serializer=asset_service.AnalyzeIamPolicyLongrunningRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["analyze_iam_policy_longrunning"]
 
@@ -964,12 +964,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_get_effective_iam_policies" not in self._stubs:
-            self._stubs[
-                "batch_get_effective_iam_policies"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies",
-                request_serializer=asset_service.BatchGetEffectiveIamPoliciesRequest.serialize,
-                response_deserializer=asset_service.BatchGetEffectiveIamPoliciesResponse.deserialize,
+            self._stubs["batch_get_effective_iam_policies"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.asset.v1.AssetService/BatchGetEffectiveIamPolicies",
+                    request_serializer=asset_service.BatchGetEffectiveIamPoliciesRequest.serialize,
+                    response_deserializer=asset_service.BatchGetEffectiveIamPoliciesResponse.deserialize,
+                )
             )
         return self._stubs["batch_get_effective_iam_policies"]
 
@@ -1026,12 +1026,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_org_policy_governed_containers" not in self._stubs:
-            self._stubs[
-                "analyze_org_policy_governed_containers"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers",
-                request_serializer=asset_service.AnalyzeOrgPolicyGovernedContainersRequest.serialize,
-                response_deserializer=asset_service.AnalyzeOrgPolicyGovernedContainersResponse.deserialize,
+            self._stubs["analyze_org_policy_governed_containers"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedContainers",
+                    request_serializer=asset_service.AnalyzeOrgPolicyGovernedContainersRequest.serialize,
+                    response_deserializer=asset_service.AnalyzeOrgPolicyGovernedContainersResponse.deserialize,
+                )
             )
         return self._stubs["analyze_org_policy_governed_containers"]
 
@@ -1107,12 +1107,12 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "analyze_org_policy_governed_assets" not in self._stubs:
-            self._stubs[
-                "analyze_org_policy_governed_assets"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets",
-                request_serializer=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.serialize,
-                response_deserializer=asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.deserialize,
+            self._stubs["analyze_org_policy_governed_assets"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.asset.v1.AssetService/AnalyzeOrgPolicyGovernedAssets",
+                    request_serializer=asset_service.AnalyzeOrgPolicyGovernedAssetsRequest.serialize,
+                    response_deserializer=asset_service.AnalyzeOrgPolicyGovernedAssetsResponse.deserialize,
+                )
             )
         return self._stubs["analyze_org_policy_governed_assets"]
 

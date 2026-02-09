@@ -158,12 +158,12 @@ class ListDiscoveredApiOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_api_operations: MutableSequence[
-        common_fields.DiscoveredApiOperation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=common_fields.DiscoveredApiOperation,
+    discovered_api_operations: MutableSequence[common_fields.DiscoveredApiOperation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=common_fields.DiscoveredApiOperation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

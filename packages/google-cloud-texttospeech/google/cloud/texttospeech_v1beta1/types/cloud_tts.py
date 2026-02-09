@@ -72,6 +72,7 @@ class SsmlVoiceGender(proto.Enum):
             A gender-neutral voice. This voice is not yet
             supported.
     """
+
     SSML_VOICE_GENDER_UNSPECIFIED = 0
     MALE = 1
     FEMALE = 2
@@ -118,6 +119,7 @@ class AudioEncoding(proto.Enum):
         M4A (8):
             M4A audio.
     """
+
     AUDIO_ENCODING_UNSPECIFIED = 0
     LINEAR16 = 1
     MP3 = 2
@@ -273,6 +275,7 @@ class SynthesizeSpeechRequest(proto.Message):
                 Timepoint information of ``<mark>`` tags in SSML input will
                 be returned.
         """
+
         TIMEPOINT_TYPE_UNSPECIFIED = 0
         SSML_MARK = 1
 
@@ -368,6 +371,7 @@ class CustomPronunciationParams(proto.Message):
                 tones are represented by 5, for example 孩子 "hai2
                 zi5".
         """
+
         PHONETIC_ENCODING_UNSPECIFIED = 0
         PHONETIC_ENCODING_IPA = 1
         PHONETIC_ENCODING_X_SAMPA = 2
@@ -481,12 +485,12 @@ class MultiSpeakerVoiceConfig(proto.Message):
             voice configurations must be provided.
     """
 
-    speaker_voice_configs: MutableSequence[
-        "MultispeakerPrebuiltVoice"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="MultispeakerPrebuiltVoice",
+    speaker_voice_configs: MutableSequence["MultispeakerPrebuiltVoice"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="MultispeakerPrebuiltVoice",
+        )
     )
 
 
@@ -774,6 +778,7 @@ class CustomVoiceParams(proto.Message):
                 synthesized audio is downloaded, stored in
                 customer service system and played repeatedly.
         """
+
         REPORTED_USAGE_UNSPECIFIED = 0
         REALTIME = 1
         OFFLINE = 2

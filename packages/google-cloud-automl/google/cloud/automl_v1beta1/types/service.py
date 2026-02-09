@@ -20,11 +20,11 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.automl_v1beta1.types import model_evaluation as gca_model_evaluation
 from google.cloud.automl_v1beta1.types import column_spec as gca_column_spec
 from google.cloud.automl_v1beta1.types import dataset as gca_dataset
 from google.cloud.automl_v1beta1.types import image, io
 from google.cloud.automl_v1beta1.types import model as gca_model
+from google.cloud.automl_v1beta1.types import model_evaluation as gca_model_evaluation
 from google.cloud.automl_v1beta1.types import table_spec as gca_table_spec
 
 __protobuf__ = proto.module(
@@ -858,12 +858,12 @@ class ListModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    model_evaluation: MutableSequence[
-        gca_model_evaluation.ModelEvaluation
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gca_model_evaluation.ModelEvaluation,
+    model_evaluation: MutableSequence[gca_model_evaluation.ModelEvaluation] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gca_model_evaluation.ModelEvaluation,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

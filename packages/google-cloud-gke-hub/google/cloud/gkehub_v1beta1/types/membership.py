@@ -164,6 +164,7 @@ class Membership(proto.Message):
             MULTI_CLOUD (2):
                 Public cloud infrastructure.
         """
+
         INFRASTRUCTURE_TYPE_UNSPECIFIED = 0
         ON_PREM = 1
         MULTI_CLOUD = 2
@@ -536,6 +537,7 @@ class OnPremCluster(proto.Message):
             USER (4):
                 The ClusterType is user cluster.
         """
+
         CLUSTERTYPE_UNSPECIFIED = 0
         BOOTSTRAP = 1
         HYBRID = 2
@@ -829,6 +831,7 @@ class MembershipState(proto.Message):
                 The Membership is being updated by the Hub
                 Service.
         """
+
         CODE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2

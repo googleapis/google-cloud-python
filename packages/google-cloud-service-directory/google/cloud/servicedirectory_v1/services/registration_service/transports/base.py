@@ -17,25 +17,27 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
+import google.auth  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
 from google.cloud.servicedirectory_v1 import gapic_version as package_version
-from google.cloud.servicedirectory_v1.types import endpoint
+from google.cloud.servicedirectory_v1.types import (
+    endpoint,
+    namespace,
+    registration_service,
+    service,
+)
 from google.cloud.servicedirectory_v1.types import endpoint as gcs_endpoint
-from google.cloud.servicedirectory_v1.types import namespace
 from google.cloud.servicedirectory_v1.types import namespace as gcs_namespace
-from google.cloud.servicedirectory_v1.types import registration_service
-from google.cloud.servicedirectory_v1.types import service
 from google.cloud.servicedirectory_v1.types import service as gcs_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

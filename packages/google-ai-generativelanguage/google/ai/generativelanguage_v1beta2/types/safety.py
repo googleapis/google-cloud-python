@@ -59,6 +59,7 @@ class HarmCategory(proto.Enum):
             Dangerous content that promotes, facilitates,
             or encourages harmful acts.
     """
+
     HARM_CATEGORY_UNSPECIFIED = 0
     HARM_CATEGORY_DEROGATORY = 1
     HARM_CATEGORY_TOXICITY = 2
@@ -100,6 +101,7 @@ class ContentFilter(proto.Message):
                 Content was blocked, but the reason is
                 uncategorized.
         """
+
         BLOCKED_REASON_UNSPECIFIED = 0
         SAFETY = 1
         OTHER = 2
@@ -182,6 +184,7 @@ class SafetyRating(proto.Message):
             HIGH (4):
                 Content has a high chance of being unsafe.
         """
+
         HARM_PROBABILITY_UNSPECIFIED = 0
         NEGLIGIBLE = 1
         LOW = 2
@@ -229,6 +232,7 @@ class SafetySetting(proto.Message):
                 Content with NEGLIGIBLE, LOW, and MEDIUM will
                 be allowed.
         """
+
         HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
         BLOCK_LOW_AND_ABOVE = 1
         BLOCK_MEDIUM_AND_ABOVE = 2

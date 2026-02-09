@@ -155,6 +155,7 @@ class PluggableDatabaseProperties(proto.Message):
             DISABLED (13):
                 The pluggable database is disabled.
         """
+
         PLUGGABLE_DATABASE_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -189,6 +190,7 @@ class PluggableDatabaseProperties(proto.Message):
             FAILED_DISABLING (6):
                 Operations Insights failed to disable.
         """
+
         OPERATIONS_INSIGHTS_STATE_UNSPECIFIED = 0
         ENABLING = 1
         ENABLED = 2
@@ -256,12 +258,12 @@ class PluggableDatabaseProperties(proto.Message):
         proto.STRING,
         number=10,
     )
-    pdb_node_level_details: MutableSequence[
-        "PluggableDatabaseNodeLevelDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=11,
-        message="PluggableDatabaseNodeLevelDetails",
+    pdb_node_level_details: MutableSequence["PluggableDatabaseNodeLevelDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=11,
+            message="PluggableDatabaseNodeLevelDetails",
+        )
     )
     database_management_config: "DatabaseManagementConfig" = proto.Field(
         proto.MESSAGE,
@@ -337,6 +339,7 @@ class PluggableDatabaseNodeLevelDetails(proto.Message):
             MIGRATE (4):
                 The pluggable database is migrated.
         """
+
         PLUGGABLE_DATABASE_OPEN_MODE_UNSPECIFIED = 0
         READ_ONLY = 1
         READ_WRITE = 2
@@ -395,6 +398,7 @@ class DatabaseManagementConfig(proto.Message):
                 The Database Management service failed to
                 update.
         """
+
         MANAGEMENT_STATE_UNSPECIFIED = 0
         ENABLING = 1
         ENABLED = 2
@@ -416,6 +420,7 @@ class DatabaseManagementConfig(proto.Message):
             ADVANCED (2):
                 Advanced Database Management.
         """
+
         MANAGEMENT_TYPE_UNSPECIFIED = 0
         BASIC = 1
         ADVANCED = 2

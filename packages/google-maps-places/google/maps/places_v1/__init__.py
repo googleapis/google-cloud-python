@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.places import PlacesAsyncClient, PlacesClient
 from .types.address_descriptor import AddressDescriptor
 from .types.attribution import AuthorAttribution

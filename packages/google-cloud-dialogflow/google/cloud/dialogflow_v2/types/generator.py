@@ -73,6 +73,7 @@ class TriggerEvent(proto.Enum):
         AGENT_MESSAGE (4):
             Triggers after each agent message only.
     """
+
     TRIGGER_EVENT_UNSPECIFIED = 0
     END_OF_UTTERANCE = 1
     MANUAL_CALL = 2
@@ -263,6 +264,7 @@ class MessageEntry(proto.Message):
                 Participant is an end user that has called or
                 chatted with Dialogflow services.
         """
+
         ROLE_UNSPECIFIED = 0
         HUMAN_AGENT = 1
         AUTOMATED_AGENT = 2
@@ -312,12 +314,12 @@ class SummarizationSectionList(proto.Message):
             Optional. Summarization sections.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SummarizationSection",
+    summarization_sections: MutableSequence["SummarizationSection"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SummarizationSection",
+        )
     )
 
 
@@ -532,6 +534,7 @@ class SummarizationSection(proto.Message):
                 type is only available if type ACTION is not
                 selected.
         """
+
         TYPE_UNSPECIFIED = 0
         SITUATION = 1
         ACTION = 2
@@ -578,12 +581,12 @@ class SummarizationContext(proto.Message):
             empty. Supported 2.0 and later versions.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SummarizationSection",
+    summarization_sections: MutableSequence["SummarizationSection"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SummarizationSection",
+        )
     )
     few_shot_examples: MutableSequence["FewShotExample"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -934,12 +937,12 @@ class AgentCoachingSuggestion(proto.Message):
         number=1,
         message=agent_coaching_instruction.AgentCoachingInstruction,
     )
-    agent_action_suggestions: MutableSequence[
-        AgentActionSuggestion
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=AgentActionSuggestion,
+    agent_action_suggestions: MutableSequence[AgentActionSuggestion] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=AgentActionSuggestion,
+        )
     )
     sample_responses: MutableSequence[SampleResponse] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1078,6 +1081,7 @@ class RaiSettings(proto.Message):
                 HATE_SPEECH (4):
                     Hate speech content.
             """
+
             RAI_CATEGORY_UNSPECIFIED = 0
             DANGEROUS_CONTENT = 1
             SEXUALLY_EXPLICIT = 2
@@ -1104,6 +1108,7 @@ class RaiSettings(proto.Message):
                 BLOCK_NONE (4):
                     No filtering for this category.
             """
+
             SENSITIVITY_LEVEL_UNSPECIFIED = 0
             BLOCK_MOST = 1
             BLOCK_SOME = 2

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -2433,9 +2433,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCancelOrder._get_transcoded_request(
@@ -2585,9 +2583,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_comment(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateComment._get_transcoded_request(
@@ -2737,9 +2733,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_create_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateHardware._get_transcoded_request(
@@ -2889,9 +2883,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateHardwareGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_hardware_group(
                 request, metadata
@@ -3045,9 +3037,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_create_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateOrder._get_transcoded_request(
@@ -3197,9 +3187,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_create_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateSite._get_transcoded_request(
@@ -3349,9 +3337,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_create_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseCreateZone._get_transcoded_request(
@@ -3500,9 +3486,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardware._get_transcoded_request(
@@ -3646,9 +3630,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteHardwareGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_hardware_group(
                 request, metadata
@@ -3796,9 +3778,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteOrder._get_transcoded_request(
@@ -3942,9 +3922,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteSite._get_transcoded_request(
@@ -4088,9 +4066,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseDeleteZone._get_transcoded_request(
@@ -4233,9 +4209,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetChangeLogEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_get_change_log_entry(
                 request, metadata
@@ -4382,9 +4356,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A comment on an order.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_comment(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetComment._get_transcoded_request(
@@ -4529,9 +4501,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_get_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetHardware._get_transcoded_request(
@@ -4677,9 +4647,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetHardwareGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_hardware_group(
                 request, metadata
@@ -4826,9 +4794,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     An order for GDC hardware.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOrder._get_transcoded_request(
@@ -5410,9 +5376,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of change log entries.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListChangeLogEntries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_change_log_entries(
                 request, metadata
@@ -5561,9 +5525,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A request to list comments.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListComments._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_comments(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListComments._get_transcoded_request(
@@ -5706,9 +5668,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of hardware.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_list_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListHardware._get_transcoded_request(
@@ -5851,9 +5811,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of hardware groups.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListHardwareGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_hardware_groups(
                 request, metadata
@@ -6002,9 +5960,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of orders.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOrders._get_transcoded_request(
@@ -6147,9 +6103,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of sites.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListSites._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sites(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSites._get_transcoded_request(
@@ -6292,9 +6246,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of SKUs.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_http_options()
 
             request, metadata = self._interceptor.pre_list_skus(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListSkus._get_transcoded_request(
@@ -6437,9 +6389,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A list of zones.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListZones._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_http_options()
 
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListZones._get_transcoded_request(
@@ -6584,9 +6534,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     A comment on an order.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseRecordActionOnComment._get_http_options()
 
             request, metadata = self._interceptor.pre_record_action_on_comment(
                 request, metadata
@@ -6743,9 +6691,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseRequestOrderDateChange._get_http_options()
 
             request, metadata = self._interceptor.pre_request_order_date_change(
                 request, metadata
@@ -6898,9 +6844,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseSignalZoneState._get_http_options()
 
             request, metadata = self._interceptor.pre_signal_zone_state(
                 request, metadata
@@ -7054,9 +6998,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_submit_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseSubmitOrder._get_transcoded_request(
@@ -7206,9 +7148,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_http_options()
 
             request, metadata = self._interceptor.pre_update_hardware(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardware._get_transcoded_request(
@@ -7358,9 +7298,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateHardwareGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_hardware_group(
                 request, metadata
@@ -7514,9 +7452,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_update_order(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateOrder._get_transcoded_request(
@@ -7666,9 +7602,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_update_site(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateSite._get_transcoded_request(
@@ -7818,9 +7752,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
 
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_http_options()
 
             request, metadata = self._interceptor.pre_update_zone(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseUpdateZone._get_transcoded_request(
@@ -8143,7 +8075,9 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
     ) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RequestOrderDateChange(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RequestOrderDateChange(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def signal_zone_state(
@@ -8259,9 +8193,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetLocation._get_transcoded_request(
@@ -8400,9 +8332,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListLocations._get_transcoded_request(
@@ -8539,9 +8469,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -8661,9 +8589,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -8781,9 +8707,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseGetOperation._get_transcoded_request(
@@ -8922,9 +8846,7 @@ class GDCHardwareManagementRestTransport(_BaseGDCHardwareManagementRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGDCHardwareManagementRestTransport._BaseListOperations._get_transcoded_request(

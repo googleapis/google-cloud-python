@@ -13,10 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .actor import Actor
-from .attachment import Attachment
-from .attachment_service import ListAttachmentsRequest, ListAttachmentsResponse
-from .case import Case, CaseClassification
+from .actor import (
+    Actor,
+)
+from .attachment import (
+    Attachment,
+)
+from .attachment_service import (
+    ListAttachmentsRequest,
+    ListAttachmentsResponse,
+)
+from .case import (
+    Case,
+    CaseClassification,
+)
 from .case_service import (
     CloseCaseRequest,
     CreateCaseRequest,
@@ -30,13 +40,17 @@ from .case_service import (
     SearchCasesResponse,
     UpdateCaseRequest,
 )
-from .comment import Comment
+from .comment import (
+    Comment,
+)
 from .comment_service import (
     CreateCommentRequest,
     ListCommentsRequest,
     ListCommentsResponse,
 )
-from .escalation import Escalation
+from .escalation import (
+    Escalation,
+)
 
 __all__ = (
     "Actor",

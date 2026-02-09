@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .docs_addon_manifest import DocsAddOnManifest, DocsExtensionPoint
+from .docs_addon_manifest import (
+    DocsAddOnManifest,
+    DocsExtensionPoint,
+)
 
 __all__ = (
     "DocsAddOnManifest",

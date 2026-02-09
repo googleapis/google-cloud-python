@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1191,9 +1193,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreatePartnerSSERealm._get_http_options()
 
             request, metadata = self._interceptor.pre_create_partner_sse_realm(
                 request, metadata
@@ -1347,9 +1347,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_create_sac_attachment(
                 request, metadata
@@ -1500,9 +1498,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCreateSACRealm._get_http_options()
 
             request, metadata = self._interceptor.pre_create_sac_realm(
                 request, metadata
@@ -1654,9 +1650,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeletePartnerSSERealm._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_partner_sse_realm(
                 request, metadata
@@ -1804,9 +1798,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_sac_attachment(
                 request, metadata
@@ -1951,9 +1943,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteSACRealm._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_sac_realm(
                 request, metadata
@@ -2098,9 +2088,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetPartnerSSERealm._get_http_options()
 
             request, metadata = self._interceptor.pre_get_partner_sse_realm(
                 request, metadata
@@ -2249,9 +2237,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseGetSACAttachment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_sac_attachment(
                 request, metadata
@@ -2548,9 +2534,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListPartnerSSERealms._get_http_options()
 
             request, metadata = self._interceptor.pre_list_partner_sse_realms(
                 request, metadata
@@ -2697,9 +2681,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     Response for ``ListSACAttachments`` method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListSACAttachments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sac_attachments(
                 request, metadata
@@ -3660,9 +3642,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -3805,9 +3785,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3924,9 +3902,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -4181,9 +4157,7 @@ class SSERealmServiceRestTransport(_BaseSSERealmServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSSERealmServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSSERealmServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSSERealmServiceRestTransport._BaseListOperations._get_transcoded_request(

@@ -63,6 +63,7 @@ class FileInput(proto.Message):
                 The file is fetched from Google Sheets specified in the
                 [fetch_uri][google.shopping.merchant.datasources.v1beta.FileInput.FetchSettings.fetch_uri].
         """
+
         FILE_INPUT_TYPE_UNSPECIFIED = 0
         UPLOAD = 1
         FETCH = 2
@@ -137,6 +138,7 @@ class FileInput(proto.Message):
                 FREQUENCY_MONTHLY (3):
                     The fetch happens every month.
             """
+
             FREQUENCY_UNSPECIFIED = 0
             FREQUENCY_DAILY = 1
             FREQUENCY_WEEKLY = 2

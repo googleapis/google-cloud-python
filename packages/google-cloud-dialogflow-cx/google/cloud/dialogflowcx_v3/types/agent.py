@@ -24,10 +24,10 @@ import proto  # type: ignore
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
 )
+from google.cloud.dialogflowcx_v3.types import audio_config, flow
 from google.cloud.dialogflowcx_v3.types import (
     generative_settings as gcdc_generative_settings,
 )
-from google.cloud.dialogflowcx_v3.types import audio_config, flow
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -648,6 +648,7 @@ class ExportAgentRequest(proto.Message):
                 Agent content will be exported in JSON
                 Package format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON_PACKAGE = 4
@@ -804,6 +805,7 @@ class RestoreAgentRequest(proto.Message):
                 Fallback to default settings if some settings
                 are not supported in the target agent.
         """
+
         RESTORE_OPTION_UNSPECIFIED = 0
         KEEP = 1
         FALLBACK = 2
@@ -911,12 +913,12 @@ class AgentValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    flow_validation_results: MutableSequence[
-        flow.FlowValidationResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=flow.FlowValidationResult,
+    flow_validation_results: MutableSequence[flow.FlowValidationResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=flow.FlowValidationResult,
+        )
     )
 
 

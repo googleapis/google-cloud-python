@@ -198,6 +198,7 @@ class SecurityProfile(proto.Message):
             URL_FILTERING (5):
                 Profile type for URL filtering.
         """
+
         PROFILE_TYPE_UNSPECIFIED = 0
         THREAT_PREVENTION = 1
         CUSTOM_MIRRORING = 2

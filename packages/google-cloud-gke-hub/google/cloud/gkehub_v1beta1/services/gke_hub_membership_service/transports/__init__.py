@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GkeHubMembershipServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GkeHubMembershipServiceTransport]]
 _transport_registry["grpc"] = GkeHubMembershipServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = GkeHubMembershipServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = GkeHubMembershipServiceRestTransport

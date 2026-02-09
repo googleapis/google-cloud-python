@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.lookup_service import LookupServiceAsyncClient, LookupServiceClient
 from .services.registration_service import (
     RegistrationServiceAsyncClient,

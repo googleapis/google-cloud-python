@@ -71,6 +71,7 @@ class ProjectSettings(proto.Message):
                 Redirection is partially enabled and missing
                 images are copied from GCR
         """
+
         REDIRECTION_STATE_UNSPECIFIED = 0
         REDIRECTION_FROM_GCR_IO_DISABLED = 1
         REDIRECTION_FROM_GCR_IO_ENABLED = 2

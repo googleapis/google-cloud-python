@@ -55,6 +55,7 @@ class IamBinding(proto.Message):
             REMOVE (2):
                 Removal of a Binding.
         """
+
         ACTION_UNSPECIFIED = 0
         ADD = 1
         REMOVE = 2

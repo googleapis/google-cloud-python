@@ -72,6 +72,7 @@ class NotificationConfig(proto.Message):
             FINDING (1):
                 Events for findings.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         FINDING = 1
 

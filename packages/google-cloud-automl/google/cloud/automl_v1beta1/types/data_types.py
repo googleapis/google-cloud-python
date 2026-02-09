@@ -65,6 +65,7 @@ class TypeCode(proto.Enum):
             ``string`` (bytes should be base64-encoded, as described in
             RFC 4648, section 4).
     """
+
     TYPE_CODE_UNSPECIFIED = 0
     FLOAT64 = 3
     TIMESTAMP = 4

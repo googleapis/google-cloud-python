@@ -102,6 +102,7 @@ class Runtime(proto.Message):
                 The runtime is being created and set up. It
                 is not ready for use.
         """
+
         STATE_UNSPECIFIED = 0
         STARTING = 1
         PROVISIONING = 2
@@ -133,6 +134,7 @@ class Runtime(proto.Message):
                 The runtime health monitoring agent is not
                 running. Applies to ACTIVE state.
         """
+
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2
@@ -239,6 +241,7 @@ class RuntimeAcceleratorConfig(proto.Message):
                 Accelerator type is NVIDIA Tesla P4 Virtual
                 Workstations.
         """
+
         ACCELERATOR_TYPE_UNSPECIFIED = 0
         NVIDIA_TESLA_K80 = 1
         NVIDIA_TESLA_P100 = 2
@@ -496,6 +499,7 @@ class LocalDiskInitializeParams(proto.Message):
             PD_EXTREME (4):
                 Extreme persistent disk type.
         """
+
         DISK_TYPE_UNSPECIFIED = 0
         PD_STANDARD = 1
         PD_SSD = 2
@@ -557,6 +561,7 @@ class RuntimeAccessConfig(proto.Message):
                 Users accessing the Runtime need ActAs (Service
                 Account User) permission.
         """
+
         RUNTIME_ACCESS_TYPE_UNSPECIFIED = 0
         SINGLE_USER = 1
         SERVICE_ACCOUNT = 2
@@ -653,6 +658,7 @@ class RuntimeSoftwareConfig(proto.Message):
                 Downloads and runs the provided post startup
                 script at every start.
         """
+
         POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED = 0
         RUN_EVERY_START = 1
         DOWNLOAD_AND_RUN_EVERY_START = 2
@@ -927,6 +933,7 @@ class VirtualMachineConfig(proto.Message):
             GVNIC (2):
                 GVNIC
         """
+
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2

@@ -116,6 +116,7 @@ class Schema(proto.Message):
             PROTOBUF (3):
                 Protobuf schema type.
         """
+
         SCHEMA_TYPE_UNSPECIFIED = 0
         AVRO = 1
         JSON = 2
@@ -298,6 +299,7 @@ class SchemaConfig(proto.Message):
                 Backwards and forwards compatible with all
                 previous versions.
         """
+
         NONE = 0
         BACKWARD = 1
         BACKWARD_TRANSITIVE = 2
@@ -360,6 +362,7 @@ class SchemaMode(proto.Message):
             IMPORT (3):
                 IMPORT mode.
         """
+
         NONE = 0
         READONLY = 1
         READWRITE = 2

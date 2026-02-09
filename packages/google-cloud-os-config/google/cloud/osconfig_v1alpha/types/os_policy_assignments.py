@@ -135,6 +135,7 @@ class OSPolicyAssignment(proto.Message):
             SUCCEEDED (4):
                 The rollout has completed successfully.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2
@@ -232,26 +233,26 @@ class OSPolicyAssignment(proto.Message):
             proto.STRING,
             number=2,
         )
-        inclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="OSPolicyAssignment.LabelSet",
+        inclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="OSPolicyAssignment.LabelSet",
+            )
         )
-        exclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="OSPolicyAssignment.LabelSet",
+        exclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="OSPolicyAssignment.LabelSet",
+            )
         )
-        inventories: MutableSequence[
-            "OSPolicyAssignment.InstanceFilter.Inventory"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="OSPolicyAssignment.InstanceFilter.Inventory",
+        inventories: MutableSequence["OSPolicyAssignment.InstanceFilter.Inventory"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="OSPolicyAssignment.InstanceFilter.Inventory",
+            )
         )
 
     class Rollout(proto.Message):
@@ -373,6 +374,7 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
             DELETE (3):
                 Delete OS policy assignment API method
         """
+
         API_METHOD_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -393,6 +395,7 @@ class OSPolicyAssignmentOperationMetadata(proto.Message):
             SUCCEEDED (4):
                 The rollout has completed successfully.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         CANCELLING = 2

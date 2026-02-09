@@ -295,6 +295,7 @@ class Aggregation(proto.Message):
                 that the values for the metric will always be positive. The
                 output is a ``GAUGE`` metric with ``value_type`` ``DOUBLE``.
         """
+
         ALIGN_NONE = 0
         ALIGN_DELTA = 1
         ALIGN_RATE = 2
@@ -410,6 +411,7 @@ class Aggregation(proto.Message):
                 numeric and distribution type. The value of the output is
                 ``DOUBLE``.
         """
+
         REDUCE_NONE = 0
         REDUCE_MEAN = 1
         REDUCE_MIN = 2
@@ -492,6 +494,7 @@ class PickTimeSeriesFilter(proto.Message):
             METHOD_LATEST (5):
                 Select the most recent value.
         """
+
         METHOD_UNSPECIFIED = 0
         METHOD_MEAN = 1
         METHOD_MAX = 2
@@ -511,6 +514,7 @@ class PickTimeSeriesFilter(proto.Message):
             BOTTOM (2):
                 Pass the lowest ``num_time_series`` ranking inputs.
         """
+
         DIRECTION_UNSPECIFIED = 0
         TOP = 1
         BOTTOM = 2
@@ -563,6 +567,7 @@ class StatisticalTimeSeriesFilter(proto.Message):
             METHOD_CLUSTER_OUTLIER (1):
                 Compute the outlier score of each stream.
         """
+
         METHOD_UNSPECIFIED = 0
         METHOD_CLUSTER_OUTLIER = 1
 

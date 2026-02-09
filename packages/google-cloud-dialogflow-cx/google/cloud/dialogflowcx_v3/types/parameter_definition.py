@@ -47,6 +47,7 @@ class DataType(proto.Enum):
         ARRAY (6):
             Represents a repeated value.
     """
+
     DATA_TYPE_UNSPECIFIED = 0
     STRING = 1
     NUMBER = 2
@@ -92,6 +93,7 @@ class ParameterDefinition(proto.Message):
             LIST (6):
                 Represents a repeated value.
         """
+
         PARAMETER_TYPE_UNSPECIFIED = 0
         STRING = 1
         NUMBER = 2

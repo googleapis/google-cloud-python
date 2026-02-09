@@ -16,9 +16,11 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,14 +28,11 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.retail_v2alpha.types import serving_config, serving_config_service
 from google.cloud.retail_v2alpha.types import serving_config as gcr_serving_config
-from google.cloud.retail_v2alpha.types import serving_config
-from google.cloud.retail_v2alpha.types import serving_config_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseServingConfigServiceRestTransport
@@ -653,9 +652,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseAddControl._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseAddControl._get_http_options()
 
             request, metadata = self._interceptor.pre_add_control(request, metadata)
             transcoded_request = _BaseServingConfigServiceRestTransport._BaseAddControl._get_transcoded_request(
@@ -811,9 +808,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseCreateServingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_serving_config(
                 request, metadata
@@ -964,9 +959,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseDeleteServingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_serving_config(
                 request, metadata
@@ -1083,9 +1076,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseGetServingConfig._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseGetServingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_serving_config(
                 request, metadata
@@ -1235,9 +1226,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseListServingConfigs._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseListServingConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_serving_configs(
                 request, metadata
@@ -1393,9 +1382,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseRemoveControl._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseRemoveControl._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_control(request, metadata)
             transcoded_request = _BaseServingConfigServiceRestTransport._BaseRemoveControl._get_transcoded_request(
@@ -1551,9 +1538,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseUpdateServingConfig._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseUpdateServingConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_serving_config(
                 request, metadata
@@ -1781,9 +1766,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseServingConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1922,9 +1905,7 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseServingConfigServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseServingConfigServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseServingConfigServiceRestTransport._BaseListOperations._get_transcoded_request(

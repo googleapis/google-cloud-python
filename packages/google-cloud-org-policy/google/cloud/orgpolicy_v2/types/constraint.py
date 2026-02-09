@@ -121,6 +121,7 @@ class Constraint(proto.Message):
                 constraints. Indicate that enforcement is on for
                 boolean constraints.
         """
+
         CONSTRAINT_DEFAULT_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -213,6 +214,7 @@ class Constraint(proto.Message):
                     Constraint applied when enforcing forced
                     tagging.
             """
+
             METHOD_TYPE_UNSPECIFIED = 0
             CREATE = 1
             UPDATE = 2
@@ -233,6 +235,7 @@ class Constraint(proto.Message):
                 DENY (2):
                     Deny action type.
             """
+
             ACTION_TYPE_UNSPECIFIED = 0
             ALLOW = 1
             DENY = 2
@@ -275,6 +278,7 @@ class Constraint(proto.Message):
                     BOOLEAN (3):
                         Boolean parameter type.
                 """
+
                 TYPE_UNSPECIFIED = 0
                 LIST = 1
                 STRING = 2
@@ -500,6 +504,7 @@ class CustomConstraint(proto.Message):
                 Constraint applied when enforcing forced
                 tagging.
         """
+
         METHOD_TYPE_UNSPECIFIED = 0
         CREATE = 1
         UPDATE = 2
@@ -520,6 +525,7 @@ class CustomConstraint(proto.Message):
             DENY (2):
                 Deny action type.
         """
+
         ACTION_TYPE_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2

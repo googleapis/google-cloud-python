@@ -128,6 +128,7 @@ class AuthzPolicy(proto.Message):
                 Signifies that this is used for Cloud Service
                 Mesh. Meant for use by CSM GKE controller only.
         """
+
         LOAD_BALANCING_SCHEME_UNSPECIFIED = 0
         INTERNAL_MANAGED = 1
         EXTERNAL_MANAGED = 2
@@ -149,6 +150,7 @@ class AuthzPolicy(proto.Message):
                 Delegate the authorization decision to an
                 external authorization engine.
         """
+
         AUTHZ_ACTION_UNSPECIFIED = 0
         ALLOW = 1
         DENY = 2
@@ -420,6 +422,7 @@ class AuthzPolicy(proto.Message):
                         CLIENT_CERT_COMMON_NAME is not supported for
                         INTERNAL_SELF_MANAGED load balancing scheme.
                 """
+
                 PRINCIPAL_SELECTOR_UNSPECIFIED = 0
                 CLIENT_CERT_URI_SAN = 1
                 CLIENT_CERT_DNS_NAME_SAN = 2
@@ -493,41 +496,41 @@ class AuthzPolicy(proto.Message):
                         Authorization Policy.
                 """
 
-                principals: MutableSequence[
-                    "AuthzPolicy.AuthzRule.Principal"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=1,
-                    message="AuthzPolicy.AuthzRule.Principal",
+                principals: MutableSequence["AuthzPolicy.AuthzRule.Principal"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=1,
+                        message="AuthzPolicy.AuthzRule.Principal",
+                    )
                 )
-                ip_blocks: MutableSequence[
-                    "AuthzPolicy.AuthzRule.IpBlock"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=2,
-                    message="AuthzPolicy.AuthzRule.IpBlock",
+                ip_blocks: MutableSequence["AuthzPolicy.AuthzRule.IpBlock"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=2,
+                        message="AuthzPolicy.AuthzRule.IpBlock",
+                    )
                 )
-                resources: MutableSequence[
-                    "AuthzPolicy.AuthzRule.RequestResource"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=3,
-                    message="AuthzPolicy.AuthzRule.RequestResource",
+                resources: MutableSequence["AuthzPolicy.AuthzRule.RequestResource"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=3,
+                        message="AuthzPolicy.AuthzRule.RequestResource",
+                    )
                 )
 
-            sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="AuthzPolicy.AuthzRule.From.RequestSource",
+            sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AuthzPolicy.AuthzRule.From.RequestSource",
+                )
             )
-            not_sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=2,
-                message="AuthzPolicy.AuthzRule.From.RequestSource",
+            not_sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=2,
+                    message="AuthzPolicy.AuthzRule.From.RequestSource",
+                )
             )
 
         class To(proto.Message):
@@ -600,12 +603,12 @@ class AuthzPolicy(proto.Message):
                             to 10 headers per Authorization Policy.
                     """
 
-                    headers: MutableSequence[
-                        "AuthzPolicy.AuthzRule.HeaderMatch"
-                    ] = proto.RepeatedField(
-                        proto.MESSAGE,
-                        number=1,
-                        message="AuthzPolicy.AuthzRule.HeaderMatch",
+                    headers: MutableSequence["AuthzPolicy.AuthzRule.HeaderMatch"] = (
+                        proto.RepeatedField(
+                            proto.MESSAGE,
+                            number=1,
+                            message="AuthzPolicy.AuthzRule.HeaderMatch",
+                        )
                     )
 
                 header_set: "AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet" = (
@@ -615,31 +618,31 @@ class AuthzPolicy(proto.Message):
                         message="AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet",
                     )
                 )
-                hosts: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=2,
-                    message="AuthzPolicy.AuthzRule.StringMatch",
+                hosts: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=2,
+                        message="AuthzPolicy.AuthzRule.StringMatch",
+                    )
                 )
-                paths: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
-                    proto.MESSAGE,
-                    number=3,
-                    message="AuthzPolicy.AuthzRule.StringMatch",
+                paths: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = (
+                    proto.RepeatedField(
+                        proto.MESSAGE,
+                        number=3,
+                        message="AuthzPolicy.AuthzRule.StringMatch",
+                    )
                 )
                 methods: MutableSequence[str] = proto.RepeatedField(
                     proto.STRING,
                     number=4,
                 )
 
-            operations: MutableSequence[
-                "AuthzPolicy.AuthzRule.To.RequestOperation"
-            ] = proto.RepeatedField(
-                proto.MESSAGE,
-                number=1,
-                message="AuthzPolicy.AuthzRule.To.RequestOperation",
+            operations: MutableSequence["AuthzPolicy.AuthzRule.To.RequestOperation"] = (
+                proto.RepeatedField(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AuthzPolicy.AuthzRule.To.RequestOperation",
+                )
             )
             not_operations: MutableSequence[
                 "AuthzPolicy.AuthzRule.To.RequestOperation"

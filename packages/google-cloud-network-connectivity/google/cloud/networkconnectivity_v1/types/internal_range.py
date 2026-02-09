@@ -157,6 +157,7 @@ class InternalRange(proto.Message):
                 FOR_MIGRATION, the peering value has to be set to FOR_SELF
                 or default to FOR_SELF when unset.
         """
+
         USAGE_UNSPECIFIED = 0
         FOR_VPC = 1
         EXTERNAL_TO_VPC = 2
@@ -194,6 +195,7 @@ class InternalRange(proto.Message):
                 is visible to this VPC, but can re-use this range as long as
                 it is NOT_SHARED from the peer VPC, too.
         """
+
         PEERING_UNSPECIFIED = 0
         FOR_SELF = 1
         FOR_PEER = 2
@@ -212,6 +214,7 @@ class InternalRange(proto.Message):
                 Allow creation of internal ranges that
                 overlap with existing subnets.
         """
+
         OVERLAP_UNSPECIFIED = 0
         OVERLAP_ROUTE_RANGE = 1
         OVERLAP_EXISTING_SUBNET_RANGE = 2
@@ -249,6 +252,7 @@ class InternalRange(proto.Message):
                 range. This deterministic strategy minimizes
                 fragmentation of the address space.
         """
+
         ALLOCATION_STRATEGY_UNSPECIFIED = 0
         RANDOM = 1
         FIRST_AVAILABLE = 2

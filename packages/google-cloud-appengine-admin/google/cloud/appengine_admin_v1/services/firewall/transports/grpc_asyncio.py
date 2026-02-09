@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.appengine_admin_v1.types import appengine, firewall
 
@@ -398,12 +398,12 @@ class FirewallGrpcAsyncIOTransport(FirewallTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_ingress_rules" not in self._stubs:
-            self._stubs[
-                "batch_update_ingress_rules"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.Firewall/BatchUpdateIngressRules",
-                request_serializer=appengine.BatchUpdateIngressRulesRequest.serialize,
-                response_deserializer=appengine.BatchUpdateIngressRulesResponse.deserialize,
+            self._stubs["batch_update_ingress_rules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.Firewall/BatchUpdateIngressRules",
+                    request_serializer=appengine.BatchUpdateIngressRulesRequest.serialize,
+                    response_deserializer=appengine.BatchUpdateIngressRulesResponse.deserialize,
+                )
             )
         return self._stubs["batch_update_ingress_rules"]
 

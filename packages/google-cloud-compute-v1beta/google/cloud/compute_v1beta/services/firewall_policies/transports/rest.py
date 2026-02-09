@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1479,9 +1479,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
@@ -1660,9 +1658,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseAddPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_packet_mirroring_rule(
                 request, metadata
@@ -2501,9 +2497,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
             transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
@@ -2874,9 +2868,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGetPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_packet_mirroring_rule(
                 request, metadata
@@ -3511,9 +3503,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_associations(
                 request, metadata
@@ -4052,9 +4042,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BasePatchPacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_packet_mirroring_rule(
                 request, metadata
@@ -4416,9 +4404,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_association(
                 request, metadata
@@ -4594,9 +4580,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseRemovePacketMirroringRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_packet_mirroring_rule(
                 request, metadata
@@ -5146,9 +5130,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5259,7 +5241,9 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AddPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AddPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def add_rule(
@@ -5320,7 +5304,9 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_rule(
@@ -5379,7 +5365,9 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._PatchPacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._PatchPacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def patch_rule(
@@ -5405,7 +5393,9 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemovePacketMirroringRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemovePacketMirroringRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def remove_rule(

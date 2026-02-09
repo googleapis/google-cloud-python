@@ -278,6 +278,7 @@ class BigtableOptions(proto.Message):
             JSON (7):
                 JSON type.
         """
+
         TYPE_UNSPECIFIED = 0
         STRING = 1
         NUMBER = 2
@@ -298,6 +299,7 @@ class BigtableOptions(proto.Message):
             BINARY (2):
                 Binary encoding.
         """
+
         ENCODING_UNSPECIFIED = 0
         TEXT = 1
         BINARY = 2
@@ -346,12 +348,12 @@ class BigtableOptions(proto.Message):
             number=3,
             enum="BigtableOptions.Type",
         )
-        columns: MutableSequence[
-            "BigtableOptions.BigtableColumn"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="BigtableOptions.BigtableColumn",
+        columns: MutableSequence["BigtableOptions.BigtableColumn"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="BigtableOptions.BigtableColumn",
+            )
         )
 
     class BigtableColumn(proto.Message):
@@ -1056,6 +1058,7 @@ class ImportDocumentsRequest(proto.Message):
                 deleted if they are not present in the source
                 location.
         """
+
         RECONCILIATION_MODE_UNSPECIFIED = 0
         INCREMENTAL = 1
         FULL = 2
@@ -1237,12 +1240,12 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        entries: MutableSequence[
-            completion.SuggestionDenyListEntry
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=completion.SuggestionDenyListEntry,
+        entries: MutableSequence[completion.SuggestionDenyListEntry] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=completion.SuggestionDenyListEntry,
+            )
         )
 
     inline_source: InlineSource = proto.Field(
@@ -1365,12 +1368,12 @@ class ImportCompletionSuggestionsRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        suggestions: MutableSequence[
-            completion.CompletionSuggestion
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message=completion.CompletionSuggestion,
+        suggestions: MutableSequence[completion.CompletionSuggestion] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=completion.CompletionSuggestion,
+            )
         )
 
     inline_source: InlineSource = proto.Field(

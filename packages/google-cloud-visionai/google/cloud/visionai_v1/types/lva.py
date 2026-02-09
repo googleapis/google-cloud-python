@@ -48,6 +48,7 @@ class RunMode(proto.Enum):
             launched to handle bounded video files, with no
             packet drop. Completion status is tracked.
     """
+
     RUN_MODE_UNSPECIFIED = 0
     LIVE = 1
     SUBMISSION = 2
@@ -494,6 +495,7 @@ class RunStatus(proto.Message):
                 PENDING means the Process is created but yet
                 to be scheduled.
         """
+
         STATE_UNSPECIFIED = 0
         INITIALIZING = 1
         RUNNING = 2

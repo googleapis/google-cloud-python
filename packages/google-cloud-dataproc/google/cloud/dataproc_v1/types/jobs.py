@@ -95,6 +95,7 @@ class LoggingConfig(proto.Message):
             OFF (8):
                 Turn off log4j.
         """
+
         LEVEL_UNSPECIFIED = 0
         ALL = 1
         TRACE = 2
@@ -1021,6 +1022,7 @@ class JobStatus(proto.Message):
 
                 Applies to restartable jobs only.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         SETUP_DONE = 8
@@ -1058,6 +1060,7 @@ class JobStatus(proto.Message):
 
                 Applies to RUNNING state.
         """
+
         UNSPECIFIED = 0
         SUBMITTED = 1
         QUEUED = 2
@@ -1163,6 +1166,7 @@ class YarnApplication(proto.Message):
             KILLED (8):
                 Status is KILLED.
         """
+
         STATE_UNSPECIFIED = 0
         NEW = 1
         NEW_SAVING = 2
@@ -1644,6 +1648,7 @@ class ListJobsRequest(proto.Message):
                 Only match jobs in terminal states:
                 CANCELLED, DONE, or ERROR.
         """
+
         ALL = 0
         ACTIVE = 1
         NON_ACTIVE = 2

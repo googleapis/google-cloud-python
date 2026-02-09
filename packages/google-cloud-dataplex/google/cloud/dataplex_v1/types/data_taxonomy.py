@@ -928,12 +928,12 @@ class ListDataAttributeBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_attribute_bindings: MutableSequence[
-        "DataAttributeBinding"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="DataAttributeBinding",
+    data_attribute_bindings: MutableSequence["DataAttributeBinding"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="DataAttributeBinding",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

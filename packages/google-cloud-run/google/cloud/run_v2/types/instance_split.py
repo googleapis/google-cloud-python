@@ -41,6 +41,7 @@ class InstanceSplitAllocationType(proto.Enum):
         INSTANCE_SPLIT_ALLOCATION_TYPE_REVISION (2):
             Allocates instances to a Revision by name.
     """
+
     INSTANCE_SPLIT_ALLOCATION_TYPE_UNSPECIFIED = 0
     INSTANCE_SPLIT_ALLOCATION_TYPE_LATEST = 1
     INSTANCE_SPLIT_ALLOCATION_TYPE_REVISION = 2

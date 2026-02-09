@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1056,9 +1056,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_http_options()
-            )
+            http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditReport._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_audit_report(
                 request, metadata
@@ -1209,9 +1207,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
                         The audit scope report.
             """
 
-            http_options = (
-                _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_http_options()
-            )
+            http_options = _BaseAuditManagerRestTransport._BaseGenerateAuditScopeReport._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_audit_scope_report(
                 request, metadata
@@ -1514,9 +1510,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_http_options()
-            )
+            http_options = _BaseAuditManagerRestTransport._BaseGetResourceEnrollmentStatus._get_http_options()
 
             request, metadata = self._interceptor.pre_get_resource_enrollment_status(
                 request, metadata
@@ -1582,11 +1576,10 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             resp = self._interceptor.post_get_resource_enrollment_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_resource_enrollment_status_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_resource_enrollment_status_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1975,9 +1968,7 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_http_options()
-            )
+            http_options = _BaseAuditManagerRestTransport._BaseListResourceEnrollmentStatuses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_resource_enrollment_statuses(
                 request, metadata
@@ -2043,11 +2034,10 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
 
             resp = self._interceptor.post_list_resource_enrollment_statuses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_resource_enrollment_statuses_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_resource_enrollment_statuses_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2100,7 +2090,9 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateAuditScopeReport(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateAuditScopeReport(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_audit_report(
@@ -2119,7 +2111,9 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetResourceEnrollmentStatus(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetResourceEnrollmentStatus(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_audit_reports(
@@ -2150,7 +2144,9 @@ class AuditManagerRestTransport(_BaseAuditManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListResourceEnrollmentStatuses(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListResourceEnrollmentStatuses(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

@@ -76,6 +76,7 @@ class ToolCall(proto.Message):
                 The tool call requires confirmation from a
                 human.
         """
+
         STATE_UNSPECIFIED = 0
         TRIGGERED = 1
         NEEDS_CONFIRMATION = 2

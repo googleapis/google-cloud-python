@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.appengine_admin_v1.types import appengine, certificate
 
@@ -347,12 +347,12 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_authorized_certificates" not in self._stubs:
-            self._stubs[
-                "list_authorized_certificates"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.AuthorizedCertificates/ListAuthorizedCertificates",
-                request_serializer=appengine.ListAuthorizedCertificatesRequest.serialize,
-                response_deserializer=appengine.ListAuthorizedCertificatesResponse.deserialize,
+            self._stubs["list_authorized_certificates"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.AuthorizedCertificates/ListAuthorizedCertificates",
+                    request_serializer=appengine.ListAuthorizedCertificatesRequest.serialize,
+                    response_deserializer=appengine.ListAuthorizedCertificatesResponse.deserialize,
+                )
             )
         return self._stubs["list_authorized_certificates"]
 
@@ -377,12 +377,12 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "get_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.AuthorizedCertificates/GetAuthorizedCertificate",
-                request_serializer=appengine.GetAuthorizedCertificateRequest.serialize,
-                response_deserializer=certificate.AuthorizedCertificate.deserialize,
+            self._stubs["get_authorized_certificate"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.AuthorizedCertificates/GetAuthorizedCertificate",
+                    request_serializer=appengine.GetAuthorizedCertificateRequest.serialize,
+                    response_deserializer=certificate.AuthorizedCertificate.deserialize,
+                )
             )
         return self._stubs["get_authorized_certificate"]
 
@@ -408,12 +408,12 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "create_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.AuthorizedCertificates/CreateAuthorizedCertificate",
-                request_serializer=appengine.CreateAuthorizedCertificateRequest.serialize,
-                response_deserializer=certificate.AuthorizedCertificate.deserialize,
+            self._stubs["create_authorized_certificate"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.AuthorizedCertificates/CreateAuthorizedCertificate",
+                    request_serializer=appengine.CreateAuthorizedCertificateRequest.serialize,
+                    response_deserializer=certificate.AuthorizedCertificate.deserialize,
+                )
             )
         return self._stubs["create_authorized_certificate"]
 
@@ -444,12 +444,12 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "update_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.AuthorizedCertificates/UpdateAuthorizedCertificate",
-                request_serializer=appengine.UpdateAuthorizedCertificateRequest.serialize,
-                response_deserializer=certificate.AuthorizedCertificate.deserialize,
+            self._stubs["update_authorized_certificate"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.AuthorizedCertificates/UpdateAuthorizedCertificate",
+                    request_serializer=appengine.UpdateAuthorizedCertificateRequest.serialize,
+                    response_deserializer=certificate.AuthorizedCertificate.deserialize,
+                )
             )
         return self._stubs["update_authorized_certificate"]
 
@@ -472,12 +472,12 @@ class AuthorizedCertificatesGrpcTransport(AuthorizedCertificatesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_authorized_certificate" not in self._stubs:
-            self._stubs[
-                "delete_authorized_certificate"
-            ] = self._logged_channel.unary_unary(
-                "/google.appengine.v1.AuthorizedCertificates/DeleteAuthorizedCertificate",
-                request_serializer=appengine.DeleteAuthorizedCertificateRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_authorized_certificate"] = (
+                self._logged_channel.unary_unary(
+                    "/google.appengine.v1.AuthorizedCertificates/DeleteAuthorizedCertificate",
+                    request_serializer=appengine.DeleteAuthorizedCertificateRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_authorized_certificate"]
 

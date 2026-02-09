@@ -17,25 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.cloud.bigquery_reservation_v1.types import reservation
+from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 
 from .base import DEFAULT_CLIENT_INFO, ReservationServiceTransport
 from .grpc import ReservationServiceGrpcTransport
@@ -547,12 +547,12 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "create_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.reservation.v1.ReservationService/CreateCapacityCommitment",
-                request_serializer=reservation.CreateCapacityCommitmentRequest.serialize,
-                response_deserializer=reservation.CapacityCommitment.deserialize,
+            self._stubs["create_capacity_commitment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.reservation.v1.ReservationService/CreateCapacityCommitment",
+                    request_serializer=reservation.CreateCapacityCommitmentRequest.serialize,
+                    response_deserializer=reservation.CapacityCommitment.deserialize,
+                )
             )
         return self._stubs["create_capacity_commitment"]
 
@@ -638,12 +638,12 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "delete_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteCapacityCommitment",
-                request_serializer=reservation.DeleteCapacityCommitmentRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_capacity_commitment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.reservation.v1.ReservationService/DeleteCapacityCommitment",
+                    request_serializer=reservation.DeleteCapacityCommitmentRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_capacity_commitment"]
 
@@ -676,12 +676,12 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_capacity_commitment" not in self._stubs:
-            self._stubs[
-                "update_capacity_commitment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateCapacityCommitment",
-                request_serializer=reservation.UpdateCapacityCommitmentRequest.serialize,
-                response_deserializer=reservation.CapacityCommitment.deserialize,
+            self._stubs["update_capacity_commitment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateCapacityCommitment",
+                    request_serializer=reservation.UpdateCapacityCommitmentRequest.serialize,
+                    response_deserializer=reservation.CapacityCommitment.deserialize,
+                )
             )
         return self._stubs["update_capacity_commitment"]
 
@@ -753,12 +753,12 @@ class ReservationServiceGrpcAsyncIOTransport(ReservationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "merge_capacity_commitments" not in self._stubs:
-            self._stubs[
-                "merge_capacity_commitments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.bigquery.reservation.v1.ReservationService/MergeCapacityCommitments",
-                request_serializer=reservation.MergeCapacityCommitmentsRequest.serialize,
-                response_deserializer=reservation.CapacityCommitment.deserialize,
+            self._stubs["merge_capacity_commitments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.bigquery.reservation.v1.ReservationService/MergeCapacityCommitments",
+                    request_serializer=reservation.MergeCapacityCommitmentsRequest.serialize,
+                    response_deserializer=reservation.CapacityCommitment.deserialize,
+                )
             )
         return self._stubs["merge_capacity_commitments"]
 

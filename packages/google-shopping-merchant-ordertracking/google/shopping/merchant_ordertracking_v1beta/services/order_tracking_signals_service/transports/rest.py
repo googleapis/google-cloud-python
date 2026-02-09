@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -293,9 +293,7 @@ class OrderTrackingSignalsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_http_options()
-            )
+            http_options = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_http_options()
 
             request, metadata = self._interceptor.pre_create_order_tracking_signal(
                 request, metadata
@@ -401,7 +399,9 @@ class OrderTrackingSignalsServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateOrderTrackingSignal(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateOrderTrackingSignal(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

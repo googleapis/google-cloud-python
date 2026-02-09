@@ -137,6 +137,7 @@ class BackupPlanBinding(proto.Message):
                     The BackupPlan is in the process of being
                     deleted.
             """
+
             STATE_UNSPECIFIED = 0
             CLUSTER_PENDING = 1
             PROVISIONING = 2

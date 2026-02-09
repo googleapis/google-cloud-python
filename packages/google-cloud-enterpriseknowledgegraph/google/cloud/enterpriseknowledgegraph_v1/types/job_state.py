@@ -56,6 +56,7 @@ class JobState(proto.Enum):
             Entity Recon API: The exporting clusters job
             is running.
     """
+
     JOB_STATE_UNSPECIFIED = 0
     JOB_STATE_PENDING = 9
     JOB_STATE_RUNNING = 1

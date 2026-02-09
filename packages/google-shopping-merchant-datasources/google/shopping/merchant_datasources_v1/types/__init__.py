@@ -33,8 +33,13 @@ from .datasourcetypes import (
     RegionalInventoryDataSource,
     SupplementalProductDataSource,
 )
-from .fileinputs import FileInput
-from .fileuploads import FileUpload, GetFileUploadRequest
+from .fileinputs import (
+    FileInput,
+)
+from .fileuploads import (
+    FileUpload,
+    GetFileUploadRequest,
+)
 
 __all__ = (
     "CreateDataSourceRequest",

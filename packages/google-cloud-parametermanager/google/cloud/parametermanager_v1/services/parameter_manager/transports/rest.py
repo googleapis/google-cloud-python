@@ -16,18 +16,18 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.parametermanager_v1.types import service
@@ -802,9 +802,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     Message describing Parameter resource
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseCreateParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseCreateParameter._get_http_options()
 
             request, metadata = self._interceptor.pre_create_parameter(
                 request, metadata
@@ -958,9 +956,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseCreateParameterVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_parameter_version(
                 request, metadata
@@ -1108,9 +1104,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseDeleteParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseDeleteParameter._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_parameter(
                 request, metadata
@@ -1218,9 +1212,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseDeleteParameterVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_parameter_version(
                 request, metadata
@@ -1480,9 +1472,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseGetParameterVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_parameter_version(
                 request, metadata
@@ -1629,9 +1619,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListParameters._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListParameters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_parameters(request, metadata)
             transcoded_request = _BaseParameterManagerRestTransport._BaseListParameters._get_transcoded_request(
@@ -1777,9 +1765,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListParameterVersions._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListParameterVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_parameter_versions(
                 request, metadata
@@ -1931,9 +1917,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseRenderParameterVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_render_parameter_version(
                 request, metadata
@@ -2083,9 +2067,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                     Message describing Parameter resource
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseUpdateParameter._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseUpdateParameter._get_http_options()
 
             request, metadata = self._interceptor.pre_update_parameter(
                 request, metadata
@@ -2239,9 +2221,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseUpdateParameterVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_parameter_version(
                 request, metadata
@@ -2352,7 +2332,9 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     ) -> Callable[[service.CreateParameterVersionRequest], service.ParameterVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateParameterVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_parameter(
@@ -2368,7 +2350,9 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     ) -> Callable[[service.DeleteParameterVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteParameterVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_parameter(
@@ -2412,7 +2396,9 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RenderParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RenderParameterVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_parameter(
@@ -2428,7 +2414,9 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
     ) -> Callable[[service.UpdateParameterVersionRequest], service.ParameterVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateParameterVersion(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateParameterVersion(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -2627,9 +2615,7 @@ class ParameterManagerRestTransport(_BaseParameterManagerRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseParameterManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseParameterManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseParameterManagerRestTransport._BaseListLocations._get_transcoded_request(

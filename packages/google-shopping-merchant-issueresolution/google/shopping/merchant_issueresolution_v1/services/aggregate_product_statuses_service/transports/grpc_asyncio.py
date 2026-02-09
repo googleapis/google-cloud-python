@@ -17,19 +17,19 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.shopping.merchant_issueresolution_v1.types import aggregateproductstatuses
 
@@ -357,12 +357,12 @@ class AggregateProductStatusesServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_aggregate_product_statuses" not in self._stubs:
-            self._stubs[
-                "list_aggregate_product_statuses"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.issueresolution.v1.AggregateProductStatusesService/ListAggregateProductStatuses",
-                request_serializer=aggregateproductstatuses.ListAggregateProductStatusesRequest.serialize,
-                response_deserializer=aggregateproductstatuses.ListAggregateProductStatusesResponse.deserialize,
+            self._stubs["list_aggregate_product_statuses"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.issueresolution.v1.AggregateProductStatusesService/ListAggregateProductStatuses",
+                    request_serializer=aggregateproductstatuses.ListAggregateProductStatusesRequest.serialize,
+                    response_deserializer=aggregateproductstatuses.ListAggregateProductStatusesResponse.deserialize,
+                )
             )
         return self._stubs["list_aggregate_product_statuses"]
 

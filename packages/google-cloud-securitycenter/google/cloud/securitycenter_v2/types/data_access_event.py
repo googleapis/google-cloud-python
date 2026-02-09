@@ -60,6 +60,7 @@ class DataAccessEvent(proto.Message):
             COPY (3):
                 Represents a copy operation.
         """
+
         OPERATION_UNSPECIFIED = 0
         READ = 1
         MOVE = 2

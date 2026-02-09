@@ -16,25 +16,27 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import conversational_search_service
-from google.cloud.discoveryengine_v1alpha.types import session
+from google.cloud.discoveryengine_v1alpha.types import (
+    conversational_search_service,
+    session,
+    session_service,
+)
 from google.cloud.discoveryengine_v1alpha.types import session as gcd_session
-from google.cloud.discoveryengine_v1alpha.types import session_service
 
 from .base import DEFAULT_CLIENT_INFO, SessionServiceTransport
 

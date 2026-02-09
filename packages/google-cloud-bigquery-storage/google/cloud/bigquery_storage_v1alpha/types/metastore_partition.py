@@ -162,12 +162,12 @@ class BatchDeleteMetastorePartitionsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    partition_values: MutableSequence[
-        partition.MetastorePartitionValues
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=partition.MetastorePartitionValues,
+    partition_values: MutableSequence[partition.MetastorePartitionValues] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=partition.MetastorePartitionValues,
+        )
     )
     trace_id: str = proto.Field(
         proto.STRING,
@@ -356,12 +356,12 @@ class StreamMetastorePartitionsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    metastore_partitions: MutableSequence[
-        partition.MetastorePartition
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=partition.MetastorePartition,
+    metastore_partitions: MutableSequence[partition.MetastorePartition] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=partition.MetastorePartition,
+        )
     )
     skip_existing_partitions: bool = proto.Field(
         proto.BOOL,

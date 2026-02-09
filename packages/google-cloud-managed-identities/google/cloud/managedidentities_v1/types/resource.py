@@ -105,6 +105,7 @@ class Domain(proto.Message):
             UNAVAILABLE (7):
                 The domain is not serving requests.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -231,6 +232,7 @@ class Trust(proto.Message):
             DISCONNECTED (5):
                 The domain trust is disconnected.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2
@@ -249,6 +251,7 @@ class Trust(proto.Message):
             EXTERNAL (2):
                 The external domain trust.
         """
+
         TRUST_TYPE_UNSPECIFIED = 0
         FOREST = 1
         EXTERNAL = 2
@@ -271,6 +274,7 @@ class Trust(proto.Message):
                 The bidirectional direction represents the
                 trusted / trusting side.
         """
+
         TRUST_DIRECTION_UNSPECIFIED = 0
         INBOUND = 1
         OUTBOUND = 2

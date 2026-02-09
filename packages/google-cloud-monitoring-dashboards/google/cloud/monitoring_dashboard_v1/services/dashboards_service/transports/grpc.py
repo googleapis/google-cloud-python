@@ -16,22 +16,21 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
+from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboard
-from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
 

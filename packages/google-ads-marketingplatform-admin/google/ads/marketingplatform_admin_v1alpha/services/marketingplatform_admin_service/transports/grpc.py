@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.ads.marketingplatform_admin_v1alpha.types import (
     marketingplatform_admin,
@@ -412,12 +412,12 @@ class MarketingplatformAdminServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "find_sales_partner_managed_clients" not in self._stubs:
-            self._stubs[
-                "find_sales_partner_managed_clients"
-            ] = self._logged_channel.unary_unary(
-                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/FindSalesPartnerManagedClients",
-                request_serializer=marketingplatform_admin.FindSalesPartnerManagedClientsRequest.serialize,
-                response_deserializer=marketingplatform_admin.FindSalesPartnerManagedClientsResponse.deserialize,
+            self._stubs["find_sales_partner_managed_clients"] = (
+                self._logged_channel.unary_unary(
+                    "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/FindSalesPartnerManagedClients",
+                    request_serializer=marketingplatform_admin.FindSalesPartnerManagedClientsRequest.serialize,
+                    response_deserializer=marketingplatform_admin.FindSalesPartnerManagedClientsResponse.deserialize,
+                )
             )
         return self._stubs["find_sales_partner_managed_clients"]
 
@@ -444,12 +444,12 @@ class MarketingplatformAdminServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_analytics_account_links" not in self._stubs:
-            self._stubs[
-                "list_analytics_account_links"
-            ] = self._logged_channel.unary_unary(
-                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListAnalyticsAccountLinks",
-                request_serializer=marketingplatform_admin.ListAnalyticsAccountLinksRequest.serialize,
-                response_deserializer=marketingplatform_admin.ListAnalyticsAccountLinksResponse.deserialize,
+            self._stubs["list_analytics_account_links"] = (
+                self._logged_channel.unary_unary(
+                    "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/ListAnalyticsAccountLinks",
+                    request_serializer=marketingplatform_admin.ListAnalyticsAccountLinksRequest.serialize,
+                    response_deserializer=marketingplatform_admin.ListAnalyticsAccountLinksResponse.deserialize,
+                )
             )
         return self._stubs["list_analytics_account_links"]
 
@@ -482,12 +482,12 @@ class MarketingplatformAdminServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_analytics_account_link" not in self._stubs:
-            self._stubs[
-                "create_analytics_account_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateAnalyticsAccountLink",
-                request_serializer=marketingplatform_admin.CreateAnalyticsAccountLinkRequest.serialize,
-                response_deserializer=resources.AnalyticsAccountLink.deserialize,
+            self._stubs["create_analytics_account_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/CreateAnalyticsAccountLink",
+                    request_serializer=marketingplatform_admin.CreateAnalyticsAccountLinkRequest.serialize,
+                    response_deserializer=resources.AnalyticsAccountLink.deserialize,
+                )
             )
         return self._stubs["create_analytics_account_link"]
 
@@ -517,12 +517,12 @@ class MarketingplatformAdminServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_analytics_account_link" not in self._stubs:
-            self._stubs[
-                "delete_analytics_account_link"
-            ] = self._logged_channel.unary_unary(
-                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/DeleteAnalyticsAccountLink",
-                request_serializer=marketingplatform_admin.DeleteAnalyticsAccountLinkRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_analytics_account_link"] = (
+                self._logged_channel.unary_unary(
+                    "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/DeleteAnalyticsAccountLink",
+                    request_serializer=marketingplatform_admin.DeleteAnalyticsAccountLinkRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_analytics_account_link"]
 
@@ -548,12 +548,12 @@ class MarketingplatformAdminServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_property_service_level" not in self._stubs:
-            self._stubs[
-                "set_property_service_level"
-            ] = self._logged_channel.unary_unary(
-                "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/SetPropertyServiceLevel",
-                request_serializer=marketingplatform_admin.SetPropertyServiceLevelRequest.serialize,
-                response_deserializer=marketingplatform_admin.SetPropertyServiceLevelResponse.deserialize,
+            self._stubs["set_property_service_level"] = (
+                self._logged_channel.unary_unary(
+                    "/google.marketingplatform.admin.v1alpha.MarketingplatformAdminService/SetPropertyServiceLevel",
+                    request_serializer=marketingplatform_admin.SetPropertyServiceLevelRequest.serialize,
+                    response_deserializer=marketingplatform_admin.SetPropertyServiceLevelResponse.deserialize,
+                )
             )
         return self._stubs["set_property_service_level"]
 

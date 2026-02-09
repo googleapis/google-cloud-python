@@ -17,21 +17,21 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.securitycentermanagement_v1.types import security_center_management
 
@@ -363,12 +363,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_effective_security_health_analytics_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_effective_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveSecurityHealthAnalyticsCustomModules",
-                request_serializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            self._stubs["list_effective_security_health_analytics_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveSecurityHealthAnalyticsCustomModules",
+                    request_serializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_effective_security_health_analytics_custom_modules"]
 
@@ -400,12 +400,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_effective_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "get_effective_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.deserialize,
+            self._stubs["get_effective_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.deserialize,
+                )
             )
         return self._stubs["get_effective_security_health_analytics_custom_module"]
 
@@ -439,12 +439,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_health_analytics_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityHealthAnalyticsCustomModules",
-                request_serializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            self._stubs["list_security_health_analytics_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityHealthAnalyticsCustomModules",
+                    request_serializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_security_health_analytics_custom_modules"]
 
@@ -481,12 +481,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
             "list_descendant_security_health_analytics_custom_modules"
             not in self._stubs
         ):
-            self._stubs[
-                "list_descendant_security_health_analytics_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantSecurityHealthAnalyticsCustomModules",
-                request_serializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+            self._stubs["list_descendant_security_health_analytics_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantSecurityHealthAnalyticsCustomModules",
+                    request_serializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_descendant_security_health_analytics_custom_modules"]
 
@@ -514,12 +514,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "get_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+            self._stubs["get_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+                )
             )
         return self._stubs["get_security_health_analytics_custom_module"]
 
@@ -551,12 +551,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "create_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+            self._stubs["create_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+                )
             )
         return self._stubs["create_security_health_analytics_custom_module"]
 
@@ -589,12 +589,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "update_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+            self._stubs["update_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.SecurityHealthAnalyticsCustomModule.deserialize,
+                )
             )
         return self._stubs["update_security_health_analytics_custom_module"]
 
@@ -624,12 +624,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "delete_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_security_health_analytics_custom_module"]
 
@@ -660,12 +660,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "simulate_security_health_analytics_custom_module" not in self._stubs:
-            self._stubs[
-                "simulate_security_health_analytics_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/SimulateSecurityHealthAnalyticsCustomModule",
-                request_serializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.deserialize,
+            self._stubs["simulate_security_health_analytics_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/SimulateSecurityHealthAnalyticsCustomModule",
+                    request_serializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.deserialize,
+                )
             )
         return self._stubs["simulate_security_health_analytics_custom_module"]
 
@@ -699,12 +699,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_effective_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_effective_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveEventThreatDetectionCustomModules",
-                request_serializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.deserialize,
+            self._stubs["list_effective_event_threat_detection_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEffectiveEventThreatDetectionCustomModules",
+                    request_serializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_effective_event_threat_detection_custom_modules"]
 
@@ -746,12 +746,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_effective_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "get_effective_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.EffectiveEventThreatDetectionCustomModule.deserialize,
+            self._stubs["get_effective_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEffectiveEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.EffectiveEventThreatDetectionCustomModule.deserialize,
+                )
             )
         return self._stubs["get_effective_event_threat_detection_custom_module"]
 
@@ -783,12 +783,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEventThreatDetectionCustomModules",
-                request_serializer=security_center_management.ListEventThreatDetectionCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListEventThreatDetectionCustomModulesResponse.deserialize,
+            self._stubs["list_event_threat_detection_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListEventThreatDetectionCustomModules",
+                    request_serializer=security_center_management.ListEventThreatDetectionCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListEventThreatDetectionCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_event_threat_detection_custom_modules"]
 
@@ -821,12 +821,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_descendant_event_threat_detection_custom_modules" not in self._stubs:
-            self._stubs[
-                "list_descendant_event_threat_detection_custom_modules"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantEventThreatDetectionCustomModules",
-                request_serializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest.serialize,
-                response_deserializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.deserialize,
+            self._stubs["list_descendant_event_threat_detection_custom_modules"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListDescendantEventThreatDetectionCustomModules",
+                    request_serializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest.serialize,
+                    response_deserializer=security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.deserialize,
+                )
             )
         return self._stubs["list_descendant_event_threat_detection_custom_modules"]
 
@@ -853,12 +853,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "get_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.GetEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+            self._stubs["get_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.GetEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+                )
             )
         return self._stubs["get_event_threat_detection_custom_module"]
 
@@ -889,12 +889,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "create_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.CreateEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+            self._stubs["create_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/CreateEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.CreateEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+                )
             )
         return self._stubs["create_event_threat_detection_custom_module"]
 
@@ -928,12 +928,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "update_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.UpdateEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+            self._stubs["update_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.UpdateEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.EventThreatDetectionCustomModule.deserialize,
+                )
             )
         return self._stubs["update_event_threat_detection_custom_module"]
 
@@ -963,12 +963,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "delete_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.DeleteEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/DeleteEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.DeleteEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_event_threat_detection_custom_module"]
 
@@ -998,12 +998,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_event_threat_detection_custom_module" not in self._stubs:
-            self._stubs[
-                "validate_event_threat_detection_custom_module"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ValidateEventThreatDetectionCustomModule",
-                request_serializer=security_center_management.ValidateEventThreatDetectionCustomModuleRequest.serialize,
-                response_deserializer=security_center_management.ValidateEventThreatDetectionCustomModuleResponse.deserialize,
+            self._stubs["validate_event_threat_detection_custom_module"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ValidateEventThreatDetectionCustomModule",
+                    request_serializer=security_center_management.ValidateEventThreatDetectionCustomModuleRequest.serialize,
+                    response_deserializer=security_center_management.ValidateEventThreatDetectionCustomModuleResponse.deserialize,
+                )
             )
         return self._stubs["validate_event_threat_detection_custom_module"]
 
@@ -1030,12 +1030,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_center_service" not in self._stubs:
-            self._stubs[
-                "get_security_center_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
-                request_serializer=security_center_management.GetSecurityCenterServiceRequest.serialize,
-                response_deserializer=security_center_management.SecurityCenterService.deserialize,
+            self._stubs["get_security_center_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/GetSecurityCenterService",
+                    request_serializer=security_center_management.GetSecurityCenterServiceRequest.serialize,
+                    response_deserializer=security_center_management.SecurityCenterService.deserialize,
+                )
             )
         return self._stubs["get_security_center_service"]
 
@@ -1062,12 +1062,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_center_services" not in self._stubs:
-            self._stubs[
-                "list_security_center_services"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
-                request_serializer=security_center_management.ListSecurityCenterServicesRequest.serialize,
-                response_deserializer=security_center_management.ListSecurityCenterServicesResponse.deserialize,
+            self._stubs["list_security_center_services"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/ListSecurityCenterServices",
+                    request_serializer=security_center_management.ListSecurityCenterServicesRequest.serialize,
+                    response_deserializer=security_center_management.ListSecurityCenterServicesResponse.deserialize,
+                )
             )
         return self._stubs["list_security_center_services"]
 
@@ -1094,12 +1094,12 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_center_service" not in self._stubs:
-            self._stubs[
-                "update_security_center_service"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
-                request_serializer=security_center_management.UpdateSecurityCenterServiceRequest.serialize,
-                response_deserializer=security_center_management.SecurityCenterService.deserialize,
+            self._stubs["update_security_center_service"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.securitycentermanagement.v1.SecurityCenterManagement/UpdateSecurityCenterService",
+                    request_serializer=security_center_management.UpdateSecurityCenterServiceRequest.serialize,
+                    response_deserializer=security_center_management.SecurityCenterService.deserialize,
+                )
             )
         return self._stubs["update_security_center_service"]
 

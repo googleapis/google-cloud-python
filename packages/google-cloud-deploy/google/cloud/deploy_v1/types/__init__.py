@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .automation_payload import AutomationEvent
-from .automationrun_payload import AutomationRunEvent
+from .automation_payload import (
+    AutomationEvent,
+)
+from .automationrun_payload import (
+    AutomationRunEvent,
+)
 from .cloud_deploy import (
     AbandonReleaseRequest,
     AbandonReleaseResponse,
@@ -180,17 +184,39 @@ from .cloud_deploy import (
     VerifyJobRun,
     WeeklyWindow,
 )
-from .customtargettype_notification_payload import CustomTargetTypeNotificationEvent
-from .deliverypipeline_notification_payload import DeliveryPipelineNotificationEvent
-from .deploypolicy_evaluation_payload import DeployPolicyEvaluationEvent
-from .deploypolicy_notification_payload import DeployPolicyNotificationEvent
-from .jobrun_notification_payload import JobRunNotificationEvent
-from .log_enums import Type
-from .release_notification_payload import ReleaseNotificationEvent
-from .release_render_payload import ReleaseRenderEvent
-from .rollout_notification_payload import RolloutNotificationEvent
-from .rollout_update_payload import RolloutUpdateEvent
-from .target_notification_payload import TargetNotificationEvent
+from .customtargettype_notification_payload import (
+    CustomTargetTypeNotificationEvent,
+)
+from .deliverypipeline_notification_payload import (
+    DeliveryPipelineNotificationEvent,
+)
+from .deploypolicy_evaluation_payload import (
+    DeployPolicyEvaluationEvent,
+)
+from .deploypolicy_notification_payload import (
+    DeployPolicyNotificationEvent,
+)
+from .jobrun_notification_payload import (
+    JobRunNotificationEvent,
+)
+from .log_enums import (
+    Type,
+)
+from .release_notification_payload import (
+    ReleaseNotificationEvent,
+)
+from .release_render_payload import (
+    ReleaseRenderEvent,
+)
+from .rollout_notification_payload import (
+    RolloutNotificationEvent,
+)
+from .rollout_update_payload import (
+    RolloutUpdateEvent,
+)
+from .target_notification_payload import (
+    TargetNotificationEvent,
+)
 
 __all__ = (
     "AutomationEvent",

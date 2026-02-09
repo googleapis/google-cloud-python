@@ -94,6 +94,7 @@ class File(proto.Message):
             FAILED (10):
                 File failed processing.
         """
+
         STATE_UNSPECIFIED = 0
         PROCESSING = 1
         ACTIVE = 2

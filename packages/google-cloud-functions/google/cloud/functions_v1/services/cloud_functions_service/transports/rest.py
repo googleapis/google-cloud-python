@@ -16,21 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -961,9 +963,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     Response of ``CallFunction`` method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseCallFunction._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseCallFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_call_function(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseCallFunction._get_transcoded_request(
@@ -1115,9 +1115,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseCreateFunction._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseCreateFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_create_function(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseCreateFunction._get_transcoded_request(
@@ -1266,9 +1264,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseDeleteFunction._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseDeleteFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_function(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseDeleteFunction._get_transcoded_request(
@@ -1410,9 +1406,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     Response of ``GenerateDownloadUrl`` method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseGenerateDownloadUrl._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseGenerateDownloadUrl._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_download_url(
                 request, metadata
@@ -1567,9 +1561,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     Response of ``GenerateSourceUploadUrl`` method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseGenerateUploadUrl._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseGenerateUploadUrl._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_upload_url(
                 request, metadata
@@ -1727,9 +1719,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseGetFunction._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseGetFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_get_function(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseGetFunction._get_transcoded_request(
@@ -1947,9 +1937,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2092,9 +2080,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     Response for the ``ListFunctions`` method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseListFunctions._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseListFunctions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_functions(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseListFunctions._get_transcoded_request(
@@ -2313,9 +2299,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2464,9 +2448,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2622,9 +2604,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseUpdateFunction._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseUpdateFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_update_function(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseUpdateFunction._get_transcoded_request(
@@ -2868,9 +2848,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -3009,9 +2987,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3150,9 +3126,7 @@ class CloudFunctionsServiceRestTransport(_BaseCloudFunctionsServiceRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudFunctionsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudFunctionsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudFunctionsServiceRestTransport._BaseListOperations._get_transcoded_request(

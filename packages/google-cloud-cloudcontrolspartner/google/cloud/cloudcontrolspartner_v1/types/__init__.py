@@ -19,8 +19,12 @@ from .access_approval_requests import (
     ListAccessApprovalRequestsRequest,
     ListAccessApprovalRequestsResponse,
 )
-from .completion_state import CompletionState
-from .core import OperationMetadata
+from .completion_state import (
+    CompletionState,
+)
+from .core import (
+    OperationMetadata,
+)
 from .customer_workloads import (
     GetWorkloadRequest,
     ListWorkloadsRequest,
@@ -40,9 +44,21 @@ from .customers import (
     ListCustomersResponse,
     UpdateCustomerRequest,
 )
-from .ekm_connections import EkmConnection, EkmConnections, GetEkmConnectionsRequest
-from .partner_permissions import GetPartnerPermissionsRequest, PartnerPermissions
-from .partners import EkmMetadata, GetPartnerRequest, Partner, Sku
+from .ekm_connections import (
+    EkmConnection,
+    EkmConnections,
+    GetEkmConnectionsRequest,
+)
+from .partner_permissions import (
+    GetPartnerPermissionsRequest,
+    PartnerPermissions,
+)
+from .partners import (
+    EkmMetadata,
+    GetPartnerRequest,
+    Partner,
+    Sku,
+)
 from .violations import (
     GetViolationRequest,
     ListViolationsRequest,

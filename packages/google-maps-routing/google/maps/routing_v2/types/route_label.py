@@ -51,6 +51,7 @@ class RouteLabel(proto.Enum):
             Shorter travel distance route. This is an
             experimental feature.
     """
+
     ROUTE_LABEL_UNSPECIFIED = 0
     DEFAULT_ROUTE = 1
     DEFAULT_ROUTE_ALTERNATE = 2

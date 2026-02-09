@@ -65,6 +65,7 @@ class JobType(proto.Enum):
             data is read, processed, and written
             continuously.
     """
+
     JOB_TYPE_UNKNOWN = 0
     JOB_TYPE_BATCH = 1
     JOB_TYPE_STREAMING = 2
@@ -82,6 +83,7 @@ class FlexResourceSchedulingGoal(proto.Enum):
         FLEXRS_COST_OPTIMIZED (2):
             Optimize for lower cost.
     """
+
     FLEXRS_UNSPECIFIED = 0
     FLEXRS_SPEED_OPTIMIZED = 1
     FLEXRS_COST_OPTIMIZED = 2
@@ -105,6 +107,7 @@ class TeardownPolicy(proto.Enum):
             Never teardown the resource. This is useful
             for debugging and development.
     """
+
     TEARDOWN_POLICY_UNKNOWN = 0
     TEARDOWN_ALWAYS = 1
     TEARDOWN_ON_SUCCESS = 2
@@ -130,6 +133,7 @@ class DefaultPackageSet(proto.Enum):
             Stage packages typically useful to workers
             written in Python.
     """
+
     DEFAULT_PACKAGE_SET_UNKNOWN = 0
     DEFAULT_PACKAGE_SET_NONE = 1
     DEFAULT_PACKAGE_SET_JAVA = 2
@@ -151,6 +155,7 @@ class AutoscalingAlgorithm(proto.Enum):
             Increase worker count over time to reduce job
             execution time.
     """
+
     AUTOSCALING_ALGORITHM_UNKNOWN = 0
     AUTOSCALING_ALGORITHM_NONE = 1
     AUTOSCALING_ALGORITHM_BASIC = 2
@@ -170,6 +175,7 @@ class WorkerIPAddressConfiguration(proto.Enum):
         WORKER_IP_PRIVATE (2):
             Workers should have private IP addresses.
     """
+
     WORKER_IP_UNSPECIFIED = 0
     WORKER_IP_PUBLIC = 1
     WORKER_IP_PRIVATE = 2
@@ -189,6 +195,7 @@ class ShuffleMode(proto.Enum):
         SERVICE_BASED (2):
             Shuffle is done on the service side.
     """
+
     SHUFFLE_MODE_UNSPECIFIED = 0
     VM_BASED = 1
     SERVICE_BASED = 2
@@ -218,6 +225,7 @@ class StreamingMode(proto.Enum):
             Setting this value also enables Streaming Engine
             and Streaming Engine resource-based billing.
     """
+
     STREAMING_MODE_UNSPECIFIED = 0
     STREAMING_MODE_EXACTLY_ONCE = 1
     STREAMING_MODE_AT_LEAST_ONCE = 2
@@ -999,12 +1007,12 @@ class WorkerPool(proto.Message):
         number=21,
         enum="WorkerIPAddressConfiguration",
     )
-    sdk_harness_container_images: MutableSequence[
-        "SdkHarnessContainerImage"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message="SdkHarnessContainerImage",
+    sdk_harness_container_images: MutableSequence["SdkHarnessContainerImage"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message="SdkHarnessContainerImage",
+        )
     )
 
 
@@ -1043,6 +1051,7 @@ class DataSamplingConfig(proto.Message):
                 When given, enables sampling input elements
                 when a user-defined DoFn causes an exception.
         """
+
         DATA_SAMPLING_BEHAVIOR_UNSPECIFIED = 0
         DISABLED = 1
         ALWAYS_ON = 2

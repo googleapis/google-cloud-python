@@ -173,6 +173,7 @@ class CheckResponse(proto.Message):
                     functionalities at a finer level of granularity
                     than the PROJECT.
             """
+
             CONSUMER_TYPE_UNSPECIFIED = 0
             PROJECT = 1
             FOLDER = 2

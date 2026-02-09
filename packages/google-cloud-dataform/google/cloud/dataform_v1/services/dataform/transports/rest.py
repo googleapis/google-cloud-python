@@ -16,20 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-import google.protobuf
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.dataform_v1.types import dataform
@@ -3205,9 +3207,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``CancelWorkflowInvocation`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_workflow_invocation(
                 request, metadata
@@ -3359,9 +3359,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``CommitRepositoryChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
 
             request, metadata = self._interceptor.pre_commit_repository_changes(
                 request, metadata
@@ -3513,9 +3511,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``CommitWorkspaceChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
 
             request, metadata = self._interceptor.pre_commit_workspace_changes(
                 request, metadata
@@ -3668,15 +3664,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``ComputeRepositoryAccessTokenStatus`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_compute_repository_access_token_status(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_compute_repository_access_token_status(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_transcoded_request(
                 http_options, request
@@ -3739,11 +3732,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_compute_repository_access_token_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_compute_repository_access_token_status_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_compute_repository_access_token_status_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3829,9 +3821,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
 
             request, metadata = self._interceptor.pre_create_compilation_result(
                 request, metadata
@@ -4448,9 +4438,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workflow_invocation(
                 request, metadata
@@ -5080,9 +5068,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workflow_invocation(
                 request, metadata
@@ -5896,9 +5882,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchRepositoryHistory`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_repository_history(
                 request, metadata
@@ -6786,9 +6770,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workflow_invocation(
                 request, metadata
@@ -7232,9 +7214,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListCompilationResults`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
 
             request, metadata = self._interceptor.pre_list_compilation_results(
                 request, metadata
@@ -7826,9 +7806,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListWorkflowInvocations`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workflow_invocations(
                 request, metadata
@@ -8897,9 +8875,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryCompilationResultActions`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
 
             request, metadata = self._interceptor.pre_query_compilation_result_actions(
                 request, metadata
@@ -8965,11 +8941,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_compilation_result_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_compilation_result_actions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_query_compilation_result_actions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9050,9 +9025,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``QueryDirectoryContents`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
 
             request, metadata = self._interceptor.pre_query_directory_contents(
                 request, metadata
@@ -9200,15 +9173,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryRepositoryDirectoryContents`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_query_repository_directory_contents(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_query_repository_directory_contents(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_transcoded_request(
                 http_options, request
@@ -9271,11 +9241,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_repository_directory_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_repository_directory_contents_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_query_repository_directory_contents_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9359,9 +9328,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryWorkflowInvocationActions`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
 
             request, metadata = self._interceptor.pre_query_workflow_invocation_actions(
                 request, metadata
@@ -9427,11 +9394,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_workflow_invocation_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_workflow_invocation_actions_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_query_workflow_invocation_actions_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -10119,9 +10085,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ResetWorkspaceChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
 
             request, metadata = self._interceptor.pre_reset_workspace_changes(
                 request, metadata
@@ -11144,7 +11108,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CancelWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CancelWorkflowInvocation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def commit_repository_changes(
@@ -11155,7 +11121,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CommitRepositoryChanges(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CommitRepositoryChanges(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def commit_workspace_changes(
@@ -11166,7 +11134,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CommitWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CommitWorkspaceChanges(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def compute_repository_access_token_status(
@@ -11177,7 +11147,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ComputeRepositoryAccessTokenStatus(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ComputeRepositoryAccessTokenStatus(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_compilation_result(
@@ -11187,7 +11159,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateCompilationResult(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_release_config(
@@ -11221,7 +11195,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateWorkflowInvocation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_workspace(
@@ -11261,7 +11237,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ) -> Callable[[dataform.DeleteWorkflowInvocationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteWorkflowInvocation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_workspace(
@@ -11318,7 +11296,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._FetchRepositoryHistory(self._session, self._host, self._interceptor)  # type: ignore
+        return self._FetchRepositoryHistory(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_compilation_result(
@@ -11393,7 +11373,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListCompilationResults(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListCompilationResults(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_release_configs(
@@ -11434,7 +11416,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListWorkflowInvocations(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListWorkflowInvocations(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_workspaces(
@@ -11493,7 +11477,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryCompilationResultActions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryCompilationResultActions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def query_directory_contents(
@@ -11504,7 +11490,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryDirectoryContents(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def query_repository_directory_contents(
@@ -11515,7 +11503,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryRepositoryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryRepositoryDirectoryContents(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def query_workflow_invocation_actions(
@@ -11526,7 +11516,9 @@ class DataformRestTransport(_BaseDataformRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._QueryWorkflowInvocationActions(self._session, self._host, self._interceptor)  # type: ignore
+        return self._QueryWorkflowInvocationActions(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def read_file(

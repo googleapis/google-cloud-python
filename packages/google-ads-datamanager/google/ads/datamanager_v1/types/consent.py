@@ -40,6 +40,7 @@ class ConsentStatus(proto.Enum):
         CONSENT_DENIED (2):
             Denied.
     """
+
     CONSENT_STATUS_UNSPECIFIED = 0
     CONSENT_GRANTED = 1
     CONSENT_DENIED = 2

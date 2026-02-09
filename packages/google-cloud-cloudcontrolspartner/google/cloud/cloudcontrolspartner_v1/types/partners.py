@@ -168,6 +168,7 @@ class EkmMetadata(proto.Message):
             VIRTRU (4):
                 This enum value is never used.
         """
+
         EKM_SOLUTION_UNSPECIFIED = 0
         FORTANIX = 1
         FUTUREX = 2

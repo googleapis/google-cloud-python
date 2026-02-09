@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.websecurityscanner_v1beta import gapic_version as package_version
 
@@ -66,19 +66,17 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import pagers
 from google.cloud.websecurityscanner_v1beta.types import (
+    crawled_url,
+    finding,
+    finding_addon,
+    finding_type_stats,
+    scan_config,
     scan_run,
     scan_run_error_trace,
     scan_run_warning_trace,
     web_security_scanner,
 )
-from google.cloud.websecurityscanner_v1beta.types import (
-    crawled_url,
-    finding,
-    finding_addon,
-    finding_type_stats,
-)
 from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_config
 
 from .transports.base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 from .transports.grpc import WebSecurityScannerGrpcTransport
@@ -94,9 +92,7 @@ class WebSecurityScannerClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[WebSecurityScannerTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[WebSecurityScannerTransport]]
     _transport_registry["grpc"] = WebSecurityScannerGrpcTransport
     _transport_registry["grpc_asyncio"] = WebSecurityScannerGrpcAsyncIOTransport
     _transport_registry["rest"] = WebSecurityScannerRestTransport
@@ -689,11 +685,9 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = WebSecurityScannerClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            WebSecurityScannerClient._read_environment_variables()
+        )
         self._client_cert_source = WebSecurityScannerClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -728,8 +722,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(WebSecurityScannerTransport, transport)
             self._api_endpoint = self._transport.host

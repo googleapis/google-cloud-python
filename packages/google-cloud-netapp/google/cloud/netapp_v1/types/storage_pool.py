@@ -358,6 +358,7 @@ class StoragePool(proto.Message):
             ERROR (7):
                 Storage Pool State is Error
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

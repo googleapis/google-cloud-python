@@ -131,12 +131,12 @@ class ListOSPolicyAssignmentReportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_policy_assignment_reports: MutableSequence[
-        "OSPolicyAssignmentReport"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="OSPolicyAssignmentReport",
+    os_policy_assignment_reports: MutableSequence["OSPolicyAssignmentReport"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="OSPolicyAssignmentReport",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -242,6 +242,7 @@ class OSPolicyAssignmentReport(proto.Message):
                     The policy is non-compliant if one or more
                     underlying resources are non-compliant.
             """
+
             UNKNOWN = 0
             COMPLIANT = 1
             NON_COMPLIANT = 2
@@ -296,6 +297,7 @@ class OSPolicyAssignmentReport(proto.Message):
                     NON_COMPLIANT (2):
                         Resource is non-compliant.
                 """
+
                 UNKNOWN = 0
                 COMPLIANT = 1
                 NON_COMPLIANT = 2
@@ -339,6 +341,7 @@ class OSPolicyAssignmentReport(proto.Message):
                             desired state due to side effects from executing
                             other resources.
                     """
+
                     TYPE_UNSPECIFIED = 0
                     VALIDATION = 1
                     DESIRED_STATE_CHECK = 2

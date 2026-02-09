@@ -66,6 +66,7 @@ class SpeedReadingInterval(proto.Message):
             TRAFFIC_JAM (3):
                 Traffic jam detected.
         """
+
         SPEED_UNSPECIFIED = 0
         NORMAL = 1
         SLOW = 2

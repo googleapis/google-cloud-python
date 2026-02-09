@@ -208,6 +208,7 @@ class SkaffoldSupportState(proto.Enum):
         SKAFFOLD_SUPPORT_STATE_UNSUPPORTED (3):
             This Skaffold version is no longer supported.
     """
+
     SKAFFOLD_SUPPORT_STATE_UNSPECIFIED = 0
     SKAFFOLD_SUPPORT_STATE_SUPPORTED = 1
     SKAFFOLD_SUPPORT_STATE_MAINTENANCE_MODE = 2
@@ -225,6 +226,7 @@ class BackoffMode(proto.Enum):
         BACKOFF_MODE_EXPONENTIAL (2):
             Increases the wait time exponentially.
     """
+
     BACKOFF_MODE_UNSPECIFIED = 0
     BACKOFF_MODE_LINEAR = 1
     BACKOFF_MODE_EXPONENTIAL = 2
@@ -249,6 +251,7 @@ class RepairState(proto.Enum):
         REPAIR_STATE_ABORTED (7):
             The ``repair`` action was aborted.
     """
+
     REPAIR_STATE_UNSPECIFIED = 0
     REPAIR_STATE_SUCCEEDED = 1
     REPAIR_STATE_CANCELLED = 2
@@ -1790,6 +1793,7 @@ class ExecutionConfig(proto.Message):
             POSTDEPLOY (5):
                 Use for postdeploy job execution.
         """
+
         EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED = 0
         RENDER = 1
         DEPLOY = 2
@@ -2990,6 +2994,7 @@ class DeployPolicy(proto.Message):
             DEPLOY_AUTOMATION (2):
                 Automated action by Cloud Deploy.
         """
+
         INVOKER_UNSPECIFIED = 0
         USER = 1
         DEPLOY_AUTOMATION = 2
@@ -3188,6 +3193,7 @@ class RolloutRestriction(proto.Message):
             TERMINATE_JOBRUN (8):
                 Terminate a jobrun.
         """
+
         ROLLOUT_ACTIONS_UNSPECIFIED = 0
         ADVANCE = 1
         APPROVE = 2
@@ -3341,12 +3347,12 @@ class PolicyViolation(proto.Message):
             Policy violation details.
     """
 
-    policy_violation_details: MutableSequence[
-        "PolicyViolationDetails"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="PolicyViolationDetails",
+    policy_violation_details: MutableSequence["PolicyViolationDetails"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="PolicyViolationDetails",
+        )
     )
 
 
@@ -3493,6 +3499,7 @@ class Release(proto.Message):
             IN_PROGRESS (3):
                 Rendering has started and is not complete.
         """
+
         RENDER_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -3536,6 +3543,7 @@ class Release(proto.Message):
                 IN_PROGRESS (3):
                     The render operation is in progress.
             """
+
             TARGET_RENDER_STATE_UNSPECIFIED = 0
             SUCCEEDED = 1
             FAILED = 2
@@ -3576,6 +3584,7 @@ class Release(proto.Message):
                     The render operation had a feature configured
                     that is not supported.
             """
+
             FAILURE_CAUSE_UNSPECIFIED = 0
             CLOUD_BUILD_UNAVAILABLE = 1
             EXECUTION_FAILED = 2
@@ -3756,12 +3765,12 @@ class Release(proto.Message):
         number=12,
         message="Target",
     )
-    custom_target_type_snapshots: MutableSequence[
-        "CustomTargetType"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=27,
-        message="CustomTargetType",
+    custom_target_type_snapshots: MutableSequence["CustomTargetType"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=27,
+            message="CustomTargetType",
+        )
     )
     render_state: RenderState = proto.Field(
         proto.ENUM,
@@ -4536,6 +4545,7 @@ class Rollout(proto.Message):
             REJECTED (4):
                 The ``Rollout`` has been rejected.
         """
+
         APPROVAL_STATE_UNSPECIFIED = 0
         NEEDS_APPROVAL = 1
         DOES_NOT_NEED_APPROVAL = 2
@@ -4571,6 +4581,7 @@ class Rollout(proto.Message):
             HALTED (10):
                 The ``Rollout`` is halted.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -4613,6 +4624,7 @@ class Rollout(proto.Message):
                 A Rollout operation had a feature configured
                 that is not supported.
         """
+
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -4946,6 +4958,7 @@ class Phase(proto.Message):
             SKIPPED (6):
                 The Phase was skipped.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         IN_PROGRESS = 2
@@ -5114,6 +5127,7 @@ class Job(proto.Message):
             IGNORED (8):
                 The Job was ignored.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         DISABLED = 2
@@ -5737,6 +5751,7 @@ class JobRun(proto.Message):
             TERMINATED (5):
                 The ``JobRun`` was terminated.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         SUCCEEDED = 2
@@ -5873,6 +5888,7 @@ class DeployJobRun(proto.Message):
                 The deploy operation had a feature configured
                 that is not supported.
         """
+
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -5953,6 +5969,7 @@ class VerifyJobRun(proto.Message):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
         """
+
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -6023,6 +6040,7 @@ class PredeployJobRun(proto.Message):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
         """
+
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -6085,6 +6103,7 @@ class PostdeployJobRun(proto.Message):
                 Cloud Build failed to fulfill Cloud Deploy's request. See
                 failure_message for additional details.
         """
+
         FAILURE_CAUSE_UNSPECIFIED = 0
         CLOUD_BUILD_UNAVAILABLE = 1
         EXECUTION_FAILED = 2
@@ -7354,6 +7373,7 @@ class AutomationRun(proto.Message):
             ABORTED (6):
                 The ``AutomationRun`` was aborted.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         CANCELLED = 2

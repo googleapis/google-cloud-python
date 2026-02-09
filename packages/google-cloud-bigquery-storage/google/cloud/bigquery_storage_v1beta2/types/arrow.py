@@ -85,6 +85,7 @@ class ArrowSerializationOptions(proto.Message):
                 Use the message format as of Apache Arrow
                 Release 0.15.
         """
+
         FORMAT_UNSPECIFIED = 0
         ARROW_0_14 = 1
         ARROW_0_15 = 2

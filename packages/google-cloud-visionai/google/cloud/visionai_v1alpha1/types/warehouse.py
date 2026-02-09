@@ -117,6 +117,7 @@ class FacetBucketType(proto.Enum):
         FACET_BUCKET_TYPE_CUSTOM_RANGE (4):
             Custom Range type.
     """
+
     FACET_BUCKET_TYPE_UNSPECIFIED = 0
     FACET_BUCKET_TYPE_VALUE = 1
     FACET_BUCKET_TYPE_DATETIME = 2
@@ -634,6 +635,7 @@ class DataSchemaDetails(proto.Message):
                 - DataSchema.SearchStrategy.NO_SEARCH,
                 - DataSchema.SearchStrategy.EXACT_SEARCH.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         INTEGER = 1
         FLOAT = 2
@@ -656,6 +658,7 @@ class DataSchemaDetails(proto.Message):
                 Partition-level granularity (annotations must
                 contain partition info).
         """
+
         GRANULARITY_UNSPECIFIED = 0
         GRANULARITY_ASSET_LEVEL = 1
         GRANULARITY_PARTITION_LEVEL = 2
@@ -701,6 +704,7 @@ class DataSchemaDetails(proto.Message):
                     When searching with ``key``, Warehouse will perform broad
                     search based on semantic of the annotation value.
             """
+
             NO_SEARCH = 0
             EXACT_SEARCH = 1
             SMART_SEARCH = 2
@@ -1519,6 +1523,7 @@ class FacetProperty(proto.Message):
                 DAY (3):
                     Granularity is day.
             """
+
             GRANULARITY_UNSPECIFIED = 0
             YEAR = 1
             MONTH = 2
@@ -1808,6 +1813,7 @@ class IngestAssetRequest(proto.Message):
                     CONTAINER_FORMAT_MP4 (1):
                         Mp4 container format.
                 """
+
                 CONTAINER_FORMAT_UNSPECIFIED = 0
                 CONTAINER_FORMAT_MP4 = 1
 
@@ -1959,12 +1965,12 @@ class GenerateHlsUriRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
 
 
@@ -1984,12 +1990,12 @@ class GenerateHlsUriResponse(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
 
 
@@ -2145,12 +2151,12 @@ class SearchResultItem(proto.Message):
         number=3,
         message="Annotation",
     )
-    annotation_matching_results: MutableSequence[
-        "AnnotationMatchingResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AnnotationMatchingResult",
+    annotation_matching_results: MutableSequence["AnnotationMatchingResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AnnotationMatchingResult",
+        )
     )
 
 

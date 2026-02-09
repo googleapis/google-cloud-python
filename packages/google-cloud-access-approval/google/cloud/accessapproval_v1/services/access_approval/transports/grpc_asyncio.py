@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.accessapproval_v1.types import accessapproval
 
@@ -527,12 +527,12 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "invalidate_approval_request" not in self._stubs:
-            self._stubs[
-                "invalidate_approval_request"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
-                request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
-                response_deserializer=accessapproval.ApprovalRequest.deserialize,
+            self._stubs["invalidate_approval_request"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
+                    request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
+                    response_deserializer=accessapproval.ApprovalRequest.deserialize,
+                )
             )
         return self._stubs["invalidate_approval_request"]
 
@@ -559,12 +559,12 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "get_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalSettings",
-                request_serializer=accessapproval.GetAccessApprovalSettingsMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+            self._stubs["get_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalSettings",
+                    request_serializer=accessapproval.GetAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+                )
             )
         return self._stubs["get_access_approval_settings"]
 
@@ -593,12 +593,12 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "update_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/UpdateAccessApprovalSettings",
-                request_serializer=accessapproval.UpdateAccessApprovalSettingsMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+            self._stubs["update_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/UpdateAccessApprovalSettings",
+                    request_serializer=accessapproval.UpdateAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
+                )
             )
         return self._stubs["update_access_approval_settings"]
 
@@ -631,12 +631,12 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "delete_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/DeleteAccessApprovalSettings",
-                request_serializer=accessapproval.DeleteAccessApprovalSettingsMessage.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_access_approval_settings"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/DeleteAccessApprovalSettings",
+                    request_serializer=accessapproval.DeleteAccessApprovalSettingsMessage.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_access_approval_settings"]
 
@@ -665,12 +665,12 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_service_account" not in self._stubs:
-            self._stubs[
-                "get_access_approval_service_account"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
-                request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
-                response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,
+            self._stubs["get_access_approval_service_account"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
+                    request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
+                    response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,
+                )
             )
         return self._stubs["get_access_approval_service_account"]
 

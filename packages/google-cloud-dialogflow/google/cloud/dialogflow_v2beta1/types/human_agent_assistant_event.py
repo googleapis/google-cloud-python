@@ -62,12 +62,12 @@ class HumanAgentAssistantEvent(proto.Message):
         proto.STRING,
         number=3,
     )
-    suggestion_results: MutableSequence[
-        gcd_participant.SuggestionResult
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=gcd_participant.SuggestionResult,
+    suggestion_results: MutableSequence[gcd_participant.SuggestionResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=gcd_participant.SuggestionResult,
+        )
     )
 
 

@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.edgenetwork_v1.types import resources, service
 
@@ -786,12 +786,12 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_interconnect_attachments" not in self._stubs:
-            self._stubs[
-                "list_interconnect_attachments"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnectAttachments",
-                request_serializer=service.ListInterconnectAttachmentsRequest.serialize,
-                response_deserializer=service.ListInterconnectAttachmentsResponse.deserialize,
+            self._stubs["list_interconnect_attachments"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.edgenetwork.v1.EdgeNetwork/ListInterconnectAttachments",
+                    request_serializer=service.ListInterconnectAttachmentsRequest.serialize,
+                    response_deserializer=service.ListInterconnectAttachmentsResponse.deserialize,
+                )
             )
         return self._stubs["list_interconnect_attachments"]
 
@@ -816,12 +816,12 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "get_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnectAttachment",
-                request_serializer=service.GetInterconnectAttachmentRequest.serialize,
-                response_deserializer=resources.InterconnectAttachment.deserialize,
+            self._stubs["get_interconnect_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.edgenetwork.v1.EdgeNetwork/GetInterconnectAttachment",
+                    request_serializer=service.GetInterconnectAttachmentRequest.serialize,
+                    response_deserializer=resources.InterconnectAttachment.deserialize,
+                )
             )
         return self._stubs["get_interconnect_attachment"]
 
@@ -847,12 +847,12 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "create_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateInterconnectAttachment",
-                request_serializer=service.CreateInterconnectAttachmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_interconnect_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.edgenetwork.v1.EdgeNetwork/CreateInterconnectAttachment",
+                    request_serializer=service.CreateInterconnectAttachmentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_interconnect_attachment"]
 
@@ -877,12 +877,12 @@ class EdgeNetworkGrpcTransport(EdgeNetworkTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_interconnect_attachment" not in self._stubs:
-            self._stubs[
-                "delete_interconnect_attachment"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteInterconnectAttachment",
-                request_serializer=service.DeleteInterconnectAttachmentRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_interconnect_attachment"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.edgenetwork.v1.EdgeNetwork/DeleteInterconnectAttachment",
+                    request_serializer=service.DeleteInterconnectAttachmentRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_interconnect_attachment"]
 

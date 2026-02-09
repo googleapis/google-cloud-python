@@ -20,9 +20,7 @@ from .base import RegionBackendBucketsTransport
 from .rest import RegionBackendBucketsRestInterceptor, RegionBackendBucketsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RegionBackendBucketsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RegionBackendBucketsTransport]]
 _transport_registry["rest"] = RegionBackendBucketsRestTransport
 
 __all__ = (

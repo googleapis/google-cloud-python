@@ -69,6 +69,7 @@ class VolumeSnapshot(proto.Message):
                 Snapshot was taken automatically as a part of
                 a snapshot schedule.
         """
+
         SNAPSHOT_TYPE_UNSPECIFIED = 0
         AD_HOC = 1
         SCHEDULED = 2

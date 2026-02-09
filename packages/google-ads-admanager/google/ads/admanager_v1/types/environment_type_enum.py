@@ -44,6 +44,7 @@ class EnvironmentTypeEnum(proto.Message):
             VIDEO_PLAYER (2):
                 Video players.
         """
+
         ENVIRONMENT_TYPE_UNSPECIFIED = 0
         BROWSER = 1
         VIDEO_PLAYER = 2

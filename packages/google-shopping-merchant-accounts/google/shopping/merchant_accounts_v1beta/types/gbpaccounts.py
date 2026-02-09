@@ -64,6 +64,7 @@ class GbpAccount(proto.Message):
             BUSINESS_ACCOUNT (2):
                 The GBP account is a business account.
         """
+
         TYPE_UNSPECIFIED = 0
         USER = 1
         BUSINESS_ACCOUNT = 2

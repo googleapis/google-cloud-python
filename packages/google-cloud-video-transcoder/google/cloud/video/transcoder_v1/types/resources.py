@@ -150,6 +150,7 @@ class Job(proto.Message):
                 The job has failed. For additional information, see
                 `Troubleshooting <https://cloud.google.com/transcoder/docs/troubleshooting>`__.
         """
+
         PROCESSING_STATE_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -170,6 +171,7 @@ class Job(proto.Message):
                 The job processing mode is batch mode.
                 Batch mode allows queuing of jobs.
         """
+
         PROCESSING_MODE_UNSPECIFIED = 0
         PROCESSING_MODE_INTERACTIVE = 1
         PROCESSING_MODE_BATCH = 2
@@ -185,6 +187,7 @@ class Job(proto.Message):
             DISABLED (2):
                 Disable all optimizations.
         """
+
         OPTIMIZATION_STRATEGY_UNSPECIFIED = 0
         AUTODETECT = 1
         DISABLED = 2
@@ -709,6 +712,7 @@ class Manifest(proto.Message):
                 Create an MPEG-DASH manifest. The corresponding file
                 extension is ``.mpd``.
         """
+
         MANIFEST_TYPE_UNSPECIFIED = 0
         HLS = 1
         DASH = 2
@@ -758,6 +762,7 @@ class Manifest(proto.Message):
                              media="hd-stream$Number%010d$.m4s" startNumber="0">
                          ...
             """
+
             SEGMENT_REFERENCE_SCHEME_UNSPECIFIED = 0
             SEGMENT_LIST = 1
             SEGMENT_TEMPLATE_NUMBER = 2
@@ -968,6 +973,7 @@ class Overlay(proto.Message):
             FADE_OUT (2):
                 Fade the overlay object out of view.
         """
+
         FADE_TYPE_UNSPECIFIED = 0
         FADE_IN = 1
         FADE_OUT = 2
@@ -1653,6 +1659,7 @@ class VideoStream(proto.Message):
                 Drop or duplicate frames to match the
                 specified frame rate.
         """
+
         FRAME_RATE_CONVERSION_STRATEGY_UNSPECIFIED = 0
         DOWNSAMPLE = 1
         DROP_DUPLICATE = 2

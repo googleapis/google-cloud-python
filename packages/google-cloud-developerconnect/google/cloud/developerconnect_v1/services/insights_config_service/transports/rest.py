@@ -16,24 +16,24 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.developerconnect_v1.types import insights_config
 from google.cloud.developerconnect_v1.types import (
     insights_config as gcd_insights_config,
 )
-from google.cloud.developerconnect_v1.types import insights_config
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseInsightsConfigServiceRestTransport
@@ -728,9 +728,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_create_insights_config(
                 request, metadata
@@ -884,9 +882,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_insights_config(
                 request, metadata
@@ -1040,9 +1036,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_insights_config(
                 request, metadata
@@ -1192,9 +1186,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_insights_configs(
                 request, metadata
@@ -1348,9 +1340,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_insights_config(
                 request, metadata
@@ -1554,9 +1544,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1695,9 +1683,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -1834,9 +1820,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1956,9 +1940,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2076,9 +2058,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2217,9 +2197,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_transcoded_request(

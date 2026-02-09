@@ -21,11 +21,11 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.apphub_v1.types import application as gca_application
+from google.cloud.apphub_v1.types import service as gca_service
 from google.cloud.apphub_v1.types import (
     service_project_attachment as gca_service_project_attachment,
 )
-from google.cloud.apphub_v1.types import application as gca_application
-from google.cloud.apphub_v1.types import service as gca_service
 from google.cloud.apphub_v1.types import workload as gca_workload
 
 __protobuf__ = proto.module(
@@ -454,12 +454,12 @@ class ListDiscoveredServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_services: MutableSequence[
-        gca_service.DiscoveredService
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gca_service.DiscoveredService,
+    discovered_services: MutableSequence[gca_service.DiscoveredService] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gca_service.DiscoveredService,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1075,12 +1075,12 @@ class ListDiscoveredWorkloadsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    discovered_workloads: MutableSequence[
-        gca_workload.DiscoveredWorkload
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gca_workload.DiscoveredWorkload,
+    discovered_workloads: MutableSequence[gca_workload.DiscoveredWorkload] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gca_workload.DiscoveredWorkload,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

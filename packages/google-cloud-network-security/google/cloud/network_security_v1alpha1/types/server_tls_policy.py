@@ -158,6 +158,7 @@ class ServerTlsPolicy(proto.Message):
                     If set, requires a reference to non-empty TrustConfig
                     specified in ``client_validation_trust_config``.
             """
+
             CLIENT_VALIDATION_MODE_UNSPECIFIED = 0
             ALLOW_INVALID_OR_MISSING_CLIENT_CERT = 1
             REJECT_INVALID = 2

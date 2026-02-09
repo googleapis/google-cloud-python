@@ -45,6 +45,7 @@ class VehicleEmissionType(proto.Enum):
         DIESEL (4):
             Diesel fueled vehicle.
     """
+
     VEHICLE_EMISSION_TYPE_UNSPECIFIED = 0
     GASOLINE = 1
     ELECTRIC = 2

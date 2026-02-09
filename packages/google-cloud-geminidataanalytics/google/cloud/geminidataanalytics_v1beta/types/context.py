@@ -120,6 +120,7 @@ class Context(proto.Message):
                     The source of the schema relationship is
                     BigQuery table constraints.
             """
+
             SOURCE_UNSPECIFIED = 0
             BIGQUERY_JOB_HISTORY = 1
             LLM_SUGGESTED = 2
@@ -156,12 +157,12 @@ class Context(proto.Message):
             number=2,
             message="Context.SchemaRelationship.SchemaPaths",
         )
-        sources: MutableSequence[
-            "Context.SchemaRelationship.Source"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=3,
-            enum="Context.SchemaRelationship.Source",
+        sources: MutableSequence["Context.SchemaRelationship.Source"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=3,
+                enum="Context.SchemaRelationship.Source",
+            )
         )
         confidence_score: float = proto.Field(
             proto.FLOAT,
