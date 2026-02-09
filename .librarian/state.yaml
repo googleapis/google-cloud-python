@@ -209,7 +209,7 @@ libraries:
     last_generated_commit: ""
     apis: []
     source_roots:
-      - packages/google-auth-httplib2/
+      - packages/google-auth-httplib2
     preserve_regex: []
     remove_regex: []
     tag_format: '{id}-v{version}'
