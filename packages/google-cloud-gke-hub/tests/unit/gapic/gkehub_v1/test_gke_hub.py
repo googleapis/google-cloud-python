@@ -65,7 +65,6 @@ import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
-import google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2 as rbacrolebindingactuation_pb2  # type: ignore
 from google.cloud.gkehub_v1.services.gke_hub import (
     GkeHubAsyncClient,
     GkeHubClient,
