@@ -635,7 +635,55 @@ MAX_GRAPH_VISUALIZATION_SIZE = 2_000_000
 MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE = 100_000
 
 
-def _add_graph_widget(query_result: pandas.DataFrame, query_job: Any, args: Any):
+def _get_graph_name(query_text: str):
+    """Returns the name of the graph queried.
+
+    Supports GRAPH only, not GRAPH_TABLE.
+
+    Args:
+        query_text: The SQL query text.
+
+    Returns:
+        A (dataset_id, graph_id) tuple, or None if the graph name cannot be determined.
+    """
+    match = re.match(r"\s*GRAPH\s+(\S+)\.(\S+)", query_text, re.IGNORECASE)
+    if match:
+        return (match.group(1), match.group(2))
+    return None
+
+
+def _get_graph_schema(
+    bq_client: bigquery.client.Client, query_text: str, query_job: bigquery.job.QueryJob
+):
+    graph_name_result = _get_graph_name(query_text)
+    if graph_name_result is None:
+        return None
+    dataset_id, graph_id = graph_name_result
+
+    info_schema_query = f"""
+        select PROPERTY_GRAPH_METADATA_JSON
+        FROM `{query_job.configuration.destination.project}.{dataset_id}`.INFORMATION_SCHEMA.PROPERTY_GRAPHS
+        WHERE PROPERTY_GRAPH_NAME = @graph_id
+    """
+    job_config = bigquery.QueryJobConfig(
+        query_parameters=[bigquery.ScalarQueryParameter("graph_id", "STRING", graph_id)]
+    )
+    info_schema_results = bq_client.query(
+        info_schema_query, job_config=job_config
+    ).to_dataframe()
+
+    if info_schema_results.shape == (1, 1):
+        return graph_server._convert_schema(info_schema_results.iloc[0, 0])
+    return None
+
+
+def _add_graph_widget(
+    bq_client: Any,
+    query_result: pandas.DataFrame,
+    query_text: str,
+    query_job: Any,
+    args: Any,
+):
     try:
         from spanner_graphs.graph_visualization import generate_visualization_html
     except ImportError as err:
@@ -687,6 +735,8 @@ def _add_graph_widget(query_result: pandas.DataFrame, query_job: Any, args: Any)
         )
         return
 
+    schema = _get_graph_schema(bq_client, query_text, query_job)
+
     table_dict = {
         "projectId": query_job.configuration.destination.project,
         "datasetId": query_job.configuration.destination.dataset_id,
@@ -696,6 +746,9 @@ def _add_graph_widget(query_result: pandas.DataFrame, query_job: Any, args: Any)
     params_dict = {"destination_table": table_dict, "args": args_dict}
     if estimated_size < MAX_GRAPH_VISUALIZATION_QUERY_RESULT_SIZE:
         params_dict["query_result"] = json.loads(query_result.to_json())
+
+    if schema is not None:
+        params_dict["schema"] = schema
 
     params_str = json.dumps(params_dict)
     html_content = generate_visualization_html(
@@ -817,7 +870,7 @@ def _make_bq_query(
         result = result.to_dataframe(**dataframe_kwargs)
 
     if args.graph and _supports_graph_widget(result):
-        _add_graph_widget(result, query_job, args)
+        _add_graph_widget(bq_client, result, query, query_job, args)
     return _handle_result(result, args)
 
 

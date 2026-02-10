@@ -1115,6 +1115,153 @@ def test_bigquery_graph_missing_spanner_deps(monkeypatch):
         display_mock.assert_not_called()
 
 
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_add_graph_widget_with_schema(monkeypatch):
+    """Test _add_graph_widget with a valid graph query that retrieves a schema."""
+    mock_display = mock.patch("IPython.display.display", autospec=True)
+    mock_gen_html = mock.patch(
+        "spanner_graphs.graph_visualization.generate_visualization_html",
+        return_value="<html>generated_html</html>",
+    )
+
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
+    query_text = "GRAPH my_dataset.my_graph"
+
+    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job.configuration.destination.project = "p"
+    query_job.configuration.destination.dataset_id = "d"
+    query_job.configuration.destination.table_id = "t"
+
+    args = mock.Mock()
+    args.bigquery_api_endpoint = "e"
+    args.project = "p"
+    args.location = "l"
+
+    # Mock INFORMATION_SCHEMA query for schema retrieval
+    schema_json = '{"propertyGraphReference": {"propertyGraphId": "my_graph"}}'
+    mock_schema_df = pandas.DataFrame(
+        [[schema_json]], columns=["PROPERTY_GRAPH_METADATA_JSON"]
+    )
+    bq_client.query.return_value.to_dataframe.return_value = mock_schema_df
+
+    with mock_display as display_mock, mock_gen_html as gen_html_mock:
+        magics._add_graph_widget(bq_client, query_result, query_text, query_job, args)
+
+        # Verify schema was retrieved and converted
+        assert bq_client.query.called
+        call_args, call_kwargs = bq_client.query.call_args
+        query_str = call_args[0]
+        assert "INFORMATION_SCHEMA.PROPERTY_GRAPHS" in query_str
+        assert "PROPERTY_GRAPH_NAME = @graph_id" in query_str
+
+        # Verify query parameter
+        job_config = call_kwargs["job_config"]
+        param = job_config.query_parameters[0]
+        assert param.name == "graph_id"
+        assert param.value == "my_graph"
+
+        # Verify generate_visualization_html was called with the converted schema
+        assert gen_html_mock.called
+        params_str = gen_html_mock.call_args[1]["params"]
+        params = json.loads(params_str.replace('\\"', '"').replace("\\\\", "\\"))
+        assert "schema" in params
+        schema_obj = json.loads(params["schema"])
+        assert schema_obj["name"] == "my_graph"
+
+        # Verify display was called
+        assert display_mock.called
+
+
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_add_graph_widget_no_graph_name(monkeypatch):
+    """Test _add_graph_widget with a query that is not a GRAPH query."""
+    mock_display = mock.patch("IPython.display.display", autospec=True)
+    mock_gen_html = mock.patch(
+        "spanner_graphs.graph_visualization.generate_visualization_html",
+        return_value="<html>generated_html</html>",
+    )
+
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
+    query_text = "SELECT * FROM my_dataset.my_table"
+
+    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job.configuration.destination.project = "p"
+    query_job.configuration.destination.dataset_id = "d"
+    query_job.configuration.destination.table_id = "t"
+
+    args = mock.Mock()
+    args.bigquery_api_endpoint = "e"
+    args.project = "p"
+    args.location = "l"
+
+    with mock_display as display_mock, mock_gen_html as gen_html_mock:
+        magics._add_graph_widget(bq_client, query_result, query_text, query_job, args)
+
+        # Verify schema retrieval was NOT attempted since graph name couldn't be parsed
+        assert not bq_client.query.called
+
+        # Verify generate_visualization_html was called without a schema
+        assert gen_html_mock.called
+        params_str = gen_html_mock.call_args[1]["params"]
+        params = json.loads(params_str.replace('\\"', '"').replace("\\\\", "\\"))
+        assert "schema" not in params
+
+        assert display_mock.called
+
+
+@pytest.mark.skipif(
+    graph_visualization is None or bigquery_storage is None,
+    reason="Requires `spanner-graph-notebook` and `google-cloud-bigquery-storage`",
+)
+def test_add_graph_widget_schema_not_found(monkeypatch):
+    """Test _add_graph_widget when the graph schema is not found in INFORMATION_SCHEMA."""
+    mock_display = mock.patch("IPython.display.display", autospec=True)
+    mock_gen_html = mock.patch(
+        "spanner_graphs.graph_visualization.generate_visualization_html",
+        return_value="<html>generated_html</html>",
+    )
+
+    bq_client = mock.create_autospec(bigquery.Client, instance=True)
+    query_result = pandas.DataFrame([{"id": 1}], columns=["result"])
+    query_text = "GRAPH my_dataset.my_graph"
+
+    query_job = mock.create_autospec(bigquery.job.QueryJob, instance=True)
+    query_job.configuration.destination.project = "p"
+    query_job.configuration.destination.dataset_id = "d"
+    query_job.configuration.destination.table_id = "t"
+
+    args = mock.Mock()
+    args.bigquery_api_endpoint = "e"
+    args.project = "p"
+    args.location = "l"
+
+    # Mock INFORMATION_SCHEMA query returning empty results
+    mock_schema_df = pandas.DataFrame([], columns=["PROPERTY_GRAPH_METADATA_JSON"])
+    bq_client.query.return_value.to_dataframe.return_value = mock_schema_df
+
+    with mock_display as display_mock, mock_gen_html as gen_html_mock:
+        magics._add_graph_widget(bq_client, query_result, query_text, query_job, args)
+
+        # Verify schema retrieval was attempted
+        assert bq_client.query.called
+
+        # Verify generate_visualization_html was called without a schema
+        assert gen_html_mock.called
+        params_str = gen_html_mock.call_args[1]["params"]
+        params = json.loads(params_str.replace('\\"', '"').replace("\\\\", "\\"))
+        assert "schema" not in params
+
+        assert display_mock.called
+
+
 def test_bigquery_magic_default_connection_user_agent():
     globalipapp.start_ipython()
     ip = globalipapp.get_ipython()

@@ -58,7 +58,113 @@ def _stringify_properties(d: Any) -> Any:
         return _stringify_value(d)
 
 
-def _convert_graph_data(query_results: Dict[str, Dict[str, str]]):
+def _convert_schema(schema_json: str) -> str:
+    """
+    Converts a JSON string from the BigQuery schema format to the format
+    expected by the visualization framework.
+
+    Args:
+        schema_json: The input JSON string in the BigQuery schema format.
+
+    Returns:
+        The converted JSON string in the visualization framework format.
+    """
+    data = json.loads(schema_json)
+
+    graph_id = data.get("propertyGraphReference", {}).get(
+        "propertyGraphId", "SampleGraph"
+    )
+
+    output = {
+        "catalog": "",
+        "name": graph_id,
+        "schema": "",
+        "labels": [],
+        "nodeTables": [],
+        "edgeTables": [],
+        "propertyDeclarations": [],
+    }
+
+    labels_dict = {}  # name -> set of property names
+    props_dict = {}  # name -> type
+
+    def process_table(table, kind):
+        name = table.get("name")
+        base_table_name = table.get("dataSourceTable", {}).get("tableId")
+        key_columns = table.get("keyColumns", [])
+
+        label_names = []
+        property_definitions = []
+
+        for lp in table.get("labelAndProperties", []):
+            label = lp.get("label")
+            label_names.append(label)
+
+            if label not in labels_dict:
+                labels_dict[label] = set()
+
+            for prop in lp.get("properties", []):
+                prop_name = prop.get("name")
+                prop_type = prop.get("dataType", {}).get("typeKind")
+                prop_expr = prop.get("expression")
+
+                labels_dict[label].add(prop_name)
+                props_dict[prop_name] = prop_type
+
+                property_definitions.append(
+                    {
+                        "propertyDeclarationName": prop_name,
+                        "valueExpressionSql": prop_expr,
+                    }
+                )
+
+        entry = {
+            "name": name,
+            "baseTableName": base_table_name,
+            "kind": kind,
+            "labelNames": label_names,
+            "keyColumns": key_columns,
+            "propertyDefinitions": property_definitions,
+        }
+
+        if kind == "EDGE":
+            src = table.get("sourceNodeReference", {})
+            dst = table.get("destinationNodeReference", {})
+
+            entry["sourceNodeTable"] = {
+                "nodeTableName": src.get("nodeTable"),
+                "edgeTableColumns": src.get("edgeTableColumns"),
+                "nodeTableColumns": src.get("nodeTableColumns"),
+            }
+            entry["destinationNodeTable"] = {
+                "nodeTableName": dst.get("nodeTable"),
+                "edgeTableColumns": dst.get("edgeTableColumns"),
+                "nodeTableColumns": dst.get("nodeTableColumns"),
+            }
+
+        return entry
+
+    for nt in data.get("nodeTables", []):
+        output["nodeTables"].append(process_table(nt, "NODE"))
+
+    for et in data.get("edgeTables", []):
+        output["edgeTables"].append(process_table(et, "EDGE"))
+
+    for label_name, prop_names in labels_dict.items():
+        output["labels"].append(
+            {
+                "name": label_name,
+                "propertyDeclarationNames": sorted(list(prop_names)),
+            }
+        )
+
+    for prop_name, prop_type in props_dict.items():
+        output["propertyDeclarations"].append({"name": prop_name, "type": prop_type})
+
+    return json.dumps(output, indent=2)
+
+
+def _convert_graph_data(query_results: Dict[str, Dict[str, str]], schema: Dict = None):
     """
     Converts graph data to the form expected by the visualization framework.
 
@@ -78,6 +184,8 @@ def _convert_graph_data(query_results: Dict[str, Dict[str, str]]):
               - The value is a JSON string containing the result of the query
                 for the current row/column. (Note: We only support graph
                 visualization for columns of type JSON).
+        schema:
+            A dictionary containing the schema for the graph.
     """
     # Delay spanner imports until this function is called to avoid making
     # spanner-graph-notebook (and its dependencies) hard requirements for bigquery
@@ -119,7 +227,7 @@ def _convert_graph_data(query_results: Dict[str, Dict[str, str]]):
                 data[column_name].append(row_json)
                 tabular_data[column_name].append(row_json)
 
-        nodes, edges = get_nodes_edges(data, fields, schema_json=None)
+        nodes, edges = get_nodes_edges(data, fields, schema_json=schema)
 
         # Convert nodes and edges to json objects.
         # (Unfortunately, the code coverage tooling does not allow this
@@ -136,9 +244,8 @@ def _convert_graph_data(query_results: Dict[str, Dict[str, str]]):
                 # These fields populate the graph result view.
                 "nodes": nodes_json,
                 "edges": edges_json,
-                # This populates the visualizer's schema view, but not yet implemented on the
-                # BigQuery side.
-                "schema": None,
+                # This populates the visualizer's schema view.
+                "schema": schema,
                 # This field is used to populate the visualizer's tabular view.
                 "query_result": tabular_data,
             }
@@ -162,7 +269,9 @@ def convert_graph_params(params: Dict[str, Any]):
         query_results = json.loads(
             bq_client.list_rows(table_ref).to_dataframe().to_json()
         )
-    return _convert_graph_data(query_results=query_results)
+    schema_json = params.get("schema")
+    schema = json.loads(schema_json) if schema_json is not None else None
+    return _convert_graph_data(query_results=query_results, schema=schema)
 
 
 class GraphServer:

@@ -585,3 +585,165 @@ class TestGraphServer(unittest.TestCase):
 
 def test_stop_server_never_started():
     graph_server.graph_server.stop_server()
+
+
+def test_convert_schema():
+    input_schema = {
+        "propertyGraphReference": {"propertyGraphId": "LDBC_SNB"},
+        "nodeTables": [
+            {
+                "name": "PersonNode",
+                "dataSourceTable": {"tableId": "PersonTable"},
+                "keyColumns": ["id"],
+                "labelAndProperties": [
+                    {
+                        "label": "Person",
+                        "properties": [
+                            {
+                                "name": "name",
+                                "dataType": {"typeKind": "STRING"},
+                                "expression": "p_name",
+                            }
+                        ],
+                    }
+                ],
+            }
+        ],
+        "edgeTables": [
+            {
+                "name": "KnowsEdge",
+                "dataSourceTable": {"tableId": "KnowsTable"},
+                "keyColumns": ["p1", "p2"],
+                "sourceNodeReference": {
+                    "nodeTable": "PersonNode",
+                    "edgeTableColumns": ["p1"],
+                    "nodeTableColumns": ["id"],
+                },
+                "destinationNodeReference": {
+                    "nodeTable": "PersonNode",
+                    "edgeTableColumns": ["p2"],
+                    "nodeTableColumns": ["id"],
+                },
+                "labelAndProperties": [
+                    {
+                        "label": "KNOWS",
+                        "properties": [
+                            {
+                                "name": "since",
+                                "dataType": {"typeKind": "DATE"},
+                                "expression": "k_since",
+                            }
+                        ],
+                    }
+                ],
+            }
+        ],
+    }
+
+    schema_json = json.dumps(input_schema)
+    result_json = graph_server._convert_schema(schema_json)
+    result = json.loads(result_json)
+
+    assert result["name"] == "LDBC_SNB"
+    assert len(result["nodeTables"]) == 1
+    assert result["nodeTables"][0]["name"] == "PersonNode"
+    assert result["nodeTables"][0]["baseTableName"] == "PersonTable"
+    assert result["nodeTables"][0]["kind"] == "NODE"
+    assert result["nodeTables"][0]["labelNames"] == ["Person"]
+    assert result["nodeTables"][0]["propertyDefinitions"] == [
+        {"propertyDeclarationName": "name", "valueExpressionSql": "p_name"}
+    ]
+
+    assert len(result["edgeTables"]) == 1
+    assert result["edgeTables"][0]["name"] == "KnowsEdge"
+    assert result["edgeTables"][0]["baseTableName"] == "KnowsTable"
+    assert result["edgeTables"][0]["kind"] == "EDGE"
+    assert result["edgeTables"][0]["labelNames"] == ["KNOWS"]
+    assert result["edgeTables"][0]["sourceNodeTable"]["nodeTableName"] == "PersonNode"
+    assert (
+        result["edgeTables"][0]["destinationNodeTable"]["nodeTableName"] == "PersonNode"
+    )
+    assert result["edgeTables"][0]["propertyDefinitions"] == [
+        {"propertyDeclarationName": "since", "valueExpressionSql": "k_since"}
+    ]
+
+    assert len(result["labels"]) == 2
+    labels = {label["name"]: label for label in result["labels"]}
+    assert "Person" in labels
+    assert "name" in labels["Person"]["propertyDeclarationNames"]
+    assert "KNOWS" in labels
+    assert "since" in labels["KNOWS"]["propertyDeclarationNames"]
+
+    assert len(result["propertyDeclarations"]) == 2
+    props = {p["name"]: p for p in result["propertyDeclarations"]}
+    assert props["name"]["type"] == "STRING"
+    assert props["since"]["type"] == "DATE"
+
+
+def test_convert_schema_empty():
+    input_schema = {
+        "propertyGraphReference": {"propertyGraphId": "EmptyGraph"},
+        "nodeTables": [],
+        "edgeTables": [],
+    }
+
+    schema_json = json.dumps(input_schema)
+    result_json = graph_server._convert_schema(schema_json)
+    result = json.loads(result_json)
+
+    assert result["name"] == "EmptyGraph"
+    assert result["nodeTables"] == []
+    assert result["edgeTables"] == []
+    assert result["labels"] == []
+    assert result["propertyDeclarations"] == []
+
+
+def test_convert_schema_shared_label():
+    """Test _convert_schema where multiple tables share the same label."""
+    input_schema = {
+        "propertyGraphReference": {"propertyGraphId": "SharedLabelGraph"},
+        "nodeTables": [
+            {
+                "name": "PersonA",
+                "dataSourceTable": {"tableId": "TableA"},
+                "labelAndProperties": [
+                    {
+                        "label": "Person",
+                        "properties": [
+                            {
+                                "name": "id",
+                                "dataType": {"typeKind": "INT64"},
+                                "expression": "id",
+                            }
+                        ],
+                    }
+                ],
+            },
+            {
+                "name": "PersonB",
+                "dataSourceTable": {"tableId": "TableB"},
+                "labelAndProperties": [
+                    {
+                        "label": "Person",
+                        "properties": [
+                            {
+                                "name": "name",
+                                "dataType": {"typeKind": "STRING"},
+                                "expression": "name",
+                            }
+                        ],
+                    }
+                ],
+            },
+        ],
+        "edgeTables": [],
+    }
+
+    schema_json = json.dumps(input_schema)
+    result_json = graph_server._convert_schema(schema_json)
+    result = json.loads(result_json)
+
+    # Verify that the 'Person' label includes properties from both tables
+    labels = {label["name"]: label for label in result["labels"]}
+    assert "Person" in labels
+    assert set(labels["Person"]["propertyDeclarationNames"]) == {"id", "name"}
