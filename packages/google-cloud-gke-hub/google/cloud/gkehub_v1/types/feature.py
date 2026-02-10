@@ -22,6 +22,7 @@ import proto  # type: ignore
 
 from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
 from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
+import google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2 as rbacrolebindingactuation_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -31,6 +32,8 @@ __protobuf__ = proto.module(
         "FeatureState",
         "CommonFeatureSpec",
         "CommonFeatureState",
+        "ScopeFeatureSpec",
+        "ScopeFeatureState",
         "MembershipFeatureSpec",
         "MembershipFeatureState",
     },
@@ -38,7 +41,7 @@ __protobuf__ = proto.module(
 
 
 class Feature(proto.Message):
-    r"""Feature represents the settings and status of any Hub
+    r"""Feature represents the settings and status of any Fleet
     Feature.
 
     Attributes:
@@ -46,55 +49,50 @@ class Feature(proto.Message):
             Output only. The full, unique name of this Feature resource
             in the format ``projects/*/locations/*/features/*``.
         labels (MutableMapping[str, str]):
-            GCP labels for this Feature.
+            Labels for this Feature.
         resource_state (google.cloud.gkehub_v1.types.FeatureResourceState):
             Output only. State of the Feature resource
             itself.
         spec (google.cloud.gkehub_v1.types.CommonFeatureSpec):
-            Optional. Hub-wide Feature configuration. If
-            this Feature does not support any Hub-wide
+            Optional. Fleet-wide Feature configuration.
+            If this Feature does not support any Fleet-wide
             configuration, this field may be unused.
         membership_specs (MutableMapping[str, google.cloud.gkehub_v1.types.MembershipFeatureSpec]):
-            Optional. Membership-specific configuration
-            for this Feature. If this Feature does not
-            support any per-Membership configuration, this
-            field may be unused.
+            Optional. Membership-specific configuration for this
+            Feature. If this Feature does not support any per-Membership
+            configuration, this field may be unused.
 
-            The keys indicate which Membership the
-            configuration is for, in the form:
+            The keys indicate which Membership the configuration is for,
+            in the form:
 
-                projects/{p}/locations/{l}/memberships/{m}
+            ``projects/{p}/locations/{l}/memberships/{m}``
 
-            Where {p} is the project, {l} is a valid
-            location and {m} is a valid Membership in this
-            project at that location. {p} WILL match the
-            Feature's project.
+            Where {p} is the project, {l} is a valid location and {m} is
+            a valid Membership in this project at that location. {p}
+            WILL match the Feature's project.
 
-            {p} will always be returned as the project
-            number, but the project ID is also accepted
-            during input. If the same Membership is
-            specified in the map twice (using the project ID
-            form, and the project number form), exactly ONE
-            of the entries will be saved, with no guarantees
-            as to which. For this reason, it is recommended
-            the same format be used for all entries when
-            mutating a Feature.
+            {p} will always be returned as the project number, but the
+            project ID is also accepted during input. If the same
+            Membership is specified in the map twice (using the project
+            ID form, and the project number form), exactly ONE of the
+            entries will be saved, with no guarantees as to which. For
+            this reason, it is recommended the same format be used for
+            all entries when mutating a Feature.
         state (google.cloud.gkehub_v1.types.CommonFeatureState):
-            Output only. The Hub-wide Feature state.
+            Output only. The Fleet-wide Feature state.
         membership_states (MutableMapping[str, google.cloud.gkehub_v1.types.MembershipFeatureState]):
-            Output only. Membership-specific Feature
-            status. If this Feature does report any
-            per-Membership status, this field may be unused.
+            Output only. Membership-specific Feature status. If this
+            Feature does report any per-Membership status, this field
+            may be unused.
 
-            The keys indicate which Membership the state is
-            for, in the form:
+            The keys indicate which Membership the state is for, in the
+            form:
 
-                projects/{p}/locations/{l}/memberships/{m}
+            ``projects/{p}/locations/{l}/memberships/{m}``
 
-            Where {p} is the project number, {l} is a valid
-            location and {m} is a valid Membership in this
-            project at that location. {p} MUST match the
-            Feature's project number.
+            Where {p} is the project number, {l} is a valid location and
+            {m} is a valid Membership in this project at that location.
+            {p} MUST match the Feature's project number.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the Feature resource was
             created.
@@ -104,6 +102,39 @@ class Feature(proto.Message):
         delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. When the Feature resource was
             deleted.
+        scope_specs (MutableMapping[str, google.cloud.gkehub_v1.types.ScopeFeatureSpec]):
+            Optional. Scope-specific configuration for this Feature. If
+            this Feature does not support any per-Scope configuration,
+            this field may be unused.
+
+            The keys indicate which Scope the configuration is for, in
+            the form:
+
+            ``projects/{p}/locations/global/scopes/{s}``
+
+            Where {p} is the project, {s} is a valid Scope in this
+            project. {p} WILL match the Feature's project.
+
+            {p} will always be returned as the project number, but the
+            project ID is also accepted during input. If the same Scope
+            is specified in the map twice (using the project ID form,
+            and the project number form), exactly ONE of the entries
+            will be saved, with no guarantees as to which. For this
+            reason, it is recommended the same format be used for all
+            entries when mutating a Feature.
+        scope_states (MutableMapping[str, google.cloud.gkehub_v1.types.ScopeFeatureState]):
+            Output only. Scope-specific Feature status. If this Feature
+            does report any per-Scope status, this field may be unused.
+
+            The keys indicate which Scope the state is for, in the form:
+
+            ``projects/{p}/locations/global/scopes/{s}``
+
+            Where {p} is the project, {s} is a valid Scope in this
+            project. {p} WILL match the Feature's project.
+        unreachable (MutableSequence[str]):
+            Output only. List of locations that could not
+            be reached while fetching this feature.
     """
 
     name: str = proto.Field(
@@ -157,12 +188,28 @@ class Feature(proto.Message):
         number=10,
         message=timestamp_pb2.Timestamp,
     )
+    scope_specs: MutableMapping[str, "ScopeFeatureSpec"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=12,
+        message="ScopeFeatureSpec",
+    )
+    scope_states: MutableMapping[str, "ScopeFeatureState"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=13,
+        message="ScopeFeatureState",
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=15,
+    )
 
 
 class FeatureResourceState(proto.Message):
     r"""FeatureResourceState describes the state of a Feature *resource* in
     the GkeHub API. See ``FeatureState`` for the "running state" of the
-    Feature in the Hub and across Memberships.
+    Feature in the Fleet and across Memberships.
 
     Attributes:
         state (google.cloud.gkehub_v1.types.FeatureResourceState.State):
@@ -180,12 +227,12 @@ class FeatureResourceState(proto.Message):
                 The Feature is being enabled, and the Feature
                 resource is being created. Once complete, the
                 corresponding Feature will be enabled in this
-                Hub.
+                Fleet.
             ACTIVE (2):
-                The Feature is enabled in this Hub, and the
+                The Feature is enabled in this Fleet, and the
                 Feature resource is fully available.
             DISABLING (3):
-                The Feature is being disabled in this Hub,
+                The Feature is being disabled in this Fleet,
                 and the Feature resource is being deleted.
             UPDATING (4):
                 The Feature resource is being updated.
@@ -288,13 +335,47 @@ class CommonFeatureSpec(proto.Message):
 
 
 class CommonFeatureState(proto.Message):
-    r"""CommonFeatureState contains Hub-wide Feature status
+    r"""CommonFeatureState contains Fleet-wide Feature status
+    information.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        rbacrolebindingactuation (google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2.FeatureState):
+            RBAC Role Binding Actuation feature state
+
+            This field is a member of `oneof`_ ``feature_state``.
+        state (google.cloud.gkehub_v1.types.FeatureState):
+            Output only. The "running state" of the
+            Feature in this Fleet.
+    """
+
+    rbacrolebindingactuation: rbacrolebindingactuation_pb2.FeatureState = proto.Field(
+        proto.MESSAGE,
+        number=120,
+        oneof="feature_state",
+        message=rbacrolebindingactuation_pb2.FeatureState,
+    )
+    state: "FeatureState" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FeatureState",
+    )
+
+
+class ScopeFeatureSpec(proto.Message):
+    r"""ScopeFeatureSpec contains feature specs for a fleet scope."""
+
+
+class ScopeFeatureState(proto.Message):
+    r"""ScopeFeatureState contains Scope-wide Feature status
     information.
 
     Attributes:
         state (google.cloud.gkehub_v1.types.FeatureState):
             Output only. The "running state" of the
-            Feature in this Hub.
+            Feature in this Scope.
     """
 
     state: "FeatureState" = proto.Field(

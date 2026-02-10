@@ -1681,7 +1681,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-gke-hub
     version: 1.20.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 7f62014053cd26b1acb7a1d0bf167104b64e3690
     apis:
       - path: google/cloud/gkehub/v1
         service_config: gkehub_v1.yaml

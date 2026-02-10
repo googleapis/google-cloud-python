@@ -29,7 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.gkehub_v1.types import feature, membership, service
+from google.cloud.gkehub_v1.types import feature, fleet, membership, service
 
 from .base import DEFAULT_CLIENT_INFO, GkeHubTransport
 
@@ -382,6 +382,35 @@ class GkeHubGrpcTransport(GkeHubTransport):
         return self._stubs["list_memberships"]
 
     @property
+    def list_bound_memberships(
+        self,
+    ) -> Callable[
+        [service.ListBoundMembershipsRequest], service.ListBoundMembershipsResponse
+    ]:
+        r"""Return a callable for the list bound memberships method over gRPC.
+
+        Lists Memberships bound to a Scope. The response
+        includes relevant Memberships from all regions.
+
+        Returns:
+            Callable[[~.ListBoundMembershipsRequest],
+                    ~.ListBoundMembershipsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_bound_memberships" not in self._stubs:
+            self._stubs["list_bound_memberships"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListBoundMemberships",
+                request_serializer=service.ListBoundMembershipsRequest.serialize,
+                response_deserializer=service.ListBoundMembershipsResponse.deserialize,
+            )
+        return self._stubs["list_bound_memberships"]
+
+    @property
     def list_features(
         self,
     ) -> Callable[[service.ListFeaturesRequest], service.ListFeaturesResponse]:
@@ -653,6 +682,893 @@ class GkeHubGrpcTransport(GkeHubTransport):
                 response_deserializer=service.GenerateConnectManifestResponse.deserialize,
             )
         return self._stubs["generate_connect_manifest"]
+
+    @property
+    def create_fleet(
+        self,
+    ) -> Callable[[service.CreateFleetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create fleet method over gRPC.
+
+        Creates a fleet.
+
+        Returns:
+            Callable[[~.CreateFleetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_fleet" not in self._stubs:
+            self._stubs["create_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateFleet",
+                request_serializer=service.CreateFleetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_fleet"]
+
+    @property
+    def get_fleet(self) -> Callable[[service.GetFleetRequest], fleet.Fleet]:
+        r"""Return a callable for the get fleet method over gRPC.
+
+        Returns the details of a fleet.
+
+        Returns:
+            Callable[[~.GetFleetRequest],
+                    ~.Fleet]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_fleet" not in self._stubs:
+            self._stubs["get_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetFleet",
+                request_serializer=service.GetFleetRequest.serialize,
+                response_deserializer=fleet.Fleet.deserialize,
+            )
+        return self._stubs["get_fleet"]
+
+    @property
+    def update_fleet(
+        self,
+    ) -> Callable[[service.UpdateFleetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update fleet method over gRPC.
+
+        Updates a fleet.
+
+        Returns:
+            Callable[[~.UpdateFleetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_fleet" not in self._stubs:
+            self._stubs["update_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateFleet",
+                request_serializer=service.UpdateFleetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_fleet"]
+
+    @property
+    def delete_fleet(
+        self,
+    ) -> Callable[[service.DeleteFleetRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete fleet method over gRPC.
+
+        Removes a Fleet. There must be no memberships
+        remaining in the Fleet.
+
+        Returns:
+            Callable[[~.DeleteFleetRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_fleet" not in self._stubs:
+            self._stubs["delete_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteFleet",
+                request_serializer=service.DeleteFleetRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_fleet"]
+
+    @property
+    def list_fleets(
+        self,
+    ) -> Callable[[service.ListFleetsRequest], service.ListFleetsResponse]:
+        r"""Return a callable for the list fleets method over gRPC.
+
+        Returns all fleets within an organization or a
+        project that the caller has access to.
+
+        Returns:
+            Callable[[~.ListFleetsRequest],
+                    ~.ListFleetsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_fleets" not in self._stubs:
+            self._stubs["list_fleets"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListFleets",
+                request_serializer=service.ListFleetsRequest.serialize,
+                response_deserializer=service.ListFleetsResponse.deserialize,
+            )
+        return self._stubs["list_fleets"]
+
+    @property
+    def get_scope_namespace(
+        self,
+    ) -> Callable[[service.GetScopeNamespaceRequest], fleet.Namespace]:
+        r"""Return a callable for the get scope namespace method over gRPC.
+
+        Returns the details of a fleet namespace.
+
+        Returns:
+            Callable[[~.GetScopeNamespaceRequest],
+                    ~.Namespace]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_scope_namespace" not in self._stubs:
+            self._stubs["get_scope_namespace"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetScopeNamespace",
+                request_serializer=service.GetScopeNamespaceRequest.serialize,
+                response_deserializer=fleet.Namespace.deserialize,
+            )
+        return self._stubs["get_scope_namespace"]
+
+    @property
+    def create_scope_namespace(
+        self,
+    ) -> Callable[[service.CreateScopeNamespaceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create scope namespace method over gRPC.
+
+        Creates a fleet namespace.
+
+        Returns:
+            Callable[[~.CreateScopeNamespaceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_scope_namespace" not in self._stubs:
+            self._stubs["create_scope_namespace"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateScopeNamespace",
+                request_serializer=service.CreateScopeNamespaceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_scope_namespace"]
+
+    @property
+    def update_scope_namespace(
+        self,
+    ) -> Callable[[service.UpdateScopeNamespaceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update scope namespace method over gRPC.
+
+        Updates a fleet namespace.
+
+        Returns:
+            Callable[[~.UpdateScopeNamespaceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_scope_namespace" not in self._stubs:
+            self._stubs["update_scope_namespace"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateScopeNamespace",
+                request_serializer=service.UpdateScopeNamespaceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_scope_namespace"]
+
+    @property
+    def delete_scope_namespace(
+        self,
+    ) -> Callable[[service.DeleteScopeNamespaceRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete scope namespace method over gRPC.
+
+        Deletes a fleet namespace.
+
+        Returns:
+            Callable[[~.DeleteScopeNamespaceRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_scope_namespace" not in self._stubs:
+            self._stubs["delete_scope_namespace"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteScopeNamespace",
+                request_serializer=service.DeleteScopeNamespaceRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_scope_namespace"]
+
+    @property
+    def list_scope_namespaces(
+        self,
+    ) -> Callable[
+        [service.ListScopeNamespacesRequest], service.ListScopeNamespacesResponse
+    ]:
+        r"""Return a callable for the list scope namespaces method over gRPC.
+
+        Lists fleet namespaces.
+
+        Returns:
+            Callable[[~.ListScopeNamespacesRequest],
+                    ~.ListScopeNamespacesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_scope_namespaces" not in self._stubs:
+            self._stubs["list_scope_namespaces"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListScopeNamespaces",
+                request_serializer=service.ListScopeNamespacesRequest.serialize,
+                response_deserializer=service.ListScopeNamespacesResponse.deserialize,
+            )
+        return self._stubs["list_scope_namespaces"]
+
+    @property
+    def get_scope_rbac_role_binding(
+        self,
+    ) -> Callable[[service.GetScopeRBACRoleBindingRequest], fleet.RBACRoleBinding]:
+        r"""Return a callable for the get scope rbac role binding method over gRPC.
+
+        Returns the details of a Scope RBACRoleBinding.
+
+        Returns:
+            Callable[[~.GetScopeRBACRoleBindingRequest],
+                    ~.RBACRoleBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_scope_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "get_scope_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetScopeRBACRoleBinding",
+                request_serializer=service.GetScopeRBACRoleBindingRequest.serialize,
+                response_deserializer=fleet.RBACRoleBinding.deserialize,
+            )
+        return self._stubs["get_scope_rbac_role_binding"]
+
+    @property
+    def create_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.CreateScopeRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create scope rbac role binding method over gRPC.
+
+        Creates a Scope RBACRoleBinding.
+
+        Returns:
+            Callable[[~.CreateScopeRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_scope_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "create_scope_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateScopeRBACRoleBinding",
+                request_serializer=service.CreateScopeRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_scope_rbac_role_binding"]
+
+    @property
+    def update_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.UpdateScopeRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update scope rbac role binding method over gRPC.
+
+        Updates a Scope RBACRoleBinding.
+
+        Returns:
+            Callable[[~.UpdateScopeRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_scope_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "update_scope_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateScopeRBACRoleBinding",
+                request_serializer=service.UpdateScopeRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_scope_rbac_role_binding"]
+
+    @property
+    def delete_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.DeleteScopeRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete scope rbac role binding method over gRPC.
+
+        Deletes a Scope RBACRoleBinding.
+
+        Returns:
+            Callable[[~.DeleteScopeRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_scope_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "delete_scope_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteScopeRBACRoleBinding",
+                request_serializer=service.DeleteScopeRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_scope_rbac_role_binding"]
+
+    @property
+    def list_scope_rbac_role_bindings(
+        self,
+    ) -> Callable[
+        [service.ListScopeRBACRoleBindingsRequest],
+        service.ListScopeRBACRoleBindingsResponse,
+    ]:
+        r"""Return a callable for the list scope rbac role bindings method over gRPC.
+
+        Lists all Scope RBACRoleBindings.
+
+        Returns:
+            Callable[[~.ListScopeRBACRoleBindingsRequest],
+                    ~.ListScopeRBACRoleBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_scope_rbac_role_bindings" not in self._stubs:
+            self._stubs[
+                "list_scope_rbac_role_bindings"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListScopeRBACRoleBindings",
+                request_serializer=service.ListScopeRBACRoleBindingsRequest.serialize,
+                response_deserializer=service.ListScopeRBACRoleBindingsResponse.deserialize,
+            )
+        return self._stubs["list_scope_rbac_role_bindings"]
+
+    @property
+    def get_scope(self) -> Callable[[service.GetScopeRequest], fleet.Scope]:
+        r"""Return a callable for the get scope method over gRPC.
+
+        Returns the details of a Scope.
+
+        Returns:
+            Callable[[~.GetScopeRequest],
+                    ~.Scope]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_scope" not in self._stubs:
+            self._stubs["get_scope"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetScope",
+                request_serializer=service.GetScopeRequest.serialize,
+                response_deserializer=fleet.Scope.deserialize,
+            )
+        return self._stubs["get_scope"]
+
+    @property
+    def create_scope(
+        self,
+    ) -> Callable[[service.CreateScopeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create scope method over gRPC.
+
+        Creates a Scope.
+
+        Returns:
+            Callable[[~.CreateScopeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_scope" not in self._stubs:
+            self._stubs["create_scope"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateScope",
+                request_serializer=service.CreateScopeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_scope"]
+
+    @property
+    def update_scope(
+        self,
+    ) -> Callable[[service.UpdateScopeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update scope method over gRPC.
+
+        Updates a scopes.
+
+        Returns:
+            Callable[[~.UpdateScopeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_scope" not in self._stubs:
+            self._stubs["update_scope"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateScope",
+                request_serializer=service.UpdateScopeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_scope"]
+
+    @property
+    def delete_scope(
+        self,
+    ) -> Callable[[service.DeleteScopeRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete scope method over gRPC.
+
+        Deletes a Scope.
+
+        Returns:
+            Callable[[~.DeleteScopeRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_scope" not in self._stubs:
+            self._stubs["delete_scope"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteScope",
+                request_serializer=service.DeleteScopeRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_scope"]
+
+    @property
+    def list_scopes(
+        self,
+    ) -> Callable[[service.ListScopesRequest], service.ListScopesResponse]:
+        r"""Return a callable for the list scopes method over gRPC.
+
+        Lists Scopes.
+
+        Returns:
+            Callable[[~.ListScopesRequest],
+                    ~.ListScopesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_scopes" not in self._stubs:
+            self._stubs["list_scopes"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListScopes",
+                request_serializer=service.ListScopesRequest.serialize,
+                response_deserializer=service.ListScopesResponse.deserialize,
+            )
+        return self._stubs["list_scopes"]
+
+    @property
+    def list_permitted_scopes(
+        self,
+    ) -> Callable[
+        [service.ListPermittedScopesRequest], service.ListPermittedScopesResponse
+    ]:
+        r"""Return a callable for the list permitted scopes method over gRPC.
+
+        Lists permitted Scopes.
+
+        Returns:
+            Callable[[~.ListPermittedScopesRequest],
+                    ~.ListPermittedScopesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_permitted_scopes" not in self._stubs:
+            self._stubs["list_permitted_scopes"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListPermittedScopes",
+                request_serializer=service.ListPermittedScopesRequest.serialize,
+                response_deserializer=service.ListPermittedScopesResponse.deserialize,
+            )
+        return self._stubs["list_permitted_scopes"]
+
+    @property
+    def get_membership_binding(
+        self,
+    ) -> Callable[[service.GetMembershipBindingRequest], fleet.MembershipBinding]:
+        r"""Return a callable for the get membership binding method over gRPC.
+
+        Returns the details of a MembershipBinding.
+
+        Returns:
+            Callable[[~.GetMembershipBindingRequest],
+                    ~.MembershipBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_membership_binding" not in self._stubs:
+            self._stubs["get_membership_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetMembershipBinding",
+                request_serializer=service.GetMembershipBindingRequest.serialize,
+                response_deserializer=fleet.MembershipBinding.deserialize,
+            )
+        return self._stubs["get_membership_binding"]
+
+    @property
+    def create_membership_binding(
+        self,
+    ) -> Callable[[service.CreateMembershipBindingRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create membership binding method over gRPC.
+
+        Creates a MembershipBinding.
+
+        Returns:
+            Callable[[~.CreateMembershipBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_membership_binding" not in self._stubs:
+            self._stubs["create_membership_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateMembershipBinding",
+                request_serializer=service.CreateMembershipBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_membership_binding"]
+
+    @property
+    def update_membership_binding(
+        self,
+    ) -> Callable[[service.UpdateMembershipBindingRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update membership binding method over gRPC.
+
+        Updates a MembershipBinding.
+
+        Returns:
+            Callable[[~.UpdateMembershipBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_membership_binding" not in self._stubs:
+            self._stubs["update_membership_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateMembershipBinding",
+                request_serializer=service.UpdateMembershipBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_membership_binding"]
+
+    @property
+    def delete_membership_binding(
+        self,
+    ) -> Callable[[service.DeleteMembershipBindingRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete membership binding method over gRPC.
+
+        Deletes a MembershipBinding.
+
+        Returns:
+            Callable[[~.DeleteMembershipBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_membership_binding" not in self._stubs:
+            self._stubs["delete_membership_binding"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteMembershipBinding",
+                request_serializer=service.DeleteMembershipBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_membership_binding"]
+
+    @property
+    def list_membership_bindings(
+        self,
+    ) -> Callable[
+        [service.ListMembershipBindingsRequest], service.ListMembershipBindingsResponse
+    ]:
+        r"""Return a callable for the list membership bindings method over gRPC.
+
+        Lists MembershipBindings.
+
+        Returns:
+            Callable[[~.ListMembershipBindingsRequest],
+                    ~.ListMembershipBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_membership_bindings" not in self._stubs:
+            self._stubs["list_membership_bindings"] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListMembershipBindings",
+                request_serializer=service.ListMembershipBindingsRequest.serialize,
+                response_deserializer=service.ListMembershipBindingsResponse.deserialize,
+            )
+        return self._stubs["list_membership_bindings"]
+
+    @property
+    def get_membership_rbac_role_binding(
+        self,
+    ) -> Callable[[service.GetMembershipRBACRoleBindingRequest], fleet.RBACRoleBinding]:
+        r"""Return a callable for the get membership rbac role
+        binding method over gRPC.
+
+        Returns the details of a Membership RBACRoleBinding.
+
+        Returns:
+            Callable[[~.GetMembershipRBACRoleBindingRequest],
+                    ~.RBACRoleBinding]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_membership_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "get_membership_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GetMembershipRBACRoleBinding",
+                request_serializer=service.GetMembershipRBACRoleBindingRequest.serialize,
+                response_deserializer=fleet.RBACRoleBinding.deserialize,
+            )
+        return self._stubs["get_membership_rbac_role_binding"]
+
+    @property
+    def create_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.CreateMembershipRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create membership rbac role
+        binding method over gRPC.
+
+        Creates a Membership RBACRoleBinding.
+
+        Returns:
+            Callable[[~.CreateMembershipRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_membership_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "create_membership_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/CreateMembershipRBACRoleBinding",
+                request_serializer=service.CreateMembershipRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_membership_rbac_role_binding"]
+
+    @property
+    def update_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.UpdateMembershipRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update membership rbac role
+        binding method over gRPC.
+
+        Updates a Membership RBACRoleBinding.
+
+        Returns:
+            Callable[[~.UpdateMembershipRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_membership_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "update_membership_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/UpdateMembershipRBACRoleBinding",
+                request_serializer=service.UpdateMembershipRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_membership_rbac_role_binding"]
+
+    @property
+    def delete_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.DeleteMembershipRBACRoleBindingRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the delete membership rbac role
+        binding method over gRPC.
+
+        Deletes a Membership RBACRoleBinding.
+
+        Returns:
+            Callable[[~.DeleteMembershipRBACRoleBindingRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_membership_rbac_role_binding" not in self._stubs:
+            self._stubs[
+                "delete_membership_rbac_role_binding"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/DeleteMembershipRBACRoleBinding",
+                request_serializer=service.DeleteMembershipRBACRoleBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_membership_rbac_role_binding"]
+
+    @property
+    def list_membership_rbac_role_bindings(
+        self,
+    ) -> Callable[
+        [service.ListMembershipRBACRoleBindingsRequest],
+        service.ListMembershipRBACRoleBindingsResponse,
+    ]:
+        r"""Return a callable for the list membership rbac role
+        bindings method over gRPC.
+
+        Lists all Membership RBACRoleBindings.
+
+        Returns:
+            Callable[[~.ListMembershipRBACRoleBindingsRequest],
+                    ~.ListMembershipRBACRoleBindingsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_membership_rbac_role_bindings" not in self._stubs:
+            self._stubs[
+                "list_membership_rbac_role_bindings"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/ListMembershipRBACRoleBindings",
+                request_serializer=service.ListMembershipRBACRoleBindingsRequest.serialize,
+                response_deserializer=service.ListMembershipRBACRoleBindingsResponse.deserialize,
+            )
+        return self._stubs["list_membership_rbac_role_bindings"]
+
+    @property
+    def generate_membership_rbac_role_binding_yaml(
+        self,
+    ) -> Callable[
+        [service.GenerateMembershipRBACRoleBindingYAMLRequest],
+        service.GenerateMembershipRBACRoleBindingYAMLResponse,
+    ]:
+        r"""Return a callable for the generate membership rbac role
+        binding yaml method over gRPC.
+
+        Generates a YAML of the  RBAC policies for the
+        specified RoleBinding and its associated impersonation
+        resources.
+
+        Returns:
+            Callable[[~.GenerateMembershipRBACRoleBindingYAMLRequest],
+                    ~.GenerateMembershipRBACRoleBindingYAMLResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_membership_rbac_role_binding_yaml" not in self._stubs:
+            self._stubs[
+                "generate_membership_rbac_role_binding_yaml"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.gkehub.v1.GkeHub/GenerateMembershipRBACRoleBindingYAML",
+                request_serializer=service.GenerateMembershipRBACRoleBindingYAMLRequest.serialize,
+                response_deserializer=service.GenerateMembershipRBACRoleBindingYAMLResponse.deserialize,
+            )
+        return self._stubs["generate_membership_rbac_role_binding_yaml"]
 
     def close(self):
         self._logged_channel.close()

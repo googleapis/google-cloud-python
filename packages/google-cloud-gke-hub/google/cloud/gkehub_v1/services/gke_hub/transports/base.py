@@ -27,7 +27,7 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.gkehub_v1 import gapic_version as package_version
-from google.cloud.gkehub_v1.types import feature, membership, service
+from google.cloud.gkehub_v1.types import feature, fleet, membership, service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -142,6 +142,11 @@ class GkeHubTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_bound_memberships: gapic_v1.method.wrap_method(
+                self.list_bound_memberships,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_features: gapic_v1.method.wrap_method(
                 self.list_features,
                 default_timeout=None,
@@ -192,6 +197,166 @@ class GkeHubTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_fleet: gapic_v1.method.wrap_method(
+                self.create_fleet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_fleet: gapic_v1.method.wrap_method(
+                self.get_fleet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_fleet: gapic_v1.method.wrap_method(
+                self.update_fleet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_fleet: gapic_v1.method.wrap_method(
+                self.delete_fleet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_fleets: gapic_v1.method.wrap_method(
+                self.list_fleets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_scope_namespace: gapic_v1.method.wrap_method(
+                self.get_scope_namespace,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_scope_namespace: gapic_v1.method.wrap_method(
+                self.create_scope_namespace,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_scope_namespace: gapic_v1.method.wrap_method(
+                self.update_scope_namespace,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_scope_namespace: gapic_v1.method.wrap_method(
+                self.delete_scope_namespace,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_scope_namespaces: gapic_v1.method.wrap_method(
+                self.list_scope_namespaces,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_scope_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.get_scope_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_scope_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.create_scope_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_scope_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.update_scope_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_scope_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.delete_scope_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_scope_rbac_role_bindings: gapic_v1.method.wrap_method(
+                self.list_scope_rbac_role_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_scope: gapic_v1.method.wrap_method(
+                self.get_scope,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_scope: gapic_v1.method.wrap_method(
+                self.create_scope,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_scope: gapic_v1.method.wrap_method(
+                self.update_scope,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_scope: gapic_v1.method.wrap_method(
+                self.delete_scope,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_scopes: gapic_v1.method.wrap_method(
+                self.list_scopes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_permitted_scopes: gapic_v1.method.wrap_method(
+                self.list_permitted_scopes,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_membership_binding: gapic_v1.method.wrap_method(
+                self.get_membership_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_membership_binding: gapic_v1.method.wrap_method(
+                self.create_membership_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_membership_binding: gapic_v1.method.wrap_method(
+                self.update_membership_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_membership_binding: gapic_v1.method.wrap_method(
+                self.delete_membership_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_membership_bindings: gapic_v1.method.wrap_method(
+                self.list_membership_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_membership_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.get_membership_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_membership_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.create_membership_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_membership_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.update_membership_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_membership_rbac_role_binding: gapic_v1.method.wrap_method(
+                self.delete_membership_rbac_role_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_membership_rbac_role_bindings: gapic_v1.method.wrap_method(
+                self.list_membership_rbac_role_bindings,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.generate_membership_rbac_role_binding_yaml: gapic_v1.method.wrap_method(
+                self.generate_membership_rbac_role_binding_yaml,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -215,6 +380,18 @@ class GkeHubTransport(abc.ABC):
         [service.ListMembershipsRequest],
         Union[
             service.ListMembershipsResponse, Awaitable[service.ListMembershipsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_bound_memberships(
+        self,
+    ) -> Callable[
+        [service.ListBoundMembershipsRequest],
+        Union[
+            service.ListBoundMembershipsResponse,
+            Awaitable[service.ListBoundMembershipsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -307,6 +484,310 @@ class GkeHubTransport(abc.ABC):
         Union[
             service.GenerateConnectManifestResponse,
             Awaitable[service.GenerateConnectManifestResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_fleet(
+        self,
+    ) -> Callable[
+        [service.CreateFleetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_fleet(
+        self,
+    ) -> Callable[
+        [service.GetFleetRequest], Union[fleet.Fleet, Awaitable[fleet.Fleet]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_fleet(
+        self,
+    ) -> Callable[
+        [service.UpdateFleetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_fleet(
+        self,
+    ) -> Callable[
+        [service.DeleteFleetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_fleets(
+        self,
+    ) -> Callable[
+        [service.ListFleetsRequest],
+        Union[service.ListFleetsResponse, Awaitable[service.ListFleetsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_scope_namespace(
+        self,
+    ) -> Callable[
+        [service.GetScopeNamespaceRequest],
+        Union[fleet.Namespace, Awaitable[fleet.Namespace]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_scope_namespace(
+        self,
+    ) -> Callable[
+        [service.CreateScopeNamespaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_scope_namespace(
+        self,
+    ) -> Callable[
+        [service.UpdateScopeNamespaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_scope_namespace(
+        self,
+    ) -> Callable[
+        [service.DeleteScopeNamespaceRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_scope_namespaces(
+        self,
+    ) -> Callable[
+        [service.ListScopeNamespacesRequest],
+        Union[
+            service.ListScopeNamespacesResponse,
+            Awaitable[service.ListScopeNamespacesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.GetScopeRBACRoleBindingRequest],
+        Union[fleet.RBACRoleBinding, Awaitable[fleet.RBACRoleBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.CreateScopeRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.UpdateScopeRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_scope_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.DeleteScopeRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_scope_rbac_role_bindings(
+        self,
+    ) -> Callable[
+        [service.ListScopeRBACRoleBindingsRequest],
+        Union[
+            service.ListScopeRBACRoleBindingsResponse,
+            Awaitable[service.ListScopeRBACRoleBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_scope(
+        self,
+    ) -> Callable[
+        [service.GetScopeRequest], Union[fleet.Scope, Awaitable[fleet.Scope]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_scope(
+        self,
+    ) -> Callable[
+        [service.CreateScopeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_scope(
+        self,
+    ) -> Callable[
+        [service.UpdateScopeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_scope(
+        self,
+    ) -> Callable[
+        [service.DeleteScopeRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_scopes(
+        self,
+    ) -> Callable[
+        [service.ListScopesRequest],
+        Union[service.ListScopesResponse, Awaitable[service.ListScopesResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_permitted_scopes(
+        self,
+    ) -> Callable[
+        [service.ListPermittedScopesRequest],
+        Union[
+            service.ListPermittedScopesResponse,
+            Awaitable[service.ListPermittedScopesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_membership_binding(
+        self,
+    ) -> Callable[
+        [service.GetMembershipBindingRequest],
+        Union[fleet.MembershipBinding, Awaitable[fleet.MembershipBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_membership_binding(
+        self,
+    ) -> Callable[
+        [service.CreateMembershipBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_membership_binding(
+        self,
+    ) -> Callable[
+        [service.UpdateMembershipBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_membership_binding(
+        self,
+    ) -> Callable[
+        [service.DeleteMembershipBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_membership_bindings(
+        self,
+    ) -> Callable[
+        [service.ListMembershipBindingsRequest],
+        Union[
+            service.ListMembershipBindingsResponse,
+            Awaitable[service.ListMembershipBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.GetMembershipRBACRoleBindingRequest],
+        Union[fleet.RBACRoleBinding, Awaitable[fleet.RBACRoleBinding]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.CreateMembershipRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.UpdateMembershipRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_membership_rbac_role_binding(
+        self,
+    ) -> Callable[
+        [service.DeleteMembershipRBACRoleBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_membership_rbac_role_bindings(
+        self,
+    ) -> Callable[
+        [service.ListMembershipRBACRoleBindingsRequest],
+        Union[
+            service.ListMembershipRBACRoleBindingsResponse,
+            Awaitable[service.ListMembershipRBACRoleBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_membership_rbac_role_binding_yaml(
+        self,
+    ) -> Callable[
+        [service.GenerateMembershipRBACRoleBindingYAMLRequest],
+        Union[
+            service.GenerateMembershipRBACRoleBindingYAMLResponse,
+            Awaitable[service.GenerateMembershipRBACRoleBindingYAMLResponse],
         ],
     ]:
         raise NotImplementedError()
