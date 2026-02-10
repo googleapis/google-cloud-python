@@ -36,6 +36,8 @@ def compile(
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
+    if op.order_independent and (window is not None) and window.is_unbounded:
+        window = window.without_order()
     return UNARY_OP_REGISTRATION[op](op, column, window=window)
 
 

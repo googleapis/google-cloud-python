@@ -19,10 +19,10 @@ from dataclasses import asdict
 import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import operations as ops
-from bigframes.core.compile.sqlglot import scalar_compiler
+from bigframes.core.compile.sqlglot import expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 
-register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
+register_nary_op = expression_compiler.expression_compiler.register_nary_op
 
 
 @register_nary_op(ops.AIGenerate, pass_op=True)

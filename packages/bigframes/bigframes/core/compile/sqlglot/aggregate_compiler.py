@@ -22,8 +22,8 @@ from bigframes.core.compile.sqlglot.aggregations import (
     ordered_unary_compiler,
     unary_compiler,
 )
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions import typed_expr
-import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
 
 def compile_aggregate(
@@ -35,7 +35,7 @@ def compile_aggregate(
         return nullary_compiler.compile(aggregate.op)
     if isinstance(aggregate, agg_expressions.UnaryAggregation):
         column = typed_expr.TypedExpr(
-            scalar_compiler.scalar_op_compiler.compile_expression(aggregate.arg),
+            expression_compiler.expression_compiler.compile_expression(aggregate.arg),
             aggregate.arg.output_type,
         )
         if not aggregate.op.order_independent:
@@ -46,11 +46,11 @@ def compile_aggregate(
             return unary_compiler.compile(aggregate.op, column)
     elif isinstance(aggregate, agg_expressions.BinaryAggregation):
         left = typed_expr.TypedExpr(
-            scalar_compiler.scalar_op_compiler.compile_expression(aggregate.left),
+            expression_compiler.expression_compiler.compile_expression(aggregate.left),
             aggregate.left.output_type,
         )
         right = typed_expr.TypedExpr(
-            scalar_compiler.scalar_op_compiler.compile_expression(aggregate.right),
+            expression_compiler.expression_compiler.compile_expression(aggregate.right),
             aggregate.right.output_type,
         )
         return binary_compiler.compile(aggregate.op, left, right)
@@ -66,7 +66,7 @@ def compile_analytic(
         return nullary_compiler.compile(aggregate.op, window)
     if isinstance(aggregate, agg_expressions.UnaryAggregation):
         column = typed_expr.TypedExpr(
-            scalar_compiler.scalar_op_compiler.compile_expression(aggregate.arg),
+            expression_compiler.expression_compiler.compile_expression(aggregate.arg),
             aggregate.arg.output_type,
         )
         return unary_compiler.compile(aggregate.op, column, window)

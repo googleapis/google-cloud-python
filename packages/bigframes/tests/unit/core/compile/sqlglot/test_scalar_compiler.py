@@ -17,13 +17,13 @@ import unittest.mock as mock
 import bigframes_vendored.sqlglot.expressions as sge
 import pytest
 
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
-import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 import bigframes.operations as ops
 
 
 def test_register_unary_op():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockUnaryOp(ops.UnaryOp):
         name = "mock_unary_op"
@@ -43,7 +43,7 @@ def test_register_unary_op():
 
 
 def test_register_unary_op_pass_op():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockUnaryOp(ops.UnaryOp):
         name = "mock_unary_op_pass_op"
@@ -63,7 +63,7 @@ def test_register_unary_op_pass_op():
 
 
 def test_register_binary_op():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockBinaryOp(ops.BinaryOp):
         name = "mock_binary_op"
@@ -84,7 +84,7 @@ def test_register_binary_op():
 
 
 def test_register_binary_op_pass_on():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockBinaryOp(ops.BinaryOp):
         name = "mock_binary_op_pass_op"
@@ -105,7 +105,7 @@ def test_register_binary_op_pass_on():
 
 
 def test_register_ternary_op():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockTernaryOp(ops.TernaryOp):
         name = "mock_ternary_op"
@@ -127,7 +127,7 @@ def test_register_ternary_op():
 
 
 def test_register_nary_op():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockNaryOp(ops.NaryOp):
         name = "mock_nary_op"
@@ -148,7 +148,7 @@ def test_register_nary_op():
 
 
 def test_register_nary_op_pass_on():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockNaryOp(ops.NaryOp):
         name = "mock_nary_op_pass_op"
@@ -171,7 +171,7 @@ def test_register_nary_op_pass_on():
 
 
 def test_binary_op_parentheses():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockAddOp(ops.BinaryOp):
         name = "mock_add_op"
@@ -208,7 +208,7 @@ def test_binary_op_parentheses():
 
 
 def test_register_duplicate_op_raises():
-    compiler = scalar_compiler.ScalarOpCompiler()
+    compiler = expression_compiler.ExpressionCompiler()
 
     class MockUnaryOp(ops.UnaryOp):
         name = "mock_unary_op_duplicate"

@@ -20,13 +20,13 @@ import bigframes_vendored.sqlglot.expressions as sge
 from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot import sqlglot_ir, sqlglot_types
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
-import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
-register_unary_op = scalar_compiler.scalar_op_compiler.register_unary_op
-register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
-register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
-register_ternary_op = scalar_compiler.scalar_op_compiler.register_ternary_op
+register_unary_op = expression_compiler.expression_compiler.register_unary_op
+register_binary_op = expression_compiler.expression_compiler.register_binary_op
+register_nary_op = expression_compiler.expression_compiler.register_nary_op
+register_ternary_op = expression_compiler.expression_compiler.register_ternary_op
 
 
 @register_unary_op(ops.AsTypeOp, pass_op=True)
@@ -94,7 +94,7 @@ def _(*operands: TypedExpr, op: ops.SqlScalarOp) -> sge.Expression:
 
 @register_unary_op(ops.isnull_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    return sge.Is(this=expr.expr, expression=sge.Null())
+    return sge.Is(this=sge.paren(expr.expr), expression=sge.Null())
 
 
 @register_unary_op(ops.MapOp, pass_op=True)
@@ -125,7 +125,7 @@ def _(expr: TypedExpr, op: ops.MapOp) -> sge.Expression:
 
 @register_unary_op(ops.notnull_op)
 def _(expr: TypedExpr) -> sge.Expression:
-    return sge.Not(this=sge.Is(this=expr.expr, expression=sge.Null()))
+    return sge.Not(this=sge.Is(this=sge.paren(expr.expr), expression=sge.Null()))
 
 
 @register_ternary_op(ops.where_op)

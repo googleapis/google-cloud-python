@@ -18,7 +18,7 @@ import typing
 import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes.core import utils, window_spec
-import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
+import bigframes.core.compile.sqlglot.expression_compiler as expression_compiler
 import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering_spec
 import bigframes.dtypes as dtypes
@@ -116,7 +116,7 @@ def get_window_order_by(
 
     order_by = []
     for ordering_spec_item in ordering:
-        expr = scalar_compiler.scalar_op_compiler.compile_expression(
+        expr = expression_compiler.expression_compiler.compile_expression(
             ordering_spec_item.scalar_expression
         )
         desc = not ordering_spec_item.direction.is_ascending
@@ -191,15 +191,15 @@ def _get_window_bounds(
 
 
 def _compile_group_by_key(key: ex.Expression) -> sge.Expression:
-    expr = scalar_compiler.scalar_op_compiler.compile_expression(key)
+    expr = expression_compiler.expression_compiler.compile_expression(key)
     # The group_by keys has been rewritten by bind_schema_to_node
-    assert isinstance(key, ex.ResolvedDerefOp)
+    assert key.is_scalar_expr and key.is_resolved
 
     # Some types need to be converted to another type to enable groupby
-    if key.dtype == dtypes.FLOAT_DTYPE:
+    if key.output_type == dtypes.FLOAT_DTYPE:
         expr = sge.Cast(this=expr, to="STRING")
-    elif key.dtype == dtypes.GEO_DTYPE:
+    elif key.output_type == dtypes.GEO_DTYPE:
         expr = sge.func("ST_ASBINARY", expr)
-    elif key.dtype == dtypes.JSON_DTYPE:
+    elif key.output_type == dtypes.JSON_DTYPE:
         expr = sge.func("TO_JSON_STRING", expr)
     return expr

@@ -13,7 +13,6 @@
 # limitations under the License.
 from __future__ import annotations
 
-import functools
 import itertools
 import typing
 from typing import Literal, Optional, Sequence
@@ -27,7 +26,7 @@ import bigframes_vendored.ibis.expr.types as ibis_types
 from google.cloud import bigquery
 import pyarrow as pa
 
-from bigframes.core import agg_expressions
+from bigframes.core import agg_expressions, rewrite
 import bigframes.core.agg_expressions as ex_types
 import bigframes.core.compile.googlesql
 import bigframes.core.compile.ibis_compiler.aggregate_compiler as agg_compiler
@@ -38,8 +37,6 @@ from bigframes.core.ordering import OrderingExpression
 import bigframes.core.sql
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
-import bigframes.operations as ops
-import bigframes.operations.aggregations as agg_ops
 
 op_compiler = op_compilers.scalar_op_compiler
 
@@ -424,59 +421,11 @@ class UnorderedIR:
                 output_name,
             )
 
-        if expression.op.order_independent and window_spec.is_unbounded:
-            # notably percentile_cont does not support ordering clause
-            window_spec = window_spec.without_order()
-
-        # TODO: Turn this logic into a true rewriter
-        result_expr: ex.Expression = agg_expressions.WindowExpression(
-            expression, window_spec
+        rewritten_expr = rewrite.simplify_complex_windows(
+            agg_expressions.WindowExpression(expression, window_spec)
         )
-        clauses: list[tuple[ex.Expression, ex.Expression]] = []
-        if window_spec.min_periods and len(expression.inputs) > 0:
-            if not expression.op.nulls_count_for_min_values:
-                is_observation = ops.notnull_op.as_expr()
 
-                # Most operations do not count NULL values towards min_periods
-                per_col_does_count = (
-                    ops.notnull_op.as_expr(input) for input in expression.inputs
-                )
-                # All inputs must be non-null for observation to count
-                is_observation = functools.reduce(
-                    lambda x, y: ops.and_op.as_expr(x, y), per_col_does_count
-                )
-                observation_sentinel = ops.AsTypeOp(bigframes.dtypes.INT_DTYPE).as_expr(
-                    is_observation
-                )
-                observation_count_expr = agg_expressions.WindowExpression(
-                    ex_types.UnaryAggregation(agg_ops.sum_op, observation_sentinel),
-                    window_spec,
-                )
-            else:
-                # Operations like count treat even NULLs as valid observations for the sake of min_periods
-                # notnull is just used to convert null values to non-null (FALSE) values to be counted
-                is_observation = ops.notnull_op.as_expr(expression.inputs[0])
-                observation_count_expr = agg_expressions.WindowExpression(
-                    agg_ops.count_op.as_expr(is_observation),
-                    window_spec,
-                )
-            clauses.append(
-                (
-                    ops.lt_op.as_expr(
-                        observation_count_expr, ex.const(window_spec.min_periods)
-                    ),
-                    ex.const(None),
-                )
-            )
-        if clauses:
-            case_inputs = [
-                *itertools.chain.from_iterable(clauses),
-                ex.const(True),
-                result_expr,
-            ]
-            result_expr = ops.CaseWhenOp().as_expr(*case_inputs)
-
-        ibis_expr = op_compiler.compile_expression(result_expr, self._ibis_bindings)
+        ibis_expr = op_compiler.compile_expression(rewritten_expr, self._ibis_bindings)
 
         return UnorderedIR(self._table, (*self.columns, ibis_expr.name(output_name)))
 

@@ -15,9 +15,72 @@
 from __future__ import annotations
 
 import dataclasses
+import functools
+import itertools
 
 from bigframes import operations as ops
-from bigframes.core import guid, identifiers, nodes, ordering
+from bigframes.core import (
+    agg_expressions,
+    expression,
+    guid,
+    identifiers,
+    nodes,
+    ordering,
+)
+import bigframes.dtypes
+from bigframes.operations import aggregations as agg_ops
+
+
+def simplify_complex_windows(
+    window_expr: agg_expressions.WindowExpression,
+) -> expression.Expression:
+    result_expr: expression.Expression = window_expr
+    agg_expr = window_expr.analytic_expr
+    window_spec = window_expr.window
+    clauses: list[tuple[expression.Expression, expression.Expression]] = []
+    if window_spec.min_periods and len(agg_expr.inputs) > 0:
+        if not agg_expr.op.nulls_count_for_min_values:
+            is_observation = ops.notnull_op.as_expr()
+
+            # Most operations do not count NULL values towards min_periods
+            per_col_does_count = (
+                ops.notnull_op.as_expr(input) for input in agg_expr.inputs
+            )
+            # All inputs must be non-null for observation to count
+            is_observation = functools.reduce(
+                lambda x, y: ops.and_op.as_expr(x, y), per_col_does_count
+            )
+            observation_sentinel = ops.AsTypeOp(bigframes.dtypes.INT_DTYPE).as_expr(
+                is_observation
+            )
+            observation_count_expr = agg_expressions.WindowExpression(
+                agg_expressions.UnaryAggregation(agg_ops.sum_op, observation_sentinel),
+                window_spec,
+            )
+        else:
+            # Operations like count treat even NULLs as valid observations for the sake of min_periods
+            # notnull is just used to convert null values to non-null (FALSE) values to be counted
+            is_observation = ops.notnull_op.as_expr(agg_expr.inputs[0])
+            observation_count_expr = agg_expressions.WindowExpression(
+                agg_ops.count_op.as_expr(is_observation),
+                window_spec,
+            )
+        clauses.append(
+            (
+                ops.lt_op.as_expr(
+                    observation_count_expr, expression.const(window_spec.min_periods)
+                ),
+                expression.const(None),
+            )
+        )
+    if clauses:
+        case_inputs = [
+            *itertools.chain.from_iterable(clauses),
+            expression.const(True),
+            result_expr,
+        ]
+        result_expr = ops.CaseWhenOp().as_expr(*case_inputs)
+    return result_expr
 
 
 def rewrite_range_rolling(node: nodes.BigFrameNode) -> nodes.BigFrameNode:

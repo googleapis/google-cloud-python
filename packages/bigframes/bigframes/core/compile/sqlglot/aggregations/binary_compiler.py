@@ -33,6 +33,8 @@ def compile(
     right: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
+    if op.order_independent and (window is not None) and window.is_unbounded:
+        window = window.without_order()
     return BINARY_OP_REGISTRATION[op](op, left, right, window=window)
 
 

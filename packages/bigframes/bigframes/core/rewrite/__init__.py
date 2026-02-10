@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bigframes.core.rewrite.as_sql import as_sql_nodes
 from bigframes.core.rewrite.fold_row_count import fold_row_counts
 from bigframes.core.rewrite.identifiers import remap_variables
 from bigframes.core.rewrite.implicit_align import try_row_join
@@ -25,9 +26,14 @@ from bigframes.core.rewrite.scan_reduction import (
 from bigframes.core.rewrite.select_pullup import defer_selection
 from bigframes.core.rewrite.slices import pull_out_limit, pull_up_limits, rewrite_slice
 from bigframes.core.rewrite.timedeltas import rewrite_timedelta_expressions
-from bigframes.core.rewrite.windows import pull_out_window_order, rewrite_range_rolling
+from bigframes.core.rewrite.windows import (
+    pull_out_window_order,
+    rewrite_range_rolling,
+    simplify_complex_windows,
+)
 
 __all__ = [
+    "as_sql_nodes",
     "legacy_join_as_projection",
     "try_row_join",
     "rewrite_slice",
@@ -44,4 +50,5 @@ __all__ = [
     "fold_row_counts",
     "pull_out_window_order",
     "defer_selection",
+    "simplify_complex_windows",
 ]

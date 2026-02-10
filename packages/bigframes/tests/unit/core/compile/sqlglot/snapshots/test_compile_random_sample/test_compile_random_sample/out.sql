@@ -1,7 +1,6 @@
 WITH `bfcte_0` AS (
   SELECT
-    *,
-    RAND() AS `bfcol_16`
+    *
   FROM UNNEST(ARRAY<STRUCT<`bfcol_0` BOOLEAN, `bfcol_1` BYTES, `bfcol_2` DATE, `bfcol_3` DATETIME, `bfcol_4` GEOGRAPHY, `bfcol_5` INT64, `bfcol_6` INT64, `bfcol_7` NUMERIC, `bfcol_8` FLOAT64, `bfcol_9` INT64, `bfcol_10` INT64, `bfcol_11` STRING, `bfcol_12` TIME, `bfcol_13` TIMESTAMP, `bfcol_14` INT64, `bfcol_15` INT64>>[STRUCT(
     TRUE,
     CAST(b'Hello, World!' AS BYTES),
@@ -161,7 +160,7 @@ WITH `bfcte_0` AS (
     *
   FROM `bfcte_0`
   WHERE
-    `bfcol_16` < 0.1
+    RAND() < 0.1
 )
 SELECT
   `bfcol_0` AS `bool_col`,

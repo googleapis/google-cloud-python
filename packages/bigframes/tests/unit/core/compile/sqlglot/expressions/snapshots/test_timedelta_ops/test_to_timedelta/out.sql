@@ -1,54 +1,9 @@
-WITH `bfcte_0` AS (
-  SELECT
-    `float64_col`,
-    `int64_col`,
-    `rowindex`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
-), `bfcte_1` AS (
-  SELECT
-    *,
-    `rowindex` AS `bfcol_6`,
-    `int64_col` AS `bfcol_7`,
-    `float64_col` AS `bfcol_8`,
-    `int64_col` AS `bfcol_9`
-  FROM `bfcte_0`
-), `bfcte_2` AS (
-  SELECT
-    *,
-    `bfcol_6` AS `bfcol_14`,
-    `bfcol_7` AS `bfcol_15`,
-    `bfcol_8` AS `bfcol_16`,
-    `bfcol_9` AS `bfcol_17`,
-    CAST(FLOOR(`bfcol_8` * 1000000) AS INT64) AS `bfcol_18`
-  FROM `bfcte_1`
-), `bfcte_3` AS (
-  SELECT
-    *,
-    `bfcol_14` AS `bfcol_24`,
-    `bfcol_15` AS `bfcol_25`,
-    `bfcol_16` AS `bfcol_26`,
-    `bfcol_17` AS `bfcol_27`,
-    `bfcol_18` AS `bfcol_28`,
-    `bfcol_15` * 3600000000 AS `bfcol_29`
-  FROM `bfcte_2`
-), `bfcte_4` AS (
-  SELECT
-    *,
-    `bfcol_24` AS `bfcol_36`,
-    `bfcol_25` AS `bfcol_37`,
-    `bfcol_26` AS `bfcol_38`,
-    `bfcol_27` AS `bfcol_39`,
-    `bfcol_28` AS `bfcol_40`,
-    `bfcol_29` AS `bfcol_41`,
-    `bfcol_27` AS `bfcol_42`
-  FROM `bfcte_3`
-)
 SELECT
-  `bfcol_36` AS `rowindex`,
-  `bfcol_37` AS `int64_col`,
-  `bfcol_38` AS `float64_col`,
-  `bfcol_39` AS `duration_us`,
-  `bfcol_40` AS `duration_s`,
-  `bfcol_41` AS `duration_w`,
-  `bfcol_42` AS `duration_on_duration`
-FROM `bfcte_4`
+  `rowindex`,
+  `int64_col`,
+  `float64_col`,
+  `int64_col` AS `duration_us`,
+  CAST(FLOOR(`float64_col` * 1000000) AS INT64) AS `duration_s`,
+  `int64_col` * 3600000000 AS `duration_w`,
+  `int64_col` AS `duration_on_duration`
+FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
