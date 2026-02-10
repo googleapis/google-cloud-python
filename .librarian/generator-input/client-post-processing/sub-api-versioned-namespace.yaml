@@ -20,9 +20,11 @@ replacements:
     before: |
       import google.cloud.gkehub.configmanagement.v1.configmanagement_pb2 as configmanagement_pb2  # type: ignore
       import google.cloud.gkehub.multiclusteringress.v1.multiclusteringress_pb2 as multiclusteringress_pb2  # type: ignore
+      import google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2 as rbacrolebindingactuation_pb2  # type: ignore
     after: |
       from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
       from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
+      from google.cloud.gkehub_v1 import rbacrolebindingactuation_v1  # type: ignore
     count: 1
   - paths: [
       packages/google-cloud-gke-hub/google/cloud/gkehub_v1/types/feature.py
@@ -39,6 +41,12 @@ replacements:
   - paths: [
       packages/google-cloud-gke-hub/google/cloud/gkehub_v1/types/feature.py
     ]
+    before: google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2
+    after: google.cloud.gkehub_v1.rbacrolebindingactuation_v1
+    count: 1
+  - paths: [
+      packages/google-cloud-gke-hub/google/cloud/gkehub_v1/types/feature.py
+    ]
     before: multiclusteringress_pb2
     after: multiclusteringress_v1
     count: 2
@@ -48,6 +56,12 @@ replacements:
     before: configmanagement_pb2
     after: configmanagement_v1
     count: 4
+  - paths: [
+      packages/google-cloud-gke-hub/google/cloud/gkehub_v1/types/feature.py
+    ]
+    before: rbacrolebindingactuation_pb2
+    after: rbacrolebindingactuation_v1
+    count: 2
   - paths: [
       packages/google-cloud-gke-hub/docs/index.rst
     ]
@@ -70,7 +84,9 @@ replacements:
           gkehub_v1/configmanagement_v1/services_
           gkehub_v1/configmanagement_v1/types_
           gkehub_v1/multiclusteringress_v1/services_
-          gkehub_v1/multiclusteringress_v1/types_\n
+          gkehub_v1/multiclusteringress_v1/types_
+          gkehub_v1/rbacrolebindingactuation_v1/services_
+          gkehub_v1/rbacrolebindingactuation_v1/types_\n
     count: 1
   - paths: [
       packages/google-cloud-workflows/docs/index.rst
