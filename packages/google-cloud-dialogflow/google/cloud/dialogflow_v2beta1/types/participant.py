@@ -1288,6 +1288,11 @@ class StreamingAnalyzeContentRequest(proto.Message):
             only one final response even if some ``Fulfillment``\ s in
             Dialogflow CX agent have been configured to return partial
             responses.
+        output_multiple_utterances (bool):
+            Optional. If multiple utterances are detected
+            in the audio stream, process them individually
+            instead of stitching them together to form a
+            single utterance.
         enable_debugging_info (bool):
             if true, ``StreamingAnalyzeContentResponse.debugging_info``
             will get populated.
@@ -1366,6 +1371,10 @@ class StreamingAnalyzeContentRequest(proto.Message):
     enable_partial_automated_agent_reply: bool = proto.Field(
         proto.BOOL,
         number=12,
+    )
+    output_multiple_utterances: bool = proto.Field(
+        proto.BOOL,
+        number=18,
     )
     enable_debugging_info: bool = proto.Field(
         proto.BOOL,

@@ -1382,7 +1382,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow
     version: 2.45.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: 7f62014053cd26b1acb7a1d0bf167104b64e3690
     apis:
       - path: google/cloud/dialogflow/v2beta1
         service_config: dialogflow_v2beta1.yaml
