@@ -21,10 +21,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package='google.cloud.gkehub.rbacrolebindingactuation.v1',
+    package="google.cloud.gkehub.rbacrolebindingactuation.v1",
     manifest={
-        'FeatureSpec',
-        'FeatureState',
+        "FeatureSpec",
+        "FeatureState",
     },
 )
 

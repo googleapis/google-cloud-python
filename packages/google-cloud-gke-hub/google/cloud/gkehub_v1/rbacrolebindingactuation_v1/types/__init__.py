@@ -19,6 +19,6 @@ from .rbacrolebindingactuation import (
 )
 
 __all__ = (
-    'FeatureSpec',
-    'FeatureState',
+    "FeatureSpec",
+    "FeatureState",
 )
