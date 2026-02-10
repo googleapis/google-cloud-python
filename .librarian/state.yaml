@@ -1694,8 +1694,10 @@ libraries:
       - docs/CHANGELOG.md
       - docs/gkehub_v1/configmanagement_v1
       - docs/gkehub_v1/multiclusteringress_v1
+      - docs/gkehub_v1/rbacrolebindingactuation_v1
       - google/cloud/gkehub_v1/configmanagement_v1
       - google/cloud/gkehub_v1/multiclusteringress_v1
+      - google/cloud/gkehub_v1/rbacrolebindingactuation_v1
     remove_regex:
       - packages/google-cloud-gke-hub
     tag_format: '{id}-v{version}'
