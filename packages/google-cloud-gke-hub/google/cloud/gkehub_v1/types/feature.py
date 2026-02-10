@@ -22,7 +22,7 @@ import proto  # type: ignore
 
 from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
 from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
-import google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2 as rbacrolebindingactuation_pb2  # type: ignore
+from google.cloud.gkehub_v1 import rbacrolebindingactuation_v1  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -342,7 +342,7 @@ class CommonFeatureState(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        rbacrolebindingactuation (google.cloud.gkehub.rbacrolebindingactuation.v1.rbacrolebindingactuation_pb2.FeatureState):
+        rbacrolebindingactuation (google.cloud.gkehub_v1.rbacrolebindingactuation_v1.FeatureState):
             RBAC Role Binding Actuation feature state
 
             This field is a member of `oneof`_ ``feature_state``.
@@ -351,11 +351,11 @@ class CommonFeatureState(proto.Message):
             Feature in this Fleet.
     """
 
-    rbacrolebindingactuation: rbacrolebindingactuation_pb2.FeatureState = proto.Field(
+    rbacrolebindingactuation: rbacrolebindingactuation_v1.FeatureState = proto.Field(
         proto.MESSAGE,
         number=120,
         oneof="feature_state",
-        message=rbacrolebindingactuation_pb2.FeatureState,
+        message=rbacrolebindingactuation_v1.FeatureState,
     )
     state: "FeatureState" = proto.Field(
         proto.MESSAGE,
