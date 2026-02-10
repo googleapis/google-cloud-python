@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/bigquery-magics/#history
 
+## [0.12.0](https://github.com/googleapis/python-bigquery-magics/compare/v0.11.0...v0.12.0) (2026-02-10)
+
+
+### Features
+
+* support schema view (#211) ([8e1883ee553a5ca4a31c0ad3affbbfd96433a6d2](https://github.com/googleapis/python-bigquery-magics/commit/8e1883ee553a5ca4a31c0ad3affbbfd96433a6d2))
+* remove bqsql magic to make that name available for bigframes (#210) ([c46c94af3a7e8d9632e2abed0198bc070a1fa2cf](https://github.com/googleapis/python-bigquery-magics/commit/c46c94af3a7e8d9632e2abed0198bc070a1fa2cf))
+
+
+### Bug Fixes
+
+* reduce conflicts between Spanner and BigQuery graph visualization on Colab (#209) ([7dca7b13164953bd07929c5313648184d44a422f](https://github.com/googleapis/python-bigquery-magics/commit/7dca7b13164953bd07929c5313648184d44a422f))
+
 ## [0.11.0](https://github.com/googleapis/google-cloud-python/compare/bigquery-magics-v0.10.3...bigquery-magics-v0.11.0) (2025-12-16)
 
 
