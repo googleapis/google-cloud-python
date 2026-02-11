@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.essential_contacts_v1.types import service
@@ -523,9 +523,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseComputeContacts._get_http_options()
 
             request, metadata = self._interceptor.pre_compute_contacts(
                 request, metadata
@@ -676,9 +674,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_http_options()
 
             request, metadata = self._interceptor.pre_create_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseCreateContact._get_transcoded_request(
@@ -825,9 +821,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseDeleteContact._get_transcoded_request(
@@ -941,9 +935,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_http_options()
 
             request, metadata = self._interceptor.pre_get_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseGetContact._get_transcoded_request(
@@ -1089,9 +1081,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_contacts(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseListContacts._get_transcoded_request(
@@ -1234,9 +1224,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseSendTestMessage._get_http_options()
 
             request, metadata = self._interceptor.pre_send_test_message(
                 request, metadata
@@ -1358,9 +1346,7 @@ class EssentialContactsServiceRestTransport(_BaseEssentialContactsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_http_options()
-            )
+            http_options = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_http_options()
 
             request, metadata = self._interceptor.pre_update_contact(request, metadata)
             transcoded_request = _BaseEssentialContactsServiceRestTransport._BaseUpdateContact._get_transcoded_request(

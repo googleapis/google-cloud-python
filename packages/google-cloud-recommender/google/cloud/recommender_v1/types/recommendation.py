@@ -118,6 +118,7 @@ class Recommendation(proto.Message):
                 Recommendation has P1 priority (highest
                 priority).
         """
+
         PRIORITY_UNSPECIFIED = 0
         P4 = 1
         P3 = 2
@@ -528,6 +529,7 @@ class ReliabilityProjection(proto.Message):
                 Potential access denial. The service is still
                 up but some or all clients can't access it.
         """
+
         RISK_TYPE_UNSPECIFIED = 0
         SERVICE_DISRUPTION = 1
         DATA_LOSS = 2
@@ -603,6 +605,7 @@ class Impact(proto.Message):
                 Indicates a potential increase or decrease in
                 reliability.
         """
+
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -695,6 +698,7 @@ class RecommendationStateInfo(proto.Message):
                 DISMISSED recommendations can be marked as
                 ACTIVE.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         CLAIMED = 6

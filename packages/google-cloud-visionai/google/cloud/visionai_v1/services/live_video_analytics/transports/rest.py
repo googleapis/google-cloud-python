@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1472,9 +1474,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseBatchRunProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_run_process(
                 request, metadata
@@ -1626,9 +1626,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateAnalysis._get_transcoded_request(
@@ -1778,9 +1776,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_http_options()
 
             request, metadata = self._interceptor.pre_create_operator(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateOperator._get_transcoded_request(
@@ -1930,9 +1926,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_create_process(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseCreateProcess._get_transcoded_request(
@@ -2081,9 +2075,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
@@ -2227,9 +2219,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operator(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperator._get_transcoded_request(
@@ -2373,9 +2363,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_process(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteProcess._get_transcoded_request(
@@ -2518,9 +2506,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetAnalysis._get_transcoded_request(
@@ -2665,9 +2651,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operator(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperator._get_transcoded_request(
@@ -2959,9 +2943,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListAnalyses._get_transcoded_request(
@@ -3109,9 +3091,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operators(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperators._get_transcoded_request(
@@ -3259,9 +3239,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_processes(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListProcesses._get_transcoded_request(
@@ -3409,9 +3387,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListPublicOperators._get_http_options()
 
             request, metadata = self._interceptor.pre_list_public_operators(
                 request, metadata
@@ -3564,9 +3540,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseResolveOperatorInfo._get_http_options()
 
             request, metadata = self._interceptor.pre_resolve_operator_info(
                 request, metadata
@@ -3724,9 +3698,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_update_analysis(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateAnalysis._get_transcoded_request(
@@ -3876,9 +3848,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_http_options()
 
             request, metadata = self._interceptor.pre_update_operator(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateOperator._get_transcoded_request(
@@ -4028,9 +3998,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
 
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_update_process(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseUpdateProcess._get_transcoded_request(
@@ -4333,9 +4301,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4474,9 +4440,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListLocations._get_transcoded_request(
@@ -4613,9 +4577,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -4733,9 +4695,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -4851,9 +4811,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4992,9 +4950,7 @@ class LiveVideoAnalyticsRestTransport(_BaseLiveVideoAnalyticsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseLiveVideoAnalyticsRestTransport._BaseListOperations._get_transcoded_request(

@@ -40,6 +40,7 @@ class CVSSVersion(proto.Enum):
         CVSS_VERSION_3 (2):
             No description available.
     """
+
     CVSS_VERSION_UNSPECIFIED = 0
     CVSS_VERSION_2 = 1
     CVSS_VERSION_3 = 2
@@ -94,6 +95,7 @@ class CVSSv3(proto.Message):
             ATTACK_VECTOR_PHYSICAL (4):
                 No description available.
         """
+
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
         ATTACK_VECTOR_ADJACENT = 2
@@ -111,6 +113,7 @@ class CVSSv3(proto.Message):
             ATTACK_COMPLEXITY_HIGH (2):
                 No description available.
         """
+
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
         ATTACK_COMPLEXITY_HIGH = 2
@@ -128,6 +131,7 @@ class CVSSv3(proto.Message):
             PRIVILEGES_REQUIRED_HIGH (3):
                 No description available.
         """
+
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
         PRIVILEGES_REQUIRED_LOW = 2
@@ -144,6 +148,7 @@ class CVSSv3(proto.Message):
             USER_INTERACTION_REQUIRED (2):
                 No description available.
         """
+
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
         USER_INTERACTION_REQUIRED = 2
@@ -159,6 +164,7 @@ class CVSSv3(proto.Message):
             SCOPE_CHANGED (2):
                 No description available.
         """
+
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
         SCOPE_CHANGED = 2
@@ -176,6 +182,7 @@ class CVSSv3(proto.Message):
             IMPACT_NONE (3):
                 No description available.
         """
+
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
         IMPACT_LOW = 2
@@ -289,6 +296,7 @@ class CVSS(proto.Message):
             ATTACK_VECTOR_PHYSICAL (4):
                 No description available.
         """
+
         ATTACK_VECTOR_UNSPECIFIED = 0
         ATTACK_VECTOR_NETWORK = 1
         ATTACK_VECTOR_ADJACENT = 2
@@ -308,6 +316,7 @@ class CVSS(proto.Message):
             ATTACK_COMPLEXITY_MEDIUM (3):
                 No description available.
         """
+
         ATTACK_COMPLEXITY_UNSPECIFIED = 0
         ATTACK_COMPLEXITY_LOW = 1
         ATTACK_COMPLEXITY_HIGH = 2
@@ -326,6 +335,7 @@ class CVSS(proto.Message):
             AUTHENTICATION_NONE (3):
                 No description available.
         """
+
         AUTHENTICATION_UNSPECIFIED = 0
         AUTHENTICATION_MULTIPLE = 1
         AUTHENTICATION_SINGLE = 2
@@ -344,6 +354,7 @@ class CVSS(proto.Message):
             PRIVILEGES_REQUIRED_HIGH (3):
                 No description available.
         """
+
         PRIVILEGES_REQUIRED_UNSPECIFIED = 0
         PRIVILEGES_REQUIRED_NONE = 1
         PRIVILEGES_REQUIRED_LOW = 2
@@ -360,6 +371,7 @@ class CVSS(proto.Message):
             USER_INTERACTION_REQUIRED (2):
                 No description available.
         """
+
         USER_INTERACTION_UNSPECIFIED = 0
         USER_INTERACTION_NONE = 1
         USER_INTERACTION_REQUIRED = 2
@@ -375,6 +387,7 @@ class CVSS(proto.Message):
             SCOPE_CHANGED (2):
                 No description available.
         """
+
         SCOPE_UNSPECIFIED = 0
         SCOPE_UNCHANGED = 1
         SCOPE_CHANGED = 2
@@ -396,6 +409,7 @@ class CVSS(proto.Message):
             IMPACT_COMPLETE (5):
                 No description available.
         """
+
         IMPACT_UNSPECIFIED = 0
         IMPACT_HIGH = 1
         IMPACT_LOW = 2

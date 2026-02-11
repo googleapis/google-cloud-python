@@ -58,6 +58,7 @@ class RolloutAction(proto.Enum):
         ROLLOUT_ACTION_CANCEL (3):
             Cancel the Rollout permanently.
     """
+
     ROLLOUT_ACTION_UNSPECIFIED = 0
     ROLLOUT_ACTION_RUN = 1
     ROLLOUT_ACTION_PAUSE = 2
@@ -208,6 +209,7 @@ class Rollout(proto.Message):
             ROLLOUT_STATE_PAUSING (9):
                 Rollout is being paused.
         """
+
         ROLLOUT_STATE_UNSPECIFIED = 0
         ROLLOUT_STATE_RUNNING = 1
         ROLLOUT_STATE_PAUSED = 2
@@ -414,6 +416,7 @@ class RolloutKind(proto.Message):
             UPDATE_UNIT_KIND_STRATEGY_NEVER (2):
                 Never update the unit kind.
         """
+
         UPDATE_UNIT_KIND_STRATEGY_UNSPECIFIED = 0
         UPDATE_UNIT_KIND_STRATEGY_ON_START = 1
         UPDATE_UNIT_KIND_STRATEGY_NEVER = 2

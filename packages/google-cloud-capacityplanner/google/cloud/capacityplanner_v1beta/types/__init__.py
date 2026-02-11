@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .allocation import Allocation
-from .future_reservation import FutureReservation
-from .location import LocationIdentifier, LocationLevel
+from .allocation import (
+    Allocation,
+)
+from .future_reservation import (
+    FutureReservation,
+)
+from .location import (
+    LocationIdentifier,
+    LocationLevel,
+)
 from .resource import (
     ResourceAttribute,
     ResourceContainer,

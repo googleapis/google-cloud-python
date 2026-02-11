@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.types import grounded_generation_service
 
@@ -354,12 +354,12 @@ class GroundedGenerationServiceGrpcAsyncIOTransport(GroundedGenerationServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "stream_generate_grounded_content" not in self._stubs:
-            self._stubs[
-                "stream_generate_grounded_content"
-            ] = self._logged_channel.stream_stream(
-                "/google.cloud.discoveryengine.v1beta.GroundedGenerationService/StreamGenerateGroundedContent",
-                request_serializer=grounded_generation_service.GenerateGroundedContentRequest.serialize,
-                response_deserializer=grounded_generation_service.GenerateGroundedContentResponse.deserialize,
+            self._stubs["stream_generate_grounded_content"] = (
+                self._logged_channel.stream_stream(
+                    "/google.cloud.discoveryengine.v1beta.GroundedGenerationService/StreamGenerateGroundedContent",
+                    request_serializer=grounded_generation_service.GenerateGroundedContentRequest.serialize,
+                    response_deserializer=grounded_generation_service.GenerateGroundedContentResponse.deserialize,
+                )
             )
         return self._stubs["stream_generate_grounded_content"]
 

@@ -250,6 +250,7 @@ class Account(proto.Message):
             MC_MCA_SUBACCOUNT (8):
                 MC MCA sub-account.
         """
+
         ACCOUNT_TYPE_UNSPECIFIED = 0
         CSS_GROUP = 1
         CSS_DOMAIN = 2

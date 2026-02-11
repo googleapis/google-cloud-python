@@ -16,9 +16,11 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,14 +28,11 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
+from google.cloud.vectorsearch_v1beta.types import data_object, data_object_service
 from google.cloud.vectorsearch_v1beta.types import data_object as gcv_data_object
-from google.cloud.vectorsearch_v1beta.types import data_object
-from google.cloud.vectorsearch_v1beta.types import data_object_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDataObjectServiceRestTransport
@@ -705,9 +704,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_create_data_objects(
                 request, metadata
@@ -861,9 +858,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_delete_data_objects(
                 request, metadata
@@ -985,9 +980,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_update_data_objects(
                 request, metadata
@@ -1147,9 +1140,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_http_options()
 
             request, metadata = self._interceptor.pre_create_data_object(
                 request, metadata
@@ -1296,9 +1287,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_data_object(
                 request, metadata
@@ -1412,9 +1401,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_object(request, metadata)
             transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_transcoded_request(
@@ -1561,9 +1548,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_http_options()
 
             request, metadata = self._interceptor.pre_update_data_object(
                 request, metadata
@@ -1667,7 +1652,9 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchCreateDataObjects(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchCreateDataObjects(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_delete_data_objects(
@@ -1675,7 +1662,9 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     ) -> Callable[[data_object_service.BatchDeleteDataObjectsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchDeleteDataObjects(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchDeleteDataObjects(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def batch_update_data_objects(
@@ -1686,7 +1675,9 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchUpdateDataObjects(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchUpdateDataObjects(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_data_object(
@@ -1922,9 +1913,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataObjectServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -2061,9 +2050,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2181,9 +2168,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2298,9 +2283,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2439,9 +2422,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataObjectServiceRestTransport._BaseListOperations._get_transcoded_request(

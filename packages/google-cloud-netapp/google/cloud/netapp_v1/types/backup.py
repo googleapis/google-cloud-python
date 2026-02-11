@@ -120,6 +120,7 @@ class Backup(proto.Message):
             UPDATING (6):
                 Backup is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPLOADING = 2
@@ -139,6 +140,7 @@ class Backup(proto.Message):
             SCHEDULED (2):
                 Scheduled backup type.
         """
+
         TYPE_UNSPECIFIED = 0
         MANUAL = 1
         SCHEDULED = 2

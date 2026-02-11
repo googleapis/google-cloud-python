@@ -41,7 +41,10 @@ from .entity import (
     Watchlist,
     WatchlistUserPreferences,
 )
-from .instance import GetInstanceRequest, Instance
+from .instance import (
+    GetInstanceRequest,
+    Instance,
+)
 from .reference_list import (
     CreateReferenceListRequest,
     GetReferenceListRequest,

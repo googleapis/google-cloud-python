@@ -94,6 +94,7 @@ class Condition(proto.Message):
                 Terminal state: Reconciliation completed
                 successfully.
         """
+
         STATE_UNSPECIFIED = 0
         CONDITION_PENDING = 1
         CONDITION_RECONCILING = 2
@@ -113,6 +114,7 @@ class Condition(proto.Message):
             INFO (3):
                 Info severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -160,6 +162,7 @@ class Condition(proto.Message):
             VPC_NETWORK_NOT_FOUND (17):
                 User-provided VPC network was not found.
         """
+
         COMMON_REASON_UNDEFINED = 0
         UNKNOWN = 1
         REVISION_FAILED = 3
@@ -220,6 +223,7 @@ class Condition(proto.Message):
                 A revision with min_instance_count > 0 was created and is
                 waiting for enough instances to begin a traffic migration.
         """
+
         REVISION_REASON_UNDEFINED = 0
         PENDING = 1
         RESERVE = 2
@@ -258,6 +262,7 @@ class Condition(proto.Message):
                 A delayed execution is waiting for a start
                 time.
         """
+
         EXECUTION_REASON_UNDEFINED = 0
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
         NON_ZERO_EXIT_CODE = 2

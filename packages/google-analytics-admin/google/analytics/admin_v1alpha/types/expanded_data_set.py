@@ -84,6 +84,7 @@ class ExpandedDataSetFilter(proto.Message):
                 CONTAINS (2):
                     Contains the string value.
             """
+
             MATCH_TYPE_UNSPECIFIED = 0
             EXACT = 1
             CONTAINS = 2
@@ -204,12 +205,12 @@ class ExpandedDataSetFilterExpressionList(proto.Message):
             A list of ExpandedDataSet filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ExpandedDataSetFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ExpandedDataSetFilterExpression",
+    filter_expressions: MutableSequence["ExpandedDataSetFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ExpandedDataSetFilterExpression",
+        )
     )
 
 

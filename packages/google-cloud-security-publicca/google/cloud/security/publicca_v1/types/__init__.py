@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .resources import ExternalAccountKey
-from .service import CreateExternalAccountKeyRequest
+from .resources import (
+    ExternalAccountKey,
+)
+from .service import (
+    CreateExternalAccountKeyRequest,
+)
 
 __all__ = (
     "ExternalAccountKey",

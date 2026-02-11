@@ -22,14 +22,14 @@ import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.databasecenter_v1beta.types import maintenance
 from google.cloud.databasecenter_v1beta.types import (
     operation_error_type as gcd_operation_error_type,
 )
+from google.cloud.databasecenter_v1beta.types import product as gcd_product
 from google.cloud.databasecenter_v1beta.types import (
     suspension_reason as gcd_suspension_reason,
 )
-from google.cloud.databasecenter_v1beta.types import maintenance
-from google.cloud.databasecenter_v1beta.types import product as gcd_product
 
 __protobuf__ = proto.module(
     package="google.cloud.databasecenter.v1beta",
@@ -76,6 +76,7 @@ class SignalStatus(proto.Enum):
         SIGNAL_STATUS_NOT_ENABLED (4):
             Signal is not enabled for the resource.
     """
+
     SIGNAL_STATUS_UNSPECIFIED = 0
     SIGNAL_STATUS_NOT_APPLICABLE = 1
     SIGNAL_STATUS_OK = 2
@@ -100,6 +101,7 @@ class SignalSource(proto.Enum):
             Signal comes from modern observability
             platform.
     """
+
     SIGNAL_SOURCE_UNSPECIFIED = 0
     SIGNAL_SOURCE_RESOURCE_METADATA = 1
     SIGNAL_SOURCE_SECURITY_FINDINGS = 2
@@ -125,6 +127,7 @@ class IssueSeverity(proto.Enum):
             Irrelevant severity. This means the issue
             should not be surfaced at all.
     """
+
     ISSUE_SEVERITY_UNSPECIFIED = 0
     ISSUE_SEVERITY_LOW = 1
     ISSUE_SEVERITY_MEDIUM = 2
@@ -436,6 +439,7 @@ class SignalType(proto.Enum):
         SIGNAL_TYPE_EXTENDED_SUPPORT (102):
             Resource version is in extended support.
     """
+
     SIGNAL_TYPE_UNSPECIFIED = 0
     SIGNAL_TYPE_RESOURCE_FAILOVER_PROTECTED = 1
     SIGNAL_TYPE_GROUP_MULTIREGIONAL = 2
@@ -1020,6 +1024,7 @@ class BackupRunInfo(proto.Message):
             FAILED (2):
                 The backup was unsuccessful.
         """
+
         STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2

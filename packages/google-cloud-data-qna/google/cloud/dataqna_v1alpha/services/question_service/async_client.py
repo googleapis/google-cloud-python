@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dataqna_v1alpha import gapic_version as package_version
 
@@ -48,11 +48,9 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
-from google.cloud.dataqna_v1alpha.types import question
+from google.cloud.dataqna_v1alpha.types import question, question_service, user_feedback
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
-from google.cloud.dataqna_v1alpha.types import question_service
-from google.cloud.dataqna_v1alpha.types import user_feedback
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 
 from .client import QuestionServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, QuestionServiceTransport
@@ -141,7 +139,10 @@ class QuestionServiceAsyncClient:
         Returns:
             QuestionServiceAsyncClient: The constructed client.
         """
-        return QuestionServiceClient.from_service_account_info.__func__(QuestionServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            QuestionServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(QuestionServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -157,7 +158,10 @@ class QuestionServiceAsyncClient:
         Returns:
             QuestionServiceAsyncClient: The constructed client.
         """
-        return QuestionServiceClient.from_service_account_file.__func__(QuestionServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            QuestionServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(QuestionServiceAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

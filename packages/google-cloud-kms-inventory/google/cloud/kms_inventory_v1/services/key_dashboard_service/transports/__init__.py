@@ -22,9 +22,7 @@ from .grpc_asyncio import KeyDashboardServiceGrpcAsyncIOTransport
 from .rest import KeyDashboardServiceRestInterceptor, KeyDashboardServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[KeyDashboardServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[KeyDashboardServiceTransport]]
 _transport_registry["grpc"] = KeyDashboardServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = KeyDashboardServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = KeyDashboardServiceRestTransport

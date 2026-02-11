@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,7 +27,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -589,15 +589,12 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_update_generative_question_configs(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_batch_update_generative_question_configs(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_transcoded_request(
                 http_options, request
@@ -656,9 +653,7 @@ class GenerativeQuestionServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
-            )
+            resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
             pb_resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
                 resp
             )
@@ -667,11 +662,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_batch_update_generative_question_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_update_generative_question_configs_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_batch_update_generative_question_configs_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -760,15 +754,12 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_generative_questions_feature_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_generative_questions_feature_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_transcoded_request(
                 http_options, request
@@ -829,11 +820,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_get_generative_questions_feature_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_generative_questions_feature_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_generative_questions_feature_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -920,9 +910,7 @@ class GenerativeQuestionServiceRestTransport(
                         Response for ListQuestions method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_generative_question_configs(
                 request, metadata
@@ -990,11 +978,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_list_generative_question_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_generative_question_configs_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_generative_question_configs_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1083,9 +1070,7 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_generative_question_config(
                 request, metadata
@@ -1154,11 +1139,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_update_generative_question_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_generative_question_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_generative_question_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1248,15 +1232,12 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_generative_questions_feature_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_generative_questions_feature_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_transcoded_request(
                 http_options, request
@@ -1324,11 +1305,10 @@ class GenerativeQuestionServiceRestTransport(
                 resp
             )
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_generative_questions_feature_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_generative_questions_feature_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1366,7 +1346,9 @@ class GenerativeQuestionServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchUpdateGenerativeQuestionConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchUpdateGenerativeQuestionConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_generative_questions_feature_config(
@@ -1377,7 +1359,9 @@ class GenerativeQuestionServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGenerativeQuestionsFeatureConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_generative_question_configs(
@@ -1388,7 +1372,9 @@ class GenerativeQuestionServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListGenerativeQuestionConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGenerativeQuestionConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_generative_question_config(
@@ -1399,7 +1385,9 @@ class GenerativeQuestionServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGenerativeQuestionConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGenerativeQuestionConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_generative_questions_feature_config(
@@ -1410,7 +1398,9 @@ class GenerativeQuestionServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGenerativeQuestionsFeatureConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -1470,9 +1460,7 @@ class GenerativeQuestionServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1613,9 +1601,7 @@ class GenerativeQuestionServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_transcoded_request(

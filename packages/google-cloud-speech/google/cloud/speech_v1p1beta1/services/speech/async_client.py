@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.speech_v1p1beta1 import gapic_version as package_version
 
@@ -49,9 +49,9 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.rpc.status_pb2 as status_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.speech_v1p1beta1.types import cloud_speech
 
@@ -119,7 +119,10 @@ class SpeechAsyncClient:
         Returns:
             SpeechAsyncClient: The constructed client.
         """
-        return SpeechClient.from_service_account_info.__func__(SpeechAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            SpeechClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SpeechAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -135,7 +138,10 @@ class SpeechAsyncClient:
         Returns:
             SpeechAsyncClient: The constructed client.
         """
-        return SpeechClient.from_service_account_file.__func__(SpeechAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            SpeechClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(SpeechAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

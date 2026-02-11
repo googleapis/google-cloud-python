@@ -150,6 +150,7 @@ class VpcFlowLogsConfig(proto.Message):
                 When DISABLED, this configuration will not
                 generate logs.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -174,6 +175,7 @@ class VpcFlowLogsConfig(proto.Message):
             INTERVAL_15_MIN (6):
                 Aggregate logs in 15m intervals.
         """
+
         AGGREGATION_INTERVAL_UNSPECIFIED = 0
         INTERVAL_5_SEC = 1
         INTERVAL_30_SEC = 2
@@ -195,6 +197,7 @@ class VpcFlowLogsConfig(proto.Message):
             CUSTOM_METADATA (3):
                 Include only custom fields (specified in metadata_fields).
         """
+
         METADATA_UNSPECIFIED = 0
         INCLUDE_ALL_METADATA = 1
         EXCLUDE_ALL_METADATA = 2
@@ -216,6 +219,7 @@ class VpcFlowLogsConfig(proto.Message):
                 When CROSS_PROJECT_METADATA_DISABLED, metadata from other
                 projects will not be included in the logs.
         """
+
         CROSS_PROJECT_METADATA_UNSPECIFIED = 0
         CROSS_PROJECT_METADATA_ENABLED = 1
         CROSS_PROJECT_METADATA_DISABLED = 2
@@ -233,6 +237,7 @@ class VpcFlowLogsConfig(proto.Message):
                 Indicates that the target resource does not
                 exist.
         """
+
         TARGET_RESOURCE_STATE_UNSPECIFIED = 0
         TARGET_RESOURCE_EXISTS = 1
         TARGET_RESOURCE_DOES_NOT_EXIST = 2
@@ -448,6 +453,7 @@ class EffectiveVpcFlowLogsConfig(proto.Message):
                 Configuration applies to an entire
                 organization.
         """
+
         SCOPE_UNSPECIFIED = 0
         SUBNET = 1
         COMPUTE_API_SUBNET = 2

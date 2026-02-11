@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .types.operation_metadata import OperationMetadata
 
 if hasattr(api_core, "check_python_version") and hasattr(

@@ -136,6 +136,7 @@ class PolicyBinding(proto.Message):
             PRINCIPAL_ACCESS_BOUNDARY (1):
                 Principal access boundary policy kind
         """
+
         POLICY_KIND_UNSPECIFIED = 0
         PRINCIPAL_ACCESS_BOUNDARY = 1
 

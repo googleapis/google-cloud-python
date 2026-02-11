@@ -46,6 +46,7 @@ class HarmCategory(proto.Enum):
         HARM_CATEGORY_CIVIC_INTEGRITY (5):
             The harm category is civic integrity.
     """
+
     HARM_CATEGORY_UNSPECIFIED = 0
     HARM_CATEGORY_HATE_SPEECH = 1
     HARM_CATEGORY_DANGEROUS_CONTENT = 2
@@ -87,6 +88,7 @@ class SafetySetting(proto.Message):
             OFF (5):
                 Turn off the safety filter.
         """
+
         HARM_BLOCK_THRESHOLD_UNSPECIFIED = 0
         BLOCK_LOW_AND_ABOVE = 1
         BLOCK_MEDIUM_AND_ABOVE = 2
@@ -107,6 +109,7 @@ class SafetySetting(proto.Message):
                 The harm block method uses the probability
                 score.
         """
+
         HARM_BLOCK_METHOD_UNSPECIFIED = 0
         SEVERITY = 1
         PROBABILITY = 2

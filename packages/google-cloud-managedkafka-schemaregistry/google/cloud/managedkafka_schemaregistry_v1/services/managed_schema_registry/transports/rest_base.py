@@ -18,17 +18,19 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import gapic_v1, path_template
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 
+from google.cloud.managedkafka_schemaregistry_v1.types import (
+    schema_registry,
+    schema_registry_resources,
+)
 from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
 from .base import DEFAULT_CLIENT_INFO, ManagedSchemaRegistryTransport
 

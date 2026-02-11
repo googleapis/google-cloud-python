@@ -16,24 +16,24 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.dialogflow_v2.types import conversation_dataset
 from google.cloud.dialogflow_v2.types import (
     conversation_dataset as gcd_conversation_dataset,
 )
-from google.cloud.dialogflow_v2.types import conversation_dataset
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseConversationDatasetsRestTransport
@@ -708,9 +708,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseCreateConversationDataset._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseCreateConversationDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_conversation_dataset(
                 request, metadata
@@ -863,9 +861,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseDeleteConversationDataset._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseDeleteConversationDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_conversation_dataset(
                 request, metadata
@@ -1016,9 +1012,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseGetConversationDataset._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseGetConversationDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_conversation_dataset(
                 request, metadata
@@ -1172,9 +1166,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseImportConversationData._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseImportConversationData._get_http_options()
 
             request, metadata = self._interceptor.pre_import_conversation_data(
                 request, metadata
@@ -1328,9 +1320,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseListConversationDatasets._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseListConversationDatasets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_conversation_datasets(
                 request, metadata
@@ -1433,7 +1423,9 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateConversationDataset(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateConversationDataset(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_conversation_dataset(
@@ -1444,7 +1436,9 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteConversationDataset(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteConversationDataset(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_conversation_dataset(
@@ -1455,7 +1449,9 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetConversationDataset(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetConversationDataset(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def import_conversation_data(
@@ -1465,7 +1461,9 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ImportConversationData(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ImportConversationData(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_conversation_datasets(
@@ -1476,7 +1474,9 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListConversationDatasets(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListConversationDatasets(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):
@@ -1536,9 +1536,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseConversationDatasetsRestTransport._BaseGetLocation._get_transcoded_request(
@@ -1677,9 +1675,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseConversationDatasetsRestTransport._BaseListLocations._get_transcoded_request(
@@ -1815,9 +1811,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1933,9 +1927,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseConversationDatasetsRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2074,9 +2066,7 @@ class ConversationDatasetsRestTransport(_BaseConversationDatasetsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseConversationDatasetsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseConversationDatasetsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseConversationDatasetsRestTransport._BaseListOperations._get_transcoded_request(

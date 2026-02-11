@@ -16,21 +16,23 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.cloud.backupdr_v1.types import (
     backupdr,
@@ -535,12 +537,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_usable_backup_vaults" not in self._stubs:
-            self._stubs[
-                "fetch_usable_backup_vaults"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FetchUsableBackupVaults",
-                request_serializer=backupvault.FetchUsableBackupVaultsRequest.serialize,
-                response_deserializer=backupvault.FetchUsableBackupVaultsResponse.deserialize,
+            self._stubs["fetch_usable_backup_vaults"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/FetchUsableBackupVaults",
+                    request_serializer=backupvault.FetchUsableBackupVaultsRequest.serialize,
+                    response_deserializer=backupvault.FetchUsableBackupVaultsResponse.deserialize,
+                )
             )
         return self._stubs["fetch_usable_backup_vaults"]
 
@@ -751,12 +753,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_backups_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_backups_for_resource_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
-                request_serializer=backupvault.FetchBackupsForResourceTypeRequest.serialize,
-                response_deserializer=backupvault.FetchBackupsForResourceTypeResponse.deserialize,
+            self._stubs["fetch_backups_for_resource_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/FetchBackupsForResourceType",
+                    request_serializer=backupvault.FetchBackupsForResourceTypeRequest.serialize,
+                    response_deserializer=backupvault.FetchBackupsForResourceTypeResponse.deserialize,
+                )
             )
         return self._stubs["fetch_backups_for_resource_type"]
 
@@ -1047,12 +1049,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_plan_revisions" not in self._stubs:
-            self._stubs[
-                "list_backup_plan_revisions"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanRevisions",
-                request_serializer=backupplan.ListBackupPlanRevisionsRequest.serialize,
-                response_deserializer=backupplan.ListBackupPlanRevisionsResponse.deserialize,
+            self._stubs["list_backup_plan_revisions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanRevisions",
+                    request_serializer=backupplan.ListBackupPlanRevisionsRequest.serialize,
+                    response_deserializer=backupplan.ListBackupPlanRevisionsResponse.deserialize,
+                )
             )
         return self._stubs["list_backup_plan_revisions"]
 
@@ -1078,12 +1080,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "create_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation",
-                request_serializer=backupplanassociation.CreateBackupPlanAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_backup_plan_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/CreateBackupPlanAssociation",
+                    request_serializer=backupplanassociation.CreateBackupPlanAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_backup_plan_association"]
 
@@ -1109,12 +1111,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "update_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/UpdateBackupPlanAssociation",
-                request_serializer=backupplanassociation.UpdateBackupPlanAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["update_backup_plan_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/UpdateBackupPlanAssociation",
+                    request_serializer=backupplanassociation.UpdateBackupPlanAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["update_backup_plan_association"]
 
@@ -1140,12 +1142,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "get_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/GetBackupPlanAssociation",
-                request_serializer=backupplanassociation.GetBackupPlanAssociationRequest.serialize,
-                response_deserializer=backupplanassociation.BackupPlanAssociation.deserialize,
+            self._stubs["get_backup_plan_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/GetBackupPlanAssociation",
+                    request_serializer=backupplanassociation.GetBackupPlanAssociationRequest.serialize,
+                    response_deserializer=backupplanassociation.BackupPlanAssociation.deserialize,
+                )
             )
         return self._stubs["get_backup_plan_association"]
 
@@ -1172,12 +1174,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backup_plan_associations" not in self._stubs:
-            self._stubs[
-                "list_backup_plan_associations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanAssociations",
-                request_serializer=backupplanassociation.ListBackupPlanAssociationsRequest.serialize,
-                response_deserializer=backupplanassociation.ListBackupPlanAssociationsResponse.deserialize,
+            self._stubs["list_backup_plan_associations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/ListBackupPlanAssociations",
+                    request_serializer=backupplanassociation.ListBackupPlanAssociationsRequest.serialize,
+                    response_deserializer=backupplanassociation.ListBackupPlanAssociationsResponse.deserialize,
+                )
             )
         return self._stubs["list_backup_plan_associations"]
 
@@ -1205,12 +1207,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_backup_plan_associations_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_backup_plan_associations_for_resource_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FetchBackupPlanAssociationsForResourceType",
-                request_serializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest.serialize,
-                response_deserializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.deserialize,
+            self._stubs["fetch_backup_plan_associations_for_resource_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/FetchBackupPlanAssociationsForResourceType",
+                    request_serializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest.serialize,
+                    response_deserializer=backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.deserialize,
+                )
             )
         return self._stubs["fetch_backup_plan_associations_for_resource_type"]
 
@@ -1236,12 +1238,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backup_plan_association" not in self._stubs:
-            self._stubs[
-                "delete_backup_plan_association"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation",
-                request_serializer=backupplanassociation.DeleteBackupPlanAssociationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["delete_backup_plan_association"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/DeleteBackupPlanAssociation",
+                    request_serializer=backupplanassociation.DeleteBackupPlanAssociationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["delete_backup_plan_association"]
 
@@ -1325,12 +1327,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_data_source_references" not in self._stubs:
-            self._stubs[
-                "list_data_source_references"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
-                request_serializer=datasourcereference.ListDataSourceReferencesRequest.serialize,
-                response_deserializer=datasourcereference.ListDataSourceReferencesResponse.deserialize,
+            self._stubs["list_data_source_references"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/ListDataSourceReferences",
+                    request_serializer=datasourcereference.ListDataSourceReferencesRequest.serialize,
+                    response_deserializer=datasourcereference.ListDataSourceReferencesResponse.deserialize,
+                )
             )
         return self._stubs["list_data_source_references"]
 
@@ -1358,12 +1360,12 @@ class BackupDRGrpcTransport(BackupDRTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_data_source_references_for_resource_type" not in self._stubs:
-            self._stubs[
-                "fetch_data_source_references_for_resource_type"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType",
-                request_serializer=datasourcereference.FetchDataSourceReferencesForResourceTypeRequest.serialize,
-                response_deserializer=datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.deserialize,
+            self._stubs["fetch_data_source_references_for_resource_type"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.backupdr.v1.BackupDR/FetchDataSourceReferencesForResourceType",
+                    request_serializer=datasourcereference.FetchDataSourceReferencesForResourceTypeRequest.serialize,
+                    response_deserializer=datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.deserialize,
+                )
             )
         return self._stubs["fetch_data_source_references_for_resource_type"]
 

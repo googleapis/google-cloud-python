@@ -16,18 +16,18 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.policysimulator_v1.types import orgpolicy as gcp_orgpolicy
 
@@ -379,12 +379,12 @@ class OrgPolicyViolationsPreviewServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_org_policy_violations_previews" not in self._stubs:
-            self._stubs[
-                "list_org_policy_violations_previews"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolationsPreviews",
-                request_serializer=gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest.serialize,
-                response_deserializer=gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.deserialize,
+            self._stubs["list_org_policy_violations_previews"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolationsPreviews",
+                    request_serializer=gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest.serialize,
+                    response_deserializer=gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.deserialize,
+                )
             )
         return self._stubs["list_org_policy_violations_previews"]
 
@@ -415,12 +415,12 @@ class OrgPolicyViolationsPreviewServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_org_policy_violations_preview" not in self._stubs:
-            self._stubs[
-                "get_org_policy_violations_preview"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/GetOrgPolicyViolationsPreview",
-                request_serializer=gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest.serialize,
-                response_deserializer=gcp_orgpolicy.OrgPolicyViolationsPreview.deserialize,
+            self._stubs["get_org_policy_violations_preview"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/GetOrgPolicyViolationsPreview",
+                    request_serializer=gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest.serialize,
+                    response_deserializer=gcp_orgpolicy.OrgPolicyViolationsPreview.deserialize,
+                )
             )
         return self._stubs["get_org_policy_violations_preview"]
 
@@ -452,12 +452,12 @@ class OrgPolicyViolationsPreviewServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_org_policy_violations_preview" not in self._stubs:
-            self._stubs[
-                "create_org_policy_violations_preview"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/CreateOrgPolicyViolationsPreview",
-                request_serializer=gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_org_policy_violations_preview"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/CreateOrgPolicyViolationsPreview",
+                    request_serializer=gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_org_policy_violations_preview"]
 
@@ -485,12 +485,12 @@ class OrgPolicyViolationsPreviewServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_org_policy_violations" not in self._stubs:
-            self._stubs[
-                "list_org_policy_violations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolations",
-                request_serializer=gcp_orgpolicy.ListOrgPolicyViolationsRequest.serialize,
-                response_deserializer=gcp_orgpolicy.ListOrgPolicyViolationsResponse.deserialize,
+            self._stubs["list_org_policy_violations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService/ListOrgPolicyViolations",
+                    request_serializer=gcp_orgpolicy.ListOrgPolicyViolationsRequest.serialize,
+                    response_deserializer=gcp_orgpolicy.ListOrgPolicyViolationsResponse.deserialize,
+                )
             )
         return self._stubs["list_org_policy_violations"]
 

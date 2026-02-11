@@ -21,8 +21,8 @@ import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import folder
+from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",

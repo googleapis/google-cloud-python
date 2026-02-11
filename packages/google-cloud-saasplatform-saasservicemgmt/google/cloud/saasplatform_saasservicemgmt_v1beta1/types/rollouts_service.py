@@ -377,12 +377,12 @@ class ListRolloutKindsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rollout_kinds: MutableSequence[
-        rollouts_resources.RolloutKind
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=10509,
-        message=rollouts_resources.RolloutKind,
+    rollout_kinds: MutableSequence[rollouts_resources.RolloutKind] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=10509,
+            message=rollouts_resources.RolloutKind,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

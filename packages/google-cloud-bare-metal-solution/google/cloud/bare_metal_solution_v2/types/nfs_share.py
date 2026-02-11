@@ -82,6 +82,7 @@ class NfsShare(proto.Message):
                 The NFS Share has been requested to be
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONED = 1
         CREATING = 2
@@ -101,6 +102,7 @@ class NfsShare(proto.Message):
                 NFS share can be mount with read-write
                 permissions.
         """
+
         MOUNT_PERMISSIONS_UNSPECIFIED = 0
         READ = 1
         READ_WRITE = 2
@@ -116,6 +118,7 @@ class NfsShare(proto.Message):
             HDD (2):
                 This storage type for this volume is HDD.
         """
+
         STORAGE_TYPE_UNSPECIFIED = 0
         SSD = 1
         HDD = 2

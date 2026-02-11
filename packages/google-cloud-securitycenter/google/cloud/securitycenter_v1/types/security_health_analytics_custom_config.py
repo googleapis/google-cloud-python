@@ -78,6 +78,7 @@ class CustomConfig(proto.Message):
             LOW (4):
                 Low severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         CRITICAL = 1
         HIGH = 2
@@ -120,12 +121,12 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence[
-            "CustomConfig.CustomOutputSpec.Property"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="CustomConfig.CustomOutputSpec.Property",
+        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="CustomConfig.CustomOutputSpec.Property",
+            )
         )
 
     class ResourceSelector(proto.Message):

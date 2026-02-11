@@ -118,6 +118,7 @@ class UserCriteriaScoping(proto.Enum):
             If the criteria is satisfied by any events
             for the user, the user matches the criteria.
     """
+
     USER_CRITERIA_SCOPING_UNSPECIFIED = 0
     USER_CRITERIA_WITHIN_SAME_EVENT = 1
     USER_CRITERIA_WITHIN_SAME_SESSION = 2
@@ -139,6 +140,7 @@ class UserExclusionDuration(proto.Enum):
             Permanently exclude users from the segment if the user ever
             meets the ``userExclusionCriteria`` condition.
     """
+
     USER_EXCLUSION_DURATION_UNSPECIFIED = 0
     USER_EXCLUSION_TEMPORARY = 1
     USER_EXCLUSION_PERMANENT = 2
@@ -158,6 +160,7 @@ class SessionCriteriaScoping(proto.Enum):
             If the criteria is satisfied within one
             session, the session matches the criteria.
     """
+
     SESSION_CRITERIA_SCOPING_UNSPECIFIED = 0
     SESSION_CRITERIA_WITHIN_SAME_EVENT = 1
     SESSION_CRITERIA_WITHIN_SAME_SESSION = 2
@@ -179,6 +182,7 @@ class SessionExclusionDuration(proto.Enum):
             Permanently exclude sessions from the segment if the session
             ever meets the ``sessionExclusionCriteria`` condition.
     """
+
     SESSION_EXCLUSION_DURATION_UNSPECIFIED = 0
     SESSION_EXCLUSION_TEMPORARY = 1
     SESSION_EXCLUSION_PERMANENT = 2
@@ -195,6 +199,7 @@ class EventCriteriaScoping(proto.Enum):
             If the criteria is satisfied within one
             event, the event matches the criteria.
     """
+
     EVENT_CRITERIA_SCOPING_UNSPECIFIED = 0
     EVENT_CRITERIA_WITHIN_SAME_EVENT = 1
 
@@ -211,6 +216,7 @@ class EventExclusionDuration(proto.Enum):
             Permanently exclude events from the segment if the event
             ever meets the ``eventExclusionCriteria`` condition.
     """
+
     EVENT_EXCLUSION_DURATION_UNSPECIFIED = 0
     EVENT_EXCLUSION_PERMANENT = 1
 
@@ -230,6 +236,7 @@ class MetricAggregation(proto.Enum):
         COUNT (4):
             Count operator.
     """
+
     METRIC_AGGREGATION_UNSPECIFIED = 0
     TOTAL = 1
     MINIMUM = 5
@@ -278,6 +285,7 @@ class MetricType(proto.Enum):
             A length in kilometers; a special floating
             point type.
     """
+
     METRIC_TYPE_UNSPECIFIED = 0
     TYPE_INTEGER = 1
     TYPE_FLOAT = 2
@@ -305,6 +313,7 @@ class RestrictedMetricType(proto.Enum):
         REVENUE_DATA (2):
             Revenue metrics such as ``purchaseRevenue``.
     """
+
     RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
     COST_DATA = 1
     REVENUE_DATA = 2
@@ -330,6 +339,7 @@ class SamplingLevel(proto.Enum):
             explorations. To learn more, see
             https://support.google.com/analytics/answer/10896953.
     """
+
     SAMPLING_LEVEL_UNSPECIFIED = 0
     LOW = 1
     MEDIUM = 2
@@ -752,6 +762,7 @@ class StringFilter(proto.Message):
                 Partial match for the regular expression with
                 the string value.
         """
+
         MATCH_TYPE_UNSPECIFIED = 0
         EXACT = 1
         BEGINS_WITH = 2
@@ -823,6 +834,7 @@ class NumericFilter(proto.Message):
             GREATER_THAN_OR_EQUAL (5):
                 Greater than or equal
         """
+
         OPERATION_UNSPECIFIED = 0
         EQUAL = 1
         LESS_THAN = 2
@@ -912,6 +924,7 @@ class OrderBy(proto.Message):
                     values all have equal ordering value below all numeric
                     values.
             """
+
             ORDER_TYPE_UNSPECIFIED = 0
             ALPHANUMERIC = 1
             CASE_INSENSITIVE_ALPHANUMERIC = 2
@@ -1180,6 +1193,7 @@ class CohortsRange(proto.Message):
                 ``dateRange`` is a month in duration and the request
                 contains ``cohortNthMonth``.
         """
+
         GRANULARITY_UNSPECIFIED = 0
         DAILY = 1
         WEEKLY = 2
@@ -1333,12 +1347,12 @@ class ResponseMetaData(proto.Message):
                 number=1,
                 optional=True,
             )
-            restricted_metric_types: MutableSequence[
-                "RestrictedMetricType"
-            ] = proto.RepeatedField(
-                proto.ENUM,
-                number=2,
-                enum="RestrictedMetricType",
+            restricted_metric_types: MutableSequence["RestrictedMetricType"] = (
+                proto.RepeatedField(
+                    proto.ENUM,
+                    number=2,
+                    enum="RestrictedMetricType",
+                )
             )
 
         active_metric_restrictions: MutableSequence[
@@ -1886,19 +1900,19 @@ class UserSegmentCriteria(proto.Message):
             if ``andConditionGroups`` are specified.
     """
 
-    and_condition_groups: MutableSequence[
-        "UserSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="UserSegmentConditionGroup",
+    and_condition_groups: MutableSequence["UserSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="UserSegmentConditionGroup",
+        )
     )
-    and_sequence_groups: MutableSequence[
-        "UserSegmentSequenceGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="UserSegmentSequenceGroup",
+    and_sequence_groups: MutableSequence["UserSegmentSequenceGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="UserSegmentSequenceGroup",
+        )
     )
 
 
@@ -2100,12 +2114,12 @@ class SessionSegmentCriteria(proto.Message):
             of these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "SessionSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SessionSegmentConditionGroup",
+    and_condition_groups: MutableSequence["SessionSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SessionSegmentConditionGroup",
+        )
     )
 
 
@@ -2215,12 +2229,12 @@ class EventSegmentCriteria(proto.Message):
             these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "EventSegmentConditionGroup"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="EventSegmentConditionGroup",
+    and_condition_groups: MutableSequence["EventSegmentConditionGroup"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="EventSegmentConditionGroup",
+        )
     )
 
 
@@ -2646,12 +2660,12 @@ class SegmentParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "SegmentParameterFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="SegmentParameterFilterExpression",
+    expressions: MutableSequence["SegmentParameterFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="SegmentParameterFilterExpression",
+        )
     )
 
 
@@ -3061,12 +3075,12 @@ class FunnelParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "FunnelParameterFilterExpression"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="FunnelParameterFilterExpression",
+    expressions: MutableSequence["FunnelParameterFilterExpression"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="FunnelParameterFilterExpression",
+        )
     )
 
 

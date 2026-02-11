@@ -165,6 +165,7 @@ class RejoinUserEventsRequest(proto.Message):
                 Only rejoin unjoined events with the latest
                 product catalog.
         """
+
         USER_EVENT_REJOIN_SCOPE_UNSPECIFIED = 0
         JOINED_EVENTS = 1
         UNJOINED_EVENTS = 2

@@ -35,7 +35,10 @@ from .functions import (
     SourceRepository,
     UpdateFunctionRequest,
 )
-from .operations import OperationMetadataV1, OperationType
+from .operations import (
+    OperationMetadataV1,
+    OperationType,
+)
 
 __all__ = (
     "CallFunctionRequest",

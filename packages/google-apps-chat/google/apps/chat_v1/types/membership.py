@@ -112,6 +112,7 @@ class Membership(proto.Message):
                 doesn't have a pending invitation to join the
                 space.
         """
+
         MEMBERSHIP_STATE_UNSPECIFIED = 0
         JOINED = 1
         INVITED = 2
@@ -193,6 +194,7 @@ class Membership(proto.Message):
                 To learn more, see `Manage space
                 settings <https://support.google.com/chat/answer/13340792>`__.
         """
+
         MEMBERSHIP_ROLE_UNSPECIFIED = 0
         ROLE_MEMBER = 1
         ROLE_MANAGER = 2

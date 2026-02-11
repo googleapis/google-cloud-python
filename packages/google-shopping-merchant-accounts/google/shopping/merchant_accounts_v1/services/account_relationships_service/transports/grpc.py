@@ -16,17 +16,17 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
 from google.shopping.merchant_accounts_v1.types import accountrelationships
 
@@ -373,12 +373,12 @@ class AccountRelationshipsServiceGrpcTransport(AccountRelationshipsServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_account_relationship" not in self._stubs:
-            self._stubs[
-                "update_account_relationship"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1.AccountRelationshipsService/UpdateAccountRelationship",
-                request_serializer=accountrelationships.UpdateAccountRelationshipRequest.serialize,
-                response_deserializer=accountrelationships.AccountRelationship.deserialize,
+            self._stubs["update_account_relationship"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1.AccountRelationshipsService/UpdateAccountRelationship",
+                    request_serializer=accountrelationships.UpdateAccountRelationshipRequest.serialize,
+                    response_deserializer=accountrelationships.AccountRelationship.deserialize,
+                )
             )
         return self._stubs["update_account_relationship"]
 
@@ -404,12 +404,12 @@ class AccountRelationshipsServiceGrpcTransport(AccountRelationshipsServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_account_relationships" not in self._stubs:
-            self._stubs[
-                "list_account_relationships"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1.AccountRelationshipsService/ListAccountRelationships",
-                request_serializer=accountrelationships.ListAccountRelationshipsRequest.serialize,
-                response_deserializer=accountrelationships.ListAccountRelationshipsResponse.deserialize,
+            self._stubs["list_account_relationships"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1.AccountRelationshipsService/ListAccountRelationships",
+                    request_serializer=accountrelationships.ListAccountRelationshipsRequest.serialize,
+                    response_deserializer=accountrelationships.ListAccountRelationshipsResponse.deserialize,
+                )
             )
         return self._stubs["list_account_relationships"]
 

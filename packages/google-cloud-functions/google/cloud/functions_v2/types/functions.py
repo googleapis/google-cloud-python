@@ -74,6 +74,7 @@ class OperationType(proto.Enum):
         DELETE_FUNCTION (3):
             DeleteFunction
     """
+
     OPERATIONTYPE_UNSPECIFIED = 0
     CREATE_FUNCTION = 1
     UPDATE_FUNCTION = 2
@@ -91,6 +92,7 @@ class Environment(proto.Enum):
         GEN_2 (2):
             Gen 2
     """
+
     ENVIRONMENT_UNSPECIFIED = 0
     GEN_1 = 1
     GEN_2 = 2
@@ -171,6 +173,7 @@ class Function(proto.Message):
                 be updated or deleted to move it out of this
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -271,6 +274,7 @@ class StateMessage(proto.Message):
             INFO (3):
                 INFO-level severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2
@@ -601,6 +605,7 @@ class BuildConfig(proto.Message):
                 also be specified by the user using the
                 ``docker_repository`` field.
         """
+
         DOCKER_REGISTRY_UNSPECIFIED = 0
         CONTAINER_REGISTRY = 1
         ARTIFACT_REGISTRY = 2
@@ -783,6 +788,7 @@ class ServiceConfig(proto.Message):
                 Force the use of VPC Access Connector for all
                 egress traffic from the function.
         """
+
         VPC_CONNECTOR_EGRESS_SETTINGS_UNSPECIFIED = 0
         PRIVATE_RANGES_ONLY = 1
         ALL_TRAFFIC = 2
@@ -807,6 +813,7 @@ class ServiceConfig(proto.Message):
                 Allow HTTP traffic from private VPC sources
                 and through GCLB.
         """
+
         INGRESS_SETTINGS_UNSPECIFIED = 0
         ALLOW_ALL = 1
         ALLOW_INTERNAL_ONLY = 2
@@ -835,6 +842,7 @@ class ServiceConfig(proto.Message):
                 application can examine the request to determine
                 which protocol was used and respond accordingly.
         """
+
         SECURITY_LEVEL_UNSPECIFIED = 0
         SECURE_ALWAYS = 1
         SECURE_OPTIONAL = 2
@@ -1110,6 +1118,7 @@ class EventTrigger(proto.Message):
                 Retry on any failure, retry up to 7 days with
                 an exponential backoff (capped at 10 seconds).
         """
+
         RETRY_POLICY_UNSPECIFIED = 0
         RETRY_POLICY_DO_NOT_RETRY = 1
         RETRY_POLICY_RETRY = 2
@@ -1543,6 +1552,7 @@ class ListRuntimesResponse(proto.Message):
             DECOMMISSIONED (6):
                 The runtime is no longer supported.
         """
+
         RUNTIME_STAGE_UNSPECIFIED = 0
         DEVELOPMENT = 1
         ALPHA = 2
@@ -1791,6 +1801,7 @@ class Stage(proto.Message):
             TRIGGER_ROLLBACK (6):
                 Trigger Rollback Stage
         """
+
         NAME_UNSPECIFIED = 0
         ARTIFACT_REGISTRY = 1
         BUILD = 2
@@ -1812,6 +1823,7 @@ class Stage(proto.Message):
             COMPLETE (3):
                 Stage has completed.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         IN_PROGRESS = 2

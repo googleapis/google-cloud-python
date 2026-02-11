@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,19 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,24 +64,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.options_pb2 as options_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.securitycenter_v1.services.security_center import (
     SecurityCenterAsyncClient,
@@ -94,16 +94,12 @@ from google.cloud.securitycenter_v1.types import (
     database,
     effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
-)
-from google.cloud.securitycenter_v1.types import (
+    event_threat_detection_custom_module,
     event_threat_detection_custom_module_validation_errors,
     exfiltration,
-)
-from google.cloud.securitycenter_v1.types import (
-    run_asset_discovery_response,
-    security_health_analytics_custom_config,
-)
-from google.cloud.securitycenter_v1.types import (
+    external_system,
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -113,22 +109,32 @@ from google.cloud.securitycenter_v1.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v1.types import (
+    mute_config,
+    notebook,
+    notification_config,
+    org_policy,
+    organization_settings,
+    process,
+    resource,
+    resource_value_config,
+    run_asset_discovery_response,
+    security_health_analytics_custom_config,
+    security_health_analytics_custom_module,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v1.types import (
+    source,
     toxic_combination,
     valued_resource,
     vulnerability,
 )
-from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module
 from google.cloud.securitycenter_v1.types import (
     event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
 )
@@ -138,25 +144,10 @@ from google.cloud.securitycenter_v1.types import (
 from google.cloud.securitycenter_v1.types import (
     resource_value_config as gcs_resource_value_config,
 )
-from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import (
     security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
 )
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import external_system
-from google.cloud.securitycenter_v1.types import file
-from google.cloud.securitycenter_v1.types import finding
-from google.cloud.securitycenter_v1.types import finding as gcs_finding
-from google.cloud.securitycenter_v1.types import mute_config
-from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v1.types import notebook
-from google.cloud.securitycenter_v1.types import notification_config
-from google.cloud.securitycenter_v1.types import org_policy
-from google.cloud.securitycenter_v1.types import organization_settings
-from google.cloud.securitycenter_v1.types import process, resource
-from google.cloud.securitycenter_v1.types import resource_value_config
-from google.cloud.securitycenter_v1.types import security_marks
-from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 
 CRED_INFO_JSON = {
@@ -1044,10 +1035,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1092,10 +1082,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1131,10 +1120,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1381,9 +1369,7 @@ def test_security_center_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1497,9 +1483,9 @@ def test_bulk_mute_findings_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.bulk_mute_findings
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.bulk_mute_findings] = (
+            mock_rpc
+        )
         request = {}
         client.bulk_mute_findings(request)
 
@@ -2002,9 +1988,7 @@ def test_create_security_health_analytics_custom_module_field_headers():
         type(client.transport.create_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.create_security_health_analytics_custom_module(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2066,9 +2050,7 @@ def test_create_security_health_analytics_custom_module_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_security_health_analytics_custom_module(
@@ -2121,9 +2103,7 @@ async def test_create_security_health_analytics_custom_module_flattened_async():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
@@ -3012,9 +2992,9 @@ def test_create_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_mute_config(request)
 
@@ -3766,9 +3746,9 @@ def test_delete_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_mute_config(request)
 
@@ -5117,9 +5097,9 @@ def test_get_valued_resource_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_valued_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_valued_resource] = (
+            mock_rpc
+        )
         request = {}
         client.get_valued_resource(request)
 
@@ -5482,9 +5462,9 @@ def test_get_big_query_export_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_big_query_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_big_query_export] = (
+            mock_rpc
+        )
         request = {}
         client.get_big_query_export(request)
 
@@ -7164,9 +7144,7 @@ def test_get_effective_security_health_analytics_custom_module(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -7210,10 +7188,11 @@ def test_get_effective_security_health_analytics_custom_module_non_empty_request
         client.get_effective_security_health_analytics_custom_module(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
-            name="name_value",
+        assert (
+            args[0]
+            == securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest(
+                name="name_value",
+            )
         )
 
 
@@ -7333,9 +7312,7 @@ async def test_get_effective_security_health_analytics_custom_module_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -7376,9 +7353,7 @@ def test_get_effective_security_health_analytics_custom_module_field_headers():
         type(client.transport.get_effective_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
         client.get_effective_security_health_analytics_custom_module(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7442,9 +7417,7 @@ def test_get_effective_security_health_analytics_custom_module_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_effective_security_health_analytics_custom_module(
@@ -7486,9 +7459,7 @@ async def test_get_effective_security_health_analytics_custom_module_flattened_a
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
@@ -7762,9 +7733,7 @@ def test_get_security_health_analytics_custom_module_field_headers():
     with mock.patch.object(
         type(client.transport.get_security_health_analytics_custom_module), "__call__"
     ) as call:
-        call.return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.get_security_health_analytics_custom_module(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7824,9 +7793,7 @@ def test_get_security_health_analytics_custom_module_flattened():
         type(client.transport.get_security_health_analytics_custom_module), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_security_health_analytics_custom_module(
@@ -7867,9 +7834,7 @@ async def test_get_security_health_analytics_custom_module_flattened_async():
         type(client.transport.get_security_health_analytics_custom_module), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
@@ -9705,9 +9670,7 @@ def test_list_descendant_security_health_analytics_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -9744,11 +9707,12 @@ def test_list_descendant_security_health_analytics_custom_modules_non_empty_requ
         client.list_descendant_security_health_analytics_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
 
 
@@ -9868,9 +9832,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -9894,9 +9856,7 @@ def test_list_descendant_security_health_analytics_custom_modules_field_headers(
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-    )
+    request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
 
     request.parent = "parent_value"
 
@@ -9905,9 +9865,7 @@ def test_list_descendant_security_health_analytics_custom_modules_field_headers(
         type(client.transport.list_descendant_security_health_analytics_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
         client.list_descendant_security_health_analytics_custom_modules(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9931,9 +9889,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_field_he
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-    )
+    request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
 
     request.parent = "parent_value"
 
@@ -9971,9 +9927,7 @@ def test_list_descendant_security_health_analytics_custom_modules_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_descendant_security_health_analytics_custom_modules(
@@ -10015,9 +9969,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_flattene
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
@@ -10831,9 +10783,9 @@ def test_list_mute_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_mute_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_mute_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_mute_configs(request)
 
@@ -11872,9 +11824,7 @@ def test_list_effective_security_health_analytics_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -11913,11 +11863,12 @@ def test_list_effective_security_health_analytics_custom_modules_non_empty_reque
         client.list_effective_security_health_analytics_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
 
 
@@ -12035,9 +11986,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -12061,9 +12010,7 @@ def test_list_effective_security_health_analytics_custom_modules_field_headers()
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-    )
+    request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
 
     request.parent = "parent_value"
 
@@ -12072,9 +12019,7 @@ def test_list_effective_security_health_analytics_custom_modules_field_headers()
         type(client.transport.list_effective_security_health_analytics_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
         client.list_effective_security_health_analytics_custom_modules(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -12098,9 +12043,7 @@ async def test_list_effective_security_health_analytics_custom_modules_field_hea
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-    )
+    request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
 
     request.parent = "parent_value"
 
@@ -12138,9 +12081,7 @@ def test_list_effective_security_health_analytics_custom_modules_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_effective_security_health_analytics_custom_modules(
@@ -12182,9 +12123,7 @@ async def test_list_effective_security_health_analytics_custom_modules_flattened
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
@@ -13642,9 +13581,9 @@ def test_run_asset_discovery_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_asset_discovery
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_asset_discovery] = (
+            mock_rpc
+        )
         request = {}
         client.run_asset_discovery(request)
 
@@ -14017,9 +13956,9 @@ def test_set_finding_state_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
         request = {}
         client.set_finding_state(request)
 
@@ -15127,9 +15066,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -15921,9 +15860,9 @@ def test_update_external_system_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_external_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_external_system] = (
+            mock_rpc
+        )
         request = {}
         client.update_external_system(request)
 
@@ -16661,9 +16600,9 @@ def test_update_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_mute_config(request)
 
@@ -17896,9 +17835,7 @@ def test_update_security_health_analytics_custom_module_field_headers():
         type(client.transport.update_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.update_security_health_analytics_custom_module(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -17960,9 +17897,7 @@ def test_update_security_health_analytics_custom_module_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_security_health_analytics_custom_module(
@@ -18015,9 +17950,7 @@ async def test_update_security_health_analytics_custom_module_flattened_async():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
@@ -18481,9 +18414,9 @@ def test_update_security_marks_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
         request = {}
         client.update_security_marks(request)
 
@@ -19913,9 +19846,9 @@ def test_list_big_query_exports_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_big_query_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_big_query_exports] = (
+            mock_rpc
+        )
         request = {}
         client.list_big_query_exports(request)
 
@@ -21536,9 +21469,7 @@ def test_list_descendant_event_threat_detection_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -21577,11 +21508,12 @@ def test_list_descendant_event_threat_detection_custom_modules_non_empty_request
         client.list_descendant_event_threat_detection_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        assert (
+            args[0]
+            == securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
 
 
@@ -21699,9 +21631,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -21736,9 +21666,7 @@ def test_list_descendant_event_threat_detection_custom_modules_field_headers():
         type(client.transport.list_descendant_event_threat_detection_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
         client.list_descendant_event_threat_detection_custom_modules(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -21802,9 +21730,7 @@ def test_list_descendant_event_threat_detection_custom_modules_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_descendant_event_threat_detection_custom_modules(
@@ -21846,9 +21772,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_flattened_a
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
@@ -23624,9 +23548,7 @@ def test_get_effective_event_threat_detection_custom_module_field_headers():
         type(client.transport.get_effective_event_threat_detection_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        call.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
         client.get_effective_event_threat_detection_custom_module(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -23690,9 +23612,7 @@ def test_get_effective_event_threat_detection_custom_module_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        call.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_effective_event_threat_detection_custom_module(
@@ -23734,9 +23654,7 @@ async def test_get_effective_event_threat_detection_custom_module_flattened_asyn
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        call.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
@@ -23804,9 +23722,7 @@ def test_list_effective_event_threat_detection_custom_modules(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -23845,11 +23761,12 @@ def test_list_effective_event_threat_detection_custom_modules_non_empty_request_
         client.list_effective_event_threat_detection_custom_modules(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
-            parent="parent_value",
-            page_token="page_token_value",
+        assert (
+            args[0]
+            == securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
+                parent="parent_value",
+                page_token="page_token_value",
+            )
         )
 
 
@@ -23967,9 +23884,7 @@ async def test_list_effective_event_threat_detection_custom_modules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -24004,9 +23919,7 @@ def test_list_effective_event_threat_detection_custom_modules_field_headers():
         type(client.transport.list_effective_event_threat_detection_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
         client.list_effective_event_threat_detection_custom_modules(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -24070,9 +23983,7 @@ def test_list_effective_event_threat_detection_custom_modules_flattened():
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_effective_event_threat_detection_custom_modules(
@@ -24114,9 +24025,7 @@ async def test_list_effective_event_threat_detection_custom_modules_flattened_as
         "__call__",
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
@@ -26494,9 +26403,9 @@ def test_list_valued_resources_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_valued_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_valued_resources] = (
+            mock_rpc
+        )
         request = {}
         client.list_valued_resources(request)
 
@@ -27042,9 +26951,9 @@ def test_list_attack_paths_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_attack_paths
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_attack_paths] = (
+            mock_rpc
+        )
         request = {}
         client.list_attack_paths(request)
 
@@ -27518,9 +27427,9 @@ def test_bulk_mute_findings_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.bulk_mute_findings
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.bulk_mute_findings] = (
+            mock_rpc
+        )
 
         request = {}
         client.bulk_mute_findings(request)
@@ -27761,9 +27670,7 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-    )
+    return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -27829,9 +27736,7 @@ def test_create_security_health_analytics_custom_module_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -28309,9 +28214,9 @@ def test_create_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_mute_config(request)
@@ -28735,9 +28640,9 @@ def test_delete_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_mute_config(request)
@@ -29454,9 +29359,9 @@ def test_get_valued_resource_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_valued_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_valued_resource] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_valued_resource(request)
@@ -29638,9 +29543,9 @@ def test_get_big_query_export_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_big_query_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_big_query_export] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_big_query_export(request)
@@ -30599,9 +30504,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-    )
+    return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -30660,9 +30563,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -30861,9 +30762,7 @@ def test_get_security_health_analytics_custom_module_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -31849,9 +31748,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-    )
+    return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -31918,9 +31815,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_flattened
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -32291,9 +32186,9 @@ def test_list_mute_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_mute_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_mute_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_mute_configs(request)
@@ -32889,9 +32784,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-    )
+    return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -32958,9 +32851,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_flattened(
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -33674,9 +33565,9 @@ def test_run_asset_discovery_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.run_asset_discovery
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.run_asset_discovery] = (
+            mock_rpc
+        )
 
         request = {}
         client.run_asset_discovery(request)
@@ -33854,9 +33745,9 @@ def test_set_finding_state_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
 
         request = {}
         client.set_finding_state(request)
@@ -34426,9 +34317,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -34843,9 +34734,9 @@ def test_update_external_system_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_external_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_external_system] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_external_system(request)
@@ -35209,9 +35100,9 @@ def test_update_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_mute_config(request)
@@ -35834,9 +35725,7 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-    )
+    return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -35896,9 +35785,7 @@ def test_update_security_health_analytics_custom_module_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -36160,9 +36047,9 @@ def test_update_security_marks_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_security_marks(request)
@@ -36933,9 +36820,9 @@ def test_list_big_query_exports_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_big_query_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_big_query_exports] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_big_query_exports(request)
@@ -37944,9 +37831,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -38830,9 +38715,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_required_fields
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-    )
+    return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -38891,9 +38774,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -39109,9 +38990,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
@@ -40308,9 +40187,9 @@ def test_list_valued_resources_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_valued_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_valued_resources] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_valued_resources(request)
@@ -40575,9 +40454,9 @@ def test_list_attack_paths_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_attack_paths
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_attack_paths] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_attack_paths(request)
@@ -40958,9 +40837,7 @@ def test_create_security_health_analytics_custom_module_empty_call_grpc():
         type(client.transport.create_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.create_security_health_analytics_custom_module(request=None)
 
         # Establish that the underlying stub method was called.
@@ -41301,17 +41178,13 @@ def test_get_effective_security_health_analytics_custom_module_empty_call_grpc()
         type(client.transport.get_effective_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
         client.get_effective_security_health_analytics_custom_module(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request_msg = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
 
         assert args[0] == request_msg
 
@@ -41328,9 +41201,7 @@ def test_get_security_health_analytics_custom_module_empty_call_grpc():
     with mock.patch.object(
         type(client.transport.get_security_health_analytics_custom_module), "__call__"
     ) as call:
-        call.return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.get_security_health_analytics_custom_module(request=None)
 
         # Establish that the underlying stub method was called.
@@ -41440,17 +41311,13 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call_grp
         type(client.transport.list_descendant_security_health_analytics_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
         client.list_descendant_security_health_analytics_custom_modules(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -41535,17 +41402,13 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call_grpc
         type(client.transport.list_effective_security_health_analytics_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
         client.list_effective_security_health_analytics_custom_modules(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -41863,9 +41726,7 @@ def test_update_security_health_analytics_custom_module_empty_call_grpc():
         type(client.transport.update_security_health_analytics_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        call.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         client.update_security_health_analytics_custom_module(request=None)
 
         # Establish that the underlying stub method was called.
@@ -42106,17 +41967,13 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call_grpc()
         type(client.transport.list_descendant_event_threat_detection_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
         client.list_descendant_event_threat_detection_custom_modules(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -42215,9 +42072,7 @@ def test_get_effective_event_threat_detection_custom_module_empty_call_grpc():
         type(client.transport.get_effective_event_threat_detection_custom_module),
         "__call__",
     ) as call:
-        call.return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        call.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
         client.get_effective_event_threat_detection_custom_module(request=None)
 
         # Establish that the underlying stub method was called.
@@ -42243,17 +42098,13 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call_grpc():
         type(client.transport.list_effective_event_threat_detection_custom_modules),
         "__call__",
     ) as call:
-        call.return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        call.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
         client.list_effective_event_threat_detection_custom_modules(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -42958,9 +42809,7 @@ async def test_get_effective_security_health_analytics_custom_module_empty_call_
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request_msg = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
 
         assert args[0] == request_msg
 
@@ -43141,9 +42990,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_empty_ca
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -43261,9 +43108,7 @@ async def test_list_effective_security_health_analytics_custom_modules_empty_cal
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -44039,9 +43884,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_empty_call_
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -44204,9 +44047,7 @@ async def test_list_effective_event_threat_detection_custom_modules_empty_call_g
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -44791,9 +44632,7 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        post.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         post_with_metadata.return_value = (
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
             metadata,
@@ -47410,17 +47249,13 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
         )
         req.return_value.content = return_value
 
-        request = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
-        )
+        post.return_value = effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule()
         post_with_metadata.return_value = (
             effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule(),
             metadata,
@@ -47579,9 +47414,7 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        post.return_value = security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         post_with_metadata.return_value = (
             security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
             metadata,
@@ -48255,17 +48088,13 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
         )
         req.return_value.content = return_value
 
-        request = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        post.return_value = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
         post_with_metadata.return_value = (
             securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse(),
             metadata,
@@ -48805,17 +48634,13 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
         )
         req.return_value.content = return_value
 
-        request = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-        )
+        post.return_value = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
         post_with_metadata.return_value = (
             securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse(),
             metadata,
@@ -51640,9 +51465,7 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
-        )
+        post.return_value = gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule()
         post_with_metadata.return_value = (
             gcs_security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule(),
             metadata,
@@ -53412,17 +53235,13 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
         )
         req.return_value.content = return_value
 
-        request = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
-        )
+        post.return_value = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse()
         post_with_metadata.return_value = (
             securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse(),
             metadata,
@@ -54134,9 +53953,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
-        )
+        post.return_value = effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule()
         post_with_metadata.return_value = (
             effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule(),
             metadata,
@@ -54273,17 +54090,13 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
         )
         req.return_value.content = return_value
 
-        request = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
-        )
+        post.return_value = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse()
         post_with_metadata.return_value = (
             securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse(),
             metadata,
@@ -55963,9 +55776,7 @@ def test_get_effective_security_health_analytics_custom_module_empty_call_rest()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
-        )
+        request_msg = securitycenter_service.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest()
 
         assert args[0] == request_msg
 
@@ -56092,9 +55903,7 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call_res
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -56181,9 +55990,7 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call_rest
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -56716,9 +56523,7 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call_rest()
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -56838,9 +56643,7 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call_rest():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
-        )
+        request_msg = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest()
 
         assert args[0] == request_msg
 
@@ -57449,12 +57252,8 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_assets._session
     session2 = client2.transport.list_assets._session
     assert session1 != session2
-    session1 = (
-        client1.transport.list_descendant_security_health_analytics_custom_modules._session
-    )
-    session2 = (
-        client2.transport.list_descendant_security_health_analytics_custom_modules._session
-    )
+    session1 = client1.transport.list_descendant_security_health_analytics_custom_modules._session
+    session2 = client2.transport.list_descendant_security_health_analytics_custom_modules._session
     assert session1 != session2
     session1 = client1.transport.list_findings._session
     session2 = client2.transport.list_findings._session
@@ -57465,12 +57264,8 @@ def test_security_center_client_transport_session_collision(transport_name):
     session1 = client1.transport.list_notification_configs._session
     session2 = client2.transport.list_notification_configs._session
     assert session1 != session2
-    session1 = (
-        client1.transport.list_effective_security_health_analytics_custom_modules._session
-    )
-    session2 = (
-        client2.transport.list_effective_security_health_analytics_custom_modules._session
-    )
+    session1 = client1.transport.list_effective_security_health_analytics_custom_modules._session
+    session2 = client2.transport.list_effective_security_health_analytics_custom_modules._session
     assert session1 != session2
     session1 = client1.transport.list_security_health_analytics_custom_modules._session
     session2 = client2.transport.list_security_health_analytics_custom_modules._session

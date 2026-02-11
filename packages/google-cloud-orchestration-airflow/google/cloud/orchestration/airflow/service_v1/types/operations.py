@@ -73,6 +73,7 @@ class OperationMetadata(proto.Message):
                 The operation is no longer running but did
                 not succeed.
         """
+
         _pb_options = {"allow_alias": True}
         STATE_UNSPECIFIED = 0
         PENDING = 1
@@ -104,6 +105,7 @@ class OperationMetadata(proto.Message):
                 instance (only for highly resilient
                 environments).
         """
+
         TYPE_UNSPECIFIED = 0
         CREATE = 1
         DELETE = 2

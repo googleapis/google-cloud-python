@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
 
@@ -68,10 +68,12 @@ import google.protobuf.any_pb2 as any_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.services.user_event_service import pagers
+from google.cloud.recommendationengine_v1beta1.types import (
+    import_,
+    user_event,
+    user_event_service,
+)
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
-from google.cloud.recommendationengine_v1beta1.types import import_
-from google.cloud.recommendationengine_v1beta1.types import user_event
-from google.cloud.recommendationengine_v1beta1.types import user_event_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
 from .transports.grpc import UserEventServiceGrpcTransport
@@ -87,9 +89,7 @@ class UserEventServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[UserEventServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[UserEventServiceTransport]]
     _transport_registry["grpc"] = UserEventServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = UserEventServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = UserEventServiceRestTransport
@@ -635,11 +635,9 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = UserEventServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            UserEventServiceClient._read_environment_variables()
+        )
         self._client_cert_source = UserEventServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -674,8 +672,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(UserEventServiceTransport, transport)
             self._api_endpoint = self._transport.host

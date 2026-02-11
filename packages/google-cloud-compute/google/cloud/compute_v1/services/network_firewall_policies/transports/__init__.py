@@ -23,9 +23,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[NetworkFirewallPoliciesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[NetworkFirewallPoliciesTransport]]
 _transport_registry["rest"] = NetworkFirewallPoliciesRestTransport
 
 __all__ = (

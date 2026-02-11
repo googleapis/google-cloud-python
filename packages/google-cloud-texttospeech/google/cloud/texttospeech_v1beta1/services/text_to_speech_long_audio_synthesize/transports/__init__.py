@@ -25,13 +25,11 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TextToSpeechLongAudioSynthesizeTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechLongAudioSynthesizeTransport]]
 _transport_registry["grpc"] = TextToSpeechLongAudioSynthesizeGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = (
+    TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
+)
 _transport_registry["rest"] = TextToSpeechLongAudioSynthesizeRestTransport
 
 __all__ = (

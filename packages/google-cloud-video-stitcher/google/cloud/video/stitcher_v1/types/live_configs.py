@@ -47,6 +47,7 @@ class AdTracking(proto.Enum):
             The Video Stitcher API will trigger playback
             events on behalf of the client player.
     """
+
     AD_TRACKING_UNSPECIFIED = 0
     CLIENT = 1
     SERVER = 2
@@ -102,6 +103,7 @@ class LiveConfig(proto.Message):
             DELETING (3):
                 Live config is queued up for deletion.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -122,6 +124,7 @@ class LiveConfig(proto.Message):
                 Finishes stitching the current ad before
                 returning to content.
         """
+
         STITCHING_POLICY_UNSPECIFIED = 0
         CUT_CURRENT = 1
         COMPLETE_AD = 2

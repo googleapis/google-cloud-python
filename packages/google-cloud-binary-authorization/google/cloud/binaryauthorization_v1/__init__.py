@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.binauthz_management_service_v1 import (
     BinauthzManagementServiceV1AsyncClient,
     BinauthzManagementServiceV1Client,

@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,10 +31,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.auditmanager_v1.types import auditmanager
 
@@ -408,12 +408,12 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_audit_scope_report" not in self._stubs:
-            self._stubs[
-                "generate_audit_scope_report"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.auditmanager.v1.AuditManager/GenerateAuditScopeReport",
-                request_serializer=auditmanager.GenerateAuditScopeReportRequest.serialize,
-                response_deserializer=auditmanager.AuditScopeReport.deserialize,
+            self._stubs["generate_audit_scope_report"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.auditmanager.v1.AuditManager/GenerateAuditScopeReport",
+                    request_serializer=auditmanager.GenerateAuditScopeReportRequest.serialize,
+                    response_deserializer=auditmanager.AuditScopeReport.deserialize,
+                )
             )
         return self._stubs["generate_audit_scope_report"]
 
@@ -526,12 +526,12 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_resource_enrollment_status" not in self._stubs:
-            self._stubs[
-                "get_resource_enrollment_status"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.auditmanager.v1.AuditManager/GetResourceEnrollmentStatus",
-                request_serializer=auditmanager.GetResourceEnrollmentStatusRequest.serialize,
-                response_deserializer=auditmanager.ResourceEnrollmentStatus.deserialize,
+            self._stubs["get_resource_enrollment_status"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.auditmanager.v1.AuditManager/GetResourceEnrollmentStatus",
+                    request_serializer=auditmanager.GetResourceEnrollmentStatusRequest.serialize,
+                    response_deserializer=auditmanager.ResourceEnrollmentStatus.deserialize,
+                )
             )
         return self._stubs["get_resource_enrollment_status"]
 
@@ -559,12 +559,12 @@ class AuditManagerGrpcAsyncIOTransport(AuditManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_resource_enrollment_statuses" not in self._stubs:
-            self._stubs[
-                "list_resource_enrollment_statuses"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.auditmanager.v1.AuditManager/ListResourceEnrollmentStatuses",
-                request_serializer=auditmanager.ListResourceEnrollmentStatusesRequest.serialize,
-                response_deserializer=auditmanager.ListResourceEnrollmentStatusesResponse.deserialize,
+            self._stubs["list_resource_enrollment_statuses"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.auditmanager.v1.AuditManager/ListResourceEnrollmentStatuses",
+                    request_serializer=auditmanager.ListResourceEnrollmentStatusesRequest.serialize,
+                    response_deserializer=auditmanager.ListResourceEnrollmentStatusesResponse.deserialize,
+                )
             )
         return self._stubs["list_resource_enrollment_statuses"]
 

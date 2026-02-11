@@ -55,6 +55,7 @@ class TimeUnitEnum(proto.Message):
                 Per video stream. Only valid for entities in a VIDEO_PLAYER
                 environment.
         """
+
         TIME_UNIT_UNSPECIFIED = 0
         MINUTE = 1
         HOUR = 2

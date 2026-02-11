@@ -141,12 +141,12 @@ class ListMigrationWorkflowsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_workflows: MutableSequence[
-        migration_entities.MigrationWorkflow
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=migration_entities.MigrationWorkflow,
+    migration_workflows: MutableSequence[migration_entities.MigrationWorkflow] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=migration_entities.MigrationWorkflow,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -275,12 +275,12 @@ class ListMigrationSubtasksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migration_subtasks: MutableSequence[
-        migration_entities.MigrationSubtask
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=migration_entities.MigrationSubtask,
+    migration_subtasks: MutableSequence[migration_entities.MigrationSubtask] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=migration_entities.MigrationSubtask,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

@@ -81,6 +81,7 @@ class OperationState(proto.Enum):
         OPERATION_STATE_FAILED (60):
             Audit report generation process has failed.
     """
+
     OPERATION_STATE_UNSPECIFIED = 0
     OPERATION_STATE_NOT_STARTED = 10
     OPERATION_STATE_EVALUATION_IN_PROGRESS = 20
@@ -109,6 +110,7 @@ class ComplianceState(proto.Enum):
         AUDIT_NOT_SUPPORTED (5):
             Cannot be audited
     """
+
     COMPLIANCE_STATE_UNSPECIFIED = 0
     COMPLIANT = 1
     VIOLATION = 2
@@ -204,6 +206,7 @@ class GenerateAuditScopeReportRequest(proto.Message):
                 Audit Scope Report creation format is Open
                 Document.
         """
+
         AUDIT_SCOPE_REPORT_FORMAT_UNSPECIFIED = 0
         AUDIT_SCOPE_REPORT_FORMAT_ODF = 1
 
@@ -265,6 +268,7 @@ class GenerateAuditReportRequest(proto.Message):
                 Audit Report creation format is Open
                 Document.
         """
+
         AUDIT_REPORT_FORMAT_UNSPECIFIED = 0
         AUDIT_REPORT_FORMAT_ODF = 1
 
@@ -355,12 +359,12 @@ class ListResourceEnrollmentStatusesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_enrollment_statuses: MutableSequence[
-        "ResourceEnrollmentStatus"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="ResourceEnrollmentStatus",
+    resource_enrollment_statuses: MutableSequence["ResourceEnrollmentStatus"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="ResourceEnrollmentStatus",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -714,6 +718,7 @@ class ResourceEnrollmentStatus(proto.Message):
             ENROLLED (3):
                 Enrolled.
         """
+
         RESOURCE_ENROLLMENT_STATE_UNSPECIFIED = 0
         NOT_ENROLLED = 1
         INHERITED = 2
@@ -800,6 +805,7 @@ class AuditReport(proto.Message):
                 completed. But report summary is unknown. This
                 is valid for older reports.
         """
+
         REPORT_GENERATION_STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         COMPLETED = 2
@@ -959,6 +965,7 @@ class Control(proto.Message):
             SR (18):
                 Supply Chain Risk Management
         """
+
         FAMILY_UNSPECIFIED = 0
         AC = 1
         AT = 2

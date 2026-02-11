@@ -26,8 +26,13 @@ from .fleetengine import (
     VehicleLocation,
     WaypointType,
 )
-from .header import RequestHeader
-from .traffic import ConsumableTrafficPolyline, SpeedReadingInterval
+from .header import (
+    RequestHeader,
+)
+from .traffic import (
+    ConsumableTrafficPolyline,
+    SpeedReadingInterval,
+)
 from .trip_api import (
     CreateTripRequest,
     DeleteTripRequest,
@@ -37,7 +42,13 @@ from .trip_api import (
     SearchTripsResponse,
     UpdateTripRequest,
 )
-from .trips import BillingPlatformIdentifier, StopLocation, Trip, TripStatus, TripView
+from .trips import (
+    BillingPlatformIdentifier,
+    StopLocation,
+    Trip,
+    TripStatus,
+    TripView,
+)
 from .vehicle_api import (
     CreateVehicleRequest,
     DeleteVehicleRequest,

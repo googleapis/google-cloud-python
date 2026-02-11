@@ -111,6 +111,7 @@ class VolumeTypeEnum(proto.Message):
             GCE_PERSISTENT_DISK (1):
                 Compute Engine Persistent Disk volume
         """
+
         VOLUME_TYPE_UNSPECIFIED = 0
         GCE_PERSISTENT_DISK = 1
 

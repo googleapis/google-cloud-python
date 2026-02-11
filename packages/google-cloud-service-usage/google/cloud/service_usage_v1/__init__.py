@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.service_usage import ServiceUsageAsyncClient, ServiceUsageClient
 from .types.resources import OperationMetadata, Service, ServiceConfig, State
 from .types.serviceusage import (

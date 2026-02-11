@@ -118,12 +118,12 @@ class BoundingBoxMetricsEntry(proto.Message):
         proto.FLOAT,
         number=2,
     )
-    confidence_metrics_entries: MutableSequence[
-        ConfidenceMetricsEntry
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=3,
-        message=ConfidenceMetricsEntry,
+    confidence_metrics_entries: MutableSequence[ConfidenceMetricsEntry] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message=ConfidenceMetricsEntry,
+        )
     )
 
 
@@ -152,12 +152,12 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
         proto.INT32,
         number=1,
     )
-    bounding_box_metrics_entries: MutableSequence[
-        "BoundingBoxMetricsEntry"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="BoundingBoxMetricsEntry",
+    bounding_box_metrics_entries: MutableSequence["BoundingBoxMetricsEntry"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="BoundingBoxMetricsEntry",
+        )
     )
     bounding_box_mean_average_precision: float = proto.Field(
         proto.FLOAT,

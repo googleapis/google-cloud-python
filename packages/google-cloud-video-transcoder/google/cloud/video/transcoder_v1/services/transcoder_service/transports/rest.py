@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.video.transcoder_v1.types import resources, services
@@ -736,9 +736,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job template resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_job_template(
                 request, metadata
@@ -991,9 +989,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job_template(
                 request, metadata
@@ -1253,9 +1249,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job template resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job_template(
                 request, metadata
@@ -1549,9 +1543,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_job_templates(
                 request, metadata

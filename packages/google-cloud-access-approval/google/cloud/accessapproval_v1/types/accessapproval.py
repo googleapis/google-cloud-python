@@ -60,6 +60,7 @@ class EnrollmentLevel(proto.Enum):
             Service is enrolled in Access Approval for
             all requests
     """
+
     ENROLLMENT_LEVEL_UNSPECIFIED = 0
     BLOCK_ALL = 1
 
@@ -158,6 +159,7 @@ class AccessReason(proto.Message):
                 to diagnose or resolve a suspected issue in
                 services or a known outage.
         """
+
         TYPE_UNSPECIFIED = 0
         CUSTOMER_INITIATED_SUPPORT = 1
         GOOGLE_INITIATED_SERVICE = 2

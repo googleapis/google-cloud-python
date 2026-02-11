@@ -38,6 +38,7 @@ class State(proto.Enum):
         DISABLED (2):
             The McpServer is disabled.
     """
+
     STATE_UNSPECIFIED = 0
     ENABLED = 1
     DISABLED = 2

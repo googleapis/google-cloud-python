@@ -48,6 +48,7 @@ class BranchView(proto.Enum):
             Includes all fields of a
             [Branch][google.cloud.retail.v2alpha.Branch].
     """
+
     BRANCH_VIEW_UNSPECIFIED = 0
     BRANCH_VIEW_BASIC = 1
     BRANCH_VIEW_FULL = 2
@@ -174,6 +175,7 @@ class Branch(proto.Message):
                     Scope for products created or updated in the
                     last 24 hours.
             """
+
             PRODUCT_COUNT_SCOPE_UNSPECIFIED = 0
             ALL_PRODUCTS = 1
             LAST_24_HOUR_UPDATE = 2
@@ -289,12 +291,12 @@ class Branch(proto.Message):
             proto.DOUBLE,
             number=4,
         )
-        unqualified_sample_products: MutableSequence[
-            product.Product
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message=product.Product,
+        unqualified_sample_products: MutableSequence[product.Product] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message=product.Product,
+            )
         )
 
     name: str = proto.Field(

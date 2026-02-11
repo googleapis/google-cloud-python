@@ -17,9 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport
 
 __protobuf__ = proto.module(
     package="google.maps.addressvalidation.v1",

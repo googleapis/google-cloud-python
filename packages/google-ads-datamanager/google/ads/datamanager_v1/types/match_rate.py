@@ -63,6 +63,7 @@ class MatchRateRange(proto.Enum):
             The match rate range is between 91% and 100% (in the
             interval ``[91, 100]``).
     """
+
     MATCH_RATE_RANGE_UNKNOWN = 0
     MATCH_RATE_RANGE_NOT_ELIGIBLE = 1
     MATCH_RATE_RANGE_LESS_THAN_20 = 2

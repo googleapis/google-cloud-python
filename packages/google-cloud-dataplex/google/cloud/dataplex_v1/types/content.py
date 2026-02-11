@@ -209,6 +209,7 @@ class GetContentRequest(proto.Message):
             FULL (2):
                 Returns the complete proto.
         """
+
         CONTENT_VIEW_UNSPECIFIED = 0
         BASIC = 1
         FULL = 2

@@ -16,23 +16,26 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.protobuf.json_format import MessageToJson
 
-from google.cloud.websecurityscanner_v1alpha.types import scan_run, web_security_scanner
+from google.cloud.websecurityscanner_v1alpha.types import (
+    finding,
+    scan_config,
+    scan_run,
+    web_security_scanner,
+)
 from google.cloud.websecurityscanner_v1alpha.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1alpha.types import finding
-from google.cloud.websecurityscanner_v1alpha.types import scan_config
 
 from .base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 

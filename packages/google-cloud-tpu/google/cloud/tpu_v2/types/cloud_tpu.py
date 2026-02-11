@@ -168,6 +168,7 @@ class AttachedDisk(proto.Message):
                 TPU nodes can attach a disk in read-only mode at
                 a time.
         """
+
         DISK_MODE_UNSPECIFIED = 0
         READ_WRITE = 1
         READ_ONLY = 2
@@ -467,6 +468,7 @@ class Node(proto.Message):
                 TPU node has unknown state after a failed
                 repair.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         READY = 2
@@ -503,6 +505,7 @@ class Node(proto.Message):
                 caused rescheduling and will resume running once
                 rescheduled.
         """
+
         HEALTH_UNSPECIFIED = 0
         HEALTHY = 1
         TIMEOUT = 3
@@ -524,6 +527,7 @@ class Node(proto.Message):
             V2 (4):
                 TPU API V2 version.
         """
+
         API_VERSION_UNSPECIFIED = 0
         V1_ALPHA1 = 1
         V1 = 2
@@ -1038,6 +1042,7 @@ class QueuedResourceState(proto.Message):
                 willing to wait, use `timing
                 constraints <https://cloud.google.com/tpu/docs/queued-resources#request_a_queued_resource_before_a_specified_time>`__.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACCEPTED = 2
@@ -1063,6 +1068,7 @@ class QueuedResourceState(proto.Message):
                 The current QueuedResource state was
                 initiated by the service.
         """
+
         STATE_INITIATOR_UNSPECIFIED = 0
         USER = 1
         SERVICE = 2
@@ -1849,6 +1855,7 @@ class Symptom(proto.Message):
                 Abusive behaviors have been identified on the
                 current project.
         """
+
         SYMPTOM_TYPE_UNSPECIFIED = 0
         LOW_MEMORY = 1
         OUT_OF_MEMORY = 2
@@ -1950,6 +1957,7 @@ class AcceleratorConfig(proto.Message):
             V6E (11):
                 TPU v6e.
         """
+
         TYPE_UNSPECIFIED = 0
         V2 = 2
         V3 = 4

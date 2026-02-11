@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
@@ -46,17 +46,19 @@ except AttributeError:  # pragma: NO COVER
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.generator_evaluations import pagers
 from google.cloud.dialogflow_v2beta1.types import (
+    generator,
+    generator_evaluation,
+    operations,
+)
+from google.cloud.dialogflow_v2beta1.types import (
     generator_evaluation as gcd_generator_evaluation,
 )
-from google.cloud.dialogflow_v2beta1.types import generator
-from google.cloud.dialogflow_v2beta1.types import generator_evaluation
-from google.cloud.dialogflow_v2beta1.types import operations
 
 from .client import GeneratorEvaluationsClient
 from .transports.base import DEFAULT_CLIENT_INFO, GeneratorEvaluationsTransport
@@ -132,7 +134,10 @@ class GeneratorEvaluationsAsyncClient:
         Returns:
             GeneratorEvaluationsAsyncClient: The constructed client.
         """
-        return GeneratorEvaluationsClient.from_service_account_info.__func__(GeneratorEvaluationsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            GeneratorEvaluationsClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(GeneratorEvaluationsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -148,7 +153,10 @@ class GeneratorEvaluationsAsyncClient:
         Returns:
             GeneratorEvaluationsAsyncClient: The constructed client.
         """
-        return GeneratorEvaluationsClient.from_service_account_file.__func__(GeneratorEvaluationsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            GeneratorEvaluationsClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(GeneratorEvaluationsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 
@@ -186,7 +194,9 @@ class GeneratorEvaluationsAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return GeneratorEvaluationsClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return GeneratorEvaluationsClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> GeneratorEvaluationsTransport:

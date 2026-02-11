@@ -16,28 +16,25 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.batch_v1alpha.types import batch, job, resource_allowance, task
+from google.cloud.batch_v1alpha.types import job as gcb_job
 from google.cloud.batch_v1alpha.types import (
     resource_allowance as gcb_resource_allowance,
 )
-from google.cloud.batch_v1alpha.types import batch
-from google.cloud.batch_v1alpha.types import job
-from google.cloud.batch_v1alpha.types import job as gcb_job
-from google.cloud.batch_v1alpha.types import resource_allowance
-from google.cloud.batch_v1alpha.types import task
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseBatchServiceRestTransport
@@ -1452,9 +1449,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchServiceRestTransport._BaseCreateResourceAllowance._get_http_options()
-            )
+            http_options = _BaseBatchServiceRestTransport._BaseCreateResourceAllowance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_resource_allowance(
                 request, metadata
@@ -1758,9 +1753,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchServiceRestTransport._BaseDeleteResourceAllowance._get_http_options()
-            )
+            http_options = _BaseBatchServiceRestTransport._BaseDeleteResourceAllowance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_resource_allowance(
                 request, metadata
@@ -2052,9 +2045,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchServiceRestTransport._BaseGetResourceAllowance._get_http_options()
-            )
+            http_options = _BaseBatchServiceRestTransport._BaseGetResourceAllowance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_resource_allowance(
                 request, metadata
@@ -2492,9 +2483,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
                     ListResourceAllowances Response.
             """
 
-            http_options = (
-                _BaseBatchServiceRestTransport._BaseListResourceAllowances._get_http_options()
-            )
+            http_options = _BaseBatchServiceRestTransport._BaseListResourceAllowances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_resource_allowances(
                 request, metadata
@@ -2948,9 +2937,7 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchServiceRestTransport._BaseUpdateResourceAllowance._get_http_options()
-            )
+            http_options = _BaseBatchServiceRestTransport._BaseUpdateResourceAllowance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_resource_allowance(
                 request, metadata
@@ -3069,7 +3056,9 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateResourceAllowance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateResourceAllowance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_job(
@@ -3085,7 +3074,9 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
     ) -> Callable[[batch.DeleteResourceAllowanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteResourceAllowance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteResourceAllowance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_job(self) -> Callable[[batch.GetJobRequest], job.Job]:
@@ -3123,7 +3114,9 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListResourceAllowances(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListResourceAllowances(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_tasks(self) -> Callable[[batch.ListTasksRequest], batch.ListTasksResponse]:
@@ -3145,7 +3138,9 @@ class BatchServiceRestTransport(_BaseBatchServiceRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateResourceAllowance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateResourceAllowance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_location(self):

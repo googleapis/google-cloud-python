@@ -42,6 +42,7 @@ class HistoryState(proto.Enum):
             rules <https://support.google.com/vault/answer/7657597>`__
             specify for how long messages and threads are kept.
     """
+
     HISTORY_STATE_UNSPECIFIED = 0
     HISTORY_OFF = 1
     HISTORY_ON = 2

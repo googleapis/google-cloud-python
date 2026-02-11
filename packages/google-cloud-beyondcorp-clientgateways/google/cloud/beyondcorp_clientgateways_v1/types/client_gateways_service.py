@@ -80,6 +80,7 @@ class ClientGateway(proto.Message):
                 ClientGateway encountered an error and is in
                 indeterministic state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         UPDATING = 2

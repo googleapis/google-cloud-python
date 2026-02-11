@@ -93,6 +93,7 @@ class Connector(proto.Message):
             UPDATING (5):
                 The connector is being updated.
         """
+
         STATE_UNSPECIFIED = 0
         READY = 1
         CREATING = 2

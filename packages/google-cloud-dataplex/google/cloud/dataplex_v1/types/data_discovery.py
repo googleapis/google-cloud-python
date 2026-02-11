@@ -105,6 +105,7 @@ class DataDiscoverySpec(proto.Message):
                     credentials of the associated BigQuery
                     connection.
             """
+
             TABLE_TYPE_UNSPECIFIED = 0
             EXTERNAL = 1
             BIGLAKE = 2

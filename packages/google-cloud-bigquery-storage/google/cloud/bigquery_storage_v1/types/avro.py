@@ -113,6 +113,7 @@ class AvroSerializationOptions(proto.Message):
                 picosecond value. The value will be encoded as a
                 string which conforms to ISO 8601 format.
         """
+
         PICOS_TIMESTAMP_PRECISION_UNSPECIFIED = 0
         TIMESTAMP_PRECISION_MICROS = 1
         TIMESTAMP_PRECISION_NANOS = 2

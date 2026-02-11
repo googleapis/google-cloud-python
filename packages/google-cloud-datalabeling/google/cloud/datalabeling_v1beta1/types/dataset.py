@@ -20,10 +20,10 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.datalabeling_v1beta1.types import annotation, data_payloads
 from google.cloud.datalabeling_v1beta1.types import (
     human_annotation_config as gcd_human_annotation_config,
 )
-from google.cloud.datalabeling_v1beta1.types import annotation, data_payloads
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",
@@ -62,6 +62,7 @@ class DataType(proto.Enum):
         GENERAL_DATA (6):
             Allowed for continuous evaluation.
     """
+
     DATA_TYPE_UNSPECIFIED = 0
     IMAGE = 1
     VIDEO = 2

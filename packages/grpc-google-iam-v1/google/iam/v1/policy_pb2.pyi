@@ -73,13 +73,13 @@ class AuditConfig(_message.Message):
 
 class AuditLogConfig(_message.Message):
     __slots__ = ("log_type", "exempted_members")
-
     class LogType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         LOG_TYPE_UNSPECIFIED: _ClassVar[AuditLogConfig.LogType]
         ADMIN_READ: _ClassVar[AuditLogConfig.LogType]
         DATA_WRITE: _ClassVar[AuditLogConfig.LogType]
         DATA_READ: _ClassVar[AuditLogConfig.LogType]
+
     LOG_TYPE_UNSPECIFIED: AuditLogConfig.LogType
     ADMIN_READ: AuditLogConfig.LogType
     DATA_WRITE: AuditLogConfig.LogType
@@ -110,12 +110,12 @@ class PolicyDelta(_message.Message):
 
 class BindingDelta(_message.Message):
     __slots__ = ("action", "role", "member", "condition")
-
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[BindingDelta.Action]
         ADD: _ClassVar[BindingDelta.Action]
         REMOVE: _ClassVar[BindingDelta.Action]
+
     ACTION_UNSPECIFIED: BindingDelta.Action
     ADD: BindingDelta.Action
     REMOVE: BindingDelta.Action
@@ -137,12 +137,12 @@ class BindingDelta(_message.Message):
 
 class AuditConfigDelta(_message.Message):
     __slots__ = ("action", "service", "exempted_member", "log_type")
-
     class Action(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         ACTION_UNSPECIFIED: _ClassVar[AuditConfigDelta.Action]
         ADD: _ClassVar[AuditConfigDelta.Action]
         REMOVE: _ClassVar[AuditConfigDelta.Action]
+
     ACTION_UNSPECIFIED: AuditConfigDelta.Action
     ADD: AuditConfigDelta.Action
     REMOVE: AuditConfigDelta.Action

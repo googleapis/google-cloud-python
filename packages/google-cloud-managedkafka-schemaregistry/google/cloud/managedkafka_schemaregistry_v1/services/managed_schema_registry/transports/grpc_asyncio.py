@@ -17,10 +17,14 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
@@ -28,18 +32,16 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.managedkafka_schemaregistry_v1.types import (
+    schema_registry,
+    schema_registry_resources,
+)
 from google.cloud.managedkafka_schemaregistry_v1.types import (
     schema_registry as gcms_schema_registry,
 )
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry_resources
-from google.cloud.managedkafka_schemaregistry_v1.types import schema_registry
 
 from .base import DEFAULT_CLIENT_INFO, ManagedSchemaRegistryTransport
 from .grpc import ManagedSchemaRegistryGrpcTransport
@@ -727,12 +729,12 @@ class ManagedSchemaRegistryGrpcAsyncIOTransport(ManagedSchemaRegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_subjects_by_schema_id" not in self._stubs:
-            self._stubs[
-                "list_subjects_by_schema_id"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.managedkafka.schemaregistry.v1.ManagedSchemaRegistry/ListSubjectsBySchemaId",
-                request_serializer=schema_registry.ListSubjectsBySchemaIdRequest.serialize,
-                response_deserializer=httpbody_pb2.HttpBody.FromString,
+            self._stubs["list_subjects_by_schema_id"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.managedkafka.schemaregistry.v1.ManagedSchemaRegistry/ListSubjectsBySchemaId",
+                    request_serializer=schema_registry.ListSubjectsBySchemaIdRequest.serialize,
+                    response_deserializer=httpbody_pb2.HttpBody.FromString,
+                )
             )
         return self._stubs["list_subjects_by_schema_id"]
 

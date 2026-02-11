@@ -91,6 +91,7 @@ class Insight(proto.Message):
             RELIABILITY (6):
                 This insight is related to reliability.
         """
+
         CATEGORY_UNSPECIFIED = 0
         COST = 1
         SECURITY = 2
@@ -114,6 +115,7 @@ class Insight(proto.Message):
             CRITICAL (4):
                 Insight has critical severity.
         """
+
         SEVERITY_UNSPECIFIED = 0
         LOW = 1
         MEDIUM = 2
@@ -184,12 +186,12 @@ class Insight(proto.Message):
         proto.STRING,
         number=11,
     )
-    associated_recommendations: MutableSequence[
-        RecommendationReference
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=8,
-        message=RecommendationReference,
+    associated_recommendations: MutableSequence[RecommendationReference] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message=RecommendationReference,
+        )
     )
 
 
@@ -228,6 +230,7 @@ class InsightStateInfo(proto.Message):
                 insights can be updated by Google. DISMISSED
                 insights can be marked as ACTIVE.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         ACCEPTED = 2

@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1378,9 +1378,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseCreatePluginInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_plugin_instance(
                 request, metadata
@@ -1680,9 +1678,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseDeletePluginInstance._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseDeletePluginInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_plugin_instance(
                 request, metadata
@@ -1984,9 +1980,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseDisablePluginInstanceAction._get_http_options()
 
             request, metadata = self._interceptor.pre_disable_plugin_instance_action(
                 request, metadata
@@ -2055,11 +2049,10 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             resp = self._interceptor.post_disable_plugin_instance_action(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_disable_plugin_instance_action_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_disable_plugin_instance_action_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2302,9 +2295,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseEnablePluginInstanceAction._get_http_options()
 
             request, metadata = self._interceptor.pre_enable_plugin_instance_action(
                 request, metadata
@@ -2373,11 +2364,10 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             resp = self._interceptor.post_enable_plugin_instance_action(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_enable_plugin_instance_action_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_enable_plugin_instance_action_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2464,9 +2454,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseExecutePluginInstanceAction._get_http_options()
 
             request, metadata = self._interceptor.pre_execute_plugin_instance_action(
                 request, metadata
@@ -2535,11 +2523,10 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             resp = self._interceptor.post_execute_plugin_instance_action(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_execute_plugin_instance_action_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_execute_plugin_instance_action_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2775,9 +2762,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseGetPluginInstance._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseGetPluginInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_plugin_instance(
                 request, metadata
@@ -2926,9 +2911,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseListPluginInstances._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseListPluginInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_plugin_instances(
                 request, metadata
@@ -3237,9 +3220,7 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
 
             """
 
-            http_options = (
-                _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_http_options()
-            )
+            http_options = _BaseApiHubPluginRestTransport._BaseUpdatePluginInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_plugin_instance(
                 request, metadata
@@ -3386,7 +3367,9 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DisablePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DisablePluginInstanceAction(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def enable_plugin(
@@ -3404,7 +3387,9 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._EnablePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
+        return self._EnablePluginInstanceAction(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def execute_plugin_instance_action(
@@ -3414,7 +3399,9 @@ class ApiHubPluginRestTransport(_BaseApiHubPluginRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExecutePluginInstanceAction(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ExecutePluginInstanceAction(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_plugin(

@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .api_entities import Annotation, Collector, GuestOsScan, VSphereScan
+from .api_entities import (
+    Annotation,
+    Collector,
+    GuestOsScan,
+    VSphereScan,
+)
 from .rapidmigrationassessment import (
     CreateAnnotationRequest,
     CreateCollectorRequest,

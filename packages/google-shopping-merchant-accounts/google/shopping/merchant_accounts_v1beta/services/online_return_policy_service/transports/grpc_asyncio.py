@@ -17,25 +17,25 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 from google.shopping.merchant_accounts_v1beta.types import (
     online_return_policy as gsma_online_return_policy,
 )
-from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO, OnlineReturnPolicyServiceTransport
 from .grpc import OnlineReturnPolicyServiceGrpcTransport
@@ -391,12 +391,12 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_online_return_policies" not in self._stubs:
-            self._stubs[
-                "list_online_return_policies"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/ListOnlineReturnPolicies",
-                request_serializer=online_return_policy.ListOnlineReturnPoliciesRequest.serialize,
-                response_deserializer=online_return_policy.ListOnlineReturnPoliciesResponse.deserialize,
+            self._stubs["list_online_return_policies"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/ListOnlineReturnPolicies",
+                    request_serializer=online_return_policy.ListOnlineReturnPoliciesRequest.serialize,
+                    response_deserializer=online_return_policy.ListOnlineReturnPoliciesResponse.deserialize,
+                )
             )
         return self._stubs["list_online_return_policies"]
 
@@ -422,12 +422,12 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_online_return_policy" not in self._stubs:
-            self._stubs[
-                "create_online_return_policy"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
-                request_serializer=gsma_online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
-                response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
+            self._stubs["create_online_return_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
+                    request_serializer=gsma_online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
+                    response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
+                )
             )
         return self._stubs["create_online_return_policy"]
 
@@ -454,12 +454,12 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_online_return_policy" not in self._stubs:
-            self._stubs[
-                "update_online_return_policy"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
-                request_serializer=gsma_online_return_policy.UpdateOnlineReturnPolicyRequest.serialize,
-                response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
+            self._stubs["update_online_return_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
+                    request_serializer=gsma_online_return_policy.UpdateOnlineReturnPolicyRequest.serialize,
+                    response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
+                )
             )
         return self._stubs["update_online_return_policy"]
 
@@ -485,12 +485,12 @@ class OnlineReturnPolicyServiceGrpcAsyncIOTransport(OnlineReturnPolicyServiceTra
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_online_return_policy" not in self._stubs:
-            self._stubs[
-                "delete_online_return_policy"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
-                request_serializer=online_return_policy.DeleteOnlineReturnPolicyRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_online_return_policy"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
+                    request_serializer=online_return_policy.DeleteOnlineReturnPolicyRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_online_return_policy"]
 

@@ -952,12 +952,12 @@ class ListUserWorkloadsSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    user_workloads_secrets: MutableSequence[
-        "UserWorkloadsSecret"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="UserWorkloadsSecret",
+    user_workloads_secrets: MutableSequence["UserWorkloadsSecret"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="UserWorkloadsSecret",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1012,12 +1012,12 @@ class ListUserWorkloadsConfigMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    user_workloads_config_maps: MutableSequence[
-        "UserWorkloadsConfigMap"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="UserWorkloadsConfigMap",
+    user_workloads_config_maps: MutableSequence["UserWorkloadsConfigMap"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="UserWorkloadsConfigMap",
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1102,6 +1102,7 @@ class ListWorkloadsResponse(proto.Message):
             REDIS (8):
                 Redis.
         """
+
         COMPOSER_WORKLOAD_TYPE_UNSPECIFIED = 0
         CELERY_WORKER = 1
         KUBERNETES_WORKER = 2
@@ -1134,6 +1135,7 @@ class ListWorkloadsResponse(proto.Message):
             FAILED (6):
                 Workload has finished execution with failure.
         """
+
         COMPOSER_WORKLOAD_STATE_UNSPECIFIED = 0
         PENDING = 1
         OK = 2
@@ -1510,6 +1512,7 @@ class EnvironmentConfig(proto.Message):
             ENVIRONMENT_SIZE_LARGE (3):
                 The environment size is large.
         """
+
         ENVIRONMENT_SIZE_UNSPECIFIED = 0
         ENVIRONMENT_SIZE_SMALL = 1
         ENVIRONMENT_SIZE_MEDIUM = 2
@@ -1526,6 +1529,7 @@ class EnvironmentConfig(proto.Message):
                 Enabled High Resilience mode, including Cloud
                 SQL HA.
         """
+
         RESILIENCE_MODE_UNSPECIFIED = 0
         HIGH_RESILIENCE = 1
 
@@ -1791,6 +1795,7 @@ class SoftwareConfig(proto.Message):
             PLUGINS_ENABLED (2):
                 Web server plugins are supported.
         """
+
         WEB_SERVER_PLUGINS_MODE_UNSPECIFIED = 0
         PLUGINS_DISABLED = 1
         PLUGINS_ENABLED = 2
@@ -2208,6 +2213,7 @@ class NetworkingConfig(proto.Message):
                 Requests the use of Private Service Connect
                 for connecting the Customer and Tenant projects.
         """
+
         CONNECTION_TYPE_UNSPECIFIED = 0
         VPC_PEERING = 1
         PRIVATE_SERVICE_CONNECT = 2
@@ -2744,6 +2750,7 @@ class TaskLogsRetentionConfig(proto.Message):
             CLOUD_LOGGING_ONLY (2):
                 Store task logs in Cloud Logging only.
         """
+
         TASK_LOGS_STORAGE_MODE_UNSPECIFIED = 0
         CLOUD_LOGGING_AND_CLOUD_STORAGE = 1
         CLOUD_LOGGING_ONLY = 2
@@ -2779,6 +2786,7 @@ class AirflowMetadataRetentionPolicyConfig(proto.Message):
             RETENTION_MODE_DISABLED (2):
                 Retention policy is disabled.
         """
+
         RETENTION_MODE_UNSPECIFIED = 0
         RETENTION_MODE_ENABLED = 1
         RETENTION_MODE_DISABLED = 2
@@ -2998,6 +3006,7 @@ class Environment(proto.Message):
                 The environment has encountered an error and
                 cannot be used.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         RUNNING = 2
@@ -3142,6 +3151,7 @@ class CheckUpgradeResponse(proto.Message):
             NO_CONFLICT (2):
                 There were no python packages conflicts.
         """
+
         CONFLICT_RESULT_UNSPECIFIED = 0
         CONFLICT = 1
         NO_CONFLICT = 2

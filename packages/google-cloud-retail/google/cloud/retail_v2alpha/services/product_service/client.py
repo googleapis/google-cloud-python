@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -32,8 +33,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -43,7 +44,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.retail_v2alpha import gapic_version as package_version
 
@@ -63,17 +63,23 @@ _LOGGER = std_logging.getLogger(__name__)
 
 import google.api_core.operation as operation  # type: ignore
 import google.api_core.operation_async as operation_async  # type: ignore
-from google.cloud.location import locations_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.retail_v2alpha.services.product_service import pagers
-from google.cloud.retail_v2alpha.types import common, export_config, import_config
-from google.cloud.retail_v2alpha.types import product_service, promotion, purge_config
-from google.cloud.retail_v2alpha.types import product
+from google.cloud.retail_v2alpha.types import (
+    common,
+    export_config,
+    import_config,
+    product,
+    product_service,
+    promotion,
+    purge_config,
+)
 from google.cloud.retail_v2alpha.types import product as gcr_product
 
 from .transports.base import DEFAULT_CLIENT_INFO, ProductServiceTransport
@@ -90,9 +96,7 @@ class ProductServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ProductServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ProductServiceTransport]]
     _transport_registry["grpc"] = ProductServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = ProductServiceGrpcAsyncIOTransport
     _transport_registry["rest"] = ProductServiceRestTransport
@@ -662,11 +666,9 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ProductServiceClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ProductServiceClient._read_environment_variables()
+        )
         self._client_cert_source = ProductServiceClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -701,8 +703,7 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ProductServiceTransport, transport)
             self._api_endpoint = self._transport.host

@@ -22,9 +22,7 @@ from .grpc_asyncio import LfpInventoryServiceGrpcAsyncIOTransport
 from .rest import LfpInventoryServiceRestInterceptor, LfpInventoryServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[LfpInventoryServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[LfpInventoryServiceTransport]]
 _transport_registry["grpc"] = LfpInventoryServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = LfpInventoryServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = LfpInventoryServiceRestTransport

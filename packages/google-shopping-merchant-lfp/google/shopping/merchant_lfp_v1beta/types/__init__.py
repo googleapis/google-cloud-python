@@ -13,9 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .lfpinventory import InsertLfpInventoryRequest, LfpInventory
-from .lfpmerchantstate import GetLfpMerchantStateRequest, LfpMerchantState
-from .lfpsale import InsertLfpSaleRequest, LfpSale
+from .lfpinventory import (
+    InsertLfpInventoryRequest,
+    LfpInventory,
+)
+from .lfpmerchantstate import (
+    GetLfpMerchantStateRequest,
+    LfpMerchantState,
+)
+from .lfpsale import (
+    InsertLfpSaleRequest,
+    LfpSale,
+)
 from .lfpstore import (
     DeleteLfpStoreRequest,
     GetLfpStoreRequest,

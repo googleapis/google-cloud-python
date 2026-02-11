@@ -43,6 +43,7 @@ class Usage(proto.Enum):
             This dataset will be used for data driven
             styling.
     """
+
     USAGE_UNSPECIFIED = 0
     USAGE_DATA_DRIVEN_STYLING = 1
 
@@ -209,6 +210,7 @@ class Status(proto.Message):
                 the dataset being available for its specific
                 usage.
         """
+
         STATE_UNSPECIFIED = 0
         STATE_IMPORTING = 1
         STATE_IMPORT_SUCCEEDED = 2

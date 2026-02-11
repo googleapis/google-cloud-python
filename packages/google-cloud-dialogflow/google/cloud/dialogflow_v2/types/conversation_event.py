@@ -105,6 +105,7 @@ class ConversationEvent(proto.Message):
                   or,
                 - when we can recover from an error.
         """
+
         TYPE_UNSPECIFIED = 0
         CONVERSATION_STARTED = 1
         CONVERSATION_FINISHED = 2

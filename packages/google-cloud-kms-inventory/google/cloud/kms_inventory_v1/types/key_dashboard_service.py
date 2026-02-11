@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.cloud.kms_v1.types import resources
 import proto  # type: ignore
+from google.cloud.kms_v1.types import resources
 
 __protobuf__ = proto.module(
     package="google.cloud.kms.inventory.v1",

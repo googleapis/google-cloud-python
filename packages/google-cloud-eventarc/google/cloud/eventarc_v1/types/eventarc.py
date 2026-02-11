@@ -21,14 +21,14 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
+from google.cloud.eventarc_v1.types import discovery
+from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
 from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
 from google.cloud.eventarc_v1.types import (
     google_channel_config as gce_google_channel_config,
 )
-from google.cloud.eventarc_v1.types import channel as gce_channel
-from google.cloud.eventarc_v1.types import discovery
-from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
 from google.cloud.eventarc_v1.types import message_bus as gce_message_bus
 from google.cloud.eventarc_v1.types import pipeline as gce_pipeline
 from google.cloud.eventarc_v1.types import trigger as gce_trigger
@@ -656,12 +656,12 @@ class ListChannelConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_connections: MutableSequence[
-        gce_channel_connection.ChannelConnection
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gce_channel_connection.ChannelConnection,
+    channel_connections: MutableSequence[gce_channel_connection.ChannelConnection] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gce_channel_connection.ChannelConnection,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -1554,12 +1554,12 @@ class ListGoogleApiSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    google_api_sources: MutableSequence[
-        gce_google_api_source.GoogleApiSource
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gce_google_api_source.GoogleApiSource,
+    google_api_sources: MutableSequence[gce_google_api_source.GoogleApiSource] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gce_google_api_source.GoogleApiSource,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

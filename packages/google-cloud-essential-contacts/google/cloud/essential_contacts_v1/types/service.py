@@ -79,12 +79,12 @@ class Contact(proto.Message):
         proto.STRING,
         number=2,
     )
-    notification_category_subscriptions: MutableSequence[
-        enums.NotificationCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=3,
-        enum=enums.NotificationCategory,
+    notification_category_subscriptions: MutableSequence[enums.NotificationCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=3,
+            enum=enums.NotificationCategory,
+        )
     )
     language_tag: str = proto.Field(
         proto.STRING,
@@ -282,12 +282,12 @@ class ComputeContactsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    notification_categories: MutableSequence[
-        enums.NotificationCategory
-    ] = proto.RepeatedField(
-        proto.ENUM,
-        number=6,
-        enum=enums.NotificationCategory,
+    notification_categories: MutableSequence[enums.NotificationCategory] = (
+        proto.RepeatedField(
+            proto.ENUM,
+            number=6,
+            enum=enums.NotificationCategory,
+        )
     )
     page_size: int = proto.Field(
         proto.INT32,

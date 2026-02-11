@@ -41,6 +41,7 @@ class AccessRight(proto.Enum):
             Users with this right have access to
             performance and insights.
     """
+
     ACCESS_RIGHT_UNSPECIFIED = 0
     STANDARD = 1
     ADMIN = 2

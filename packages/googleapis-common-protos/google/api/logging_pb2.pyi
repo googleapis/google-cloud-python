@@ -26,7 +26,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class Logging(_message.Message):
     __slots__ = ("producer_destinations", "consumer_destinations")
-
     class LoggingDestination(_message.Message):
         __slots__ = ("monitored_resource", "logs")
         MONITORED_RESOURCE_FIELD_NUMBER: _ClassVar[int]
@@ -38,6 +37,7 @@ class Logging(_message.Message):
             monitored_resource: _Optional[str] = ...,
             logs: _Optional[_Iterable[str]] = ...,
         ) -> None: ...
+
     PRODUCER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     CONSUMER_DESTINATIONS_FIELD_NUMBER: _ClassVar[int]
     producer_destinations: _containers.RepeatedCompositeFieldContainer[

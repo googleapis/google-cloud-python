@@ -188,7 +188,6 @@ class Publishing(_message.Message):
 
 class JavaSettings(_message.Message):
     __slots__ = ("library_package", "service_class_names", "common")
-
     class ServiceClassNamesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -198,6 +197,7 @@ class JavaSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     LIBRARY_PACKAGE_FIELD_NUMBER: _ClassVar[int]
     SERVICE_CLASS_NAMES_FIELD_NUMBER: _ClassVar[int]
     COMMON_FIELD_NUMBER: _ClassVar[int]
@@ -229,7 +229,6 @@ class PhpSettings(_message.Message):
 
 class PythonSettings(_message.Message):
     __slots__ = ("common", "experimental_features")
-
     class ExperimentalFeatures(_message.Message):
         __slots__ = (
             "rest_async_io_enabled",
@@ -248,6 +247,7 @@ class PythonSettings(_message.Message):
             protobuf_pythonic_types_enabled: bool = ...,
             unversioned_package_disabled: bool = ...,
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     EXPERIMENTAL_FEATURES_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
@@ -277,7 +277,6 @@ class DotnetSettings(_message.Message):
         "forced_namespace_aliases",
         "handwritten_signatures",
     )
-
     class RenamedServicesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -297,6 +296,7 @@ class DotnetSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     RENAMED_SERVICES_FIELD_NUMBER: _ClassVar[int]
     RENAMED_RESOURCES_FIELD_NUMBER: _ClassVar[int]
@@ -329,7 +329,6 @@ class RubySettings(_message.Message):
 
 class GoSettings(_message.Message):
     __slots__ = ("common", "renamed_services")
-
     class RenamedServicesEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -339,6 +338,7 @@ class GoSettings(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     COMMON_FIELD_NUMBER: _ClassVar[int]
     RENAMED_SERVICES_FIELD_NUMBER: _ClassVar[int]
     common: CommonLanguageSettings
@@ -351,7 +351,6 @@ class GoSettings(_message.Message):
 
 class MethodSettings(_message.Message):
     __slots__ = ("selector", "long_running", "auto_populated_fields")
-
     class LongRunning(_message.Message):
         __slots__ = (
             "initial_poll_delay",
@@ -378,6 +377,7 @@ class MethodSettings(_message.Message):
                 _Union[_duration_pb2.Duration, _Mapping]
             ] = ...,
         ) -> None: ...
+
     SELECTOR_FIELD_NUMBER: _ClassVar[int]
     LONG_RUNNING_FIELD_NUMBER: _ClassVar[int]
     AUTO_POPULATED_FIELDS_FIELD_NUMBER: _ClassVar[int]

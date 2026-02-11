@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,13 +31,10 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
 from google.cloud.dialogflow_v2.types import encryption_spec
+from google.cloud.dialogflow_v2.types import encryption_spec as gcd_encryption_spec
 
 from .base import DEFAULT_CLIENT_INFO, EncryptionSpecServiceTransport
 from .grpc import EncryptionSpecServiceGrpcTransport
@@ -407,12 +407,12 @@ class EncryptionSpecServiceGrpcAsyncIOTransport(EncryptionSpecServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "initialize_encryption_spec" not in self._stubs:
-            self._stubs[
-                "initialize_encryption_spec"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2.EncryptionSpecService/InitializeEncryptionSpec",
-                request_serializer=gcd_encryption_spec.InitializeEncryptionSpecRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["initialize_encryption_spec"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2.EncryptionSpecService/InitializeEncryptionSpec",
+                    request_serializer=gcd_encryption_spec.InitializeEncryptionSpecRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["initialize_encryption_spec"]
 

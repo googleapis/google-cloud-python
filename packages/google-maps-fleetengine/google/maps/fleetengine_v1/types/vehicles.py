@@ -54,6 +54,7 @@ class VehicleState(proto.Enum):
         ONLINE (2):
             The vehicle is accepting new trips.
     """
+
     UNKNOWN_VEHICLE_STATE = 0
     OFFLINE = 1
     ONLINE = 2
@@ -88,6 +89,7 @@ class LocationPowerSaveMode(proto.Enum):
             LocationManager will throttle all requests to
             providers when the device is non-interactive.
     """
+
     UNKNOWN_LOCATION_POWER_SAVE_MODE = 0
     LOCATION_MODE_NO_CHANGE = 1
     LOCATION_MODE_GPS_DISABLED_WHEN_SCREEN_OFF = 2
@@ -113,6 +115,7 @@ class BatteryStatus(proto.Enum):
         BATTERY_STATUS_POWER_LOW (5):
             Battery is low on power.
     """
+
     UNKNOWN_BATTERY_STATUS = 0
     BATTERY_STATUS_CHARGING = 1
     BATTERY_STATUS_DISCHARGING = 2
@@ -136,6 +139,7 @@ class PowerSource(proto.Enum):
         POWER_SOURCE_UNPLUGGED (4):
             Battery is unplugged.
     """
+
     UNKNOWN_POWER_SOURCE = 0
     POWER_SOURCE_AC = 1
     POWER_SOURCE_USB = 2
@@ -287,6 +291,7 @@ class Vehicle(proto.Message):
                     A human transporter, typically walking or
                     running, traveling along pedestrian pathways.
             """
+
             UNKNOWN = 0
             AUTO = 1
             TAXI = 2
@@ -548,6 +553,7 @@ class VisualTrafficReportPolylineRendering(proto.Message):
                 TRAFFIC_JAM (2):
                     There is a traffic jam.
             """
+
             STYLE_UNSPECIFIED = 0
             SLOWER_TRAFFIC = 1
             TRAFFIC_JAM = 2

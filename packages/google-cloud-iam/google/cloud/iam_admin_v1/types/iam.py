@@ -87,6 +87,7 @@ class ServiceAccountKeyAlgorithm(proto.Enum):
         KEY_ALG_RSA_2048 (2):
             2k RSA Key.
     """
+
     KEY_ALG_UNSPECIFIED = 0
     KEY_ALG_RSA_1024 = 1
     KEY_ALG_RSA_2048 = 2
@@ -105,6 +106,7 @@ class ServiceAccountPrivateKeyType(proto.Enum):
         TYPE_GOOGLE_CREDENTIALS_FILE (2):
             Google Credentials File format.
     """
+
     TYPE_UNSPECIFIED = 0
     TYPE_PKCS12_FILE = 1
     TYPE_GOOGLE_CREDENTIALS_FILE = 2
@@ -121,6 +123,7 @@ class ServiceAccountPublicKeyType(proto.Enum):
         TYPE_RAW_PUBLIC_KEY (2):
             Raw public key.
     """
+
     TYPE_NONE = 0
     TYPE_X509_PEM_FILE = 1
     TYPE_RAW_PUBLIC_KEY = 2
@@ -137,6 +140,7 @@ class ServiceAccountKeyOrigin(proto.Enum):
         GOOGLE_PROVIDED (2):
             Key is provided by Google.
     """
+
     ORIGIN_UNSPECIFIED = 0
     USER_PROVIDED = 1
     GOOGLE_PROVIDED = 2
@@ -152,6 +156,7 @@ class RoleView(proto.Enum):
         FULL (1):
             Returns all fields.
     """
+
     BASIC = 0
     FULL = 1
 
@@ -532,6 +537,7 @@ class ListServiceAccountKeysRequest(proto.Message):
                 System-managed keys (managed and rotated by
                 Google).
         """
+
         KEY_TYPE_UNSPECIFIED = 0
         USER_MANAGED = 1
         SYSTEM_MANAGED = 2
@@ -1046,6 +1052,7 @@ class Role(proto.Message):
                 The user has indicated this role is currently
                 in an EAP phase.
         """
+
         ALPHA = 0
         BETA = 1
         GA = 2
@@ -1543,6 +1550,7 @@ class Permission(proto.Message):
             DEPRECATED (3):
                 The permission is being deprecated.
         """
+
         ALPHA = 0
         BETA = 1
         GA = 2
@@ -1562,6 +1570,7 @@ class Permission(proto.Message):
                 Permission is not supported for custom role
                 use.
         """
+
         SUPPORTED = 0
         TESTING = 1
         NOT_SUPPORTED = 2
@@ -1795,6 +1804,7 @@ class LintResult(proto.Message):
                 A validation unit which operates on an
                 individual condition within a binding.
         """
+
         LEVEL_UNSPECIFIED = 0
         CONDITION = 3
 
@@ -1835,6 +1845,7 @@ class LintResult(proto.Message):
             DEPRECATED (5):
                 Deprecated severity level.
         """
+
         SEVERITY_UNSPECIFIED = 0
         ERROR = 1
         WARNING = 2

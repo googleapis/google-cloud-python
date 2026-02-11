@@ -48,6 +48,7 @@ class AdReviewCenterAdStatusEnum(proto.Message):
                 This ad is allowed to serve by default and
                 has not been reviewed.
         """
+
         AD_REVIEW_CENTER_AD_STATUS_UNSPECIFIED = 0
         ALLOWED = 1
         BLOCKED = 2

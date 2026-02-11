@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import functools
-from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
+import warnings
+from collections import OrderedDict
+from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -33,8 +34,8 @@ from typing import (
     Union,
     cast,
 )
-import warnings
 
+import google.protobuf
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation, gapic_v1
@@ -44,7 +45,6 @@ from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.compute_v1beta import gapic_version as package_version
 
@@ -79,9 +79,7 @@ class GlobalNetworkEndpointGroupsClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[GlobalNetworkEndpointGroupsTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[GlobalNetworkEndpointGroupsTransport]]
     _transport_registry["rest"] = GlobalNetworkEndpointGroupsRestTransport
 
     def get_transport_class(
@@ -608,11 +606,9 @@ class GlobalNetworkEndpointGroupsClient(
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = GlobalNetworkEndpointGroupsClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            GlobalNetworkEndpointGroupsClient._read_environment_variables()
+        )
         self._client_cert_source = (
             GlobalNetworkEndpointGroupsClient._get_client_cert_source(
                 self._client_options.client_cert_source, self._use_client_cert
@@ -649,8 +645,7 @@ class GlobalNetworkEndpointGroupsClient(
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(GlobalNetworkEndpointGroupsTransport, transport)
             self._api_endpoint = self._transport.host
@@ -839,9 +834,7 @@ class GlobalNetworkEndpointGroupsClient(
                 global_network_endpoint_groups_attach_endpoints_request_resource
                 is not None
             ):
-                request.global_network_endpoint_groups_attach_endpoints_request_resource = (
-                    global_network_endpoint_groups_attach_endpoints_request_resource
-                )
+                request.global_network_endpoint_groups_attach_endpoints_request_resource = global_network_endpoint_groups_attach_endpoints_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -990,9 +983,7 @@ class GlobalNetworkEndpointGroupsClient(
                 global_network_endpoint_groups_attach_endpoints_request_resource
                 is not None
             ):
-                request.global_network_endpoint_groups_attach_endpoints_request_resource = (
-                    global_network_endpoint_groups_attach_endpoints_request_resource
-                )
+                request.global_network_endpoint_groups_attach_endpoints_request_resource = global_network_endpoint_groups_attach_endpoints_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1445,9 +1436,7 @@ class GlobalNetworkEndpointGroupsClient(
                 global_network_endpoint_groups_detach_endpoints_request_resource
                 is not None
             ):
-                request.global_network_endpoint_groups_detach_endpoints_request_resource = (
-                    global_network_endpoint_groups_detach_endpoints_request_resource
-                )
+                request.global_network_endpoint_groups_detach_endpoints_request_resource = global_network_endpoint_groups_detach_endpoints_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1596,9 +1585,7 @@ class GlobalNetworkEndpointGroupsClient(
                 global_network_endpoint_groups_detach_endpoints_request_resource
                 is not None
             ):
-                request.global_network_endpoint_groups_detach_endpoints_request_resource = (
-                    global_network_endpoint_groups_detach_endpoints_request_resource
-                )
+                request.global_network_endpoint_groups_detach_endpoints_request_resource = global_network_endpoint_groups_detach_endpoints_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

@@ -22,9 +22,7 @@ from .grpc_asyncio import AccountIssueServiceGrpcAsyncIOTransport
 from .rest import AccountIssueServiceRestInterceptor, AccountIssueServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AccountIssueServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AccountIssueServiceTransport]]
 _transport_registry["grpc"] = AccountIssueServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AccountIssueServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AccountIssueServiceRestTransport

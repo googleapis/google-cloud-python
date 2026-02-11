@@ -53,6 +53,7 @@ class CollectionType(proto.Enum):
             The collection type is delete. This should be
             used when an API is deleted at the source.
     """
+
     COLLECTION_TYPE_UNSPECIFIED = 0
     COLLECTION_TYPE_UPSERT = 1
     COLLECTION_TYPE_DELETE = 2

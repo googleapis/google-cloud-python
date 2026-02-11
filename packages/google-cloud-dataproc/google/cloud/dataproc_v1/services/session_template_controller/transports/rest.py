@@ -16,20 +16,22 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.dataproc_v1.types import session_templates
@@ -656,9 +658,7 @@ class SessionTemplateControllerRestTransport(
 
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseCreateSessionTemplate._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseCreateSessionTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_create_session_template(
                 request, metadata
@@ -807,9 +807,7 @@ class SessionTemplateControllerRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseDeleteSessionTemplate._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseDeleteSessionTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_session_template(
                 request, metadata
@@ -923,9 +921,7 @@ class SessionTemplateControllerRestTransport(
 
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseGetSessionTemplate._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseGetSessionTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_session_template(
                 request, metadata
@@ -1073,9 +1069,7 @@ class SessionTemplateControllerRestTransport(
                     A list of session templates.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseListSessionTemplates._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseListSessionTemplates._get_http_options()
 
             request, metadata = self._interceptor.pre_list_session_templates(
                 request, metadata
@@ -1226,9 +1220,7 @@ class SessionTemplateControllerRestTransport(
 
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseUpdateSessionTemplate._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseUpdateSessionTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_update_session_template(
                 request, metadata
@@ -1435,9 +1427,7 @@ class SessionTemplateControllerRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseSessionTemplateControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -1584,9 +1574,7 @@ class SessionTemplateControllerRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseSessionTemplateControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1733,9 +1721,7 @@ class SessionTemplateControllerRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -1878,9 +1864,7 @@ class SessionTemplateControllerRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -1995,9 +1979,7 @@ class SessionTemplateControllerRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2115,9 +2097,7 @@ class SessionTemplateControllerRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseSessionTemplateControllerRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2258,9 +2238,7 @@ class SessionTemplateControllerRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSessionTemplateControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSessionTemplateControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseSessionTemplateControllerRestTransport._BaseListOperations._get_transcoded_request(

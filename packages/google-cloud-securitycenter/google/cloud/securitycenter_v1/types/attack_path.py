@@ -83,6 +83,7 @@ class AttackPath(proto.Message):
                 NODE_TYPE_ATTACKER (4):
                     Incoming edge is attacker
             """
+
             NODE_TYPE_UNSPECIFIED = 0
             NODE_TYPE_AND = 1
             NODE_TYPE_OR = 2
@@ -180,12 +181,12 @@ class AttackPath(proto.Message):
             proto.STRING,
             number=5,
         )
-        attack_steps: MutableSequence[
-            "AttackPath.AttackPathNode.AttackStepNode"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="AttackPath.AttackPathNode.AttackStepNode",
+        attack_steps: MutableSequence["AttackPath.AttackPathNode.AttackStepNode"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="AttackPath.AttackPathNode.AttackStepNode",
+            )
         )
 
     class AttackPathEdge(proto.Message):

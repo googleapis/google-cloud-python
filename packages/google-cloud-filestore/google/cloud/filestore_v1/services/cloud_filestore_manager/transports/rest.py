@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1488,9 +1488,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_transcoded_request(
@@ -1641,9 +1639,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_transcoded_request(
@@ -1794,9 +1790,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_transcoded_request(
@@ -1945,9 +1939,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -2092,9 +2084,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
@@ -2239,9 +2229,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_transcoded_request(
@@ -2383,9 +2371,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore backup.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_transcoded_request(
@@ -2529,9 +2515,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore instance.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_transcoded_request(
@@ -2677,9 +2661,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore snapshot.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_transcoded_request(
@@ -2826,9 +2808,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_transcoded_request(
@@ -2975,9 +2955,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_transcoded_request(
@@ -3124,9 +3102,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
 
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_transcoded_request(
@@ -3276,9 +3252,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_http_options()
 
             request, metadata = self._interceptor.pre_promote_replica(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_transcoded_request(
@@ -3430,9 +3404,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_instance(
                 request, metadata
@@ -3588,9 +3560,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_revert_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_transcoded_request(
@@ -3741,9 +3711,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_transcoded_request(
@@ -3894,9 +3862,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_transcoded_request(
@@ -4048,9 +4014,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_transcoded_request(
@@ -4382,9 +4346,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_transcoded_request(
@@ -4523,9 +4485,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_transcoded_request(
@@ -4662,9 +4622,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -4784,9 +4742,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -4904,9 +4860,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_transcoded_request(
@@ -5045,9 +4999,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_transcoded_request(

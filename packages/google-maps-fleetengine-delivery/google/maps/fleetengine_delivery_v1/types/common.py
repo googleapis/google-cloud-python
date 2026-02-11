@@ -71,6 +71,7 @@ class DeliveryVehicleLocationSensor(proto.Enum):
             The location provider on Apple operating
             systems.
     """
+
     UNKNOWN_SENSOR = 0
     GPS = 1
     NETWORK = 2
@@ -99,6 +100,7 @@ class DeliveryVehicleNavigationStatus(proto.Enum):
             The vehicle is within approximately 50m of
             the destination.
     """
+
     UNKNOWN_NAVIGATION_STATUS = 0
     NO_GUIDANCE = 1
     ENROUTE_TO_DESTINATION = 2

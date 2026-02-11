@@ -89,6 +89,7 @@ class AnnotatedString(proto.Message):
                 Markup for a substring that contains terms
                 for row.
         """
+
         MARKUP_TYPE_UNSPECIFIED = 0
         METRIC = 1
         DIMENSION = 2

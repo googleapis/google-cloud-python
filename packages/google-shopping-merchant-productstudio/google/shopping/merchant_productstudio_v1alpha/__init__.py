@@ -30,6 +30,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.image_service import ImageServiceAsyncClient, ImageServiceClient
 from .services.text_suggestions_service import (
     TextSuggestionsServiceAsyncClient,

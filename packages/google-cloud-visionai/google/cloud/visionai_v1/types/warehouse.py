@@ -204,6 +204,7 @@ class FacetBucketType(proto.Enum):
         FACET_BUCKET_TYPE_CUSTOM_RANGE (4):
             Custom Range type.
     """
+
     FACET_BUCKET_TYPE_UNSPECIFIED = 0
     FACET_BUCKET_TYPE_VALUE = 1
     FACET_BUCKET_TYPE_DATETIME = 2
@@ -614,6 +615,7 @@ class AnalyzeAssetMetadata(proto.Message):
                 FAILED (3):
                     The ml model analysis failed.
             """
+
             STATE_UNSPECIFIED = 0
             IN_PROGRESS = 1
             SUCCEEDED = 2
@@ -679,6 +681,7 @@ class IndexingStatus(proto.Message):
             FAILED (3):
                 The process failed.
         """
+
         STATE_UNSPECIFIED = 0
         IN_PROGRESS = 1
         SUCCEEDED = 2
@@ -979,6 +982,7 @@ class SearchCapability(proto.Message):
             EMBEDDING_SEARCH (1):
                 Embedding search.
         """
+
         TYPE_UNSPECIFIED = 0
         EMBEDDING_SEARCH = 1
 
@@ -1387,6 +1391,7 @@ class CollectionItem(proto.Message):
             ASSET (1):
                 Asset type item.
         """
+
         TYPE_UNSPECIFIED = 0
         ASSET = 1
 
@@ -1662,6 +1667,7 @@ class Index(proto.Message):
             UPDATING (3):
                 State UPDATING.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -1792,6 +1798,7 @@ class Corpus(proto.Message):
             VIDEO_ON_DEMAND (3):
                 Asset is a batch video.
         """
+
         TYPE_UNSPECIFIED = 0
         STREAM_VIDEO = 1
         IMAGE = 2
@@ -2172,6 +2179,7 @@ class DataSchemaDetails(proto.Message):
                     to be of CUSTOMIZED_STRUCT as well, but the overall
                     layers restriction is 10.
         """
+
         DATA_TYPE_UNSPECIFIED = 0
         INTEGER = 1
         FLOAT = 2
@@ -2196,6 +2204,7 @@ class DataSchemaDetails(proto.Message):
                 Partition-level granularity (annotations must
                 contain partition info).
         """
+
         GRANULARITY_UNSPECIFIED = 0
         GRANULARITY_ASSET_LEVEL = 1
         GRANULARITY_PARTITION_LEVEL = 2
@@ -2279,6 +2288,7 @@ class DataSchemaDetails(proto.Message):
                     When searching with ``key``, Warehouse will perform broad
                     search based on semantic of the annotation value.
             """
+
             NO_SEARCH = 0
             EXACT_SEARCH = 1
             SMART_SEARCH = 2
@@ -3249,6 +3259,7 @@ class IndexEndpoint(proto.Message):
             FAILED (4):
                 State FAILED.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -3758,6 +3769,7 @@ class FacetProperty(proto.Message):
                 DAY (3):
                     Granularity is day.
             """
+
             GRANULARITY_UNSPECIFIED = 0
             YEAR = 1
             MONTH = 2
@@ -4236,6 +4248,7 @@ class IngestAssetRequest(proto.Message):
                     CONTAINER_FORMAT_MP4 (1):
                         Mp4 container format.
                 """
+
                 CONTAINER_FORMAT_UNSPECIFIED = 0
                 CONTAINER_FORMAT_MP4 = 1
 
@@ -4391,12 +4404,12 @@ class GenerateHlsUriRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
     live_view_enabled: bool = proto.Field(
         proto.BOOL,
@@ -4420,12 +4433,12 @@ class GenerateHlsUriResponse(proto.Message):
         proto.STRING,
         number=1,
     )
-    temporal_partitions: MutableSequence[
-        "Partition.TemporalPartition"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message="Partition.TemporalPartition",
+    temporal_partitions: MutableSequence["Partition.TemporalPartition"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Partition.TemporalPartition",
+        )
     )
 
 
@@ -4673,6 +4686,7 @@ class SchemaKeySortingStrategy(proto.Message):
                     Take the (lexicographical or numerical)
                     smallest value to sort.
             """
+
             AGGREGATE_METHOD_UNSPECIFIED = 0
             AGGREGATE_METHOD_LARGEST = 1
             AGGREGATE_METHOD_SMALLEST = 2
@@ -4796,12 +4810,12 @@ class SearchResultItem(proto.Message):
         number=3,
         message="Annotation",
     )
-    annotation_matching_results: MutableSequence[
-        "AnnotationMatchingResult"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="AnnotationMatchingResult",
+    annotation_matching_results: MutableSequence["AnnotationMatchingResult"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="AnnotationMatchingResult",
+        )
     )
 
 

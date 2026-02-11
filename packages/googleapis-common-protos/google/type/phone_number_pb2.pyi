@@ -24,7 +24,6 @@ DESCRIPTOR: _descriptor.FileDescriptor
 
 class PhoneNumber(_message.Message):
     __slots__ = ("e164_number", "short_code", "extension")
-
     class ShortCode(_message.Message):
         __slots__ = ("region_code", "number")
         REGION_CODE_FIELD_NUMBER: _ClassVar[int]
@@ -34,6 +33,7 @@ class PhoneNumber(_message.Message):
         def __init__(
             self, region_code: _Optional[str] = ..., number: _Optional[str] = ...
         ) -> None: ...
+
     E164_NUMBER_FIELD_NUMBER: _ClassVar[int]
     SHORT_CODE_FIELD_NUMBER: _ClassVar[int]
     EXTENSION_FIELD_NUMBER: _ClassVar[int]

@@ -270,6 +270,7 @@ class Evaluation(proto.Message):
                     parent (i.e., non-leaf) entity types are an
                     aggregate of metrics for their children.
             """
+
             METRICS_TYPE_UNSPECIFIED = 0
             AGGREGATE = 1
 

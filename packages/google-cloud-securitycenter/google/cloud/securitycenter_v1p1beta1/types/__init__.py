@@ -13,15 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .asset import Asset
-from .finding import Finding
-from .folder import Folder
-from .notification_config import NotificationConfig
-from .notification_message import NotificationMessage
-from .organization_settings import OrganizationSettings
-from .resource import Resource
-from .run_asset_discovery_response import RunAssetDiscoveryResponse
-from .security_marks import SecurityMarks
+from .asset import (
+    Asset,
+)
+from .finding import (
+    Finding,
+)
+from .folder import (
+    Folder,
+)
+from .notification_config import (
+    NotificationConfig,
+)
+from .notification_message import (
+    NotificationMessage,
+)
+from .organization_settings import (
+    OrganizationSettings,
+)
+from .resource import (
+    Resource,
+)
+from .run_asset_discovery_response import (
+    RunAssetDiscoveryResponse,
+)
+from .security_marks import (
+    SecurityMarks,
+)
 from .securitycenter_service import (
     CreateFindingRequest,
     CreateNotificationConfigRequest,
@@ -51,7 +69,9 @@ from .securitycenter_service import (
     UpdateSecurityMarksRequest,
     UpdateSourceRequest,
 )
-from .source import Source
+from .source import (
+    Source,
+)
 
 __all__ = (
     "Asset",

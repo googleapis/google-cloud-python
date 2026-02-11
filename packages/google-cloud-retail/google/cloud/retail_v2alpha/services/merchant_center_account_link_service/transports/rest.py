@@ -16,19 +16,19 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
@@ -490,15 +490,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_merchant_center_account_link(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_merchant_center_account_link(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_transcoded_request(
                 http_options, request
@@ -562,11 +559,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             resp = self._interceptor.post_create_merchant_center_account_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_merchant_center_account_link_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_merchant_center_account_link_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -647,15 +643,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_merchant_center_account_link(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_merchant_center_account_link(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_transcoded_request(
                 http_options, request
@@ -773,15 +766,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_merchant_center_account_links(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_merchant_center_account_links(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_transcoded_request(
                 http_options, request
@@ -835,9 +825,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-            )
+            resp = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
             pb_resp = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.pb(
                 resp
             )
@@ -846,11 +834,10 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             resp = self._interceptor.post_list_merchant_center_account_links(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_merchant_center_account_links_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_merchant_center_account_links_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -886,7 +873,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateMerchantCenterAccountLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateMerchantCenterAccountLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_merchant_center_account_link(
@@ -897,7 +886,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteMerchantCenterAccountLink(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteMerchantCenterAccountLink(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_merchant_center_account_links(
@@ -908,7 +899,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListMerchantCenterAccountLinks(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListMerchantCenterAccountLinks(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_operation(self):
@@ -968,9 +961,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1109,9 +1100,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_transcoded_request(

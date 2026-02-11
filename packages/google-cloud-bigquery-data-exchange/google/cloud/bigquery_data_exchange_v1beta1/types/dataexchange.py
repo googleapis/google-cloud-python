@@ -320,6 +320,7 @@ class Listing(proto.Message):
                 dataexchange.listings.subscribe permission can
                 subscribe to this listing.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
@@ -368,6 +369,7 @@ class Listing(proto.Message):
             CATEGORY_TRAVEL_AND_TOURISM (19):
                 No description available.
         """
+
         CATEGORY_UNSPECIFIED = 0
         CATEGORY_OTHERS = 1
         CATEGORY_ADVERTISING_AND_MARKETING = 2

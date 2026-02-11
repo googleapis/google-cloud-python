@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,7 +43,19 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
+import google.api_core.operation_async as operation_async  # type: ignore
+import google.auth
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.options_pb2 as options_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
+import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
+import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
+import google.type.expr_pb2 as expr_pb2  # type: ignore
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
@@ -52,24 +64,12 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
-import google.api_core.operation_async as operation_async  # type: ignore
-import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.options_pb2 as options_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
-import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
-import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
-import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
-import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
-import google.type.expr_pb2 as expr_pb2  # type: ignore
 
 from google.cloud.securitycenter_v2.services.security_center import (
     SecurityCenterAsyncClient,
@@ -100,8 +100,9 @@ from google.cloud.securitycenter_v2.types import (
     database,
     disk,
     exfiltration,
-)
-from google.cloud.securitycenter_v2.types import (
+    external_system,
+    file,
+    finding,
     group_membership,
     iam_binding,
     indicator,
@@ -113,19 +114,27 @@ from google.cloud.securitycenter_v2.types import (
     load_balancer,
     log_entry,
     mitre_attack,
-)
-from google.cloud.securitycenter_v2.types import (
+    mute_config,
+    network,
+    notebook,
+    notification_config,
+    org_policy,
+    process,
+    resource,
+    resource_value_config,
+    security_marks,
     security_posture,
     securitycenter_service,
     simulation,
-)
-from google.cloud.securitycenter_v2.types import (
+    source,
     toxic_combination,
     valued_resource,
     vertex_ai,
     vulnerability,
 )
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
+from google.cloud.securitycenter_v2.types import finding as gcs_finding
+from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v2.types import (
     notification_config as gcs_notification_config,
 )
@@ -133,18 +142,6 @@ from google.cloud.securitycenter_v2.types import (
     resource_value_config as gcs_resource_value_config,
 )
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v2.types import external_system
-from google.cloud.securitycenter_v2.types import file
-from google.cloud.securitycenter_v2.types import finding
-from google.cloud.securitycenter_v2.types import finding as gcs_finding
-from google.cloud.securitycenter_v2.types import mute_config
-from google.cloud.securitycenter_v2.types import mute_config as gcs_mute_config
-from google.cloud.securitycenter_v2.types import network, notebook
-from google.cloud.securitycenter_v2.types import notification_config
-from google.cloud.securitycenter_v2.types import org_policy, process, resource
-from google.cloud.securitycenter_v2.types import resource_value_config
-from google.cloud.securitycenter_v2.types import security_marks
-from google.cloud.securitycenter_v2.types import source
 from google.cloud.securitycenter_v2.types import source as gcs_source
 
 CRED_INFO_JSON = {
@@ -1032,10 +1029,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1080,10 +1076,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1119,10 +1114,9 @@ def test_security_center_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1369,9 +1363,7 @@ def test_security_center_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1866,9 +1858,9 @@ def test_bulk_mute_findings_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.bulk_mute_findings
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.bulk_mute_findings] = (
+            mock_rpc
+        )
         request = {}
         client.bulk_mute_findings(request)
 
@@ -3008,9 +3000,9 @@ def test_create_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.create_mute_config(request)
 
@@ -4368,9 +4360,9 @@ def test_delete_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.delete_mute_config(request)
 
@@ -5310,9 +5302,9 @@ def test_get_big_query_export_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_big_query_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_big_query_export] = (
+            mock_rpc
+        )
         request = {}
         client.get_big_query_export(request)
 
@@ -6003,9 +5995,9 @@ def test_get_valued_resource_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_valued_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_valued_resource] = (
+            mock_rpc
+        )
         request = {}
         client.get_valued_resource(request)
 
@@ -8569,9 +8561,9 @@ def test_list_attack_paths_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_attack_paths
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_attack_paths] = (
+            mock_rpc
+        )
         request = {}
         client.list_attack_paths(request)
 
@@ -9116,9 +9108,9 @@ def test_list_big_query_exports_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_big_query_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_big_query_exports] = (
+            mock_rpc
+        )
         request = {}
         client.list_big_query_exports(request)
 
@@ -10198,9 +10190,9 @@ def test_list_mute_configs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_mute_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_mute_configs] = (
+            mock_rpc
+        )
         request = {}
         client.list_mute_configs(request)
 
@@ -12309,9 +12301,9 @@ def test_list_valued_resources_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_valued_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_valued_resources] = (
+            mock_rpc
+        )
         request = {}
         client.list_valued_resources(request)
 
@@ -12881,9 +12873,9 @@ def test_set_finding_state_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
         request = {}
         client.set_finding_state(request)
 
@@ -13981,9 +13973,9 @@ def test_test_iam_permissions_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
         request = {}
         client.test_iam_permissions(request)
 
@@ -14728,9 +14720,9 @@ def test_update_external_system_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_external_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_external_system] = (
+            mock_rpc
+        )
         request = {}
         client.update_external_system(request)
 
@@ -15476,9 +15468,9 @@ def test_update_mute_config_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_mute_config] = (
+            mock_rpc
+        )
         request = {}
         client.update_mute_config(request)
 
@@ -16520,9 +16512,9 @@ def test_update_security_marks_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
         request = {}
         client.update_security_marks(request)
 
@@ -17358,9 +17350,9 @@ def test_bulk_mute_findings_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.bulk_mute_findings
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.bulk_mute_findings] = (
+            mock_rpc
+        )
 
         request = {}
         client.bulk_mute_findings(request)
@@ -17960,9 +17952,9 @@ def test_create_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_mute_config(request)
@@ -18754,9 +18746,9 @@ def test_delete_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_mute_config(request)
@@ -19288,9 +19280,9 @@ def test_get_big_query_export_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_big_query_export
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_big_query_export] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_big_query_export(request)
@@ -19649,9 +19641,9 @@ def test_get_valued_resource_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_valued_resource
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_valued_resource] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_valued_resource(request)
@@ -20983,9 +20975,9 @@ def test_list_attack_paths_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_attack_paths
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_attack_paths] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_attack_paths(request)
@@ -21248,9 +21240,9 @@ def test_list_big_query_exports_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_big_query_exports
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_big_query_exports] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_big_query_exports(request)
@@ -21778,9 +21770,9 @@ def test_list_mute_configs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_mute_configs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_mute_configs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_mute_configs(request)
@@ -22830,9 +22822,9 @@ def test_list_valued_resources_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_valued_resources
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_valued_resources] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_valued_resources(request)
@@ -23097,9 +23089,9 @@ def test_set_finding_state_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.set_finding_state
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.set_finding_state] = (
+            mock_rpc
+        )
 
         request = {}
         client.set_finding_state(request)
@@ -23666,9 +23658,9 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = (
+            mock_rpc
+        )
 
         request = {}
         client.test_iam_permissions(request)
@@ -24047,9 +24039,9 @@ def test_update_external_system_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_external_system
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_external_system] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_external_system(request)
@@ -24415,9 +24407,9 @@ def test_update_mute_config_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_mute_config
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_mute_config] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_mute_config(request)
@@ -24984,9 +24976,9 @@ def test_update_security_marks_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_security_marks
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_security_marks] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_security_marks(request)

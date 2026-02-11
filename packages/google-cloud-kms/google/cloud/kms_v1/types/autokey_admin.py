@@ -126,6 +126,7 @@ class AutokeyConfig(proto.Message):
                 has been reset to its default uninitialized
                 state.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         KEY_PROJECT_DELETED = 2

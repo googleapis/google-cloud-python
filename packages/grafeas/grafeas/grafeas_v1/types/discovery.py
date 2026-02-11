@@ -103,6 +103,7 @@ class DiscoveryOccurrence(proto.Message):
                 The resource is ignored for continuous
                 analysis.
         """
+
         CONTINUOUS_ANALYSIS_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2
@@ -129,6 +130,7 @@ class DiscoveryOccurrence(proto.Message):
             FINISHED_UNSUPPORTED (5):
                 The resource is known not to be supported.
         """
+
         _pb_options = {"allow_alias": True}
         ANALYSIS_STATUS_UNSPECIFIED = 0
         PENDING = 1
@@ -174,6 +176,7 @@ class DiscoveryOccurrence(proto.Message):
                 COMPLETE (2):
                     SBOM scanning has completed.
             """
+
             SBOM_STATE_UNSPECIFIED = 0
             PENDING = 1
             COMPLETE = 2
@@ -216,6 +219,7 @@ class DiscoveryOccurrence(proto.Message):
                     Attestation was unsuccessfully generated and
                     stored.
             """
+
             VULNERABILITY_ATTESTATION_STATE_UNSPECIFIED = 0
             SUCCESS = 1
             FAILURE = 2

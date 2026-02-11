@@ -16,15 +16,15 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -4490,9 +4490,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseDeleteNetworkInterface._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseDeleteNetworkInterface._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_network_interface(
                 request, metadata
@@ -4961,9 +4959,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseGetEffectiveFirewalls._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseGetEffectiveFirewalls._get_http_options()
 
             request, metadata = self._interceptor.pre_get_effective_firewalls(
                 request, metadata
@@ -5782,9 +5778,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
                         A Shielded Instance Identity.
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseGetShieldedInstanceIdentity._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseGetShieldedInstanceIdentity._get_http_options()
 
             request, metadata = self._interceptor.pre_get_shielded_instance_identity(
                 request, metadata
@@ -5850,11 +5844,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             resp = self._interceptor.post_get_shielded_instance_identity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_shielded_instance_identity_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_shielded_instance_identity_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6615,9 +6608,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseRemoveResourcePolicies._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseRemoveResourcePolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_resource_policies(
                 request, metadata
@@ -7301,9 +7292,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseSendDiagnosticInterrupt._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseSendDiagnosticInterrupt._get_http_options()
 
             request, metadata = self._interceptor.pre_send_diagnostic_interrupt(
                 request, metadata
@@ -7481,9 +7470,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseSetDeletionProtection._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseSetDeletionProtection._get_http_options()
 
             request, metadata = self._interceptor.pre_set_deletion_protection(
                 request, metadata
@@ -9712,15 +9699,12 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseSetShieldedInstanceIntegrityPolicy._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseSetShieldedInstanceIntegrityPolicy._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_set_shielded_instance_integrity_policy(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_set_shielded_instance_integrity_policy(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseInstancesRestTransport._BaseSetShieldedInstanceIntegrityPolicy._get_transcoded_request(
                 http_options, request
@@ -9786,11 +9770,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             resp = self._interceptor.post_set_shielded_instance_integrity_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_set_shielded_instance_integrity_policy_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_set_shielded_instance_integrity_policy_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -10080,9 +10063,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseSimulateMaintenanceEvent._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseSimulateMaintenanceEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_simulate_maintenance_event(
                 request, metadata
@@ -10431,9 +10412,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseStartWithEncryptionKey._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseStartWithEncryptionKey._get_http_options()
 
             request, metadata = self._interceptor.pre_start_with_encryption_key(
                 request, metadata
@@ -11654,9 +11633,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseUpdateNetworkInterface._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseUpdateNetworkInterface._get_http_options()
 
             request, metadata = self._interceptor.pre_update_network_interface(
                 request, metadata
@@ -11837,9 +11814,7 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseInstancesRestTransport._BaseUpdateShieldedInstanceConfig._get_http_options()
-            )
+            http_options = _BaseInstancesRestTransport._BaseUpdateShieldedInstanceConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_shielded_instance_config(
                 request, metadata
@@ -11910,11 +11885,10 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
 
             resp = self._interceptor.post_update_shielded_instance_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_shielded_instance_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_shielded_instance_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -12009,7 +11983,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ) -> Callable[[compute.DeleteNetworkInterfaceInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteNetworkInterface(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteNetworkInterface(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def detach_disk(
@@ -12079,7 +12055,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetShieldedInstanceIdentity(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetShieldedInstanceIdentity(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def insert(self) -> Callable[[compute.InsertInstanceRequest], compute.Operation]:
@@ -12117,7 +12095,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ) -> Callable[[compute.RemoveResourcePoliciesInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveResourcePolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveResourcePolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def report_host_as_faulty(
@@ -12148,7 +12128,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SendDiagnosticInterrupt(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SendDiagnosticInterrupt(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_deletion_protection(
@@ -12252,7 +12234,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SetShieldedInstanceIntegrityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SetShieldedInstanceIntegrityPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_tags(self) -> Callable[[compute.SetTagsInstanceRequest], compute.Operation]:
@@ -12266,7 +12250,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ) -> Callable[[compute.SimulateMaintenanceEventInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._SimulateMaintenanceEvent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._SimulateMaintenanceEvent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def start(self) -> Callable[[compute.StartInstanceRequest], compute.Operation]:
@@ -12280,7 +12266,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ) -> Callable[[compute.StartWithEncryptionKeyInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StartWithEncryptionKey(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StartWithEncryptionKey(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def stop(self) -> Callable[[compute.StopInstanceRequest], compute.Operation]:
@@ -12332,7 +12320,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ) -> Callable[[compute.UpdateNetworkInterfaceInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateNetworkInterface(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateNetworkInterface(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_shielded_instance_config(
@@ -12342,7 +12332,9 @@ class InstancesRestTransport(_BaseInstancesRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateShieldedInstanceConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateShieldedInstanceConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def kind(self) -> str:

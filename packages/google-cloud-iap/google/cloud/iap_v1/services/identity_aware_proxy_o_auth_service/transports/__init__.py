@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[IdentityAwareProxyOAuthServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[IdentityAwareProxyOAuthServiceTransport]]
 _transport_registry["grpc"] = IdentityAwareProxyOAuthServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = IdentityAwareProxyOAuthServiceRestTransport

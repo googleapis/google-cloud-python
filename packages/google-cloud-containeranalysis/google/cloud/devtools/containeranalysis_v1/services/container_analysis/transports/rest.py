@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
-import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -754,9 +754,7 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
 
             """
 
-            http_options = (
-                _BaseContainerAnalysisRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseContainerAnalysisRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseContainerAnalysisRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -911,15 +909,12 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
 
             """
 
-            http_options = (
-                _BaseContainerAnalysisRestTransport._BaseGetVulnerabilityOccurrencesSummary._get_http_options()
-            )
+            http_options = _BaseContainerAnalysisRestTransport._BaseGetVulnerabilityOccurrencesSummary._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_vulnerability_occurrences_summary(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_get_vulnerability_occurrences_summary(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseContainerAnalysisRestTransport._BaseGetVulnerabilityOccurrencesSummary._get_transcoded_request(
                 http_options, request
@@ -980,11 +975,10 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
 
             resp = self._interceptor.post_get_vulnerability_occurrences_summary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_vulnerability_occurrences_summary_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_vulnerability_occurrences_summary_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1143,9 +1137,7 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
 
             """
 
-            http_options = (
-                _BaseContainerAnalysisRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseContainerAnalysisRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseContainerAnalysisRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -1294,9 +1286,7 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseContainerAnalysisRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseContainerAnalysisRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -1418,7 +1408,9 @@ class ContainerAnalysisRestTransport(_BaseContainerAnalysisRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetVulnerabilityOccurrencesSummary(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetVulnerabilityOccurrencesSummary(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def set_iam_policy(

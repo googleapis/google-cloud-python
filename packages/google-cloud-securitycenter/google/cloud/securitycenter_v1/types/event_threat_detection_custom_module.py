@@ -88,6 +88,7 @@ class EventThreatDetectionCustomModule(proto.Message):
             INHERITED (3):
                 When the enablement state is inherited.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

@@ -95,6 +95,7 @@ class Likelihood(proto.Enum):
             It is very likely that the image belongs to
             the specified vertical.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -161,6 +162,7 @@ class Feature(proto.Message):
             OBJECT_LOCALIZATION (19):
                 Run localizer for object detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -407,6 +409,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2
@@ -1128,12 +1131,12 @@ class AnnotateImageResponse(proto.Message):
         number=4,
         message="EntityAnnotation",
     )
-    localized_object_annotations: MutableSequence[
-        "LocalizedObjectAnnotation"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message="LocalizedObjectAnnotation",
+    localized_object_annotations: MutableSequence["LocalizedObjectAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message="LocalizedObjectAnnotation",
+        )
     )
     text_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1461,6 +1464,7 @@ class OperationMetadata(proto.Message):
             CANCELLED (4):
                 The batch processing was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2

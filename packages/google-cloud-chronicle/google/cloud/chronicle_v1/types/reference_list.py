@@ -54,6 +54,7 @@ class ReferenceListSyntaxType(proto.Enum):
         REFERENCE_LIST_SYNTAX_TYPE_CIDR (3):
             List contains only CIDR patterns.
     """
+
     REFERENCE_LIST_SYNTAX_TYPE_UNSPECIFIED = 0
     REFERENCE_LIST_SYNTAX_TYPE_PLAIN_TEXT_STRING = 1
     REFERENCE_LIST_SYNTAX_TYPE_REGEX = 2
@@ -79,6 +80,7 @@ class ReferenceListView(proto.Enum):
             metadata, content lines, associated rule counts.
             This is the default view for GetReferenceList.
     """
+
     REFERENCE_LIST_VIEW_UNSPECIFIED = 0
     REFERENCE_LIST_VIEW_BASIC = 1
     REFERENCE_LIST_VIEW_FULL = 2

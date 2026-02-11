@@ -22,17 +22,17 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
-from collections.abc import AsyncIterable, Iterable
 import json
 import math
+from collections.abc import AsyncIterable, Iterable, Mapping, Sequence
 
+import grpc
+import pytest
 from google.api_core import api_core_version
 from google.protobuf import json_format
-import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
-import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -43,23 +43,30 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
 import google.auth
-from google.auth import credentials as ga_credentials
-from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.location import locations_pb2
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
+from google.api_core import (
+    client_options,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    path_template,
+)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.auth import credentials as ga_credentials
+from google.auth.exceptions import MutualTLSChannelError
+from google.cloud.location import locations_pb2
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    options_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
 
 from google.cloud.kms_v1.services.key_management_service import (
     KeyManagementServiceAsyncClient,
@@ -1001,10 +1008,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1049,10 +1055,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1088,10 +1093,9 @@ def test_key_management_service_client_get_mtls_endpoint_and_cert_source(client_
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1351,9 +1355,7 @@ def test_key_management_service_client_create_channel_credentials_file(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1998,9 +2000,9 @@ def test_list_crypto_keys_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_crypto_keys
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_crypto_keys] = (
+            mock_rpc
+        )
         request = {}
         client.list_crypto_keys(request)
 
@@ -3083,9 +3085,9 @@ def test_list_import_jobs_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_import_jobs] = (
+            mock_rpc
+        )
         request = {}
         client.list_import_jobs(request)
 
@@ -4286,9 +4288,9 @@ def test_get_crypto_key_version_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_crypto_key_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_crypto_key_version] = (
+            mock_rpc
+        )
         request = {}
         client.get_crypto_key_version(request)
 
@@ -5681,9 +5683,9 @@ def test_create_crypto_key_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_crypto_key] = (
+            mock_rpc
+        )
         request = {}
         client.create_crypto_key(request)
 
@@ -6767,9 +6769,9 @@ def test_create_import_job_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_import_job] = (
+            mock_rpc
+        )
         request = {}
         client.create_import_job(request)
 
@@ -7135,9 +7137,9 @@ def test_update_crypto_key_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_crypto_key] = (
+            mock_rpc
+        )
         request = {}
         client.update_crypto_key(request)
 
@@ -10598,9 +10600,9 @@ def test_asymmetric_decrypt_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.asymmetric_decrypt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.asymmetric_decrypt] = (
+            mock_rpc
+        )
         request = {}
         client.asymmetric_decrypt(request)
 
@@ -11915,9 +11917,9 @@ def test_generate_random_bytes_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_random_bytes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_random_bytes] = (
+            mock_rpc
+        )
         request = {}
         client.generate_random_bytes(request)
 
@@ -12461,9 +12463,9 @@ def test_list_crypto_keys_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_crypto_keys
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_crypto_keys] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_crypto_keys(request)
@@ -12998,9 +13000,9 @@ def test_list_import_jobs_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_import_jobs
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_import_jobs] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_import_jobs(request)
@@ -13618,9 +13620,9 @@ def test_get_crypto_key_version_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_crypto_key_version
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_crypto_key_version] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_crypto_key_version(request)
@@ -14364,9 +14366,9 @@ def test_create_crypto_key_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_crypto_key] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_crypto_key(request)
@@ -14920,9 +14922,9 @@ def test_create_import_job_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_import_job
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_import_job] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_import_job(request)
@@ -15131,9 +15133,9 @@ def test_update_crypto_key_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_crypto_key
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_crypto_key] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_crypto_key(request)
@@ -16932,9 +16934,9 @@ def test_asymmetric_decrypt_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.asymmetric_decrypt
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.asymmetric_decrypt] = (
+            mock_rpc
+        )
 
         request = {}
         client.asymmetric_decrypt(request)
@@ -17656,9 +17658,9 @@ def test_generate_random_bytes_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.generate_random_bytes
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.generate_random_bytes] = (
+            mock_rpc
+        )
 
         request = {}
         client.generate_random_bytes(request)

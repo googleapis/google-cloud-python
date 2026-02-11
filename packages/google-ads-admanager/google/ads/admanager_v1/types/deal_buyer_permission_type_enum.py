@@ -47,6 +47,7 @@ class DealBuyerPermissionTypeEnum(proto.Message):
                 The deal transacts with all buyers under the
                 same bidder.
         """
+
         DEAL_BUYER_PERMISSION_TYPE_UNSPECIFIED = 0
         NEGOTIATOR_ONLY = 1
         BIDDER = 2

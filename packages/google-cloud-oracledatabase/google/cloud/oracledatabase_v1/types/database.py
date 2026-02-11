@@ -112,6 +112,7 @@ class Database(proto.Message):
                 Indicates that the operations insights failed
                 to disable.
         """
+
         OPERATIONS_INSIGHTS_STATUS_UNSPECIFIED = 0
         ENABLING = 1
         ENABLED = 2
@@ -232,6 +233,7 @@ class DatabaseProperties(proto.Message):
                 Indicates that the resource is in failed
                 state.
         """
+
         DATABASE_LIFECYCLE_STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         AVAILABLE = 2
@@ -320,6 +322,7 @@ class DbBackupConfig(proto.Message):
             DBRS (5):
                 Backup destination type is DBRS.
         """
+
         BACKUP_DESTINATION_TYPE_UNSPECIFIED = 0
         NFS = 1
         RECOVERY_APPLIANCE = 2
@@ -359,6 +362,7 @@ class DbBackupConfig(proto.Message):
             SLOT_TWELVE (12):
                 10:00 PM - 12:00 AM
         """
+
         BACKUP_WINDOW_UNSPECIFIED = 0
         SLOT_ONE = 1
         SLOT_TWO = 2
@@ -387,6 +391,7 @@ class DbBackupConfig(proto.Message):
                 Keeps the backups as per the policy defined
                 for database backups.
         """
+
         BACKUP_DELETION_POLICY_UNSPECIFIED = 0
         DELETE_IMMEDIATELY = 1
         DELETE_AFTER_RETENTION_PERIOD = 2
@@ -410,12 +415,12 @@ class DbBackupConfig(proto.Message):
         proto.BOOL,
         number=1,
     )
-    backup_destination_details: MutableSequence[
-        BackupDestinationDetails
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=BackupDestinationDetails,
+    backup_destination_details: MutableSequence[BackupDestinationDetails] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=BackupDestinationDetails,
+        )
     )
     retention_period_days: int = proto.Field(
         proto.INT32,

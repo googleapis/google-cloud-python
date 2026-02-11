@@ -19,8 +19,8 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1p1beta1.types import resource as gcs_resource
 from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
+from google.cloud.securitycenter_v1p1beta1.types import resource as gcs_resource
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1p1beta1",

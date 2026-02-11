@@ -216,6 +216,7 @@ class TransitVehicle(proto.Message):
             TROLLEYBUS (18):
                 Trolleybus.
         """
+
         TRANSIT_VEHICLE_TYPE_UNSPECIFIED = 0
         BUS = 1
         CABLE_CAR = 2

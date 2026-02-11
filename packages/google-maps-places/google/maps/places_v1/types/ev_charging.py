@@ -69,6 +69,7 @@ class EVConnectorType(proto.Enum):
             The North American Charging System (NACS),
             standardized as SAE J3400.
     """
+
     EV_CONNECTOR_TYPE_UNSPECIFIED = 0
     EV_CONNECTOR_TYPE_OTHER = 1
     EV_CONNECTOR_TYPE_J1772 = 2

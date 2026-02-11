@@ -54,6 +54,7 @@ class SummaryOptions(proto.Message):
             COMPREHENSIVE (3):
                 The longest option available.
         """
+
         LENGTH_UNSPECIFIED = 0
         BRIEF = 1
         MODERATE = 2
@@ -70,6 +71,7 @@ class SummaryOptions(proto.Message):
             BULLETS (2):
                 Format the output in bullets.
         """
+
         FORMAT_UNSPECIFIED = 0
         PARAGRAPH = 1
         BULLETS = 2
@@ -279,6 +281,7 @@ class DocumentSchema(proto.Message):
                         The entity type will appear once or more
                         times.
                 """
+
                 OCCURRENCE_TYPE_UNSPECIFIED = 0
                 OPTIONAL_ONCE = 1
                 OPTIONAL_MULTIPLE = 2
@@ -300,6 +303,7 @@ class DocumentSchema(proto.Message):
                         inference and is not necessarily an exact text
                         extraction from the document.
                 """
+
                 METHOD_UNSPECIFIED = 0
                 EXTRACT = 1
                 DERIVE = 2
@@ -360,12 +364,12 @@ class DocumentSchema(proto.Message):
             proto.STRING,
             number=2,
         )
-        properties: MutableSequence[
-            "DocumentSchema.EntityType.Property"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="DocumentSchema.EntityType.Property",
+        properties: MutableSequence["DocumentSchema.EntityType.Property"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="DocumentSchema.EntityType.Property",
+            )
         )
         entity_type_metadata: "EntityTypeMetadata" = proto.Field(
             proto.MESSAGE,

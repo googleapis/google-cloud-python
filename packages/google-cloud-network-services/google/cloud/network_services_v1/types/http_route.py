@@ -363,12 +363,12 @@ class HttpRoute(proto.Message):
             number=5,
             message="HttpRoute.HeaderMatch",
         )
-        query_parameters: MutableSequence[
-            "HttpRoute.QueryParameterMatch"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=6,
-            message="HttpRoute.QueryParameterMatch",
+        query_parameters: MutableSequence["HttpRoute.QueryParameterMatch"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="HttpRoute.QueryParameterMatch",
+            )
         )
 
     class Destination(proto.Message):
@@ -497,6 +497,7 @@ class HttpRoute(proto.Message):
                     Corresponds to 308. In this case, the request
                     method will be retained.
             """
+
             RESPONSE_CODE_UNSPECIFIED = 0
             MOVED_PERMANENTLY_DEFAULT = 1
             FOUND = 2

@@ -17,9 +17,12 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.api_core import retry_async as retries
@@ -28,15 +31,12 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
+from google.cloud.dialogflow_v2.types import conversation_model
 from google.cloud.dialogflow_v2.types import (
     conversation_model as gcd_conversation_model,
 )
-from google.cloud.dialogflow_v2.types import conversation_model
 
 from .base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
 from .grpc import ConversationModelsGrpcTransport
@@ -565,12 +565,12 @@ class ConversationModelsGrpcAsyncIOTransport(ConversationModelsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undeploy_conversation_model" not in self._stubs:
-            self._stubs[
-                "undeploy_conversation_model"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2.ConversationModels/UndeployConversationModel",
-                request_serializer=conversation_model.UndeployConversationModelRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["undeploy_conversation_model"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2.ConversationModels/UndeployConversationModel",
+                    request_serializer=conversation_model.UndeployConversationModelRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["undeploy_conversation_model"]
 
@@ -597,12 +597,12 @@ class ConversationModelsGrpcAsyncIOTransport(ConversationModelsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_conversation_model_evaluation" not in self._stubs:
-            self._stubs[
-                "get_conversation_model_evaluation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2.ConversationModels/GetConversationModelEvaluation",
-                request_serializer=conversation_model.GetConversationModelEvaluationRequest.serialize,
-                response_deserializer=conversation_model.ConversationModelEvaluation.deserialize,
+            self._stubs["get_conversation_model_evaluation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2.ConversationModels/GetConversationModelEvaluation",
+                    request_serializer=conversation_model.GetConversationModelEvaluationRequest.serialize,
+                    response_deserializer=conversation_model.ConversationModelEvaluation.deserialize,
+                )
             )
         return self._stubs["get_conversation_model_evaluation"]
 
@@ -629,12 +629,12 @@ class ConversationModelsGrpcAsyncIOTransport(ConversationModelsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_conversation_model_evaluations" not in self._stubs:
-            self._stubs[
-                "list_conversation_model_evaluations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2.ConversationModels/ListConversationModelEvaluations",
-                request_serializer=conversation_model.ListConversationModelEvaluationsRequest.serialize,
-                response_deserializer=conversation_model.ListConversationModelEvaluationsResponse.deserialize,
+            self._stubs["list_conversation_model_evaluations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2.ConversationModels/ListConversationModelEvaluations",
+                    request_serializer=conversation_model.ListConversationModelEvaluationsRequest.serialize,
+                    response_deserializer=conversation_model.ListConversationModelEvaluationsResponse.deserialize,
+                )
             )
         return self._stubs["list_conversation_model_evaluations"]
 
@@ -661,12 +661,12 @@ class ConversationModelsGrpcAsyncIOTransport(ConversationModelsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_conversation_model_evaluation" not in self._stubs:
-            self._stubs[
-                "create_conversation_model_evaluation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.dialogflow.v2.ConversationModels/CreateConversationModelEvaluation",
-                request_serializer=conversation_model.CreateConversationModelEvaluationRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+            self._stubs["create_conversation_model_evaluation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.dialogflow.v2.ConversationModels/CreateConversationModelEvaluation",
+                    request_serializer=conversation_model.CreateConversationModelEvaluationRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
         return self._stubs["create_conversation_model_evaluation"]
 

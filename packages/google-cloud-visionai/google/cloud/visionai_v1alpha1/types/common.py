@@ -75,6 +75,7 @@ class Cluster(proto.Message):
                 The ERROR state indicates the cluster is
                 unusable. It will be automatically deleted.
         """
+
         STATE_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2

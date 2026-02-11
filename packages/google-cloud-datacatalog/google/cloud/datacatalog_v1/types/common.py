@@ -56,6 +56,7 @@ class IntegratedSystem(proto.Enum):
         VERTEX_AI (10):
             Vertex AI
     """
+
     INTEGRATED_SYSTEM_UNSPECIFIED = 0
     BIGQUERY = 1
     CLOUD_PUBSUB = 2
@@ -80,6 +81,7 @@ class ManagingSystem(proto.Enum):
         MANAGING_SYSTEM_OTHER (2):
             Other
     """
+
     MANAGING_SYSTEM_UNSPECIFIED = 0
     MANAGING_SYSTEM_DATAPLEX = 1
     MANAGING_SYSTEM_OTHER = 2

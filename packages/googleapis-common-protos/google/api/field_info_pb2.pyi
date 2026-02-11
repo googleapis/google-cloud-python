@@ -30,7 +30,6 @@ field_info: _descriptor.FieldDescriptor
 
 class FieldInfo(_message.Message):
     __slots__ = ("format", "referenced_types")
-
     class Format(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         FORMAT_UNSPECIFIED: _ClassVar[FieldInfo.Format]
@@ -38,6 +37,7 @@ class FieldInfo(_message.Message):
         IPV4: _ClassVar[FieldInfo.Format]
         IPV6: _ClassVar[FieldInfo.Format]
         IPV4_OR_IPV6: _ClassVar[FieldInfo.Format]
+
     FORMAT_UNSPECIFIED: FieldInfo.Format
     UUID4: FieldInfo.Format
     IPV4: FieldInfo.Format

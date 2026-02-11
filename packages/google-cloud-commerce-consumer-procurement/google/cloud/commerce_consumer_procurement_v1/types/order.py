@@ -53,6 +53,7 @@ class LineItemChangeType(proto.Enum):
         LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION (4):
             The change is to revert a cancellation.
     """
+
     LINE_ITEM_CHANGE_TYPE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_TYPE_CREATE = 1
     LINE_ITEM_CHANGE_TYPE_UPDATE = 2
@@ -98,6 +99,7 @@ class LineItemChangeState(proto.Enum):
             state. This state is only applicable for pending
             change.
     """
+
     LINE_ITEM_CHANGE_STATE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL = 1
     LINE_ITEM_CHANGE_STATE_APPROVED = 2
@@ -124,6 +126,7 @@ class LineItemChangeStateReasonType(proto.Enum):
             Change is in current state due to
             system-initiated cancellation.
     """
+
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED = 0
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED = 1
     LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED = 2

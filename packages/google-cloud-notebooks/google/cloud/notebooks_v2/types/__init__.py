@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .diagnostic_config import DiagnosticConfig
-from .event import Event
+from .diagnostic_config import (
+    DiagnosticConfig,
+)
+from .event import (
+    Event,
+)
 from .gce_setup import (
     AcceleratorConfig,
     BootDisk,
@@ -29,7 +33,12 @@ from .gce_setup import (
     ShieldedInstanceConfig,
     VmImage,
 )
-from .instance import HealthState, Instance, State, UpgradeHistoryEntry
+from .instance import (
+    HealthState,
+    Instance,
+    State,
+    UpgradeHistoryEntry,
+)
 from .service import (
     CheckInstanceUpgradabilityRequest,
     CheckInstanceUpgradabilityResponse,

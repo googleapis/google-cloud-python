@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,13 +29,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.shopping.merchant_accounts_v1 import gapic_version as package_version
 
@@ -123,7 +123,10 @@ class AccountServicesServiceAsyncClient:
         Returns:
             AccountServicesServiceAsyncClient: The constructed client.
         """
-        return AccountServicesServiceClient.from_service_account_info.__func__(AccountServicesServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            AccountServicesServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(AccountServicesServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -139,7 +142,12 @@ class AccountServicesServiceAsyncClient:
         Returns:
             AccountServicesServiceAsyncClient: The constructed client.
         """
-        return AccountServicesServiceClient.from_service_account_file.__func__(AccountServicesServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            AccountServicesServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            AccountServicesServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -177,7 +185,9 @@ class AccountServicesServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return AccountServicesServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return AccountServicesServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> AccountServicesServiceTransport:

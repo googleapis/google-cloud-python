@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.shopping.merchant_notifications_v1beta.types import notificationsapi
 
@@ -352,12 +352,12 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_notification_subscription" not in self._stubs:
-            self._stubs[
-                "get_notification_subscription"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/GetNotificationSubscription",
-                request_serializer=notificationsapi.GetNotificationSubscriptionRequest.serialize,
-                response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+            self._stubs["get_notification_subscription"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/GetNotificationSubscription",
+                    request_serializer=notificationsapi.GetNotificationSubscriptionRequest.serialize,
+                    response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+                )
             )
         return self._stubs["get_notification_subscription"]
 
@@ -401,12 +401,12 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_subscription" not in self._stubs:
-            self._stubs[
-                "create_notification_subscription"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/CreateNotificationSubscription",
-                request_serializer=notificationsapi.CreateNotificationSubscriptionRequest.serialize,
-                response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+            self._stubs["create_notification_subscription"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/CreateNotificationSubscription",
+                    request_serializer=notificationsapi.CreateNotificationSubscriptionRequest.serialize,
+                    response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+                )
             )
         return self._stubs["create_notification_subscription"]
 
@@ -434,12 +434,12 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_subscription" not in self._stubs:
-            self._stubs[
-                "update_notification_subscription"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/UpdateNotificationSubscription",
-                request_serializer=notificationsapi.UpdateNotificationSubscriptionRequest.serialize,
-                response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+            self._stubs["update_notification_subscription"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/UpdateNotificationSubscription",
+                    request_serializer=notificationsapi.UpdateNotificationSubscriptionRequest.serialize,
+                    response_deserializer=notificationsapi.NotificationSubscription.deserialize,
+                )
             )
         return self._stubs["update_notification_subscription"]
 
@@ -466,12 +466,12 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_subscription" not in self._stubs:
-            self._stubs[
-                "delete_notification_subscription"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/DeleteNotificationSubscription",
-                request_serializer=notificationsapi.DeleteNotificationSubscriptionRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["delete_notification_subscription"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/DeleteNotificationSubscription",
+                    request_serializer=notificationsapi.DeleteNotificationSubscriptionRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["delete_notification_subscription"]
 
@@ -499,12 +499,12 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_notification_subscriptions" not in self._stubs:
-            self._stubs[
-                "list_notification_subscriptions"
-            ] = self._logged_channel.unary_unary(
-                "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/ListNotificationSubscriptions",
-                request_serializer=notificationsapi.ListNotificationSubscriptionsRequest.serialize,
-                response_deserializer=notificationsapi.ListNotificationSubscriptionsResponse.deserialize,
+            self._stubs["list_notification_subscriptions"] = (
+                self._logged_channel.unary_unary(
+                    "/google.shopping.merchant.notifications.v1beta.NotificationsApiService/ListNotificationSubscriptions",
+                    request_serializer=notificationsapi.ListNotificationSubscriptionsRequest.serialize,
+                    response_deserializer=notificationsapi.ListNotificationSubscriptionsResponse.deserialize,
+                )
             )
         return self._stubs["list_notification_subscriptions"]
 

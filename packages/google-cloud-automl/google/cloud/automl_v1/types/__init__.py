@@ -13,21 +13,36 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .annotation_payload import AnnotationPayload
-from .annotation_spec import AnnotationSpec
+from .annotation_payload import (
+    AnnotationPayload,
+)
+from .annotation_spec import (
+    AnnotationSpec,
+)
 from .classification import (
     ClassificationAnnotation,
     ClassificationEvaluationMetrics,
     ClassificationType,
 )
-from .data_items import Document, DocumentDimensions, ExamplePayload, Image, TextSnippet
-from .dataset import Dataset
+from .data_items import (
+    Document,
+    DocumentDimensions,
+    ExamplePayload,
+    Image,
+    TextSnippet,
+)
+from .dataset import (
+    Dataset,
+)
 from .detection import (
     BoundingBoxMetricsEntry,
     ImageObjectDetectionAnnotation,
     ImageObjectDetectionEvaluationMetrics,
 )
-from .geometry import BoundingPoly, NormalizedVertex
+from .geometry import (
+    BoundingPoly,
+    NormalizedVertex,
+)
 from .image import (
     ImageClassificationDatasetMetadata,
     ImageClassificationModelDeploymentMetadata,
@@ -46,8 +61,12 @@ from .io import (
     ModelExportOutputConfig,
     OutputConfig,
 )
-from .model import Model
-from .model_evaluation import ModelEvaluation
+from .model import (
+    Model,
+)
+from .model_evaluation import (
+    ModelEvaluation,
+)
 from .operations import (
     BatchPredictOperationMetadata,
     CreateDatasetOperationMetadata,
@@ -97,9 +116,17 @@ from .text import (
     TextSentimentDatasetMetadata,
     TextSentimentModelMetadata,
 )
-from .text_extraction import TextExtractionAnnotation, TextExtractionEvaluationMetrics
-from .text_segment import TextSegment
-from .text_sentiment import TextSentimentAnnotation, TextSentimentEvaluationMetrics
+from .text_extraction import (
+    TextExtractionAnnotation,
+    TextExtractionEvaluationMetrics,
+)
+from .text_segment import (
+    TextSegment,
+)
+from .text_sentiment import (
+    TextSentimentAnnotation,
+    TextSentimentEvaluationMetrics,
+)
 from .translation import (
     TranslationAnnotation,
     TranslationDatasetMetadata,

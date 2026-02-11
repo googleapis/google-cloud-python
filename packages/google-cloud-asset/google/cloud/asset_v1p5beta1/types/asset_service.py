@@ -48,6 +48,7 @@ class ContentType(proto.Enum):
             The Access Context Manager policy set on an
             asset.
     """
+
     CONTENT_TYPE_UNSPECIFIED = 0
     RESOURCE = 1
     IAM_POLICY = 2

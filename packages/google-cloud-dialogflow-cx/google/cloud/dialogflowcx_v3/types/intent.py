@@ -58,6 +58,7 @@ class IntentView(proto.Enum):
         INTENT_VIEW_FULL (2):
             All fields are populated.
     """
+
     INTENT_VIEW_UNSPECIFIED = 0
     INTENT_VIEW_PARTIAL = 1
     INTENT_VIEW_FULL = 2
@@ -560,6 +561,7 @@ class ImportIntentsRequest(proto.Message):
                 conflicting new intent when display name
                 conflicts exist.
         """
+
         MERGE_OPTION_UNSPECIFIED = 0
         REJECT = 1
         REPLACE = 2
@@ -699,6 +701,7 @@ class ExportIntentsRequest(proto.Message):
             CSV (3):
                 Intents will be exported in CSV format.
         """
+
         DATA_FORMAT_UNSPECIFIED = 0
         BLOB = 1
         JSON = 2

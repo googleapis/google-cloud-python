@@ -93,6 +93,7 @@ class SecretKind(proto.Enum):
         SECRET_KIND_STRIPE_WEBHOOK_SECRET (22):
             A Stripe webhook secret.
     """
+
     SECRET_KIND_UNSPECIFIED = 0
     SECRET_KIND_UNKNOWN = 1
     SECRET_KIND_GCP_SERVICE_ACCOUNT_KEY = 2
@@ -212,6 +213,7 @@ class SecretStatus(proto.Message):
             INVALID (3):
                 The secret is invalid.
         """
+
         STATUS_UNSPECIFIED = 0
         UNKNOWN = 1
         VALID = 2

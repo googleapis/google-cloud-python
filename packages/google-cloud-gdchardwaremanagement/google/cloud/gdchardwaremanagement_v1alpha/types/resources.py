@@ -67,6 +67,7 @@ class PowerSupply(proto.Enum):
         POWER_SUPPLY_DC (2):
             DC power supply.
     """
+
     POWER_SUPPLY_UNSPECIFIED = 0
     POWER_SUPPLY_AC = 1
     POWER_SUPPLY_DC = 2
@@ -85,6 +86,7 @@ class Entity(proto.Enum):
         VENDOR (3):
             Vendor.
     """
+
     ENTITY_UNSPECIFIED = 0
     GOOGLE = 1
     CUSTOMER = 2
@@ -219,6 +221,7 @@ class Order(proto.Message):
             CANCELLED (11):
                 Order has been cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         SUBMITTED = 2
@@ -246,6 +249,7 @@ class Order(proto.Message):
             UNPAID (2):
                 Not billed.
         """
+
         _pb_options = {"allow_alias": True}
         TYPE_UNSPECIFIED = 0
         PAID = 1
@@ -270,6 +274,7 @@ class Order(proto.Message):
                 Customer lab deployment that we support as
                 though it's prod.
         """
+
         DEPLOYMENT_TYPE_UNSPECIFIED = 0
         FULL_PRODUCTION = 1
         PROOF_OF_CONCEPT = 2
@@ -576,6 +581,7 @@ class HardwareGroup(proto.Message):
                 An error occurred and customer intervention
                 is required.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         BUILDING = 2
@@ -724,6 +730,7 @@ class Hardware(proto.Message):
                 An error occurred and customer intervention
                 is required.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         BUILDING = 2
@@ -760,6 +767,7 @@ class Hardware(proto.Message):
                 VIRTUAL (3):
                     Address of a virtual interface.
             """
+
             ADDRESS_TYPE_UNSPECIFIED = 0
             NIC = 1
             BMC = 2
@@ -1105,6 +1113,7 @@ class Sku(proto.Message):
             SERVER (2):
                 Server SKU.
         """
+
         TYPE_UNSPECIFIED = 0
         RACK = 1
         SERVER = 2
@@ -1268,6 +1277,7 @@ class Zone(proto.Message):
             CANCELLED (4):
                 The Zone has been cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         ADDITIONAL_INFO_NEEDED = 1
         PREPARING = 2
@@ -1292,6 +1302,7 @@ class Zone(proto.Message):
             PROVISIONING_COMPLETE (3):
                 Provisioning is complete. Set by customer.
         """
+
         PROVISIONING_STATE_UNSPECIFIED = 0
         PROVISIONING_REQUIRED = 1
         PROVISIONING_IN_PROGRESS = 2
@@ -1598,6 +1609,7 @@ class HardwarePhysicalInfo(proto.Message):
             TYPE_F (7):
                 Type F.
         """
+
         POWER_RECEPTACLE_TYPE_UNSPECIFIED = 0
         NEMA_5_15 = 1
         C_13 = 2
@@ -1616,6 +1628,7 @@ class HardwarePhysicalInfo(proto.Message):
             RJ_45 (1):
                 RJ-45.
         """
+
         NETWORK_UPLINK_TYPE_UNSPECIFIED = 0
         RJ_45 = 1
 
@@ -1630,6 +1643,7 @@ class HardwarePhysicalInfo(proto.Message):
             VOLTAGE_220 (3):
                 220V.
         """
+
         VOLTAGE_UNSPECIFIED = 0
         VOLTAGE_110 = 1
         VOLTAGE_220 = 3
@@ -1643,6 +1657,7 @@ class HardwarePhysicalInfo(proto.Message):
             AMPERES_15 (1):
                 15A.
         """
+
         AMPERES_UNSPECIFIED = 0
         AMPERES_15 = 1
 
@@ -1701,6 +1716,7 @@ class HardwareInstallationInfo(proto.Message):
             FOUR_POST (2):
                 Four post rack.
         """
+
         RACK_TYPE_UNSPECIFIED = 0
         TWO_POST = 1
         FOUR_POST = 2
@@ -1979,6 +1995,7 @@ class SubscriptionConfig(proto.Message):
                 The subscription has been completed, because
                 it has reached the end date.
         """
+
         SUBSCRIPTION_STATE_UNSPECIFIED = 0
         ACTIVE = 1
         INACTIVE = 2

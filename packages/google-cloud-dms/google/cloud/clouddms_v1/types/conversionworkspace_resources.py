@@ -96,6 +96,7 @@ class ValuePresentInList(proto.Enum):
             If the source value is not in the supplied list at
             value_list
     """
+
     VALUE_PRESENT_IN_LIST_UNSPECIFIED = 0
     VALUE_PRESENT_IN_LIST_IF_VALUE_LIST = 1
     VALUE_PRESENT_IN_LIST_IF_VALUE_NOT_LIST = 2
@@ -138,6 +139,7 @@ class DatabaseEntityType(proto.Enum):
         DATABASE_ENTITY_TYPE_DATABASE (15):
             Database.
     """
+
     DATABASE_ENTITY_TYPE_UNSPECIFIED = 0
     DATABASE_ENTITY_TYPE_SCHEMA = 1
     DATABASE_ENTITY_TYPE_TABLE = 2
@@ -171,6 +173,7 @@ class EntityNameTransformation(proto.Enum):
         ENTITY_NAME_TRANSFORMATION_CAPITALIZED_CASE (4):
             Transform to capitalized case.
     """
+
     ENTITY_NAME_TRANSFORMATION_UNSPECIFIED = 0
     ENTITY_NAME_TRANSFORMATION_NO_TRANSFORMATION = 1
     ENTITY_NAME_TRANSFORMATION_LOWER_CASE = 2
@@ -197,6 +200,7 @@ class BackgroundJobType(proto.Enum):
             an external source such as an ora2pg config
             file.
     """
+
     BACKGROUND_JOB_TYPE_UNSPECIFIED = 0
     BACKGROUND_JOB_TYPE_SOURCE_SEED = 1
     BACKGROUND_JOB_TYPE_CONVERT = 2
@@ -215,6 +219,7 @@ class ImportRulesFileFormat(proto.Enum):
         IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE (2):
             Ora2Pg configuration file.
     """
+
     IMPORT_RULES_FILE_FORMAT_UNSPECIFIED = 0
     IMPORT_RULES_FILE_FORMAT_HARBOUR_BRIDGE_SESSION_FILE = 1
     IMPORT_RULES_FILE_FORMAT_ORATOPG_CONFIG_FILE = 2
@@ -238,6 +243,7 @@ class ValueComparison(proto.Enum):
             Value is larger or equal than the Compare
             value.
     """
+
     VALUE_COMPARISON_UNSPECIFIED = 0
     VALUE_COMPARISON_IF_VALUE_SMALLER_THAN = 1
     VALUE_COMPARISON_IF_VALUE_SMALLER_EQUAL_THAN = 2
@@ -265,6 +271,7 @@ class NumericFilterOption(proto.Enum):
             numeric columns with no precision and scale
             specified.
     """
+
     NUMERIC_FILTER_OPTION_UNSPECIFIED = 0
     NUMERIC_FILTER_OPTION_ALL = 1
     NUMERIC_FILTER_OPTION_LIMIT = 2
@@ -441,6 +448,7 @@ class BackgroundJobLogEntry(proto.Message):
             FAILED (2):
                 Error.
         """
+
         JOB_COMPLETION_STATE_UNSPECIFIED = 0
         SUCCEEDED = 1
         FAILED = 2
@@ -743,6 +751,7 @@ class MappingRule(proto.Message):
             DELETED (3):
                 The rule is logically deleted.
         """
+
         STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2
@@ -1765,6 +1774,7 @@ class DatabaseEntity(proto.Message):
                 Tree of entities observed on the destination
                 database.
         """
+
         TREE_TYPE_UNSPECIFIED = 0
         SOURCE = 1
         DRAFT = 2
@@ -2626,6 +2636,7 @@ class EntityIssue(proto.Message):
             ISSUE_TYPE_CONVERT (3):
                 Issue originated during the convert process
         """
+
         ISSUE_TYPE_UNSPECIFIED = 0
         ISSUE_TYPE_DDL = 1
         ISSUE_TYPE_APPLY = 2
@@ -2644,6 +2655,7 @@ class EntityIssue(proto.Message):
             ISSUE_SEVERITY_ERROR (3):
                 Error
         """
+
         ISSUE_SEVERITY_UNSPECIFIED = 0
         ISSUE_SEVERITY_INFO = 1
         ISSUE_SEVERITY_WARNING = 2

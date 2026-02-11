@@ -77,6 +77,7 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
             DISABLED (2):
                 The module is disabled at the given level.
         """
+
         ENABLEMENT_STATE_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

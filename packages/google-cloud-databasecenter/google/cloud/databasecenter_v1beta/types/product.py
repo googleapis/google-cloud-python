@@ -68,6 +68,7 @@ class Engine(proto.Enum):
             engine. This is to be when engine is known, but
             it is not present in this enum.
     """
+
     ENGINE_UNSPECIFIED = 0
     ENGINE_MYSQL = 1
     ENGINE_POSTGRES = 2
@@ -115,6 +116,7 @@ class ProductType(proto.Enum):
             This is to be when product type is known, but it
             is not present in this enum.
     """
+
     PRODUCT_TYPE_UNSPECIFIED = 0
     PRODUCT_TYPE_CLOUD_SQL = 1
     PRODUCT_TYPE_ALLOYDB = 2

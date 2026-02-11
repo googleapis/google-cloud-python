@@ -830,6 +830,7 @@ class PrivateConnection(proto.Message):
                 Delete request has failed, resource is in
                 invalid state.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2
@@ -2550,6 +2551,7 @@ class JsonFileFormat(proto.Message):
             AVRO_SCHEMA_FILE (2):
                 Avro schema format.
         """
+
         SCHEMA_FILE_FORMAT_UNSPECIFIED = 0
         NO_SCHEMA_FILE = 1
         AVRO_SCHEMA_FILE = 2
@@ -2565,6 +2567,7 @@ class JsonFileFormat(proto.Message):
             GZIP (2):
                 Gzip compression.
         """
+
         JSON_COMPRESSION_UNSPECIFIED = 0
         NO_COMPRESSION = 1
         GZIP = 2
@@ -2790,6 +2793,7 @@ class BigQueryDestinationConfig(proto.Message):
                 PARQUET (1):
                     Parquet file format.
             """
+
             FILE_FORMAT_UNSPECIFIED = 0
             PARQUET = 1
 
@@ -2802,6 +2806,7 @@ class BigQueryDestinationConfig(proto.Message):
                 ICEBERG (1):
                     Iceberg table format.
             """
+
             TABLE_FORMAT_UNSPECIFIED = 0
             ICEBERG = 1
 
@@ -3014,6 +3019,7 @@ class Stream(proto.Message):
                 The Stream is no longer reading new events,
                 but still writing events in the buffer.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         RUNNING = 2
@@ -3473,6 +3479,7 @@ class BackfillJob(proto.Message):
                 Backfill job failed since the table structure
                 is currently unsupported for backfill.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_STARTED = 1
         PENDING = 2
@@ -3496,6 +3503,7 @@ class BackfillJob(proto.Message):
                 Object backfill job was triggered manually
                 using the dedicated API.
         """
+
         TRIGGER_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -3616,6 +3624,7 @@ class Validation(proto.Message):
             WARNING (4):
                 Validation executed with warnings.
         """
+
         STATE_UNSPECIFIED = 0
         NOT_EXECUTED = 1
         FAILED = 2
@@ -3668,6 +3677,7 @@ class ValidationMessage(proto.Message):
             ERROR (2):
                 Definitely cause issues with the Stream.
         """
+
         LEVEL_UNSPECIFIED = 0
         WARNING = 1
         ERROR = 2

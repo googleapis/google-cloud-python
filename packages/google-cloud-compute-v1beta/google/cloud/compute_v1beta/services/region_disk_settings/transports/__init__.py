@@ -20,9 +20,7 @@ from .base import RegionDiskSettingsTransport
 from .rest import RegionDiskSettingsRestInterceptor, RegionDiskSettingsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RegionDiskSettingsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RegionDiskSettingsTransport]]
 _transport_registry["rest"] = RegionDiskSettingsRestTransport
 
 __all__ = (

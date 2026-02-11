@@ -47,6 +47,7 @@ class CloudProvider(proto.Enum):
         MICROSOFT_AZURE (3):
             The cloud provider is Microsoft Azure.
     """
+
     CLOUD_PROVIDER_UNSPECIFIED = 0
     GOOGLE_CLOUD_PLATFORM = 1
     AMAZON_WEB_SERVICES = 2
@@ -425,6 +426,7 @@ class ResourcePath(proto.Message):
             AZURE_RESOURCE_GROUP (9):
                 The node represents an Azure resource group.
         """
+
         RESOURCE_PATH_NODE_TYPE_UNSPECIFIED = 0
         GCP_ORGANIZATION = 1
         GCP_FOLDER = 2

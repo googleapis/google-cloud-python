@@ -51,6 +51,7 @@ class RouteTravelMode(proto.Enum):
             Travel by public transit routes, where
             available.
     """
+
     TRAVEL_MODE_UNSPECIFIED = 0
     DRIVE = 1
     BICYCLE = 2

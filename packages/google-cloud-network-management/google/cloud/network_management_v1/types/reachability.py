@@ -115,12 +115,12 @@ class ListConnectivityTestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resources: MutableSequence[
-        connectivity_test.ConnectivityTest
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=connectivity_test.ConnectivityTest,
+    resources: MutableSequence[connectivity_test.ConnectivityTest] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=connectivity_test.ConnectivityTest,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

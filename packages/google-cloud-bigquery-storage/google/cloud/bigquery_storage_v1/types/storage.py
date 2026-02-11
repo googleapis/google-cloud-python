@@ -500,6 +500,7 @@ class AppendRowsRequest(proto.Message):
                 default value if declared in the table schema,
                 NULL otherwise.
         """
+
         MISSING_VALUE_INTERPRETATION_UNSPECIFIED = 0
         NULL_VALUE = 1
         DEFAULT_VALUE = 2
@@ -585,13 +586,13 @@ class AppendRowsRequest(proto.Message):
         proto.STRING,
         number=6,
     )
-    missing_value_interpretations: MutableMapping[
-        str, MissingValueInterpretation
-    ] = proto.MapField(
-        proto.STRING,
-        proto.ENUM,
-        number=7,
-        enum=MissingValueInterpretation,
+    missing_value_interpretations: MutableMapping[str, MissingValueInterpretation] = (
+        proto.MapField(
+            proto.STRING,
+            proto.ENUM,
+            number=7,
+            enum=MissingValueInterpretation,
+        )
     )
     default_missing_value_interpretation: MissingValueInterpretation = proto.Field(
         proto.ENUM,
@@ -907,6 +908,7 @@ class StorageError(proto.Message):
                 Permission denied while using
                 customer-managed encryption key.
         """
+
         STORAGE_ERROR_CODE_UNSPECIFIED = 0
         TABLE_NOT_FOUND = 1
         STREAM_ALREADY_COMMITTED = 2
@@ -960,6 +962,7 @@ class RowError(proto.Message):
             FIELDS_ERROR (1):
                 One or more fields in the row has errors.
         """
+
         ROW_ERROR_CODE_UNSPECIFIED = 0
         FIELDS_ERROR = 1
 

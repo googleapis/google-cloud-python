@@ -80,6 +80,7 @@ class AgentCoachingInstruction(proto.Message):
             TOOL_CALL_COMPLETION (5):
                 Triggers on tool call completion.
         """
+
         TRIGGER_EVENT_UNSPECIFIED = 0
         END_OF_UTTERANCE = 1
         MANUAL_CALL = 2

@@ -21,10 +21,10 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.financialservices_v1.types import bigquery_destination
 from google.cloud.financialservices_v1.types import (
     line_of_business as gcf_line_of_business,
 )
-from google.cloud.financialservices_v1.types import bigquery_destination
 
 __protobuf__ = proto.module(
     package="google.cloud.financialservices.v1",
@@ -91,6 +91,7 @@ class Instance(proto.Message):
                 The resource is in the process of being
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -403,6 +404,7 @@ class ImportRegisteredPartiesRequest(proto.Message):
             APPEND (2):
                 Add new parties to Parties Table.
         """
+
         UPDATE_MODE_UNSPECIFIED = 0
         REPLACE = 1
         APPEND = 2

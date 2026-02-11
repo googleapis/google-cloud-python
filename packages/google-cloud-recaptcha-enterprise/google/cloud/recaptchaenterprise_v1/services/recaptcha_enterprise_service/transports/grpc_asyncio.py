@@ -17,20 +17,20 @@ import inspect
 import json
 import logging as std_logging
 import pickle
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, grpc_helpers_async
 from google.api_core import retry_async as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 
@@ -475,12 +475,12 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_legacy_secret_key" not in self._stubs:
-            self._stubs[
-                "retrieve_legacy_secret_key"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
-                request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
-                response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
+            self._stubs["retrieve_legacy_secret_key"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
+                    request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
+                    response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
+                )
             )
         return self._stubs["retrieve_legacy_secret_key"]
 
@@ -925,12 +925,12 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_groups" not in self._stubs:
-            self._stubs[
-                "list_related_account_groups"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
-                request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
-                response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
+            self._stubs["list_related_account_groups"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
+                    request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
+                    response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
+                )
             )
         return self._stubs["list_related_account_groups"]
 
@@ -957,12 +957,12 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "list_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
-                request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
-                response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
+            self._stubs["list_related_account_group_memberships"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
+                    request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
+                    response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
+                )
             )
         return self._stubs["list_related_account_group_memberships"]
 
@@ -989,12 +989,12 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "search_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
-                request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
-                response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,
+            self._stubs["search_related_account_group_memberships"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
+                    request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
+                    response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,
+                )
             )
         return self._stubs["search_related_account_group_memberships"]
 

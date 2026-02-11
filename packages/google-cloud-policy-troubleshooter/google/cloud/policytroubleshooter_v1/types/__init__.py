@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .checker import TroubleshootIamPolicyRequest, TroubleshootIamPolicyResponse
+from .checker import (
+    TroubleshootIamPolicyRequest,
+    TroubleshootIamPolicyResponse,
+)
 from .explanations import (
     AccessState,
     AccessTuple,

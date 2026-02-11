@@ -233,6 +233,7 @@ class TaskStatus(proto.Message):
                 The Task has not been executed when the Job
                 finishes.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ASSIGNED = 2
@@ -732,6 +733,7 @@ class LifecyclePolicy(proto.Message):
                 Action that tasks in the group will be
                 stopped immediately.
         """
+
         ACTION_UNSPECIFIED = 0
         RETRY_TASK = 1
         FAIL_TASK = 2

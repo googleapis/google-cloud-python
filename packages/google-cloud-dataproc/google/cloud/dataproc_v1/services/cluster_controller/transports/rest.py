@@ -16,18 +16,20 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -898,9 +900,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseCreateCluster._get_transcoded_request(
@@ -1049,9 +1049,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseDeleteCluster._get_transcoded_request(
@@ -1197,9 +1195,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDiagnoseCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_diagnose_cluster(
                 request, metadata
@@ -1498,9 +1494,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseListClusters._get_transcoded_request(
@@ -1646,9 +1640,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseStartCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseStartCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_start_cluster(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseStartCluster._get_transcoded_request(
@@ -1949,9 +1941,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseUpdateCluster._get_transcoded_request(
@@ -2162,9 +2152,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -2308,9 +2296,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -2455,9 +2441,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -2600,9 +2584,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -2715,9 +2697,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -2832,9 +2812,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseGetOperation._get_transcoded_request(
@@ -2973,9 +2951,7 @@ class ClusterControllerRestTransport(_BaseClusterControllerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseClusterControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseClusterControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseClusterControllerRestTransport._BaseListOperations._get_transcoded_request(

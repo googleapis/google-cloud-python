@@ -427,6 +427,7 @@ class AppConnector(proto.Message):
                 the future. This happens when CCFE sends
                 ProjectState = OFF.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         CREATED = 2

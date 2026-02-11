@@ -80,6 +80,7 @@ class Application(proto.Message):
             DELETING (3):
                 The Application is being deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2
@@ -147,6 +148,7 @@ class Scope(proto.Message):
             GLOBAL (2):
                 Global type.
         """
+
         TYPE_UNSPECIFIED = 0
         REGIONAL = 1
         GLOBAL = 2

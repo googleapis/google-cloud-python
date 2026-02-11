@@ -28,6 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
+
 from .services.oracle_database import OracleDatabaseAsyncClient, OracleDatabaseClient
 from .types.autonomous_database import (
     AllConnectionStrings,

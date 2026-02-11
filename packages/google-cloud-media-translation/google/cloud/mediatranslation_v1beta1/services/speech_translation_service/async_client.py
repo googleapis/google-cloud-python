@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.mediatranslation_v1beta1 import gapic_version as package_version
 
@@ -121,7 +121,10 @@ class SpeechTranslationServiceAsyncClient:
         Returns:
             SpeechTranslationServiceAsyncClient: The constructed client.
         """
-        return SpeechTranslationServiceClient.from_service_account_info.__func__(SpeechTranslationServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            SpeechTranslationServiceClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SpeechTranslationServiceAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -137,7 +140,12 @@ class SpeechTranslationServiceAsyncClient:
         Returns:
             SpeechTranslationServiceAsyncClient: The constructed client.
         """
-        return SpeechTranslationServiceClient.from_service_account_file.__func__(SpeechTranslationServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            SpeechTranslationServiceClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(
+            SpeechTranslationServiceAsyncClient, filename, *args, **kwargs
+        )
 
     from_service_account_json = from_service_account_file
 
@@ -175,7 +183,9 @@ class SpeechTranslationServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return SpeechTranslationServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SpeechTranslationServiceClient.get_mtls_endpoint_and_cert_source(
+            client_options
+        )  # type: ignore
 
     @property
     def transport(self) -> SpeechTranslationServiceTransport:

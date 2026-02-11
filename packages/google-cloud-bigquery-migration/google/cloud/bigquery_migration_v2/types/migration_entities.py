@@ -25,11 +25,11 @@ from google.cloud.bigquery_migration_v2.types import (
     migration_error_details,
     migration_metrics,
     translation_config,
+    translation_usability,
 )
 from google.cloud.bigquery_migration_v2.types import (
     translation_details as gcbm_translation_details,
 )
-from google.cloud.bigquery_migration_v2.types import translation_usability
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2",
@@ -92,6 +92,7 @@ class MigrationWorkflow(proto.Message):
                 (e.g. forced termination), they will not be
                 scheduled.
         """
+
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         RUNNING = 2
@@ -217,6 +218,7 @@ class MigrationTask(proto.Message):
             FAILED (6):
                 The task finished unsuccessfully.
         """
+
         STATE_UNSPECIFIED = 0
         PENDING = 1
         ORCHESTRATING = 2
@@ -371,6 +373,7 @@ class MigrationSubtask(proto.Message):
                 The subtask is pending a dependency. It will
                 be scheduled once its dependencies are done.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         RUNNING = 2
@@ -460,19 +463,19 @@ class TranslationTaskResult(proto.Message):
             a migration workflow.
     """
 
-    translated_literals: MutableSequence[
-        gcbm_translation_details.Literal
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcbm_translation_details.Literal,
+    translated_literals: MutableSequence[gcbm_translation_details.Literal] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcbm_translation_details.Literal,
+        )
     )
-    report_log_messages: MutableSequence[
-        translation_usability.GcsReportLogMessage
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=2,
-        message=translation_usability.GcsReportLogMessage,
+    report_log_messages: MutableSequence[translation_usability.GcsReportLogMessage] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=translation_usability.GcsReportLogMessage,
+        )
     )
 
 

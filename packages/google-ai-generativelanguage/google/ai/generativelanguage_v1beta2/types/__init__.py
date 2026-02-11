@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .citation import CitationMetadata, CitationSource
+from .citation import (
+    CitationMetadata,
+    CitationSource,
+)
 from .discuss_service import (
     CountMessageTokensRequest,
     CountMessageTokensResponse,
@@ -23,8 +26,14 @@ from .discuss_service import (
     Message,
     MessagePrompt,
 )
-from .model import Model
-from .model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
+from .model import (
+    Model,
+)
+from .model_service import (
+    GetModelRequest,
+    ListModelsRequest,
+    ListModelsResponse,
+)
 from .safety import (
     ContentFilter,
     HarmCategory,

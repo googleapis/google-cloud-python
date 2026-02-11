@@ -173,6 +173,7 @@ class AccountService(proto.Message):
                 The service is read-only and must not be
                 mutated.
         """
+
         MUTABILITY_UNSPECIFIED = 0
         MUTABLE = 1
         IMMUTABLE = 2
@@ -427,6 +428,7 @@ class Handshake(proto.Message):
             REJECTED (3):
                 The service proposal was rejected.
         """
+
         APPROVAL_STATE_UNSPECIFIED = 0
         PENDING = 1
         ESTABLISHED = 2
@@ -445,6 +447,7 @@ class Handshake(proto.Message):
                 The last change was done by the other party
                 who this service points to.
         """
+
         ACTOR_UNSPECIFIED = 0
         ACCOUNT = 1
         OTHER_PARTY = 2

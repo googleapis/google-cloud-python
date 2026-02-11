@@ -93,6 +93,7 @@ class ScanConfig(proto.Message):
             SAFARI_IPHONE (3):
                 Safari on IPhone.
         """
+
         USER_AGENT_UNSPECIFIED = 0
         CHROME_LINUX = 1
         CHROME_ANDROID = 2
@@ -112,6 +113,7 @@ class ScanConfig(proto.Message):
             LOW (2):
                 Lower impact scanning
         """
+
         RISK_LEVEL_UNSPECIFIED = 0
         NORMAL = 1
         LOW = 2
@@ -130,6 +132,7 @@ class ScanConfig(proto.Message):
                 Do not export results of this scan to
                 Security Command Center.
         """
+
         EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED = 0
         ENABLED = 1
         DISABLED = 2

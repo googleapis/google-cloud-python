@@ -180,6 +180,7 @@ class LogsPolicy(proto.Message):
                 Logs are saved to the file path specified in the
                 ``logsPath`` field.
         """
+
         DESTINATION_UNSPECIFIED = 0
         CLOUD_LOGGING = 1
         PATH = 2
@@ -272,6 +273,7 @@ class JobStatus(proto.Message):
                 executions were stopped and the resources were
                 cleaned up.
         """
+
         STATE_UNSPECIFIED = 0
         QUEUED = 1
         SCHEDULED = 2
@@ -397,6 +399,7 @@ class JobNotification(proto.Message):
             TASK_STATE_CHANGED (2):
                 Notify users that the task state has changed.
         """
+
         TYPE_UNSPECIFIED = 0
         JOB_STATE_CHANGED = 1
         TASK_STATE_CHANGED = 2
@@ -526,6 +529,7 @@ class AllocationPolicy(proto.Message):
                 Instance is provisioned with DWS Flex Start
                 and has limited max run duration.
         """
+
         PROVISIONING_MODEL_UNSPECIFIED = 0
         STANDARD = 1
         SPOT = 2
@@ -786,12 +790,12 @@ class AllocationPolicy(proto.Message):
             number=4,
             enum="AllocationPolicy.ProvisioningModel",
         )
-        accelerators: MutableSequence[
-            "AllocationPolicy.Accelerator"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="AllocationPolicy.Accelerator",
+        accelerators: MutableSequence["AllocationPolicy.Accelerator"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="AllocationPolicy.Accelerator",
+            )
         )
         boot_disk: "AllocationPolicy.Disk" = proto.Field(
             proto.MESSAGE,
@@ -954,12 +958,12 @@ class AllocationPolicy(proto.Message):
                 Network configurations.
         """
 
-        network_interfaces: MutableSequence[
-            "AllocationPolicy.NetworkInterface"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="AllocationPolicy.NetworkInterface",
+        network_interfaces: MutableSequence["AllocationPolicy.NetworkInterface"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="AllocationPolicy.NetworkInterface",
+            )
         )
 
     class PlacementPolicy(proto.Message):
@@ -1106,6 +1110,7 @@ class TaskGroup(proto.Message):
                 Run Tasks sequentially with increased task
                 index.
         """
+
         SCHEDULING_POLICY_UNSPECIFIED = 0
         AS_SOON_AS_POSSIBLE = 1
         IN_ORDER = 2

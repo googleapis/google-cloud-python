@@ -16,16 +16,16 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -404,9 +404,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BaseBatchPredict._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BaseBatchPredict._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_predict(request, metadata)
             transcoded_request = _BasePredictionServiceRestTransport._BaseBatchPredict._get_transcoded_request(

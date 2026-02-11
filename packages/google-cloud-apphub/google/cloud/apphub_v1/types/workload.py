@@ -90,6 +90,7 @@ class Workload(proto.Message):
                 The underlying compute resources have been
                 deleted.
         """
+
         STATE_UNSPECIFIED = 0
         CREATING = 1
         ACTIVE = 2

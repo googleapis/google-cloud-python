@@ -21,9 +21,8 @@ import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.gkehub_v1.types import feature
+from google.cloud.gkehub_v1.types import feature, membership
 from google.cloud.gkehub_v1.types import fleet as gcg_fleet
-from google.cloud.gkehub_v1.types import membership
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
@@ -743,12 +742,12 @@ class ListMembershipBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    membership_bindings: MutableSequence[
-        gcg_fleet.MembershipBinding
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message=gcg_fleet.MembershipBinding,
+    membership_bindings: MutableSequence[gcg_fleet.MembershipBinding] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=gcg_fleet.MembershipBinding,
+        )
     )
     next_page_token: str = proto.Field(
         proto.STRING,

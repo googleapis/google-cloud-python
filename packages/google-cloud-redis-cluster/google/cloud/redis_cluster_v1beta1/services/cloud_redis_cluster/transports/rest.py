@@ -16,17 +16,17 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1250,9 +1250,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_backup_cluster(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseBackupCluster._get_transcoded_request(
@@ -1402,9 +1400,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseCreateCluster._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseCreateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_create_cluster(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseCreateCluster._get_transcoded_request(
@@ -1552,9 +1548,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -1698,9 +1692,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseDeleteCluster._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseDeleteCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_cluster(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseDeleteCluster._get_transcoded_request(
@@ -1844,9 +1836,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_export_backup(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseExportBackup._get_transcoded_request(
@@ -2136,9 +2126,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     BackupCollection of a cluster.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseGetBackupCollection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_collection(
                 request, metadata
@@ -2433,9 +2421,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                         Redis cluster certificate authority
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseGetClusterCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseGetClusterCertificateAuthority._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cluster_certificate_authority(
                 request, metadata
@@ -2499,11 +2485,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             resp = self._interceptor.post_get_cluster_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_cluster_certificate_authority_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_cluster_certificate_authority_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -2585,9 +2570,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     Response for [ListBackupCollections].
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseListBackupCollections._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListBackupCollections._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backup_collections(
                 request, metadata
@@ -2883,9 +2866,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     Response for [ListClusters][CloudRedis.ListClusters].
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseListClusters._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListClusters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clusters(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseListClusters._get_transcoded_request(
@@ -3036,9 +3017,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseRescheduleClusterMaintenance._get_http_options()
 
             request, metadata = self._interceptor.pre_reschedule_cluster_maintenance(
                 request, metadata
@@ -3105,11 +3084,10 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             resp = self._interceptor.post_reschedule_cluster_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_reschedule_cluster_maintenance_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_reschedule_cluster_maintenance_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3193,9 +3171,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseUpdateCluster._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseUpdateCluster._get_http_options()
 
             request, metadata = self._interceptor.pre_update_cluster(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseUpdateCluster._get_transcoded_request(
@@ -3362,7 +3338,9 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetClusterCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetClusterCertificateAuthority(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_backup_collections(
@@ -3406,7 +3384,9 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RescheduleClusterMaintenance(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RescheduleClusterMaintenance(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_cluster(
@@ -3614,9 +3594,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseListLocations._get_transcoded_request(
@@ -3752,9 +3730,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -3867,9 +3843,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -3984,9 +3958,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseGetOperation._get_transcoded_request(
@@ -4125,9 +4097,7 @@ class CloudRedisClusterRestTransport(_BaseCloudRedisClusterRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudRedisClusterRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudRedisClusterRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseCloudRedisClusterRestTransport._BaseListOperations._get_transcoded_request(

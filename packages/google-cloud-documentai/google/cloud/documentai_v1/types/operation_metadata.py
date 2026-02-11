@@ -62,6 +62,7 @@ class CommonOperationMetadata(proto.Message):
             CANCELLED (5):
                 Operation is cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         RUNNING = 1
         CANCELLING = 2

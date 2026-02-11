@@ -19,15 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.ads.datamanager_v1.types import audience, destination, event
+from google.ads.datamanager_v1.types import consent as gad_consent
 from google.ads.datamanager_v1.types import encryption_info as gad_encryption_info
 from google.ads.datamanager_v1.types import (
     request_status_per_destination as gad_request_status_per_destination,
 )
 from google.ads.datamanager_v1.types import terms_of_service as gad_terms_of_service
-from google.ads.datamanager_v1.types import audience
-from google.ads.datamanager_v1.types import consent as gad_consent
-from google.ads.datamanager_v1.types import destination
-from google.ads.datamanager_v1.types import event
 
 __protobuf__ = proto.module(
     package="google.ads.datamanager.v1",
@@ -57,6 +55,7 @@ class Encoding(proto.Enum):
         BASE64 (2):
             Base 64 encoding.
     """
+
     ENCODING_UNSPECIFIED = 0
     HEX = 1
     BASE64 = 2

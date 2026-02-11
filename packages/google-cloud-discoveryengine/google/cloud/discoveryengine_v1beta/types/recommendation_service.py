@@ -20,8 +20,8 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.struct_pb2 as struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import user_event as gcd_user_event
 from google.cloud.discoveryengine_v1beta.types import document as gcd_document
+from google.cloud.discoveryengine_v1beta.types import user_event as gcd_user_event
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",

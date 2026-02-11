@@ -57,6 +57,7 @@ class Escalation(proto.Message):
                 The issue is having a significant business
                 impact.
         """
+
         REASON_UNSPECIFIED = 0
         RESOLUTION_TIME = 1
         TECHNICAL_EXPERTISE = 2

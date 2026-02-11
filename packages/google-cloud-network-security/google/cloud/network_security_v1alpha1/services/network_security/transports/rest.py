@@ -16,40 +16,50 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
+from google.cloud.network_security_v1alpha1.types import (
+    authorization_policy,
+    authz_policy,
+    backend_authentication_config,
+    client_tls_policy,
+    gateway_security_policy,
+    gateway_security_policy_rule,
+    server_tls_policy,
+    tls_inspection_policy,
+    url_list,
+)
 from google.cloud.network_security_v1alpha1.types import (
     authorization_policy as gcn_authorization_policy,
 )
 from google.cloud.network_security_v1alpha1.types import (
     authz_policy as gcn_authz_policy,
 )
-from google.cloud.network_security_v1alpha1.types import backend_authentication_config
 from google.cloud.network_security_v1alpha1.types import (
     backend_authentication_config as gcn_backend_authentication_config,
 )
 from google.cloud.network_security_v1alpha1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy as gcn_gateway_security_policy,
 )
-from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule
 from google.cloud.network_security_v1alpha1.types import (
     gateway_security_policy_rule as gcn_gateway_security_policy_rule,
 )
@@ -60,12 +70,6 @@ from google.cloud.network_security_v1alpha1.types import (
     tls_inspection_policy as gcn_tls_inspection_policy,
 )
 from google.cloud.network_security_v1alpha1.types import url_list as gcn_url_list
-from google.cloud.network_security_v1alpha1.types import authorization_policy
-from google.cloud.network_security_v1alpha1.types import authz_policy
-from google.cloud.network_security_v1alpha1.types import client_tls_policy
-from google.cloud.network_security_v1alpha1.types import server_tls_policy
-from google.cloud.network_security_v1alpha1.types import tls_inspection_policy
-from google.cloud.network_security_v1alpha1.types import url_list
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseNetworkSecurityRestTransport
@@ -3148,9 +3152,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateAuthorizationPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_authorization_policy(
                 request, metadata
@@ -3304,9 +3306,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateAuthzPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateAuthzPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_authz_policy(
                 request, metadata
@@ -3463,15 +3463,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateBackendAuthenticationConfig._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateBackendAuthenticationConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_backend_authentication_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_backend_authentication_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateBackendAuthenticationConfig._get_transcoded_request(
                 http_options, request
@@ -3535,11 +3532,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_backend_authentication_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_backend_authentication_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_backend_authentication_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3624,9 +3620,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateClientTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_client_tls_policy(
                 request, metadata
@@ -3782,9 +3776,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateGatewaySecurityPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateGatewaySecurityPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_gateway_security_policy(
                 request, metadata
@@ -3853,11 +3845,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_gateway_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_gateway_security_policy_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_gateway_security_policy_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -3945,15 +3936,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateGatewaySecurityPolicyRule._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateGatewaySecurityPolicyRule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_gateway_security_policy_rule(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_create_gateway_security_policy_rule(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseCreateGatewaySecurityPolicyRule._get_transcoded_request(
                 http_options, request
@@ -4017,11 +4005,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_create_gateway_security_policy_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_gateway_security_policy_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_create_gateway_security_policy_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -4106,9 +4093,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateServerTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_server_tls_policy(
                 request, metadata
@@ -4264,9 +4249,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCreateTlsInspectionPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCreateTlsInspectionPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tls_inspection_policy(
                 request, metadata
@@ -4573,9 +4556,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteAuthorizationPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_authorization_policy(
                 request, metadata
@@ -4723,9 +4704,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteAuthzPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteAuthzPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_authz_policy(
                 request, metadata
@@ -4876,15 +4855,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteBackendAuthenticationConfig._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteBackendAuthenticationConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_backend_authentication_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_backend_authentication_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteBackendAuthenticationConfig._get_transcoded_request(
                 http_options, request
@@ -4943,11 +4919,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_backend_authentication_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_backend_authentication_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_backend_authentication_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5031,9 +5006,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteClientTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_client_tls_policy(
                 request, metadata
@@ -5183,9 +5156,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteGatewaySecurityPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteGatewaySecurityPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_gateway_security_policy(
                 request, metadata
@@ -5249,11 +5220,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_gateway_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_gateway_security_policy_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_gateway_security_policy_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5338,15 +5308,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteGatewaySecurityPolicyRule._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteGatewaySecurityPolicyRule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_gateway_security_policy_rule(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_delete_gateway_security_policy_rule(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseDeleteGatewaySecurityPolicyRule._get_transcoded_request(
                 http_options, request
@@ -5405,11 +5372,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_delete_gateway_security_policy_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_gateway_security_policy_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_delete_gateway_security_policy_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -5493,9 +5459,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteServerTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_server_tls_policy(
                 request, metadata
@@ -5645,9 +5609,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteTlsInspectionPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteTlsInspectionPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tls_inspection_policy(
                 request, metadata
@@ -5946,9 +5908,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetAuthorizationPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_authorization_policy(
                 request, metadata
@@ -6099,9 +6059,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetAuthzPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetAuthzPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_authz_policy(
                 request, metadata
@@ -6267,9 +6225,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetBackendAuthenticationConfig._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetBackendAuthenticationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backend_authentication_config(
                 request, metadata
@@ -6333,11 +6289,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_get_backend_authentication_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_backend_authentication_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_backend_authentication_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6426,9 +6381,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetClientTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_client_tls_policy(
                 request, metadata
@@ -6581,9 +6534,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetGatewaySecurityPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetGatewaySecurityPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_gateway_security_policy(
                 request, metadata
@@ -6739,9 +6690,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetGatewaySecurityPolicyRule._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetGatewaySecurityPolicyRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_gateway_security_policy_rule(
                 request, metadata
@@ -6805,11 +6754,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_get_gateway_security_policy_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_gateway_security_policy_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_get_gateway_security_policy_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -6908,9 +6856,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetServerTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_server_tls_policy(
                 request, metadata
@@ -7062,9 +7008,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseGetTlsInspectionPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseGetTlsInspectionPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tls_inspection_policy(
                 request, metadata
@@ -7366,9 +7310,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListAuthorizationPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_authorization_policies(
                 request, metadata
@@ -7522,9 +7464,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListAuthzPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListAuthzPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_authz_policies(
                 request, metadata
@@ -7675,15 +7615,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListBackendAuthenticationConfigs._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListBackendAuthenticationConfigs._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_backend_authentication_configs(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_backend_authentication_configs(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseListBackendAuthenticationConfigs._get_transcoded_request(
                 http_options, request
@@ -7748,11 +7685,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_backend_authentication_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_backend_authentication_configs_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_backend_authentication_configs_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -7837,9 +7773,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListClientTlsPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_client_tls_policies(
                 request, metadata
@@ -7994,9 +7928,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListGatewaySecurityPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListGatewaySecurityPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_gateway_security_policies(
                 request, metadata
@@ -8064,11 +7996,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_gateway_security_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_gateway_security_policies_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_gateway_security_policies_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8154,15 +8085,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListGatewaySecurityPolicyRules._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListGatewaySecurityPolicyRules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_gateway_security_policy_rules(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_list_gateway_security_policy_rules(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseListGatewaySecurityPolicyRules._get_transcoded_request(
                 http_options, request
@@ -8227,11 +8155,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_list_gateway_security_policy_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_gateway_security_policy_rules_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_list_gateway_security_policy_rules_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -8316,9 +8243,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListServerTlsPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_server_tls_policies(
                 request, metadata
@@ -8473,9 +8398,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListTlsInspectionPolicies._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListTlsInspectionPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tls_inspection_policies(
                 request, metadata
@@ -8779,9 +8702,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateAuthorizationPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_authorization_policy(
                 request, metadata
@@ -8935,9 +8856,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateAuthzPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateAuthzPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_authz_policy(
                 request, metadata
@@ -9094,15 +9013,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateBackendAuthenticationConfig._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateBackendAuthenticationConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_backend_authentication_config(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_backend_authentication_config(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateBackendAuthenticationConfig._get_transcoded_request(
                 http_options, request
@@ -9166,11 +9082,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_backend_authentication_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_backend_authentication_config_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_backend_authentication_config_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9255,9 +9170,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateClientTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_client_tls_policy(
                 request, metadata
@@ -9413,9 +9326,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateGatewaySecurityPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateGatewaySecurityPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_gateway_security_policy(
                 request, metadata
@@ -9484,11 +9395,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_gateway_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_gateway_security_policy_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_gateway_security_policy_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9574,15 +9484,12 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateGatewaySecurityPolicyRule._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateGatewaySecurityPolicyRule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_gateway_security_policy_rule(
-                request, metadata
+            request, metadata = (
+                self._interceptor.pre_update_gateway_security_policy_rule(
+                    request, metadata
+                )
             )
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseUpdateGatewaySecurityPolicyRule._get_transcoded_request(
                 http_options, request
@@ -9646,11 +9553,10 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             resp = self._interceptor.post_update_gateway_security_policy_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_gateway_security_policy_rule_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_update_gateway_security_policy_rule_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -9735,9 +9641,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateServerTlsPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_server_tls_policy(
                 request, metadata
@@ -9893,9 +9797,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseUpdateTlsInspectionPolicy._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseUpdateTlsInspectionPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tls_inspection_policy(
                 request, metadata
@@ -10150,7 +10052,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateAuthorizationPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_authz_policy(
@@ -10171,7 +10075,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateBackendAuthenticationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateBackendAuthenticationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_client_tls_policy(
@@ -10192,7 +10098,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateGatewaySecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGatewaySecurityPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_gateway_security_policy_rule(
@@ -10203,7 +10111,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateGatewaySecurityPolicyRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateGatewaySecurityPolicyRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_server_tls_policy(
@@ -10224,7 +10134,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._CreateTlsInspectionPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._CreateTlsInspectionPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_url_list(
@@ -10243,7 +10155,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteAuthorizationPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_authz_policy(
@@ -10262,7 +10176,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteBackendAuthenticationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteBackendAuthenticationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_client_tls_policy(
@@ -10283,7 +10199,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteGatewaySecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteGatewaySecurityPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_gateway_security_policy_rule(
@@ -10294,7 +10212,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteGatewaySecurityPolicyRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteGatewaySecurityPolicyRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_server_tls_policy(
@@ -10315,7 +10235,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._DeleteTlsInspectionPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._DeleteTlsInspectionPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def delete_url_list(
@@ -10334,7 +10256,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAuthorizationPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_authz_policy(
@@ -10353,7 +10277,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetBackendAuthenticationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetBackendAuthenticationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_client_tls_policy(
@@ -10374,7 +10300,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGatewaySecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGatewaySecurityPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_gateway_security_policy_rule(
@@ -10385,7 +10313,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetGatewaySecurityPolicyRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetGatewaySecurityPolicyRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_server_tls_policy(
@@ -10406,7 +10336,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetTlsInspectionPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetTlsInspectionPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_url_list(self) -> Callable[[url_list.GetUrlListRequest], url_list.UrlList]:
@@ -10423,7 +10355,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListAuthorizationPolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListAuthorizationPolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_authz_policies(
@@ -10444,7 +10378,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListBackendAuthenticationConfigs(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListBackendAuthenticationConfigs(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_client_tls_policies(
@@ -10466,7 +10402,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListGatewaySecurityPolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGatewaySecurityPolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_gateway_security_policy_rules(
@@ -10477,7 +10415,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListGatewaySecurityPolicyRules(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListGatewaySecurityPolicyRules(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_server_tls_policies(
@@ -10499,7 +10439,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListTlsInspectionPolicies(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListTlsInspectionPolicies(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_url_lists(
@@ -10518,7 +10460,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAuthorizationPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAuthorizationPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_authz_policy(
@@ -10539,7 +10483,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateBackendAuthenticationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateBackendAuthenticationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_client_tls_policy(
@@ -10560,7 +10506,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGatewaySecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGatewaySecurityPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_gateway_security_policy_rule(
@@ -10571,7 +10519,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateGatewaySecurityPolicyRule(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateGatewaySecurityPolicyRule(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_server_tls_policy(
@@ -10592,7 +10542,9 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateTlsInspectionPolicy(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateTlsInspectionPolicy(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_url_list(
@@ -11227,9 +11179,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -11372,9 +11322,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -11491,9 +11439,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -11748,9 +11694,7 @@ class NetworkSecurityRestTransport(_BaseNetworkSecurityRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNetworkSecurityRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNetworkSecurityRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseNetworkSecurityRestTransport._BaseListOperations._get_transcoded_request(

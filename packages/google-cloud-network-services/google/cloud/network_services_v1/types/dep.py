@@ -88,6 +88,7 @@ class EventType(proto.Enum):
             If included in ``supported_events``, the extension is called
             when the HTTP response trailers arrives.
     """
+
     EVENT_TYPE_UNSPECIFIED = 0
     REQUEST_HEADERS = 1
     REQUEST_BODY = 2
@@ -113,6 +114,7 @@ class LoadBalancingScheme(proto.Enum):
             Signifies that this is used for External
             Managed HTTP(S) Load Balancing.
     """
+
     LOAD_BALANCING_SCHEME_UNSPECIFIED = 0
     INTERNAL_MANAGED = 1
     EXTERNAL_MANAGED = 2
@@ -131,6 +133,7 @@ class WireFormat(proto.Enum):
             HTTP2 or H2C as the protocol. All ``supported_events`` for a
             client request are sent as part of the same gRPC stream.
     """
+
     WIRE_FORMAT_UNSPECIFIED = 0
     EXT_PROC_GRPC = 1
 

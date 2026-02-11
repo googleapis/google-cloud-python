@@ -13,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
 import re
+from collections import OrderedDict
 from typing import (
     AsyncIterable,
     AsyncIterator,
@@ -32,13 +32,13 @@ from typing import (
     Union,
 )
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 
@@ -146,7 +146,10 @@ class SessionsAsyncClient:
         Returns:
             SessionsAsyncClient: The constructed client.
         """
-        return SessionsClient.from_service_account_info.__func__(SessionsAsyncClient, info, *args, **kwargs)  # type: ignore
+        sa_info_func = (
+            SessionsClient.from_service_account_info.__func__  # type: ignore
+        )
+        return sa_info_func(SessionsAsyncClient, info, *args, **kwargs)
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -162,7 +165,10 @@ class SessionsAsyncClient:
         Returns:
             SessionsAsyncClient: The constructed client.
         """
-        return SessionsClient.from_service_account_file.__func__(SessionsAsyncClient, filename, *args, **kwargs)  # type: ignore
+        sa_file_func = (
+            SessionsClient.from_service_account_file.__func__  # type: ignore
+        )
+        return sa_file_func(SessionsAsyncClient, filename, *args, **kwargs)
 
     from_service_account_json = from_service_account_file
 

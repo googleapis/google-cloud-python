@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TextSuggestionsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TextSuggestionsServiceTransport]]
 _transport_registry["grpc"] = TextSuggestionsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = TextSuggestionsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = TextSuggestionsServiceRestTransport

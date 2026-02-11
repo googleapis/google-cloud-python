@@ -25,9 +25,7 @@ from .rest import (
 )
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[OmnichannelSettingsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[OmnichannelSettingsServiceTransport]]
 _transport_registry["grpc"] = OmnichannelSettingsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = OmnichannelSettingsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = OmnichannelSettingsServiceRestTransport

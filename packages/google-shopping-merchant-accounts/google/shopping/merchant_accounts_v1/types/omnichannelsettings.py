@@ -100,6 +100,7 @@ class OmnichannelSetting(proto.Message):
                 article <https://support.google.com/merchants/answer/14617076>`__
                 for more details.
         """
+
         LSF_TYPE_UNSPECIFIED = 0
         GHLSF = 1
         MHLSF_BASIC = 2
@@ -170,6 +171,7 @@ class ReviewState(proto.Message):
                 The review process is waiting for the
                 merchant to take action.
         """
+
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         FAILED = 2
@@ -346,6 +348,7 @@ class InventoryVerification(proto.Message):
                 verification process and all attempts are
                 exhausted.
         """
+
         STATE_UNSPECIFIED = 0
         ACTION_REQUIRED = 1
         INACTIVE = 5

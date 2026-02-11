@@ -42,18 +42,17 @@ class MetricDescriptor(_message.Message):
         "launch_stage",
         "monitored_resource_types",
     )
-
     class MetricKind(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         METRIC_KIND_UNSPECIFIED: _ClassVar[MetricDescriptor.MetricKind]
         GAUGE: _ClassVar[MetricDescriptor.MetricKind]
         DELTA: _ClassVar[MetricDescriptor.MetricKind]
         CUMULATIVE: _ClassVar[MetricDescriptor.MetricKind]
+
     METRIC_KIND_UNSPECIFIED: MetricDescriptor.MetricKind
     GAUGE: MetricDescriptor.MetricKind
     DELTA: MetricDescriptor.MetricKind
     CUMULATIVE: MetricDescriptor.MetricKind
-
     class ValueType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
         __slots__ = ()
         VALUE_TYPE_UNSPECIFIED: _ClassVar[MetricDescriptor.ValueType]
@@ -63,6 +62,7 @@ class MetricDescriptor(_message.Message):
         STRING: _ClassVar[MetricDescriptor.ValueType]
         DISTRIBUTION: _ClassVar[MetricDescriptor.ValueType]
         MONEY: _ClassVar[MetricDescriptor.ValueType]
+
     VALUE_TYPE_UNSPECIFIED: MetricDescriptor.ValueType
     BOOL: MetricDescriptor.ValueType
     INT64: MetricDescriptor.ValueType
@@ -70,7 +70,6 @@ class MetricDescriptor(_message.Message):
     STRING: MetricDescriptor.ValueType
     DISTRIBUTION: MetricDescriptor.ValueType
     MONEY: MetricDescriptor.ValueType
-
     class MetricDescriptorMetadata(_message.Message):
         __slots__ = (
             "launch_stage",
@@ -78,7 +77,6 @@ class MetricDescriptor(_message.Message):
             "ingest_delay",
             "time_series_resource_hierarchy_level",
         )
-
         class TimeSeriesResourceHierarchyLevel(
             int, metaclass=_enum_type_wrapper.EnumTypeWrapper
         ):
@@ -95,10 +93,19 @@ class MetricDescriptor(_message.Message):
             FOLDER: _ClassVar[
                 MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
             ]
-        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        PROJECT: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        ORGANIZATION: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
-        FOLDER: MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+
+        TIME_SERIES_RESOURCE_HIERARCHY_LEVEL_UNSPECIFIED: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        PROJECT: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        ORGANIZATION: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
+        FOLDER: (
+            MetricDescriptor.MetricDescriptorMetadata.TimeSeriesResourceHierarchyLevel
+        )
         LAUNCH_STAGE_FIELD_NUMBER: _ClassVar[int]
         SAMPLE_PERIOD_FIELD_NUMBER: _ClassVar[int]
         INGEST_DELAY_FIELD_NUMBER: _ClassVar[int]
@@ -123,6 +130,7 @@ class MetricDescriptor(_message.Message):
                 ]
             ] = ...,
         ) -> None: ...
+
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
@@ -166,7 +174,6 @@ class MetricDescriptor(_message.Message):
 
 class Metric(_message.Message):
     __slots__ = ("type", "labels")
-
     class LabelsEntry(_message.Message):
         __slots__ = ("key", "value")
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -176,6 +183,7 @@ class Metric(_message.Message):
         def __init__(
             self, key: _Optional[str] = ..., value: _Optional[str] = ...
         ) -> None: ...
+
     TYPE_FIELD_NUMBER: _ClassVar[int]
     LABELS_FIELD_NUMBER: _ClassVar[int]
     type: str

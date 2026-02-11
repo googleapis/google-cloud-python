@@ -102,7 +102,9 @@ from .backupvault_alloydb import (
     AlloyDbClusterBackupProperties,
     AlloyDBClusterDataSourceProperties,
 )
-from .backupvault_ba import BackupApplianceBackupProperties
+from .backupvault_ba import (
+    BackupApplianceBackupProperties,
+)
 from .backupvault_cloudsql import (
     CloudSqlInstanceBackupPlanAssociationProperties,
     CloudSqlInstanceBackupProperties,

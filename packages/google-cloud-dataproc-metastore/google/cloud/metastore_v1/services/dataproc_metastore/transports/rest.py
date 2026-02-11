@@ -16,19 +16,21 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -1510,9 +1512,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseAlterMetadataResourceLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_alter_metadata_resource_location(
                 request, metadata
@@ -1579,11 +1579,10 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             resp = self._interceptor.post_alter_metadata_resource_location(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_alter_metadata_resource_location_with_metadata(
-                resp, response_metadata
+            resp, _ = (
+                self._interceptor.post_alter_metadata_resource_location_with_metadata(
+                    resp, response_metadata
+                )
             )
             if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
                 logging.DEBUG
@@ -1667,9 +1666,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateBackup._get_transcoded_request(
@@ -1820,9 +1817,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateMetadataImport._get_http_options()
 
             request, metadata = self._interceptor.pre_create_metadata_import(
                 request, metadata
@@ -1977,9 +1972,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_http_options()
 
             request, metadata = self._interceptor.pre_create_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseCreateService._get_transcoded_request(
@@ -2128,9 +2121,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteBackup._get_transcoded_request(
@@ -2275,9 +2266,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseDeleteService._get_transcoded_request(
@@ -2423,9 +2412,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_export_metadata(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseExportMetadata._get_transcoded_request(
@@ -2719,9 +2706,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetMetadataImport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_metadata_import(
                 request, metadata
@@ -3163,9 +3148,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListMetadataImports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_metadata_imports(
                 request, metadata
@@ -3316,9 +3299,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListServices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_services(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListServices._get_transcoded_request(
@@ -3466,9 +3447,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseMoveTableToDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_move_table_to_database(
                 request, metadata
@@ -3623,9 +3602,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_http_options()
 
             request, metadata = self._interceptor.pre_query_metadata(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseQueryMetadata._get_transcoded_request(
@@ -3775,9 +3752,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseRestoreService._get_transcoded_request(
@@ -3928,9 +3903,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseUpdateMetadataImport._get_http_options()
 
             request, metadata = self._interceptor.pre_update_metadata_import(
                 request, metadata
@@ -4085,9 +4058,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_http_options()
 
             request, metadata = self._interceptor.pre_update_service(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseUpdateService._get_transcoded_request(
@@ -4186,7 +4157,9 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AlterMetadataResourceLocation(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AlterMetadataResourceLocation(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_backup(
@@ -4520,9 +4493,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListLocations._get_transcoded_request(
@@ -4660,9 +4631,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -4801,9 +4770,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseSetIamPolicy._get_transcoded_request(
@@ -4948,9 +4915,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseTestIamPermissions._get_http_options()
 
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
@@ -5094,9 +5059,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -5214,9 +5177,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseDeleteOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_operation(
                 request, metadata
@@ -5331,9 +5292,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseGetOperation._get_transcoded_request(
@@ -5472,9 +5431,7 @@ class DataprocMetastoreRestTransport(_BaseDataprocMetastoreRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseDataprocMetastoreRestTransport._BaseListOperations._get_transcoded_request(

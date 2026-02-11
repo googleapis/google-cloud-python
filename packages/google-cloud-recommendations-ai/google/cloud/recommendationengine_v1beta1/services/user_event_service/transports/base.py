@@ -18,19 +18,18 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api.httpbody_pb2 as httpbody_pb2  # type: ignore
 import google.api_core
+import google.auth  # type: ignore
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-import google.protobuf
 
 from google.cloud.recommendationengine_v1beta1 import gapic_version as package_version
+from google.cloud.recommendationengine_v1beta1.types import import_, user_event_service
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
-from google.cloud.recommendationengine_v1beta1.types import import_
-from google.cloud.recommendationengine_v1beta1.types import user_event_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__

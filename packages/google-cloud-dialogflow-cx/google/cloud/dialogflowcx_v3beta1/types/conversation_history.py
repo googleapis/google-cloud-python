@@ -213,6 +213,7 @@ class Conversation(proto.Message):
                 none of the requests contain text or audio input
                 (eg. event or intent input).
         """
+
         TYPE_UNSPECIFIED = 0
         AUDIO = 1
         TEXT = 2
@@ -496,12 +497,12 @@ class Conversation(proto.Message):
             number=2,
             message=session.DetectIntentResponse,
         )
-        partial_responses: MutableSequence[
-            session.DetectIntentResponse
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message=session.DetectIntentResponse,
+        partial_responses: MutableSequence[session.DetectIntentResponse] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message=session.DetectIntentResponse,
+            )
         )
         request_utterances: str = proto.Field(
             proto.STRING,
@@ -526,12 +527,12 @@ class Conversation(proto.Message):
             number=8,
             message="Conversation.Interaction.MissingTransition",
         )
-        step_metrics: MutableSequence[
-            "Conversation.Interaction.StepMetrics"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=9,
-            message="Conversation.Interaction.StepMetrics",
+        step_metrics: MutableSequence["Conversation.Interaction.StepMetrics"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=9,
+                message="Conversation.Interaction.StepMetrics",
+            )
         )
 
     name: str = proto.Field(

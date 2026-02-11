@@ -558,6 +558,7 @@ class FrequencyOptions(proto.Message):
             WEEKLY (2):
                 Report will be generated weekly.
         """
+
         FREQUENCY_UNSPECIFIED = 0
         DAILY = 1
         WEEKLY = 2
@@ -803,6 +804,7 @@ class Identity(proto.Message):
             IDENTITY_TYPE_PER_PROJECT (2):
                 Google managed service account per project.
         """
+
         IDENTITY_TYPE_UNSPECIFIED = 0
         IDENTITY_TYPE_PER_CONFIG = 1
         IDENTITY_TYPE_PER_PROJECT = 2
@@ -941,6 +943,7 @@ class DatasetConfig(proto.Message):
             CONFIG_STATE_PROCESSING (4):
                 Configuration is under processing
         """
+
         CONFIG_STATE_UNSPECIFIED = 0
         CONFIG_STATE_ACTIVE = 1
         CONFIG_STATE_VERIFICATION_IN_PROGRESS = 2
@@ -1110,11 +1113,11 @@ class DatasetConfig(proto.Message):
             proto.INT64,
             number=7,
         )
-        non_storage_intelligence_entitled_bucket_ids: MutableSequence[
-            str
-        ] = proto.RepeatedField(
-            proto.STRING,
-            number=8,
+        non_storage_intelligence_entitled_bucket_ids: MutableSequence[str] = (
+            proto.RepeatedField(
+                proto.STRING,
+                number=8,
+            )
         )
 
     class ProjectErrors(proto.Message):
@@ -1196,22 +1199,22 @@ class DatasetConfig(proto.Message):
             number=7,
             optional=True,
         )
-        non_management_hub_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
-            proto.INT64,
-            number=8,
+        non_management_hub_entitled_project_numbers: MutableSequence[int] = (
+            proto.RepeatedField(
+                proto.INT64,
+                number=8,
+            )
         )
         non_storage_intelligence_entitled_error_count: int = proto.Field(
             proto.INT64,
             number=9,
             optional=True,
         )
-        non_storage_intelligence_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
-            proto.INT64,
-            number=10,
+        non_storage_intelligence_entitled_project_numbers: MutableSequence[int] = (
+            proto.RepeatedField(
+                proto.INT64,
+                number=10,
+            )
         )
         internal_error_count: int = proto.Field(
             proto.INT64,

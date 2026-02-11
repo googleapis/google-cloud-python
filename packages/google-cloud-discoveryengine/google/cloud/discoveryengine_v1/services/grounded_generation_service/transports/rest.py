@@ -16,9 +16,10 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
+import google.protobuf
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
@@ -26,7 +27,6 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
@@ -424,9 +424,7 @@ class GroundedGenerationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_http_options()
 
             request, metadata = self._interceptor.pre_check_grounding(request, metadata)
             transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_transcoded_request(
@@ -584,9 +582,7 @@ class GroundedGenerationServiceRestTransport(
                     Response for the ``GenerateGroundedContent`` method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_http_options()
 
             request, metadata = self._interceptor.pre_generate_grounded_content(
                 request, metadata
@@ -726,7 +722,9 @@ class GroundedGenerationServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GenerateGroundedContent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GenerateGroundedContent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def stream_generate_grounded_content(
@@ -737,7 +735,9 @@ class GroundedGenerationServiceRestTransport(
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._StreamGenerateGroundedContent(self._session, self._host, self._interceptor)  # type: ignore
+        return self._StreamGenerateGroundedContent(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def cancel_operation(self):
@@ -795,9 +795,7 @@ class GroundedGenerationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_operation(
                 request, metadata
@@ -920,9 +918,7 @@ class GroundedGenerationServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -1063,9 +1059,7 @@ class GroundedGenerationServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_transcoded_request(

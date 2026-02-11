@@ -51,6 +51,7 @@ class AccessState(proto.Enum):
             access to all of the policies that Policy
             Troubleshooter needs to evaluate.
     """
+
     ACCESS_STATE_UNSPECIFIED = 0
     GRANTED = 1
     NOT_GRANTED = 2
@@ -75,6 +76,7 @@ class HeuristicRelevance(proto.Enum):
             result. Changing the data point is likely to
             affect the overall determination.
     """
+
     HEURISTIC_RELEVANCE_UNSPECIFIED = 0
     NORMAL = 1
     HIGH = 2
@@ -280,6 +282,7 @@ class BindingExplanation(proto.Message):
                 The sender of the request is not allowed to
                 access the binding.
         """
+
         ROLE_PERMISSION_UNSPECIFIED = 0
         ROLE_PERMISSION_INCLUDED = 1
         ROLE_PERMISSION_NOT_INCLUDED = 2
@@ -310,6 +313,7 @@ class BindingExplanation(proto.Message):
                 Google Accounts and service accounts are
                 supported.
         """
+
         MEMBERSHIP_UNSPECIFIED = 0
         MEMBERSHIP_INCLUDED = 1
         MEMBERSHIP_NOT_INCLUDED = 2

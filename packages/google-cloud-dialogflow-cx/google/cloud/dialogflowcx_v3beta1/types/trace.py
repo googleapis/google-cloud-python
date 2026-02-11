@@ -65,6 +65,7 @@ class OutputState(proto.Enum):
         OUTPUT_STATE_PENDING (5):
             Pending.
     """
+
     OUTPUT_STATE_UNSPECIFIED = 0
     OUTPUT_STATE_OK = 1
     OUTPUT_STATE_CANCELLED = 2
@@ -89,6 +90,7 @@ class RetrievalStrategy(proto.Enum):
             Example will never be inserted into the
             prompt.
     """
+
     RETRIEVAL_STRATEGY_UNSPECIFIED = 0
     DEFAULT = 1
     STATIC = 2
@@ -229,12 +231,12 @@ class Action(proto.Message):
                 message=struct_pb2.Struct,
             )
 
-        matched_intents: MutableSequence[
-            "Action.IntentMatch.MatchedIntent"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="Action.IntentMatch.MatchedIntent",
+        matched_intents: MutableSequence["Action.IntentMatch.MatchedIntent"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="Action.IntentMatch.MatchedIntent",
+            )
         )
 
     class FlowStateUpdate(proto.Message):
@@ -922,6 +924,7 @@ class PlaybookOutput(proto.Message):
             ESCALATED (4):
                 Playbook failed due to escalation.
         """
+
         _pb_options = {"deprecated": True}
         STATE_UNSPECIFIED = 0
         OK = 1

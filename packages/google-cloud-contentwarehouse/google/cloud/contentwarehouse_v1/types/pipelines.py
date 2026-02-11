@@ -197,12 +197,12 @@ class RunPipelineMetadata(proto.Message):
             message=ProcessWithDocAiPipelineMetadata,
         )
     )
-    individual_document_statuses: MutableSequence[
-        IndividualDocumentStatus
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=5,
-        message=IndividualDocumentStatus,
+    individual_document_statuses: MutableSequence[IndividualDocumentStatus] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=IndividualDocumentStatus,
+        )
     )
 
 

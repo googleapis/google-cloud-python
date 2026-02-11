@@ -50,6 +50,7 @@ class AccessRight(proto.Enum):
             accessible to accounts that have a developer
             registration.
     """
+
     ACCESS_RIGHT_UNSPECIFIED = 0
     STANDARD = 1
     READ_ONLY = 4

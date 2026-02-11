@@ -277,6 +277,7 @@ class PrivateIPv6GoogleAccess(proto.Enum):
             Enables private IPv6 access to and from
             Google Services
     """
+
     PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED = 0
     PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED = 1
     PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE = 2
@@ -295,6 +296,7 @@ class UpgradeResourceType(proto.Enum):
         NODE_POOL (2):
             Node pool
     """
+
     UPGRADE_RESOURCE_TYPE_UNSPECIFIED = 0
     MASTER = 1
     NODE_POOL = 2
@@ -319,6 +321,7 @@ class NodePoolUpdateStrategy(proto.Enum):
             QueuedProvisioning and flex start nodepools scaled up only
             by enqueueing to the Dynamic Workload Scheduler (DWS).
     """
+
     NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED = 0
     BLUE_GREEN = 2
     SURGE = 3
@@ -342,6 +345,7 @@ class DatapathProvider(proto.Enum):
             documentation <https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2>`__
             for more.
     """
+
     DATAPATH_PROVIDER_UNSPECIFIED = 0
     LEGACY_DATAPATH = 1
     ADVANCED_DATAPATH = 2
@@ -359,6 +363,7 @@ class StackType(proto.Enum):
             The value used if the cluster is a dual stack
             cluster
     """
+
     STACK_TYPE_UNSPECIFIED = 0
     IPV4 = 1
     IPV4_IPV6 = 2
@@ -377,6 +382,7 @@ class InTransitEncryptionConfig(proto.Enum):
             Data in-transit is encrypted using inter-node
             transparent encryption.
     """
+
     IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED = 0
     IN_TRANSIT_ENCRYPTION_DISABLED = 1
     IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT = 2
@@ -497,6 +503,7 @@ class LinuxNodeConfig(proto.Message):
                 CGROUP_MODE_V2 specifies to use cgroupv2 for the cgroup
                 configuration on the node image.
         """
+
         CGROUP_MODE_UNSPECIFIED = 0
         CGROUP_MODE_V1 = 1
         CGROUP_MODE_V2 = 2
@@ -519,6 +526,7 @@ class LinuxNodeConfig(proto.Message):
                 Transparent hugepage support for anonymous
                 memory is disabled.
         """
+
         TRANSPARENT_HUGEPAGE_ENABLED_UNSPECIFIED = 0
         TRANSPARENT_HUGEPAGE_ENABLED_ALWAYS = 1
         TRANSPARENT_HUGEPAGE_ENABLED_MADVISE = 2
@@ -558,6 +566,7 @@ class LinuxNodeConfig(proto.Message):
                 It means that an application will never enter
                 direct reclaim or compaction.
         """
+
         TRANSPARENT_HUGEPAGE_DEFRAG_UNSPECIFIED = 0
         TRANSPARENT_HUGEPAGE_DEFRAG_ALWAYS = 1
         TRANSPARENT_HUGEPAGE_DEFRAG_DEFER = 2
@@ -795,6 +804,7 @@ class LinuxNodeConfig(proto.Message):
                     For GPU nodes, the image will allow loading any
                     module, whether it is signed or not.
             """
+
             POLICY_UNSPECIFIED = 0
             ENFORCE_SIGNED_MODULES = 1
             DO_NOT_ENFORCE_SIGNED_MODULES = 2
@@ -868,6 +878,7 @@ class WindowsNodeConfig(proto.Message):
                 LTSC2022 specifies to use LTSC2022 as the
                 Windows Servercore Base Image.
         """
+
         OS_VERSION_UNSPECIFIED = 0
         OS_VERSION_LTSC2019 = 1
         OS_VERSION_LTSC2022 = 2
@@ -1784,6 +1795,7 @@ class NodeConfig(proto.Message):
                 The Local SSDs will not be able to recover data
                 in case of node crash.
         """
+
         LOCAL_SSD_ENCRYPTION_MODE_UNSPECIFIED = 0
         STANDARD_ENCRYPTION = 1
         EPHEMERAL_KEY_ENCRYPTION = 2
@@ -1803,6 +1815,7 @@ class NodeConfig(proto.Message):
                 CGROUP_MODE_V2 means the node pool is configured to use
                 cgroupv2 for the cgroup configuration.
         """
+
         EFFECTIVE_CGROUP_MODE_UNSPECIFIED = 0
         EFFECTIVE_CGROUP_MODE_V1 = 1
         EFFECTIVE_CGROUP_MODE_V2 = 2
@@ -2085,6 +2098,7 @@ class AdvancedMachineFeatures(proto.Message):
             ENHANCED (3):
                 Most documented core/L2 and LLC events.
         """
+
         PERFORMANCE_MONITORING_UNIT_UNSPECIFIED = 0
         ARCHITECTURAL = 1
         STANDARD = 2
@@ -2256,6 +2270,7 @@ class NodeNetworkConfig(proto.Message):
                     Higher bandwidth, actual values based on VM
                     size.
             """
+
             TIER_UNSPECIFIED = 0
             TIER_1 = 1
 
@@ -2300,19 +2315,19 @@ class NodeNetworkConfig(proto.Message):
         number=13,
         message="PodCIDROverprovisionConfig",
     )
-    additional_node_network_configs: MutableSequence[
-        "AdditionalNodeNetworkConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message="AdditionalNodeNetworkConfig",
+    additional_node_network_configs: MutableSequence["AdditionalNodeNetworkConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message="AdditionalNodeNetworkConfig",
+        )
     )
-    additional_pod_network_configs: MutableSequence[
-        "AdditionalPodNetworkConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=15,
-        message="AdditionalPodNetworkConfig",
+    additional_pod_network_configs: MutableSequence["AdditionalPodNetworkConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=15,
+            message="AdditionalPodNetworkConfig",
+        )
     )
     pod_ipv4_range_utilization: float = proto.Field(
         proto.DOUBLE,
@@ -2447,6 +2462,7 @@ class SandboxConfig(proto.Message):
             GVISOR (1):
                 Run sandbox using gvisor.
         """
+
         UNSPECIFIED = 0
         GVISOR = 1
 
@@ -2621,6 +2637,7 @@ class ReservationAffinity(proto.Message):
                 Must specify key value fields for specifying the
                 reservations.
         """
+
         UNSPECIFIED = 0
         NO_RESERVATION = 1
         ANY_RESERVATION = 2
@@ -2688,6 +2705,7 @@ class SoleTenantConfig(proto.Message):
                 NOT_IN (2):
                     Anti-affinity operator.
             """
+
             OPERATOR_UNSPECIFIED = 0
             IN = 1
             NOT_IN = 2
@@ -2865,6 +2883,7 @@ class ContainerdConfig(proto.Message):
                     Push represents the capability to push blobs
                     and manifests.
             """
+
             HOST_CAPABILITY_UNSPECIFIED = 0
             HOST_CAPABILITY_PULL = 1
             HOST_CAPABILITY_RESOLVE = 2
@@ -3026,12 +3045,12 @@ class ContainerdConfig(proto.Message):
             proto.STRING,
             number=1,
         )
-        hosts: MutableSequence[
-            "ContainerdConfig.RegistryHostConfig.HostConfig"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=2,
-            message="ContainerdConfig.RegistryHostConfig.HostConfig",
+        hosts: MutableSequence["ContainerdConfig.RegistryHostConfig.HostConfig"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="ContainerdConfig.RegistryHostConfig.HostConfig",
+            )
         )
 
     private_registry_access_config: PrivateRegistryAccessConfig = proto.Field(
@@ -3094,6 +3113,7 @@ class HostMaintenancePolicy(proto.Message):
                 AS_NEEDED. Security updates will still be applied as soon as
                 they are available.
         """
+
         MAINTENANCE_INTERVAL_UNSPECIFIED = 0
         AS_NEEDED = 1
         PERIODIC = 2
@@ -3193,6 +3213,7 @@ class NodeTaint(proto.Message):
             NO_EXECUTE (3):
                 NoExecute
         """
+
         EFFECT_UNSPECIFIED = 0
         NO_SCHEDULE = 1
         PREFER_NO_SCHEDULE = 2
@@ -3980,6 +4001,7 @@ class IstioConfig(proto.Message):
             AUTH_MUTUAL_TLS (1):
                 auth mutual TLS enabled
         """
+
         AUTH_NONE = 0
         AUTH_MUTUAL_TLS = 1
 
@@ -4018,6 +4040,7 @@ class CloudRunConfig(proto.Message):
             LOAD_BALANCER_TYPE_INTERNAL (2):
                 Install internal load balancer for Cloud Run.
         """
+
         LOAD_BALANCER_TYPE_UNSPECIFIED = 0
         LOAD_BALANCER_TYPE_EXTERNAL = 1
         LOAD_BALANCER_TYPE_INTERNAL = 2
@@ -4144,6 +4167,7 @@ class NetworkPolicy(proto.Message):
             CALICO (1):
                 Tigera (Calico Felix).
         """
+
         PROVIDER_UNSPECIFIED = 0
         CALICO = 1
 
@@ -4377,6 +4401,7 @@ class IPAllocationPolicy(proto.Message):
                 The value used if the cluster is a dual stack
                 cluster
         """
+
         STACK_TYPE_UNSPECIFIED = 0
         IPV4 = 1
         IPV4_IPV6 = 2
@@ -4395,6 +4420,7 @@ class IPAllocationPolicy(proto.Message):
                 Access type external (all v6 addresses are
                 external IPs)
         """
+
         IPV6_ACCESS_TYPE_UNSPECIFIED = 0
         INTERNAL = 1
         EXTERNAL = 2
@@ -4487,12 +4513,12 @@ class IPAllocationPolicy(proto.Message):
         proto.DOUBLE,
         number=25,
     )
-    additional_ip_ranges_configs: MutableSequence[
-        "AdditionalIPRangesConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=29,
-        message="AdditionalIPRangesConfig",
+    additional_ip_ranges_configs: MutableSequence["AdditionalIPRangesConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=29,
+            message="AdditionalIPRangesConfig",
+        )
     )
     auto_ipam_config: "AutoIpamConfig" = proto.Field(
         proto.MESSAGE,
@@ -4546,6 +4572,7 @@ class BinaryAuthorization(proto.Message):
                 admission requests with Binary Authorization using the
                 project's singleton policy.
         """
+
         EVALUATION_MODE_UNSPECIFIED = 0
         DISABLED = 1
         PROJECT_SINGLETON_POLICY_ENFORCE = 2
@@ -4651,6 +4678,7 @@ class ClusterTelemetry(proto.Message):
                 Only system components are monitored and
                 logged.
         """
+
         UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -5125,6 +5153,7 @@ class Cluster(proto.Message):
                 action to restore full functionality. Details can be found
                 in the ``statusMessage`` field.
         """
+
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -5668,11 +5697,11 @@ class UserManagedKeysConfig(proto.Message):
         proto.STRING,
         number=16,
     )
-    control_plane_disk_encryption_key_versions: MutableSequence[
-        str
-    ] = proto.RepeatedField(
-        proto.STRING,
-        number=18,
+    control_plane_disk_encryption_key_versions: MutableSequence[str] = (
+        proto.RepeatedField(
+            proto.STRING,
+            number=18,
+        )
     )
     gkeops_etcd_backup_encryption_key: str = proto.Field(
         proto.STRING,
@@ -5704,6 +5733,7 @@ class AnonymousAuthenticationConfig(proto.Message):
                 Anonymous authentication is allowed for only
                 health check endpoints.
         """
+
         MODE_UNSPECIFIED = 0
         ENABLED = 1
         LIMITED = 2
@@ -5745,6 +5775,7 @@ class CompliancePostureConfig(proto.Message):
                 Enables Compliance Posture features on the
                 cluster.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         ENABLED = 2
@@ -5832,6 +5863,7 @@ class WorkloadConfig(proto.Message):
                 with the Pod Security Standard Restricted
                 policy.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 4
@@ -5880,6 +5912,7 @@ class ProtectConfig(proto.Message):
                 Applies basic vulnerability scanning settings
                 for cluster workloads.
         """
+
         WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 2
@@ -5935,6 +5968,7 @@ class SecurityPostureConfig(proto.Message):
                 Applies the Security Posture off cluster
                 Enterprise level features.
         """
+
         MODE_UNSPECIFIED = 0
         DISABLED = 1
         BASIC = 2
@@ -5957,6 +5991,7 @@ class SecurityPostureConfig(proto.Message):
                 Applies the Security Posture's vulnerability
                 on cluster Enterprise level features.
         """
+
         VULNERABILITY_MODE_UNSPECIFIED = 0
         VULNERABILITY_DISABLED = 1
         VULNERABILITY_BASIC = 2
@@ -6971,6 +7006,7 @@ class AdditionalIPRangesConfig(proto.Message):
                 DRAINING status indicates that the subnet is
                 not used for new node pool creation.
         """
+
         STATUS_UNSPECIFIED = 0
         ACTIVE = 1
         DRAINING = 2
@@ -7002,12 +7038,12 @@ class DesiredAdditionalIPRangesConfig(proto.Message):
             subnetwork's IP ranges
     """
 
-    additional_ip_ranges_configs: MutableSequence[
-        "AdditionalIPRangesConfig"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message="AdditionalIPRangesConfig",
+    additional_ip_ranges_configs: MutableSequence["AdditionalIPRangesConfig"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="AdditionalIPRangesConfig",
+        )
     )
 
 
@@ -7160,6 +7196,7 @@ class Operation(proto.Message):
             ABORTING (4):
                 The operation is aborting.
         """
+
         STATUS_UNSPECIFIED = 0
         PENDING = 1
         RUNNING = 2
@@ -7287,6 +7324,7 @@ class Operation(proto.Message):
                 blocked for other upgrades until the operation
                 finishes.
         """
+
         TYPE_UNSPECIFIED = 0
         CREATE_CLUSTER = 1
         DELETE_CLUSTER = 2
@@ -8357,6 +8395,7 @@ class SetMasterAuthRequest(proto.Message):
                 provided, basic authentication is enabled, with
                 either a provided password or a generated one.
         """
+
         UNKNOWN = 0
         SET_PASSWORD = 1
         GENERATE_PASSWORD = 2
@@ -9293,6 +9332,7 @@ class NodePool(proto.Message):
                 The ERROR state indicates the node pool may be unusable.
                 Details can be found in the ``statusMessage`` field.
         """
+
         STATUS_UNSPECIFIED = 0
         PROVISIONING = 1
         RUNNING = 2
@@ -9457,6 +9497,7 @@ class NodePool(proto.Message):
                     ROLLBACK_STARTED (7):
                         Rollback has been initiated.
                 """
+
                 PHASE_UNSPECIFIED = 0
                 UPDATE_STARTED = 1
                 CREATING_GREEN_POOL = 2
@@ -9525,6 +9566,7 @@ class NodePool(proto.Message):
                     availability domain to ensure low communication
                     latency.
             """
+
             TYPE_UNSPECIFIED = 0
             COMPACT = 1
 
@@ -9884,6 +9926,7 @@ class MaintenanceExclusionOptions(proto.Message):
                 the cluster, and also exclude all node pool upgrades. Only
                 control plane patches are allowed.
         """
+
         NO_UPGRADES = 0
         NO_MINOR_UPGRADES = 1
         NO_MINOR_OR_NODE_UPGRADES = 2
@@ -9901,6 +9944,7 @@ class MaintenanceExclusionOptions(proto.Message):
                 until the end of the support of the cluster's current
                 version.
         """
+
         END_TIME_BEHAVIOR_UNSPECIFIED = 0
         UNTIL_END_OF_SUPPORT = 1
 
@@ -10251,6 +10295,7 @@ class ClusterAutoscaling(proto.Message):
                 Use default (balanced) autoscaling
                 configuration.
         """
+
         PROFILE_UNSPECIFIED = 0
         OPTIMIZE_UTILIZATION = 1
         BALANCED = 2
@@ -10264,6 +10309,7 @@ class ClusterAutoscaling(proto.Message):
             NO_PERFORMANCE (1):
                 Avoid extra IP consumption.
         """
+
         AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED = 0
         NO_PERFORMANCE = 1
 
@@ -10531,6 +10577,7 @@ class NodePoolAutoscaling(proto.Message):
                 ANY policy picks zones that have the highest
                 capacity available.
         """
+
         LOCATION_POLICY_UNSPECIFIED = 0
         BALANCED = 1
         ANY = 2
@@ -10868,6 +10915,7 @@ class GPUSharingConfig(proto.Message):
                 GPUs are shared between containers with
                 NVIDIA MPS.
         """
+
         GPU_SHARING_STRATEGY_UNSPECIFIED = 0
         TIME_SHARING = 1
         MPS = 2
@@ -10913,6 +10961,7 @@ class GPUDriverInstallationConfig(proto.Message):
             LATEST (3):
                 "Latest" GPU driver in COS.
         """
+
         GPU_DRIVER_VERSION_UNSPECIFIED = 0
         INSTALLATION_DISABLED = 1
         DEFAULT = 2
@@ -10969,6 +11018,7 @@ class AutoMonitoringConfig(proto.Message):
             NONE (2):
                 Disable Auto-Monitoring.
         """
+
         SCOPE_UNSPECIFIED = 0
         ALL = 1
         NONE = 2
@@ -11024,6 +11074,7 @@ class WorkloadMetadataConfig(proto.Message):
                 only be enabled if Workload Identity is enabled
                 at the cluster level.
         """
+
         UNSPECIFIED = 0
         SECURE = 1
         EXPOSE = 2
@@ -11047,6 +11098,7 @@ class WorkloadMetadataConfig(proto.Message):
                 only be enabled if Workload Identity is enabled
                 at the cluster level.
         """
+
         MODE_UNSPECIFIED = 0
         GCE_METADATA = 1
         GKE_METADATA = 2
@@ -11239,6 +11291,7 @@ class Location(proto.Message):
                 A GKE Location where Regional clusters can be
                 created.
         """
+
         LOCATION_TYPE_UNSPECIFIED = 0
         ZONE = 1
         REGION = 2
@@ -11303,6 +11356,7 @@ class StatusCondition(proto.Message):
                 encryption has been destroyed. This is a
                 permanent error.
         """
+
         _pb_options = {"deprecated": True}
         UNKNOWN = 0
         GCE_STOCKOUT = 1
@@ -11437,6 +11491,7 @@ class NetworkConfig(proto.Message):
                     Higher bandwidth, actual values based on VM
                     size.
             """
+
             TIER_UNSPECIFIED = 0
             TIER_1 = 1
 
@@ -11556,6 +11611,7 @@ class GatewayAPIConfig(proto.Message):
                 Gateway API support is enabled, standard CRDs
                 are installed
         """
+
         CHANNEL_UNSPECIFIED = 0
         CHANNEL_DISABLED = 1
         CHANNEL_EXPERIMENTAL = 3
@@ -11696,6 +11752,7 @@ class UsableSubnetworkSecondaryRange(proto.Message):
                 IN_USE_MANAGED_POD denotes this range was created by GKE and
                 is claimed for pods. It cannot be used for other clusters.
         """
+
         UNKNOWN = 0
         UNUSED = 1
         IN_USE_SERVICE = 2
@@ -11755,12 +11812,12 @@ class UsableSubnetwork(proto.Message):
         proto.STRING,
         number=3,
     )
-    secondary_ip_ranges: MutableSequence[
-        "UsableSubnetworkSecondaryRange"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=4,
-        message="UsableSubnetworkSecondaryRange",
+    secondary_ip_ranges: MutableSequence["UsableSubnetworkSecondaryRange"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="UsableSubnetworkSecondaryRange",
+        )
     )
     status_message: str = proto.Field(
         proto.STRING,
@@ -11863,6 +11920,7 @@ class DNSConfig(proto.Message):
             KUBE_DNS (3):
                 Use KubeDNS for DNS resolution.
         """
+
         PROVIDER_UNSPECIFIED = 0
         PLATFORM_DEFAULT = 1
         CLOUD_DNS = 2
@@ -11883,6 +11941,7 @@ class DNSConfig(proto.Message):
                 DNS records are accessible from within the
                 VPC.
         """
+
         DNS_SCOPE_UNSPECIFIED = 0
         CLUSTER_SCOPE = 1
         VPC_SCOPE = 2
@@ -12066,6 +12125,7 @@ class DatabaseEncryption(proto.Message):
                 etcd level) - this is unrelated to Compute
                 Engine level full disk encryption.
         """
+
         UNKNOWN = 0
         ENCRYPTED = 1
         DECRYPTED = 2
@@ -12096,6 +12156,7 @@ class DatabaseEncryption(proto.Message):
                 De-crypting Secrets to plain text in etcd
                 encountered an error.
         """
+
         CURRENT_STATE_UNSPECIFIED = 0
         CURRENT_STATE_ENCRYPTED = 7
         CURRENT_STATE_DECRYPTED = 2
@@ -12292,6 +12353,7 @@ class GPUDirectConfig(proto.Message):
                 GPUDirect-RDMA on A3 Ultra, and A4 machine
                 types
         """
+
         GPU_DIRECT_STRATEGY_UNSPECIFIED = 0
         RDMA = 2
 
@@ -12528,6 +12590,7 @@ class AutopilotCompatibilityIssue(proto.Message):
                 business logic, there is a potential that they
                 won't work on Autopilot.
         """
+
         UNSPECIFIED = 0
         INCOMPATIBILITY = 1
         ADDITIONAL_CONFIG_REQUIRED = 2
@@ -12628,6 +12691,7 @@ class ReleaseChannel(proto.Message):
                 which are known to be stable and reliable in
                 production.
         """
+
         UNSPECIFIED = 0
         RAPID = 1
         REGULAR = 2
@@ -12770,6 +12834,7 @@ class AutopilotConversionStatus(proto.Message):
                 completed. Old node pools will continue being
                 deleted in the background.
         """
+
         STATE_UNSPECIFIED = 0
         DONE = 5
 
@@ -12903,6 +12968,7 @@ class NotificationConfig(proto.Message):
             UPGRADE_INFO_EVENT (4):
                 Corresponds with UpgradeInfoEvent.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         UPGRADE_AVAILABLE_EVENT = 1
         UPGRADE_EVENT = 2
@@ -12952,12 +13018,12 @@ class NotificationConfig(proto.Message):
                 Event types to allowlist.
         """
 
-        event_type: MutableSequence[
-            "NotificationConfig.EventType"
-        ] = proto.RepeatedField(
-            proto.ENUM,
-            number=1,
-            enum="NotificationConfig.EventType",
+        event_type: MutableSequence["NotificationConfig.EventType"] = (
+            proto.RepeatedField(
+                proto.ENUM,
+                number=1,
+                enum="NotificationConfig.EventType",
+            )
         )
 
     pubsub: PubSub = proto.Field(
@@ -12994,6 +13060,7 @@ class ConfidentialNodes(proto.Message):
             TDX (3):
                 Intel Trust Domain eXtension.
         """
+
         CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED = 0
         SEV = 1
         SEV_SNP = 2
@@ -13139,6 +13206,7 @@ class UpgradeInfoEvent(proto.Message):
             CANCELED (6):
                 CANCELED indicates the upgrade has canceled.
         """
+
         STATE_UNSPECIFIED = 0
         STARTED = 3
         SUCCEEDED = 4
@@ -13167,6 +13235,7 @@ class UpgradeInfoEvent(proto.Message):
                 DISRUPTION_EVENT indicates the event is about the
                 disruption.
         """
+
         EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SUPPORT = 1
         COS_MILESTONE_VERSION_UPDATE = 2
@@ -13286,6 +13355,7 @@ class DisruptionEvent(proto.Message):
                 POD_PDB_VIOLATION indicates that there are force pod
                 evictions during node drain which violate the PDB.
         """
+
         DISRUPTION_TYPE_UNSPECIFIED = 0
         POD_NOT_ENOUGH_PDB = 1
         POD_PDB_VIOLATION = 2
@@ -13535,6 +13605,7 @@ class LoggingComponentConfig(proto.Message):
             KCP_HPA (9):
                 horizontal pod autoscaler decision logs
         """
+
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2
@@ -13631,6 +13702,7 @@ class AdvancedDatapathObservabilityConfig(proto.Message):
             EXTERNAL_LB (4):
                 exposed via external load balancer
         """
+
         RELAY_MODE_UNSPECIFIED = 0
         DISABLED = 1
         INTERNAL_VPC_LB = 3
@@ -13703,6 +13775,7 @@ class LoggingVariantConfig(proto.Message):
             MAX_THROUGHPUT (2):
                 maximum logging throughput variant.
         """
+
         VARIANT_UNSPECIFIED = 0
         DEFAULT = 1
         MAX_THROUGHPUT = 2
@@ -13762,6 +13835,7 @@ class MonitoringComponentConfig(proto.Message):
             JOBSET (16):
                 JobSet
         """
+
         COMPONENT_UNSPECIFIED = 0
         SYSTEM_COMPONENTS = 1
         WORKLOADS = 2
@@ -13816,6 +13890,7 @@ class PodAutoscaling(proto.Message):
                 faster metrics collection for workload
                 autoscaling.
         """
+
         HPA_PROFILE_UNSPECIFIED = 0
         NONE = 1
         PERFORMANCE = 2
@@ -13859,6 +13934,7 @@ class Fleet(proto.Message):
                 The membership supports only lightweight
                 compatible features.
         """
+
         MEMBERSHIP_TYPE_UNSPECIFIED = 0
         LIGHTWEIGHT = 1
 
@@ -14089,6 +14165,7 @@ class EnterpriseConfig(proto.Message):
                 ENTERPRISE indicates a GKE Enterprise
                 cluster.
         """
+
         _pb_options = {"deprecated": True}
         CLUSTER_TIER_UNSPECIFIED = 0
         STANDARD = 1
@@ -14223,6 +14300,7 @@ class SecondaryBootDisk(proto.Message):
                 CONTAINER_IMAGE_CACHE is for using the secondary boot disk
                 as a container image cache.
         """
+
         MODE_UNSPECIFIED = 0
         CONTAINER_IMAGE_CACHE = 1
 
@@ -14322,6 +14400,7 @@ class ClusterUpgradeInfo(proto.Message):
             UPGRADE_PAUSED (5):
                 UPGRADE_PAUSED indicates the upgrade is paused.
         """
+
         UNKNOWN = 0
         ACTIVE = 1
         MINOR_UPGRADE_PAUSED = 4
@@ -14356,6 +14435,7 @@ class ClusterUpgradeInfo(proto.Message):
                 SYSTEM_CONFIG indicates the cluster upgrade is paused by
                 system config.
         """
+
         AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
         MAINTENANCE_WINDOW = 1
         MAINTENANCE_EXCLUSION_NO_UPGRADES = 5
@@ -14431,6 +14511,7 @@ class RollbackSafeUpgradeStatus(proto.Message):
                 rollback-safe mode after a KCP minor version step-one
                 upgrade.
         """
+
         MODE_UNSPECIFIED = 0
         KCP_MINOR_UPGRADE_ROLLBACK_SAFE_MODE = 1
 
@@ -14495,6 +14576,7 @@ class UpgradeDetails(proto.Message):
             RUNNING (4):
                 Upgrade is running.
         """
+
         UNKNOWN = 0
         FAILED = 1
         SUCCEEDED = 2
@@ -14512,6 +14594,7 @@ class UpgradeDetails(proto.Message):
             MANUAL (2):
                 Upgrade started manually.
         """
+
         START_TYPE_UNSPECIFIED = 0
         AUTOMATIC = 1
         MANUAL = 2
@@ -14631,6 +14714,7 @@ class NodePoolUpgradeInfo(proto.Message):
             UPGRADE_PAUSED (3):
                 UPGRADE_PAUSED indicates the upgrade is paused.
         """
+
         UNKNOWN = 0
         ACTIVE = 1
         MINOR_UPGRADE_PAUSED = 2
@@ -14658,6 +14742,7 @@ class NodePoolUpgradeInfo(proto.Message):
                 SYSTEM_CONFIG indicates the cluster upgrade is paused by
                 system config.
         """
+
         AUTO_UPGRADE_PAUSED_REASON_UNSPECIFIED = 0
         MAINTENANCE_WINDOW = 1
         MAINTENANCE_EXCLUSION_NO_UPGRADES = 2
@@ -14725,6 +14810,7 @@ class GkeAutoUpgradeConfig(proto.Message):
                 build in the channel should be used as the
                 upgrade target for the version.
         """
+
         PATCH_MODE_UNSPECIFIED = 0
         ACCELERATED = 1
 
@@ -14765,6 +14851,7 @@ class NetworkTierConfig(proto.Message):
             NETWORK_TIER_STANDARD (3):
                 Standard network tier.
         """
+
         NETWORK_TIER_UNSPECIFIED = 0
         NETWORK_TIER_DEFAULT = 1
         NETWORK_TIER_PREMIUM = 2
@@ -14866,6 +14953,7 @@ class ManagedOpenTelemetryConfig(proto.Message):
                 the Managed OpenTelemetry pipeline for collection and
                 instrumentation components.
         """
+
         SCOPE_UNSPECIFIED = 0
         NONE = 1
         COLLECTION_AND_INSTRUMENTATION_COMPONENTS = 2

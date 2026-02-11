@@ -16,21 +16,23 @@
 import dataclasses
 import json  # type: ignore
 import logging
-from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
+import google.protobuf
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
+from google.iam.v1 import (
+    iam_policy_pb2,  # type: ignore
+    policy_pb2,  # type: ignore
+)
 from google.longrunning import operations_pb2  # type: ignore
-import google.protobuf
 from google.protobuf import json_format
-import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from requests import __version__ as requests_version
 
 from google.cloud.config_v1.types import config
@@ -2778,9 +2780,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigRestTransport._BaseExportDeploymentStatefile._get_http_options()
-            )
+            http_options = _BaseConfigRestTransport._BaseExportDeploymentStatefile._get_http_options()
 
             request, metadata = self._interceptor.pre_export_deployment_statefile(
                 request, metadata
@@ -3241,9 +3241,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigRestTransport._BaseExportRevisionStatefile._get_http_options()
-            )
+            http_options = _BaseConfigRestTransport._BaseExportRevisionStatefile._get_http_options()
 
             request, metadata = self._interceptor.pre_export_revision_statefile(
                 request, metadata
@@ -6127,9 +6125,7 @@ class ConfigRestTransport(_BaseConfigRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigRestTransport._BaseUpdateAutoMigrationConfig._get_http_options()
-            )
+            http_options = _BaseConfigRestTransport._BaseUpdateAutoMigrationConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_auto_migration_config(
                 request, metadata
@@ -6427,7 +6423,9 @@ class ConfigRestTransport(_BaseConfigRestTransport):
     ) -> Callable[[config.ExportDeploymentStatefileRequest], config.Statefile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportDeploymentStatefile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ExportDeploymentStatefile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def export_lock_info(
@@ -6453,7 +6451,9 @@ class ConfigRestTransport(_BaseConfigRestTransport):
     ) -> Callable[[config.ExportRevisionStatefileRequest], config.Statefile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ExportRevisionStatefile(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ExportRevisionStatefile(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_auto_migration_config(
@@ -6461,7 +6461,9 @@ class ConfigRestTransport(_BaseConfigRestTransport):
     ) -> Callable[[config.GetAutoMigrationConfigRequest], config.AutoMigrationConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetAutoMigrationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._GetAutoMigrationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def get_deployment(
@@ -6605,7 +6607,9 @@ class ConfigRestTransport(_BaseConfigRestTransport):
     ) -> Callable[[config.UpdateAutoMigrationConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._UpdateAutoMigrationConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._UpdateAutoMigrationConfig(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_deployment(

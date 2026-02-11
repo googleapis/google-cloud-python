@@ -17,26 +17,27 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.localized_text_pb2 as localized_text_pb2  # type: ignore
 import google.type.money_pb2 as money_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.routing_v2.types import (
+    localized_time,
+    location,
     route_label,
     route_travel_mode,
     speed_reading_interval,
+    transit,
 )
 from google.maps.routing_v2.types import (
     navigation_instruction as gmr_navigation_instruction,
 )
-from google.maps.routing_v2.types import polyline_details as gmr_polyline_details
-from google.maps.routing_v2.types import localized_time, location
 from google.maps.routing_v2.types import polyline as gmr_polyline
+from google.maps.routing_v2.types import polyline_details as gmr_polyline_details
 from google.maps.routing_v2.types import toll_info as gmr_toll_info
-from google.maps.routing_v2.types import transit
 
 __protobuf__ = proto.module(
     package="google.maps.routing.v2",

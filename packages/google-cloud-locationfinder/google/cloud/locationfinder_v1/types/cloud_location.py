@@ -93,6 +93,7 @@ class CloudLocation(proto.Message):
             CLOUD_PROVIDER_OCI (4):
                 Cloud provider type for OCI.
         """
+
         CLOUD_PROVIDER_UNSPECIFIED = 0
         CLOUD_PROVIDER_GCP = 1
         CLOUD_PROVIDER_AWS = 2
@@ -116,6 +117,7 @@ class CloudLocation(proto.Message):
                 CloudLocation type for Google Distributed
                 Cloud Connected Zone.
         """
+
         CLOUD_LOCATION_TYPE_UNSPECIFIED = 0
         CLOUD_LOCATION_TYPE_REGION = 1
         CLOUD_LOCATION_TYPE_ZONE = 2

@@ -87,6 +87,7 @@ class CalendarAddOnManifest(proto.Message):
                 fields including the metadata, attendees, and conference
                 data and the ability to perform all actions.
         """
+
         UNSPECIFIED = 0
         METADATA = 1
         READ = 3

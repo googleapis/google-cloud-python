@@ -46,6 +46,7 @@ class ComputeModel(proto.Enum):
             Physical measure of compute resources. OCPUs
             are based on the physical core of a processor.
     """
+
     COMPUTE_MODEL_UNSPECIFIED = 0
     COMPUTE_MODEL_ECPU = 1
     COMPUTE_MODEL_OCPU = 2
@@ -101,6 +102,7 @@ class IdentityConnector(proto.Message):
                 The identity pool connection is in an unknown
                 state.
         """
+
         CONNECTION_STATE_UNSPECIFIED = 0
         CONNECTED = 1
         PARTIALLY_CONNECTED = 2

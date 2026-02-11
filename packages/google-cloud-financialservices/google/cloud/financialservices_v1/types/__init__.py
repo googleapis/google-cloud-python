@@ -24,7 +24,9 @@ from .backtest_result import (
     ListBacktestResultsResponse,
     UpdateBacktestResultRequest,
 )
-from .bigquery_destination import BigQueryDestination
+from .bigquery_destination import (
+    BigQueryDestination,
+)
 from .dataset import (
     CreateDatasetRequest,
     Dataset,
@@ -64,7 +66,9 @@ from .instance import (
     ListInstancesResponse,
     UpdateInstanceRequest,
 )
-from .line_of_business import LineOfBusiness
+from .line_of_business import (
+    LineOfBusiness,
+)
 from .model import (
     CreateModelRequest,
     DeleteModelRequest,
@@ -87,7 +91,9 @@ from .prediction_result import (
     PredictionResult,
     UpdatePredictionResultRequest,
 )
-from .service import OperationMetadata
+from .service import (
+    OperationMetadata,
+)
 
 __all__ = (
     "BacktestResult",

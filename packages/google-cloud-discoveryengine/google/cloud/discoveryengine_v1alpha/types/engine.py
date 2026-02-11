@@ -238,6 +238,7 @@ class Engine(proto.Message):
                 TRAINING (2):
                     The engine is training.
             """
+
             TRAINING_STATE_UNSPECIFIED = 0
             PAUSED = 1
             TRAINING = 2
@@ -443,6 +444,7 @@ class Engine(proto.Message):
                     The engine is trained on tuned
                     hyperparameters and can be queried.
             """
+
             SERVING_STATE_UNSPECIFIED = 0
             INACTIVE = 1
             ACTIVE = 2
@@ -463,6 +465,7 @@ class Engine(proto.Message):
                     data. Error messages can be queried via
                     Stackdriver.
             """
+
             DATA_STATE_UNSPECIFIED = 0
             DATA_OK = 1
             DATA_ERROR = 2

@@ -17,13 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.geo.type.types import viewport as ggt_viewport
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.protobuf.wrappers_pb2 as wrappers_pb2  # type: ignore
 import google.type.latlng_pb2 as latlng_pb2  # type: ignore
 import proto  # type: ignore
+from google.geo.type.types import viewport as ggt_viewport
 
 from google.maps.fleetengine_v1.types import fleetengine
 from google.maps.fleetengine_v1.types import header as mf_header
@@ -498,6 +498,7 @@ class SearchVehiclesRequest(proto.Message):
                 these weights need to be modified for your
                 project.
         """
+
         UNKNOWN_VEHICLE_MATCH_ORDER = 0
         PICKUP_POINT_ETA = 1
         PICKUP_POINT_DISTANCE = 2
@@ -522,6 +523,7 @@ class SearchVehiclesRequest(proto.Message):
                 included in the search results. When this value is used,
                 ``include_back_to_back`` cannot be ``true``.
         """
+
         CURRENT_TRIPS_PRESENT_UNSPECIFIED = 0
         NONE = 1
         ANY = 2
@@ -567,33 +569,33 @@ class SearchVehiclesRequest(proto.Message):
         number=10,
         message=duration_pb2.Duration,
     )
-    vehicle_types: MutableSequence[
-        mf_vehicles.Vehicle.VehicleType
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=14,
-        message=mf_vehicles.Vehicle.VehicleType,
+    vehicle_types: MutableSequence[mf_vehicles.Vehicle.VehicleType] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=14,
+            message=mf_vehicles.Vehicle.VehicleType,
+        )
     )
-    required_attributes: MutableSequence[
-        fleetengine.VehicleAttribute
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=12,
-        message=fleetengine.VehicleAttribute,
+    required_attributes: MutableSequence[fleetengine.VehicleAttribute] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=12,
+            message=fleetengine.VehicleAttribute,
+        )
     )
-    required_one_of_attributes: MutableSequence[
-        "VehicleAttributeList"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=15,
-        message="VehicleAttributeList",
+    required_one_of_attributes: MutableSequence["VehicleAttributeList"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=15,
+            message="VehicleAttributeList",
+        )
     )
-    required_one_of_attribute_sets: MutableSequence[
-        "VehicleAttributeList"
-    ] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=20,
-        message="VehicleAttributeList",
+    required_one_of_attribute_sets: MutableSequence["VehicleAttributeList"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=20,
+            message="VehicleAttributeList",
+        )
     )
     order_by: VehicleMatchOrder = proto.Field(
         proto.ENUM,
@@ -1004,6 +1006,7 @@ class VehicleMatch(proto.Message):
                 and distance calculations take the existing trip
                 into account.
         """
+
         UNKNOWN = 0
         EXCLUSIVE = 1
         BACK_TO_BACK = 2

@@ -16,19 +16,19 @@
 import json
 import logging as std_logging
 import pickle
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
+import google.protobuf.message
+import grpc  # type: ignore
+import proto  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-import grpc  # type: ignore
-import proto  # type: ignore
 
 from google.cloud.apihub_v1.types import common_fields, discovery_service
 
@@ -348,12 +348,12 @@ class ApiHubDiscoveryGrpcTransport(ApiHubDiscoveryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_discovered_api_observations" not in self._stubs:
-            self._stubs[
-                "list_discovered_api_observations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiObservations",
-                request_serializer=discovery_service.ListDiscoveredApiObservationsRequest.serialize,
-                response_deserializer=discovery_service.ListDiscoveredApiObservationsResponse.deserialize,
+            self._stubs["list_discovered_api_observations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiObservations",
+                    request_serializer=discovery_service.ListDiscoveredApiObservationsRequest.serialize,
+                    response_deserializer=discovery_service.ListDiscoveredApiObservationsResponse.deserialize,
+                )
             )
         return self._stubs["list_discovered_api_observations"]
 
@@ -380,12 +380,12 @@ class ApiHubDiscoveryGrpcTransport(ApiHubDiscoveryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_discovered_api_observation" not in self._stubs:
-            self._stubs[
-                "get_discovered_api_observation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiObservation",
-                request_serializer=discovery_service.GetDiscoveredApiObservationRequest.serialize,
-                response_deserializer=common_fields.DiscoveredApiObservation.deserialize,
+            self._stubs["get_discovered_api_observation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiObservation",
+                    request_serializer=discovery_service.GetDiscoveredApiObservationRequest.serialize,
+                    response_deserializer=common_fields.DiscoveredApiObservation.deserialize,
+                )
             )
         return self._stubs["get_discovered_api_observation"]
 
@@ -412,12 +412,12 @@ class ApiHubDiscoveryGrpcTransport(ApiHubDiscoveryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_discovered_api_operations" not in self._stubs:
-            self._stubs[
-                "list_discovered_api_operations"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiOperations",
-                request_serializer=discovery_service.ListDiscoveredApiOperationsRequest.serialize,
-                response_deserializer=discovery_service.ListDiscoveredApiOperationsResponse.deserialize,
+            self._stubs["list_discovered_api_operations"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubDiscovery/ListDiscoveredApiOperations",
+                    request_serializer=discovery_service.ListDiscoveredApiOperationsRequest.serialize,
+                    response_deserializer=discovery_service.ListDiscoveredApiOperationsResponse.deserialize,
+                )
             )
         return self._stubs["list_discovered_api_operations"]
 
@@ -444,12 +444,12 @@ class ApiHubDiscoveryGrpcTransport(ApiHubDiscoveryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_discovered_api_operation" not in self._stubs:
-            self._stubs[
-                "get_discovered_api_operation"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiOperation",
-                request_serializer=discovery_service.GetDiscoveredApiOperationRequest.serialize,
-                response_deserializer=common_fields.DiscoveredApiOperation.deserialize,
+            self._stubs["get_discovered_api_operation"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.apihub.v1.ApiHubDiscovery/GetDiscoveredApiOperation",
+                    request_serializer=discovery_service.GetDiscoveredApiOperationRequest.serialize,
+                    response_deserializer=common_fields.DiscoveredApiOperation.deserialize,
+                )
             )
         return self._stubs["get_discovered_api_operation"]
 
