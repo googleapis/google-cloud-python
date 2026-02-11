@@ -17,7 +17,6 @@
 from __future__ import absolute_import
 import os
 import pathlib
-import re
 import shutil
 
 import nox
@@ -27,9 +26,8 @@ BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.14"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.10", "3.14"]
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -51,9 +49,6 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "system",
-    # TODO(https://github.com/googleapis/python-storage/issues/1499):
-    # Remove or restore testing for Python 3.7/3.8
-    "unit-3.9",
     "unit-3.10",
     "unit-3.11",
     "unit-3.12",

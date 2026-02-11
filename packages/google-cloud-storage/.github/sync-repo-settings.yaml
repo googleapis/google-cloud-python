@@ -10,5 +10,5 @@ branchProtectionRules:
     - 'Kokoro'
     - 'cla/google'
     - 'Kokoro system-3.14'
-    - 'Kokoro system-3.9'
+    - 'Kokoro system-3.10'
     - 'OwlBot Post Processor'
