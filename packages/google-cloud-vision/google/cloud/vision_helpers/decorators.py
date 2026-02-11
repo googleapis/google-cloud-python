@@ -98,7 +98,7 @@ def _create_single_feature_method(feature):
         retry=None,
         timeout=None,
         metadata=(),
-        **kwargs
+        **kwargs,
     ):
         """Return a single feature annotation for the given image.
 
