@@ -993,8 +993,15 @@ def test_set_custom_timeout_and_retry(capsys, instance_id, sample_database):
 
 
 @pytest.mark.dependency(depends=["insert_data"])
-def test_isolated_level_options(capsys, instance_id, sample_database):
+def test_isolation_level_options(capsys, instance_id, sample_database):
     snippets.isolation_level_options(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) updated." in out
+
+
+@pytest.mark.dependency(depends=["insert_data"])
+def test_read_lock_mode_options(capsys, instance_id, sample_database):
+    snippets.read_lock_mode_options(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
     assert "1 record(s) updated." in out
 

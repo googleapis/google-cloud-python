@@ -3186,14 +3186,13 @@ def isolation_level_options(
     instance_id,
     database_id,
 ):
-    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
-
     """
     Shows how to run a Read Write transaction with isolation level options.
     """
     # [START spanner_isolation_level]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
+    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
 
     # The isolation level specified at the client-level will be applied to all RW transactions.
     isolation_options_for_client = TransactionOptions.IsolationLevel.SERIALIZABLE
@@ -3230,6 +3229,60 @@ def isolation_level_options(
         update_albums_with_isolation, isolation_level=isolation_options_for_transaction
     )
     # [END spanner_isolation_level]
+
+
+def read_lock_mode_options(
+    instance_id,
+    database_id,
+):
+    """
+    Shows how to run a Read Write transaction with read lock mode options.
+    """
+    # [START spanner_read_lock_mode]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    from google.cloud.spanner_v1 import TransactionOptions, DefaultTransactionOptions
+
+    # The read lock mode specified at the client-level will be applied to all
+    # RW transactions.
+    read_lock_mode_options_for_client = TransactionOptions.ReadWrite.ReadLockMode.OPTIMISTIC
+
+    # Create a client that uses Serializable isolation (default) with
+    # optimistic locking for read-write transactions.
+    spanner_client = spanner.Client(
+        default_transaction_options=DefaultTransactionOptions(
+            read_lock_mode=read_lock_mode_options_for_client
+        )
+    )
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # The read lock mode specified at the request level takes precedence over
+    # the read lock mode configured at the client level.
+    read_lock_mode_options_for_transaction = (
+        TransactionOptions.ReadWrite.ReadLockMode.PESSIMISTIC
+    )
+
+    def update_albums_with_read_lock_mode(transaction):
+        # Read an AlbumTitle.
+        results = transaction.execute_sql(
+            "SELECT AlbumTitle from Albums WHERE SingerId = 2 and AlbumId = 1"
+        )
+        for result in results:
+            print("Current Album Title: {}".format(*result))
+
+        # Update the AlbumTitle.
+        row_ct = transaction.execute_update(
+            "UPDATE Albums SET AlbumTitle = 'A New Title' WHERE SingerId = 2 and AlbumId = 1"
+        )
+
+        print("{} record(s) updated.".format(row_ct))
+
+    database.run_in_transaction(
+        update_albums_with_read_lock_mode,
+        read_lock_mode=read_lock_mode_options_for_transaction
+    )
+    # [END spanner_read_lock_mode]
 
 
 def set_custom_timeout_and_retry(instance_id, database_id):
@@ -3857,6 +3910,9 @@ if __name__ == "__main__":  # noqa: C901
         "isolation_level_options", help=isolation_level_options.__doc__
     )
     subparsers.add_parser(
+        "read_lock_mode_options", help=read_lock_mode_options.__doc__
+    )
+    subparsers.add_parser(
         "set_custom_timeout_and_retry", help=set_custom_timeout_and_retry.__doc__
     )
     subparsers.add_parser("add_proto_type_columns", help=add_proto_type_columns.__doc__)
@@ -4018,6 +4074,8 @@ if __name__ == "__main__":  # noqa: C901
         directed_read_options(args.instance_id, args.database_id)
     elif args.command == "isolation_level_options":
         isolation_level_options(args.instance_id, args.database_id)
+    elif args.command == "read_lock_mode_options":
+        read_lock_mode_options(args.instance_id, args.database_id)
     elif args.command == "set_custom_timeout_and_retry":
         set_custom_timeout_and_retry(args.instance_id, args.database_id)
     elif args.command == "create_instance_with_autoscaling_config":
