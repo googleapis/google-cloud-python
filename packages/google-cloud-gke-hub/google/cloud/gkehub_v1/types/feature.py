@@ -20,9 +20,11 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.gkehub_v1 import configmanagement_v1  # type: ignore
-from google.cloud.gkehub_v1 import multiclusteringress_v1  # type: ignore
-from google.cloud.gkehub_v1 import rbacrolebindingactuation_v1  # type: ignore
+from google.cloud.gkehub_v1 import (
+    configmanagement_v1,  # type: ignore
+    multiclusteringress_v1,  # type: ignore
+    rbacrolebindingactuation_v1,  # type: ignore
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.gkehub.v1",
