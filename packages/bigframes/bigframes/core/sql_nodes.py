@@ -142,6 +142,10 @@ class SqlSelectNode(nodes.UnaryNode):
     def _node_expressions(self):
         raise NotImplementedError()
 
+    @property
+    def is_star_selection(self) -> bool:
+        return tuple(self.ids) == tuple(self.child.ids)
+
     @functools.cache
     def get_id_mapping(self) -> dict[identifiers.ColumnId, ex.Expression]:
         return {cdef.id: cdef.expression for cdef in self.selections}

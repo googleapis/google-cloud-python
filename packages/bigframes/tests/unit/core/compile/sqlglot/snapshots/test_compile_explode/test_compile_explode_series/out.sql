@@ -1,7 +1,7 @@
 WITH `bfcte_0` AS (
   SELECT
-    `int_list_col`,
-    `rowindex`
+    `rowindex`,
+    `int_list_col`
   FROM `bigframes-dev`.`sqlglot_test`.`repeated_types`
 ), `bfcte_1` AS (
   SELECT

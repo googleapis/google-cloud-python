@@ -54,13 +54,12 @@ def pull_up_source_ids(node: nodes.ReadTableNode) -> nodes.BigFrameNode:
     if all(id.sql == source_id for id, source_id in node.scan_list.items):
         return node
     else:
-        source_ids = sorted(
-            set(scan_item.source_id for scan_item in node.scan_list.items)
-        )
         new_scan_list = nodes.ScanList.from_items(
             [
-                nodes.ScanItem(identifiers.ColumnId(source_id), source_id)
-                for source_id in source_ids
+                nodes.ScanItem(
+                    identifiers.ColumnId(scan_item.source_id), scan_item.source_id
+                )
+                for scan_item in node.scan_list.items
             ]
         )
         new_source = dataclasses.replace(node, scan_list=new_scan_list)

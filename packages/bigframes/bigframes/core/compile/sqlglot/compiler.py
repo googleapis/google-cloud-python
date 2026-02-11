@@ -153,13 +153,17 @@ def compile_sql_select(node: sql_nodes.SqlSelectNode, child: ir.SQLGlotIR):
         for ordering in node.sorting
     )
 
-    projected_cols: tuple[tuple[str, sge.Expression], ...] = tuple(
-        (
-            cdef.id.sql,
-            expression_compiler.expression_compiler.compile_expression(cdef.expression),
+    projected_cols: tuple[tuple[str, sge.Expression], ...] = tuple()
+    if not node.is_star_selection:
+        projected_cols = tuple(
+            (
+                cdef.id.sql,
+                expression_compiler.expression_compiler.compile_expression(
+                    cdef.expression
+                ),
+            )
+            for cdef in node.selections
         )
-        for cdef in node.selections
-    )
 
     sge_predicates = tuple(
         expression_compiler.expression_compiler.compile_expression(expression)

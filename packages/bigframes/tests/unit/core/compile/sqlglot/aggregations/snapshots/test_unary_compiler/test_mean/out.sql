@@ -1,8 +1,8 @@
 WITH `bfcte_0` AS (
   SELECT
     `bool_col`,
-    `duration_col`,
     `int64_col`,
+    `duration_col`,
     `int64_col` AS `bfcol_6`,
     `bool_col` AS `bfcol_7`,
     `duration_col` AS `bfcol_8`

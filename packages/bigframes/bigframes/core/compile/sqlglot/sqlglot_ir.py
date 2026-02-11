@@ -150,7 +150,7 @@ class SQLGlotIR:
         if sql_predicate:
             select_expr = sge.Select().select(sge.Star()).from_(table_expr)
             select_expr = select_expr.where(
-                sg.parse_one(sql_predicate, dialect="bigquery"), append=False
+                sg.parse_one(sql_predicate, dialect=cls.dialect), append=False
             )
             return cls(expr=select_expr, uid_gen=uid_gen)
 
@@ -172,16 +172,19 @@ class SQLGlotIR:
         if len(sorting) > 0:
             new_expr = new_expr.order_by(*sorting)
 
-        to_select = [
-            sge.Alias(
-                this=expr,
-                alias=sge.to_identifier(id, quoted=self.quoted),
-            )
-            if expr.alias_or_name != id
-            else expr
-            for id, expr in selections
-        ]
-        new_expr = new_expr.select(*to_select, append=False)
+        if len(selections) > 0:
+            to_select = [
+                sge.Alias(
+                    this=expr,
+                    alias=sge.to_identifier(id, quoted=self.quoted),
+                )
+                if expr.alias_or_name != id
+                else expr
+                for id, expr in selections
+            ]
+            new_expr = new_expr.select(*to_select, append=False)
+        else:
+            new_expr = new_expr.select(sge.Star(), append=False)
 
         if len(predicates) > 0:
             condition = _and(predicates)
