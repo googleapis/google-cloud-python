@@ -1331,6 +1331,7 @@ def test_search(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search(request)
 
@@ -1347,6 +1348,9 @@ def test_search(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_non_empty_request_with_auto_populated_field():
@@ -1370,8 +1374,8 @@ def test_search_non_empty_request_with_auto_populated_field():
         order_by="order_by_value",
         language_code="language_code_value",
         user_pseudo_id="user_pseudo_id_value",
-        session="session_value",
         ranking_expression="ranking_expression_value",
+        session="session_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1392,8 +1396,8 @@ def test_search_non_empty_request_with_auto_populated_field():
             order_by="order_by_value",
             language_code="language_code_value",
             user_pseudo_id="user_pseudo_id_value",
-            session="session_value",
             ranking_expression="ranking_expression_value",
+            session="session_value",
         )
 
 
@@ -1495,6 +1499,7 @@ async def test_search_async(
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search(request)
@@ -1512,6 +1517,9 @@ async def test_search_async(
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.asyncio
@@ -1802,6 +1810,7 @@ def test_search_lite(request_type, transport: str = "grpc"):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
         response = client.search_lite(request)
 
@@ -1818,6 +1827,9 @@ def test_search_lite(request_type, transport: str = "grpc"):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 def test_search_lite_non_empty_request_with_auto_populated_field():
@@ -1841,8 +1853,8 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
         order_by="order_by_value",
         language_code="language_code_value",
         user_pseudo_id="user_pseudo_id_value",
-        session="session_value",
         ranking_expression="ranking_expression_value",
+        session="session_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1863,8 +1875,8 @@ def test_search_lite_non_empty_request_with_auto_populated_field():
             order_by="order_by_value",
             language_code="language_code_value",
             user_pseudo_id="user_pseudo_id_value",
-            session="session_value",
             ranking_expression="ranking_expression_value",
+            session="session_value",
         )
 
 
@@ -1968,6 +1980,7 @@ async def test_search_lite_async(
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         response = await client.search_lite(request)
@@ -1985,6 +1998,9 @@ async def test_search_lite_async(
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.asyncio
@@ -2800,6 +2816,7 @@ async def test_search_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search(request=None)
@@ -2831,6 +2848,7 @@ async def test_search_lite_empty_call_grpc_asyncio():
                 redirect_uri="redirect_uri_value",
                 next_page_token="next_page_token_value",
                 corrected_query="corrected_query_value",
+                semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
             )
         )
         await client.search_lite(request=None)
@@ -2902,6 +2920,7 @@ def test_search_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -2923,6 +2942,9 @@ def test_search_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3039,6 +3061,7 @@ def test_search_lite_rest_call_success(request_type):
             redirect_uri="redirect_uri_value",
             next_page_token="next_page_token_value",
             corrected_query="corrected_query_value",
+            semantic_state=search_service.SearchResponse.SemanticState.DISABLED,
         )
 
         # Wrap the value into a proper Response obj
@@ -3060,6 +3083,9 @@ def test_search_lite_rest_call_success(request_type):
     assert response.redirect_uri == "redirect_uri_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.corrected_query == "corrected_query_value"
+    assert (
+        response.semantic_state == search_service.SearchResponse.SemanticState.DISABLED
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

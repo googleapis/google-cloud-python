@@ -4794,6 +4794,7 @@ def test_create_data_store_rest_call_success(request_type):
             "disable_initial_index": True,
             "disable_automatic_refresh": True,
         },
+        "natural_language_query_understanding_config": {"mode": 1},
         "kms_key_name": "kms_key_name_value",
         "cmek_config": {
             "name": "name_value",
@@ -5478,6 +5479,7 @@ def test_update_data_store_rest_call_success(request_type):
             "disable_initial_index": True,
             "disable_automatic_refresh": True,
         },
+        "natural_language_query_understanding_config": {"mode": 1},
         "kms_key_name": "kms_key_name_value",
         "cmek_config": {
             "name": "name_value",

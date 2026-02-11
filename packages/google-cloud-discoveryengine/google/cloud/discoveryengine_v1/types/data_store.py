@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
     manifest={
         "DataStore",
         "AdvancedSiteSearchConfig",
+        "NaturalLanguageQueryUnderstandingConfig",
         "WorkspaceConfig",
     },
 )
@@ -81,6 +82,9 @@ class DataStore(proto.Message):
         advanced_site_search_config (google.cloud.discoveryengine_v1.types.AdvancedSiteSearchConfig):
             Optional. Configuration for advanced site
             search.
+        natural_language_query_understanding_config (google.cloud.discoveryengine_v1.types.NaturalLanguageQueryUnderstandingConfig):
+            Optional. Configuration for Natural Language
+            Query Understanding.
         kms_key_name (str):
             Input only. The KMS key to be used to protect this DataStore
             at creation time.
@@ -265,6 +269,11 @@ class DataStore(proto.Message):
         number=12,
         message="AdvancedSiteSearchConfig",
     )
+    natural_language_query_understanding_config: "NaturalLanguageQueryUnderstandingConfig" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        message="NaturalLanguageQueryUnderstandingConfig",
+    )
     kms_key_name: str = proto.Field(
         proto.STRING,
         number=32,
@@ -336,6 +345,45 @@ class AdvancedSiteSearchConfig(proto.Message):
         proto.BOOL,
         number=4,
         optional=True,
+    )
+
+
+class NaturalLanguageQueryUnderstandingConfig(proto.Message):
+    r"""Configuration for Natural Language Query Understanding.
+
+    Attributes:
+        mode (google.cloud.discoveryengine_v1.types.NaturalLanguageQueryUnderstandingConfig.Mode):
+            Mode of Natural Language Query Understanding. If this field
+            is unset, the behavior defaults to
+            [NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED][google.cloud.discoveryengine.v1.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED].
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode of Natural Language Query Understanding. When the
+        NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the
+        natural language understanding capabilities will be enabled for
+        a search request if the
+        NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition
+        in the SearchRequest is ENABLED.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                Default value.
+            DISABLED (1):
+                Natural Language Query Understanding is
+                disabled.
+            ENABLED (2):
+                Natural Language Query Understanding is
+                enabled.
+        """
+        MODE_UNSPECIFIED = 0
+        DISABLED = 1
+        ENABLED = 2
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
     )
 
 

@@ -1414,7 +1414,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
     version: 0.16.0
-    last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
+    last_generated_commit: f248ed087ef9b822834de74c962d9ba67bb737d3
     apis:
       - path: google/cloud/discoveryengine/v1
         service_config: discoveryengine_v1.yaml

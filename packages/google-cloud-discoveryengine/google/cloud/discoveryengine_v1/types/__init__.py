@@ -85,7 +85,12 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import AdvancedSiteSearchConfig, DataStore, WorkspaceConfig
+from .data_store import (
+    AdvancedSiteSearchConfig,
+    DataStore,
+    NaturalLanguageQueryUnderstandingConfig,
+    WorkspaceConfig,
+)
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -339,6 +344,7 @@ __all__ = (
     "CustomTuningModel",
     "AdvancedSiteSearchConfig",
     "DataStore",
+    "NaturalLanguageQueryUnderstandingConfig",
     "WorkspaceConfig",
     "CreateDataStoreMetadata",
     "CreateDataStoreRequest",

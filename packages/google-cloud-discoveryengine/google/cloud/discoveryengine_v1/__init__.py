@@ -164,7 +164,12 @@ from .types.conversational_search_service import (
     UpdateSessionRequest,
 )
 from .types.custom_tuning_model import CustomTuningModel
-from .types.data_store import AdvancedSiteSearchConfig, DataStore, WorkspaceConfig
+from .types.data_store import (
+    AdvancedSiteSearchConfig,
+    DataStore,
+    NaturalLanguageQueryUnderstandingConfig,
+    WorkspaceConfig,
+)
 from .types.data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -638,6 +643,7 @@ __all__ = (
     "ListUserLicensesRequest",
     "ListUserLicensesResponse",
     "MediaInfo",
+    "NaturalLanguageQueryUnderstandingConfig",
     "PageInfo",
     "PanelInfo",
     "Principal",
