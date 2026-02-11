@@ -450,6 +450,34 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             )
         return self._stubs["aggregate_issue_stats"]
 
+    @property
+    def query_issues(
+        self,
+    ) -> Callable[[service.QueryIssuesRequest], Awaitable[service.QueryIssuesResponse]]:
+        r"""Return a callable for the query issues method over gRPC.
+
+        QueryIssues provides a list of issues and
+        recommendations that a user has access to and that are
+        within the requested scope.
+
+        Returns:
+            Callable[[~.QueryIssuesRequest],
+                    Awaitable[~.QueryIssuesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_issues" not in self._stubs:
+            self._stubs["query_issues"] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryIssues",
+                request_serializer=service.QueryIssuesRequest.serialize,
+                response_deserializer=service.QueryIssuesResponse.deserialize,
+            )
+        return self._stubs["query_issues"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -470,6 +498,11 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             ),
             self.aggregate_issue_stats: self._wrap_method(
                 self.aggregate_issue_stats,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_issues: self._wrap_method(
+                self.query_issues,
                 default_timeout=None,
                 client_info=client_info,
             ),

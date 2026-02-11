@@ -156,6 +156,11 @@ class DatabaseCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_issues: gapic_v1.method.wrap_method(
+                self.query_issues,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -208,6 +213,15 @@ class DatabaseCenterTransport(abc.ABC):
             service.AggregateIssueStatsResponse,
             Awaitable[service.AggregateIssueStatsResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_issues(
+        self,
+    ) -> Callable[
+        [service.QueryIssuesRequest],
+        Union[service.QueryIssuesResponse, Awaitable[service.QueryIssuesResponse]],
     ]:
         raise NotImplementedError()
 

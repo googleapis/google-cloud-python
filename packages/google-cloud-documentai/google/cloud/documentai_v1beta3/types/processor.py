@@ -189,11 +189,11 @@ class ProcessorVersion(proto.Message):
 
             Attributes:
                 finetuning_allowed (bool):
-                    Whether finetuning is allowed for this base
+                    Whether fine tuning is allowed for this base
                     processor version.
                 min_train_labeled_documents (int):
                     The minimum number of labeled documents in
-                    the training dataset required for finetuning.
+                    the training dataset required for fine tuning.
             """
 
             finetuning_allowed: bool = proto.Field(

@@ -30,6 +30,11 @@
                 "delete_folder"
               ]
             },
+            "DeleteFolderRecursive": {
+              "methods": [
+                "delete_folder_recursive"
+              ]
+            },
             "DeleteManagedFolder": {
               "methods": [
                 "delete_managed_folder"
@@ -165,6 +170,11 @@
                 "delete_folder"
               ]
             },
+            "DeleteFolderRecursive": {
+              "methods": [
+                "delete_folder_recursive"
+              ]
+            },
             "DeleteManagedFolder": {
               "methods": [
                 "delete_managed_folder"
@@ -298,6 +308,11 @@
             "DeleteFolder": {
               "methods": [
                 "delete_folder"
+              ]
+            },
+            "DeleteFolderRecursive": {
+              "methods": [
+                "delete_folder_recursive"
               ]
             },
             "DeleteManagedFolder": {

@@ -19,11 +19,13 @@ from .document import Document, RevisionRef
 from .document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
+    Documents,
     GcsDocument,
     GcsDocuments,
     GcsPrefix,
     OcrConfig,
     RawDocument,
+    RawDocuments,
 )
 from .document_processor_service import (
     BatchProcessMetadata,
@@ -79,6 +81,7 @@ from .document_processor_service import (
     UndeployProcessorVersionMetadata,
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
+    UpdateProcessorVersionMetadata,
 )
 from .document_schema import (
     DocumentSchema,
@@ -123,11 +126,13 @@ __all__ = (
     "RevisionRef",
     "BatchDocumentsInputConfig",
     "DocumentOutputConfig",
+    "Documents",
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
     "OcrConfig",
     "RawDocument",
+    "RawDocuments",
     "BatchProcessMetadata",
     "BatchProcessRequest",
     "BatchProcessResponse",
@@ -181,6 +186,7 @@ __all__ = (
     "UndeployProcessorVersionMetadata",
     "UndeployProcessorVersionRequest",
     "UndeployProcessorVersionResponse",
+    "UpdateProcessorVersionMetadata",
     "DocumentSchema",
     "EntityTypeMetadata",
     "FieldExtractionMetadata",

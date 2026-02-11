@@ -96,6 +96,14 @@ class DatabaseCenterRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_query_issues(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_query_issues(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_query_products(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -255,6 +263,52 @@ class DatabaseCenterRestInterceptor:
         `post_query_database_resource_groups` interceptor. The (possibly modified) response returned by
         `post_query_database_resource_groups` will be passed to
         `post_query_database_resource_groups_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_query_issues(
+        self,
+        request: service.QueryIssuesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.QueryIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for query_issues
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DatabaseCenter server.
+        """
+        return request, metadata
+
+    def post_query_issues(
+        self, response: service.QueryIssuesResponse
+    ) -> service.QueryIssuesResponse:
+        """Post-rpc interceptor for query_issues
+
+        DEPRECATED. Please use the `post_query_issues_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DatabaseCenter server but before
+        it is returned to user code. This `post_query_issues` interceptor runs
+        before the `post_query_issues_with_metadata` interceptor.
+        """
+        return response
+
+    def post_query_issues_with_metadata(
+        self,
+        response: service.QueryIssuesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[service.QueryIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for query_issues
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DatabaseCenter server but before it is returned to user code.
+
+        We recommend only using this `post_query_issues_with_metadata`
+        interceptor in new development instead of the `post_query_issues` interceptor.
+        When both interceptors are used, this `post_query_issues_with_metadata` interceptor runs after the
+        `post_query_issues` interceptor. The (possibly modified) response returned by
+        `post_query_issues` will be passed to
+        `post_query_issues_with_metadata`.
         """
         return response, metadata
 
@@ -866,6 +920,159 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
                 )
             return resp
 
+    class _QueryIssues(
+        _BaseDatabaseCenterRestTransport._BaseQueryIssues, DatabaseCenterRestStub
+    ):
+        def __hash__(self):
+            return hash("DatabaseCenterRestTransport.QueryIssues")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: service.QueryIssuesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> service.QueryIssuesResponse:
+            r"""Call the query issues method over HTTP.
+
+            Args:
+                request (~.service.QueryIssuesRequest):
+                    The request object. QueryIssuesRequest is the request to
+                get a list of issues.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.service.QueryIssuesResponse:
+                    QueryIssuesResponse is the response
+                containing a list of issues.
+
+            """
+
+            http_options = (
+                _BaseDatabaseCenterRestTransport._BaseQueryIssues._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_query_issues(request, metadata)
+            transcoded_request = _BaseDatabaseCenterRestTransport._BaseQueryIssues._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDatabaseCenterRestTransport._BaseQueryIssues._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDatabaseCenterRestTransport._BaseQueryIssues._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.databasecenter_v1beta.DatabaseCenterClient.QueryIssues",
+                    extra={
+                        "serviceName": "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                        "rpcName": "QueryIssues",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DatabaseCenterRestTransport._QueryIssues._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = service.QueryIssuesResponse()
+            pb_resp = service.QueryIssuesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_query_issues(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_query_issues_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = service.QueryIssuesResponse.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.databasecenter_v1beta.DatabaseCenterClient.query_issues",
+                    extra={
+                        "serviceName": "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                        "rpcName": "QueryIssues",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _QueryProducts(
         _BaseDatabaseCenterRestTransport._BaseQueryProducts, DatabaseCenterRestStub
     ):
@@ -1041,6 +1248,14 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryDatabaseResourceGroups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def query_issues(
+        self,
+    ) -> Callable[[service.QueryIssuesRequest], service.QueryIssuesResponse]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._QueryIssues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def query_products(

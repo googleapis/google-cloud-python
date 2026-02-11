@@ -133,6 +133,15 @@ class SolarPanelOrientation(proto.Enum):
 class Experiment(proto.Enum):
     r"""Specifies pre-GA experiments that can be enabled in the API.
 
+    Requests using this field are classified as a pre-GA offering under
+    the `Google Maps Platform Service Specific
+    Terms <https://cloud.google.com/maps-platform/terms/maps-service-terms>`__.
+    See `launch stage
+    descriptions <https://cloud.google.com/maps-platform/terms/launch-stages>`__
+    for more details.
+
+    New values may be added to this enum in the future.
+
     Values:
         EXPERIMENT_UNSPECIFIED (0):
             No experiments are specified.
@@ -1221,8 +1230,8 @@ class DataLayers(proto.Message):
             Invalid locations (where we don't have data) are
             stored as -9999.
         rgb_url (str):
-            The URL for an image of RGB data (aerial
-            photo) of the region.
+            The URL for an image of RGB data (aerial or
+            satellite photo) of the region.
         mask_url (str):
             The URL for the building mask image: one bit
             per pixel saying whether that pixel is

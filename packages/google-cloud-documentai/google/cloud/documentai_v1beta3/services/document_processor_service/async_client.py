@@ -28,6 +28,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -2705,6 +2706,11 @@ class DocumentProcessorServiceAsyncClient:
                    method.
 
         """
+        warnings.warn(
+            "DocumentProcessorServiceAsyncClient.review_document is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

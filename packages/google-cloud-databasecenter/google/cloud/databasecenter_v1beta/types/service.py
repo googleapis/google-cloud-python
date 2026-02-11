@@ -50,6 +50,10 @@ __protobuf__ = proto.module(
         "AggregateFleetRow",
         "Dimension",
         "BackupDRConfig",
+        "QueryIssuesRequest",
+        "SignalProductsFilters",
+        "QueryIssuesResponse",
+        "DatabaseResourceIssue",
         "Tag",
         "ResourceDetails",
         "DeltaDetails",
@@ -268,12 +272,12 @@ class QueryDatabaseResourceGroupsRequest(proto.Message):
             parentheses must be appropriately used to group the
             combinations.
 
-            Example: location="us-east1" Example:
-            container="projects/123" OR container="projects/456"
-            Example: (container="projects/123" OR
-            container="projects/456") AND location="us-east1" Example:
-            full_resource_name=~"test" Example:
-            full_resource_name=~"test.*master".
+            Example: ``location="us-east1"`` Example:
+            ``container="projects/123" OR container="projects/456"``
+            Example:
+            ``(container="projects/123" OR container="projects/456") AND location="us-east1"``
+            Example: ``full_resource_name=~"test"`` Example:
+            ``full_resource_name=~"test.*master"``
         signal_type_groups (MutableSequence[google.cloud.databasecenter_v1beta.types.SignalTypeGroup]):
             Optional. Groups of signal types that are
             requested.
@@ -317,14 +321,16 @@ class QueryDatabaseResourceGroupsRequest(proto.Message):
             name to indicate ascending order. It only supports a single
             field at a time.
 
-            For example: order_by = "full_resource_name" sorts response
-            in ascending order order_by = "full_resource_name DESC"
-            sorts response in descending order order_by = "issue_count
-            DESC" sorts response in descending order of count of all
-            issues associated with a resource.
+            For example: ``order_by = "full_resource_name"`` sorts
+            response in ascending order
+            ``order_by = "full_resource_name DESC"`` sorts response in
+            descending order ``order_by = "issue_count DESC"`` sorts
+            response in descending order of count of all issues
+            associated with a resource.
 
-            More explicitly, order_by = "full_resource_name, product" is
-            not supported.
+            More explicitly,
+            ``order_by = "full_resource_name, product"`` is not
+            supported.
         page_size (int):
             Optional. If unspecified, at most 50 resource
             groups will be returned. The maximum value is
@@ -634,10 +640,10 @@ class AggregateIssueStatsRequest(proto.Message):
             parentheses must be appropriately used to group the
             combinations.
 
-            Example: location="us-east1" Example:
-            container="projects/123" OR container="projects/456"
-            Example: (container="projects/123" OR
-            container="projects/456") AND location="us-east1".
+            Example: ``location="us-east1"`` Example:
+            ``container="projects/123" OR container="projects/456"``
+            Example:
+            ``(container="projects/123" OR container="projects/456") AND location="us-east1"``
         signal_type_groups (MutableSequence[google.cloud.databasecenter_v1beta.types.SignalTypeGroup]):
             Optional. Lists of signal types that are
             issues.
@@ -877,10 +883,10 @@ class AggregateFleetRequest(proto.Message):
             parentheses must be appropriately used to group the
             combinations.
 
-            Example: location="us-east1" Example:
-            container="projects/123" OR container="projects/456"
-            Example: (container="projects/123" OR
-            container="projects/456") AND location="us-east1".
+            Example: ``location="us-east1"`` Example:
+            ``container="projects/123" OR container="projects/456"``
+            Example:
+            ``(container="projects/123" OR container="projects/456") AND location="us-east1"``
         group_by (str):
             Optional. A field that statistics are grouped by. Valid
             values are any combination of the following:
@@ -910,12 +916,14 @@ class AggregateFleetRequest(proto.Message):
               is ascending. Add "DESC" after the field name to indicate
               descending order. Add "ASC" after the field name to
               indicate ascending order. It supports ordering using
-              multiple fields. For example: order_by =
-              "resource_groups_count" sorts response in ascending order
-              order_by = "resource_groups_count DESC" sorts response in
-              descending order order_by = "product.type, product.version
-              DESC, location" orders by type in ascending order, version
-              in descending order and location in ascending order
+              multiple fields. For example:
+              ``order_by = "resource_groups_count"`` sorts response in
+              ascending order
+              ``order_by = "resource_groups_count DESC"`` sorts response
+              in descending order
+              ``order_by = "product.type, product.version DESC, location"``
+              orders by type in ascending order, version in descending
+              order and location in ascending order
         page_size (int):
             Optional. If unspecified, at most 50 items
             will be returned. The maximum value is 1000;
@@ -1284,6 +1292,166 @@ class BackupDRConfig(proto.Message):
         proto.BOOL,
         number=1,
         optional=True,
+    )
+
+
+class QueryIssuesRequest(proto.Message):
+    r"""QueryIssuesRequest is the request to get a list of issues.
+
+    Attributes:
+        parent (str):
+            Required. Parent can be a project, a folder, or an
+            organization. The list is limited to the one attached to
+            resources within the ``scope`` that a user has access to.
+
+            The allowed values are:
+
+            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            - organizations/{ORGANIZATION_NUMBER} (e.g.,
+              "organizations/123456")
+        filter (str):
+            Optional. Supported fields are: 'product', ``location``,
+            ``issue_severity``, 'tags', 'labels',
+        signal_products_filters (MutableSequence[google.cloud.databasecenter_v1beta.types.SignalProductsFilters]):
+            Optional. Filters based on signal and
+            product. The filter list will be ORed across
+            pairs and ANDed within a signal and products
+            pair.
+        order_by (str):
+            Optional. Following fields are sortable:
+
+            SignalType
+            Product
+            Location
+            IssueSeverity
+
+            The default order is ascending. Add "DESC" after
+            the field name to indicate descending order. Add
+            "ASC" after the field name to indicate ascending
+            order. It only supports a single field at a
+            time.
+        page_size (int):
+            Optional. If unspecified, at most 50 issues
+            will be returned. The maximum value is 1000;
+            values above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``QueryIssues`` call. Provide this to retrieve the
+            subsequent page. All parameters except page size should
+            match the parameters used in the call that provided the page
+            token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    signal_products_filters: MutableSequence[
+        "SignalProductsFilters"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="SignalProductsFilters",
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class SignalProductsFilters(proto.Message):
+    r"""SignalProductsFilters represents a signal and list of
+    supported products.
+
+    Attributes:
+        signal_type (google.cloud.databasecenter_v1beta.types.SignalType):
+            Optional. The type of signal.
+        products (MutableSequence[google.cloud.databasecenter_v1beta.types.Product]):
+            Optional. Product type of the resource. The
+            version of the product will be ignored in
+            filtering.
+    """
+
+    signal_type: signals.SignalType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=signals.SignalType,
+    )
+    products: MutableSequence[gcd_product.Product] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gcd_product.Product,
+    )
+
+
+class QueryIssuesResponse(proto.Message):
+    r"""QueryIssuesResponse is the response containing a list of
+    issues.
+
+    Attributes:
+        resource_issues (MutableSequence[google.cloud.databasecenter_v1beta.types.DatabaseResourceIssue]):
+            List of issues and resource details.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Unordered list. List of unreachable regions
+            from where data could not be retrieved.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    resource_issues: MutableSequence["DatabaseResourceIssue"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DatabaseResourceIssue",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DatabaseResourceIssue(proto.Message):
+    r"""DatabaseResource and Issue associated with it.
+
+    Attributes:
+        signal (google.cloud.databasecenter_v1beta.types.Signal):
+            Signal associated with the issue.
+        resource (google.cloud.databasecenter_v1beta.types.DatabaseResource):
+            Resource associated with the issue.
+    """
+
+    signal: signals.Signal = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=signals.Signal,
+    )
+    resource: "DatabaseResource" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DatabaseResource",
     )
 
 

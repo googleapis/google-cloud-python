@@ -3168,6 +3168,11 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
                    method.
 
         """
+        warnings.warn(
+            "DocumentProcessorServiceClient.review_document is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.

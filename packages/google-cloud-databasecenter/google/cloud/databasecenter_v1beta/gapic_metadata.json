@@ -25,6 +25,11 @@
                 "query_database_resource_groups"
               ]
             },
+            "QueryIssues": {
+              "methods": [
+                "query_issues"
+              ]
+            },
             "QueryProducts": {
               "methods": [
                 "query_products"
@@ -50,6 +55,11 @@
                 "query_database_resource_groups"
               ]
             },
+            "QueryIssues": {
+              "methods": [
+                "query_issues"
+              ]
+            },
             "QueryProducts": {
               "methods": [
                 "query_products"
@@ -73,6 +83,11 @@
             "QueryDatabaseResourceGroups": {
               "methods": [
                 "query_database_resource_groups"
+              ]
+            },
+            "QueryIssues": {
+              "methods": [
+                "query_issues"
               ]
             },
             "QueryProducts": {

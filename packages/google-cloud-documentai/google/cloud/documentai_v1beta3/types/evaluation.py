@@ -89,6 +89,9 @@ class Evaluation(proto.Message):
         kms_key_version_name (str):
             The KMS key version with which data is
             encrypted.
+        revisions (MutableSequence[google.cloud.documentai_v1beta3.types.Evaluation.EvaluationRevision]):
+            Contains all revisions of the evaluation,
+            excluding the latest one.
     """
 
     class Counters(proto.Message):
@@ -136,7 +139,7 @@ class Evaluation(proto.Message):
             recall (float):
                 The calculated recall.
             f1_score (float):
-                The calculated f1 score.
+                The calculated F1 score.
             predicted_occurrences_count (int):
                 The amount of occurrences in predicted
                 documents.
@@ -309,6 +312,47 @@ class Evaluation(proto.Message):
             enum="Evaluation.MultiConfidenceMetrics.MetricsType",
         )
 
+    class EvaluationRevision(proto.Message):
+        r"""A revision of the evaluation.
+
+        Attributes:
+            revision_id (str):
+                Output only. The revision ID of the
+                evaluation.
+            document_counters (google.cloud.documentai_v1beta3.types.Evaluation.Counters):
+                Output only. Counters for the documents used
+                in the evaluation.
+            all_entities_metrics (google.cloud.documentai_v1beta3.types.Evaluation.MultiConfidenceMetrics):
+                Output only. Metrics for all the entities in
+                aggregate.
+            entity_metrics (MutableMapping[str, google.cloud.documentai_v1beta3.types.Evaluation.MultiConfidenceMetrics]):
+                Output only. Metrics across confidence
+                levels, for different entities.
+        """
+
+        revision_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        document_counters: "Evaluation.Counters" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="Evaluation.Counters",
+        )
+        all_entities_metrics: "Evaluation.MultiConfidenceMetrics" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Evaluation.MultiConfidenceMetrics",
+        )
+        entity_metrics: MutableMapping[
+            str, "Evaluation.MultiConfidenceMetrics"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=4,
+            message="Evaluation.MultiConfidenceMetrics",
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -341,6 +385,11 @@ class Evaluation(proto.Message):
     kms_key_version_name: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    revisions: MutableSequence[EvaluationRevision] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=EvaluationRevision,
     )
 
 

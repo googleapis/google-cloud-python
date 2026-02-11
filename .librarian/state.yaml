@@ -16,7 +16,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-ads-datamanager
     version: 0.4.0
-    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/ads/datamanager/v1
         service_config: datamanager_v1.yaml
@@ -429,7 +429,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-artifact-registry
     version: 1.19.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/devtools/artifactregistry/v1
         service_config: artifactregistry_v1.yaml
@@ -496,7 +496,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-auditmanager
     version: 0.1.0
-    last_generated_commit: 85b3f459f91cd08669c27da47d07bb57f6d9aa4d
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/auditmanager/v1
         service_config: auditmanager_v1.yaml
@@ -1054,7 +1054,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-confidentialcomputing
     version: 0.7.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/confidentialcomputing/v1
         service_config: confidentialcomputing_v1.yaml
@@ -1188,7 +1188,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
     version: 0.4.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/databasecenter/v1beta
         service_config: databasecenter_v1beta.yaml
@@ -1247,7 +1247,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-dataform
     version: 0.8.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/dataform/v1beta1
         service_config: dataform_v1beta1.yaml
@@ -1461,7 +1461,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
     version: 3.9.0
-    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/documentai/v1beta3
         service_config: documentai_v1beta3.yaml
@@ -2832,7 +2832,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storage-control
     version: 1.9.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/storage/control/v2
         service_config: storage_v2.yaml
@@ -2888,7 +2888,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-support
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/support/v2beta
         service_config: cloudsupport_v2beta.yaml
@@ -3143,7 +3143,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-visionai
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/cloud/visionai/v1alpha1
         service_config: visionai_v1alpha1.yaml
@@ -3398,7 +3398,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-maps-solar
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/maps/solar/v1
         service_config: solar_v1.yaml
@@ -3663,7 +3663,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 7a5706618f42f482acf583febcc7b977b66c25b2
+    last_generated_commit: 9eea40c74d97622bb0aa406dd313409a376cc73b
     apis:
       - path: google/api
         service_config: serviceconfig.yaml

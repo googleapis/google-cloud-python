@@ -4550,7 +4550,7 @@ class SearchIndexEndpointRequest(proto.Message):
             requested. If negative, INVALID_ARGUMENT error will be
             returned. If unspecified or 0, API will pick a default size,
             which is 10. If the requested page size is larger than the
-            maximum size, API will pick the maximum size, which is 100.
+            maximum size, API will pick the maximum size, which is 200.
         page_token (str):
             The continuation token to fetch the next
             page. If empty, it means it is fetching the

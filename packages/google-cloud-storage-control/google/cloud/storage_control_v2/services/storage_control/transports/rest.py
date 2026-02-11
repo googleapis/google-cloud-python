@@ -104,6 +104,14 @@ class StorageControlRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_folder_recursive(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_folder_recursive(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_managed_folder(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -777,6 +785,25 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         ):
             raise NotImplementedError(
                 "Method DeleteFolder is not available over REST transport"
+            )
+
+    class _DeleteFolderRecursive(
+        _BaseStorageControlRestTransport._BaseDeleteFolderRecursive,
+        StorageControlRestStub,
+    ):
+        def __hash__(self):
+            return hash("StorageControlRestTransport.DeleteFolderRecursive")
+
+        def __call__(
+            self,
+            request: storage_control.DeleteFolderRecursiveRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            raise NotImplementedError(
+                "Method DeleteFolderRecursive is not available over REST transport"
             )
 
     class _DeleteManagedFolder(
@@ -2111,6 +2138,16 @@ class StorageControlRestTransport(_BaseStorageControlRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_folder_recursive(
+        self,
+    ) -> Callable[
+        [storage_control.DeleteFolderRecursiveRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteFolderRecursive(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_managed_folder(

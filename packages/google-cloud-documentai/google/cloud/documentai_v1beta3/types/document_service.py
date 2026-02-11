@@ -168,6 +168,13 @@ class ImportDocumentsRequest(proto.Message):
             batch_input_config (google.cloud.documentai_v1beta3.types.BatchDocumentsInputConfig):
                 The common config to specify a set of
                 documents used as input.
+            document_type (str):
+                Optional. If set, determines the type of the documents to be
+                imported in this batch. It can be used to auto-label the
+                documents with a single entity of the provided type. This
+                field can only be used with a classifier or splitter
+                processor. Providing this field is mutually exclusive with
+                ``entities`` and ``auto_labeling_config``.
         """
 
         class AutoSplitConfig(proto.Message):
@@ -199,6 +206,10 @@ class ImportDocumentsRequest(proto.Message):
             proto.MESSAGE,
             number=1,
             message=document_io.BatchDocumentsInputConfig,
+        )
+        document_type: str = proto.Field(
+            proto.STRING,
+            number=6,
         )
 
     dataset: str = proto.Field(

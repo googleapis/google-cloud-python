@@ -223,6 +223,24 @@ class StorageControlTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.delete_folder_recursive: gapic_v1.method.wrap_method(
+                self.delete_folder_recursive,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.get_storage_layout: gapic_v1.method.wrap_method(
                 self.get_storage_layout,
                 default_retry=retries.Retry(
@@ -596,6 +614,15 @@ class StorageControlTransport(abc.ABC):
         self,
     ) -> Callable[
         [storage_control.RenameFolderRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_folder_recursive(
+        self,
+    ) -> Callable[
+        [storage_control.DeleteFolderRecursiveRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -41,6 +41,648 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.dataform_v1beta1.types import dataform
 
 
+class QueryTeamFolderContentsPager:
+    """A pager for iterating through ``query_team_folder_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``QueryTeamFolderContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.QueryTeamFolderContentsResponse],
+        request: dataform.QueryTeamFolderContentsRequest,
+        response: dataform.QueryTeamFolderContentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryTeamFolderContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.QueryTeamFolderContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[dataform.QueryTeamFolderContentsResponse.TeamFolderContentsEntry]:
+        for page in self.pages:
+            yield from page.entries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryTeamFolderContentsAsyncPager:
+    """A pager for iterating through ``query_team_folder_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``QueryTeamFolderContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.QueryTeamFolderContentsResponse]],
+        request: dataform.QueryTeamFolderContentsRequest,
+        response: dataform.QueryTeamFolderContentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryTeamFolderContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.QueryTeamFolderContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[
+        dataform.QueryTeamFolderContentsResponse.TeamFolderContentsEntry
+    ]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.entries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchTeamFoldersPager:
+    """A pager for iterating through ``search_team_folders`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``results`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``SearchTeamFolders`` requests and continue to iterate
+    through the ``results`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.SearchTeamFoldersResponse],
+        request: dataform.SearchTeamFoldersRequest,
+        response: dataform.SearchTeamFoldersResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.SearchTeamFoldersRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.SearchTeamFoldersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.SearchTeamFoldersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[dataform.SearchTeamFoldersResponse.TeamFolderSearchResult]:
+        for page in self.pages:
+            yield from page.results
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class SearchTeamFoldersAsyncPager:
+    """A pager for iterating through ``search_team_folders`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``results`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``SearchTeamFolders`` requests and continue to iterate
+    through the ``results`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.SearchTeamFoldersResponse]],
+        request: dataform.SearchTeamFoldersRequest,
+        response: dataform.SearchTeamFoldersResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.SearchTeamFoldersRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.SearchTeamFoldersRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.SearchTeamFoldersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[dataform.SearchTeamFoldersResponse.TeamFolderSearchResult]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.results:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryFolderContentsPager:
+    """A pager for iterating through ``query_folder_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``QueryFolderContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.QueryFolderContentsResponse],
+        request: dataform.QueryFolderContentsRequest,
+        response: dataform.QueryFolderContentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryFolderContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryFolderContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.QueryFolderContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[dataform.QueryFolderContentsResponse.FolderContentsEntry]:
+        for page in self.pages:
+            yield from page.entries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryFolderContentsAsyncPager:
+    """A pager for iterating through ``query_folder_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``QueryFolderContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.QueryFolderContentsResponse]],
+        request: dataform.QueryFolderContentsRequest,
+        response: dataform.QueryFolderContentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryFolderContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryFolderContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.QueryFolderContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[dataform.QueryFolderContentsResponse.FolderContentsEntry]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.entries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryUserRootContentsPager:
+    """A pager for iterating through ``query_user_root_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``QueryUserRootContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dataform.QueryUserRootContentsResponse],
+        request: dataform.QueryUserRootContentsRequest,
+        response: dataform.QueryUserRootContentsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryUserRootContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.Retry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryUserRootContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dataform.QueryUserRootContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __iter__(
+        self,
+    ) -> Iterator[dataform.QueryUserRootContentsResponse.RootContentsEntry]:
+        for page in self.pages:
+            yield from page.entries
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class QueryUserRootContentsAsyncPager:
+    """A pager for iterating through ``query_user_root_contents`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``entries`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``QueryUserRootContents`` requests and continue to iterate
+    through the ``entries`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dataform.QueryUserRootContentsResponse]],
+        request: dataform.QueryUserRootContentsRequest,
+        response: dataform.QueryUserRootContentsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dataform_v1beta1.types.QueryUserRootContentsRequest):
+                The initial request object.
+            response (google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse):
+                The initial response object.
+            retry (google.api_core.retry.AsyncRetry): Designation of what errors,
+                if any, should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        self._method = method
+        self._request = dataform.QueryUserRootContentsRequest(request)
+        self._response = response
+        self._retry = retry
+        self._timeout = timeout
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dataform.QueryUserRootContentsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[dataform.QueryUserRootContentsResponse.RootContentsEntry]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.entries:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListRepositoriesPager:
     """A pager for iterating through ``list_repositories`` requests.
 

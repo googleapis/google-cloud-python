@@ -39,11 +39,13 @@ from .types.document import Document, RevisionRef
 from .types.document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
+    Documents,
     GcsDocument,
     GcsDocuments,
     GcsPrefix,
     OcrConfig,
     RawDocument,
+    RawDocuments,
 )
 from .types.document_processor_service import (
     BatchProcessMetadata,
@@ -99,6 +101,7 @@ from .types.document_processor_service import (
     UndeployProcessorVersionMetadata,
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
+    UpdateProcessorVersionMetadata,
 )
 from .types.document_schema import (
     DocumentSchema,
@@ -264,6 +267,7 @@ __all__ = (
     "DocumentProcessorServiceClient",
     "DocumentSchema",
     "DocumentServiceClient",
+    "Documents",
     "EnableProcessorMetadata",
     "EnableProcessorRequest",
     "EnableProcessorResponse",
@@ -314,6 +318,7 @@ __all__ = (
     "ProcessorVersionAlias",
     "PropertyMetadata",
     "RawDocument",
+    "RawDocuments",
     "ReviewDocumentOperationMetadata",
     "ReviewDocumentRequest",
     "ReviewDocumentResponse",
@@ -331,5 +336,6 @@ __all__ = (
     "UpdateDatasetOperationMetadata",
     "UpdateDatasetRequest",
     "UpdateDatasetSchemaRequest",
+    "UpdateProcessorVersionMetadata",
     "Vertex",
 )

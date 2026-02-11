@@ -28,8 +28,10 @@ __protobuf__ = proto.module(
     manifest={
         "DataEncryptionState",
         "Repository",
+        "PrivateResourceMetadata",
         "ListRepositoriesRequest",
         "ListRepositoriesResponse",
+        "MoveRepositoryRequest",
         "GetRepositoryRequest",
         "CreateRepositoryRequest",
         "UpdateRepositoryRequest",
@@ -134,6 +136,27 @@ __protobuf__ = proto.module(
         "Config",
         "GetConfigRequest",
         "UpdateConfigRequest",
+        "Folder",
+        "CreateFolderRequest",
+        "MoveFolderRequest",
+        "GetFolderRequest",
+        "UpdateFolderRequest",
+        "DeleteFolderRequest",
+        "QueryFolderContentsRequest",
+        "QueryFolderContentsResponse",
+        "QueryUserRootContentsRequest",
+        "QueryUserRootContentsResponse",
+        "TeamFolder",
+        "CreateTeamFolderRequest",
+        "GetTeamFolderRequest",
+        "UpdateTeamFolderRequest",
+        "DeleteTeamFolderRequest",
+        "QueryTeamFolderContentsRequest",
+        "QueryTeamFolderContentsResponse",
+        "SearchTeamFoldersRequest",
+        "SearchTeamFoldersResponse",
+        "MoveFolderMetadata",
+        "MoveRepositoryMetadata",
     },
 )
 
@@ -161,6 +184,24 @@ class Repository(proto.Message):
     Attributes:
         name (str):
             Identifier. The repository's name.
+        containing_folder (str):
+            Optional. The name of the containing folder of the
+            repository. The field is immutable and it can be modified
+            via a MoveRepository operation. Format:
+            ``projects/*/locations/*/folders/*``. or
+            ``projects/*/locations/*/teamFolders/*``.
+
+            This field is a member of `oneof`_ ``_containing_folder``.
+        team_folder_name (str):
+            Output only. The resource name of the
+            TeamFolder that this Repository is associated
+            with. This should take the format:
+
+            projects/{project}/locations/{location}/teamFolders/{teamFolder}.
+            If this is not set, the Repository is not
+            associated with a TeamFolder.
+
+            This field is a member of `oneof`_ ``_team_folder_name``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of when the
             repository was created.
@@ -345,6 +386,16 @@ class Repository(proto.Message):
         proto.STRING,
         number=1,
     )
+    containing_folder: str = proto.Field(
+        proto.STRING,
+        number=16,
+        optional=True,
+    )
+    team_folder_name: str = proto.Field(
+        proto.STRING,
+        number=18,
+        optional=True,
+    )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=13,
@@ -394,6 +445,22 @@ class Repository(proto.Message):
         proto.STRING,
         number=15,
         optional=True,
+    )
+
+
+class PrivateResourceMetadata(proto.Message):
+    r"""Metadata used to identify if a resource is user scoped.
+
+    Attributes:
+        user_scoped (bool):
+            Output only. If true, this resource is
+            user-scoped, meaning it is either a workspace or
+            sourced from a workspace.
+    """
+
+    user_scoped: bool = proto.Field(
+        proto.BOOL,
+        number=1,
     )
 
 
@@ -481,6 +548,36 @@ class ListRepositoriesResponse(proto.Message):
     )
 
 
+class MoveRepositoryRequest(proto.Message):
+    r"""``MoveRepository`` request message.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the
+            repository to move.
+        destination_containing_folder (str):
+            Optional. The name of the Folder, TeamFolder, or root
+            location to move the repository to. Can be in the format of:
+            "" to move into the root User folder,
+            ``projects/*/locations/*/folders/*``,
+            ``projects/*/locations/*/teamFolders/*``
+
+            This field is a member of `oneof`_ ``_destination_containing_folder``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_containing_folder: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+
+
 class GetRepositoryRequest(proto.Message):
     r"""``GetRepository`` request message.
 
@@ -556,10 +653,14 @@ class DeleteRepositoryRequest(proto.Message):
         name (str):
             Required. The repository's name.
         force (bool):
-            Optional. If set to true, any child resources
-            of this repository will also be deleted.
-            (Otherwise, the request will only succeed if the
-            repository has no child resources.)
+            Optional. If set to true, child resources of this repository
+            (compilation results and workflow invocations) will also be
+            deleted. Otherwise, the request will only succeed if the
+            repository has no child resources.
+
+            **Note:** *This flag doesn't support deletion of workspaces,
+            release configs or workflow configs. If any of such
+            resources exists in the repository, the request will fail.*.
     """
 
     name: str = proto.Field(
@@ -1025,6 +1126,16 @@ class Workspace(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        disable_moves (bool):
+            Optional. If set to true, workspaces will not
+            be moved if its linked Repository is moved.
+            Instead, it will be deleted.
+
+            This field is a member of `oneof`_ ``_disable_moves``.
+        private_resource_metadata (google.cloud.dataform_v1beta1.types.PrivateResourceMetadata):
+            Output only. Metadata indicating whether this resource is
+            user-scoped. For ``Workspace`` resources, the
+            ``user_scoped`` field is always ``true``.
     """
 
     name: str = proto.Field(
@@ -1045,6 +1156,16 @@ class Workspace(proto.Message):
         proto.STRING,
         number=5,
         optional=True,
+    )
+    disable_moves: bool = proto.Field(
+        proto.BOOL,
+        number=6,
+        optional=True,
+    )
+    private_resource_metadata: "PrivateResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="PrivateResourceMetadata",
     )
 
 
@@ -2333,6 +2454,10 @@ class CompilationResult(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        private_resource_metadata (google.cloud.dataform_v1beta1.types.PrivateResourceMetadata):
+            Output only. Metadata indicating whether this resource is
+            user-scoped. ``CompilationResult`` resource is
+            ``user_scoped`` only if it is sourced from a workspace.
     """
 
     class CompilationError(proto.Message):
@@ -2422,6 +2547,11 @@ class CompilationResult(proto.Message):
         proto.STRING,
         number=11,
         optional=True,
+    )
+    private_resource_metadata: "PrivateResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="PrivateResourceMetadata",
     )
 
 
@@ -2853,6 +2983,23 @@ class CompilationResultAction(proto.Message):
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language
                 for more information on which options are
                 supported.
+            connection (str):
+                Optional. The connection specifying the credentials to be
+                used to read and write to external storage, such as Cloud
+                Storage. The connection can have the form
+                ``{project}.{location}.{connection_id}`` or
+                ``projects/{project}/locations/{location}/connections/{connection_id}``,
+                or be set to DEFAULT.
+            table_format (google.cloud.dataform_v1beta1.types.CompilationResultAction.Relation.TableFormat):
+                Optional. The table format for the BigQuery
+                table.
+            file_format (google.cloud.dataform_v1beta1.types.CompilationResultAction.Relation.FileFormat):
+                Optional. The file format for the BigQuery
+                table.
+            storage_uri (str):
+                Optional. The fully qualified location prefix of the
+                external folder where table data is stored. The URI should
+                be in the format ``gs://bucket/path_to_table/``.
         """
 
         class RelationType(proto.Enum):
@@ -2875,6 +3022,30 @@ class CompilationResultAction(proto.Message):
             VIEW = 2
             INCREMENTAL_TABLE = 3
             MATERIALIZED_VIEW = 4
+
+        class TableFormat(proto.Enum):
+            r"""Supported table formats for BigQuery tables.
+
+            Values:
+                TABLE_FORMAT_UNSPECIFIED (0):
+                    Default value.
+                ICEBERG (1):
+                    Apache Iceberg format.
+            """
+            TABLE_FORMAT_UNSPECIFIED = 0
+            ICEBERG = 1
+
+        class FileFormat(proto.Enum):
+            r"""Supported file formats for BigQuery tables.
+
+            Values:
+                FILE_FORMAT_UNSPECIFIED (0):
+                    Default value.
+                PARQUET (1):
+                    Apache Parquet format.
+            """
+            FILE_FORMAT_UNSPECIFIED = 0
+            PARQUET = 1
 
         class IncrementalTableConfig(proto.Message):
             r"""Contains settings for relations of type ``INCREMENTAL_TABLE``.
@@ -2990,6 +3161,24 @@ class CompilationResultAction(proto.Message):
             proto.STRING,
             proto.STRING,
             number=14,
+        )
+        connection: str = proto.Field(
+            proto.STRING,
+            number=15,
+        )
+        table_format: "CompilationResultAction.Relation.TableFormat" = proto.Field(
+            proto.ENUM,
+            number=16,
+            enum="CompilationResultAction.Relation.TableFormat",
+        )
+        file_format: "CompilationResultAction.Relation.FileFormat" = proto.Field(
+            proto.ENUM,
+            number=17,
+            enum="CompilationResultAction.Relation.FileFormat",
+        )
+        storage_uri: str = proto.Field(
+            proto.STRING,
+            number=18,
         )
 
     class Operations(proto.Message):
@@ -3608,6 +3797,9 @@ class InvocationConfig(proto.Message):
     both ``included_targets`` and ``included_tags`` are unset, all
     actions will be included.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         included_targets (MutableSequence[google.cloud.dataform_v1beta1.types.Target]):
             Optional. The set of action identifiers to
@@ -3627,7 +3819,34 @@ class InvocationConfig(proto.Message):
         service_account (str):
             Optional. The service account to run workflow
             invocations under.
+        query_priority (google.cloud.dataform_v1beta1.types.InvocationConfig.QueryPriority):
+            Optional. Specifies the priority for query
+            execution in BigQuery. More information can be
+            found at
+            https://cloud.google.com/bigquery/docs/running-queries#queries.
+
+            This field is a member of `oneof`_ ``_query_priority``.
     """
+
+    class QueryPriority(proto.Enum):
+        r"""Types of priority for query execution in BigQuery.
+
+        Values:
+            QUERY_PRIORITY_UNSPECIFIED (0):
+                Default value. This value is unused.
+            INTERACTIVE (1):
+                Query will be executed in BigQuery with
+                interactive priority. More information can be
+                found at
+                https://cloud.google.com/bigquery/docs/running-queries#queries.
+            BATCH (2):
+                Query will be executed in BigQuery with batch
+                priority. More information can be found at
+                https://cloud.google.com/bigquery/docs/running-queries#batchqueries.
+        """
+        QUERY_PRIORITY_UNSPECIFIED = 0
+        INTERACTIVE = 1
+        BATCH = 2
 
     included_targets: MutableSequence["Target"] = proto.RepeatedField(
         proto.MESSAGE,
@@ -3653,6 +3872,12 @@ class InvocationConfig(proto.Message):
     service_account: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    query_priority: QueryPriority = proto.Field(
+        proto.ENUM,
+        number=9,
+        optional=True,
+        enum=QueryPriority,
     )
 
 
@@ -3858,6 +4083,11 @@ class WorkflowInvocation(proto.Message):
             etc. The format of this field is a JSON string.
 
             This field is a member of `oneof`_ ``_internal_metadata``.
+        private_resource_metadata (google.cloud.dataform_v1beta1.types.PrivateResourceMetadata):
+            Output only. Metadata indicating whether this resource is
+            user-scoped. ``WorkflowInvocation`` resource is
+            ``user_scoped`` only if it is sourced from a compilation
+            result and the compilation result is user-scoped.
     """
 
     class State(proto.Enum):
@@ -3930,6 +4160,11 @@ class WorkflowInvocation(proto.Message):
         proto.STRING,
         number=9,
         optional=True,
+    )
+    private_resource_metadata: "PrivateResourceMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="PrivateResourceMetadata",
     )
 
 
@@ -4517,6 +4752,8 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
 class Config(proto.Message):
     r"""Config for all repositories in a given project and location.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. The config name.
@@ -4524,6 +4761,13 @@ class Config(proto.Message):
             Optional. The default KMS key that is used if
             no encryption key is provided when a repository
             is created.
+        internal_metadata (str):
+            Output only. All the metadata information
+            that is used internally to serve the resource.
+            For example: timestamps, flags, status fields,
+            etc. The format of this field is a JSON string.
+
+            This field is a member of `oneof`_ ``_internal_metadata``.
     """
 
     name: str = proto.Field(
@@ -4533,6 +4777,11 @@ class Config(proto.Message):
     default_kms_key_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    internal_metadata: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
     )
 
 
@@ -4570,6 +4819,961 @@ class UpdateConfigRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class Folder(proto.Message):
+    r"""Represents a Dataform Folder. This is a resource that is used
+    to organize Files and other Folders and provide hierarchical
+    access controls.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The Folder's name.
+        display_name (str):
+            Required. The Folder's user-friendly name.
+        containing_folder (str):
+            Optional. The containing Folder resource
+            name. This should take the format:
+            projects/{project}/locations/{location}/folders/{folder},
+            projects/{project}/locations/{location}/teamFolders/{teamFolder},
+            or just projects/{project}/locations/{location}
+            if this is a root Folder. This field can only be
+            updated through MoveFolder.
+        team_folder_name (str):
+            Output only. The resource name of the
+            TeamFolder that this Folder is associated with.
+            This should take the format:
+
+            projects/{project}/locations/{location}/teamFolders/{teamFolder}.
+            If this is not set, the Folder is not associated
+            with a TeamFolder and is a UserFolder.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of when the Folder
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of when the Folder
+            was last updated.
+        internal_metadata (str):
+            Output only. All the metadata information
+            that is used internally to serve the resource.
+            For example: timestamps, flags, status fields,
+            etc. The format of this field is a JSON string.
+
+            This field is a member of `oneof`_ ``_internal_metadata``.
+        creator_iam_principal (str):
+            Output only. The IAM principal identifier of
+            the creator of the Folder.
+
+            This field is a member of `oneof`_ ``_creator_iam_principal``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    containing_folder: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    team_folder_name: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    internal_metadata: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
+    creator_iam_principal: str = proto.Field(
+        proto.STRING,
+        number=8,
+        optional=True,
+    )
+
+
+class CreateFolderRequest(proto.Message):
+    r"""``CreateFolder`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The location in which to create the Folder. Must
+            be in the format ``projects/*/locations/*``.
+        folder (google.cloud.dataform_v1beta1.types.Folder):
+            Required. The Folder to create.
+        folder_id (str):
+            The ID to use for the Folder, which will
+            become the final component of the Folder's
+            resource name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    folder: "Folder" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Folder",
+    )
+    folder_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class MoveFolderRequest(proto.Message):
+    r"""``MoveFolder`` request message.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. The full resource name of the
+            Folder to move.
+        destination_containing_folder (str):
+            Optional. The name of the Folder, TeamFolder, or root
+            location to move the Folder to. Can be in the format of: ""
+            to move into the root User folder,
+            ``projects/*/locations/*/folders/*``,
+            ``projects/*/locations/*/teamFolders/*``
+
+            This field is a member of `oneof`_ ``_destination_containing_folder``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    destination_containing_folder: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
+    )
+
+
+class GetFolderRequest(proto.Message):
+    r"""``GetFolder`` request message.
+
+    Attributes:
+        name (str):
+            Required. The Folder's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateFolderRequest(proto.Message):
+    r"""``UpdateFolder`` request message.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Specifies the fields to be updated in the Folder.
+            If left unset, all fields that can be updated, will be
+            updated. A few fields cannot be updated and will be ignored
+            if specified in the update_mask (e.g. parent_name,
+            team_folder_name).
+        folder (google.cloud.dataform_v1beta1.types.Folder):
+            Required. The updated Folder.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    folder: "Folder" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Folder",
+    )
+
+
+class DeleteFolderRequest(proto.Message):
+    r"""``DeleteFolder`` request message.
+
+    Attributes:
+        name (str):
+            Required. The Folder's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class QueryFolderContentsRequest(proto.Message):
+    r"""``QueryFolderContents`` request message.
+
+    Attributes:
+        folder (str):
+            Required. Name of the folder whose contents to list. Format:
+            projects/*/locations/*/folders/\*
+        page_size (int):
+            Optional. Maximum number of paths to return.
+            The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``QueryFolderContents`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``QueryFolderContents``, with the exception of
+            ``page_size``, must match the call that provided the page
+            token.
+        order_by (str):
+            Optional. Field to additionally sort results by. Will order
+            Folders before Repositories, and then by ``order_by`` in
+            ascending order. Supported keywords: display_name (default),
+            create_time, last_modified_time. Examples:
+
+            - ``orderBy="display_name"``
+            - ``orderBy="display_name desc"``
+        filter (str):
+            Optional. Optional filtering for the returned list.
+            Filtering is currently only supported on the
+            ``display_name`` field.
+
+            Example:
+
+            - ``filter="display_name="MyFolder""``
+    """
+
+    folder: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class QueryFolderContentsResponse(proto.Message):
+    r"""``QueryFolderContents`` response message.
+
+    Attributes:
+        entries (MutableSequence[google.cloud.dataform_v1beta1.types.QueryFolderContentsResponse.FolderContentsEntry]):
+            List of entries in the folder.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    class FolderContentsEntry(proto.Message):
+        r"""Represents a single content entry.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            folder (google.cloud.dataform_v1beta1.types.Folder):
+                A subfolder.
+
+                This field is a member of `oneof`_ ``entry``.
+            repository (google.cloud.dataform_v1beta1.types.Repository):
+                A repository.
+
+                This field is a member of `oneof`_ ``entry``.
+        """
+
+        folder: "Folder" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="entry",
+            message="Folder",
+        )
+        repository: "Repository" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="entry",
+            message="Repository",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    entries: MutableSequence[FolderContentsEntry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=FolderContentsEntry,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class QueryUserRootContentsRequest(proto.Message):
+    r"""``QueryUserRootContents`` request message.
+
+    Attributes:
+        location (str):
+            Required. Location of the user root folder whose contents to
+            list. Format: projects/*/locations/*
+        page_size (int):
+            Optional. Maximum number of paths to return.
+            The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``QueryUserRootContents`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``QueryUserRootFolderContents``, with the exception of
+            ``page_size``, must match the call that provided the page
+            token.
+        order_by (str):
+            Optional. Field to additionally sort results by. Will order
+            Folders before Repositories, and then by ``order_by`` in
+            ascending order. Supported keywords: display_name (default),
+            created_at, last_modified_at. Examples:
+
+            - ``orderBy="display_name"``
+            - ``orderBy="display_name desc"``
+        filter (str):
+            Optional. Optional filtering for the returned list.
+            Filtering is currently only supported on the
+            ``display_name`` field.
+
+            Example:
+
+            - ``filter="display_name="MyFolder""``
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class QueryUserRootContentsResponse(proto.Message):
+    r"""``QueryUserRootContents`` response message.
+
+    Attributes:
+        entries (MutableSequence[google.cloud.dataform_v1beta1.types.QueryUserRootContentsResponse.RootContentsEntry]):
+            List of entries in the folder.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    class RootContentsEntry(proto.Message):
+        r"""Represents a single content entry.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            folder (google.cloud.dataform_v1beta1.types.Folder):
+                A subfolder.
+
+                This field is a member of `oneof`_ ``entry``.
+            repository (google.cloud.dataform_v1beta1.types.Repository):
+                A repository.
+
+                This field is a member of `oneof`_ ``entry``.
+        """
+
+        folder: "Folder" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="entry",
+            message="Folder",
+        )
+        repository: "Repository" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="entry",
+            message="Repository",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    entries: MutableSequence[RootContentsEntry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=RootContentsEntry,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class TeamFolder(proto.Message):
+    r"""Represents a Dataform TeamFolder. This is a resource that
+    sits at the project level and is used to organize Repositories
+    and Folders with hierarchical access controls. They provide a
+    team context and stricter access controls.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Identifier. The TeamFolder's name.
+        display_name (str):
+            Required. The TeamFolder's user-friendly
+            name.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of when the
+            TeamFolder was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp of when the
+            TeamFolder was last updated.
+        internal_metadata (str):
+            Output only. All the metadata information
+            that is used internally to serve the resource.
+            For example: timestamps, flags, status fields,
+            etc. The format of this field is a JSON string.
+
+            This field is a member of `oneof`_ ``_internal_metadata``.
+        creator_iam_principal (str):
+            Output only. The IAM principal identifier of
+            the creator of the TeamFolder.
+
+            This field is a member of `oneof`_ ``_creator_iam_principal``.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    internal_metadata: str = proto.Field(
+        proto.STRING,
+        number=5,
+        optional=True,
+    )
+    creator_iam_principal: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
+    )
+
+
+class CreateTeamFolderRequest(proto.Message):
+    r"""``CreateTeamFolder`` request message.
+
+    Attributes:
+        parent (str):
+            Required. The location in which to create the TeamFolder.
+            Must be in the format ``projects/*/locations/*``.
+        team_folder (google.cloud.dataform_v1beta1.types.TeamFolder):
+            Required. The TeamFolder to create.
+        team_folder_id (str):
+            The ID to use for the TeamFolder, which will
+            become the final component of the TeamFolder's
+            resource name.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    team_folder: "TeamFolder" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TeamFolder",
+    )
+    team_folder_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetTeamFolderRequest(proto.Message):
+    r"""``GetTeamFolder`` request message.
+
+    Attributes:
+        name (str):
+            Required. The TeamFolder's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateTeamFolderRequest(proto.Message):
+    r"""``UpdateTeamFolder`` request message.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. Specifies the fields to be updated
+            in the Folder. If left unset, all fields will be
+            updated.
+        team_folder (google.cloud.dataform_v1beta1.types.TeamFolder):
+            Required. The updated TeamFolder.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    team_folder: "TeamFolder" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TeamFolder",
+    )
+
+
+class DeleteTeamFolderRequest(proto.Message):
+    r"""``DeleteTeamFolder`` request message.
+
+    Attributes:
+        name (str):
+            Required. The TeamFolder's name.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class QueryTeamFolderContentsRequest(proto.Message):
+    r"""``QueryTeamFolderContents`` request message.
+
+    Attributes:
+        team_folder (str):
+            Required. Name of the team_folder whose contents to list.
+            Format: ``projects/*/locations/*/teamFolders/*``.
+        page_size (int):
+            Optional. Maximum number of paths to return.
+            The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``QueryTeamFolderContents`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``QueryTeamFolderContents``, with the exception of
+            ``page_size``, must match the call that provided the page
+            token.
+        order_by (str):
+            Optional. Field to additionally sort results by. Will order
+            Folders before Repositories, and then by ``order_by`` in
+            ascending order. Supported keywords: ``display_name``
+            (default), ``create_time``, last_modified_time. Examples:
+
+            - ``orderBy="display_name"``
+            - ``orderBy="display_name desc"``
+        filter (str):
+            Optional. Optional filtering for the returned list.
+            Filtering is currently only supported on the
+            ``display_name`` field.
+
+            Example:
+
+            - ``filter="display_name="MyFolder""``
+    """
+
+    team_folder: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class QueryTeamFolderContentsResponse(proto.Message):
+    r"""``QueryTeamFolderContents`` response message.
+
+    Attributes:
+        entries (MutableSequence[google.cloud.dataform_v1beta1.types.QueryTeamFolderContentsResponse.TeamFolderContentsEntry]):
+            List of entries in the TeamFolder.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    class TeamFolderContentsEntry(proto.Message):
+        r"""Represents a single content entry.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            folder (google.cloud.dataform_v1beta1.types.Folder):
+                A subfolder.
+
+                This field is a member of `oneof`_ ``entry``.
+            repository (google.cloud.dataform_v1beta1.types.Repository):
+                A repository.
+
+                This field is a member of `oneof`_ ``entry``.
+        """
+
+        folder: "Folder" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="entry",
+            message="Folder",
+        )
+        repository: "Repository" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="entry",
+            message="Repository",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    entries: MutableSequence[TeamFolderContentsEntry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=TeamFolderContentsEntry,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SearchTeamFoldersRequest(proto.Message):
+    r"""``SearchTeamFolders`` request message.
+
+    Attributes:
+        location (str):
+            Required. Location in which to query TeamFolders. Format:
+            ``projects/*/locations/*``.
+        page_size (int):
+            Optional. Maximum number of TeamFolders to
+            return. The server may return fewer items than
+            requested. If unspecified, the server will pick
+            an appropriate default.
+        page_token (str):
+            Optional. Page token received from a previous
+            ``SearchTeamFolders`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``SearchTeamFolders``, with the exception of ``page_size``,
+            must match the call that provided the page token.
+        order_by (str):
+            Optional. Field to additionally sort results by. Supported
+            keywords: ``display_name`` (default), ``create_time``,
+            ``last_modified_time``. Examples:
+
+            - ``orderBy="display_name"``
+            - ``orderBy="display_name desc"``
+        filter (str):
+            Optional. Optional filtering for the returned list.
+            Filtering is currently only supported on the
+            ``display_name`` field.
+
+            Example:
+
+            - ``filter="display_name="MyFolder""``
+    """
+
+    location: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class SearchTeamFoldersResponse(proto.Message):
+    r"""``SearchTeamFolders`` response message.
+
+    Attributes:
+        results (MutableSequence[google.cloud.dataform_v1beta1.types.SearchTeamFoldersResponse.TeamFolderSearchResult]):
+            List of TeamFolders that match the search
+            query.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    class TeamFolderSearchResult(proto.Message):
+        r"""Represents a single content entry.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            team_folder (google.cloud.dataform_v1beta1.types.TeamFolder):
+                A TeamFolder resource that is in the project
+                / location.
+
+                This field is a member of `oneof`_ ``entry``.
+        """
+
+        team_folder: "TeamFolder" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="entry",
+            message="TeamFolder",
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    results: MutableSequence[TeamFolderSearchResult] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=TeamFolderSearchResult,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class MoveFolderMetadata(proto.Message):
+    r"""Contains metadata about the progress of the MoveFolder
+    Long-running operations.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Server-defined resource path for
+            the target of the operation.
+        state (google.cloud.dataform_v1beta1.types.MoveFolderMetadata.State):
+            The state of the move.
+        percent_complete (int):
+            Percent complete of the move [0, 100].
+    """
+
+    class State(proto.Enum):
+        r"""Different states of the move.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            INITIALIZED (1):
+                The move was initialized and recorded by the
+                server, but not yet started.
+            IN_PROGRESS (2):
+                The move is in progress.
+            SUCCESS (3):
+                The move has completed successfully.
+            FAILED (4):
+                The move has failed.
+        """
+        STATE_UNSPECIFIED = 0
+        INITIALIZED = 1
+        IN_PROGRESS = 2
+        SUCCESS = 3
+        FAILED = 4
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    percent_complete: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+
+
+class MoveRepositoryMetadata(proto.Message):
+    r"""Contains metadata about the progress of the MoveRepository
+    Long-running operations.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation was
+            created.
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The time the operation finished
+            running.
+        target (str):
+            Output only. Server-defined resource path for
+            the target of the operation.
+        state (google.cloud.dataform_v1beta1.types.MoveRepositoryMetadata.State):
+            The state of the move.
+        percent_complete (int):
+            Percent complete of the move [0, 100].
+    """
+
+    class State(proto.Enum):
+        r"""Different states of the move.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The state is unspecified.
+            INITIALIZED (1):
+                The move was initialized and recorded by the
+                server, but not yet started.
+            IN_PROGRESS (2):
+                The move is in progress.
+            SUCCESS (3):
+                The move has completed successfully.
+            FAILED (4):
+                The move has failed.
+        """
+        STATE_UNSPECIFIED = 0
+        INITIALIZED = 1
+        IN_PROGRESS = 2
+        SUCCESS = 3
+        FAILED = 4
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    percent_complete: int = proto.Field(
+        proto.INT32,
+        number=5,
     )
 
 

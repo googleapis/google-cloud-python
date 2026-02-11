@@ -18,13 +18,16 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
@@ -143,6 +146,71 @@ class DataformTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
+            self.get_team_folder: gapic_v1.method.wrap_method(
+                self.get_team_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_team_folder: gapic_v1.method.wrap_method(
+                self.create_team_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_team_folder: gapic_v1.method.wrap_method(
+                self.update_team_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_team_folder: gapic_v1.method.wrap_method(
+                self.delete_team_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_team_folder_contents: gapic_v1.method.wrap_method(
+                self.query_team_folder_contents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.search_team_folders: gapic_v1.method.wrap_method(
+                self.search_team_folders,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_folder: gapic_v1.method.wrap_method(
+                self.get_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_folder: gapic_v1.method.wrap_method(
+                self.create_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_folder: gapic_v1.method.wrap_method(
+                self.update_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_folder: gapic_v1.method.wrap_method(
+                self.delete_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_folder_contents: gapic_v1.method.wrap_method(
+                self.query_folder_contents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_user_root_contents: gapic_v1.method.wrap_method(
+                self.query_user_root_contents,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.move_folder: gapic_v1.method.wrap_method(
+                self.move_folder,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_repositories: gapic_v1.method.wrap_method(
                 self.list_repositories,
                 default_timeout=None,
@@ -165,6 +233,11 @@ class DataformTransport(abc.ABC):
             ),
             self.delete_repository: gapic_v1.method.wrap_method(
                 self.delete_repository,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.move_repository: gapic_v1.method.wrap_method(
+                self.move_repository,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -413,16 +486,6 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.get_location: gapic_v1.method.wrap_method(
-                self.get_location,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.list_locations: gapic_v1.method.wrap_method(
-                self.list_locations,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
                 default_timeout=None,
@@ -438,6 +501,36 @@ class DataformTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_location: gapic_v1.method.wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: gapic_v1.method.wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -447,6 +540,139 @@ class DataformTransport(abc.ABC):
              Only call this method if the transport is NOT shared
              with other clients - this may cause errors in other clients!
         """
+        raise NotImplementedError()
+
+    @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
+    def get_team_folder(
+        self,
+    ) -> Callable[
+        [dataform.GetTeamFolderRequest],
+        Union[dataform.TeamFolder, Awaitable[dataform.TeamFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_team_folder(
+        self,
+    ) -> Callable[
+        [dataform.CreateTeamFolderRequest],
+        Union[dataform.TeamFolder, Awaitable[dataform.TeamFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_team_folder(
+        self,
+    ) -> Callable[
+        [dataform.UpdateTeamFolderRequest],
+        Union[dataform.TeamFolder, Awaitable[dataform.TeamFolder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_team_folder(
+        self,
+    ) -> Callable[
+        [dataform.DeleteTeamFolderRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_team_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryTeamFolderContentsRequest],
+        Union[
+            dataform.QueryTeamFolderContentsResponse,
+            Awaitable[dataform.QueryTeamFolderContentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def search_team_folders(
+        self,
+    ) -> Callable[
+        [dataform.SearchTeamFoldersRequest],
+        Union[
+            dataform.SearchTeamFoldersResponse,
+            Awaitable[dataform.SearchTeamFoldersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_folder(
+        self,
+    ) -> Callable[
+        [dataform.GetFolderRequest], Union[dataform.Folder, Awaitable[dataform.Folder]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_folder(
+        self,
+    ) -> Callable[
+        [dataform.CreateFolderRequest],
+        Union[dataform.Folder, Awaitable[dataform.Folder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_folder(
+        self,
+    ) -> Callable[
+        [dataform.UpdateFolderRequest],
+        Union[dataform.Folder, Awaitable[dataform.Folder]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_folder(
+        self,
+    ) -> Callable[
+        [dataform.DeleteFolderRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryFolderContentsRequest],
+        Union[
+            dataform.QueryFolderContentsResponse,
+            Awaitable[dataform.QueryFolderContentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_user_root_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryUserRootContentsRequest],
+        Union[
+            dataform.QueryUserRootContentsResponse,
+            Awaitable[dataform.QueryUserRootContentsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_folder(
+        self,
+    ) -> Callable[
+        [dataform.MoveFolderRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
         raise NotImplementedError()
 
     @property
@@ -494,6 +720,15 @@ class DataformTransport(abc.ABC):
     ) -> Callable[
         [dataform.DeleteRepositoryRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def move_repository(
+        self,
+    ) -> Callable[
+        [dataform.MoveRepositoryRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
@@ -1010,19 +1245,19 @@ class DataformTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
+    def get_iam_policy(
         self,
     ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
+        [iam_policy_pb2.GetIamPolicyRequest],
         Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
+    def set_iam_policy(
         self,
     ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
+        [iam_policy_pb2.SetIamPolicyRequest],
         Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
@@ -1037,6 +1272,39 @@ class DataformTransport(abc.ABC):
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest],
+        Union[
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
         raise NotImplementedError()
 
     @property

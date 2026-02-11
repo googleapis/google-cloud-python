@@ -86,6 +86,7 @@ __protobuf__ = proto.module(
         "ImportProcessorVersionRequest",
         "ImportProcessorVersionResponse",
         "ImportProcessorVersionMetadata",
+        "UpdateProcessorVersionMetadata",
     },
 )
 
@@ -156,6 +157,8 @@ class ProcessOptions(proto.Message):
             enable_table_annotation (bool):
                 Optional. Whether to include table
                 annotations in layout parser response.
+            enable_table_split (bool):
+                Optional. Whether to split table.
         """
 
         class ChunkingConfig(proto.Message):
@@ -224,6 +227,10 @@ class ProcessOptions(proto.Message):
         enable_table_annotation: bool = proto.Field(
             proto.BOOL,
             number=6,
+        )
+        enable_table_split: bool = proto.Field(
+            proto.BOOL,
+            number=8,
         )
 
     class IndividualPageSelector(proto.Message):
@@ -2042,6 +2049,24 @@ class ImportProcessorVersionResponse(proto.Message):
 class ImportProcessorVersionMetadata(proto.Message):
     r"""The long-running operation metadata for the
     [ImportProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.ImportProcessorVersion]
+    method.
+
+    Attributes:
+        common_metadata (google.cloud.documentai_v1beta3.types.CommonOperationMetadata):
+            The basic metadata for the long-running
+            operation.
+    """
+
+    common_metadata: operation_metadata.CommonOperationMetadata = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=operation_metadata.CommonOperationMetadata,
+    )
+
+
+class UpdateProcessorVersionMetadata(proto.Message):
+    r"""The long-running operation metadata for the
+    [UpdateProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.UpdateProcessorVersion]
     method.
 
     Attributes:

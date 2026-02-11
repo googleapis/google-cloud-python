@@ -46,7 +46,7 @@ class WarehouseTransport(abc.ABC):
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = "visionai.googleapis.com"
+    DEFAULT_HOST: str = "warehouse-visionai.googleapis.com"
 
     def __init__(
         self,
@@ -65,7 +65,7 @@ class WarehouseTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'visionai.googleapis.com').
+                 The hostname to connect to (default: 'warehouse-visionai.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -498,6 +498,16 @@ class WarehouseTransport(abc.ABC):
             ),
             self.view_collection_items: gapic_v1.method.wrap_method(
                 self.view_collection_items,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_location: gapic_v1.method.wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: gapic_v1.method.wrap_method(
+                self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1174,6 +1184,27 @@ class WarehouseTransport(abc.ABC):
     def delete_operation(
         self,
     ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
+        ],
+    ]:
         raise NotImplementedError()
 
     @property

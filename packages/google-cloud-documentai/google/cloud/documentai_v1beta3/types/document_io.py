@@ -20,18 +20,37 @@ from typing import MutableMapping, MutableSequence
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.documentai_v1beta3.types import document
+
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",
     manifest={
+        "Documents",
         "RawDocument",
         "GcsDocument",
         "GcsDocuments",
         "GcsPrefix",
+        "RawDocuments",
         "BatchDocumentsInputConfig",
         "DocumentOutputConfig",
         "OcrConfig",
     },
 )
+
+
+class Documents(proto.Message):
+    r"""A set of inline documents.
+
+    Attributes:
+        documents (MutableSequence[google.cloud.documentai_v1beta3.types.Document]):
+            The list of documents.
+    """
+
+    documents: MutableSequence[document.Document] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=document.Document,
+    )
 
 
 class RawDocument(proto.Message):
@@ -113,6 +132,21 @@ class GcsPrefix(proto.Message):
     gcs_uri_prefix: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class RawDocuments(proto.Message):
+    r"""Specifies a set of raw documents.
+
+    Attributes:
+        documents (MutableSequence[google.cloud.documentai_v1beta3.types.RawDocument]):
+            Specifies raw document content and mime type.
+    """
+
+    documents: MutableSequence["RawDocument"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="RawDocument",
     )
 
 

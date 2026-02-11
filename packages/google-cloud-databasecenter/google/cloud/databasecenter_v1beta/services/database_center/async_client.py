@@ -437,6 +437,7 @@ class DatabaseCenterAsyncClient:
             google.cloud.databasecenter_v1beta.services.database_center.pagers.AggregateFleetAsyncPager:
                 The response message to aggregate a
                 fleet by some group by fields.
+
                 Iterating over this object will yield
                 results and resolve additional pages
                 automatically.
@@ -655,6 +656,138 @@ class DatabaseCenterAsyncClient:
         # Send the request.
         response = await rpc(
             request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def query_issues(
+        self,
+        request: Optional[Union[service.QueryIssuesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.QueryIssuesAsyncPager:
+        r"""QueryIssues provides a list of issues and
+        recommendations that a user has access to and that are
+        within the requested scope.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import databasecenter_v1beta
+
+            async def sample_query_issues():
+                # Create a client
+                client = databasecenter_v1beta.DatabaseCenterAsyncClient()
+
+                # Initialize request argument(s)
+                request = databasecenter_v1beta.QueryIssuesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.query_issues(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.databasecenter_v1beta.types.QueryIssuesRequest, dict]]):
+                The request object. QueryIssuesRequest is the request to
+                get a list of issues.
+            parent (:class:`str`):
+                Required. Parent can be a project, a folder, or an
+                organization. The list is limited to the one attached to
+                resources within the ``scope`` that a user has access
+                to.
+
+                The allowed values are:
+
+                - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+                - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+                - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+                - organizations/{ORGANIZATION_NUMBER} (e.g.,
+                  "organizations/123456")
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.databasecenter_v1beta.services.database_center.pagers.QueryIssuesAsyncPager:
+                QueryIssuesResponse is the response
+                containing a list of issues.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.QueryIssuesRequest):
+            request = service.QueryIssuesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.query_issues
+        ]
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.QueryIssuesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
             retry=retry,
             timeout=timeout,
             metadata=metadata,

@@ -501,6 +501,36 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
         return self._stubs["rename_folder"]
 
     @property
+    def delete_folder_recursive(
+        self,
+    ) -> Callable[
+        [storage_control.DeleteFolderRecursiveRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete folder recursive method over gRPC.
+
+        Deletes a folder recursively. This operation is only
+        applicable to a hierarchical namespace enabled bucket.
+
+        Returns:
+            Callable[[~.DeleteFolderRecursiveRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_folder_recursive" not in self._stubs:
+            self._stubs["delete_folder_recursive"] = self._logged_channel.unary_unary(
+                "/google.storage.control.v2.StorageControl/DeleteFolderRecursive",
+                request_serializer=storage_control.DeleteFolderRecursiveRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_folder_recursive"]
+
+    @property
     def get_storage_layout(
         self,
     ) -> Callable[
@@ -1211,6 +1241,24 @@ class StorageControlGrpcAsyncIOTransport(StorageControlTransport):
             ),
             self.rename_folder: self._wrap_method(
                 self.rename_folder,
+                default_retry=retries.AsyncRetry(
+                    initial=1.0,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ResourceExhausted,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.delete_folder_recursive: self._wrap_method(
+                self.delete_folder_recursive,
                 default_retry=retries.AsyncRetry(
                     initial=1.0,
                     maximum=60.0,

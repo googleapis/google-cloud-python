@@ -144,13 +144,18 @@ class DocumentSchema(proto.Message):
 
     Attributes:
         display_name (str):
-            Display name to show to users.
+            Display name to show users.
         description (str):
             Description of the schema.
         entity_types (MutableSequence[google.cloud.documentai_v1beta3.types.DocumentSchema.EntityType]):
             Entity types of the schema.
         metadata (google.cloud.documentai_v1beta3.types.DocumentSchema.Metadata):
             Metadata of the schema.
+        document_prompt (str):
+            Optional. Document level prompt provided by
+            the user. This custom text is injected into the
+            AI model's prompt to provide extra,
+            document-wide guidance for processing.
     """
 
     class EntityType(proto.Message):
@@ -166,7 +171,7 @@ class DocumentSchema(proto.Message):
             enum_values (google.cloud.documentai_v1beta3.types.DocumentSchema.EntityType.EnumValues):
                 If specified, lists all the possible values for this entity.
                 This should not be more than a handful of values. If the
-                number of values is >10 or could change frequently use the
+                number of values is >10 or could change frequently, use the
                 ``EntityType.value_ontology`` field and specify a list of
                 all possible values in a value ontology file.
 
@@ -183,8 +188,8 @@ class DocumentSchema(proto.Message):
                 - Maximum 64 characters.
                 - Must start with a letter.
                 - Allowed characters: ASCII letters ``[a-z0-9_-]``. (For
-                  backward compatibility internal infrastructure and tooling
-                  can handle any ascii character.)
+                  backward compatibility, internal infrastructure and
+                  tooling can handle any ASCII character.)
                 - The ``/`` is sometimes used to denote a property of a
                   type. For example ``line_item/amount``. This convention is
                   deprecated, but will still be honored for backward
@@ -251,9 +256,9 @@ class DocumentSchema(proto.Message):
                 example, a bank statement might only have one ``account_number``,
                 but this account number can be mentioned in several places on the
                 document. In this case, the ``account_number`` is considered a
-                ``REQUIRED_ONCE`` entity type. If, on the other hand, we expect a
-                bank statement to contain the status of multiple different accounts
-                for the customers, the occurrence type is set to
+                ``REQUIRED_ONCE`` entity type. If, on the other hand, it's expected
+                that a bank statement contains the status of multiple different
+                accounts for the customers, the occurrence type is set to
                 ``REQUIRED_MULTIPLE``.
 
                 Values:
@@ -383,7 +388,7 @@ class DocumentSchema(proto.Message):
                 If set, all the nested entities must be
                 prefixed with the parents.
             skip_naming_validation (bool):
-                If set, we will skip the naming format validation in the
+                If set, this will skip the naming format validation in the
                 schema. So the string values in
                 ``DocumentSchema.EntityType.name`` and
                 ``DocumentSchema.EntityType.Property.name`` will not be
@@ -424,6 +429,10 @@ class DocumentSchema(proto.Message):
         proto.MESSAGE,
         number=4,
         message=Metadata,
+    )
+    document_prompt: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 

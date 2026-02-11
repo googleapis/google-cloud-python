@@ -65,13 +65,6 @@ class Dataset(proto.Message):
             (not user-managed).
 
             This field is a member of `oneof`_ ``storage_source``.
-        spanner_indexing_config (google.cloud.documentai_v1beta3.types.Dataset.SpannerIndexingConfig):
-            Optional. A lightweight indexing source with
-            low latency and high reliability, but lacking
-            advanced features like CMEK and content-based
-            search.
-
-            This field is a member of `oneof`_ ``indexing_source``.
         name (str):
             Dataset resource name. Format:
             ``projects/{project}/locations/{location}/processors/{processor}/dataset``
@@ -144,9 +137,6 @@ class Dataset(proto.Message):
     class UnmanagedDatasetConfig(proto.Message):
         r"""Configuration specific to an unmanaged dataset."""
 
-    class SpannerIndexingConfig(proto.Message):
-        r"""Configuration specific to spanner-based indexing."""
-
     gcs_managed_config: GCSManagedConfig = proto.Field(
         proto.MESSAGE,
         number=3,
@@ -164,12 +154,6 @@ class Dataset(proto.Message):
         number=6,
         oneof="storage_source",
         message=UnmanagedDatasetConfig,
-    )
-    spanner_indexing_config: SpannerIndexingConfig = proto.Field(
-        proto.MESSAGE,
-        number=4,
-        oneof="indexing_source",
-        message=SpannerIndexingConfig,
     )
     name: str = proto.Field(
         proto.STRING,

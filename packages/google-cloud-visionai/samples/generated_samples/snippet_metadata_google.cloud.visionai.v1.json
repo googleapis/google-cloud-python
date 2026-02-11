@@ -12192,10 +12192,10 @@
         "shortName": "add_collection_item"
       },
       "description": "Sample for AddCollectionItem",
-      "file": "visionai_v1_generated_warehouse_add_collection_item_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_add_collection_item_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AddCollectionItem_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AddCollectionItem_async",
       "segments": [
         {
           "end": 56,
@@ -12228,7 +12228,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_add_collection_item_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_add_collection_item_async.py"
     },
     {
       "canonical": true,
@@ -12272,10 +12272,10 @@
         "shortName": "add_collection_item"
       },
       "description": "Sample for AddCollectionItem",
-      "file": "visionai_v1_generated_warehouse_add_collection_item_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_add_collection_item_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AddCollectionItem_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AddCollectionItem_sync",
       "segments": [
         {
           "end": 56,
@@ -12308,7 +12308,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_add_collection_item_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_add_collection_item_sync.py"
     },
     {
       "canonical": true,
@@ -12349,10 +12349,10 @@
         "shortName": "analyze_asset"
       },
       "description": "Sample for AnalyzeAsset",
-      "file": "visionai_v1_generated_warehouse_analyze_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_analyze_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AnalyzeAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AnalyzeAsset_async",
       "segments": [
         {
           "end": 55,
@@ -12385,7 +12385,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_analyze_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_analyze_asset_async.py"
     },
     {
       "canonical": true,
@@ -12425,10 +12425,10 @@
         "shortName": "analyze_asset"
       },
       "description": "Sample for AnalyzeAsset",
-      "file": "visionai_v1_generated_warehouse_analyze_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_analyze_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AnalyzeAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AnalyzeAsset_sync",
       "segments": [
         {
           "end": 55,
@@ -12461,7 +12461,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_analyze_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_analyze_asset_sync.py"
     },
     {
       "canonical": true,
@@ -12502,10 +12502,10 @@
         "shortName": "analyze_corpus"
       },
       "description": "Sample for AnalyzeCorpus",
-      "file": "visionai_v1_generated_warehouse_analyze_corpus_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_analyze_corpus_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AnalyzeCorpus_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AnalyzeCorpus_async",
       "segments": [
         {
           "end": 55,
@@ -12538,7 +12538,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_analyze_corpus_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_analyze_corpus_async.py"
     },
     {
       "canonical": true,
@@ -12578,10 +12578,10 @@
         "shortName": "analyze_corpus"
       },
       "description": "Sample for AnalyzeCorpus",
-      "file": "visionai_v1_generated_warehouse_analyze_corpus_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_analyze_corpus_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_AnalyzeCorpus_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_AnalyzeCorpus_sync",
       "segments": [
         {
           "end": 55,
@@ -12614,7 +12614,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_analyze_corpus_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_analyze_corpus_sync.py"
     },
     {
       "canonical": true,
@@ -12655,10 +12655,10 @@
         "shortName": "clip_asset"
       },
       "description": "Sample for ClipAsset",
-      "file": "visionai_v1_generated_warehouse_clip_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_clip_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ClipAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ClipAsset_async",
       "segments": [
         {
           "end": 51,
@@ -12691,7 +12691,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_clip_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_clip_asset_async.py"
     },
     {
       "canonical": true,
@@ -12731,10 +12731,10 @@
         "shortName": "clip_asset"
       },
       "description": "Sample for ClipAsset",
-      "file": "visionai_v1_generated_warehouse_clip_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_clip_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ClipAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ClipAsset_sync",
       "segments": [
         {
           "end": 51,
@@ -12767,7 +12767,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_clip_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_clip_asset_sync.py"
     },
     {
       "canonical": true,
@@ -12820,10 +12820,10 @@
         "shortName": "create_annotation"
       },
       "description": "Sample for CreateAnnotation",
-      "file": "visionai_v1_generated_warehouse_create_annotation_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_annotation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateAnnotation_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateAnnotation_async",
       "segments": [
         {
           "end": 51,
@@ -12856,7 +12856,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_annotation_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_annotation_async.py"
     },
     {
       "canonical": true,
@@ -12908,10 +12908,10 @@
         "shortName": "create_annotation"
       },
       "description": "Sample for CreateAnnotation",
-      "file": "visionai_v1_generated_warehouse_create_annotation_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_annotation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateAnnotation_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateAnnotation_sync",
       "segments": [
         {
           "end": 51,
@@ -12944,7 +12944,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_annotation_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_annotation_sync.py"
     },
     {
       "canonical": true,
@@ -12997,10 +12997,10 @@
         "shortName": "create_asset"
       },
       "description": "Sample for CreateAsset",
-      "file": "visionai_v1_generated_warehouse_create_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateAsset_async",
       "segments": [
         {
           "end": 51,
@@ -13033,7 +13033,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_asset_async.py"
     },
     {
       "canonical": true,
@@ -13085,10 +13085,10 @@
         "shortName": "create_asset"
       },
       "description": "Sample for CreateAsset",
-      "file": "visionai_v1_generated_warehouse_create_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateAsset_sync",
       "segments": [
         {
           "end": 51,
@@ -13121,7 +13121,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_asset_sync.py"
     },
     {
       "canonical": true,
@@ -13174,10 +13174,10 @@
         "shortName": "create_collection"
       },
       "description": "Sample for CreateCollection",
-      "file": "visionai_v1_generated_warehouse_create_collection_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_collection_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateCollection_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateCollection_async",
       "segments": [
         {
           "end": 55,
@@ -13210,7 +13210,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_collection_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_collection_async.py"
     },
     {
       "canonical": true,
@@ -13262,10 +13262,10 @@
         "shortName": "create_collection"
       },
       "description": "Sample for CreateCollection",
-      "file": "visionai_v1_generated_warehouse_create_collection_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_collection_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateCollection_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateCollection_sync",
       "segments": [
         {
           "end": 55,
@@ -13298,7 +13298,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_collection_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_collection_sync.py"
     },
     {
       "canonical": true,
@@ -13347,10 +13347,10 @@
         "shortName": "create_corpus"
       },
       "description": "Sample for CreateCorpus",
-      "file": "visionai_v1_generated_warehouse_create_corpus_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_corpus_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateCorpus_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateCorpus_async",
       "segments": [
         {
           "end": 59,
@@ -13383,7 +13383,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_corpus_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_corpus_async.py"
     },
     {
       "canonical": true,
@@ -13431,10 +13431,10 @@
         "shortName": "create_corpus"
       },
       "description": "Sample for CreateCorpus",
-      "file": "visionai_v1_generated_warehouse_create_corpus_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_corpus_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateCorpus_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateCorpus_sync",
       "segments": [
         {
           "end": 59,
@@ -13467,7 +13467,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_corpus_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_corpus_sync.py"
     },
     {
       "canonical": true,
@@ -13516,10 +13516,10 @@
         "shortName": "create_data_schema"
       },
       "description": "Sample for CreateDataSchema",
-      "file": "visionai_v1_generated_warehouse_create_data_schema_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_data_schema_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateDataSchema_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateDataSchema_async",
       "segments": [
         {
           "end": 55,
@@ -13552,7 +13552,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_data_schema_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_data_schema_async.py"
     },
     {
       "canonical": true,
@@ -13600,10 +13600,10 @@
         "shortName": "create_data_schema"
       },
       "description": "Sample for CreateDataSchema",
-      "file": "visionai_v1_generated_warehouse_create_data_schema_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_data_schema_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateDataSchema_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateDataSchema_sync",
       "segments": [
         {
           "end": 55,
@@ -13636,7 +13636,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_data_schema_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_data_schema_sync.py"
     },
     {
       "canonical": true,
@@ -13689,10 +13689,10 @@
         "shortName": "create_index_endpoint"
       },
       "description": "Sample for CreateIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_create_index_endpoint_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_index_endpoint_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateIndexEndpoint_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateIndexEndpoint_async",
       "segments": [
         {
           "end": 55,
@@ -13725,7 +13725,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_index_endpoint_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_index_endpoint_async.py"
     },
     {
       "canonical": true,
@@ -13777,10 +13777,10 @@
         "shortName": "create_index_endpoint"
       },
       "description": "Sample for CreateIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_create_index_endpoint_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_index_endpoint_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateIndexEndpoint_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateIndexEndpoint_sync",
       "segments": [
         {
           "end": 55,
@@ -13813,7 +13813,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_index_endpoint_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_index_endpoint_sync.py"
     },
     {
       "canonical": true,
@@ -13866,10 +13866,10 @@
         "shortName": "create_index"
       },
       "description": "Sample for CreateIndex",
-      "file": "visionai_v1_generated_warehouse_create_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateIndex_async",
       "segments": [
         {
           "end": 59,
@@ -13902,7 +13902,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_index_async.py"
     },
     {
       "canonical": true,
@@ -13954,10 +13954,10 @@
         "shortName": "create_index"
       },
       "description": "Sample for CreateIndex",
-      "file": "visionai_v1_generated_warehouse_create_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateIndex_sync",
       "segments": [
         {
           "end": 59,
@@ -13990,7 +13990,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_index_sync.py"
     },
     {
       "canonical": true,
@@ -14043,10 +14043,10 @@
         "shortName": "create_search_config"
       },
       "description": "Sample for CreateSearchConfig",
-      "file": "visionai_v1_generated_warehouse_create_search_config_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_search_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateSearchConfig_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateSearchConfig_async",
       "segments": [
         {
           "end": 52,
@@ -14079,7 +14079,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_search_config_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_search_config_async.py"
     },
     {
       "canonical": true,
@@ -14131,10 +14131,10 @@
         "shortName": "create_search_config"
       },
       "description": "Sample for CreateSearchConfig",
-      "file": "visionai_v1_generated_warehouse_create_search_config_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_search_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateSearchConfig_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateSearchConfig_sync",
       "segments": [
         {
           "end": 52,
@@ -14167,7 +14167,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_search_config_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_search_config_sync.py"
     },
     {
       "canonical": true,
@@ -14220,10 +14220,10 @@
         "shortName": "create_search_hypernym"
       },
       "description": "Sample for CreateSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_create_search_hypernym_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_search_hypernym_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateSearchHypernym_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateSearchHypernym_async",
       "segments": [
         {
           "end": 51,
@@ -14256,7 +14256,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_search_hypernym_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_search_hypernym_async.py"
     },
     {
       "canonical": true,
@@ -14308,10 +14308,10 @@
         "shortName": "create_search_hypernym"
       },
       "description": "Sample for CreateSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_create_search_hypernym_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_create_search_hypernym_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_CreateSearchHypernym_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_CreateSearchHypernym_sync",
       "segments": [
         {
           "end": 51,
@@ -14344,7 +14344,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_create_search_hypernym_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_create_search_hypernym_sync.py"
     },
     {
       "canonical": true,
@@ -14388,10 +14388,10 @@
         "shortName": "delete_annotation"
       },
       "description": "Sample for DeleteAnnotation",
-      "file": "visionai_v1_generated_warehouse_delete_annotation_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_annotation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteAnnotation_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteAnnotation_async",
       "segments": [
         {
           "end": 49,
@@ -14422,7 +14422,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_annotation_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_annotation_async.py"
     },
     {
       "canonical": true,
@@ -14465,10 +14465,10 @@
         "shortName": "delete_annotation"
       },
       "description": "Sample for DeleteAnnotation",
-      "file": "visionai_v1_generated_warehouse_delete_annotation_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_annotation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteAnnotation_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteAnnotation_sync",
       "segments": [
         {
           "end": 49,
@@ -14499,7 +14499,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_annotation_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_annotation_sync.py"
     },
     {
       "canonical": true,
@@ -14544,10 +14544,10 @@
         "shortName": "delete_asset"
       },
       "description": "Sample for DeleteAsset",
-      "file": "visionai_v1_generated_warehouse_delete_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteAsset_async",
       "segments": [
         {
           "end": 55,
@@ -14580,7 +14580,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_asset_async.py"
     },
     {
       "canonical": true,
@@ -14624,10 +14624,10 @@
         "shortName": "delete_asset"
       },
       "description": "Sample for DeleteAsset",
-      "file": "visionai_v1_generated_warehouse_delete_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteAsset_sync",
       "segments": [
         {
           "end": 55,
@@ -14660,7 +14660,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_asset_sync.py"
     },
     {
       "canonical": true,
@@ -14705,10 +14705,10 @@
         "shortName": "delete_collection"
       },
       "description": "Sample for DeleteCollection",
-      "file": "visionai_v1_generated_warehouse_delete_collection_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_collection_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteCollection_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteCollection_async",
       "segments": [
         {
           "end": 55,
@@ -14741,7 +14741,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_collection_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_collection_async.py"
     },
     {
       "canonical": true,
@@ -14785,10 +14785,10 @@
         "shortName": "delete_collection"
       },
       "description": "Sample for DeleteCollection",
-      "file": "visionai_v1_generated_warehouse_delete_collection_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_collection_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteCollection_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteCollection_sync",
       "segments": [
         {
           "end": 55,
@@ -14821,7 +14821,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_collection_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_collection_sync.py"
     },
     {
       "canonical": true,
@@ -14865,10 +14865,10 @@
         "shortName": "delete_corpus"
       },
       "description": "Sample for DeleteCorpus",
-      "file": "visionai_v1_generated_warehouse_delete_corpus_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_corpus_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteCorpus_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteCorpus_async",
       "segments": [
         {
           "end": 49,
@@ -14899,7 +14899,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_corpus_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_corpus_async.py"
     },
     {
       "canonical": true,
@@ -14942,10 +14942,10 @@
         "shortName": "delete_corpus"
       },
       "description": "Sample for DeleteCorpus",
-      "file": "visionai_v1_generated_warehouse_delete_corpus_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_corpus_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteCorpus_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteCorpus_sync",
       "segments": [
         {
           "end": 49,
@@ -14976,7 +14976,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_corpus_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_corpus_sync.py"
     },
     {
       "canonical": true,
@@ -15020,10 +15020,10 @@
         "shortName": "delete_data_schema"
       },
       "description": "Sample for DeleteDataSchema",
-      "file": "visionai_v1_generated_warehouse_delete_data_schema_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_data_schema_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteDataSchema_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteDataSchema_async",
       "segments": [
         {
           "end": 49,
@@ -15054,7 +15054,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_data_schema_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_data_schema_async.py"
     },
     {
       "canonical": true,
@@ -15097,10 +15097,10 @@
         "shortName": "delete_data_schema"
       },
       "description": "Sample for DeleteDataSchema",
-      "file": "visionai_v1_generated_warehouse_delete_data_schema_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_data_schema_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteDataSchema_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteDataSchema_sync",
       "segments": [
         {
           "end": 49,
@@ -15131,7 +15131,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_data_schema_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_data_schema_sync.py"
     },
     {
       "canonical": true,
@@ -15176,10 +15176,10 @@
         "shortName": "delete_index_endpoint"
       },
       "description": "Sample for DeleteIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_delete_index_endpoint_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_index_endpoint_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteIndexEndpoint_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteIndexEndpoint_async",
       "segments": [
         {
           "end": 55,
@@ -15212,7 +15212,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_index_endpoint_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_index_endpoint_async.py"
     },
     {
       "canonical": true,
@@ -15256,10 +15256,10 @@
         "shortName": "delete_index_endpoint"
       },
       "description": "Sample for DeleteIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_delete_index_endpoint_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_index_endpoint_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteIndexEndpoint_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteIndexEndpoint_sync",
       "segments": [
         {
           "end": 55,
@@ -15292,7 +15292,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_index_endpoint_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_index_endpoint_sync.py"
     },
     {
       "canonical": true,
@@ -15337,10 +15337,10 @@
         "shortName": "delete_index"
       },
       "description": "Sample for DeleteIndex",
-      "file": "visionai_v1_generated_warehouse_delete_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteIndex_async",
       "segments": [
         {
           "end": 55,
@@ -15373,7 +15373,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_index_async.py"
     },
     {
       "canonical": true,
@@ -15417,10 +15417,10 @@
         "shortName": "delete_index"
       },
       "description": "Sample for DeleteIndex",
-      "file": "visionai_v1_generated_warehouse_delete_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteIndex_sync",
       "segments": [
         {
           "end": 55,
@@ -15453,7 +15453,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_index_sync.py"
     },
     {
       "canonical": true,
@@ -15497,10 +15497,10 @@
         "shortName": "delete_search_config"
       },
       "description": "Sample for DeleteSearchConfig",
-      "file": "visionai_v1_generated_warehouse_delete_search_config_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_search_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteSearchConfig_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteSearchConfig_async",
       "segments": [
         {
           "end": 49,
@@ -15531,7 +15531,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_search_config_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_search_config_async.py"
     },
     {
       "canonical": true,
@@ -15574,10 +15574,10 @@
         "shortName": "delete_search_config"
       },
       "description": "Sample for DeleteSearchConfig",
-      "file": "visionai_v1_generated_warehouse_delete_search_config_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_search_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteSearchConfig_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteSearchConfig_sync",
       "segments": [
         {
           "end": 49,
@@ -15608,7 +15608,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_search_config_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_search_config_sync.py"
     },
     {
       "canonical": true,
@@ -15652,10 +15652,10 @@
         "shortName": "delete_search_hypernym"
       },
       "description": "Sample for DeleteSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_delete_search_hypernym_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_search_hypernym_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteSearchHypernym_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteSearchHypernym_async",
       "segments": [
         {
           "end": 49,
@@ -15686,7 +15686,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_search_hypernym_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_search_hypernym_async.py"
     },
     {
       "canonical": true,
@@ -15729,10 +15729,10 @@
         "shortName": "delete_search_hypernym"
       },
       "description": "Sample for DeleteSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_delete_search_hypernym_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_delete_search_hypernym_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeleteSearchHypernym_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeleteSearchHypernym_sync",
       "segments": [
         {
           "end": 49,
@@ -15763,7 +15763,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_delete_search_hypernym_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_delete_search_hypernym_sync.py"
     },
     {
       "canonical": true,
@@ -15804,10 +15804,10 @@
         "shortName": "deploy_index"
       },
       "description": "Sample for DeployIndex",
-      "file": "visionai_v1_generated_warehouse_deploy_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_deploy_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeployIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeployIndex_async",
       "segments": [
         {
           "end": 59,
@@ -15840,7 +15840,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_deploy_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_deploy_index_async.py"
     },
     {
       "canonical": true,
@@ -15880,10 +15880,10 @@
         "shortName": "deploy_index"
       },
       "description": "Sample for DeployIndex",
-      "file": "visionai_v1_generated_warehouse_deploy_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_deploy_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_DeployIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_DeployIndex_sync",
       "segments": [
         {
           "end": 59,
@@ -15916,7 +15916,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_deploy_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_deploy_index_sync.py"
     },
     {
       "canonical": true,
@@ -15957,10 +15957,10 @@
         "shortName": "generate_hls_uri"
       },
       "description": "Sample for GenerateHlsUri",
-      "file": "visionai_v1_generated_warehouse_generate_hls_uri_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_generate_hls_uri_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GenerateHlsUri_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GenerateHlsUri_async",
       "segments": [
         {
           "end": 51,
@@ -15993,7 +15993,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_generate_hls_uri_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_generate_hls_uri_async.py"
     },
     {
       "canonical": true,
@@ -16033,10 +16033,10 @@
         "shortName": "generate_hls_uri"
       },
       "description": "Sample for GenerateHlsUri",
-      "file": "visionai_v1_generated_warehouse_generate_hls_uri_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_generate_hls_uri_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GenerateHlsUri_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GenerateHlsUri_sync",
       "segments": [
         {
           "end": 51,
@@ -16069,7 +16069,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_generate_hls_uri_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_generate_hls_uri_sync.py"
     },
     {
       "canonical": true,
@@ -16110,10 +16110,10 @@
         "shortName": "generate_retrieval_url"
       },
       "description": "Sample for GenerateRetrievalUrl",
-      "file": "visionai_v1_generated_warehouse_generate_retrieval_url_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_generate_retrieval_url_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GenerateRetrievalUrl_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GenerateRetrievalUrl_async",
       "segments": [
         {
           "end": 51,
@@ -16146,7 +16146,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_generate_retrieval_url_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_generate_retrieval_url_async.py"
     },
     {
       "canonical": true,
@@ -16186,10 +16186,10 @@
         "shortName": "generate_retrieval_url"
       },
       "description": "Sample for GenerateRetrievalUrl",
-      "file": "visionai_v1_generated_warehouse_generate_retrieval_url_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_generate_retrieval_url_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GenerateRetrievalUrl_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GenerateRetrievalUrl_sync",
       "segments": [
         {
           "end": 51,
@@ -16222,7 +16222,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_generate_retrieval_url_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_generate_retrieval_url_sync.py"
     },
     {
       "canonical": true,
@@ -16267,10 +16267,10 @@
         "shortName": "get_annotation"
       },
       "description": "Sample for GetAnnotation",
-      "file": "visionai_v1_generated_warehouse_get_annotation_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_annotation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetAnnotation_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetAnnotation_async",
       "segments": [
         {
           "end": 51,
@@ -16303,7 +16303,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_annotation_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_annotation_async.py"
     },
     {
       "canonical": true,
@@ -16347,10 +16347,10 @@
         "shortName": "get_annotation"
       },
       "description": "Sample for GetAnnotation",
-      "file": "visionai_v1_generated_warehouse_get_annotation_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_annotation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetAnnotation_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetAnnotation_sync",
       "segments": [
         {
           "end": 51,
@@ -16383,7 +16383,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_annotation_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_annotation_sync.py"
     },
     {
       "canonical": true,
@@ -16428,10 +16428,10 @@
         "shortName": "get_asset"
       },
       "description": "Sample for GetAsset",
-      "file": "visionai_v1_generated_warehouse_get_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetAsset_async",
       "segments": [
         {
           "end": 51,
@@ -16464,7 +16464,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_asset_async.py"
     },
     {
       "canonical": true,
@@ -16508,10 +16508,10 @@
         "shortName": "get_asset"
       },
       "description": "Sample for GetAsset",
-      "file": "visionai_v1_generated_warehouse_get_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetAsset_sync",
       "segments": [
         {
           "end": 51,
@@ -16544,7 +16544,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_asset_sync.py"
     },
     {
       "canonical": true,
@@ -16589,10 +16589,10 @@
         "shortName": "get_collection"
       },
       "description": "Sample for GetCollection",
-      "file": "visionai_v1_generated_warehouse_get_collection_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_collection_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetCollection_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetCollection_async",
       "segments": [
         {
           "end": 51,
@@ -16625,7 +16625,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_collection_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_collection_async.py"
     },
     {
       "canonical": true,
@@ -16669,10 +16669,10 @@
         "shortName": "get_collection"
       },
       "description": "Sample for GetCollection",
-      "file": "visionai_v1_generated_warehouse_get_collection_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_collection_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetCollection_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetCollection_sync",
       "segments": [
         {
           "end": 51,
@@ -16705,7 +16705,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_collection_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_collection_sync.py"
     },
     {
       "canonical": true,
@@ -16750,10 +16750,10 @@
         "shortName": "get_corpus"
       },
       "description": "Sample for GetCorpus",
-      "file": "visionai_v1_generated_warehouse_get_corpus_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_corpus_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetCorpus_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetCorpus_async",
       "segments": [
         {
           "end": 51,
@@ -16786,7 +16786,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_corpus_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_corpus_async.py"
     },
     {
       "canonical": true,
@@ -16830,10 +16830,10 @@
         "shortName": "get_corpus"
       },
       "description": "Sample for GetCorpus",
-      "file": "visionai_v1_generated_warehouse_get_corpus_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_corpus_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetCorpus_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetCorpus_sync",
       "segments": [
         {
           "end": 51,
@@ -16866,7 +16866,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_corpus_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_corpus_sync.py"
     },
     {
       "canonical": true,
@@ -16911,10 +16911,10 @@
         "shortName": "get_data_schema"
       },
       "description": "Sample for GetDataSchema",
-      "file": "visionai_v1_generated_warehouse_get_data_schema_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_data_schema_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetDataSchema_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetDataSchema_async",
       "segments": [
         {
           "end": 51,
@@ -16947,7 +16947,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_data_schema_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_data_schema_async.py"
     },
     {
       "canonical": true,
@@ -16991,10 +16991,10 @@
         "shortName": "get_data_schema"
       },
       "description": "Sample for GetDataSchema",
-      "file": "visionai_v1_generated_warehouse_get_data_schema_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_data_schema_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetDataSchema_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetDataSchema_sync",
       "segments": [
         {
           "end": 51,
@@ -17027,7 +17027,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_data_schema_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_data_schema_sync.py"
     },
     {
       "canonical": true,
@@ -17072,10 +17072,10 @@
         "shortName": "get_index_endpoint"
       },
       "description": "Sample for GetIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_get_index_endpoint_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_index_endpoint_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetIndexEndpoint_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetIndexEndpoint_async",
       "segments": [
         {
           "end": 51,
@@ -17108,7 +17108,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_index_endpoint_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_index_endpoint_async.py"
     },
     {
       "canonical": true,
@@ -17152,10 +17152,10 @@
         "shortName": "get_index_endpoint"
       },
       "description": "Sample for GetIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_get_index_endpoint_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_index_endpoint_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetIndexEndpoint_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetIndexEndpoint_sync",
       "segments": [
         {
           "end": 51,
@@ -17188,7 +17188,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_index_endpoint_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_index_endpoint_sync.py"
     },
     {
       "canonical": true,
@@ -17233,10 +17233,10 @@
         "shortName": "get_index"
       },
       "description": "Sample for GetIndex",
-      "file": "visionai_v1_generated_warehouse_get_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetIndex_async",
       "segments": [
         {
           "end": 51,
@@ -17269,7 +17269,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_index_async.py"
     },
     {
       "canonical": true,
@@ -17313,10 +17313,10 @@
         "shortName": "get_index"
       },
       "description": "Sample for GetIndex",
-      "file": "visionai_v1_generated_warehouse_get_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetIndex_sync",
       "segments": [
         {
           "end": 51,
@@ -17349,7 +17349,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_index_sync.py"
     },
     {
       "canonical": true,
@@ -17394,10 +17394,10 @@
         "shortName": "get_search_config"
       },
       "description": "Sample for GetSearchConfig",
-      "file": "visionai_v1_generated_warehouse_get_search_config_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_search_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetSearchConfig_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetSearchConfig_async",
       "segments": [
         {
           "end": 51,
@@ -17430,7 +17430,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_search_config_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_search_config_async.py"
     },
     {
       "canonical": true,
@@ -17474,10 +17474,10 @@
         "shortName": "get_search_config"
       },
       "description": "Sample for GetSearchConfig",
-      "file": "visionai_v1_generated_warehouse_get_search_config_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_search_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetSearchConfig_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetSearchConfig_sync",
       "segments": [
         {
           "end": 51,
@@ -17510,7 +17510,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_search_config_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_search_config_sync.py"
     },
     {
       "canonical": true,
@@ -17555,10 +17555,10 @@
         "shortName": "get_search_hypernym"
       },
       "description": "Sample for GetSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_get_search_hypernym_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_search_hypernym_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetSearchHypernym_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetSearchHypernym_async",
       "segments": [
         {
           "end": 51,
@@ -17591,7 +17591,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_search_hypernym_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_search_hypernym_async.py"
     },
     {
       "canonical": true,
@@ -17635,10 +17635,10 @@
         "shortName": "get_search_hypernym"
       },
       "description": "Sample for GetSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_get_search_hypernym_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_get_search_hypernym_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_GetSearchHypernym_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_GetSearchHypernym_sync",
       "segments": [
         {
           "end": 51,
@@ -17671,7 +17671,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_get_search_hypernym_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_get_search_hypernym_sync.py"
     },
     {
       "canonical": true,
@@ -17712,10 +17712,10 @@
         "shortName": "import_assets"
       },
       "description": "Sample for ImportAssets",
-      "file": "visionai_v1_generated_warehouse_import_assets_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_import_assets_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ImportAssets_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ImportAssets_async",
       "segments": [
         {
           "end": 56,
@@ -17748,7 +17748,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_import_assets_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_import_assets_async.py"
     },
     {
       "canonical": true,
@@ -17788,10 +17788,10 @@
         "shortName": "import_assets"
       },
       "description": "Sample for ImportAssets",
-      "file": "visionai_v1_generated_warehouse_import_assets_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_import_assets_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ImportAssets_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ImportAssets_sync",
       "segments": [
         {
           "end": 56,
@@ -17824,7 +17824,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_import_assets_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_import_assets_sync.py"
     },
     {
       "canonical": true,
@@ -17865,10 +17865,10 @@
         "shortName": "index_asset"
       },
       "description": "Sample for IndexAsset",
-      "file": "visionai_v1_generated_warehouse_index_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_index_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_IndexAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_IndexAsset_async",
       "segments": [
         {
           "end": 55,
@@ -17901,7 +17901,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_index_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_index_asset_async.py"
     },
     {
       "canonical": true,
@@ -17941,10 +17941,10 @@
         "shortName": "index_asset"
       },
       "description": "Sample for IndexAsset",
-      "file": "visionai_v1_generated_warehouse_index_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_index_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_IndexAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_IndexAsset_sync",
       "segments": [
         {
           "end": 55,
@@ -17977,7 +17977,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_index_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_index_asset_sync.py"
     },
     {
       "canonical": true,
@@ -18018,10 +18018,10 @@
         "shortName": "ingest_asset"
       },
       "description": "Sample for IngestAsset",
-      "file": "visionai_v1_generated_warehouse_ingest_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_ingest_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_IngestAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_IngestAsset_async",
       "segments": [
         {
           "end": 65,
@@ -18054,7 +18054,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_ingest_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_ingest_asset_async.py"
     },
     {
       "canonical": true,
@@ -18094,10 +18094,10 @@
         "shortName": "ingest_asset"
       },
       "description": "Sample for IngestAsset",
-      "file": "visionai_v1_generated_warehouse_ingest_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_ingest_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_IngestAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_IngestAsset_sync",
       "segments": [
         {
           "end": 65,
@@ -18130,7 +18130,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_ingest_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_ingest_asset_sync.py"
     },
     {
       "canonical": true,
@@ -18175,10 +18175,10 @@
         "shortName": "list_annotations"
       },
       "description": "Sample for ListAnnotations",
-      "file": "visionai_v1_generated_warehouse_list_annotations_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_annotations_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListAnnotations_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListAnnotations_async",
       "segments": [
         {
           "end": 51,
@@ -18211,7 +18211,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_annotations_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_annotations_async.py"
     },
     {
       "canonical": true,
@@ -18255,10 +18255,10 @@
         "shortName": "list_annotations"
       },
       "description": "Sample for ListAnnotations",
-      "file": "visionai_v1_generated_warehouse_list_annotations_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_annotations_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListAnnotations_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListAnnotations_sync",
       "segments": [
         {
           "end": 51,
@@ -18291,7 +18291,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_annotations_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_annotations_sync.py"
     },
     {
       "canonical": true,
@@ -18336,10 +18336,10 @@
         "shortName": "list_assets"
       },
       "description": "Sample for ListAssets",
-      "file": "visionai_v1_generated_warehouse_list_assets_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_assets_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListAssets_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListAssets_async",
       "segments": [
         {
           "end": 52,
@@ -18372,7 +18372,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_assets_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_assets_async.py"
     },
     {
       "canonical": true,
@@ -18416,10 +18416,10 @@
         "shortName": "list_assets"
       },
       "description": "Sample for ListAssets",
-      "file": "visionai_v1_generated_warehouse_list_assets_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_assets_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListAssets_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListAssets_sync",
       "segments": [
         {
           "end": 52,
@@ -18452,7 +18452,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_assets_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_assets_sync.py"
     },
     {
       "canonical": true,
@@ -18497,10 +18497,10 @@
         "shortName": "list_collections"
       },
       "description": "Sample for ListCollections",
-      "file": "visionai_v1_generated_warehouse_list_collections_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_collections_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListCollections_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListCollections_async",
       "segments": [
         {
           "end": 52,
@@ -18533,7 +18533,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_collections_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_collections_async.py"
     },
     {
       "canonical": true,
@@ -18577,10 +18577,10 @@
         "shortName": "list_collections"
       },
       "description": "Sample for ListCollections",
-      "file": "visionai_v1_generated_warehouse_list_collections_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_collections_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListCollections_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListCollections_sync",
       "segments": [
         {
           "end": 52,
@@ -18613,7 +18613,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_collections_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_collections_sync.py"
     },
     {
       "canonical": true,
@@ -18658,10 +18658,10 @@
         "shortName": "list_corpora"
       },
       "description": "Sample for ListCorpora",
-      "file": "visionai_v1_generated_warehouse_list_corpora_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_corpora_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListCorpora_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListCorpora_async",
       "segments": [
         {
           "end": 52,
@@ -18694,7 +18694,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_corpora_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_corpora_async.py"
     },
     {
       "canonical": true,
@@ -18738,10 +18738,10 @@
         "shortName": "list_corpora"
       },
       "description": "Sample for ListCorpora",
-      "file": "visionai_v1_generated_warehouse_list_corpora_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_corpora_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListCorpora_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListCorpora_sync",
       "segments": [
         {
           "end": 52,
@@ -18774,7 +18774,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_corpora_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_corpora_sync.py"
     },
     {
       "canonical": true,
@@ -18819,10 +18819,10 @@
         "shortName": "list_data_schemas"
       },
       "description": "Sample for ListDataSchemas",
-      "file": "visionai_v1_generated_warehouse_list_data_schemas_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_data_schemas_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListDataSchemas_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListDataSchemas_async",
       "segments": [
         {
           "end": 52,
@@ -18855,7 +18855,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_data_schemas_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_data_schemas_async.py"
     },
     {
       "canonical": true,
@@ -18899,10 +18899,10 @@
         "shortName": "list_data_schemas"
       },
       "description": "Sample for ListDataSchemas",
-      "file": "visionai_v1_generated_warehouse_list_data_schemas_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_data_schemas_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListDataSchemas_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListDataSchemas_sync",
       "segments": [
         {
           "end": 52,
@@ -18935,7 +18935,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_data_schemas_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_data_schemas_sync.py"
     },
     {
       "canonical": true,
@@ -18980,10 +18980,10 @@
         "shortName": "list_index_endpoints"
       },
       "description": "Sample for ListIndexEndpoints",
-      "file": "visionai_v1_generated_warehouse_list_index_endpoints_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_index_endpoints_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListIndexEndpoints_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListIndexEndpoints_async",
       "segments": [
         {
           "end": 52,
@@ -19016,7 +19016,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_index_endpoints_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_index_endpoints_async.py"
     },
     {
       "canonical": true,
@@ -19060,10 +19060,10 @@
         "shortName": "list_index_endpoints"
       },
       "description": "Sample for ListIndexEndpoints",
-      "file": "visionai_v1_generated_warehouse_list_index_endpoints_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_index_endpoints_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListIndexEndpoints_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListIndexEndpoints_sync",
       "segments": [
         {
           "end": 52,
@@ -19096,7 +19096,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_index_endpoints_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_index_endpoints_sync.py"
     },
     {
       "canonical": true,
@@ -19141,10 +19141,10 @@
         "shortName": "list_indexes"
       },
       "description": "Sample for ListIndexes",
-      "file": "visionai_v1_generated_warehouse_list_indexes_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_indexes_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListIndexes_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListIndexes_async",
       "segments": [
         {
           "end": 52,
@@ -19177,7 +19177,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_indexes_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_indexes_async.py"
     },
     {
       "canonical": true,
@@ -19221,10 +19221,10 @@
         "shortName": "list_indexes"
       },
       "description": "Sample for ListIndexes",
-      "file": "visionai_v1_generated_warehouse_list_indexes_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_indexes_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListIndexes_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListIndexes_sync",
       "segments": [
         {
           "end": 52,
@@ -19257,7 +19257,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_indexes_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_indexes_sync.py"
     },
     {
       "canonical": true,
@@ -19302,10 +19302,10 @@
         "shortName": "list_search_configs"
       },
       "description": "Sample for ListSearchConfigs",
-      "file": "visionai_v1_generated_warehouse_list_search_configs_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_search_configs_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListSearchConfigs_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListSearchConfigs_async",
       "segments": [
         {
           "end": 52,
@@ -19338,7 +19338,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_search_configs_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_search_configs_async.py"
     },
     {
       "canonical": true,
@@ -19382,10 +19382,10 @@
         "shortName": "list_search_configs"
       },
       "description": "Sample for ListSearchConfigs",
-      "file": "visionai_v1_generated_warehouse_list_search_configs_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_search_configs_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListSearchConfigs_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListSearchConfigs_sync",
       "segments": [
         {
           "end": 52,
@@ -19418,7 +19418,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_search_configs_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_search_configs_sync.py"
     },
     {
       "canonical": true,
@@ -19463,10 +19463,10 @@
         "shortName": "list_search_hypernyms"
       },
       "description": "Sample for ListSearchHypernyms",
-      "file": "visionai_v1_generated_warehouse_list_search_hypernyms_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_search_hypernyms_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListSearchHypernyms_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListSearchHypernyms_async",
       "segments": [
         {
           "end": 52,
@@ -19499,7 +19499,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_search_hypernyms_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_search_hypernyms_async.py"
     },
     {
       "canonical": true,
@@ -19543,10 +19543,10 @@
         "shortName": "list_search_hypernyms"
       },
       "description": "Sample for ListSearchHypernyms",
-      "file": "visionai_v1_generated_warehouse_list_search_hypernyms_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_list_search_hypernyms_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ListSearchHypernyms_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ListSearchHypernyms_sync",
       "segments": [
         {
           "end": 52,
@@ -19579,7 +19579,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_list_search_hypernyms_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_list_search_hypernyms_sync.py"
     },
     {
       "canonical": true,
@@ -19624,10 +19624,10 @@
         "shortName": "remove_collection_item"
       },
       "description": "Sample for RemoveCollectionItem",
-      "file": "visionai_v1_generated_warehouse_remove_collection_item_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_remove_collection_item_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_RemoveCollectionItem_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_RemoveCollectionItem_async",
       "segments": [
         {
           "end": 56,
@@ -19660,7 +19660,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_remove_collection_item_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_remove_collection_item_async.py"
     },
     {
       "canonical": true,
@@ -19704,10 +19704,10 @@
         "shortName": "remove_collection_item"
       },
       "description": "Sample for RemoveCollectionItem",
-      "file": "visionai_v1_generated_warehouse_remove_collection_item_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_remove_collection_item_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_RemoveCollectionItem_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_RemoveCollectionItem_sync",
       "segments": [
         {
           "end": 56,
@@ -19740,7 +19740,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_remove_collection_item_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_remove_collection_item_sync.py"
     },
     {
       "canonical": true,
@@ -19781,10 +19781,10 @@
         "shortName": "remove_index_asset"
       },
       "description": "Sample for RemoveIndexAsset",
-      "file": "visionai_v1_generated_warehouse_remove_index_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_remove_index_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_RemoveIndexAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_RemoveIndexAsset_async",
       "segments": [
         {
           "end": 55,
@@ -19817,7 +19817,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_remove_index_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_remove_index_asset_async.py"
     },
     {
       "canonical": true,
@@ -19857,10 +19857,10 @@
         "shortName": "remove_index_asset"
       },
       "description": "Sample for RemoveIndexAsset",
-      "file": "visionai_v1_generated_warehouse_remove_index_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_remove_index_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_RemoveIndexAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_RemoveIndexAsset_sync",
       "segments": [
         {
           "end": 55,
@@ -19893,7 +19893,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_remove_index_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_remove_index_asset_sync.py"
     },
     {
       "canonical": true,
@@ -19934,10 +19934,10 @@
         "shortName": "search_assets"
       },
       "description": "Sample for SearchAssets",
-      "file": "visionai_v1_generated_warehouse_search_assets_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_search_assets_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_SearchAssets_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_SearchAssets_async",
       "segments": [
         {
           "end": 52,
@@ -19970,7 +19970,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_search_assets_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_search_assets_async.py"
     },
     {
       "canonical": true,
@@ -20010,10 +20010,10 @@
         "shortName": "search_assets"
       },
       "description": "Sample for SearchAssets",
-      "file": "visionai_v1_generated_warehouse_search_assets_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_search_assets_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_SearchAssets_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_SearchAssets_sync",
       "segments": [
         {
           "end": 52,
@@ -20046,7 +20046,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_search_assets_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_search_assets_sync.py"
     },
     {
       "canonical": true,
@@ -20087,10 +20087,10 @@
         "shortName": "search_index_endpoint"
       },
       "description": "Sample for SearchIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_search_index_endpoint_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_search_index_endpoint_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_SearchIndexEndpoint_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_SearchIndexEndpoint_async",
       "segments": [
         {
           "end": 56,
@@ -20123,7 +20123,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_search_index_endpoint_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_search_index_endpoint_async.py"
     },
     {
       "canonical": true,
@@ -20163,10 +20163,10 @@
         "shortName": "search_index_endpoint"
       },
       "description": "Sample for SearchIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_search_index_endpoint_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_search_index_endpoint_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_SearchIndexEndpoint_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_SearchIndexEndpoint_sync",
       "segments": [
         {
           "end": 56,
@@ -20199,7 +20199,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_search_index_endpoint_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_search_index_endpoint_sync.py"
     },
     {
       "canonical": true,
@@ -20240,10 +20240,10 @@
         "shortName": "undeploy_index"
       },
       "description": "Sample for UndeployIndex",
-      "file": "visionai_v1_generated_warehouse_undeploy_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_undeploy_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UndeployIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UndeployIndex_async",
       "segments": [
         {
           "end": 55,
@@ -20276,7 +20276,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_undeploy_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_undeploy_index_async.py"
     },
     {
       "canonical": true,
@@ -20316,10 +20316,10 @@
         "shortName": "undeploy_index"
       },
       "description": "Sample for UndeployIndex",
-      "file": "visionai_v1_generated_warehouse_undeploy_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_undeploy_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UndeployIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UndeployIndex_sync",
       "segments": [
         {
           "end": 55,
@@ -20352,7 +20352,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_undeploy_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_undeploy_index_sync.py"
     },
     {
       "canonical": true,
@@ -20401,10 +20401,10 @@
         "shortName": "update_annotation"
       },
       "description": "Sample for UpdateAnnotation",
-      "file": "visionai_v1_generated_warehouse_update_annotation_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_annotation_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateAnnotation_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateAnnotation_async",
       "segments": [
         {
           "end": 50,
@@ -20437,7 +20437,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_annotation_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_annotation_async.py"
     },
     {
       "canonical": true,
@@ -20485,10 +20485,10 @@
         "shortName": "update_annotation"
       },
       "description": "Sample for UpdateAnnotation",
-      "file": "visionai_v1_generated_warehouse_update_annotation_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_annotation_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateAnnotation_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateAnnotation_sync",
       "segments": [
         {
           "end": 50,
@@ -20521,7 +20521,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_annotation_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_annotation_sync.py"
     },
     {
       "canonical": true,
@@ -20570,10 +20570,10 @@
         "shortName": "update_asset"
       },
       "description": "Sample for UpdateAsset",
-      "file": "visionai_v1_generated_warehouse_update_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateAsset_async",
       "segments": [
         {
           "end": 50,
@@ -20606,7 +20606,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_asset_async.py"
     },
     {
       "canonical": true,
@@ -20654,10 +20654,10 @@
         "shortName": "update_asset"
       },
       "description": "Sample for UpdateAsset",
-      "file": "visionai_v1_generated_warehouse_update_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateAsset_sync",
       "segments": [
         {
           "end": 50,
@@ -20690,7 +20690,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_asset_sync.py"
     },
     {
       "canonical": true,
@@ -20739,10 +20739,10 @@
         "shortName": "update_collection"
       },
       "description": "Sample for UpdateCollection",
-      "file": "visionai_v1_generated_warehouse_update_collection_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_collection_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateCollection_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateCollection_async",
       "segments": [
         {
           "end": 50,
@@ -20775,7 +20775,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_collection_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_collection_async.py"
     },
     {
       "canonical": true,
@@ -20823,10 +20823,10 @@
         "shortName": "update_collection"
       },
       "description": "Sample for UpdateCollection",
-      "file": "visionai_v1_generated_warehouse_update_collection_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_collection_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateCollection_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateCollection_sync",
       "segments": [
         {
           "end": 50,
@@ -20859,7 +20859,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_collection_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_collection_sync.py"
     },
     {
       "canonical": true,
@@ -20908,10 +20908,10 @@
         "shortName": "update_corpus"
       },
       "description": "Sample for UpdateCorpus",
-      "file": "visionai_v1_generated_warehouse_update_corpus_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_corpus_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateCorpus_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateCorpus_async",
       "segments": [
         {
           "end": 54,
@@ -20944,7 +20944,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_corpus_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_corpus_async.py"
     },
     {
       "canonical": true,
@@ -20992,10 +20992,10 @@
         "shortName": "update_corpus"
       },
       "description": "Sample for UpdateCorpus",
-      "file": "visionai_v1_generated_warehouse_update_corpus_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_corpus_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateCorpus_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateCorpus_sync",
       "segments": [
         {
           "end": 54,
@@ -21028,7 +21028,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_corpus_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_corpus_sync.py"
     },
     {
       "canonical": true,
@@ -21077,10 +21077,10 @@
         "shortName": "update_data_schema"
       },
       "description": "Sample for UpdateDataSchema",
-      "file": "visionai_v1_generated_warehouse_update_data_schema_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_data_schema_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateDataSchema_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateDataSchema_async",
       "segments": [
         {
           "end": 54,
@@ -21113,7 +21113,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_data_schema_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_data_schema_async.py"
     },
     {
       "canonical": true,
@@ -21161,10 +21161,10 @@
         "shortName": "update_data_schema"
       },
       "description": "Sample for UpdateDataSchema",
-      "file": "visionai_v1_generated_warehouse_update_data_schema_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_data_schema_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateDataSchema_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateDataSchema_sync",
       "segments": [
         {
           "end": 54,
@@ -21197,7 +21197,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_data_schema_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_data_schema_sync.py"
     },
     {
       "canonical": true,
@@ -21246,10 +21246,10 @@
         "shortName": "update_index_endpoint"
       },
       "description": "Sample for UpdateIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_update_index_endpoint_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_index_endpoint_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateIndexEndpoint_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateIndexEndpoint_async",
       "segments": [
         {
           "end": 54,
@@ -21282,7 +21282,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_index_endpoint_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_index_endpoint_async.py"
     },
     {
       "canonical": true,
@@ -21330,10 +21330,10 @@
         "shortName": "update_index_endpoint"
       },
       "description": "Sample for UpdateIndexEndpoint",
-      "file": "visionai_v1_generated_warehouse_update_index_endpoint_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_index_endpoint_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateIndexEndpoint_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateIndexEndpoint_sync",
       "segments": [
         {
           "end": 54,
@@ -21366,7 +21366,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_index_endpoint_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_index_endpoint_sync.py"
     },
     {
       "canonical": true,
@@ -21415,10 +21415,10 @@
         "shortName": "update_index"
       },
       "description": "Sample for UpdateIndex",
-      "file": "visionai_v1_generated_warehouse_update_index_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_index_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateIndex_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateIndex_async",
       "segments": [
         {
           "end": 58,
@@ -21451,7 +21451,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_index_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_index_async.py"
     },
     {
       "canonical": true,
@@ -21499,10 +21499,10 @@
         "shortName": "update_index"
       },
       "description": "Sample for UpdateIndex",
-      "file": "visionai_v1_generated_warehouse_update_index_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_index_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateIndex_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateIndex_sync",
       "segments": [
         {
           "end": 58,
@@ -21535,7 +21535,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_index_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_index_sync.py"
     },
     {
       "canonical": true,
@@ -21584,10 +21584,10 @@
         "shortName": "update_search_config"
       },
       "description": "Sample for UpdateSearchConfig",
-      "file": "visionai_v1_generated_warehouse_update_search_config_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_search_config_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateSearchConfig_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateSearchConfig_async",
       "segments": [
         {
           "end": 50,
@@ -21620,7 +21620,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_search_config_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_search_config_async.py"
     },
     {
       "canonical": true,
@@ -21668,10 +21668,10 @@
         "shortName": "update_search_config"
       },
       "description": "Sample for UpdateSearchConfig",
-      "file": "visionai_v1_generated_warehouse_update_search_config_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_search_config_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateSearchConfig_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateSearchConfig_sync",
       "segments": [
         {
           "end": 50,
@@ -21704,7 +21704,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_search_config_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_search_config_sync.py"
     },
     {
       "canonical": true,
@@ -21753,10 +21753,10 @@
         "shortName": "update_search_hypernym"
       },
       "description": "Sample for UpdateSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_update_search_hypernym_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_search_hypernym_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateSearchHypernym_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateSearchHypernym_async",
       "segments": [
         {
           "end": 50,
@@ -21789,7 +21789,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_search_hypernym_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_search_hypernym_async.py"
     },
     {
       "canonical": true,
@@ -21837,10 +21837,10 @@
         "shortName": "update_search_hypernym"
       },
       "description": "Sample for UpdateSearchHypernym",
-      "file": "visionai_v1_generated_warehouse_update_search_hypernym_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_update_search_hypernym_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UpdateSearchHypernym_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UpdateSearchHypernym_sync",
       "segments": [
         {
           "end": 50,
@@ -21873,7 +21873,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_update_search_hypernym_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_update_search_hypernym_sync.py"
     },
     {
       "canonical": true,
@@ -21914,10 +21914,10 @@
         "shortName": "upload_asset"
       },
       "description": "Sample for UploadAsset",
-      "file": "visionai_v1_generated_warehouse_upload_asset_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_upload_asset_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UploadAsset_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UploadAsset_async",
       "segments": [
         {
           "end": 55,
@@ -21950,7 +21950,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_upload_asset_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_upload_asset_async.py"
     },
     {
       "canonical": true,
@@ -21990,10 +21990,10 @@
         "shortName": "upload_asset"
       },
       "description": "Sample for UploadAsset",
-      "file": "visionai_v1_generated_warehouse_upload_asset_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_upload_asset_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_UploadAsset_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_UploadAsset_sync",
       "segments": [
         {
           "end": 55,
@@ -22026,7 +22026,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_upload_asset_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_upload_asset_sync.py"
     },
     {
       "canonical": true,
@@ -22071,10 +22071,10 @@
         "shortName": "view_collection_items"
       },
       "description": "Sample for ViewCollectionItems",
-      "file": "visionai_v1_generated_warehouse_view_collection_items_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_view_collection_items_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ViewCollectionItems_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ViewCollectionItems_async",
       "segments": [
         {
           "end": 52,
@@ -22107,7 +22107,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_view_collection_items_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_view_collection_items_async.py"
     },
     {
       "canonical": true,
@@ -22151,10 +22151,10 @@
         "shortName": "view_collection_items"
       },
       "description": "Sample for ViewCollectionItems",
-      "file": "visionai_v1_generated_warehouse_view_collection_items_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_view_collection_items_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ViewCollectionItems_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ViewCollectionItems_sync",
       "segments": [
         {
           "end": 52,
@@ -22187,7 +22187,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_view_collection_items_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_view_collection_items_sync.py"
     },
     {
       "canonical": true,
@@ -22232,10 +22232,10 @@
         "shortName": "view_indexed_assets"
       },
       "description": "Sample for ViewIndexedAssets",
-      "file": "visionai_v1_generated_warehouse_view_indexed_assets_async.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_view_indexed_assets_async.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ViewIndexedAssets_async",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ViewIndexedAssets_async",
       "segments": [
         {
           "end": 52,
@@ -22268,7 +22268,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_view_indexed_assets_async.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_view_indexed_assets_async.py"
     },
     {
       "canonical": true,
@@ -22312,10 +22312,10 @@
         "shortName": "view_indexed_assets"
       },
       "description": "Sample for ViewIndexedAssets",
-      "file": "visionai_v1_generated_warehouse_view_indexed_assets_sync.py",
+      "file": "warehouse-visionai_v1_generated_warehouse_view_indexed_assets_sync.py",
       "language": "PYTHON",
       "origin": "API_DEFINITION",
-      "regionTag": "visionai_v1_generated_Warehouse_ViewIndexedAssets_sync",
+      "regionTag": "warehouse-visionai_v1_generated_Warehouse_ViewIndexedAssets_sync",
       "segments": [
         {
           "end": 52,
@@ -22348,7 +22348,7 @@
           "type": "RESPONSE_HANDLING"
         }
       ],
-      "title": "visionai_v1_generated_warehouse_view_indexed_assets_sync.py"
+      "title": "warehouse-visionai_v1_generated_warehouse_view_indexed_assets_sync.py"
     }
   ]
 }

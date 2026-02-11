@@ -66,6 +66,7 @@ import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 import google.protobuf.duration_pb2 as duration_pb2  # type: ignore
+import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 import google.protobuf.field_mask_pb2 as field_mask_pb2  # type: ignore
 import google.protobuf.timestamp_pb2 as timestamp_pb2  # type: ignore
 import google.type.expr_pb2 as expr_pb2  # type: ignore
@@ -2940,6 +2941,305 @@ async def test_rename_folder_flattened_error_async():
             storage_control.RenameFolderRequest(),
             name="name_value",
             destination_folder_id="destination_folder_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        storage_control.DeleteFolderRecursiveRequest,
+        dict,
+    ],
+)
+def test_delete_folder_recursive(request_type, transport: str = "grpc"):
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_folder_recursive(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DeleteFolderRecursiveRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_folder_recursive_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storage_control.DeleteFolderRecursiveRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.delete_folder_recursive(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        assert args[0] == storage_control.DeleteFolderRecursiveRequest(
+            name="name_value",
+        )
+
+
+def test_delete_folder_recursive_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = StorageControlClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.delete_folder_recursive
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.delete_folder_recursive
+        ] = mock_rpc
+        request = {}
+        client.delete_folder_recursive(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        client.delete_folder_recursive(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = StorageControlAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.delete_folder_recursive
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.delete_folder_recursive
+        ] = mock_rpc
+
+        request = {}
+        await client.delete_folder_recursive(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        # Operation methods call wrapper_fn to build a cached
+        # client._transport.operations_client instance on first rpc call.
+        # Subsequent calls should use the cached wrapper
+        wrapper_fn.reset_mock()
+
+        await client.delete_folder_recursive(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_async(
+    transport: str = "grpc_asyncio",
+    request_type=storage_control.DeleteFolderRecursiveRequest,
+):
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+    if isinstance(request, dict):
+        request["request_id"] = "explicit value for autopopulate-able field"
+    else:
+        request.request_id = "explicit value for autopopulate-able field"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_folder_recursive(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = storage_control.DeleteFolderRecursiveRequest()
+        request.request_id = "explicit value for autopopulate-able field"
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_async_from_dict():
+    await test_delete_folder_recursive_async(request_type=dict)
+
+
+def test_delete_folder_recursive_flattened():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_folder_recursive(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_folder_recursive_flattened_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_folder_recursive(
+            storage_control.DeleteFolderRecursiveRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_flattened_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_folder_recursive(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_flattened_error_async():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_folder_recursive(
+            storage_control.DeleteFolderRecursiveRequest(),
+            name="name_value",
         )
 
 
@@ -10054,6 +10354,16 @@ def test_rename_folder_rest_no_http_options():
         client.rename_folder(request)
 
 
+def test_delete_folder_recursive_rest_no_http_options():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = storage_control.DeleteFolderRecursiveRequest()
+    with pytest.raises(RuntimeError):
+        client.delete_folder_recursive(request)
+
+
 def test_get_storage_layout_rest_no_http_options():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -11463,6 +11773,19 @@ def test_rename_folder_rest_error():
     )
 
 
+def test_delete_folder_recursive_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # Since a `google.api.http` annotation is required for using a rest transport
+    # method, this should error.
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.delete_folder_recursive({})
+    assert "Method DeleteFolderRecursive is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
 def test_get_storage_layout_rest_error():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -11893,6 +12216,36 @@ def test_rename_folder_empty_call_grpc():
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_delete_folder_recursive_empty_call_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_folder_recursive(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest()
 
         assert args[0] == request_msg
 
@@ -12607,6 +12960,43 @@ def test_rename_folder_routing_parameters_request_1_grpc():
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+def test_delete_folder_recursive_routing_parameters_request_1_grpc():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_folder_recursive(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest(
             **{"name": "projects/sample1/buckets/sample2/sample3"}
         )
 
@@ -13415,6 +13805,40 @@ async def test_rename_folder_empty_call_grpc_asyncio():
         # clear UUID field so that the check below succeeds
         args[0].request_id = None
         request_msg = storage_control.RenameFolderRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_delete_folder_recursive_empty_call_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_folder_recursive(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest()
 
         assert args[0] == request_msg
 
@@ -14315,6 +14739,47 @@ async def test_rename_folder_routing_parameters_request_1_grpc_asyncio():
 
 
 @pytest.mark.asyncio
+async def test_delete_folder_recursive_routing_parameters_request_1_grpc_asyncio():
+    client = StorageControlAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        await client.delete_folder_recursive(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
+@pytest.mark.asyncio
 async def test_get_storage_layout_routing_parameters_request_1_grpc_asyncio():
     client = StorageControlAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -15135,6 +15600,18 @@ def test_rename_folder_rest_error():
     with pytest.raises(NotImplementedError) as not_implemented_error:
         client.rename_folder({})
     assert "Method RenameFolder is not available over REST transport" in str(
+        not_implemented_error.value
+    )
+
+
+def test_delete_folder_recursive_rest_error():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    with pytest.raises(NotImplementedError) as not_implemented_error:
+        client.delete_folder_recursive({})
+    assert "Method DeleteFolderRecursive is not available over REST transport" in str(
         not_implemented_error.value
     )
 
@@ -16580,6 +17057,35 @@ def test_rename_folder_empty_call_rest():
 
 # This test is a coverage failsafe to make sure that totally empty calls,
 # i.e. request == None and no flattened fields passed, work.
+def test_delete_folder_recursive_empty_call_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        client.delete_folder_recursive(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
 def test_get_storage_layout_empty_call_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17273,6 +17779,42 @@ def test_rename_folder_routing_parameters_request_1_rest():
         )
 
 
+def test_delete_folder_recursive_routing_parameters_request_1_rest():
+    client = StorageControlClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_folder_recursive), "__call__"
+    ) as call:
+        client.delete_folder_recursive(
+            request={"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, kw = call.mock_calls[0]
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(
+            r"[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}",
+            args[0].request_id,
+        )
+        # clear UUID field so that the check below succeeds
+        args[0].request_id = None
+        request_msg = storage_control.DeleteFolderRecursiveRequest(
+            **{"name": "projects/sample1/buckets/sample2/sample3"}
+        )
+
+        assert args[0] == request_msg
+
+        expected_headers = {"bucket": "projects/sample1/buckets/sample2"}
+        assert (
+            gapic_v1.routing_header.to_grpc_metadata(expected_headers) in kw["metadata"]
+        )
+
+
 def test_get_storage_layout_routing_parameters_request_1_rest():
     client = StorageControlClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -17937,6 +18479,7 @@ def test_storage_control_base_transport():
         "get_folder",
         "list_folders",
         "rename_folder",
+        "delete_folder_recursive",
         "get_storage_layout",
         "create_managed_folder",
         "delete_managed_folder",
@@ -18259,6 +18802,9 @@ def test_storage_control_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.rename_folder._session
     session2 = client2.transport.rename_folder._session
+    assert session1 != session2
+    session1 = client1.transport.delete_folder_recursive._session
+    session2 = client2.transport.delete_folder_recursive._session
     assert session1 != session2
     session1 = client1.transport.get_storage_layout._session
     session2 = client2.transport.get_storage_layout._session

@@ -19,13 +19,16 @@ import pickle
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+import google.iam.v1.iam_policy_pb2 as iam_policy_pb2  # type: ignore
+import google.iam.v1.policy_pb2 as policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf.empty_pb2 as empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
@@ -199,6 +202,7 @@ class DataformGrpcTransport(DataformTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -325,6 +329,375 @@ class DataformGrpcTransport(DataformTransport):
     def grpc_channel(self) -> grpc.Channel:
         """Return the channel designed to connect to this service."""
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(
+                self._logged_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
+    def get_team_folder(
+        self,
+    ) -> Callable[[dataform.GetTeamFolderRequest], dataform.TeamFolder]:
+        r"""Return a callable for the get team folder method over gRPC.
+
+        Fetches a single TeamFolder.
+
+        Returns:
+            Callable[[~.GetTeamFolderRequest],
+                    ~.TeamFolder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_team_folder" not in self._stubs:
+            self._stubs["get_team_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/GetTeamFolder",
+                request_serializer=dataform.GetTeamFolderRequest.serialize,
+                response_deserializer=dataform.TeamFolder.deserialize,
+            )
+        return self._stubs["get_team_folder"]
+
+    @property
+    def create_team_folder(
+        self,
+    ) -> Callable[[dataform.CreateTeamFolderRequest], dataform.TeamFolder]:
+        r"""Return a callable for the create team folder method over gRPC.
+
+        Creates a new TeamFolder in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateTeamFolderRequest],
+                    ~.TeamFolder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_team_folder" not in self._stubs:
+            self._stubs["create_team_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CreateTeamFolder",
+                request_serializer=dataform.CreateTeamFolderRequest.serialize,
+                response_deserializer=dataform.TeamFolder.deserialize,
+            )
+        return self._stubs["create_team_folder"]
+
+    @property
+    def update_team_folder(
+        self,
+    ) -> Callable[[dataform.UpdateTeamFolderRequest], dataform.TeamFolder]:
+        r"""Return a callable for the update team folder method over gRPC.
+
+        Updates a single TeamFolder.
+
+        Returns:
+            Callable[[~.UpdateTeamFolderRequest],
+                    ~.TeamFolder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_team_folder" not in self._stubs:
+            self._stubs["update_team_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/UpdateTeamFolder",
+                request_serializer=dataform.UpdateTeamFolderRequest.serialize,
+                response_deserializer=dataform.TeamFolder.deserialize,
+            )
+        return self._stubs["update_team_folder"]
+
+    @property
+    def delete_team_folder(
+        self,
+    ) -> Callable[[dataform.DeleteTeamFolderRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete team folder method over gRPC.
+
+        Deletes a single TeamFolder.
+
+        Returns:
+            Callable[[~.DeleteTeamFolderRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_team_folder" not in self._stubs:
+            self._stubs["delete_team_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteTeamFolder",
+                request_serializer=dataform.DeleteTeamFolderRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_team_folder"]
+
+    @property
+    def query_team_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryTeamFolderContentsRequest],
+        dataform.QueryTeamFolderContentsResponse,
+    ]:
+        r"""Return a callable for the query team folder contents method over gRPC.
+
+        Returns the contents of a given TeamFolder.
+
+        Returns:
+            Callable[[~.QueryTeamFolderContentsRequest],
+                    ~.QueryTeamFolderContentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_team_folder_contents" not in self._stubs:
+            self._stubs[
+                "query_team_folder_contents"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/QueryTeamFolderContents",
+                request_serializer=dataform.QueryTeamFolderContentsRequest.serialize,
+                response_deserializer=dataform.QueryTeamFolderContentsResponse.deserialize,
+            )
+        return self._stubs["query_team_folder_contents"]
+
+    @property
+    def search_team_folders(
+        self,
+    ) -> Callable[
+        [dataform.SearchTeamFoldersRequest], dataform.SearchTeamFoldersResponse
+    ]:
+        r"""Return a callable for the search team folders method over gRPC.
+
+        Returns all TeamFolders in a given location that the
+        caller has access to and match the provided filter.
+
+        Returns:
+            Callable[[~.SearchTeamFoldersRequest],
+                    ~.SearchTeamFoldersResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "search_team_folders" not in self._stubs:
+            self._stubs["search_team_folders"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/SearchTeamFolders",
+                request_serializer=dataform.SearchTeamFoldersRequest.serialize,
+                response_deserializer=dataform.SearchTeamFoldersResponse.deserialize,
+            )
+        return self._stubs["search_team_folders"]
+
+    @property
+    def get_folder(self) -> Callable[[dataform.GetFolderRequest], dataform.Folder]:
+        r"""Return a callable for the get folder method over gRPC.
+
+        Fetches a single Folder.
+
+        Returns:
+            Callable[[~.GetFolderRequest],
+                    ~.Folder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_folder" not in self._stubs:
+            self._stubs["get_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/GetFolder",
+                request_serializer=dataform.GetFolderRequest.serialize,
+                response_deserializer=dataform.Folder.deserialize,
+            )
+        return self._stubs["get_folder"]
+
+    @property
+    def create_folder(
+        self,
+    ) -> Callable[[dataform.CreateFolderRequest], dataform.Folder]:
+        r"""Return a callable for the create folder method over gRPC.
+
+        Creates a new Folder in a given project and location.
+
+        Returns:
+            Callable[[~.CreateFolderRequest],
+                    ~.Folder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_folder" not in self._stubs:
+            self._stubs["create_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/CreateFolder",
+                request_serializer=dataform.CreateFolderRequest.serialize,
+                response_deserializer=dataform.Folder.deserialize,
+            )
+        return self._stubs["create_folder"]
+
+    @property
+    def update_folder(
+        self,
+    ) -> Callable[[dataform.UpdateFolderRequest], dataform.Folder]:
+        r"""Return a callable for the update folder method over gRPC.
+
+        Updates a single Folder.
+
+        Returns:
+            Callable[[~.UpdateFolderRequest],
+                    ~.Folder]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_folder" not in self._stubs:
+            self._stubs["update_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/UpdateFolder",
+                request_serializer=dataform.UpdateFolderRequest.serialize,
+                response_deserializer=dataform.Folder.deserialize,
+            )
+        return self._stubs["update_folder"]
+
+    @property
+    def delete_folder(
+        self,
+    ) -> Callable[[dataform.DeleteFolderRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete folder method over gRPC.
+
+        Deletes a single Folder.
+
+        Returns:
+            Callable[[~.DeleteFolderRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_folder" not in self._stubs:
+            self._stubs["delete_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/DeleteFolder",
+                request_serializer=dataform.DeleteFolderRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_folder"]
+
+    @property
+    def query_folder_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryFolderContentsRequest], dataform.QueryFolderContentsResponse
+    ]:
+        r"""Return a callable for the query folder contents method over gRPC.
+
+        Returns the contents of a given Folder.
+
+        Returns:
+            Callable[[~.QueryFolderContentsRequest],
+                    ~.QueryFolderContentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_folder_contents" not in self._stubs:
+            self._stubs["query_folder_contents"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/QueryFolderContents",
+                request_serializer=dataform.QueryFolderContentsRequest.serialize,
+                response_deserializer=dataform.QueryFolderContentsResponse.deserialize,
+            )
+        return self._stubs["query_folder_contents"]
+
+    @property
+    def query_user_root_contents(
+        self,
+    ) -> Callable[
+        [dataform.QueryUserRootContentsRequest], dataform.QueryUserRootContentsResponse
+    ]:
+        r"""Return a callable for the query user root contents method over gRPC.
+
+        Returns the contents of a caller's root folder in a
+        given location. The root folder contains all resources
+        that are created by the user and not contained in any
+        other folder.
+
+        Returns:
+            Callable[[~.QueryUserRootContentsRequest],
+                    ~.QueryUserRootContentsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_user_root_contents" not in self._stubs:
+            self._stubs["query_user_root_contents"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/QueryUserRootContents",
+                request_serializer=dataform.QueryUserRootContentsRequest.serialize,
+                response_deserializer=dataform.QueryUserRootContentsResponse.deserialize,
+            )
+        return self._stubs["query_user_root_contents"]
+
+    @property
+    def move_folder(
+        self,
+    ) -> Callable[[dataform.MoveFolderRequest], operations_pb2.Operation]:
+        r"""Return a callable for the move folder method over gRPC.
+
+        Moves a Folder to a new Folder, TeamFolder, or the
+        root location.
+
+        Returns:
+            Callable[[~.MoveFolderRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "move_folder" not in self._stubs:
+            self._stubs["move_folder"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/MoveFolder",
+                request_serializer=dataform.MoveFolderRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["move_folder"]
 
     @property
     def list_repositories(
@@ -468,6 +841,32 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_repository"]
+
+    @property
+    def move_repository(
+        self,
+    ) -> Callable[[dataform.MoveRepositoryRequest], operations_pb2.Operation]:
+        r"""Return a callable for the move repository method over gRPC.
+
+        Moves a Repository to a new location.
+
+        Returns:
+            Callable[[~.MoveRepositoryRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "move_repository" not in self._stubs:
+            self._stubs["move_repository"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/MoveRepository",
+                request_serializer=dataform.MoveRepositoryRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["move_repository"]
 
     @property
     def commit_repository_changes(
@@ -1850,8 +2249,172 @@ class DataformGrpcTransport(DataformTransport):
             )
         return self._stubs["update_config"]
 
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+
+        Gets the access control policy for a resource.
+        Returns an empty policy if the resource exists and does
+        not have a policy set.
+
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+
+        Sets the access control policy on the specified resource.
+        Replaces any existing policy.
+
+        Can return ``NOT_FOUND``, ``INVALID_ARGUMENT``, and
+        ``PERMISSION_DENIED`` errors.
+
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+
+        Returns permissions that a caller has on the specified resource.
+        If the resource does not exist, this will return an empty set of
+        permissions, not a ``NOT_FOUND`` error.
+
+        Note: This operation is designed to be used for building
+        permission-aware UIs and command-line tools, not for
+        authorization checking. This operation may "fail open" without
+        warning.
+
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.cloud.dataform.v1beta1.Dataform/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
+
     def close(self):
         self._logged_channel.close()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
 
     @property
     def list_locations(
@@ -1888,86 +2451,6 @@ class DataformGrpcTransport(DataformTransport):
                 response_deserializer=locations_pb2.Location.FromString,
             )
         return self._stubs["get_location"]
-
-    @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
-        r"""Return a callable for the set iam policy method over gRPC.
-        Sets the IAM access control policy on the specified
-        function. Replaces any existing policy.
-        Returns:
-            Callable[[~.SetIamPolicyRequest],
-                    ~.Policy]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "set_iam_policy" not in self._stubs:
-            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/SetIamPolicy",
-                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["set_iam_policy"]
-
-    @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
-        r"""Return a callable for the get iam policy method over gRPC.
-        Gets the IAM access control policy for a function.
-        Returns an empty policy if the function exists and does
-        not have a policy set.
-        Returns:
-            Callable[[~.GetIamPolicyRequest],
-                    ~.Policy]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_iam_policy" not in self._stubs:
-            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/GetIamPolicy",
-                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy_pb2.Policy.FromString,
-            )
-        return self._stubs["get_iam_policy"]
-
-    @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
-        r"""Return a callable for the test iam permissions method over gRPC.
-        Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
-        return an empty set of permissions, not a NOT_FOUND error.
-        Returns:
-            Callable[[~.TestIamPermissionsRequest],
-                    ~.TestIamPermissionsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "test_iam_permissions" not in self._stubs:
-            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
-                "/google.iam.v1.IAMPolicy/TestIamPermissions",
-                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
-            )
-        return self._stubs["test_iam_permissions"]
 
     @property
     def kind(self) -> str:

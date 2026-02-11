@@ -144,7 +144,7 @@ class MaintenanceInfo(proto.Message):
             Optional. List of Deny maintenance period for
             the database resource.
         maintenance_version (str):
-            Optional. Current Maintenance version of the database
+            Output only. Current Maintenance version of the database
             resource. Example: "MYSQL_8_0_41.R20250531.01_15".
     """
 

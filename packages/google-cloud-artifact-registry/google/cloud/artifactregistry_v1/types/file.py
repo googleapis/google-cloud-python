@@ -55,10 +55,13 @@ class Hash(proto.Message):
                 SHA256 hash.
             MD5 (2):
                 MD5 hash.
+            DIRSUM_SHA256 (3):
+                Dirsum SHA256 hash.
         """
         HASH_TYPE_UNSPECIFIED = 0
         SHA256 = 1
         MD5 = 2
+        DIRSUM_SHA256 = 3
 
     type_: HashType = proto.Field(
         proto.ENUM,

@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "Challenge",
         "CreateChallengeRequest",
         "VerifyAttestationRequest",
+        "NvidiaAttestation",
         "TdxCcelAttestation",
         "SevSnpAttestation",
         "VerifyAttestationResponse",
@@ -222,6 +223,11 @@ class VerifyAttestationRequest(proto.Message):
             Optional. An SEV-SNP Attestation Report.
 
             This field is a member of `oneof`_ ``tee_attestation``.
+        nvidia_attestation (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation):
+            Optional. An Nvidia attestation report for
+            GPU and NVSwitch devices.
+
+            This field is a member of `oneof`_ ``device_attestation``.
         challenge (str):
             Required. The name of the Challenge whose nonce was used to
             generate the attestation, in the format
@@ -258,6 +264,12 @@ class VerifyAttestationRequest(proto.Message):
         oneof="tee_attestation",
         message="SevSnpAttestation",
     )
+    nvidia_attestation: "NvidiaAttestation" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="device_attestation",
+        message="NvidiaAttestation",
+    )
     challenge: str = proto.Field(
         proto.STRING,
         number=1,
@@ -285,6 +297,199 @@ class VerifyAttestationRequest(proto.Message):
     attester: str = proto.Field(
         proto.STRING,
         number=8,
+    )
+
+
+class NvidiaAttestation(proto.Message):
+    r"""An Nvidia attestation report for GPU and NVSwitch devices.
+    Contains necessary attestation evidence that the client collects
+    for verification.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        spt (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.SinglePassthroughAttestation):
+            Single GPU Passthrough (SPT) attestation.
+
+            This field is a member of `oneof`_ ``cc_feature``.
+        ppcie (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.ProtectedPcieAttestation):
+            Protected PCIe (PPCIE) attestation.
+
+            This field is a member of `oneof`_ ``cc_feature``.
+        mpt (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.MultiGpuSecurePassthroughAttestation):
+            Multi-GPU Secure Passthrough (MPT)
+            attestation.
+
+            This field is a member of `oneof`_ ``cc_feature``.
+    """
+
+    class GpuArchitectureType(proto.Enum):
+        r"""GpuArchitectureType enumerates the supported GPU architecture
+        types.
+
+        Values:
+            GPU_ARCHITECTURE_TYPE_UNSPECIFIED (0):
+                Unspecified GPU architecture type.
+            GPU_ARCHITECTURE_TYPE_HOPPER (8):
+                Hopper GPU architecture type.
+            GPU_ARCHITECTURE_TYPE_BLACKWELL (10):
+                Blackwell GPU architecture type.
+        """
+        GPU_ARCHITECTURE_TYPE_UNSPECIFIED = 0
+        GPU_ARCHITECTURE_TYPE_HOPPER = 8
+        GPU_ARCHITECTURE_TYPE_BLACKWELL = 10
+
+    class GpuInfo(proto.Message):
+        r"""GpuInfo contains the attestation evidence for a GPU device.
+
+        Attributes:
+            uuid (str):
+                Optional. The UUID of the GPU device.
+            driver_version (str):
+                Optional. The driver version of the GPU.
+            vbios_version (str):
+                Optional. The vBIOS version of the GPU.
+            gpu_architecture_type (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.GpuArchitectureType):
+                Optional. The GPU architecture type.
+            attestation_certificate_chain (bytes):
+                Optional. The raw attestation certificate
+                chain for the GPU device.
+            attestation_report (bytes):
+                Optional. The raw attestation report for the GPU device.
+                This field contains SPDM request/response defined in
+                https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.0.pdf
+        """
+
+        uuid: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        driver_version: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        vbios_version: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        gpu_architecture_type: "NvidiaAttestation.GpuArchitectureType" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="NvidiaAttestation.GpuArchitectureType",
+        )
+        attestation_certificate_chain: bytes = proto.Field(
+            proto.BYTES,
+            number=5,
+        )
+        attestation_report: bytes = proto.Field(
+            proto.BYTES,
+            number=6,
+        )
+
+    class SwitchInfo(proto.Message):
+        r"""SwitchInfo contains the attestation evidence for a NVSwitch
+        device.
+
+        Attributes:
+            uuid (str):
+                Optional. The UUID of the NVSwitch device.
+            attestation_certificate_chain (bytes):
+                Optional. The raw attestation certificate
+                chain for the NVSwitch device.
+            attestation_report (bytes):
+                Optional. The raw attestation report for the NvSwitch
+                device. This field contains SPDM request/response defined in
+                https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.1.0.pdf
+        """
+
+        uuid: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        attestation_certificate_chain: bytes = proto.Field(
+            proto.BYTES,
+            number=2,
+        )
+        attestation_report: bytes = proto.Field(
+            proto.BYTES,
+            number=3,
+        )
+
+    class SinglePassthroughAttestation(proto.Message):
+        r"""Single GPU Passthrough (SPT) attestation.
+
+        Attributes:
+            gpu_quote (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.GpuInfo):
+                Optional. Single GPU quote.
+        """
+
+        gpu_quote: "NvidiaAttestation.GpuInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="NvidiaAttestation.GpuInfo",
+        )
+
+    class ProtectedPcieAttestation(proto.Message):
+        r"""Protected PCIe (PPCIE) attestation.
+        Eight Hopper GPUs with Four NVSwitch Passthrough.
+
+        Attributes:
+            gpu_quotes (MutableSequence[google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.GpuInfo]):
+                Optional. A list of GPU infos.
+            switch_quotes (MutableSequence[google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.SwitchInfo]):
+                Optional. A list of SWITCH infos.
+        """
+
+        gpu_quotes: MutableSequence["NvidiaAttestation.GpuInfo"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NvidiaAttestation.GpuInfo",
+        )
+        switch_quotes: MutableSequence[
+            "NvidiaAttestation.SwitchInfo"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="NvidiaAttestation.SwitchInfo",
+        )
+
+    class MultiGpuSecurePassthroughAttestation(proto.Message):
+        r"""MultiGpuSecurePassthroughAttestation contains the attestation
+        evidence for a Multi-GPU Secure Passthrough (MPT) attestation.
+
+        Attributes:
+            gpu_quotes (MutableSequence[google.cloud.confidentialcomputing_v1.types.NvidiaAttestation.GpuInfo]):
+                Optional. A list of GPU quotes.
+        """
+
+        gpu_quotes: MutableSequence["NvidiaAttestation.GpuInfo"] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="NvidiaAttestation.GpuInfo",
+        )
+
+    spt: SinglePassthroughAttestation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="cc_feature",
+        message=SinglePassthroughAttestation,
+    )
+    ppcie: ProtectedPcieAttestation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="cc_feature",
+        message=ProtectedPcieAttestation,
+    )
+    mpt: MultiGpuSecurePassthroughAttestation = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="cc_feature",
+        message=MultiGpuSecurePassthroughAttestation,
     )
 
 
@@ -706,6 +911,10 @@ class VerifyConfidentialSpaceRequest(proto.Message):
         options (google.cloud.confidentialcomputing_v1.types.VerifyConfidentialSpaceRequest.ConfidentialSpaceOptions):
             Optional. A collection of fields that modify
             the token output.
+        nvidia_attestation (google.cloud.confidentialcomputing_v1.types.NvidiaAttestation):
+            Optional. An optional Nvidia attestation
+            report, used to populate hardware rooted claims
+            for Nvidia devices.
     """
 
     class ConfidentialSpaceOptions(proto.Message):
@@ -797,6 +1006,11 @@ class VerifyConfidentialSpaceRequest(proto.Message):
         number=7,
         message=ConfidentialSpaceOptions,
     )
+    nvidia_attestation: "NvidiaAttestation" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="NvidiaAttestation",
+    )
 
 
 class GceShieldedIdentity(proto.Message):
@@ -879,7 +1093,43 @@ class VerifyConfidentialGkeRequest(proto.Message):
             generate the attestation, in the format
             projects/*/locations/*/challenges/\*. The provided Challenge
             will be consumed, and cannot be used again.
+        options (google.cloud.confidentialcomputing_v1.types.VerifyConfidentialGkeRequest.ConfidentialGkeOptions):
+            Optional. A collection of fields that modify
+            the token output.
     """
+
+    class ConfidentialGkeOptions(proto.Message):
+        r"""Token options for Confidential GKE attestation.
+
+        Attributes:
+            audience (str):
+                Optional. Optional string to issue the token
+                with a custom audience claim. Required if custom
+                nonces are specified.
+            nonce (MutableSequence[str]):
+                Optional. Optional parameter to place one or more nonces in
+                the eat_nonce claim in the output token. The minimum size
+                for JSON-encoded EATs is 10 bytes and the maximum size is 74
+                bytes.
+            signature_type (google.cloud.confidentialcomputing_v1.types.SignatureType):
+                Optional. Optional specification for how to sign the
+                attestation token. Defaults to SIGNATURE_TYPE_OIDC if
+                unspecified.
+        """
+
+        audience: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        nonce: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
+        signature_type: "SignatureType" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="SignatureType",
+        )
 
     tpm_attestation: "TpmAttestation" = proto.Field(
         proto.MESSAGE,
@@ -890,6 +1140,11 @@ class VerifyConfidentialGkeRequest(proto.Message):
     challenge: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    options: ConfidentialGkeOptions = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=ConfidentialGkeOptions,
     )
 
 

@@ -137,7 +137,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     @classmethod
     def create_channel(
         cls,
-        host: str = "visionai.googleapis.com",
+        host: str = "warehouse-visionai.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -180,7 +180,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     def __init__(
         self,
         *,
-        host: str = "visionai.googleapis.com",
+        host: str = "warehouse-visionai.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -198,7 +198,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'visionai.googleapis.com').
+                 The hostname to connect to (default: 'warehouse-visionai.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -2496,6 +2496,16 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_location: self._wrap_method(
+                self.get_location,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_locations: self._wrap_method(
+                self.list_locations,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.cancel_operation: self._wrap_method(
                 self.cancel_operation,
                 default_timeout=None,
@@ -2599,6 +2609,42 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 response_deserializer=operations_pb2.ListOperationsResponse.FromString,
             )
         return self._stubs["list_operations"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
 
 
 __all__ = ("WarehouseGrpcAsyncIOTransport",)

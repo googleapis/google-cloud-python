@@ -2679,6 +2679,469 @@ async def test_aggregate_issue_stats_async_from_dict():
     await test_aggregate_issue_stats_async(request_type=dict)
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryIssuesRequest,
+        dict,
+    ],
+)
+def test_query_issues(request_type, transport: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.QueryIssuesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.query_issues(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = service.QueryIssuesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryIssuesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_query_issues_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.QueryIssuesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        order_by="order_by_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.query_issues(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.QueryIssuesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            order_by="order_by_value",
+            page_token="page_token_value",
+        )
+
+
+def test_query_issues_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_issues in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.query_issues] = mock_rpc
+        request = {}
+        client.query_issues(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.query_issues(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_issues_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = DatabaseCenterAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.query_issues
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.query_issues
+        ] = mock_rpc
+
+        request = {}
+        await client.query_issues(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.query_issues(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_query_issues_async(
+    transport: str = "grpc_asyncio", request_type=service.QueryIssuesRequest
+):
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryIssuesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.query_issues(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = service.QueryIssuesRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryIssuesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_query_issues_async_from_dict():
+    await test_query_issues_async(request_type=dict)
+
+
+def test_query_issues_flattened():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.QueryIssuesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.query_issues(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_query_issues_flattened_error():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.query_issues(
+            service.QueryIssuesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_query_issues_flattened_async():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.QueryIssuesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryIssuesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.query_issues(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_query_issues_flattened_error_async():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.query_issues(
+            service.QueryIssuesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_query_issues_pager(transport_name: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="abc",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[],
+                next_page_token="def",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        expected_metadata = ()
+        retry = retries.Retry()
+        timeout = 5
+        pager = client.query_issues(request={}, retry=retry, timeout=timeout)
+
+        assert pager._metadata == expected_metadata
+        assert pager._retry == retry
+        assert pager._timeout == timeout
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.DatabaseResourceIssue) for i in results)
+
+
+def test_query_issues_pages(transport_name: str = "grpc"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="abc",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[],
+                next_page_token="def",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.query_issues(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_query_issues_async_pager():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_issues), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="abc",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[],
+                next_page_token="def",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.query_issues(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, service.DatabaseResourceIssue) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_query_issues_async_pages():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.query_issues), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="abc",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[],
+                next_page_token="def",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.query_issues(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_query_products_rest_use_cached_wrapped_rpc():
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
@@ -3418,6 +3881,242 @@ def test_aggregate_issue_stats_rest_unset_required_fields():
     assert set(unset_fields) == (set(()) & set(("parent",)))
 
 
+def test_query_issues_rest_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = DatabaseCenterClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="rest",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert client._transport.query_issues in client._transport._wrapped_methods
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[client._transport.query_issues] = mock_rpc
+
+        request = {}
+        client.query_issues(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.query_issues(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+def test_query_issues_rest_required_fields(request_type=service.QueryIssuesRequest):
+    transport_class = transports.DatabaseCenterRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_issues._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).query_issues._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = service.QueryIssuesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = service.QueryIssuesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+            req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+            response = client.query_issues(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_query_issues_rest_unset_required_fields():
+    transport = transports.DatabaseCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.query_issues._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+def test_query_issues_rest_flattened():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.QueryIssuesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = service.QueryIssuesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+
+        client.query_issues(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1beta:queryIssues" % client.transport._host, args[1]
+        )
+
+
+def test_query_issues_rest_flattened_error(transport: str = "rest"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.query_issues(
+            service.QueryIssuesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_query_issues_rest_pager(transport: str = "rest"):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="abc",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[],
+                next_page_token="def",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.QueryIssuesResponse(
+                resource_issues=[
+                    service.DatabaseResourceIssue(),
+                    service.DatabaseResourceIssue(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(service.QueryIssuesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.query_issues(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, service.DatabaseResourceIssue) for i in results)
+
+        pages = list(client.query_issues(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DatabaseCenterGrpcTransport(
@@ -3612,6 +4311,27 @@ def test_aggregate_issue_stats_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_issues_empty_call_grpc():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        call.return_value = service.QueryIssuesResponse()
+        client.query_issues(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.QueryIssuesRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = DatabaseCenterAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -3741,6 +4461,34 @@ async def test_aggregate_issue_stats_empty_call_grpc_asyncio():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         request_msg = service.AggregateIssueStatsRequest()
+
+        assert args[0] == request_msg
+
+
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_query_issues_empty_call_grpc_asyncio():
+    client = DatabaseCenterAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.QueryIssuesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        await client.query_issues(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.QueryIssuesRequest()
 
         assert args[0] == request_msg
 
@@ -4282,6 +5030,133 @@ def test_aggregate_issue_stats_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
+def test_query_issues_rest_bad_request(request_type=service.QueryIssuesRequest):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        json_return_value = ""
+        response_value.json = mock.Mock(return_value={})
+        response_value.status_code = 400
+        response_value.request = mock.Mock()
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        client.query_issues(request)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.QueryIssuesRequest,
+        dict,
+    ],
+)
+def test_query_issues_rest_call_success(request_type):
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = service.QueryIssuesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = mock.Mock()
+        response_value.status_code = 200
+
+        # Convert return value to protobuf type
+        return_value = service.QueryIssuesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value.content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        response = client.query_issues(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.QueryIssuesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_query_issues_rest_interceptors(null_interceptor):
+    transport = transports.DatabaseCenterRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.DatabaseCenterRestInterceptor(),
+    )
+    client = DatabaseCenterClient(transport=transport)
+
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.DatabaseCenterRestInterceptor, "post_query_issues"
+    ) as post, mock.patch.object(
+        transports.DatabaseCenterRestInterceptor, "post_query_issues_with_metadata"
+    ) as post_with_metadata, mock.patch.object(
+        transports.DatabaseCenterRestInterceptor, "pre_query_issues"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        post_with_metadata.assert_not_called()
+        pb_message = service.QueryIssuesRequest.pb(service.QueryIssuesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = mock.Mock()
+        req.return_value.status_code = 200
+        req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
+        return_value = service.QueryIssuesResponse.to_json(
+            service.QueryIssuesResponse()
+        )
+        req.return_value.content = return_value
+
+        request = service.QueryIssuesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = service.QueryIssuesResponse()
+        post_with_metadata.return_value = service.QueryIssuesResponse(), metadata
+
+        client.query_issues(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+        post_with_metadata.assert_called_once()
+
+
 def test_initialize_client_w_rest():
     client = DatabaseCenterClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -4373,6 +5248,26 @@ def test_aggregate_issue_stats_empty_call_rest():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_query_issues_empty_call_rest():
+    client = DatabaseCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(type(client.transport.query_issues), "__call__") as call:
+        client.query_issues(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = service.QueryIssuesRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DatabaseCenterClient(
@@ -4410,6 +5305,7 @@ def test_database_center_base_transport():
         "aggregate_fleet",
         "query_database_resource_groups",
         "aggregate_issue_stats",
+        "query_issues",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -4679,6 +5575,9 @@ def test_database_center_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.aggregate_issue_stats._session
     session2 = client2.transport.aggregate_issue_stats._session
+    assert session1 != session2
+    session1 = client1.transport.query_issues._session
+    session2 = client2.transport.query_issues._session
     assert session1 != session2
 
 

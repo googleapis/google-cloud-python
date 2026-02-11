@@ -33,8 +33,10 @@ __protobuf__ = proto.module(
         "ListFoldersRequest",
         "ListFoldersResponse",
         "RenameFolderRequest",
+        "DeleteFolderRecursiveRequest",
         "CommonLongRunningOperationMetadata",
         "RenameFolderMetadata",
+        "DeleteFolderRecursiveMetadata",
         "StorageLayout",
         "GetStorageLayoutRequest",
         "ManagedFolder",
@@ -447,6 +449,54 @@ class RenameFolderRequest(proto.Message):
     )
 
 
+class DeleteFolderRecursiveRequest(proto.Message):
+    r"""Request message for DeleteFolderRecursive.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Required. Name of the folder being deleted, however all of
+            its contents will be deleted too. Format:
+            ``projects/{project}/buckets/{bucket}/folders/{folder}``
+        if_metageneration_match (int):
+            Optional. Makes the operation only succeed
+            conditional on whether the root folder's current
+            metageneration matches the given value.
+
+            This field is a member of `oneof`_ ``_if_metageneration_match``.
+        if_metageneration_not_match (int):
+            Optional. Makes the operation only succeed
+            conditional on whether the root folder's current
+            metageneration does not match the given value.
+
+            This field is a member of `oneof`_ ``_if_metageneration_not_match``.
+        request_id (str):
+            Optional. A unique identifier for this
+            request. UUID is the recommended format, but
+            other formats are still accepted.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    if_metageneration_match: int = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
+    )
+    if_metageneration_not_match: int = proto.Field(
+        proto.INT64,
+        number=3,
+        optional=True,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
 class CommonLongRunningOperationMetadata(proto.Message):
     r"""The message contains metadata that is common to all Storage Control
     long-running operations, present in its
@@ -529,6 +579,29 @@ class RenameFolderMetadata(proto.Message):
     destination_folder_id: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class DeleteFolderRecursiveMetadata(proto.Message):
+    r"""Message returned in the metadata field of the Operation
+    resource for DeleteFolderRecursive operations.
+
+    Attributes:
+        common_metadata (google.cloud.storage_control_v2.types.CommonLongRunningOperationMetadata):
+            Generic metadata for the long running
+            operation.
+        folder_id (str):
+            The path of the folder recursively deleted.
+    """
+
+    common_metadata: "CommonLongRunningOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CommonLongRunningOperationMetadata",
+    )
+    folder_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
