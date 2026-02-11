@@ -82,7 +82,9 @@ async def upload_chunks_using_grpc_async(client, filename, other_params):
         uploaded_bytes += bytes_to_upload
     await writer.close()
 
-    assert uploaded_bytes == upload_size
+    # print('writer flush count', writer._flush_count)
+
+    assert writer.offset == upload_size
 
     end_time = time.monotonic_ns()
     elapsed_time = end_time - start_time

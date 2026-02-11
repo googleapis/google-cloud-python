@@ -35,11 +35,15 @@ GENERATION = 123
 WRITE_HANDLE = b"test-write-handle"
 PERSISTED_SIZE = 456
 EIGHT_MIB = 8 * 1024 * 1024
+DATA_LESS_THAN_FLUSH_INTERVAL = (
+    b"test-data"  # 9 bytes, less than default flush interval
+)
 
 
 class TestIsWriteRetryable:
     """Exhaustive tests for retry predicate logic."""
 
+    # TODO: remove `mock_appendable_writer` param.
     def test_standard_transient_errors(self, mock_appendable_writer):
         for exc in [
             exceptions.InternalServerError("500"),
@@ -110,7 +114,6 @@ def mock_appendable_writer():
 
     yield {
         "mock_client": mock_client,
-        "mock_stream_cls": mock_stream_cls,
         "mock_stream": mock_stream,
     }
 
@@ -172,9 +175,9 @@ class TestAsyncAppendableObjectWriter:
         writer._is_stream_open = True
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=100)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=100)
+        )
 
         size = await writer.state_lookup()
 
@@ -220,41 +223,59 @@ class TestAsyncAppendableObjectWriter:
     # -------------------------------------------------------------------------
 
     @pytest.mark.asyncio
-    async def test_append_basic_success(self, mock_appendable_writer):
+    async def test_append_data_less_than_flush_interval(self, mock_appendable_writer):
         """Verify append orchestrates manager and drives the internal generator."""
         writer = self._make_one(mock_appendable_writer["mock_client"])
         writer._is_stream_open = True
-        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.persisted_size = 0
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+        writer.write_obj_stream.send = AsyncMock()
 
-        data = b"test-data"
+        data_len = len(DATA_LESS_THAN_FLUSH_INTERVAL)
+        await writer.append(DATA_LESS_THAN_FLUSH_INTERVAL)
 
-        with mock.patch(
-            "google.cloud.storage.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
-        ) as MockManager:
+        assert writer.offset == data_len
+        assert writer.bytes_appended_since_last_flush == data_len
 
-            async def mock_execute(state, policy):
-                factory = MockManager.call_args[0][1]
-                dummy_reqs = [storage_type.BidiWriteObjectRequest()]
-                gen = factory(dummy_reqs, state)
+    @pytest.mark.parametrize(
+        "data_len",
+        [
+            _DEFAULT_FLUSH_INTERVAL_BYTES - 1,
+            _DEFAULT_FLUSH_INTERVAL_BYTES,
+            _DEFAULT_FLUSH_INTERVAL_BYTES + 1,
+        ],
+    )
+    @pytest.mark.asyncio
+    async def test_append(
+        self, data_len, mock_appendable_writer
+    ):
+        """Verify append orchestrates manager and drives the internal generator."""
+        # Arrange
+        writer = self._make_one(mock_appendable_writer["mock_client"])
+        writer._is_stream_open = True
+        writer.persisted_size = 0
+        writer.write_obj_stream = mock_appendable_writer["mock_stream"]
+        writer.write_obj_stream.send = AsyncMock()
 
-                mock_appendable_writer["mock_stream"].recv.side_effect = [
-                    storage_type.BidiWriteObjectResponse(
-                        persisted_size=len(data),
-                        write_handle=storage_type.BidiWriteHandle(handle=b"h2"),
-                    ),
-                    None,
-                ]
-                async for _ in gen:
-                    pass
+        # if data > flush interval then we expect 1 flush & 1 state_lookup going through
+        # which means we will do 1 recv() call.
+        writer.write_obj_stream.recv = AsyncMock(
+            return_value=storage_type.BidiWriteObjectResponse(
+                persisted_size=_DEFAULT_FLUSH_INTERVAL_BYTES
+            )
+        )
+        data = b"a" * data_len
 
-            MockManager.return_value.execute.side_effect = mock_execute
-            await writer.append(data)
+        # Act
+        await writer.append(data)
 
-            assert writer.persisted_size == len(data)
-            sent_req = mock_appendable_writer["mock_stream"].send.call_args[0][0]
-            assert sent_req.state_lookup
-            assert sent_req.flush
+        # Assert
+        expected_recv_count = data_len // _DEFAULT_FLUSH_INTERVAL_BYTES
+        assert writer.offset == data_len
+        assert writer.bytes_appended_since_last_flush == data_len % _DEFAULT_FLUSH_INTERVAL_BYTES
+        assert writer.persisted_size == expected_recv_count*_DEFAULT_FLUSH_INTERVAL_BYTES
+        assert writer.write_obj_stream.send.await_count == -(-data_len // _MAX_CHUNK_SIZE_BYTES)  # Ceiling division for number of chunks
+        assert writer.write_obj_stream.recv.await_count == expected_recv_count  # Expect 1 recv per flush interval
 
     @pytest.mark.asyncio
     async def test_append_recovery_reopens_stream(self, mock_appendable_writer):
@@ -318,9 +339,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
         writer.bytes_appended_since_last_flush = 100
 
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(persisted_size=200)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(persisted_size=200)
+        )
 
         await writer.flush()
 
@@ -361,9 +382,9 @@ class TestAsyncAppendableObjectWriter:
         writer.write_obj_stream = mock_appendable_writer["mock_stream"]
 
         resource = storage_type.Object(size=999)
-        mock_appendable_writer[
-            "mock_stream"
-        ].recv.return_value = storage_type.BidiWriteObjectResponse(resource=resource)
+        mock_appendable_writer["mock_stream"].recv.return_value = (
+            storage_type.BidiWriteObjectResponse(resource=resource)
+        )
 
         res = await writer.finalize()
 

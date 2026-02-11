@@ -190,7 +190,10 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         _utils.update_write_handle_if_exists(self, first_resp)
 
         if first_resp != grpc.aio.EOF:
-            self.persisted_size = first_resp.persisted_size
+            # this persisted_size will not be upto date., also what if response
+            # doesn't have persisted_size? , it'll throw error.
+            if hasattr(first_resp, "persisted_size"):
+                self.persisted_size = first_resp.persisted_size
             second_resp = await self.socket_like_rpc.recv()
             assert second_resp == grpc.aio.EOF
 

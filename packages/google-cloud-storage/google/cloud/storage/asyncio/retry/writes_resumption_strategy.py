@@ -47,6 +47,11 @@ class _WriteState:
         self.chunk_size = chunk_size
         self.user_buffer = user_buffer
         self.persisted_size: int = 0
+        # Bytes sent to the server (it may be unpersisted),
+        # i.e. latest object size = persisted_size + some more bytes.
+        # Please note: these bytes are sent from client to server, server might have also received it.
+        # but might not have persisted it yet (may be in memory buffer on server side).
+        # This variable is same as `offset variable` in the instance of `AppendableObjectWriter`.
         self.bytes_sent: int = 0
         self.bytes_since_last_flush: int = 0
         self.flush_interval: int = flush_interval
@@ -91,7 +96,7 @@ class _WriteResumptionStrategy(_BaseResumptionStrategy):
 
             if write_state.bytes_since_last_flush >= write_state.flush_interval:
                 request.flush = True
-                # reset counter after marking flush
+                request.state_lookup = True
                 write_state.bytes_since_last_flush = 0
 
             requests.append(request)

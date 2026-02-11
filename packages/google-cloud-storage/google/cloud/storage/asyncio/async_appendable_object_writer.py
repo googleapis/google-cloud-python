@@ -211,6 +211,7 @@ class AsyncAppendableObjectWriter:
         self.bytes_appended_since_last_flush = 0
         self._routing_token: Optional[str] = None
         self.object_resource: Optional[_storage_v2.Object] = None
+        self._flush_count = 0
 
     async def state_lookup(self) -> int:
         """Returns the persisted_size
@@ -318,6 +319,8 @@ class AsyncAppendableObjectWriter:
                 self.write_handle = self.write_obj_stream.write_handle
             if self.write_obj_stream.persisted_size is not None:
                 self.persisted_size = self.write_obj_stream.persisted_size
+                # set offset while opening
+                self.offset = self.persisted_size
 
             self._is_stream_open = True
             self._routing_token = None
@@ -403,28 +406,31 @@ class AsyncAppendableObjectWriter:
                     write_state.user_buffer.seek(write_state.persisted_size)
                     write_state.bytes_sent = write_state.persisted_size
                     write_state.bytes_since_last_flush = 0
+                    self.bytes_appended_since_last_flush = 0
 
                     requests = strategy.generate_requests(state)
 
-                num_requests = len(requests)
-                for i, chunk_req in enumerate(requests):
-                    if i == num_requests - 1:
-                        chunk_req.state_lookup = True
-                        chunk_req.flush = True
+                for chunk_req in requests:
                     await self.write_obj_stream.send(chunk_req)
+                    if chunk_req.flush:
+                        self._flush_count += 1
 
-                resp = await self.write_obj_stream.recv()
-                if resp:
-                    if resp.persisted_size is not None:
-                        self.persisted_size = resp.persisted_size
-                        state["write_state"].persisted_size = resp.persisted_size
-                        self.offset = self.persisted_size
-                    if resp.write_handle:
-                        self.write_handle = resp.write_handle
-                        state["write_state"].write_handle = resp.write_handle
-                    self.bytes_appended_since_last_flush = 0
+                    resp = None
+                    if chunk_req.state_lookup:
+                        # TODO: if there's error, it'll raise error
+                        # and will be handled by `recover_state_on_failure`
+                        resp = await self.write_obj_stream.recv()
 
-                yield resp
+                    if resp:
+                        if resp.persisted_size is not None:
+                            self.persisted_size = resp.persisted_size
+                            state["write_state"].persisted_size = resp.persisted_size
+                            self.offset = self.persisted_size
+                        if resp.write_handle:
+                            self.write_handle = resp.write_handle
+                            state["write_state"].write_handle = resp.write_handle
+
+                    yield resp
 
             return generator()
 
@@ -432,7 +438,8 @@ class AsyncAppendableObjectWriter:
         write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
         write_state.write_handle = self.write_handle
         write_state.persisted_size = self.persisted_size
-        write_state.bytes_sent = self.persisted_size
+        # offset is set during `open()` call.
+        write_state.bytes_sent = self.offset or 0
         write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
 
         retry_manager = _BidiStreamRetryManager(
@@ -442,11 +449,8 @@ class AsyncAppendableObjectWriter:
         await retry_manager.execute({"write_state": write_state}, retry_policy)
 
         # Sync local markers
-        self.write_obj_stream.persisted_size = write_state.persisted_size
-        self.write_obj_stream.write_handle = write_state.write_handle
         self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
-        self.persisted_size = write_state.persisted_size
-        self.offset = write_state.persisted_size
+        self.offset = write_state.bytes_sent
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -516,7 +520,6 @@ class AsyncAppendableObjectWriter:
         await self.write_obj_stream.close()
 
         self._is_stream_open = False
-        self.offset = None
         return self.persisted_size
 
     async def finalize(self) -> _storage_v2.Object:

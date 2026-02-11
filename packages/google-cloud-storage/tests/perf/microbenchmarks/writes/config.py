@@ -86,7 +86,7 @@ def get_write_params() -> Dict[str, List[WriteParameters]]:
             num_files = num_processes * num_coros
 
             # Create a descriptive name for the parameter set
-            name = f"{workload_name}_{bucket_type}_{num_processes}p_{num_coros}c"
+            name = f"{workload_name}_{bucket_type}_{num_processes}p_{num_coros}c_{chunk_size_mib}csize"
 
             params[workload_name].append(
                 WriteParameters(
