@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-from google.protobuf import duration_pb2 as duration  # type: ignore
 import proto  # type: ignore
+from google.protobuf import duration_pb2 as duration  # type: ignore
 
 from google.monitoring.dashboard_v1.types import metrics
 
@@ -80,6 +80,7 @@ class XyChart(proto.Message):
 
         class PlotType(proto.Enum):
             r"""The types of plotting strategies for data sets."""
+
             PLOT_TYPE_UNSPECIFIED = 0
             LINE = 1
             STACKED_AREA = 2
@@ -119,6 +120,7 @@ class XyChart(proto.Message):
 
         class Scale(proto.Enum):
             r"""Types of scales used in axes."""
+
             SCALE_UNSPECIFIED = 0
             LINEAR = 1
             LOG10 = 2
@@ -178,6 +180,7 @@ class ChartOptions(proto.Message):
 
     class Mode(proto.Enum):
         r"""Chart mode options."""
+
         MODE_UNSPECIFIED = 0
         COLOR = 1
         X_RAY = 2

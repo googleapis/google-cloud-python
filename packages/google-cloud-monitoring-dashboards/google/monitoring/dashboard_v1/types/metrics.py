@@ -35,6 +35,7 @@ class SparkChartType(proto.Enum):
     r"""Defines the possible types of spark chart supported by the
     ``Scorecard``.
     """
+
     SPARK_CHART_TYPE_UNSPECIFIED = 0
     SPARK_LINE = 1
     SPARK_BAR = 2
@@ -236,6 +237,7 @@ class Threshold(proto.Message):
         provide UX guidance on how users can be expected to interpret a
         given state color.
         """
+
         COLOR_UNSPECIFIED = 0
         YELLOW = 4
         RED = 6
@@ -244,6 +246,7 @@ class Threshold(proto.Message):
         r"""Whether the threshold is considered crossed by an actual
         value above or below its threshold value.
         """
+
         DIRECTION_UNSPECIFIED = 0
         ABOVE = 1
         BELOW = 2

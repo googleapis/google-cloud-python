@@ -18,8 +18,10 @@
 import abc
 import typing
 
-from google.api_core import exceptions  # type: ignore
-from google.api_core import gapic_v1  # type: ignore
+from google.api_core import (
+    exceptions,  # type: ignore
+    gapic_v1,  # type: ignore
+)
 from google.auth import credentials  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
 
