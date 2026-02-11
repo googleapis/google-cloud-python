@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import functools
 import typing
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, Optional, Sequence
 
 import google.cloud.bigquery
 import pyarrow
@@ -41,30 +41,15 @@ class ArraySchema:
         yield from self.items
 
     @classmethod
-    def from_bq_table(
-        cls,
-        table: google.cloud.bigquery.Table,
-        column_type_overrides: Optional[
-            typing.Dict[str, bigframes.dtypes.Dtype]
-        ] = None,
-        columns: Optional[Sequence[str]] = None,
-    ):
-        if not columns:
-            fields = table.schema
-        else:
-            lookup = {field.name: field for field in table.schema}
-            fields = [lookup[col] for col in columns]
-
-        return ArraySchema.from_bq_schema(
-            fields, column_type_overrides=column_type_overrides
-        )
-
-    @classmethod
     def from_bq_schema(
         cls,
-        schema: List[google.cloud.bigquery.SchemaField],
+        schema: Sequence[google.cloud.bigquery.SchemaField],
         column_type_overrides: Optional[Dict[str, bigframes.dtypes.Dtype]] = None,
+        columns: Optional[Sequence[str]] = None,
     ):
+        if columns:
+            lookup = {field.name: field for field in schema}
+            schema = [lookup[col] for col in columns]
         if column_type_overrides is None:
             column_type_overrides = {}
         items = tuple(

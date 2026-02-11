@@ -20,15 +20,15 @@ from __future__ import annotations
 
 import datetime
 import typing
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 import warnings
 
 import bigframes_vendored.constants as constants
 import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
-import google.cloud.bigquery.table
 
 import bigframes.core
+from bigframes.core import bq_data
 import bigframes.core.events
 import bigframes.exceptions as bfe
 import bigframes.session._io.bigquery
@@ -98,81 +98,6 @@ def get_information_schema_metadata(
     return table
 
 
-def get_table_metadata(
-    bqclient: bigquery.Client,
-    *,
-    table_id: str,
-    default_project: Optional[str],
-    bq_time: datetime.datetime,
-    cache: Dict[str, Tuple[datetime.datetime, bigquery.Table]],
-    use_cache: bool = True,
-    publisher: bigframes.core.events.Publisher,
-) -> Tuple[datetime.datetime, google.cloud.bigquery.table.Table]:
-    """Get the table metadata, either from cache or via REST API."""
-
-    cached_table = cache.get(table_id)
-    if use_cache and cached_table is not None:
-        snapshot_timestamp, table = cached_table
-
-        if is_time_travel_eligible(
-            bqclient=bqclient,
-            table=table,
-            columns=None,
-            snapshot_time=snapshot_timestamp,
-            filter_str=None,
-            # Don't warn, because that will already have been taken care of.
-            should_warn=False,
-            should_dry_run=False,
-            publisher=publisher,
-        ):
-            # This warning should only happen if the cached snapshot_time will
-            # have any effect on bigframes (b/437090788). For example, with
-            # cached query results, such as after re-running a query, time
-            # travel won't be applied and thus this check is irrelevent.
-            #
-            # In other cases, such as an explicit read_gbq_table(), Cache hit
-            # could be unexpected. See internal issue 329545805. Raise a
-            # warning with more information about how to avoid the problems
-            # with the cache.
-            msg = bfe.format_message(
-                f"Reading cached table from {snapshot_timestamp} to avoid "
-                "incompatibilies with previous reads of this table. To read "
-                "the latest version, set `use_cache=False` or close the "
-                "current session with Session.close() or "
-                "bigframes.pandas.close_session()."
-            )
-            # There are many layers before we get to (possibly) the user's code:
-            # pandas.read_gbq_table
-            # -> with_default_session
-            # -> Session.read_gbq_table
-            # -> _read_gbq_table
-            # -> _get_snapshot_sql_and_primary_key
-            # -> get_snapshot_datetime_and_table_metadata
-            warnings.warn(msg, category=bfe.TimeTravelCacheWarning, stacklevel=7)
-
-        return cached_table
-
-    if is_information_schema(table_id):
-        table = get_information_schema_metadata(
-            bqclient=bqclient, table_id=table_id, default_project=default_project
-        )
-    else:
-        table_ref = google.cloud.bigquery.table.TableReference.from_string(
-            table_id, default_project=default_project
-        )
-        table = bqclient.get_table(table_ref)
-
-    # local time will lag a little bit do to network latency
-    # make sure it is at least table creation time.
-    # This is relevant if the table was created immediately before loading it here.
-    if (table.created is not None) and (table.created > bq_time):
-        bq_time = table.created
-
-    cached_table = (bq_time, table)
-    cache[table_id] = cached_table
-    return cached_table
-
-
 def is_information_schema(table_id: str):
     table_id_casefold = table_id.casefold()
     # Include the "."s to ensure we don't have false positives for some user
@@ -186,7 +111,7 @@ def is_information_schema(table_id: str):
 
 def is_time_travel_eligible(
     bqclient: bigquery.Client,
-    table: google.cloud.bigquery.table.Table,
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
     columns: Optional[Sequence[str]],
     snapshot_time: datetime.datetime,
     filter_str: Optional[str] = None,
@@ -220,43 +145,48 @@ def is_time_travel_eligible(
     # -> is_time_travel_eligible
     stacklevel = 7
 
-    # Anonymous dataset, does not support snapshot ever
-    if table.dataset_id.startswith("_"):
-        return False
+    if isinstance(table, bq_data.GbqNativeTable):
+        # Anonymous dataset, does not support snapshot ever
+        if table.dataset_id.startswith("_"):
+            return False
 
-    # Only true tables support time travel
-    if table.table_id.endswith("*"):
-        if should_warn:
-            msg = bfe.format_message(
-                "Wildcard tables do not support FOR SYSTEM_TIME AS OF queries. "
-                "Attempting query without time travel. Be aware that "
-                "modifications to the underlying data may result in errors or "
-                "unexpected behavior."
-            )
-            warnings.warn(
-                msg, category=bfe.TimeTravelDisabledWarning, stacklevel=stacklevel
-            )
-        return False
-    elif table.table_type != "TABLE":
-        if table.table_type == "MATERIALIZED_VIEW":
+        # Only true tables support time travel
+        if table.table_id.endswith("*"):
             if should_warn:
                 msg = bfe.format_message(
-                    "Materialized views do not support FOR SYSTEM_TIME AS OF queries. "
-                    "Attempting query without time travel. Be aware that as materialized views "
-                    "are updated periodically, modifications to the underlying data in the view may "
-                    "result in errors or unexpected behavior."
+                    "Wildcard tables do not support FOR SYSTEM_TIME AS OF queries. "
+                    "Attempting query without time travel. Be aware that "
+                    "modifications to the underlying data may result in errors or "
+                    "unexpected behavior."
                 )
                 warnings.warn(
                     msg, category=bfe.TimeTravelDisabledWarning, stacklevel=stacklevel
                 )
             return False
-        elif table.table_type == "VIEW":
-            return False
+        elif table.metadata.type != "TABLE":
+            if table.metadata.type == "MATERIALIZED_VIEW":
+                if should_warn:
+                    msg = bfe.format_message(
+                        "Materialized views do not support FOR SYSTEM_TIME AS OF queries. "
+                        "Attempting query without time travel. Be aware that as materialized views "
+                        "are updated periodically, modifications to the underlying data in the view may "
+                        "result in errors or unexpected behavior."
+                    )
+                    warnings.warn(
+                        msg,
+                        category=bfe.TimeTravelDisabledWarning,
+                        stacklevel=stacklevel,
+                    )
+                return False
+            elif table.metadata.type == "VIEW":
+                return False
 
     # table might support time travel, lets do a dry-run query with time travel
     if should_dry_run:
         snapshot_sql = bigframes.session._io.bigquery.to_query(
-            query_or_table=f"{table.reference.project}.{table.reference.dataset_id}.{table.reference.table_id}",
+            query_or_table=table.get_full_id(
+                quoted=False
+            ),  # to_query will quote for us
             columns=columns or (),
             sql_predicate=filter_str,
             time_travel_timestamp=snapshot_time,
@@ -299,8 +229,8 @@ def is_time_travel_eligible(
 
 
 def infer_unique_columns(
-    table: google.cloud.bigquery.table.Table,
-    index_cols: List[str],
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
+    index_cols: Sequence[str],
 ) -> Tuple[str, ...]:
     """Return a set of columns that can provide a unique row key or empty if none can be inferred.
 
@@ -309,7 +239,7 @@ def infer_unique_columns(
     """
     # If index_cols contain the primary_keys, the query engine assumes they are
     # provide a unique index.
-    primary_keys = tuple(_get_primary_keys(table))
+    primary_keys = table.primary_key or ()
     if (len(primary_keys) > 0) and frozenset(primary_keys) <= frozenset(index_cols):
         # Essentially, just reordering the primary key to match the index col order
         return tuple(index_col for index_col in index_cols if index_col in primary_keys)
@@ -322,8 +252,8 @@ def infer_unique_columns(
 
 def check_if_index_columns_are_unique(
     bqclient: bigquery.Client,
-    table: google.cloud.bigquery.table.Table,
-    index_cols: List[str],
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
+    index_cols: Sequence[str],
     *,
     publisher: bigframes.core.events.Publisher,
 ) -> Tuple[str, ...]:
@@ -332,7 +262,9 @@ def check_if_index_columns_are_unique(
 
     # TODO(b/337925142): Avoid a "SELECT *" subquery here by ensuring
     # table_expression only selects just index_cols.
-    is_unique_sql = bigframes.core.sql.is_distinct_sql(index_cols, table.reference)
+    is_unique_sql = bigframes.core.sql.is_distinct_sql(
+        index_cols, table.get_table_ref()
+    )
     job_config = bigquery.QueryJobConfig()
     results, _ = bigframes.session._io.bigquery.start_query_with_client(
         bq_client=bqclient,
@@ -352,49 +284,8 @@ def check_if_index_columns_are_unique(
     return ()
 
 
-def _get_primary_keys(
-    table: google.cloud.bigquery.table.Table,
-) -> List[str]:
-    """Get primary keys from table if they are set."""
-
-    primary_keys: List[str] = []
-    if (
-        (table_constraints := getattr(table, "table_constraints", None)) is not None
-        and (primary_key := table_constraints.primary_key) is not None
-        # This will be False for either None or empty list.
-        # We want primary_keys = None if no primary keys are set.
-        and (columns := primary_key.columns)
-    ):
-        primary_keys = columns if columns is not None else []
-
-    return primary_keys
-
-
-def _is_table_clustered_or_partitioned(
-    table: google.cloud.bigquery.table.Table,
-) -> bool:
-    """Returns True if the table is clustered or partitioned."""
-
-    # Could be None or an empty tuple if it's not clustered, both of which are
-    # falsey.
-    if table.clustering_fields:
-        return True
-
-    if (
-        time_partitioning := table.time_partitioning
-    ) is not None and time_partitioning.type_ is not None:
-        return True
-
-    if (
-        range_partitioning := table.range_partitioning
-    ) is not None and range_partitioning.field is not None:
-        return True
-
-    return False
-
-
 def get_index_cols(
-    table: google.cloud.bigquery.table.Table,
+    table: Union[bq_data.GbqNativeTable, bq_data.BiglakeIcebergTable],
     index_col: Iterable[str]
     | str
     | Iterable[int]
@@ -403,7 +294,7 @@ def get_index_cols(
     *,
     rename_to_schema: Optional[Dict[str, str]] = None,
     default_index_type: bigframes.enums.DefaultIndexKind = bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
-) -> List[str]:
+) -> Sequence[str]:
     """
     If we can get a total ordering from the table, such as via primary key
     column(s), then return those too so that ordering generation can be
@@ -411,9 +302,9 @@ def get_index_cols(
     """
     # Transform index_col -> index_cols so we have a variable that is
     # always a list of column names (possibly empty).
-    schema_len = len(table.schema)
+    schema_len = len(table.physical_schema)
 
-    index_cols: List[str] = []
+    index_cols = []
     if isinstance(index_col, bigframes.enums.DefaultIndexKind):
         if index_col == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64:
             # User has explicity asked for a default, sequential index.
@@ -438,7 +329,7 @@ def get_index_cols(
                 f"Integer index {index_col} is out of bounds "
                 f"for table with {schema_len} columns (must be >= 0 and < {schema_len})."
             )
-        index_cols = [table.schema[index_col].name]
+        index_cols = [table.physical_schema[index_col].name]
     elif isinstance(index_col, Iterable):
         for item in index_col:
             if isinstance(item, str):
@@ -451,7 +342,7 @@ def get_index_cols(
                         f"Integer index {item} is out of bounds "
                         f"for table with {schema_len} columns (must be >= 0 and < {schema_len})."
                     )
-                index_cols.append(table.schema[item].name)
+                index_cols.append(table.physical_schema[item].name)
             else:
                 raise TypeError(
                     "If index_col is an iterable, it must contain either strings "
@@ -466,19 +357,19 @@ def get_index_cols(
     # If the isn't an index selected, use the primary keys of the table as the
     # index. If there are no primary keys, we'll return an empty list.
     if len(index_cols) == 0:
-        primary_keys = _get_primary_keys(table)
+        primary_keys = table.primary_key or ()
 
         # If table has clustering/partitioning, fail if we haven't been able to
         # find index_cols to use. This is to avoid unexpected performance and
         # resource utilization because of the default sequential index. See
         # internal issue 335727141.
         if (
-            _is_table_clustered_or_partitioned(table)
+            (table.partition_col is not None or table.cluster_cols)
             and not primary_keys
             and default_index_type == bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64
         ):
             msg = bfe.format_message(
-                f"Table '{str(table.reference)}' is clustered and/or "
+                f"Table '{str(table.get_full_id())}' is clustered and/or "
                 "partitioned, but BigQuery DataFrames was not able to find a "
                 "suitable index. To avoid this warning, set at least one of: "
                 # TODO(b/338037499): Allow max_results to override this too,
@@ -490,6 +381,6 @@ def get_index_cols(
         # If there are primary keys defined, the query engine assumes these
         # columns are unique, even if the constraint is not enforced. We make
         # the same assumption and use these columns as the total ordering keys.
-        index_cols = primary_keys
+        index_cols = list(primary_keys)
 
     return index_cols

@@ -17,7 +17,7 @@ from typing import Optional
 
 from google.cloud import bigquery_storage_v1
 
-from bigframes.core import bigframe_node, nodes, rewrite
+from bigframes.core import bigframe_node, bq_data, nodes, rewrite
 from bigframes.session import executor, semi_executor
 
 
@@ -45,6 +45,9 @@ class ReadApiSemiExecutor(semi_executor.SemiExecutor):
             return None
         node, limit = adapt_result
         if node.explicitly_ordered and ordered:
+            return None
+
+        if not isinstance(node.source.table, bq_data.GbqNativeTable):
             return None
 
         if not node.source.table.is_physically_stored:

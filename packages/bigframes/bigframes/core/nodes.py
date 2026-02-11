@@ -825,9 +825,7 @@ class ReadTableNode(LeafNode):
 
     @property
     def row_count(self) -> typing.Optional[int]:
-        if self.source.sql_predicate is None and self.source.table.is_physically_stored:
-            return self.source.n_rows
-        return None
+        return self.source.n_rows
 
     @property
     def node_defined_ids(self) -> Tuple[identifiers.ColumnId, ...]:

@@ -19,9 +19,9 @@ import google.cloud.bigquery
 import pandas as pd
 
 import bigframes.core as core
+import bigframes.core.bq_data
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
-import bigframes.core.schema
 import bigframes.operations as ops
 import bigframes.session.planner as planner
 
@@ -38,7 +38,7 @@ FAKE_SESSION = mock.create_autospec(bigframes.Session, instance=True)
 type(FAKE_SESSION)._strictly_ordered = mock.PropertyMock(return_value=True)
 LEAF: core.ArrayValue = core.ArrayValue.from_table(
     session=FAKE_SESSION,
-    table=TABLE,
+    table=bigframes.core.bq_data.GbqNativeTable.from_table(TABLE),
 )
 
 

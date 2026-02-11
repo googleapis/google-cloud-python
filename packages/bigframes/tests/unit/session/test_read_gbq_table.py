@@ -20,6 +20,7 @@ import warnings
 import google.cloud.bigquery
 import pytest
 
+from bigframes.core import bq_data
 import bigframes.enums
 import bigframes.exceptions
 import bigframes.session._io.bigquery.read_gbq_table as bf_read_gbq_table
@@ -81,7 +82,9 @@ def test_infer_unique_columns(index_cols, primary_keys, expected):
         },
     }
 
-    result = bf_read_gbq_table.infer_unique_columns(table, index_cols)
+    result = bf_read_gbq_table.infer_unique_columns(
+        bq_data.GbqNativeTable.from_table(table), index_cols
+    )
 
     assert result == expected
 
@@ -140,7 +143,7 @@ def test_check_if_index_columns_are_unique(index_cols, values_distinct, expected
 
     result = bf_read_gbq_table.check_if_index_columns_are_unique(
         bqclient=bqclient,
-        table=table,
+        table=bq_data.GbqNativeTable.from_table(table),
         index_cols=index_cols,
         publisher=session._publisher,
     )
@@ -170,7 +173,7 @@ def test_get_index_cols_warns_if_clustered_but_sequential_index():
 
     with pytest.warns(bigframes.exceptions.DefaultIndexWarning, match="is clustered"):
         bf_read_gbq_table.get_index_cols(
-            table,
+            bq_data.GbqNativeTable.from_table(table),
             index_col=(),
             default_index_type=bigframes.enums.DefaultIndexKind.SEQUENTIAL_INT64,
         )
@@ -182,7 +185,7 @@ def test_get_index_cols_warns_if_clustered_but_sequential_index():
             "error", category=bigframes.exceptions.DefaultIndexWarning
         )
         bf_read_gbq_table.get_index_cols(
-            table,
+            bq_data.GbqNativeTable.from_table(table),
             index_col=(),
             default_index_type=bigframes.enums.DefaultIndexKind.NULL,
         )

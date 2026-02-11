@@ -58,6 +58,7 @@ dependencies = [
     "humanize >=4.6.0",
     "matplotlib >=3.7.1",
     "db-dtypes >=1.4.2",
+    "pyiceberg >= 0.7.1",
     # For vendored ibis-framework.
     "atpublic>=2.3,<6",
     "python-dateutil>=2.8.2,<3",

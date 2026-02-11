@@ -17,9 +17,8 @@ from dataclasses import dataclass
 import datetime
 import functools
 import typing
-from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
+from typing import Iterable, List, Mapping, Optional, Sequence, Tuple, Union
 
-import google.cloud.bigquery
 import pandas
 import pyarrow as pa
 
@@ -91,7 +90,7 @@ class ArrayValue:
     @classmethod
     def from_table(
         cls,
-        table: google.cloud.bigquery.Table,
+        table: Union[bq_data.BiglakeIcebergTable, bq_data.GbqNativeTable],
         session: Session,
         *,
         columns: Optional[Sequence[str]] = None,
@@ -103,8 +102,6 @@ class ArrayValue:
     ):
         if offsets_col and primary_key:
             raise ValueError("must set at most one of 'offests', 'primary_key'")
-        # define data source only for needed columns, this makes row-hashing cheaper
-        table_def = bq_data.GbqTable.from_table(table, columns=columns or ())
 
         # create ordering from info
         ordering = None
@@ -115,7 +112,9 @@ class ArrayValue:
                 [ids.ColumnId(key_part) for key_part in primary_key]
             )
 
-        bf_schema = schemata.ArraySchema.from_bq_table(table, columns=columns)
+        bf_schema = schemata.ArraySchema.from_bq_schema(
+            table.physical_schema, columns=columns
+        )
         # Scan all columns by default, we define this list as it can be pruned while preserving source_def
         scan_list = nodes.ScanList(
             tuple(
@@ -124,7 +123,7 @@ class ArrayValue:
             )
         )
         source_def = bq_data.BigqueryDataSource(
-            table=table_def,
+            table=table,
             schema=bf_schema,
             at_time=at_time,
             sql_predicate=predicate,

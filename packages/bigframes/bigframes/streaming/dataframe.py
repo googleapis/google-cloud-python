@@ -251,7 +251,7 @@ class StreamingDataFrame(StreamingBase):
     def _original_table(self):
         def traverse(node: nodes.BigFrameNode):
             if isinstance(node, nodes.ReadTableNode):
-                return f"{node.source.table.project_id}.{node.source.table.dataset_id}.{node.source.table.table_id}"
+                return node.source.table.get_full_id(quoted=False)
             for child in node.child_nodes:
                 original_table = traverse(child)
                 if original_table:

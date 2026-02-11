@@ -17,6 +17,7 @@ import datetime
 import google.cloud.bigquery as bigquery
 import pytest
 
+from bigframes.core import bq_data
 import bigframes.pandas as bpd
 
 pytest.importorskip("pytest_snapshot")
@@ -63,7 +64,7 @@ def test_compile_readtable_w_system_time(
     table._properties["location"] = compiler_session._location
     compiler_session._loader._df_snapshot[str(table_ref)] = (
         datetime.datetime(2025, 11, 9, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc),
-        table,
+        bq_data.GbqNativeTable.from_table(table),
     )
     bf_df = compiler_session.read_gbq_table(str(table_ref))
     snapshot.assert_match(bf_df.sql, "out.sql")

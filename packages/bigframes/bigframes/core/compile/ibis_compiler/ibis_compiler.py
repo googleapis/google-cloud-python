@@ -215,9 +215,7 @@ def _table_to_ibis(
     source: bq_data.BigqueryDataSource,
     scan_cols: typing.Sequence[str],
 ) -> ibis_types.Table:
-    full_table_name = (
-        f"{source.table.project_id}.{source.table.dataset_id}.{source.table.table_id}"
-    )
+    full_table_name = source.table.get_full_id(quoted=False)
     # Physical schema might include unused columns, unsupported datatypes like JSON
     physical_schema = ibis_bigquery.BigQuerySchema.to_ibis(
         list(source.table.physical_schema)

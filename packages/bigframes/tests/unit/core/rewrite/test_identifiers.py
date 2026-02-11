@@ -13,6 +13,7 @@
 # limitations under the License.
 import typing
 
+from bigframes.core import bq_data
 import bigframes.core as core
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as identifiers
@@ -55,7 +56,7 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
     # Create two more distinct leaf nodes
     leaf2_uncached = core.ArrayValue.from_table(
         session=fake_session,
-        table=table,
+        table=bq_data.GbqNativeTable.from_table(table),
     ).node
     leaf2 = leaf2_uncached.remap_vars(
         {
@@ -65,7 +66,7 @@ def test_remap_variables_nested_join_stability(leaf, fake_session, table):
     )
     leaf3_uncached = core.ArrayValue.from_table(
         session=fake_session,
-        table=table,
+        table=bq_data.GbqNativeTable.from_table(table),
     ).node
     leaf3 = leaf3_uncached.remap_vars(
         {
