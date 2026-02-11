@@ -263,7 +263,7 @@ class TestQuery(unittest.TestCase):
         client = self._create_client()
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_group(GROUP)
-        expected = ('metric.type = "{type}"' ' AND group.id = "{group}"').format(
+        expected = ('metric.type = "{type}" AND group.id = "{group}"').format(
             type=METRIC_TYPE, group=GROUP
         )
         self.assertEqual(query.filter, expected)
@@ -285,8 +285,7 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_resources(zone_prefix=ZONE_PREFIX)
         expected = (
-            'metric.type = "{type}"'
-            ' AND resource.label.zone = starts_with("{prefix}")'
+            'metric.type = "{type}" AND resource.label.zone = starts_with("{prefix}")'
         ).format(type=METRIC_TYPE, prefix=ZONE_PREFIX)
         self.assertEqual(query.filter, expected)
 
@@ -296,7 +295,7 @@ class TestQuery(unittest.TestCase):
         query = self._make_one(client, PROJECT, METRIC_TYPE)
         query = query.select_metrics(instance_name=INSTANCE)
         expected = (
-            'metric.type = "{type}"' ' AND metric.label.instance_name = "{instance}"'
+            'metric.type = "{type}" AND metric.label.instance_name = "{instance}"'
         ).format(type=METRIC_TYPE, instance=INSTANCE)
         self.assertEqual(query.filter, expected)
 
@@ -562,7 +561,7 @@ class Test__build_label_filter(unittest.TestCase):
             "metric", response_code_greater=500, response_code_less=600
         )
         expected = (
-            "metric.label.response_code < 600" " AND metric.label.response_code > 500"
+            "metric.label.response_code < 600 AND metric.label.response_code > 500"
         )
         self.assertEqual(actual, expected)
 
@@ -571,7 +570,7 @@ class Test__build_label_filter(unittest.TestCase):
             "metric", response_code_greaterequal=500, response_code_lessequal=600
         )
         expected = (
-            "metric.label.response_code <= 600" " AND metric.label.response_code >= 500"
+            "metric.label.response_code <= 600 AND metric.label.response_code >= 500"
         )
         self.assertEqual(actual, expected)
 
