@@ -19,6 +19,7 @@ from .metrics_tracer_factory import MetricsTracerFactory
 import os
 import logging
 from .constants import SPANNER_SERVICE_NAME
+import contextvars
 
 try:
     import mmh3
@@ -43,7 +44,9 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
     """A factory for creating SpannerMetricsTracer instances."""
 
     _metrics_tracer_factory: "SpannerMetricsTracerFactory" = None
-    current_metrics_tracer: MetricsTracer = None
+    _current_metrics_tracer_ctx = contextvars.ContextVar(
+        "current_metrics_tracer", default=None
+    )
 
     def __new__(
         cls, enabled: bool = True, gfe_enabled: bool = False
@@ -80,9 +83,21 @@ class SpannerMetricsTracerFactory(MetricsTracerFactory):
             cls._metrics_tracer_factory.gfe_enabled = gfe_enabled
 
             if cls._metrics_tracer_factory.enabled != enabled:
-                cls._metrics_tracer_factory.enabeld = enabled
+                cls._metrics_tracer_factory.enabled = enabled
 
         return cls._metrics_tracer_factory
+
+    @staticmethod
+    def get_current_tracer() -> MetricsTracer:
+        return SpannerMetricsTracerFactory._current_metrics_tracer_ctx.get()
+
+    @staticmethod
+    def set_current_tracer(tracer: MetricsTracer) -> contextvars.Token:
+        return SpannerMetricsTracerFactory._current_metrics_tracer_ctx.set(tracer)
+
+    @staticmethod
+    def reset_current_tracer(token: contextvars.Token):
+        SpannerMetricsTracerFactory._current_metrics_tracer_ctx.reset(token)
 
     @staticmethod
     def _generate_client_uid() -> str:

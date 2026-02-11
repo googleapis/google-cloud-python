@@ -97,22 +97,17 @@ class MetricsInterceptor(ClientInterceptor):
         Args:
             resources (Dict[str, str]): A dictionary containing project, instance, and database information.
         """
-        if SpannerMetricsTracerFactory.current_metrics_tracer is None:
+        tracer = SpannerMetricsTracerFactory.get_current_tracer()
+        if tracer is None:
             return
 
         if resources:
             if "project" in resources:
-                SpannerMetricsTracerFactory.current_metrics_tracer.set_project(
-                    resources["project"]
-                )
+                tracer.set_project(resources["project"])
             if "instance" in resources:
-                SpannerMetricsTracerFactory.current_metrics_tracer.set_instance(
-                    resources["instance"]
-                )
+                tracer.set_instance(resources["instance"])
             if "database" in resources:
-                SpannerMetricsTracerFactory.current_metrics_tracer.set_database(
-                    resources["database"]
-                )
+                tracer.set_database(resources["database"])
 
     def intercept(self, invoked_method, request_or_iterator, call_details):
         """Intercept gRPC calls to collect metrics.
@@ -126,31 +121,32 @@ class MetricsInterceptor(ClientInterceptor):
             The RPC response
         """
         factory = SpannerMetricsTracerFactory()
-        if (
-            SpannerMetricsTracerFactory.current_metrics_tracer is None
-            or not factory.enabled
-        ):
+        tracer = SpannerMetricsTracerFactory.get_current_tracer()
+        if tracer is None or not factory.enabled:
             return invoked_method(request_or_iterator, call_details)
 
         # Setup Metric Tracer attributes from call details
-        ## Extract  Project / Instance / Databse from header information
-        resources = self._extract_resource_from_path(call_details.metadata)
-        self._set_metrics_tracer_attributes(resources)
+        ## Extract Project / Instance / Database from header information if not already set
+        if not (
+            tracer.client_attributes.get("project_id")
+            and tracer.client_attributes.get("instance_id")
+            and tracer.client_attributes.get("database")
+        ):
+            resources = self._extract_resource_from_path(call_details.metadata)
+            self._set_metrics_tracer_attributes(resources)
 
         ## Format method to be be spanner.<method name>
         method_name = self._remove_prefix(
             call_details.method, SPANNER_METHOD_PREFIX
         ).replace("/", ".")
 
-        SpannerMetricsTracerFactory.current_metrics_tracer.set_method(method_name)
-        SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_start()
+        tracer.set_method(method_name)
+        tracer.record_attempt_start()
         response = invoked_method(request_or_iterator, call_details)
-        SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_completion()
+        tracer.record_attempt_completion()
 
         # Process and send GFE metrics if enabled
-        if SpannerMetricsTracerFactory.current_metrics_tracer.gfe_enabled:
+        if tracer.gfe_enabled:
             metadata = response.initial_metadata()
-            SpannerMetricsTracerFactory.current_metrics_trace.record_gfe_metrics(
-                metadata
-            )
+            tracer.record_gfe_metrics(metadata)
         return response

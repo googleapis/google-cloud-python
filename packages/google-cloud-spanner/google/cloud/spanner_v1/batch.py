@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """Context manager for Cloud Spanner batched writes."""
+
 import functools
 from typing import List, Optional
 

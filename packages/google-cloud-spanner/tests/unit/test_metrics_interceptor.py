@@ -26,6 +26,30 @@ def interceptor():
     return MetricsInterceptor()
 
 
+@pytest.fixture
+def mock_tracer_ctx():
+    tracer = MockMetricTracer()
+    token = SpannerMetricsTracerFactory._current_metrics_tracer_ctx.set(tracer)
+    yield tracer
+    SpannerMetricsTracerFactory._current_metrics_tracer_ctx.reset(token)
+
+
+class MockMetricTracer:
+    def __init__(self):
+        self.project = None
+        self.instance = None
+        self.database = None
+        self.gfe_enabled = False
+        self.record_attempt_start = MagicMock()
+        self.record_attempt_completion = MagicMock()
+        self.set_method = MagicMock()
+        self.record_gfe_metrics = MagicMock()
+        self.set_project = MagicMock()
+        self.set_instance = MagicMock()
+        self.set_database = MagicMock()
+        self.client_attributes = {}
+
+
 def test_parse_resource_path_valid(interceptor):
     path = "projects/my_project/instances/my_instance/databases/my_database"
     expected = {
@@ -57,8 +81,8 @@ def test_extract_resource_from_path(interceptor):
     assert interceptor._extract_resource_from_path(metadata) == expected
 
 
-def test_set_metrics_tracer_attributes(interceptor):
-    SpannerMetricsTracerFactory.current_metrics_tracer = MockMetricTracer()
+def test_set_metrics_tracer_attributes(interceptor, mock_tracer_ctx):
+    # mock_tracer_ctx fixture sets the ContextVar
     resources = {
         "project": "my_project",
         "instance": "my_instance",
@@ -66,20 +90,14 @@ def test_set_metrics_tracer_attributes(interceptor):
     }
 
     interceptor._set_metrics_tracer_attributes(resources)
-    assert SpannerMetricsTracerFactory.current_metrics_tracer.project == "my_project"
-    assert SpannerMetricsTracerFactory.current_metrics_tracer.instance == "my_instance"
-    assert SpannerMetricsTracerFactory.current_metrics_tracer.database == "my_database"
+    mock_tracer_ctx.set_project.assert_called_with("my_project")
+    mock_tracer_ctx.set_instance.assert_called_with("my_instance")
+    mock_tracer_ctx.set_database.assert_called_with("my_database")
 
 
-def test_intercept_with_tracer(interceptor):
-    SpannerMetricsTracerFactory.current_metrics_tracer = MockMetricTracer()
-    SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_start = (
-        MagicMock()
-    )
-    SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_completion = (
-        MagicMock()
-    )
-    SpannerMetricsTracerFactory.current_metrics_tracer.gfe_enabled = False
+def test_intercept_with_tracer(interceptor, mock_tracer_ctx):
+    # mock_tracer_ctx fixture sets the ContextVar
+    mock_tracer_ctx.gfe_enabled = False
 
     invoked_response = MagicMock()
     invoked_response.initial_metadata.return_value = {}
@@ -97,32 +115,6 @@ def test_intercept_with_tracer(interceptor):
 
     response = interceptor.intercept(mock_invoked_method, "request", call_details)
     assert response == invoked_response
-    SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_start.assert_called_once()
-    SpannerMetricsTracerFactory.current_metrics_tracer.record_attempt_completion.assert_called_once()
+    mock_tracer_ctx.record_attempt_start.assert_called()
+    mock_tracer_ctx.record_attempt_completion.assert_called_once()
     mock_invoked_method.assert_called_once_with("request", call_details)
-
-
-class MockMetricTracer:
-    def __init__(self):
-        self.project = None
-        self.instance = None
-        self.database = None
-        self.method = None
-
-    def set_project(self, project):
-        self.project = project
-
-    def set_instance(self, instance):
-        self.instance = instance
-
-    def set_database(self, database):
-        self.database = database
-
-    def set_method(self, method):
-        self.method = method
-
-    def record_attempt_start(self):
-        pass
-
-    def record_attempt_completion(self):
-        pass

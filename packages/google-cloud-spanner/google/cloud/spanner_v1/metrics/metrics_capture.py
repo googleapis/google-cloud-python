@@ -20,6 +20,8 @@ are consistently recorded for Cloud Spanner operations, facilitating observabili
 performance monitoring.
 """
 
+from contextvars import Token
+
 from .spanner_metrics_tracer_factory import SpannerMetricsTracerFactory
 
 
@@ -29,6 +31,9 @@ class MetricsCapture:
     This class provides a context manager interface to automatically handle
     the start and completion of metrics tracing for a given operation.
     """
+
+    _token: Token
+    """Token to reset the context variable after the operation completes."""
 
     def __enter__(self):
         """Enter the runtime context related to this object.
@@ -45,11 +50,11 @@ class MetricsCapture:
             return self
 
         # Define a new metrics tracer for the new operation
-        SpannerMetricsTracerFactory.current_metrics_tracer = (
-            factory.create_metrics_tracer()
-        )
-        if SpannerMetricsTracerFactory.current_metrics_tracer:
-            SpannerMetricsTracerFactory.current_metrics_tracer.record_operation_start()
+        # Set the context var and keep the token for reset
+        tracer = factory.create_metrics_tracer()
+        self._token = SpannerMetricsTracerFactory.set_current_tracer(tracer)
+        if tracer:
+            tracer.record_operation_start()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -70,6 +75,11 @@ class MetricsCapture:
         if not SpannerMetricsTracerFactory().enabled:
             return False
 
-        if SpannerMetricsTracerFactory.current_metrics_tracer:
-            SpannerMetricsTracerFactory.current_metrics_tracer.record_operation_completion()
+        tracer = SpannerMetricsTracerFactory.get_current_tracer()
+        if tracer:
+            tracer.record_operation_completion()
+
+        # Reset the context var using the token
+        if getattr(self, "_token", None):
+            SpannerMetricsTracerFactory.reset_current_tracer(self._token)
         return False  # Propagate the exception if any

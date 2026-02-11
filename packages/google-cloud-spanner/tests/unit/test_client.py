@@ -255,28 +255,44 @@ class TestClient(unittest.TestCase):
             expected_scopes, creds, directed_read_options=self.DIRECTED_READ_OPTIONS
         )
 
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1.client.MeterProvider")
     @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
     @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"})
     def test_constructor_w_metrics_initialization_error(
-        self, mock_spanner_metrics_factory
+        self,
+        mock_spanner_metrics_factory,
+        mock_meter_provider,
+        mock_periodic_reader,
+        mock_exporter,
+        mock_metrics,
     ):
         """
         Test that Client constructor handles exceptions during metrics
         initialization and logs a warning.
         """
         from google.cloud.spanner_v1.client import Client
+        from google.cloud.spanner_v1 import client as MUT
 
+        MUT._metrics_monitor_initialized = False
         mock_spanner_metrics_factory.side_effect = Exception("Metrics init failed")
         creds = build_scoped_credentials()
-
-        with self.assertLogs("google.cloud.spanner_v1.client", level="WARNING") as log:
-            client = Client(project=self.PROJECT, credentials=creds)
-            self.assertIsNotNone(client)
-            self.assertIn(
-                "Failed to initialize Spanner built-in metrics. Error: Metrics init failed",
-                log.output[0],
-            )
-        mock_spanner_metrics_factory.assert_called_once()
+        try:
+            with self.assertLogs(
+                "google.cloud.spanner_v1.client", level="WARNING"
+            ) as log:
+                client = Client(project=self.PROJECT, credentials=creds)
+                self.assertIsNotNone(client)
+                self.assertIn(
+                    "Failed to initialize Spanner built-in metrics. Error: Metrics init failed",
+                    log.output[0],
+                )
+            mock_spanner_metrics_factory.assert_called_once()
+            mock_metrics.set_meter_provider.assert_called_once()
+        finally:
+            MUT._metrics_monitor_initialized = False
 
     @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
     @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "true"})
@@ -292,6 +308,58 @@ class TestClient(unittest.TestCase):
         client = Client(project=self.PROJECT, credentials=creds)
         self.assertIsNotNone(client)
         mock_spanner_metrics_factory.assert_called_once_with(enabled=False)
+
+    @mock.patch("google.cloud.spanner_v1.client.metrics")
+    @mock.patch("google.cloud.spanner_v1.client.CloudMonitoringMetricsExporter")
+    @mock.patch("google.cloud.spanner_v1.client.PeriodicExportingMetricReader")
+    @mock.patch("google.cloud.spanner_v1.client.MeterProvider")
+    @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
+    @mock.patch.dict(os.environ, {"SPANNER_DISABLE_BUILTIN_METRICS": "false"})
+    def test_constructor_metrics_singleton_behavior(
+        self,
+        mock_spanner_metrics_factory,
+        mock_meter_provider,
+        mock_periodic_reader,
+        mock_exporter,
+        mock_metrics,
+    ):
+        """
+        Test that metrics are only initialized once.
+        """
+        from google.cloud.spanner_v1 import client as MUT
+
+        # Reset global state for this test
+        MUT._metrics_monitor_initialized = False
+        try:
+            creds = build_scoped_credentials()
+
+            # First client initialization
+            client1 = MUT.Client(project=self.PROJECT, credentials=creds)
+            self.assertIsNotNone(client1)
+            mock_metrics.set_meter_provider.assert_called_once()
+            mock_spanner_metrics_factory.assert_called_once()
+
+            # Verify MeterProvider chain was created
+            mock_meter_provider.assert_called_once()
+            mock_periodic_reader.assert_called_once()
+            mock_exporter.assert_called_once()
+
+            self.assertTrue(MUT._metrics_monitor_initialized)
+
+            # Reset mocks to verify they are NOT called again
+            mock_metrics.set_meter_provider.reset_mock()
+            mock_spanner_metrics_factory.reset_mock()
+            mock_meter_provider.reset_mock()
+
+            # Second client initialization
+            client2 = MUT.Client(project=self.PROJECT, credentials=creds)
+            self.assertIsNotNone(client2)
+            mock_metrics.set_meter_provider.assert_not_called()
+            mock_spanner_metrics_factory.assert_not_called()
+            mock_meter_provider.assert_not_called()
+            self.assertTrue(MUT._metrics_monitor_initialized)
+        finally:
+            MUT._metrics_monitor_initialized = False
 
     @mock.patch("google.cloud.spanner_v1.client.SpannerMetricsTracerFactory")
     def test_constructor_w_disable_builtin_metrics_using_option(
