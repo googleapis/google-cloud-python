@@ -94,3 +94,20 @@ def test_generate_text_with_options(text_model):
 
     # It basically asserts that the results are still returned.
     assert len(result) == 2
+
+
+def test_generate_table(text_model):
+    df = bpd.DataFrame(
+        {"prompt": ["Generate a table of 2 programming languages and their creators."]}
+    )
+
+    result = ai.generate_table(
+        text_model,
+        df,
+        output_schema="language STRING, creator STRING",
+    )
+
+    assert "language" in result.columns
+    assert "creator" in result.columns
+    # The model may not always return the exact number of rows requested.
+    assert len(result) > 0

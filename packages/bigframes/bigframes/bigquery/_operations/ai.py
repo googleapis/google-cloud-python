@@ -602,6 +602,101 @@ def generate_text(
 
 
 @log_adapter.method_logger(custom_base_name="bigquery_ai")
+def generate_table(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    data: Union[dataframe.DataFrame, series.Series, pd.DataFrame, pd.Series],
+    *,
+    output_schema: str,
+    temperature: Optional[float] = None,
+    top_p: Optional[float] = None,
+    max_output_tokens: Optional[int] = None,
+    stop_sequences: Optional[List[str]] = None,
+    request_type: Optional[str] = None,
+) -> dataframe.DataFrame:
+    """
+    Generates a table using a BigQuery ML model.
+
+    See the `AI.GENERATE_TABLE function syntax
+    <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-table>`_
+    for additional reference.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.bigquery as bbq
+        >>> # The user is responsible for constructing a DataFrame that contains
+        >>> # the necessary columns for the model's prompt. For example, a
+        >>> # DataFrame with a 'prompt' column for text classification.
+        >>> df = bpd.DataFrame({'prompt': ["some text to classify"]})
+        >>> result = bbq.ai.generate_table(
+        ...     "project.dataset.model_name",
+        ...     data=df,
+        ...     output_schema="category STRING"
+        ... ) # doctest: +SKIP
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for table generation.
+        data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
+            The data to generate embeddings for. If a Series is provided, it is
+            treated as the 'content' column.  If a DataFrame is provided, it
+            must contain a 'content' column, or you must rename the column you
+            wish to embed to 'content'.
+        output_schema (str):
+            A string defining the output schema (e.g., "col1 STRING, col2 INT64").
+        temperature (float, optional):
+            A FLOAT64 value that is used for sampling promiscuity. The value
+            must be in the range ``[0.0, 1.0]``.
+        top_p (float, optional):
+            A FLOAT64 value that changes how the model selects tokens for
+            output.
+        max_output_tokens (int, optional):
+            An INT64 value that sets the maximum number of tokens in the
+            generated table.
+        stop_sequences (List[str], optional):
+            An ARRAY<STRING> value that contains the stop sequences for the model.
+        request_type (str, optional):
+            A STRING value that contains the request type for the model.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The generated table.
+    """
+    data = _to_dataframe(data, series_rename="prompt")
+    model_name, session = bq_utils.get_model_name_and_session(model, data)
+    table_sql = bq_utils.to_sql(data)
+
+    struct_fields_bq: Dict[str, bigframes.core.sql.literals.STRUCT_VALUES] = {
+        "output_schema": output_schema
+    }
+    if temperature is not None:
+        struct_fields_bq["temperature"] = temperature
+    if top_p is not None:
+        struct_fields_bq["top_p"] = top_p
+    if max_output_tokens is not None:
+        struct_fields_bq["max_output_tokens"] = max_output_tokens
+    if stop_sequences is not None:
+        struct_fields_bq["stop_sequences"] = stop_sequences
+    if request_type is not None:
+        struct_fields_bq["request_type"] = request_type
+
+    struct_sql = bigframes.core.sql.literals.struct_literal(struct_fields_bq)
+    query = f"""
+        SELECT *
+        FROM AI.GENERATE_TABLE(
+            MODEL `{model_name}`,
+            ({table_sql}),
+            {struct_sql}
+        )
+    """
+
+    if session is None:
+        return bpd.read_gbq_query(query)
+    else:
+        return session.read_gbq_query(query)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ai")
 def if_(
     prompt: PROMPT_TYPE,
     *,
