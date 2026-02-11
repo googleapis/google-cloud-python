@@ -57,11 +57,6 @@ def remap_variables(
     new_root = root.transform_children(lambda node: remapped_children[node])
 
     # Step 3: Transform the current node using the mappings from its children.
-    # "reversed" is required for InNode so that in case of a duplicate column ID,
-    # the left child's mapping is the one that's kept.
-    downstream_mappings: dict[identifiers.ColumnId, identifiers.ColumnId] = {
-        k: v for mapping in reversed(new_child_mappings) for k, v in mapping.items()
-    }
     if isinstance(new_root, nodes.InNode):
         new_root = typing.cast(nodes.InNode, new_root)
         new_root = dataclasses.replace(
@@ -71,6 +66,9 @@ def remap_variables(
             ),
         )
     else:
+        downstream_mappings: dict[identifiers.ColumnId, identifiers.ColumnId] = {
+            k: v for mapping in new_child_mappings for k, v in mapping.items()
+        }
         new_root = new_root.remap_refs(downstream_mappings)
 
     # Step 4: Create new IDs for columns defined by the current node.
@@ -82,12 +80,8 @@ def remap_variables(
     new_root._validate()
 
     # Step 5: Determine which mappings to propagate up to the parent.
-    if root.defines_namespace:
-        # If a node defines a new namespace (e.g., a join), mappings from its
-        # children are not visible to its parents.
-        mappings_for_parent = node_defined_mappings
-    else:
-        # Otherwise, pass up the combined mappings from children and the current node.
-        mappings_for_parent = downstream_mappings | node_defined_mappings
+    propagated_mappings = {
+        old_id: new_id for old_id, new_id in zip(root.ids, new_root.ids)
+    }
 
-    return new_root, mappings_for_parent
+    return new_root, propagated_mappings
