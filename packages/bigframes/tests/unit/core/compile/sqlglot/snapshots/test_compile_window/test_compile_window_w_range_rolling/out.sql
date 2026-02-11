@@ -7,9 +7,9 @@ SELECT
   `bfcol_0` AS `ts_col`,
   CASE
     WHEN COALESCE(
-      SUM(CAST(NOT (
+      SUM(CAST((
         `bfcol_1`
-      ) IS NULL AS INT64)) OVER (
+      ) IS NOT NULL AS INT64)) OVER (
         ORDER BY UNIX_MICROS(`bfcol_0`) ASC
         RANGE BETWEEN 2999999 PRECEDING AND CURRENT ROW
       ),

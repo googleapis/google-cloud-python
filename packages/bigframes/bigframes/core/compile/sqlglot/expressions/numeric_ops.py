@@ -362,7 +362,7 @@ def _float_pow_op(
             sge.If(
                 this=sge.and_(
                     sge.LT(this=left_expr, expression=constants._ZERO),
-                    sge.Not(this=exponent_is_whole),
+                    sge.Not(this=sge.paren(exponent_is_whole)),
                 ),
                 true=constants._NAN,
             ),

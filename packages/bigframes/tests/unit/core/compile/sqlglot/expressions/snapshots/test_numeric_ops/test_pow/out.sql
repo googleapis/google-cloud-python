@@ -33,7 +33,9 @@ SELECT
       END
     )
     WHEN `int64_col` < CAST(0 AS INT64)
-    AND NOT CAST(`float64_col` AS INT64) = `float64_col`
+    AND NOT (
+      CAST(`float64_col` AS INT64) = `float64_col`
+    )
     THEN CAST('NaN' AS FLOAT64)
     WHEN `int64_col` <> CAST(0 AS INT64) AND `float64_col` * LN(ABS(`int64_col`)) > 709.78
     THEN CAST('Infinity' AS FLOAT64) * CASE
@@ -75,7 +77,10 @@ SELECT
         ELSE `int64_col`
       END
     )
-    WHEN `float64_col` < CAST(0 AS INT64) AND NOT CAST(`int64_col` AS INT64) = `int64_col`
+    WHEN `float64_col` < CAST(0 AS INT64)
+    AND NOT (
+      CAST(`int64_col` AS INT64) = `int64_col`
+    )
     THEN CAST('NaN' AS FLOAT64)
     WHEN `float64_col` <> CAST(0 AS INT64)
     AND `int64_col` * LN(ABS(`float64_col`)) > 709.78
@@ -119,7 +124,9 @@ SELECT
       END
     )
     WHEN `float64_col` < CAST(0 AS INT64)
-    AND NOT CAST(`float64_col` AS INT64) = `float64_col`
+    AND NOT (
+      CAST(`float64_col` AS INT64) = `float64_col`
+    )
     THEN CAST('NaN' AS FLOAT64)
     WHEN `float64_col` <> CAST(0 AS INT64)
     AND `float64_col` * LN(ABS(`float64_col`)) > 709.78
@@ -167,7 +174,9 @@ SELECT
         ELSE 0
       END
     )
-    WHEN `float64_col` < CAST(0 AS INT64) AND NOT CAST(0 AS INT64) = 0
+    WHEN `float64_col` < CAST(0 AS INT64) AND NOT (
+      CAST(0 AS INT64) = 0
+    )
     THEN CAST('NaN' AS FLOAT64)
     WHEN `float64_col` <> CAST(0 AS INT64) AND 0 * LN(ABS(`float64_col`)) > 709.78
     THEN CAST('Infinity' AS FLOAT64) * CASE
@@ -214,7 +223,9 @@ SELECT
         ELSE 1
       END
     )
-    WHEN `float64_col` < CAST(0 AS INT64) AND NOT CAST(1 AS INT64) = 1
+    WHEN `float64_col` < CAST(0 AS INT64) AND NOT (
+      CAST(1 AS INT64) = 1
+    )
     THEN CAST('NaN' AS FLOAT64)
     WHEN `float64_col` <> CAST(0 AS INT64) AND 1 * LN(ABS(`float64_col`)) > 709.78
     THEN CAST('Infinity' AS FLOAT64) * CASE

@@ -30,7 +30,9 @@ SELECT
         2 * IEEE_DIVIDE(MAX(`int64_col`) OVER () - MIN(`int64_col`) OVER (), 3)
       ) + 0 AS `right_inclusive`
     )
-    WHEN `int64_col` IS NOT NULL
+    WHEN (
+      `int64_col`
+    ) IS NOT NULL
     THEN STRUCT(
       (
         MIN(`int64_col`) OVER () + (

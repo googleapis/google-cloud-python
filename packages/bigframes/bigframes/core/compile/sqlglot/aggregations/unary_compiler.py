@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import typing
 
+import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 import pandas as pd
 
@@ -189,7 +190,10 @@ def _cut_ops_w_int_bins(
 
         condition: sge.Expression
         if this_bin == bins - 1:
-            condition = sge.Is(this=column.expr, expression=sge.Not(this=sge.Null()))
+            condition = sge.Is(
+                this=sge.paren(column.expr, copy=False),
+                expression=sg.not_(sge.Null(), copy=False),
+            )
         else:
             if op.right:
                 condition = sge.LTE(

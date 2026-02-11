@@ -17,6 +17,7 @@ import pytest
 
 from bigframes import operations as ops
 import bigframes.core.expression as ex
+from bigframes.operations import numeric_ops
 import bigframes.pandas as bpd
 from bigframes.testing import utils
 
@@ -152,6 +153,16 @@ def test_floor(scalar_types_df: bpd.DataFrame, snapshot):
     col_name = "float64_col"
     bf_df = scalar_types_df[[col_name]]
     sql = utils._apply_ops_to_sql(bf_df, [ops.floor_op.as_expr(col_name)], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_isfinite(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "float64_col"
+    bf_df = scalar_types_df[[col_name]]
+    sql = utils._apply_ops_to_sql(
+        bf_df, [numeric_ops.isfinite_op.as_expr(col_name)], [col_name]
+    )
 
     snapshot.assert_match(sql, "out.sql")
 

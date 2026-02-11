@@ -3,9 +3,9 @@ SELECT
   `rowindex`,
   CASE
     WHEN COALESCE(
-      SUM(CAST(NOT (
+      SUM(CAST((
         `bool_col`
-      ) IS NULL AS INT64)) OVER (
+      ) IS NOT NULL AS INT64)) OVER (
         PARTITION BY `bool_col`
         ORDER BY `bool_col` ASC NULLS LAST, `rowindex` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
@@ -25,9 +25,9 @@ SELECT
   END AS `bool_col_1`,
   CASE
     WHEN COALESCE(
-      SUM(CAST(NOT (
+      SUM(CAST((
         `int64_col`
-      ) IS NULL AS INT64)) OVER (
+      ) IS NOT NULL AS INT64)) OVER (
         PARTITION BY `bool_col`
         ORDER BY `bool_col` ASC NULLS LAST, `rowindex` ASC NULLS LAST
         ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
@@ -47,9 +47,9 @@ SELECT
   END AS `int64_col`
 FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 WHERE
-  NOT (
+  (
     `bool_col`
-  ) IS NULL
+  ) IS NOT NULL
 ORDER BY
   `bool_col` ASC NULLS LAST,
   `rowindex` ASC NULLS LAST
