@@ -522,10 +522,10 @@ def generate_text(
         model (bigframes.ml.base.BaseEstimator or str):
             The model to use for text generation.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
-            The data to generate embeddings for. If a Series is provided, it is
-            treated as the 'content' column.  If a DataFrame is provided, it
-            must contain a 'content' column, or you must rename the column you
-            wish to embed to 'content'.
+            The data to generate text for. If a Series is provided, it is
+            treated as the 'prompt' column.  If a DataFrame is provided, it
+            must contain a 'prompt' column, or you must rename the column you
+            wish to generate text to 'prompt'.
         temperature (float, optional):
             A FLOAT64 value that is used for sampling promiscuity. The value
             must be in the range ``[0.0, 1.0]``. A lower temperature works well
@@ -638,10 +638,10 @@ def generate_table(
         model (bigframes.ml.base.BaseEstimator or str):
             The model to use for table generation.
         data (bigframes.pandas.DataFrame or bigframes.pandas.Series):
-            The data to generate embeddings for. If a Series is provided, it is
-            treated as the 'content' column.  If a DataFrame is provided, it
-            must contain a 'content' column, or you must rename the column you
-            wish to embed to 'content'.
+            The data to generate table for. If a Series is provided, it is
+            treated as the 'prompt' column.  If a DataFrame is provided, it
+            must contain a 'prompt' column, or you must rename the column you
+            wish to generate table to 'prompt'.
         output_schema (str):
             A string defining the output schema (e.g., "col1 STRING, col2 INT64").
         temperature (float, optional):
