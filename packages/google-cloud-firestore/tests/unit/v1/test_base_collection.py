@@ -437,10 +437,25 @@ def test_basecollectionreference_pipeline(mock_query):
         assert pipeline == mock_query._build_pipeline.return_value
 
 
-@mock.patch("random.choice")
+@mock.patch("random.SystemRandom.choice")
 def test__auto_id(mock_rand_choice):
     from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS, _auto_id
 
+    mock_result = "0123456789abcdefghij"
+    mock_rand_choice.side_effect = list(mock_result)
+    result = _auto_id()
+    assert result == mock_result
+
+    mock_calls = [mock.call(_AUTO_ID_CHARS)] * 20
+    assert mock_rand_choice.mock_calls == mock_calls
+
+
+@mock.patch("random.choice")
+@mock.patch("random.SystemRandom.choice")
+def test__auto_id_fallback_to_random(mock_system_rand_choice, mock_rand_choice):
+    from google.cloud.firestore_v1.base_collection import _AUTO_ID_CHARS, _auto_id
+
+    mock_system_rand_choice.side_effect = NotImplementedError
     mock_result = "0123456789abcdefghij"
     mock_rand_choice.side_effect = list(mock_result)
     result = _auto_id()

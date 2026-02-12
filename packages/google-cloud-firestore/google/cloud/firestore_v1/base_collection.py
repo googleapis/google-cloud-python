@@ -60,6 +60,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     import datetime
 
 _AUTO_ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+system_random = random.SystemRandom()
 
 
 class BaseCollectionReference(Generic[QueryType]):
@@ -623,8 +624,11 @@ def _auto_id() -> str:
         str: A 20 character string composed of digits, uppercase and
         lowercase and letters.
     """
-
-    return "".join(random.choice(_AUTO_ID_CHARS) for _ in range(20))
+    try:
+        return "".join(system_random.choice(_AUTO_ID_CHARS) for _ in range(20))
+    # Very old Unix systems don't have os.urandom (/dev/urandom), in which case use random.choice
+    except NotImplementedError:
+        return "".join(random.choice(_AUTO_ID_CHARS) for _ in range(20))
 
 
 def _item_to_document_ref(collection_reference, item):
