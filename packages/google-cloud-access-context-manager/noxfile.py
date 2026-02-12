@@ -143,6 +143,15 @@ def format(session):
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run the type checker."""
+
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/13362):
+    # Enable mypy once this bug is fixed.
+    session.skip("Skip mypy since this library doesn't have py.typed")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
     """Verify that setup.py is valid (including RST check)."""
     session.install("docutils", "pygments", "setuptools")
